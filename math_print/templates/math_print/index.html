@@ -1,0 +1,14 @@
+{% extends 'math_print/base.html' %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <a href="{% url 'calculate' %}">正負混合四則演算(10問)</a>
+{% endblock %}

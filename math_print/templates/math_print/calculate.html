@@ -1,12 +1,28 @@
 {% extends 'math_print/base.html' %}
 
 {% block script %}
+<script type="text/javascript"
+src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
 function showAnswer(){
     var nodes = document.getElementsByClassName('answer');
     for(var i = 0; i < nodes.length; i++){
         nodes[i].style.visibility = 'visible';
     }
 }
+</script>
 {% endblock %}
 
 {% block hero_unit %}
@@ -19,19 +35,42 @@ function showAnswer(){
 {% endblock %}
 
 {% block body %}
-<ol>
-    {% for math_problem in math_problem_list %}
-        <li>
-        \[
-        {{ math_problem.latex_problem }}
-        \]
-        <p class="answer" style="visibility:hidden;">
-        \[
-        {{ math_problem.latex_answer }}
-        \]
-        </p>
-        </li>
-    {% endfor %}
-    <input type="button" value="解答表示" onclick="showAnswer()" />
-</ol>
+<!--
+<div class="container-fluid">
+{% for math_problem in math_problem_list %}
+    {% if forloop.counter0|divisibleby:"2" %}
+    {{ forloop.counter0|divisibleby:"2" }}
+        <div class="row justify-content-start">
+            forloop.counter0: {{ forloop.counter0 }}
+            <p>${{ math_problem.latex_problem }}$</p>
+            <p class="answer" style="visibility:hidden;">
+                ${{ math_problem.latex_answer }}$
+            </p>
+        </div>
+    {% else %}
+    {{ forloop.counter0|divisibleby:"2" }}
+        <div class="row justify-content-end">
+            forloop.counter0: {{ forloop.counter0 }}
+            <p>${{ math_problem.latex_problem }}$</p>
+            <p class="answer" style="visibility:hidden;">
+                ${{ math_problem.latex_answer }}$
+            </p>
+        </div>
+    {% endif %}
+{% endfor %}
+</div>
+<input type="button" value="解答表示" onclick="showAnswer()" />
+-->
+
+さんぷる
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">A</div>
+        <div class="col">B</div>
+        <div class="col">C</div>
+        <div class="col">D</div>
+        <div class="col">E</div>
+        <div class="col">F</div>
+    </div>
+</div>
 {% endblock %}

@@ -37,18 +37,33 @@ function showAnswer(){
 {% endblock %}
 
 {% block body %}
-{{% for math_problem in math_problem_list %}}
+{% for math_problem in math_problem_list %}
     {% if forloop.counter0 < 10 %}
+    {{ forloop.counter0 }}
+    {{ forloop.counter0 < 10 }}
         <div class="pull-left">
-            <p class="text-center">${{ math_problem.latex_problem }}$</p>
-            <p class="answer text-center" style="visibility:hidden;">${{ math_problem.latex_answer }}$</p>
+            <p class="text-left">
+                \({{ math_problem.latex_problem }}\)
+            </p>
+            <p class="answer text-left" style="visibility:hidden;">
+                \({{ math_problem.latex_answer }}\)
+            </p>
         </div>
     {% else %}
+    {{ forloop.counter0 }}
+    {{ forloop.counter0 < 10 }}
         <div class="pull-right">
-            <p class="text-center">${{ math_problem.latex_problem }}$</p>
-            <p class="answer text-center" style="visibility:hidden;">${{ math_problem.latex_answer }}$</p>
+            <p class="text-right">
+                \({{ math_problem.latex_problem }}\)
+            </p>
+            <p class="answer text-right" style="visibility:hidden;">
+                \({{ math_problem.latex_answer }}\)
+            </p>
         </div>
     {% endif %}
+{% endfor %}
+
+<input type="button" value="解答表示" onclick="showAnswer()" />
 <!--
 <div class="container-fluid">
 {% for math_problem in math_problem_list %}
@@ -73,6 +88,5 @@ function showAnswer(){
     {% endif %}
 {% endfor %}
 </div>
-<input type="button" value="解答表示" onclick="showAnswer()" />
 -->
 {% endblock %}

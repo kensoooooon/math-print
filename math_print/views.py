@@ -11,7 +11,7 @@ def index(request):
 
 def make_math_print(request):
     math_problem_list = []
-    NUMBER_OF_PROBLEM = 10
+    NUMBER_OF_PROBLEM = 20
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
     TERM_NUMBER = 3

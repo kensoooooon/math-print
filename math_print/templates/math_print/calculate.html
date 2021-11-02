@@ -42,7 +42,7 @@ function showAnswer(){
     <div class="row">
         <div class="col-md-6">
             <p>
-                {{ forloop.counter }}
+                \({{ forloop.counter }}.) \qquad \)
                 \({{ math_problem_tuple.0.latex_problem }}\)
             </p>
             <p class="answer" style="visibility:hidden;">
@@ -51,7 +51,7 @@ function showAnswer(){
         </div>
         <div class="col-md-6">
             <p>
-                {{ forloop.counter|add:"1" }}
+                \({{ forloop.counter|add:"10" }}.) \qquad \)
                 \({{ math_problem_tuple.1.latex_problem }}\)
             </p>
             <p class="answer" style="visibility:hidden;">

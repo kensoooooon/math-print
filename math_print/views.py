@@ -10,13 +10,14 @@ def index(request):
     return render(request, 'math_print/index.html', {})
 
 def make_math_print(request):
-    math_problem_list = []
+    math_problem_tuple_list = []
     NUMBER_OF_PROBLEM = 10
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
     TERM_NUMBER = 3
     for _ in range(NUMBER_OF_PROBLEM):
-        problem = MathProblem(TERM_NUMBER, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC)
-        math_problem_list.append(problem)
+        problem1 = MathProblem(TERM_NUMBER, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC)
+        problem2 = MathProblem(TERM_NUMBER, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC)
+        math_problem_tuple_list.append((problem1, problem2))
 
-    return render(request, 'math_print/calculate.html', {'math_problem_list': math_problem_list})
+    return render(request, 'math_print/calculate.html', {'math_problem_tuple_list': math_problem_tuple_list})

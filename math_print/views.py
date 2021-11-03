@@ -24,4 +24,10 @@ def make_math_print(request):
 
 def select_problem(request):
     result = request.POST
+    number_to_use = request.POST.getlist("number_to_use")
+    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
+    problem_number = request.POST["problem_number"]
+    print(f"problem_number: {problem_number} \n type: {type(problem_number)}")
+    term_number = request.POST["term_number"]
+    print(f"term_number: {term_number} \n type: {type(term_number)}")
     return render(request, 'math_print/result.html', {'result': result})

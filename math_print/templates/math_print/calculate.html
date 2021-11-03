@@ -63,29 +63,5 @@ function showAnswer(){
 {% endfor %}
 
 <input type="button" value="解答表示" onclick="showAnswer()" />
-<!--
-<div class="container-fluid">
-{% for math_problem in math_problem_list %}
-    {% if forloop.counter0|divisibleby:"2" %}
-    {{ forloop.counter0|divisibleby:"2" }}
-        <div class="row justify-content-start">
-            forloop.counter0: {{ forloop.counter0 }}
-            <p>${{ math_problem.latex_problem }}$</p>
-            <p class="answer" style="visibility:hidden;">
-                ${{ math_problem.latex_answer }}$
-            </p>
-        </div>
-    {% else %}
-    {{ forloop.counter0|divisibleby:"2" }}
-        <div class="row justify-content-end">
-            forloop.counter0: {{ forloop.counter0 }}
-            <p>${{ math_problem.latex_problem }}$</p>
-            <p class="answer" style="visibility:hidden;">
-                ${{ math_problem.latex_answer }}$
-            </p>
-        </div>
-    {% endif %}
-{% endfor %}
-</div>
--->
+
 {% endblock %}

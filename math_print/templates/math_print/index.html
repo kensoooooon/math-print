@@ -10,5 +10,74 @@
 {% endblock %}
 
 {% block body %}
-    <a href="{% url 'calculate' %}">正負混合四則演算(10問)</a>
+<div class="container">
+    <a href="{% url 'calculate' %}">正負混合四則演算(20問)</a>
+        <form class="" action="{% url 'select' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <small class="text-muted">使用する数のタイプ</small>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="integerCheck" checked>
+                    <label class="form-check-label" for="integerCheck">
+                        整数
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="decimalCheck">
+                    <label class="form-check-label" for="decimalCheck">
+                        小数
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="fracCheck">
+                    <label class="form-check-label" for="fracCheck">
+                        分数
+                    </label>
+                </div>
+            </div>
+            <small class="text-muted">問題数</small>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="20" name="problem_number" id="twentyRadio" checked>
+                    <label class="form-check-label" for="twentyRadio">
+                        20問
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="40" name="problem_number" id="fortyRadio">
+                    <label class="form-check-label" for="fortyRadio">
+                        40問
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="60" name="problem_number" id="sixtyRadio">
+                    <label class="form-check-label" for="sixtyRadio">
+                        60問
+                    </label>
+                </div>
+            </div>
+            <small class="text-muted">項数</small>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="2" name="term_number" id="twoRadio" checked>
+                    <label class="form-check-label" for="tweoRadio">
+                        2項
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="3" name="term_number" id="threeRadio">
+                    <label class="form-check-label" for="threeRadio">
+                        3項
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="5" name="term_number" id="fourRadio">
+                    <label class="form-check-label" for="fourRadio">
+                        4項
+                    </label>
+                </div>
+            </div>
+            <input class="btn btn-primary" type="submit" value="送信">
+        </form>
+</div>
 {% endblock %}

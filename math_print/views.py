@@ -21,3 +21,7 @@ def make_math_print(request):
         math_problem_tuple_list.append((problem1, problem2))
 
     return render(request, 'math_print/calculate.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def select_problem(request):
+    result = request.POST
+    return render(request, 'math_print/result.html', {'result': result})

@@ -11,7 +11,7 @@
 
 {% block body %}
 <div class="container">
-    <a href="{% url 'calculate' %}">正負混合四則演算(20問)</a>
+    <a href="{% url 'select' %}">正負混合四則演算(20問)</a>
         <form class="" action="{% url 'select' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <small class="text-muted">使用する数のタイプ</small>
@@ -60,7 +60,7 @@
             <div class="form-group">
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" value="2" name="term_number" id="twoRadio" checked>
-                    <label class="form-check-label" for="tweoRadio">
+                    <label class="form-check-label" for="twoRadio">
                         2項
                     </label>
                 </div>
@@ -74,6 +74,27 @@
                     <input class="form-check-input" type="radio" value="5" name="term_number" id="fourRadio">
                     <label class="form-check-label" for="fourRadio">
                         4項
+                    </label>
+                </div>
+            </div>
+            <small class="text-muted">枚数</small>
+            <div class="form-group">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="5" name="paper_number" id="fivePaperRadio" checked>
+                    <label class="form-check-label" for="fivePaperRadio">
+                        5枚
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="10" name="paper_number" id="tenPaperRadio">
+                    <label class="form-check-label" for="tenPaperRadio">
+                        10枚
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="15" name="paper_number" id="fifteenPaperRadio">
+                    <label class="form-check-label" for="fifteenPaperRadio">
+                        15枚
                     </label>
                 </div>
             </div>

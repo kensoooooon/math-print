@@ -24,10 +24,26 @@ def make_math_print(request):
 
 def select_problem(request):
     result = request.POST
+    print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
     print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
-    problem_number = request.POST["problem_number"]
+    problem_number = int(request.POST["problem_number"])
     print(f"problem_number: {problem_number} \n type: {type(problem_number)}")
-    term_number = request.POST["term_number"]
+    term_number = int(request.POST["term_number"])
     print(f"term_number: {term_number} \n type: {type(term_number)}")
-    return render(request, 'math_print/result.html', {'result': result})
+    paper_number = int(request.POST["paper_number"])
+
+    MAX_NUMBER_TO_FRAC = 10
+    MIN_NUMBER_TO_FRAC = -10
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(problem_number/2)):
+            problem1 = MathProblem(term_number, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC, number_to_use)
+            problem2 = MathProblem(term_number, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC, number_to_use)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+
+    # print(f"ren of math_problem_tuple_list: {len(math_problem_tuple_inner_list)}")
+    return render(request, 'math_print/calculate.html', {'math_problem_list_of_list': math_problem_list_of_list})

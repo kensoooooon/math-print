@@ -23,6 +23,21 @@ function showAnswer(){
 </script>
 {% endblock %}
 
+{% block css %}
+<style type="text/css" media="print">
+    .print_pages{
+        /*A4縦*/
+        width: 172mm;
+        height: 251mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+</style>
+{% endblock %}
+
 {% block title %}
 四則演算練習
 {% endblock %}
@@ -37,31 +52,72 @@ function showAnswer(){
 {% endblock %}
 
 {% block body %}
-{% for math_problem_tuple in math_problem_tuple_list %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-6">
-            <p>
-                \({{ forloop.counter }}.) \qquad \)
-                \({{ math_problem_tuple.0.latex_problem }}\)
-            </p>
-            <p class="answer" style="visibility:hidden;">
-                \({{ math_problem_tuple.0.latex_answer }}\)
-            </p>
-        </div>
-        <div class="col-md-6">
-            <p>
-                \({{ forloop.counter|add:"10" }}.) \qquad \)
-                \({{ math_problem_tuple.1.latex_problem }}\)
-            </p>
-            <p class="answer" style="visibility:hidden;">
-                \({{ math_problem_tuple.1.latex_answer }}\)
-            </p>
-        </div>
-    </div>
-</div>
+{% for inner_list in math_problem_list_of_list %}
+    {% for math_problem_tuple in inner_list %}
+        <section class="print_pages">
+            <ol>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <li>
+                                <p>
+                                    \( \quad \)
+                                    \({{ math_problem_tuple.0.latex_problem }}\)
+                                </p>
+                                <p class="answer" style="visibility:hidden;">
+                                    \({{ math_problem_tuple.0.latex_answer }}\)
+                                </p>
+                            </li>
+                        </div>
+                        <div class="col-md-6">
+                            <li>
+                                <p>
+                                    \( \quad \)
+                                    \({{ math_problem_tuple.1.latex_problem }}\)
+                                </p>
+                                <p class="answer" style="visibility:hidden;">
+                                    \({{ math_problem_tuple.1.latex_answer }}\)
+                                </p>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            </ol>
+        </section>
+    {% endfor %}
+    {% for math_problem_tuple in inner_list %}
+        <section class="print_pages">
+            <ol>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <li>
+                                <p>
+                                    \( \quad \)
+                                    \({{ math_problem_tuple.0.latex_problem }}\)
+                                </p>
+                                <p class="answer" style="visibility:visible;">
+                                    \({{ math_problem_tuple.0.latex_answer }}\)
+                                </p>
+                            </li>
+                        </div>
+                        <div class="col-md-6">
+                            <li>
+                                <p>
+                                    \( \quad \)
+                                    \({{ math_problem_tuple.1.latex_problem }}\)
+                                </p>
+                                <p class="answer" style="visibility:visible;">
+                                    \({{ math_problem_tuple.1.latex_answer }}\)
+                                </p>
+                            </li>
+                        </div>
+                    </div>
+                </div>
+            </ol>
+        </section>
+    {% endfor %}
 {% endfor %}
-
 <input type="button" value="解答表示" onclick="showAnswer()" />
 
 {% endblock %}

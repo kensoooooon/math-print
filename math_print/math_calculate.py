@@ -32,16 +32,6 @@ class MathProblem:
         else:
             raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
 
-        '''
-        if first_number_checker == 'integer':
-            first_number, first_latex = ...
-        elif first_number_checker == 'frac':
-            ...
-        else:
-            first
-        的に、文字列をランダムに返すようなリストを作って、それから考える?
-        '''
-
         answer = first_number
         latex_problem = first_latex
         # 後ろを追加していく

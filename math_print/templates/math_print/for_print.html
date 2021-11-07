@@ -1,0 +1,139 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+</script>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .problem{
+        display: flex;
+        gap: 1em;
+    }
+    .problem>div{
+        width: 50%;
+    }
+</style>
+<style type="text/css" media="print">
+    .print_pages{
+        /*A4縦*/
+        width: 172mm;
+        height: 251mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container{
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+四則演算練習
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">計算練習プリント</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container button_container">
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <form>
+                <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+{% for inner_list in math_problem_list_of_list %}
+    <section class="print_pages">
+        <ol>
+            {% for math_problem_tuple in inner_list %}
+                <div class="problem">
+                    <div>
+                        <li>
+                            <p>
+                                \( \quad \)
+                                \({{ math_problem_tuple.0.latex_problem }}\)
+                            </p>
+                            <p class="answer" style="visibility:hidden;">
+                                \({{ math_problem_tuple.0.latex_answer }}\)
+                            </p>
+                        </li>
+                    </div>
+                    <div>
+                        <li>
+                            <p>
+                                \( \quad \)
+                                \({{ math_problem_tuple.1.latex_problem }}\)
+                            </p>
+                            <p class="answer" style="visibility:hidden;">
+                                \({{ math_problem_tuple.1.latex_answer }}\)
+                            </p>
+                        </li>
+                    </div>
+                </div>
+            {% endfor %}
+        </ol>
+    </section>
+    <section class="print_pages">
+        <ol>
+            {% for math_problem_tuple in inner_list %}
+                <div class="problem">
+                    <div>
+                        <li>
+                            <p>
+                                \( \quad \)
+                                \({{ math_problem_tuple.0.latex_problem }}\)
+                            </p>
+                            <p class="answer" style="visibility:visible;">
+                                \({{ math_problem_tuple.0.latex_answer }}\)
+                            </p>
+                        </li>
+                    </div>
+                    <div>
+                        <li>
+                            <p>
+                                \( \quad \)
+                                \({{ math_problem_tuple.1.latex_problem }}\)
+                            </p>
+                            <p class="answer" style="visibility:visible;">
+                                \({{ math_problem_tuple.1.latex_answer }}\)
+                            </p>
+                        </li>
+                    </div>
+                </div>
+            {% endfor %}
+        </ol>
+    </section>
+{% endfor %}
+{% endblock %}

@@ -27,6 +27,7 @@ function showAnswer(){
 <style type="text/css">
     .problem{
         display: flex;
+        gap: 1em;
     }
     .problem>div{
         width: 50%;
@@ -43,10 +44,7 @@ function showAnswer(){
     .print_pages:last-child{
         page-break-after: auto;
     }
-    .hero_unit{
-        display: none;
-    }
-    .base_footer{
+    .hero_unit, .base_footer, .button_container{
         display: none;
     }
 </style>
@@ -66,6 +64,16 @@ function showAnswer(){
 {% endblock %}
 
 {% block body %}
+<div class="container button_container">
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <form>
+                <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <ol>

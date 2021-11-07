@@ -76,9 +76,9 @@ class MathProblem:
         answer_numerator = answer.numerator
         answer_denominator = answer.denominator
         if answer_numerator == 0:
-            latex_answer = "0"
+            latex_answer = " = 0"
         elif answer_denominator == 1:
-            latex_answer = answer_numerator
+            latex_answer = f" = {answer_numerator}"
         else:
             latex_answer = f" = \\frac{{{answer_numerator}}}{{{answer_denominator}}}"
         return latex_answer, latex_problem

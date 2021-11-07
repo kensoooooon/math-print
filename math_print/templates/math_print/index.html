@@ -11,8 +11,8 @@
 
 {% block body %}
 <div class="container">
-    <a href="{% url 'select' %}">正負混合四則演算(20問)</a>
-        <form class="" action="{% url 'select' %}" method="post" enctype="multipart/form-data">
+    <p>正負混合四則演算(20問)</p>
+        <form action="?" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <small class="text-muted">使用する数のタイプ</small>
             <div class="form-group">
@@ -35,27 +35,6 @@
                     </label>
                 </div>
             </div>
-            <small class="text-muted">問題数</small>
-            <div class="form-group">
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" value="20" name="problem_number" id="twentyRadio" checked>
-                    <label class="form-check-label" for="twentyRadio">
-                        20問
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" value="40" name="problem_number" id="fortyRadio">
-                    <label class="form-check-label" for="fortyRadio">
-                        40問
-                    </label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" value="60" name="problem_number" id="sixtyRadio">
-                    <label class="form-check-label" for="sixtyRadio">
-                        60問
-                    </label>
-                </div>
-            </div>
             <small class="text-muted">項数</small>
             <div class="form-group">
                 <div class="form-check form-check-inline">
@@ -71,7 +50,7 @@
                     </label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" value="5" name="term_number" id="fourRadio">
+                    <input class="form-check-input" type="radio" value="4" name="term_number" id="fourRadio">
                     <label class="form-check-label" for="fourRadio">
                         4項
                     </label>
@@ -82,23 +61,23 @@
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" value="5" name="paper_number" id="fivePaperRadio" checked>
                     <label class="form-check-label" for="fivePaperRadio">
-                        5枚
+                        20問×5枚
                     </label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" value="10" name="paper_number" id="tenPaperRadio">
                     <label class="form-check-label" for="tenPaperRadio">
-                        10枚
+                        20問×10枚
                     </label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" value="15" name="paper_number" id="fifteenPaperRadio">
                     <label class="form-check-label" for="fifteenPaperRadio">
-                        15枚
+                        20問×15枚
                     </label>
                 </div>
             </div>
-            <input class="btn btn-primary" type="submit" value="送信">
+            <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'print' %}">
         </form>
 </div>
 {% endblock %}

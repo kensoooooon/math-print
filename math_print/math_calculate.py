@@ -8,11 +8,12 @@ class MathProblem:
     属性として、latex用の問題文と回答を持っておく必要がある
     →tupleで持たせる
     """
-    def __init__(self, term_number, max_number_to_frac, min_number_to_frac, used_number_type_list):
+    def __init__(self, term_number, max_number_to_frac, min_number_to_frac, used_number_type_list, used_operator_type_list):
         self._term_number = term_number
         self._max_number_to_frac = max_number_to_frac
         self._min_number_to_frac = min_number_to_frac
         self._used_number_type_list = used_number_type_list
+        self._used_operator_type_list = used_operator_type_list
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
@@ -37,7 +38,8 @@ class MathProblem:
         # 後ろを追加していく
         for _ in range(self._term_number-1):
             num_type_checker = choice(self._used_number_type_list)
-            operator_type_checker = random()
+            # plus, minus, times, divided
+            operator_type_checker = choice(self._used_operator_type_list)
             
             # 数字決定
             if num_type_checker == 'integer':
@@ -55,19 +57,19 @@ class MathProblem:
                 break
             """
             # 足し算のとき
-            if (operator_type_checker >= 0) and (operator_type_checker < 0.25):
+            if operator_type_checker == "plus":
                 answer = answer + number
                 latex_problem = latex_problem + " + " + latex_number
             # 引き算の時
-            elif (operator_type_checker >= 0.25) and (operator_type_checker < 0.5):
+            elif operator_type_checker == "minus":
                 answer = answer - number
                 latex_problem = latex_problem + " - " + latex_number
             # 掛け算の時
-            elif (operator_type_checker >= 0.5) and (operator_type_checker < 0.75):
+            elif operator_type_checker == "times":
                 answer = answer * number
                 latex_problem =  latex_problem + " \\times " + latex_number
             # 割り算の時
-            elif (operator_type_checker >= 0.75) and (operator_type_checker < 1):
+            elif operator_type_checker == "divided":
                 answer = answer / number
                 latex_problem = latex_problem + " \\div " + latex_number
             else:

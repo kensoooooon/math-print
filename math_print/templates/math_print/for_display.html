@@ -1,0 +1,80 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+四則演算練習
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">計算練習プリント</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<ol>
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            \({{ math_problem_tuple.0.latex_problem }}\)
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            \({{ math_problem_tuple.0.latex_answer }}\)
+                        </p>
+                    </li>
+                </div>
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            \({{ math_problem_tuple.1.latex_problem }}\)
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            \({{ math_problem_tuple.1.latex_answer }}\)
+                        </p>
+                    </li>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</ol>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
+    <button class="btn btn-outline-success" type="button" onclick="window.location.reload(true)">もう一度解く</button>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+{% endblock %}

@@ -20,6 +20,12 @@
     </head>
 
     <body>
+        <nav class="nav bg-light justify-content-end">
+            <li class="nav-item justify-content-center">
+                <a class="nav-link" href="{% url 'index' %}">トップページ</a>
+            </li>
+        </nav>
+
         {% block hero_unit %}
         {% endblock %}
         

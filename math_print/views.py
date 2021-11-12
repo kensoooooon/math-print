@@ -22,7 +22,7 @@ def make_math_print(request):
 
     return render(request, 'math_print/calculate.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
-def print_problem(request):
+def print_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
@@ -50,7 +50,7 @@ def print_problem(request):
     # print(f"ren of math_problem_tuple_list: {len(math_problem_tuple_inner_list)}")
     return render(request, 'math_print/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-def display_problem(request):
+def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST

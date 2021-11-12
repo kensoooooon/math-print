@@ -20,8 +20,12 @@ function showAnswer(){
         nodes[i].style.visibility = 'visible';
     }
 }
-function reload(){
-    location.href = window.location.href;
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
 }
 </script>
 {% endblock %}
@@ -77,7 +81,7 @@ function reload(){
 
 <div class="d-grid gap-3 col-6 mx-auto">
     <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
-    <button class="btn btn-outline-success" type="button" onclick="reload()">もう一度解く</button>
+    <button class="btn btn-outline-success" type="button" onclick="refresh()">もう一度解く</button>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
 {% endblock %}

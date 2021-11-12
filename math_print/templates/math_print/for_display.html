@@ -20,6 +20,9 @@ function showAnswer(){
         nodes[i].style.visibility = 'visible';
     }
 }
+function reload(){
+    location.href = window.location.href;
+}
 </script>
 {% endblock %}
 
@@ -73,8 +76,8 @@ function showAnswer(){
 </ol>
 
 <div class="d-grid gap-3 col-6 mx-auto">
-    <button class="btn btn-outline-success" type="button" onclick="setTimeout('showAnswer()', 500)">答えを表示する</button>
-    <button class="btn btn-outline-success" type="button" onclick="setTimeout(function(){window.location.reload()}, 500)">もう一度解く</button>
+    <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
+    <button class="btn btn-outline-success" type="button" onclick="reload()">もう一度解く</button>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 """
-文字組み込みをどこで？
-→定数を返す関数と、文字を含む関数(make)で分ける？
+latexまわり？正しく計算できていない系
+足し算だけだと表示順除けば概ね
 """
 
 from random import choice, randint, random
@@ -103,16 +103,20 @@ class CharacterMathProblem:
             print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
             frac_with_character_latex = sy.latex(frac_with_character)
             print(f"frac_with_character_latex: {frac_with_character_latex}, type: {type(frac_with_character_latex)}")
+            """
             if frac < 0:
                 frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
+            """
             return frac_with_character, frac_with_character_latex
 
         elif number_or_character == "number":
             print(f"frac: {frac}, type:{type(frac)}")
             frac_with_number_latex = sy.latex(frac)
             print(f"frac_with_character_latex: {frac_with_number_latex}, type: {type(frac_with_number_latex)}")
+            """
             if frac < 0:
                 frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
+            """
             return frac, frac_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
@@ -131,8 +135,10 @@ class CharacterMathProblem:
             used_character = choice(self._used_character_type_list)
             decimal_with_character = decimal * sy.Symbol(used_character)
             decimal_with_character_latex = sy.latex(decimal_with_character)
+            """
             if decimal < 0:
                 decimal_with_character_latex = f"\\left({decimal_with_character_latex}\\right)"
+            """
             return decimal_with_character, decimal_with_character_latex
 
         elif number_or_character == "number":
@@ -156,14 +162,18 @@ class CharacterMathProblem:
             used_character = choice(self._used_character_type_list)
             integer_with_character = integer * sy.Symbol(used_character)
             integer_with_character_latex = sy.latex(integer_with_character)
+            """
             if integer < 0:
                 integer_with_character_latex = f"\\left({integer_with_character_latex}\\right)"
+            """
             return integer_with_character, integer_with_character_latex
 
         elif number_or_character == "number":
             integer_with_number_latex = sy.latex(integer)
+            """
             if integer < 0:
                 integer_with_number_latex = f"\\left({integer_with_number_latex}\\right)"
+            """
             return integer, integer_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")

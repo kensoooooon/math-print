@@ -28,7 +28,7 @@ class CharacterMathProblem:
         elif first_number_checker == 'frac':
             first_number, first_latex = self._make_random_frac(max_number, min_number, "character")
         elif first_number_checker == 'decimal':
-            first_number, first_latex = self._make_random_decimal(max_number, min_number, "character")
+            first_number, first_latex = self._make_random_decimal(max_number, min_number, 10, "character")
         else:
             raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
 
@@ -53,9 +53,9 @@ class CharacterMathProblem:
                     number, latex_number = self._make_random_frac(max_number, min_number, "number")
             elif num_type_checker == 'decimal':
                 if random() > 0.3:
-                    number, latex_number = self._make_random_decimal(max_number, min_number, "character")
+                    number, latex_number = self._make_random_decimal(max_number, min_number, 10, "character")
                 else:
-                    number, latex_number = self._make_random_decimal(max_number, min_number, "number")
+                    number, latex_number = self._make_random_decimal(max_number, min_number, 10, "number")
             else:
                 raise ValueError("The second and subsequent number may be wrong. Please check 'used_number_type_list'.")
 
@@ -77,8 +77,8 @@ class CharacterMathProblem:
                 latex_problem = latex_problem + " \\div " + latex_number
             else:
                 raise ValueError("operator_checker isn't in any condition.")              
-
-        latex_answer = " = " + sy.latex(answer).replace("\\", "\\\\")
+        print(f"answer: {answer}")
+        latex_answer = " = " + self._answer_to_latex(answer)
         
         return latex_answer, latex_problem
 
@@ -96,13 +96,15 @@ class CharacterMathProblem:
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
             frac_with_character = frac * sy.Symbol(used_character)
-            frac_with_character_latex = sy.latex(frac_with_character).replace("\\", "\\\\")
+            print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
+            frac_with_character_latex = self._answer_to_latex(frac_with_character)
             if frac < 0:
                 frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
             return frac_with_character, frac_with_character_latex
 
         elif number_or_character == "number":
-            frac_with_number_latex = sy.latex(frac).replace("\\", "\\\\")
+            print(f"frac: {frac}, type:{type(frac)}")
+            frac_with_number_latex = self._answer_to_latex(frac)
             if frac < 0:
                 frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
             return frac, frac_with_number_latex
@@ -159,5 +161,4 @@ class CharacterMathProblem:
             return integer, integer_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
-
 

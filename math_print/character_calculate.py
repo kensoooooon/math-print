@@ -1,6 +1,17 @@
 """
 latexまわり？正しく計算できていない系
 足し算だけだと表示順除けば概ね
+
+import sympy as sy
+
+x = sy.Symbol("x")
+frac = sy.Rational(1, 3)
+print(f"frac: {frac}")
+frac2 = sy.Rational(2, 10)
+decimal = float(frac2)
+print(f"decimal: {decimal}")
+result = frac + decimal
+print(f"result: {result}")
 """
 
 from random import choice, randint, random

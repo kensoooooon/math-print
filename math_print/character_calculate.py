@@ -16,6 +16,9 @@ class CharacterMathProblem:
         self._used_number_type_list = settings["used_number_type_list"]
         self._used_operator_type_list = settings["used_operator_type_list"]
         self._used_character_type_list = settings["used_character_type_list"]
+        self._character_dict = {}
+        for character in self._used_character_type_list:
+            self._character_dict[character] = sy.Symbol(character)
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
@@ -78,11 +81,17 @@ class CharacterMathProblem:
             else:
                 raise ValueError("operator_checker isn't in any condition.")              
         print(f"answer: {answer}")
-        simplified_answer = sy.simplify(answer)
+        expanded_answer = sy.expand(answer)
+        print(f"expanded_answer: {expanded_answer}")
+        """
+        simplified_answer = sy.simplify(expanded_answer)
         print(f"simplified_answer:{simplified_answer}")
-        latex_answer = " = " + sy.latex(simplified_answer)
+        """
+        collected_answer = sy.collect(expanded_answer, self._character_dict["x"])
+        print(f"collected_answer: {collected_answer}")
+        latex_answer = " = " + sy.latex(collected_answer)
         
-        print(f"latex_anwer: {latex_answer}")
+        print(f"latex_answer: {latex_answer}")
         print(f"latex_problem: {latex_problem}")
         return latex_answer, latex_problem
 
@@ -99,24 +108,21 @@ class CharacterMathProblem:
         
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
-            frac_with_character = frac * sy.Symbol(used_character)
+            frac_with_character = frac * self._character_dict[used_character]
             print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
             frac_with_character_latex = sy.latex(frac_with_character)
             print(f"frac_with_character_latex: {frac_with_character_latex}, type: {type(frac_with_character_latex)}")
-            """
             if frac < 0:
                 frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
-            """
+
             return frac_with_character, frac_with_character_latex
 
         elif number_or_character == "number":
             print(f"frac: {frac}, type:{type(frac)}")
             frac_with_number_latex = sy.latex(frac)
             print(f"frac_with_character_latex: {frac_with_number_latex}, type: {type(frac_with_number_latex)}")
-            """
             if frac < 0:
                 frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
-            """
             return frac, frac_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
@@ -133,12 +139,10 @@ class CharacterMathProblem:
 
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
-            decimal_with_character = decimal * sy.Symbol(used_character)
+            decimal_with_character = decimal * self._character_dict[used_character]
             decimal_with_character_latex = sy.latex(decimal_with_character)
-            """
             if decimal < 0:
                 decimal_with_character_latex = f"\\left({decimal_with_character_latex}\\right)"
-            """
             return decimal_with_character, decimal_with_character_latex
 
         elif number_or_character == "number":
@@ -160,20 +164,16 @@ class CharacterMathProblem:
         
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
-            integer_with_character = integer * sy.Symbol(used_character)
+            integer_with_character = integer * self._character_dict[used_character]
             integer_with_character_latex = sy.latex(integer_with_character)
-            """
             if integer < 0:
                 integer_with_character_latex = f"\\left({integer_with_character_latex}\\right)"
-            """
             return integer_with_character, integer_with_character_latex
 
         elif number_or_character == "number":
             integer_with_number_latex = sy.latex(integer)
-            """
             if integer < 0:
                 integer_with_number_latex = f"\\left({integer_with_number_latex}\\right)"
-            """
             return integer, integer_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")

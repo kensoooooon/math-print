@@ -29,7 +29,7 @@ class CharacterMathProblem:
         self._used_character_type_list = settings["used_character_type_list"]
         self._character_dict = {}
         for character in self._used_character_type_list:
-            self._character_dict[character] = sy.Symbol(character)
+            self._character_dict[character] = sy.Symbol(character, real=True)
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
@@ -146,21 +146,24 @@ class CharacterMathProblem:
         else:
             numerator = randint(min_num, -1)
         
-        decimal = sy.Float(numerator/denominator)
+        frac_for_decimal = sy.Rational(numerator, denominator)
+        decimal = float(frac_for_decimal)
 
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
-            decimal_with_character = decimal * self._character_dict[used_character]
-            decimal_with_character_latex = sy.latex(decimal_with_character)
+            character = self._character_dict[used_character]
+            decimal_with_character = frac_for_decimal * character
+            decimal_with_character_latex = sy.latex(decimal * character)
             if decimal < 0:
                 decimal_with_character_latex = f"\\left({decimal_with_character_latex}\\right)"
             return decimal_with_character, decimal_with_character_latex
 
         elif number_or_character == "number":
+            decimal_with_number = frac_for_decimal
             decimal_with_number_latex = sy.latex(decimal)
             if decimal < 0:
                 decimal_with_number_latex = f"\\left({decimal_with_number_latex}\\right)"
-            return decimal, decimal_with_number_latex
+            return decimal_with_number, decimal_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
     
@@ -188,4 +191,3 @@ class CharacterMathProblem:
             return integer, integer_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
-

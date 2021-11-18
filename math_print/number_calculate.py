@@ -2,7 +2,7 @@ from fractions import Fraction
 from random import choice, randint, random
 
 
-class MathProblem:
+class NumberMathProblem:
     """
     とりあえず整数、分数、小数の3つを使った適当な演算を請け負うクラス
     属性として、latex用の問題文と回答を持っておく必要がある

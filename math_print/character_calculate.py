@@ -91,19 +91,15 @@ class CharacterMathProblem:
                 latex_problem = latex_problem + " \\div " + latex_number
             else:
                 raise ValueError("operator_checker isn't in any condition.")              
-        print(f"answer: {answer}")
+        # print(f"answer: {answer}")
         expanded_answer = sy.expand(answer)
-        print(f"expanded_answer: {expanded_answer}")
-        """
-        simplified_answer = sy.simplify(expanded_answer)
-        print(f"simplified_answer:{simplified_answer}")
-        """
+        # print(f"expanded_answer: {expanded_answer}")
         collected_answer = sy.collect(expanded_answer, self._character_dict["x"])
-        print(f"collected_answer: {collected_answer}")
+        # print(f"collected_answer: {collected_answer}")
         latex_answer = " = " + sy.latex(collected_answer)
         
-        print(f"latex_answer: {latex_answer}")
-        print(f"latex_problem: {latex_problem}")
+        # print(f"latex_answer: {latex_answer}")
+        # print(f"latex_problem: {latex_problem}")
         return latex_answer, latex_problem
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
@@ -120,18 +116,18 @@ class CharacterMathProblem:
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
             frac_with_character = frac * self._character_dict[used_character]
-            print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
+            # print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
             frac_with_character_latex = sy.latex(frac_with_character)
-            print(f"frac_with_character_latex: {frac_with_character_latex}, type: {type(frac_with_character_latex)}")
+            # print(f"frac_with_character_latex: {frac_with_character_latex}, type: {type(frac_with_character_latex)}")
             if frac < 0:
                 frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
 
             return frac_with_character, frac_with_character_latex
 
         elif number_or_character == "number":
-            print(f"frac: {frac}, type:{type(frac)}")
+            # print(f"frac: {frac}, type:{type(frac)}")
             frac_with_number_latex = sy.latex(frac)
-            print(f"frac_with_character_latex: {frac_with_number_latex}, type: {type(frac_with_number_latex)}")
+            # print(f"frac_with_character_latex: {frac_with_number_latex}, type: {type(frac_with_number_latex)}")
             if frac < 0:
                 frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
             return frac, frac_with_number_latex

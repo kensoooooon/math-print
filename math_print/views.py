@@ -68,8 +68,10 @@ def print_character_problem(request):
     character_to_use_list = ["x"]
     if character_to_use == "2":
         character_to_use_list += ["y"]
+    """
     elif character_to_use == "3":
         character_to_use_list += ["y", "z"]
+    """
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
@@ -135,8 +137,10 @@ def display_character_problem(request):
     character_to_use_list = ["x"]
     if character_to_use == "2":
         character_to_use_list += ["y"]
+    """
     elif character_to_use == "3":
         character_to_use_list += ["y", "z"]
+    """
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10

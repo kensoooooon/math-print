@@ -1,26 +1,13 @@
-"""
-latexまわり？正しく計算できていない系
-足し算だけだと表示順除けば概ね
-
-import sympy as sy
-
-x = sy.Symbol("x")
-frac = sy.Rational(1, 3)
-print(f"frac: {frac}")
-frac2 = sy.Rational(2, 10)
-decimal = float(frac2)
-print(f"decimal: {decimal}")
-result = frac + decimal
-print(f"result: {result}")
-"""
-
+from collections import defaultdict
 from random import choice, randint, random
+
 import sympy as sy
 
 
 class CharacterMathProblem:
 
     def __init__(self, **settings):
+        sy.init_printing(order='grevlex')
         self._term_number = settings["term_number"]
         self._max_number_to_frac = settings["max_number_to_frac"]
         self._min_number_to_frac = settings["min_number_to_frac"]
@@ -28,7 +15,7 @@ class CharacterMathProblem:
         self._used_operator_type_list = settings["used_operator_type_list"]
         self._used_character_type_list = settings["used_character_type_list"]
         self._character_dict = {}
-        for character in self._used_character_type_list:
+        for character in ["x", "y"]:
             self._character_dict[character] = sy.Symbol(character, real=True)
         self.latex_answer, self.latex_problem = self._make_problem()
 
@@ -48,7 +35,6 @@ class CharacterMathProblem:
 
         answer = first_number
         latex_problem = first_latex
-        # 後ろを追加していく
         for _ in range(self._term_number-1):
             num_type_checker = choice(self._used_number_type_list)
             # plus, minus, times, divided
@@ -91,15 +77,12 @@ class CharacterMathProblem:
                 latex_problem = latex_problem + " \\div " + latex_number
             else:
                 raise ValueError("operator_checker isn't in any condition.")              
-        # print(f"answer: {answer}")
+        print(f"answer: {answer}")
         expanded_answer = sy.expand(answer)
-        # print(f"expanded_answer: {expanded_answer}")
-        collected_answer = sy.collect(expanded_answer, self._character_dict["x"])
-        # print(f"collected_answer: {collected_answer}")
-        latex_answer = " = " + sy.latex(collected_answer)
-        
-        # print(f"latex_answer: {latex_answer}")
-        # print(f"latex_problem: {latex_problem}")
+        print(f"expanded_answer: {expanded_answer}")
+        collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
+        latex_answer = f" = {sy.latex(collected_answer)}"
+
         return latex_answer, latex_problem
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
@@ -143,7 +126,10 @@ class CharacterMathProblem:
             numerator = randint(min_num, -1)
         
         frac_for_decimal = sy.Rational(numerator, denominator)
-        decimal = float(frac_for_decimal)
+        if frac_for_decimal == 1:
+            decimal = 1
+        else:
+            decimal = float(frac_for_decimal)
 
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
@@ -170,11 +156,12 @@ class CharacterMathProblem:
         else:
             numerator = randint(min_num, -1)
         
-        integer = numerator
+        # integer = numerator
+        integer = sy.Integer(numerator)
         
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
-            integer_with_character = integer * self._character_dict[used_character]
+            integer_with_character = self._character_dict[used_character] * integer
             integer_with_character_latex = sy.latex(integer_with_character)
             if integer < 0:
                 integer_with_character_latex = f"\\left({integer_with_character_latex}\\right)"

@@ -41,7 +41,20 @@ class LinearEquationProblem:
         left += first_number
         left_latex += first_latex
 
-        for _ in range(self._term_number - 1):
+        second_number_checker = choice(self._used_number_type_list)
+        if second_number_checker == 'integer':
+            second_number, second_latex = self._make_random_integer(max_number, min_number, "number")
+        elif second_number_checker == 'frac':
+            second_number, second_latex = self._make_random_frac(max_number, min_number, "number")
+        elif second_number_checker == 'decimal':
+            second_number, second_latex = self._make_random_decimal(max_number, min_number, 10, "number")
+        else:
+            raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
+
+        right += second_number
+        right_latex += second_latex
+
+        for _ in range(self._term_number - 2):
             num_type_checker = choice(self._used_number_type_list)
             # plus, minus, times, divided
             operator_type_checker = choice(self._used_operator_type_list)
@@ -90,11 +103,15 @@ class LinearEquationProblem:
             print(f"right: {right}")
             diff = left - right
             print(f"diff: {diff}")
-            equation_answer = int(sy.solve(diff, self._character_dict["x"])[0])
+            solve_result = sy.solve(diff, self._character_dict["x"])
+            if not (solve_result):
+                return "0", f"{left_latex} = {right_latex}"
+            print(f"solve_result: {solve_result}")
+            equation_answer = solve_result[0]
             print(f"equation_answer: {equation_answer}")
             answer = sy.collect(equation_answer, self._character_dict["x"])
             print(f"answer: {answer}")
-            latex_answer = sy.latex(answer)
+            latex_answer = f"x = {sy.latex(answer)}"
             print(f"latex_answer: {latex_answer}")
             latex_problem = f"{left_latex} = {right_latex}"
             print(f"latex_problem: {latex_problem}")

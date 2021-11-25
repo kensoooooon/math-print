@@ -54,14 +54,10 @@ class LinearEquationProblem:
         right += second_number
         right_latex += second_latex
 
-        print(f"self._term_number-2 is {self._term_number - 2}")
         for i in range(self._term_number - 2):
-            print(f"loop is {i}!")
             num_type_checker = choice(self._used_number_type_list)
-            # plus, minus, times, divided
             operator_type_checker = choice(self._used_operator_type_list)
             
-            # decide number type and character or number within if block
             if num_type_checker == 'integer':
                 if random() > 0.3:
                     number, latex_number = self._make_random_integer(max_number, min_number, "character")
@@ -95,32 +91,24 @@ class LinearEquationProblem:
                     left = left - number
                     left_latex = left_latex + " - " + latex_number
                 else:
-                    right = right + number
+                    right = right - number
                     right_latex = right_latex + " - " + latex_number
             else:
                 raise ValueError("operator_checker isn't in any condition.")
-            print("----------inner loop end----------")
 
 
-        print(f"left: {left}")
-        print(f"right: {right}")
-        print(f"left_latex: {left_latex}")
-        print(f"right_latex: {right_latex}")
-        diff = left - right
-        print(f"diff: {diff}")
-        solve_result = sy.solve(diff, self._character_dict["x"])
-        if not (solve_result):
-            return "0", f"{left_latex} = {right_latex}"
-        print(f"solve_result: {solve_result}")
-        equation_answer = solve_result[0]
-        print(f"equation_answer: {equation_answer}")
-        answer = sy.collect(equation_answer, self._character_dict["x"])
-        print(f"answer: {answer}")
-        latex_answer = f"x = {sy.latex(answer)}"
-        print(f"latex_answer: {latex_answer}")
         latex_problem = f"{left_latex} = {right_latex}"
-        print(f"latex_problem: {latex_problem}")
-        print(f"---------one make end-------------------")
+        diff = (left) - (right)
+        diff_latex = sy.latex(diff)
+        if "x" not in diff_latex:
+            if diff_latex == "0":
+                return "常に成り立つ", latex_problem
+            else:
+                return "常に成り立たない", latex_problem
+        solve_result = sy.solve(diff, self._character_dict["x"])
+        equation_answer = solve_result[0]
+        answer = sy.collect(equation_answer, self._character_dict["x"])
+        latex_answer = f"x = {sy.latex(answer)}"
         return latex_answer, latex_problem
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
@@ -137,18 +125,14 @@ class LinearEquationProblem:
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)
             frac_with_character = frac * self._character_dict[used_character]
-            # print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
             frac_with_character_latex = sy.latex(frac_with_character)
-            # print(f"frac_with_character_latex: {frac_with_character_latex}, type: {type(frac_with_character_latex)}")
             if frac < 0:
                 frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
 
             return frac_with_character, frac_with_character_latex
 
         elif number_or_character == "number":
-            # print(f"frac: {frac}, type:{type(frac)}")
             frac_with_number_latex = sy.latex(frac)
-            # print(f"frac_with_character_latex: {frac_with_number_latex}, type: {type(frac_with_number_latex)}")
             if frac < 0:
                 frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
             return frac, frac_with_number_latex
@@ -194,7 +178,6 @@ class LinearEquationProblem:
         else:
             numerator = randint(min_num, -1)
         
-        # integer = numerator
         integer = sy.Integer(numerator)
         
         if number_or_character == "character":

@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .character_calculate import CharacterMathProblem
-from .linear_equation import LinearEquationProblem
-from .number_calculate import NumberMathProblem
+from .math_process.character_calculate import CharacterMathProblem
+from .math_process.linear_equation import LinearEquationProblem
+from .math_process.number_calculate import NumberMathProblem
 
 
 

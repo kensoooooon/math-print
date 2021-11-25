@@ -54,7 +54,9 @@ class LinearEquationProblem:
         right += second_number
         right_latex += second_latex
 
-        for _ in range(self._term_number - 2):
+        print(f"self._term_number-2 is {self._term_number - 2}")
+        for i in range(self._term_number - 2):
+            print(f"loop is {i}!")
             num_type_checker = choice(self._used_number_type_list)
             # plus, minus, times, divided
             operator_type_checker = choice(self._used_operator_type_list)
@@ -97,25 +99,29 @@ class LinearEquationProblem:
                     right_latex = right_latex + " - " + latex_number
             else:
                 raise ValueError("operator_checker isn't in any condition.")
+            print("----------inner loop end----------")
 
 
-            print(f"left: {left}")
-            print(f"right: {right}")
-            diff = left - right
-            print(f"diff: {diff}")
-            solve_result = sy.solve(diff, self._character_dict["x"])
-            if not (solve_result):
-                return "0", f"{left_latex} = {right_latex}"
-            print(f"solve_result: {solve_result}")
-            equation_answer = solve_result[0]
-            print(f"equation_answer: {equation_answer}")
-            answer = sy.collect(equation_answer, self._character_dict["x"])
-            print(f"answer: {answer}")
-            latex_answer = f"x = {sy.latex(answer)}"
-            print(f"latex_answer: {latex_answer}")
-            latex_problem = f"{left_latex} = {right_latex}"
-            print(f"latex_problem: {latex_problem}")
-            return latex_answer, latex_problem
+        print(f"left: {left}")
+        print(f"right: {right}")
+        print(f"left_latex: {left_latex}")
+        print(f"right_latex: {right_latex}")
+        diff = left - right
+        print(f"diff: {diff}")
+        solve_result = sy.solve(diff, self._character_dict["x"])
+        if not (solve_result):
+            return "0", f"{left_latex} = {right_latex}"
+        print(f"solve_result: {solve_result}")
+        equation_answer = solve_result[0]
+        print(f"equation_answer: {equation_answer}")
+        answer = sy.collect(equation_answer, self._character_dict["x"])
+        print(f"answer: {answer}")
+        latex_answer = f"x = {sy.latex(answer)}"
+        print(f"latex_answer: {latex_answer}")
+        latex_problem = f"{left_latex} = {right_latex}"
+        print(f"latex_problem: {latex_problem}")
+        print(f"---------one make end-------------------")
+        return latex_answer, latex_problem
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()

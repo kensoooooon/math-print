@@ -229,5 +229,99 @@
                 </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <p>1次方程式</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="plus" name="operator_to_use" id="linearEquationPlusCheck" checked>
+                        <label class="form-check-label" for="linearEqutionPlusCheck">
+                            足し算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="minus" name="operator_to_use" id="linearEquationMinusCheck" checked>
+                        <label class="form-check-label" for="linearEquationMinusCheck">
+                            引き算
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">使用する数のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="linearEquationIntegerCheck" checked>
+                        <label class="form-check-label" for="linearEquationIntegerCheck">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="linearEquationDecimalCheck">
+                        <label class="form-check-label" for="linearEquationDecimalCheck">
+                            小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="linearEquationFracCheck">
+                        <label class="form-check-label" for="linearEquationFracCheck">
+                            分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">項数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="3" name="term_number" id="linearEquationThreeRadio" checked>
+                        <label class="form-check-label" for="characterThreeRadio">
+                            3項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="4" name="term_number" id="linearEquationFourRadio">
+                        <label class="form-check-label" for="linearEquationFourRadio">
+                            4項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="term_number" id="linearEquationFiveRadio">
+                        <label class="form-check-label" for="linearEquationFiveRadio">
+                            5項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="6" name="term_number" id="linearEquationSixRadio">
+                        <label class="form-check-label" for="linearEquationSixRadio">
+                            6項
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="linearEquationFivePaperRadio" checked>
+                        <label class="form-check-label" for="linearEquationFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="linearEquationTenPaperRadio">
+                        <label class="form-check-label" for="linearEquationTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="linearEquationFifteenPaperRadio">
+                        <label class="form-check-label" for="linearEquationFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'linear_equation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'linear_equation_display' %}">      
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

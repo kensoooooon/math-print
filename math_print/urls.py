@@ -12,4 +12,6 @@ urlpatterns = [
     path('character/character_display', views.display_character_problem, name="character_display"),
     path('linear_equation/linear_equation_print/', views.print_linear_equation_problem, name="linear_equation_print"),
     path('linear_equation/linear_equation_display/', views.display_linear_equation_problem, name="linear_equation_display"),
+    path('linear_equation/linear_equation_ax_equal_b_only_integer_print/',views.print_linear_equation_ax_equal_b_integer, name='linear_equation_ax_equal_b_integer_print'),
+    path('linear_equation/linear_equation_ax_equal_b_only_integer_display/',views.display_linear_equation_ax_equal_b_integer, name='linear_equation_ax_equal_b_integer_display'),
 ]

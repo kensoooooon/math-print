@@ -1,9 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from sympy.geometry import line
 
-from .character_calculate import CharacterMathProblem
-from .linear_equation import LinearEquationProblem
-from .number_calculate import NumberMathProblem
+from .math_process.character_calculate import CharacterMathProblem
+from .math_process.linear_equation import LinearEquationProblem
+from .math_process.number_calculate import NumberMathProblem
+from .math_process.linear_equation_ax_equal_b import LinearEquationAxEqualB
 
 
 
@@ -136,6 +138,28 @@ def print_linear_equation_problem(request):
 
     return render(request, 'math_print/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_linear_equation_ax_equal_b_integer(request):
+    PROBLEM_NUMBER = 20
+    
+    linear_equation_type = request.POST["linear_equation_type"]
+    number_to_use = request.POST.getlist("number_to_use")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = LinearEquationAxEqualB(
+                used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+            )
+            problem2 = LinearEquationAxEqualB(
+                used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -226,6 +250,24 @@ def display_linear_equation_problem(request):
             min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
             used_operator_type_list=operator_to_use,
             )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_linear_equation_ax_equal_b_integer(request):
+    PROBLEM_NUMBER = 20
+    
+    linear_equation_type = request.POST["linear_equation_type"]
+    number_to_use = request.POST.getlist("number_to_use")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = LinearEquationAxEqualB(
+            used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+            )
+        problem2 = LinearEquationAxEqualB(
+            used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+        )
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

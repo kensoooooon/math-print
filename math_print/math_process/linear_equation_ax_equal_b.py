@@ -42,12 +42,24 @@ class LinearEquationAxEqualB:
         print(f"answer: {answer}")
         print(f"intercept: {intercept}")
 
-        left = linear_coefficient * self._character_dict["x"]
-        left_latex = sy.latex(left)
-        right = intercept
-        right_latex = sy.latex(right)
+        # left = linear_coefficient * self._character_dict["x"]
+        if linear_coefficient_latex == "1":
+            left_latex = "x"
+        elif linear_coefficient_latex == "-1":
+            left_latex = "-x"
+        else:
+            left_latex = f"{linear_coefficient_latex} x"
+        print(f"left_latex: {left_latex}")
         
-        latex_answer = f"x = {sy.latex(answer)}"
+        right = intercept
+        if number_type_checker == "decimal":
+            right_latex = sy.latex(float(right))
+        else:
+            right_latex = sy.latex(right)
+        
+        print(f"left_latex: {left_latex}")
+        print(f"right_latex: {right_latex}")
+        latex_answer = f"x = {answer_latex}"
         latex_problem = f"{left_latex} = {right_latex}"
         
         return latex_answer, latex_problem
@@ -59,10 +71,14 @@ class LinearEquationAxEqualB:
 
         if number_type_checker == "integer":
             left, left_latex = self._make_random_integer(10, -10, "character")
+            if left == 1:
+                left_latex = "x"
+            elif left == -1:
+                left_latex = "-x"
         elif number_type_checker == "frac":
             left, left_latex = self._make_random_frac(10, -10, "character")
         elif number_type_checker == "decimal":
-            right, right_latex = self._make_random_decimal(10, -10, 10, "character")
+            left, left_latex = self._make_random_decimal(10, -10, 10, "character")
 
         number_type_checker = choice(self._used_number_type_list)
 
@@ -73,6 +89,7 @@ class LinearEquationAxEqualB:
         elif number_type_checker == "decimal":
             right, right_latex = self._make_random_decimal(10, -10, 10, "number")
         
+
         latex_problem = f"{left_latex} = {right_latex}"
         diff = left - right
         solve_result = sy.solve(diff, self._character_dict["x"])

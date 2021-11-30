@@ -340,6 +340,8 @@
                             ax=b(分数解もふくむ)
                         </label>
                     </div>
+                </div>
+                <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="ax_plus_b_equal_c_only_integer" name="linear_equation_type" id="ax_plus_b_equal_c_only_integer" checked>
                         <label class="form-check-label" for="ax_plus_b_equal_c_only_integer">
@@ -395,8 +397,8 @@
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'linear_equation_ax_equal_b_integer_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'linear_equation_ax_equal_b_integer_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'specific_linear_equation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'specific_linear_equation_display' %}">      
             </form>
         </div>
     </div>

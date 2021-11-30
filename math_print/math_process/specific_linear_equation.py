@@ -162,7 +162,7 @@ class SpecificLinearEquation:
         if a_type_checker == 'integer':
             a, a_latex = self._make_random_integer(10, -10, "number")
         elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(10, -10, "number")
+            a, a_latex = self._make_random_frac(5, -5, "number")
         elif a_type_checker == 'decimal':
             a, a_latex = self._make_random_decimal(10, -10, 10, "number")
         else:
@@ -173,7 +173,7 @@ class SpecificLinearEquation:
         if c_type_checker == 'integer':
             c, c_latex = self._make_random_integer(10, -10, "number")
         elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(10, -10, "number")
+            c, c_latex = self._make_random_frac(5, -5, "number")
         elif c_type_checker == 'decimal':
             c, c_latex = self._make_random_decimal(10, -10, 10, "number")
         else:
@@ -183,7 +183,7 @@ class SpecificLinearEquation:
         if answer_type_checker == 'integer':
             answer, answer_latex = self._make_random_integer(10, -10, "number")
         elif answer_type_checker == 'frac':
-            answer, answer_latex = self._make_random_frac(10, -10, "number")
+            answer, answer_latex = self._make_random_frac(5, -5, "number")
         elif answer_type_checker == 'decimal':
             answer, answer_latex = self._make_random_decimal(10, -10, 10, "number")
         else:
@@ -234,19 +234,10 @@ class SpecificLinearEquation:
             used_character = choice(self._used_character_type_list)
             frac_with_character = frac * self._character_dict[used_character]
             frac_with_character_latex = sy.latex(frac_with_character)
-            """
-            if frac < 0:
-                frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
-            """
-
             return frac_with_character, frac_with_character_latex
 
         elif number_or_character == "number":
             frac_with_number_latex = sy.latex(frac)
-            """
-            if frac < 0:
-                frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
-            """
             return frac, frac_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
@@ -270,19 +261,11 @@ class SpecificLinearEquation:
             character = self._character_dict[used_character]
             decimal_with_character = frac_for_decimal * character
             decimal_with_character_latex = sy.latex(decimal * character)
-            """
-            if decimal < 0:
-                decimal_with_character_latex = f"\\left({decimal_with_character_latex}\\right)"
-            """
             return decimal_with_character, decimal_with_character_latex
 
         elif number_or_character == "number":
             decimal_with_number = frac_for_decimal
             decimal_with_number_latex = sy.latex(decimal)
-            """
-            if decimal < 0:
-                decimal_with_number_latex = f"\\left({decimal_with_number_latex}\\right)"
-            """
             return decimal_with_number, decimal_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
@@ -300,18 +283,10 @@ class SpecificLinearEquation:
             used_character = choice(self._used_character_type_list)
             integer_with_character = self._character_dict[used_character] * integer
             integer_with_character_latex = sy.latex(integer_with_character)
-            """
-            if integer < 0:
-                integer_with_character_latex = f"\\left({integer_with_character_latex}\\right)"
-            """
             return integer_with_character, integer_with_character_latex
 
         elif number_or_character == "number":
             integer_with_number_latex = sy.latex(integer)
-            """
-            if integer < 0:
-                integer_with_number_latex = f"\\left({integer_with_number_latex}\\right)"
-            """
             return integer, integer_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")

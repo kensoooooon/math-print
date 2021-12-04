@@ -14,4 +14,5 @@ urlpatterns = [
     path('linear_equation/linear_equation_display/', views.display_linear_equation_problem, name="linear_equation_display"),
     path('linear_equation/linear_equation_ax_equal_b_only_integer_print/',views.print_specific_linear_equation, name='specific_linear_equation_print'),
     path('linear_equation/linear_equation_ax_equal_b_only_integer_display/',views.display_specific_linear_equation, name='specific_linear_equation_display'),
+    path('simultaneous_equations/simultaneous_equations_for_display/', views.display_simultaneous_equations, name='simultaneous_equation_display'),
 ]

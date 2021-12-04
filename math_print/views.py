@@ -271,3 +271,8 @@ def display_specific_linear_equation(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_simultaneous_equations(request):
+    message = "this is sample of simultaneous equations."
+    
+    return render(request, 'math_print/simultaneous_equations/simultaneous_equations_for_display.html', {'message': message})

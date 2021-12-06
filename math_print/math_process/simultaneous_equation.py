@@ -3,7 +3,7 @@ from random import choice, randint, random
 import sympy as sy
 
 
-class SpecificLinearEquation:
+class SimultaneousEquation:
     
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
@@ -28,6 +28,7 @@ class SpecificLinearEquation:
         
         for _ in range(2):
             a_type_checker = choice(self._used_number_type_list)
+            print(f"a_type_checker: {a_type_checker}")
             
             if a_type_checker == "integer":
                 a, a_latex = self._make_random_integer(10, -10, "number")
@@ -52,7 +53,7 @@ class SpecificLinearEquation:
             c = a * x + b * y
             c_latex = sy.latex(c)
             
-            left_latex1 = ""
+            left_latex = ""
             if a == 1:
                 left_latex = left_latex + "x"
             elif a == -1:
@@ -69,7 +70,7 @@ class SpecificLinearEquation:
             
             two_problems_list.append(f"{left_latex}={right_latex}")
          
-        latex_problem = f"{two_problems_list[0]} \\ {two_problems_list[1]}"
+        latex_problem = f"{two_problems_list[0]} \\\\ {two_problems_list[1]}"
         latex_answer = f"x = {x_latex}, y = {y_latex}"
         
         return latex_answer, latex_problem
@@ -132,7 +133,7 @@ class SpecificLinearEquation:
             
             two_problems_list.append(f"{left_latex}={right_latex}")
          
-        latex_problem = f"{two_problems_list[0]} \\ {two_problems_list[1]}"
+        latex_problem = f"{two_problems_list[0]} \\\\ {two_problems_list[1]}"
         latex_answer = f"x = {x_latex}, y = {y_latex}"
         
         return latex_answer, latex_problem

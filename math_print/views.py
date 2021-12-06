@@ -6,6 +6,7 @@ from .math_process.character_calculate import CharacterMathProblem
 from .math_process.linear_equation import LinearEquationProblem
 from .math_process.number_calculate import NumberMathProblem
 from .math_process.specific_linear_equation import SpecificLinearEquation
+from .math_process.simultaneous_equation import SimultaneousEquation
 
 
 
@@ -159,6 +160,29 @@ def print_specific_linear_equation(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_simultaneous_equation(request):
+    PROBLEM_NUMBER = 20
+    
+    simultaneous_equation_type = request.POST["simultaneous_equation_type"]
+    number_to_use = request.POST.getlist("number_to_use")
+    paper_number = int(request.POST["paper_number"])
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = SimultaneousEquation(
+                used_number_type_list=number_to_use, simultaneous_equation_type=simultaneous_equation_type
+            )
+            problem2 = SpecificLinearEquation(
+                used_number_type_list=number_to_use, simultaneous_equation_type=simultaneous_equation_type
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, "math_print/simultaneous_equations/simultaneous_equations_for_print.html", {"math_problem_list_of_list": math_problem_list_of_list})
+    
     
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -272,7 +296,21 @@ def display_specific_linear_equation(request):
     
     return render(request, 'math_print/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
-def display_simultaneous_equations(request):
-    message = "this is sample of simultaneous equations."
+def display_simultaneous_equation(request):
+    PROBLEM_NUMBER = 20
     
-    return render(request, 'math_print/simultaneous_equations/simultaneous_equations_for_display.html', {'message': message})
+    simultaneous_equation_type = request.POST["simultaneous_equation_type"]
+    used_number_type_list = request.POST.getlist("number_to_use")
+    print(f"used_number_type_list: {used_number_type_list}")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = SimultaneousEquation(
+            used_number_type_list=used_number_type_list, simultaneous_equation_type=simultaneous_equation_type
+        )
+        problem2 = SimultaneousEquation(
+            used_number_type_list=used_number_type_list, simultaneous_equation_type=simultaneous_equation_type
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/simultaneous_equations/simultaneous_equations_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

@@ -15,49 +15,127 @@ class SpecificLinearEquation:
             self._character_dict[character] = sy.Symbol(character, real=True)
         if self._answer_type == "ax_plus_by_equal_c_only_integer":
             self.latex_answer, self.latex_problem = self._make_ax_plus_by_equal_c_only_integer()
+        elif self._answer_type == "ax_plus_by_equal_c_all_number":
+            self.latex_answer, self.latex_problem = self._make_ax_plus_by_equal_c_all_number()
         else:
             raise ValueError("linear_equation_type may be wrong.")
 
     def _make_ax_plus_by_equal_c_only_integer(self):
         x, x_latex = self._make_random_integer(10, -10, "number")
         y, y_latex = self._make_random_integer(10, -10, "number")
-    
-        a_type_checker = choice(self._used_number_type_list)
         
-        if a_type_checker == "integer":
-            a, a_latex = self._make_random_integer(10, -10, "number")
-        elif a_type_checker == "frac":
-            a, a_latex = self._make_random_frac(10, -10, "number")
-        elif a_type_checker == "decimal":
-            a, a_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+        two_problems_list = []
         
-        b_type_checker = choice(self._used_number_type_list)
-        
-        if b_type_checker == "integer":
-            b, b_latex = self._make_random_integer(10, -10, "number")
-        elif a_type_checker == "frac":
-            b, b_latex = self._make_random_frac(10, -10, "number")
-        elif a_type_checker == "decimal":
-            b, b_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+        for _ in range(2):
+            a_type_checker = choice(self._used_number_type_list)
+            
+            if a_type_checker == "integer":
+                a, a_latex = self._make_random_integer(10, -10, "number")
+            elif a_type_checker == "frac":
+                a, a_latex = self._make_random_frac(10, -10, "number")
+            elif a_type_checker == "decimal":
+                a, a_latex = self._make_random_decimal(10, -10, 10, "number")
+            else:
+                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+            
+            b_type_checker = choice(self._used_number_type_list)
+            
+            if b_type_checker == "integer":
+                b, b_latex = self._make_random_integer(10, -10, "number")
+            elif a_type_checker == "frac":
+                b, b_latex = self._make_random_frac(10, -10, "number")
+            elif a_type_checker == "decimal":
+                b, b_latex = self._make_random_decimal(10, -10, 10, "number")
+            else:
+                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
 
-        c = a * x + b * y
-        
-        left_latex = ""
-        if a == 1:
-            left_latex = left_latex + "x"
-        elif a == -1:
-            left_latex = left_latex + "-x"
-        else:
-            left_latex = left_latex + f"{a_latex}x"
+            c = a * x + b * y
+            c_latex = sy.latex(c)
+            
+            left_latex1 = ""
+            if a == 1:
+                left_latex = left_latex + "x"
+            elif a == -1:
+                left_latex = left_latex + "-x"
+            else:
+                left_latex = left_latex + f"{a_latex}x"
 
-        if b > 0:
-            left_latex = left_latex + f"+ {b_latex}"
-        elif b < 0:
-            left_latex = left_latex + f"{b_latex}"
+            if b > 0:
+                left_latex = left_latex + f"+ {b_latex}"
+            elif b < 0:
+                left_latex = left_latex + f"{b_latex}"
+            
+            right_latex = f"{c_latex}"
+            
+            two_problems_list.append(f"{left_latex}={right_latex}")
+         
+        latex_problem = f"{two_problems_list[0]} \\ {two_problems_list[1]}"
+        latex_answer = f"x = {x_latex}, y = {y_latex}"
+        
+        return latex_answer, latex_problem
+        
+    def _make_ax_plus_by_equal_c_all_number(self):
+        answer_type_checker =choice(self._used_number_type_list)
+        
+        if answer_type_checker == "integer":
+            x, x_latex = self._make_random_integer(10, -10, "number")
+            y, y_latex = self._make_random_integer(10, -10, "number")
+        if answer_type_checker == "frac":
+            x, x_latex = self._make_random_frac(10, -10, "number")
+            y, y_latex = self._make_random_frac(10, -10, "number")
+        if answer_type_checker == "decimal":
+            x, x_latex = self._make_random_decimal(10, -10, "number")
+            y, y_latex = self._make_random_decimal(10, -10, "number")
+        
+        two_problems_list = []
+        
+        for _ in range(2):
+            a_type_checker = choice(self._used_number_type_list)
+            
+            if a_type_checker == "integer":
+                a, a_latex = self._make_random_integer(10, -10, "number")
+            elif a_type_checker == "frac":
+                a, a_latex = self._make_random_frac(10, -10, "number")
+            elif a_type_checker == "decimal":
+                a, a_latex = self._make_random_decimal(10, -10, 10, "number")
+            else:
+                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+            
+            b_type_checker = choice(self._used_number_type_list)
+            
+            if b_type_checker == "integer":
+                b, b_latex = self._make_random_integer(10, -10, "number")
+            elif a_type_checker == "frac":
+                b, b_latex = self._make_random_frac(10, -10, "number")
+            elif a_type_checker == "decimal":
+                b, b_latex = self._make_random_decimal(10, -10, 10, "number")
+            else:
+                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+
+            c = a * x + b * y
+            c_latex = sy.latex(c)
+            
+            left_latex1 = ""
+            if a == 1:
+                left_latex = left_latex + "x"
+            elif a == -1:
+                left_latex = left_latex + "-x"
+            else:
+                left_latex = left_latex + f"{a_latex}x"
+
+            if b > 0:
+                left_latex = left_latex + f"+ {b_latex}"
+            elif b < 0:
+                left_latex = left_latex + f"{b_latex}"
+            
+            right_latex = f"{c_latex}"
+            
+            two_problems_list.append(f"{left_latex}={right_latex}")
+         
+        latex_problem = f"{two_problems_list[0]} \\ {two_problems_list[1]}"
+        latex_answer = f"x = {x_latex}, y = {y_latex}"
+        
+        return latex_answer, latex_problem
         
 
     def _make_random_frac(self, max_num, min_num, number_or_character):

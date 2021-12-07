@@ -175,7 +175,7 @@ def print_simultaneous_equation(request):
             problem1 = SimultaneousEquation(
                 used_number_type_list=number_to_use, simultaneous_equation_type=simultaneous_equation_type
             )
-            problem2 = SpecificLinearEquation(
+            problem2 = SimultaneousEquation(
                 used_number_type_list=number_to_use, simultaneous_equation_type=simultaneous_equation_type
             )
             math_problem_tuple_inner_list.append((problem1, problem2))

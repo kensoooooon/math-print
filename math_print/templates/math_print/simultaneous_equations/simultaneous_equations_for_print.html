@@ -84,7 +84,13 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                \({{ math_problem_tuple.0.latex_problem }}\)
+                                \(
+                                    \left\{
+                                    \begin{array}{l}
+                                        {{ math_problem_tuple.0.latex_problem }}
+                                    \end{array}
+                                    \right.
+                                \)
                             </p>
                             <p class="answer" style="visibility:hidden;">
                                 \({{ math_problem_tuple.0.latex_answer }}\)
@@ -95,7 +101,13 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                \({{ math_problem_tuple.1.latex_problem }}\)
+                                \(
+                                    \left\{
+                                    \begin{array}{l}
+                                        {{ math_problem_tuple.1.latex_problem }}
+                                    \end{array}
+                                    \right.
+                                \)
                             </p>
                             <p class="answer" style="visibility:hidden;">
                                 \({{ math_problem_tuple.1.latex_answer }}\)

@@ -21,32 +21,36 @@ class SimultaneousEquation:
             raise ValueError("linear_equation_type may be wrong.")
 
     def _make_ax_plus_by_equal_c_only_integer(self):
-        x, x_latex = self._make_random_integer(10, -10, "number")
-        y, y_latex = self._make_random_integer(10, -10, "number")
+        x, x_latex = self._make_random_integer(8, -8, "number")
+        y, y_latex = self._make_random_integer(8, -8, "number")
         
         two_problems_list = []
         
         for _ in range(2):
+            print(f"self._used_number_type_list: {self._used_number_type_list}")
             a_type_checker = choice(self._used_number_type_list)
-            print(f"a_type_checker: {a_type_checker}")
+            print(f"a_type_checker: {a_type_checker}, type:{type(a_type_checker)}")
+            print(f"a_type_checker is integer: {bool(a_type_checker == 'integer')}")
             
             if a_type_checker == "integer":
-                a, a_latex = self._make_random_integer(10, -10, "number")
+                a, a_latex = self._make_random_integer(8, -8, "number")
             elif a_type_checker == "frac":
-                a, a_latex = self._make_random_frac(10, -10, "number")
+                a, a_latex = self._make_random_frac(8, -8, "number")
             elif a_type_checker == "decimal":
-                a, a_latex = self._make_random_decimal(10, -10, 10, "number")
+                a, a_latex = self._make_random_decimal(8, -8, 10, "number")
             else:
                 raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
             
             b_type_checker = choice(self._used_number_type_list)
+            print(f"b_type_checker: {b_type_checker}, type:{type(b_type_checker)}")
+            print(f"b_type_checker is integer: {bool(b_type_checker == 'integer')}")
             
             if b_type_checker == "integer":
-                b, b_latex = self._make_random_integer(10, -10, "number")
-            elif a_type_checker == "frac":
-                b, b_latex = self._make_random_frac(10, -10, "number")
-            elif a_type_checker == "decimal":
-                b, b_latex = self._make_random_decimal(10, -10, 10, "number")
+                b, b_latex = self._make_random_integer(8, -8, "number")
+            elif b_type_checker == "frac":
+                b, b_latex = self._make_random_frac(8, -8, "number")
+            elif b_type_checker == "decimal":
+                b, b_latex = self._make_random_decimal(8, -8, 10, "number")
             else:
                 raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
 
@@ -61,12 +65,23 @@ class SimultaneousEquation:
             else:
                 left_latex = left_latex + f"{a_latex}x"
 
-            if b > 0:
-                left_latex = left_latex + f"+ {b_latex}"
+            if b == 1:
+                left_latex = left_latex + "+y"
+            elif b == -1:
+                left_latex = left_latex + "-y"
+            elif b > 0:
+                left_latex = left_latex + f"+ {b_latex}y"
             elif b < 0:
-                left_latex = left_latex + f"{b_latex}"
+                left_latex = left_latex + f"{b_latex}y"
             
-            right_latex = f"{c_latex}"
+            if ("integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list) and ("decimal" in self._used_number_type_list):
+                print("---------FLOAT!!------------")
+                right_latex = f"{sy.latex(float(c))}"
+                print(f"c is {c}")
+                print(f"floating c is {float(c)}")
+                print(f"floating c_latex is {sy.latex(float(c))}")
+            else:
+                right_latex = f"{c_latex}"
             
             two_problems_list.append(f"{left_latex}={right_latex}")
          
@@ -79,14 +94,20 @@ class SimultaneousEquation:
         answer_type_checker =choice(self._used_number_type_list)
         
         if answer_type_checker == "integer":
-            x, x_latex = self._make_random_integer(10, -10, "number")
-            y, y_latex = self._make_random_integer(10, -10, "number")
+            x, x_latex = self._make_random_integer(8, -8, "number")
         if answer_type_checker == "frac":
-            x, x_latex = self._make_random_frac(10, -10, "number")
-            y, y_latex = self._make_random_frac(10, -10, "number")
+            x, x_latex = self._make_random_frac(8, -8, "number")
         if answer_type_checker == "decimal":
-            x, x_latex = self._make_random_decimal(10, -10, "number")
-            y, y_latex = self._make_random_decimal(10, -10, "number")
+            x, x_latex = self._make_random_decimal(8, -8, 10, "number")
+
+        answer_type_checker =choice(self._used_number_type_list)
+        
+        if answer_type_checker == "integer":
+            y, y_latex = self._make_random_integer(8, -8, "number")
+        if answer_type_checker == "frac":
+            y, y_latex = self._make_random_frac(8, -8, "number")
+        if answer_type_checker == "decimal":
+            y, y_latex = self._make_random_decimal(8, -8, 10, "number")
         
         two_problems_list = []
         
@@ -94,29 +115,29 @@ class SimultaneousEquation:
             a_type_checker = choice(self._used_number_type_list)
             
             if a_type_checker == "integer":
-                a, a_latex = self._make_random_integer(10, -10, "number")
+                a, a_latex = self._make_random_integer(8, -8, "number")
             elif a_type_checker == "frac":
-                a, a_latex = self._make_random_frac(10, -10, "number")
+                a, a_latex = self._make_random_frac(8, -8, "number")
             elif a_type_checker == "decimal":
-                a, a_latex = self._make_random_decimal(10, -10, 10, "number")
+                a, a_latex = self._make_random_decimal(8, -8, 10, "number")
             else:
                 raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
             
             b_type_checker = choice(self._used_number_type_list)
             
             if b_type_checker == "integer":
-                b, b_latex = self._make_random_integer(10, -10, "number")
-            elif a_type_checker == "frac":
-                b, b_latex = self._make_random_frac(10, -10, "number")
-            elif a_type_checker == "decimal":
-                b, b_latex = self._make_random_decimal(10, -10, 10, "number")
+                b, b_latex = self._make_random_integer(8, -8, "number")
+            elif b_type_checker == "frac":
+                b, b_latex = self._make_random_frac(8, -8, "number")
+            elif b_type_checker == "decimal":
+                b, b_latex = self._make_random_decimal(8, -8, 10, "number")
             else:
-                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+                raise ValueError(f"b_type_checker is {b_type_checker}, it may be wrong.")
 
             c = a * x + b * y
             c_latex = sy.latex(c)
             
-            left_latex1 = ""
+            left_latex = ""
             if a == 1:
                 left_latex = left_latex + "x"
             elif a == -1:
@@ -124,12 +145,23 @@ class SimultaneousEquation:
             else:
                 left_latex = left_latex + f"{a_latex}x"
 
-            if b > 0:
-                left_latex = left_latex + f"+ {b_latex}"
+            if b == 1:
+                left_latex = left_latex + "+y"
+            elif b == -1:
+                left_latex = left_latex + "-y"
+            elif b > 0:
+                left_latex = left_latex + f"+ {b_latex}y"
             elif b < 0:
-                left_latex = left_latex + f"{b_latex}"
+                left_latex = left_latex + f"{b_latex}y"
             
-            right_latex = f"{c_latex}"
+            if ("integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list) and ("decimal" in self._used_number_type_list):
+                print("---------FLOAT!!------------")
+                right_latex = f"{sy.latex(float(c))}"
+                print(f"c is {c}")
+                print(f"floating c is {float(c)}")
+                print(f"floating c_latex is {sy.latex(float(c))}")
+            else:
+                right_latex = f"{c_latex}"
             
             two_problems_list.append(f"{left_latex}={right_latex}")
          

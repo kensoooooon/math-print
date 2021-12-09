@@ -27,10 +27,10 @@ class SimultaneousEquation:
         two_problems_list = []
         
         for _ in range(2):
-            print(f"self._used_number_type_list: {self._used_number_type_list}")
+            # print(f"self._used_number_type_list: {self._used_number_type_list}")
             a_type_checker = choice(self._used_number_type_list)
-            print(f"a_type_checker: {a_type_checker}, type:{type(a_type_checker)}")
-            print(f"a_type_checker is integer: {bool(a_type_checker == 'integer')}")
+            # print(f"a_type_checker: {a_type_checker}, type:{type(a_type_checker)}")
+            # print(f"a_type_checker is integer: {bool(a_type_checker == 'integer')}")
             
             if a_type_checker == "integer":
                 a, a_latex = self._make_random_integer(8, -8, "number")
@@ -42,8 +42,8 @@ class SimultaneousEquation:
                 raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
             
             b_type_checker = choice(self._used_number_type_list)
-            print(f"b_type_checker: {b_type_checker}, type:{type(b_type_checker)}")
-            print(f"b_type_checker is integer: {bool(b_type_checker == 'integer')}")
+            # print(f"b_type_checker: {b_type_checker}, type:{type(b_type_checker)}")
+            # print(f"b_type_checker is integer: {bool(b_type_checker == 'integer')}")
             
             if b_type_checker == "integer":
                 b, b_latex = self._make_random_integer(8, -8, "number")
@@ -75,11 +75,11 @@ class SimultaneousEquation:
                 left_latex = left_latex + f"{b_latex}y"
             
             if ("integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list) and ("decimal" in self._used_number_type_list):
-                print("---------FLOAT!!------------")
+                # print("---------FLOAT!!------------")
                 right_latex = f"{sy.latex(float(c))}"
-                print(f"c is {c}")
-                print(f"floating c is {float(c)}")
-                print(f"floating c_latex is {sy.latex(float(c))}")
+                # print(f"c is {c}")
+                # print(f"floating c is {float(c)}")
+                # print(f"floating c_latex is {sy.latex(float(c))}")
             else:
                 right_latex = f"{c_latex}"
             
@@ -155,11 +155,11 @@ class SimultaneousEquation:
                 left_latex = left_latex + f"{b_latex}y"
             
             if ("integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list) and ("decimal" in self._used_number_type_list):
-                print("---------FLOAT!!------------")
+                # print("---------FLOAT!!------------")
                 right_latex = f"{sy.latex(float(c))}"
-                print(f"c is {c}")
-                print(f"floating c is {float(c)}")
-                print(f"floating c_latex is {sy.latex(float(c))}")
+                # print(f"c is {c}")
+                # print(f"floating c is {float(c)}")
+                # print(f"floating c_latex is {sy.latex(float(c))}")
             else:
                 right_latex = f"{c_latex}"
             

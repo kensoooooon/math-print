@@ -51,42 +51,46 @@ function refresh() {
 <p class="h5">{{ message }}</p>
 
 <ol>
-    <div class="col-md-6">
-        <li>
-            <p>
-                \( \quad \)
-                \(
-                    \left\{
-                    \begin{array}{l}
-                        x+y=8\\
-                        2x+4y=26
-                    \end{array}
-                    \right.
-                \)
-            </p>
-            <p class="answer" style="visibility:hidden;">
-                \(x = 3, y = 5\)
-            </p>
-        </li>
-    </div>
-    <div class="col-md-6">
-        <li>
-            <p>
-                \( \quad \)
-                \(
-                    \left\{
-                    \begin{array}{l}
-                        x+y=2\\
-                        3x-y=6
-                    \end{array}
-                    \right.
-                \)
-            </p>
-            <p class="answer" style="visibility:hidden;">
-                \(x = 2, y = 0\)
-            </p>
-        </li>
-    </div>
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            \(
+                                \left\{
+                                \begin{array}{l}
+                                    {{ math_problem_tuple.0.latex_problem }}
+                                \end{array}
+                                \right.
+                            \)
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            \({{ math_problem_tuple.0.latex_answer }}\)
+                        </p>
+                    </li>
+                </div>
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            \(
+                                \left\{
+                                \begin{array}{l}
+                                    {{ math_problem_tuple.1.latex_problem }}
+                                \end{array}
+                                \right.
+                            \)
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            \({{ math_problem_tuple.1.latex_answer }}\)
+                        </p>
+                    </li>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 </ol>
 
 <div class="d-grid gap-3 col-6 mx-auto">

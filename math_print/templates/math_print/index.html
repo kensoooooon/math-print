@@ -13,7 +13,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col">
-            <p>正負混合四則演算(20問)</p>
+            <p>正負混合四則演算</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <small class="text-muted">問題に使用する計算</small>
@@ -46,9 +46,15 @@
                     <small class="text-muted">使用する数のタイプ</small>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="numberIntegerCheck" checked>
-                            <label class="form-check-label" for="numberIntegerCheck">
-                                整数
+                            <input class="form-check-input" type="checkbox" value="one_digit_integer" name="number_to_use" id="numberOneDigitIntegerCheck" checked>
+                            <label class="form-check-label" for="numberOneDigitIntegerCheck">
+                                1桁の整数
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="two_digit_integer" name="number_to_use" id="numberTwoDigitIntegerCheck">
+                            <label class="form-check-label" for="numberTwoDigitIntegerCheck">
+                                2桁の整数
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -111,7 +117,7 @@
                 </form>
         </div>
         <div class="col">
-            <p>文字計算(20問)</p>
+            <p>文字計算</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <small class="text-muted">登場する文字</small>

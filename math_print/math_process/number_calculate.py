@@ -24,8 +24,10 @@ class NumberMathProblem:
         addition, subtraction, multiplication, division
         """
         first_number_checker = choice(self._used_number_type_list)
-        if first_number_checker == 'integer':
-            first_number, first_latex = self._make_random_integer(max_number, min_number)
+        if first_number_checker == 'one_digit_integer':
+            first_number, first_latex = self._make_random_integer(9, -9)
+        elif first_number_checker == 'two_digit_integer':
+            first_number, first_latex = self._make_random_integer(99, -99)
         elif first_number_checker == 'frac':
             first_number, first_latex = self._make_random_frac(max_number, min_number)
         elif first_number_checker == 'decimal':
@@ -42,8 +44,10 @@ class NumberMathProblem:
             operator_type_checker = choice(self._used_operator_type_list)
             
             # 数字決定
-            if num_type_checker == 'integer':
-                number, latex_number = self._make_random_integer(max_number, min_number)
+            if num_type_checker == 'one_digit_integer':
+                number, latex_number = self._make_random_integer(9, -9)
+            elif num_type_checker == 'two_digit_integer':
+                number, latex_number = self._make_random_integer(99, -99)
             elif num_type_checker == 'frac':
                 number, latex_number = self._make_random_frac(max_number, min_number)
             elif num_type_checker == 'decimal':

@@ -54,37 +54,33 @@ class NumberMathProblem:
                 raise ValueError("The second and subsequent number may be wrong. Please check 'used_number_type_list'.")
             
             operator_type_checker = choice(self._used_operator_type_list)
-            # 足し算のとき
             if operator_type_checker == "plus":
                 answer = answer + number
                 latex_problem = latex_problem + " + " + latex_number
-            # 引き算の時
             elif operator_type_checker == "minus":
                 answer = answer - number
                 latex_problem = latex_problem + " - " + latex_number
-            # 掛け算の時
             elif operator_type_checker == "times":
                 answer = answer * number
                 latex_problem =  latex_problem + " \\times " + latex_number
-            # 割り算の時
             elif operator_type_checker == "divided":
                 answer = answer / number
                 latex_problem = latex_problem + " \\div " + latex_number
             else:
                 raise ValueError("operator_checker isn't in any condition.")
-
-        print(f"latex_problem: {latex_problem}")
-        print(f"answer: {answer}")
-        if ("two_digit_integer" not in self._used_number_type_list) and ("one_digit_integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list):
-            if self._is_finite_decimal(answer):
-                latex_answer = f"= {sy.latex(float(answer))}"
-                return latex_answer, latex_problem
-            else:
-                latex_answer = f"= {sy.latex(answer)}"
-                return latex_answer, latex_problem
-        else:
-            latex_answer = f"= {sy.latex(answer)}"
-            return latex_answer, latex_problem
+        
+        used_number_type_set = set(self._used_number_type_list)
+        used_operator_type_set = set(self._used_operator_type_list)
+        
+        if used_number_type_set == {'decimal'}:
+            if self._is_plus_or_minus_only(used_operator_type_set):
+                if self._is_finite_decimal(number):
+                    latex_answer = f"= {sy.latex(float(answer))}"
+                    return latex_answer, latex_problem
+            
+        latex_answer = f"= {sy.latex(answer)}"
+        
+        return latex_answer, latex_problem
 
     def _make_random_frac_number(self, max_num, min_num):
         checker = random()
@@ -139,19 +135,26 @@ class NumberMathProblem:
     
     def _is_finite_decimal(self, number):
         print(f"number is {number}")
-        if number.denominator == 1:
-            print("1, True")
+        denominator_list = list(sy.factorint(number.denominator).keys())
+        denominator_set = set(denominator_list)
+        print(f"denominator_set:{denominator_set}")
+        if denominator_set == {}:
+            return True
+        elif denominator_set == {2}:
+            return True
+        elif denominator_set == {5}:
+            return True
+        elif denominator_set == {2, 5}:
             return True
         else:
-            denominator_dict = sy.factorint(number.denominator)
-            in_two = denominator_dict.get(2)
-            in_five = denominator_dict.get(5)
-            if (in_two is None) and (in_five is None):
-                if denominator_dict is not None:
-                    print("2, False")
-                    return False
-            else:
-                print("3, True")
-                return True
+            return False
 
-
+    def _is_plus_or_minus_only(self, operator_type_set):
+        if operator_type_set == {'plus'}:
+            return True
+        elif operator_type_set == {'minus'}:
+            return True
+        elif operator_type_set == {'plus', 'minus'}:
+            return True
+        else:
+            return False

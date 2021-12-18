@@ -1,0 +1,83 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+四則演算練習(中2)
+{% endblock %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <p>式の展開・整理</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する係数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="EquationExpandIntegerCheck" checked>
+                        <label class="form-check-label" for="EquationExpandIntegerCheck">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="EquationExpandFracCheck">
+                        <label class="form-check-label" for="EquationExpandFracCheck">
+                            分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">式のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="ax_times_bx_plus_c" name="expand_equation_type" id="ax_times_bx_plus_c" checked>
+                        <label class="form-check-label" for="ax_times_bx_plus_c">
+                            ax(bx+c)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="double_ax_times_bx_plus_c" name="expand_equation_type" id="double_ax_times_bx_plus_c">
+                        <label class="form-check-label" for="double_ax_times_bx_plus_c">
+                            ax(bx+c) + dx(ex+f)
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="EquationExpandFivePaperRadio" checked>
+                        <label class="form-check-label" for="EquationExpandFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="EquationExpandTenPaperRadio">
+                        <label class="form-check-label" for="EquationExpandTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="EquationExpandFifteenPaperRadio">
+                        <label class="form-check-label" for="EquationExpandFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'expand_equation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'expand_equation_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+</div>
+{% endblock %}

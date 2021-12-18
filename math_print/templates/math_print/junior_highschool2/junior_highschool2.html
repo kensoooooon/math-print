@@ -81,6 +81,124 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'simultaneous_equation_display' %}">      
             </form>
         </div>
+        <div class="col">
+            <p>文字計算</p>
+                <form action="?" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <small class="text-muted">登場する文字</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="1" name="character_to_use" id="oneCharacterRadio" checked>
+                            <label class="form-check-label" for="oneCharacterRadio">
+                                1種類(x)
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="2" name="character_to_use" id="twoCharacterRadio">
+                            <label class="form-check-label" for="twoCharacterRadio">
+                                2種類(x,y)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="plus" name="operator_to_use" id="characterPlusCheck" checked>
+                            <label class="form-check-label" for="characterPlusCheck">
+                                足し算
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="minus" name="operator_to_use" id="characterMinusCheck" checked>
+                            <label class="form-check-label" for="characterMinusCheck">
+                                引き算
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="times" name="operator_to_use" id="characterTimesCheck">
+                            <label class="form-check-label" for="characterTimesCheck">
+                                かけ算
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="divided" name="operator_to_use" id="characterDividedCheck">
+                            <label class="form-check-label" for="characterDividedCheck">
+                                割り算
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">使用する数のタイプ</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="characterIntegerCheck" checked>
+                            <label class="form-check-label" for="characterIntegerCheck">
+                                整数
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="characterDecimalCheck">
+                            <label class="form-check-label" for="characterDecimalCheck">
+                                小数
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="characterFracCheck">
+                            <label class="form-check-label" for="characterFracCheck">
+                                分数
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">項数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="3" name="term_number" id="characterThreeRadio" checked>
+                            <label class="form-check-label" for="characterThreeRadio">
+                                3項
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="4" name="term_number" id="characterFourRadio">
+                            <label class="form-check-label" for="characterFourRadio">
+                                4項
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="5" name="term_number" id="characterFiveRadio">
+                            <label class="form-check-label" for="characterFiveRadio">
+                                5項
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="6" name="term_number" id="characterSixRadio">
+                            <label class="form-check-label" for="characterSixRadio">
+                                6項
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">枚数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="characterFivePaperRadio" checked>
+                            <label class="form-check-label" for="characterFivePaperRadio">
+                                20問×5枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="characterTenPaperRadio">
+                            <label class="form-check-label" for="characterTenPaperRadio">
+                                20問×10枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="characterFifteenPaperRadio">
+                            <label class="form-check-label" for="characterFifteenPaperRadio">
+                                20問×15枚
+                            </label>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'character_print' %}">
+                    <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'character_display' %}">
+                </form>
+        </div>
     </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>

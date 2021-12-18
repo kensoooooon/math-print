@@ -7,6 +7,7 @@ from .math_process.linear_equation import LinearEquationProblem
 from .math_process.number_calculate import NumberMathProblem
 from .math_process.specific_linear_equation import SpecificLinearEquation
 from .math_process.simultaneous_equation import SimultaneousEquation
+from .math_process.expand_equation import ExpandEquationProblem
 
 
 
@@ -26,6 +27,15 @@ def make_math_print(request):
         math_problem_tuple_list.append((problem1, problem2))
 
     return render(request, 'math_print/calculate.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def show_junior_highschool1(request):
+    return render(request, 'math_print/junior_highschool1/junior_highschool1.html', {})
+
+def show_junior_highschool2(request):
+    return render(request, 'math_print/junior_highschool2/junior_highschool2.html', {})
+
+def show_junior_highschool3(request):
+    return render(request, 'math_print/junior_highschool3/junior_highschool3.html', {})
 
 def print_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -52,7 +62,7 @@ def print_number_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
-    return render(request, 'math_print/number/number_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/number/number_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_character_problem(request):
     PROBLEM_NUMBER = 20
@@ -97,7 +107,7 @@ def print_character_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
-    return render(request, 'math_print/character/character_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/character/character_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
@@ -137,7 +147,7 @@ def print_linear_equation_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
-    return render(request, 'math_print/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
@@ -159,7 +169,7 @@ def print_specific_linear_equation(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_simultaneous_equation(request):
     PROBLEM_NUMBER = 20
@@ -181,8 +191,41 @@ def print_simultaneous_equation(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/simultaneous_equations/simultaneous_equations_for_print.html", {"math_problem_list_of_list": math_problem_list_of_list})
+    return render(request, "math_print/junior_highschool2/simultaneous_equations/simultaneous_equations_for_print.html", {"math_problem_list_of_list": math_problem_list_of_list})
+
+def print_expand_equation(request):
+    PROBLEM_NUMBER = 20
+
+    number_to_use = request.POST.getlist("number_to_use")
+    expand_equation_type = request.POST["expand_equation_type"]
+    paper_number = int(request.POST["paper_number"])
     
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = ExpandEquationProblem(
+                used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+            )
+            problem2 = ExpandEquationProblem(
+                used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, "math_print/junior_highschool3/expand_equation/expand_equation_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER/2)):
+        problem1 = ExpandEquationProblem(
+            used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+        )
+        problem2 = ExpandEquationProblem(
+            used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool3/expand_equation/expand_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -205,7 +248,7 @@ def display_number_problem(request):
         problem2 = NumberMathProblem(term_number, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC, number_to_use, operator_to_use)
         math_problem_tuple_list.append((problem1, problem2))
 
-    return render(request, 'math_print/number/number_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/number/number_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_character_problem(request):
     PROBLEM_NUMBER = 20
@@ -243,7 +286,7 @@ def display_character_problem(request):
             )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/character/character_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/character/character_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
@@ -276,7 +319,7 @@ def display_linear_equation_problem(request):
             )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
@@ -294,7 +337,7 @@ def display_specific_linear_equation(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_simultaneous_equation(request):
     PROBLEM_NUMBER = 20
@@ -313,4 +356,22 @@ def display_simultaneous_equation(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/simultaneous_equations/simultaneous_equations_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool2/simultaneous_equations/simultaneous_equations_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_expand_equation(request):
+    PROBLEM_NUMBER = 20
+
+    number_to_use = request.POST.getlist("number_to_use")
+    expand_equation_type = request.POST["expand_equation_type"]
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER/2)):
+        problem1 = ExpandEquationProblem(
+            used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+        )
+        problem2 = ExpandEquationProblem(
+            used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool3/expand_equation/expand_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

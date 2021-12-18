@@ -5,7 +5,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('calculate/', views.make_math_print, name='calculate'),
+    path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),
+    path('junior_highschool2/', views.show_junior_highschool2, name='junior_highschool2'),
     path('number/nubmer_print/', views.print_number_problem, name='number_print'),
     path('number/number_display/', views.display_number_problem, name="number_display"),
     path('character/character_print/', views.print_character_problem, name="character_print"),

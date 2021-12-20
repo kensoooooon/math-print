@@ -72,9 +72,16 @@ class NumberMathProblem:
         used_number_type_set = set(self._used_number_type_list)
         used_operator_type_set = set(self._used_operator_type_list)
         
+        """
         if used_number_type_set == {'decimal'}:
-            if self._is_plus_or_minus_only(used_operator_type_set):
+            if 'divided' not in used_operator_type_set:
                 if self._is_finite_decimal(number):
+                    latex_answer = f"= {sy.latex(float(answer))}"
+                    return latex_answer, latex_problem
+        """
+        if ('decimal' in used_number_type_set)  and ('frac' not in used_number_type_set):
+            if 'divided' not in used_operator_type_set:
+                if not answer.is_Integer:
                     latex_answer = f"= {sy.latex(float(answer))}"
                     return latex_answer, latex_problem
             
@@ -134,27 +141,18 @@ class NumberMathProblem:
         return integer, integer_with_number_latex
     
     def _is_finite_decimal(self, number):
+        print("------------------")
         print(f"number is {number}")
         denominator_list = list(sy.factorint(number.denominator).keys())
         denominator_set = set(denominator_list)
         print(f"denominator_set:{denominator_set}")
-        if denominator_set == {}:
+        if denominator_set == set():
             return True
         elif denominator_set == {2}:
             return True
         elif denominator_set == {5}:
             return True
         elif denominator_set == {2, 5}:
-            return True
-        else:
-            return False
-
-    def _is_plus_or_minus_only(self, operator_type_set):
-        if operator_type_set == {'plus'}:
-            return True
-        elif operator_type_set == {'minus'}:
-            return True
-        elif operator_type_set == {'plus', 'minus'}:
             return True
         else:
             return False

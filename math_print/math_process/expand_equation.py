@@ -16,6 +16,10 @@ class ExpandEquationProblem:
             self.latex_answer, self.latex_problem = self._make_ax_times_bx_plus_c()
         elif self._expand_equation_type == 'double_ax_times_bx_plus_c':
             self.latex_answer, self.latex_problem = self._make_double_ax_times_bx_plus_c()
+        elif self._expand_equation_type == 'double_ax_plus_b':
+            self.latex_answer, self.latex_problem = self._make_double_ax_plus_b()
+        elif self._expand_equation_type == 'double_ax_plus_by':
+            self.latex_answer, self.latex_problem = self._make_double_ax_plus_by()
     
     def _make_ax_times_bx_plus_c(self):
         a_checker = choice(self._used_number_type_list)
@@ -29,7 +33,7 @@ class ExpandEquationProblem:
         
         if b_checker == "integer":
             b, b_latex = self._make_random_integer(8, -8, "number")
-        elif a_checker == "frac":
+        elif b_checker == "frac":
             b, b_latex = self._make_random_frac(8, -8, "number")
 
         c_checker = choice(self._used_number_type_list)
@@ -162,8 +166,83 @@ class ExpandEquationProblem:
         latex_answer = f"= {sy.latex(right)}"
         
         return latex_answer, latex_problem
+    
+    def _make_double_ax_plus_b(self):
+        a_checker = choice(self._used_number_type_list)
         
+        if a_checker == "integer":
+            a, a_latex = self._make_random_integer(8, -8, "number")
+        elif a_checker == "frac":
+            a, a_latex = self._make_random_frac(8, -8, "number")
         
+        b_checker = choice(self._used_number_type_list)
+        
+        if b_checker == "integer":
+            b, b_latex = self._make_random_integer(8, -8, "number")
+        elif b_checker == "frac":
+            b, b_latex = self._make_random_frac(8, -8, "number")
+
+        c_checker = choice(self._used_number_type_list)
+        
+        if c_checker == "integer":
+            c, c_latex = self._make_random_integer(8, -8, "number")
+        elif c_checker == "frac":
+            c, c_latex = self._make_random_frac(8, -8, "number")
+
+        d_checker = choice(self._used_number_type_list)
+        
+        if d_checker == "integer":
+            d, d_latex = self._make_random_integer(8, -8, "number")
+        elif d_checker == "frac":
+            d, d_latex = self._make_random_frac(8, -8, "number")
+        
+        x = self._character_dict["x"]
+        left = (a * x + b) * (c * x + d)
+        left_latex = sy.latex(left)
+        latex_problem = left_latex
+        answer = sy.expand(left)
+        latex_answer = f"= {sy.latex(answer)}"
+        
+        return latex_answer, latex_problem
+
+    def _make_double_ax_plus_by(self):
+        a_checker = choice(self._used_number_type_list)
+        
+        if a_checker == "integer":
+            a, a_latex = self._make_random_integer(8, -8, "number")
+        elif a_checker == "frac":
+            a, a_latex = self._make_random_frac(8, -8, "number")
+        
+        b_checker = choice(self._used_number_type_list)
+        
+        if b_checker == "integer":
+            b, b_latex = self._make_random_integer(8, -8, "number")
+        elif b_checker == "frac":
+            b, b_latex = self._make_random_frac(8, -8, "number")
+
+        c_checker = choice(self._used_number_type_list)
+        
+        if c_checker == "integer":
+            c, c_latex = self._make_random_integer(8, -8, "number")
+        elif c_checker == "frac":
+            c, c_latex = self._make_random_frac(8, -8, "number")
+
+        d_checker = choice(self._used_number_type_list)
+        
+        if d_checker == "integer":
+            d, d_latex = self._make_random_integer(8, -8, "number")
+        elif d_checker == "frac":
+            d, d_latex = self._make_random_frac(8, -8, "number")
+        
+        x = self._character_dict["x"]
+        y = self._character_dict["y"]
+        left = (a * x + b * y) * (c * x + d * y)
+        left_latex = sy.latex(left)
+        latex_problem = left_latex
+        answer = sy.expand(left)
+        latex_answer = f"= {sy.latex(answer)}"
+        
+        return latex_answer, latex_problem
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()

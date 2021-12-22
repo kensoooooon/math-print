@@ -214,18 +214,6 @@ def print_expand_equation(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, "math_print/junior_highschool3/expand_equation/expand_equation_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
-
-    math_problem_tuple_list = []
-    for _ in range(int(PROBLEM_NUMBER/2)):
-        problem1 = ExpandEquationProblem(
-            used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
-        )
-        problem2 = ExpandEquationProblem(
-            used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
-        )
-        math_problem_tuple_list.append((problem1, problem2))
-    
-    return render(request, 'math_print/junior_highschool3/expand_equation/expand_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     
 def display_number_problem(request):
     PROBLEM_NUMBER = 20

@@ -20,6 +20,10 @@ class ExpandEquationProblem:
             self.latex_answer, self.latex_problem = self._make_double_ax_plus_b()
         elif self._expand_equation_type == 'double_ax_plus_by':
             self.latex_answer, self.latex_problem = self._make_double_ax_plus_by()
+        elif self._expand_equation_type == 'square_x_plus_a':
+            self.latex_answer, self.latex_problem = self._make_square_x_plus_a()
+        elif self._expand_equation_type == 'square_x_minus_a':
+            self.latex_answer, self.latex_problem = self._make_square_x_minus_a()
     
     def _make_ax_times_bx_plus_c(self):
         a_checker = choice(self._used_number_type_list)
@@ -243,6 +247,30 @@ class ExpandEquationProblem:
         latex_answer = f"= {sy.latex(answer)}"
         
         return latex_answer, latex_problem
+
+    def _make_square_x_plus_a(self):
+
+        a_checker = choice(self._used_number_type_list)
+        
+        if a_checker == "integer":
+            a, a_latex = self._make_random_integer(8, -8, "number")
+        elif a_checker == "frac":
+            a, a_latex = self._make_random_frac(8, -8, "number")
+        
+        x = self._character_dict["x"]
+        left = (x + a) ** 2
+        left_latex = sy.latex(left)
+        
+        right = sy.expand(left)
+        right_latex = sy.latex(right)
+        
+        latex_problem = left_latex
+        latex_answer = f"= {right_latex}"
+        
+        return latex_answer, latex_problem
+    
+    def _make_square_x_minus_a(self):
+        pass
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()

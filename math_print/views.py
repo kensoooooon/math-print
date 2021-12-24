@@ -2,12 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from sympy.geometry import line
 
+from math_print.math_process.completing_the_square import CompletingTheSquareProblem
+
 from .math_process.character_calculate import CharacterMathProblem
 from .math_process.linear_equation import LinearEquationProblem
 from .math_process.number_calculate import NumberMathProblem
 from .math_process.specific_linear_equation import SpecificLinearEquation
 from .math_process.simultaneous_equation import SimultaneousEquation
 from .math_process.expand_equation import ExpandEquationProblem
+from .math_process.completing_the_square import CompletingTheSquareProblem
 
 
 
@@ -36,6 +39,9 @@ def show_junior_highschool2(request):
 
 def show_junior_highschool3(request):
     return render(request, 'math_print/junior_highschool3/junior_highschool3.html', {})
+
+def show_highschool1(request):
+    return render(request, 'math_print/highschool1/highschool1.html', {})
 
 def print_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -205,15 +211,38 @@ def print_expand_equation(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = ExpandEquationProblem(
-                used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+                used_number_type_list=number_to_use, expand_equation_type=expand_equation_type
             )
             problem2 = ExpandEquationProblem(
-                used_number_type_list = number_to_use, expand_equation_type=expand_equation_type
+                used_number_type_list=number_to_use, expand_equation_type=expand_equation_type
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, "math_print/junior_highschool3/expand_equation/expand_equation_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_completing_the_square(request):
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("number_to_use")
+    number_including_in_bracket = request.POST["number_including_in_bracket"]
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = CompletingTheSquareProblem(
+                used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+            )
+            problem2 = CompletingTheSquareProblem(
+                used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, "math_print/highschool1/completing_the_square/completing_the_square_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+        
     
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -363,3 +392,22 @@ def display_expand_equation(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool3/expand_equation/expand_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_completing_the_square(request):
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("number_to_use")
+    number_including_in_bracket = request.POST["number_including_in_bracket"]
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = CompletingTheSquareProblem(
+            used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+        )
+        problem2 = CompletingTheSquareProblem(
+            used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/highschool1/completing_the_square/completing_the_square_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    

@@ -9,8 +9,9 @@ class ExpandEquationProblem:
         sy.init_printing(order='grevlex')
         self._used_number_type_list = settings["used_number_type_list"]
         self._expand_equation_type = settings["expand_equation_type"]
+        self._used_character_list = ["x", "y"]
         self._character_dict = {}
-        for character in ["x", "y"]:
+        for character in self._used_character_list:
             self._character_dict[character] = sy.Symbol(character, real=True)
         if self._expand_equation_type == 'ax_times_bx_plus_c':
             self.latex_answer, self.latex_problem = self._make_ax_times_bx_plus_c()
@@ -20,6 +21,10 @@ class ExpandEquationProblem:
             self.latex_answer, self.latex_problem = self._make_double_ax_plus_b()
         elif self._expand_equation_type == 'double_ax_plus_by':
             self.latex_answer, self.latex_problem = self._make_double_ax_plus_by()
+        elif self._expand_equation_type == 'square_x_plus_a':
+            self.latex_answer, self.latex_problem = self._make_square_x_plus_a()
+        elif self._expand_equation_type == 'square_x_minus_a':
+            self.latex_answer, self.latex_problem = self._make_square_x_minus_a()
     
     def _make_ax_times_bx_plus_c(self):
         a_checker = choice(self._used_number_type_list)
@@ -244,6 +249,47 @@ class ExpandEquationProblem:
         
         return latex_answer, latex_problem
 
+    def _make_square_x_plus_a(self):
+
+        a_checker = choice(self._used_number_type_list)
+        
+        if a_checker == "integer":
+            a, a_latex = self._make_random_positive_or_negative_integer(8, 1, "number", "positive")
+        elif a_checker == "frac":
+            a, a_latex = self._make_random_positive_or_negative_frac(8, 1, "number", "positive")
+        
+        x = self._character_dict["x"]
+        left = (x + a) ** 2
+        left_latex = sy.latex(left)
+        
+        right = sy.expand(left)
+        right_latex = sy.latex(right)
+        
+        latex_problem = left_latex
+        latex_answer = f"= {right_latex}"
+        
+        return latex_answer, latex_problem
+    
+    def _make_square_x_minus_a(self):
+        a_checker = choice(self._used_number_type_list)
+        
+        if a_checker == "integer":
+            a, a_latex = self._make_random_positive_or_negative_integer(-1, -8, "number", "negative")
+        elif a_checker == "frac":
+            a, a_latex = self._make_random_positive_or_negative_frac(-1, -8, "number", "negative")
+        
+        x = self._character_dict["x"]
+        left = (x + a) ** 2
+        left_latex = sy.latex(left)
+        
+        right = sy.expand(left)
+        right_latex = sy.latex(right)
+        
+        latex_problem = left_latex
+        latex_answer = f"= {right_latex}"
+        
+        return latex_answer, latex_problem
+
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()
         if checker > 0.5:
@@ -288,3 +334,49 @@ class ExpandEquationProblem:
             return integer, integer_with_number_latex
         else:
             raise ValueError("There is something wrong with 'add_number_or_character'.")
+    
+    def _make_random_positive_or_negative_integer(self, max_num, min_num, number_or_character, positive_or_negative):
+        numerator = randint(min_num, max_num)
+        
+        integer = sy.Integer(numerator)
+        
+        if positive_or_negative == "positive":
+            integer = abs(integer)
+        elif positive_or_negative == "negative":
+            integer = -1 * abs(integer)
+        
+        if number_or_character == "character":
+            used_character = choice(self._used_character_type_list)
+            integer_with_character = self._character_dict[used_character] * integer
+            integer_with_character_latex = sy.latex(integer_with_character)
+            return integer_with_character, integer_with_character_latex
+
+        elif number_or_character == "number":
+            integer_with_number_latex = sy.latex(integer)
+            return integer, integer_with_number_latex
+        else:
+            raise ValueError("There is something wrong with 'add_number_or_character'.")
+
+    def _make_random_positive_or_negative_frac(self, max_num, min_num, number_or_character, positive_or_negative):
+        numerator = randint(min_num, max_num)
+        denominator = randint(min_num, max_num)
+    
+        frac = sy.Rational(numerator, denominator)
+        
+        if positive_or_negative == "positive":
+            frac = abs(frac)
+        elif positive_or_negative == "negative":
+            frac = -1 * abs(frac)
+        
+        if number_or_character == "character":
+            used_character = choice(self._used_character_type_list)
+            frac_with_character = frac * self._character_dict[used_character]
+            frac_with_character_latex = sy.latex(frac_with_character)
+            return frac_with_character, frac_with_character_latex
+
+        elif number_or_character == "number":
+            frac_with_number_latex = sy.latex(frac)
+            return frac, frac_with_number_latex
+        else:
+            raise ValueError("There is something wrong with 'add_number_or_character'.")
+

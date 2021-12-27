@@ -23,4 +23,6 @@ urlpatterns = [
     path('expand_equation/display/', views.display_expand_equation, name='expand_equation_display'),
     path('completing_the_square/print/', views.print_completing_the_square, name='completing_the_square_print'),
     path('completing_the_square/display/', views.display_completing_the_square, name='completing_the_square_display'),
+    path('proportional_expression/print/', views.print_proportional_expression, name='proportional_expression_print'),
+    path('proportional_expression/display/', views.display_proportional_expression, name='proportional_expression_display'),
 ]

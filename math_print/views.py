@@ -11,6 +11,7 @@ from .math_process.specific_linear_equation import SpecificLinearEquation
 from .math_process.simultaneous_equation import SimultaneousEquation
 from .math_process.expand_equation import ExpandEquationProblem
 from .math_process.completing_the_square import CompletingTheSquareProblem
+from .math_process.proportional_expression import ProportionalExpressionProblem
 
 
 
@@ -242,6 +243,29 @@ def print_completing_the_square(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, "math_print/highschool1/completing_the_square/completing_the_square_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_proportional_expression(request):
+
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("number_to_use")
+    proportional_expression_type = request.POST["proportional_expression_type"]
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = ProportionalExpressionProblem(
+                used_number_type_list=number_to_use, proportional_expression_type=proportional_expression_type
+            )
+            problem2 = ProportionalExpressionProblem(
+                used_number_type_list=number_to_use, proportional_expression_type=proportional_expression_type
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, "math_print/junior_highschool1/proportional_expression/proportional_expression_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
         
     
 def display_number_problem(request):
@@ -410,4 +434,22 @@ def display_completing_the_square(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool1/completing_the_square/completing_the_square_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_proportional_expression(request):
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("number_to_use")
+    proportional_expression_type = request.POST["proportional_expression_type"]
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = ProportionalExpressionProblem(
+            used_number_type_list=number_to_use, proportional_expression_type=proportional_expression_type
+        )
+        problem2 = ProportionalExpressionProblem(
+            used_number_type_list=number_to_use, proportional_expression_type=proportional_expression_type
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool1/proportional_expression/proportional_expression_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     

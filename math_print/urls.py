@@ -25,4 +25,6 @@ urlpatterns = [
     path('completing_the_square/display/', views.display_completing_the_square, name='completing_the_square_display'),
     path('proportional_expression/print/', views.print_proportional_expression, name='proportional_expression_print'),
     path('proportional_expression/display/', views.display_proportional_expression, name='proportional_expression_display'),
+    path('linear_function/print/', views.print_linear_function, name='linear_function_print'),
+    path('linear_function/display/', views.display_linear_function, name='linear_function_display'),
 ]

@@ -199,6 +199,67 @@
                     <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'character_display' %}">
                 </form>
         </div>
+        <div class="row">
+            <div class="col">
+                <p>1次関数を求める</p>
+                <form action="?" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <small class="text-muted">傾きと切片に登場する数字</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="linearFunctionIntegerCheck" checked>
+                            <label class="form-check-label" for="linearFunctionIntegerCheck">
+                                整数
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="linearFunctionFracCheck">
+                            <label class="form-check-label" for="linearFunctionFracCheck">
+                                分数
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">与えられる情報</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="slope_and_one_point" name="given_information" id="slope_and_one_point" checked>
+                            <label class="form-check-label" for="slope_and_one_point">
+                                傾きと1点の座標
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="two_points" name="given_information" id="two_points_integer">
+                            <label class="form-check-label" for="two_points_integer">
+                                2点の座標
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">枚数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="linearFunctionFivePaperRadio" checked>
+                            <label class="form-check-label" for="linearFunctionFivePaperRadio">
+                                20問×5枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="linearFunctionTenPaperRadio">
+                            <label class="form-check-label" for="linearFunctionTenPaperRadio">
+                                20問×10枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="linearFunctionFifteenPaperRadio">
+                            <label class="form-check-label" for="linearFunctionFifteenPaperRadio">
+                                20問×15枚
+                            </label>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'linear_function_print' %}">
+                    <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'linear_function_display' %}">
+                </form>
+            </div>
+        </div>
     </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>

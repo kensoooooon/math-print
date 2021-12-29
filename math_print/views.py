@@ -279,13 +279,15 @@ def print_linear_function(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = LinearFunctionProblem(
-                used_number_type_list=number_to_use, given_information=given_information
+                number_to_use=number_to_use, given_information=given_information
             )
             problem2 = LinearFunctionProblem(
-                used_number_type_list=number_to_use, given_information=given_information
+                number_to_use=number_to_use, given_information=given_information
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, "math_print/junior_highschool2/linear_function/linear_function_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
         
 
 def display_number_problem(request):

@@ -13,6 +13,7 @@ from .math_process.expand_equation import ExpandEquationProblem
 from .math_process.completing_the_square import CompletingTheSquareProblem
 from .math_process.proportional_expression import ProportionalExpressionProblem
 from .math_process.linear_function import LinearFunctionProblem
+from .math_process.power_calculate import PowerCalculateProblem
 
 
 # Create your views here.
@@ -288,7 +289,28 @@ def print_linear_function(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, "math_print/junior_highschool2/linear_function/linear_function_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
-        
+
+def print_power_calculate(request):
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("number_to_use")
+    calculate_type = request.POST.getlist("calculate_type")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = PowerCalculateProblem(
+                number_to_use=number_to_use, calculate_type=calculate_type
+            )
+            problem2 = PowerCalculateProblem(
+                number_to_use=number_to_use, calculate_type=calculate_type
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, "math_print/junior_highschool1/power/power_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -493,3 +515,20 @@ def display_linear_function(request):
     
     return render(request, 'math_print/junior_highschool2/linear_function/linear_function_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     
+def display_power_calculate(request):
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("number_to_use")
+    calculate_type = request.POST.getlist("calculate_type")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = PowerCalculateProblem(
+            number_to_use=number_to_use, calculate_type=calculate_type
+        )
+        problem2 = PowerCalculateProblem(
+            number_to_use=number_to_use, calculate_type=calculate_type
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool1/power/power_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

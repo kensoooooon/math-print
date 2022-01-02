@@ -13,6 +13,20 @@
     </div>
 {% endblock %}
 
+{% block script %}
+<script>
+    function changeStatusOfCalculateType(){
+        let calculate_types = document.getElementsByName(`calculate_type`);
+        
+        for (let i = 0; i < calculate_types.length; i ++){
+            if (!(calculate_types[i].checked)){
+                calculate_types[i].checked = true;
+            }
+        }
+    }
+</script>
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
     <div class="row">
@@ -263,26 +277,39 @@
                         </label>
                     </div>
                 </div>
-                <small class="text-muted">登場する数の個数(かけ算の因子の数)</small>
+                <small class="text-muted">登場する計算のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="1" name="factor_number" id="powerFactorOneRadio" checked>
-                        <label class="form-check-label" for="powerFactorOneRadio">
-                            1個
+                        <input class="form-check-input" type="checkbox" value="single" name="calculate_type" id="powerSingleCheck" checked>
+                        <label class="form-check-label" for="powerSingleCheck">
+                            単一項(a^b)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="2" name="factor_number" id="powerFactorTwoRadio">
-                        <label class="form-check-label" for="powerFactorTwoRadio">
-                            2個
+                        <input class="form-check-input" type="checkbox" value="double_plus" name="calculate_type" id="powerDoublePlusCheck">
+                        <label class="form-check-label" for="powerDoublePlusCheck">
+                            二項の足し算(a^b + c^d)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="3" name="factor_number" id="powerFactorFourRadio">
-                        <label class="form-check-label" for="powerFactorFourRadio">
-                            3個
+                        <input class="form-check-input" type="checkbox" value="double_minus" name="calculate_type" id="powerDoubleMinusCheck">
+                        <label class="form-check-label" for="powerDoubleMinusCheck">
+                            二項の引き算(a^b - c^d)
                         </label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="double_times" name="calculate_type" id="powerDoubleTimesCheck">
+                        <label class="form-check-label" for="powerDoubleTimesCheck">
+                            二項のかけ算(a^b × c^d)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="double_div" name="calculate_type" id="powerDoubleDivCheck">
+                        <label class="form-check-label" for="powerDoubleDivCheck">
+                            二項の割り算(a^b ÷ c^d)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfCalculateType()" value="全部のせ">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -305,8 +332,8 @@
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'factor_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'factor_display' %}">
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'power_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'power_display' %}">
             </form>
         </div>
     </div>

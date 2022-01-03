@@ -20,8 +20,6 @@ class NumberMathProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
-        max_number = self._max_number_to_frac
-        min_number = self._min_number_to_frac
         first_number_checker = choice(self._used_number_type_list)
         if first_number_checker == 'one_digit_integer':
             first_number, first_latex = self._make_random_integer_number(9, -9)

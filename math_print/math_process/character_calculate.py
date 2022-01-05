@@ -20,21 +20,63 @@ class CharacterMathProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
+        """
+        基本方針
+        
+        x = sy.Symbol("x", real=True)
+        string_for_eval = "1 + 3 * x * 4 / 5"
+        answer = eval(string_for_eval)
+        latex_problem = ...
+        の同時並行作成 
+        """
         max_number = self._max_number_to_frac
         min_number = self._min_number_to_frac
-
-        first_number_checker = choice(self._used_number_type_list)
-        if first_number_checker == 'integer':
-            first_number, first_latex = self._make_random_integer(max_number, min_number, "character")
-        elif first_number_checker == 'frac':
-            first_number, first_latex = self._make_random_frac(max_number, min_number, "character")
-        elif first_number_checker == 'decimal':
-            first_number, first_latex = self._make_random_decimal(max_number, min_number, 10, "character")
-        else:
-            raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
-
-        answer = first_number
-        latex_problem = first_latex
+        
+        latex_problem = ""
+        latex_string_for_eval = ""
+        first_num_type_checker = choice(self._used_number_type_list)
+        if first_num_type_checker == "integer":
+            number, number_latex = self._make_random_integer(max_number, min_number, "number")
+        elif first_num_type_checker == "frac":
+            number, number_latex = self._make_random_frac(max_number, min_number, "number")
+        elif first_num_type_checker == "decimal":
+            number, number_latex = self._make_random_decimal(max_number, min_number, 10, "number")
+        
+        latex_problem += f"{number_latex}x"
+        latex_string_for_eval += f"{number} * x"
+        
+        for _ in range(self._term_number-1):
+            num_type_checker = choice(self._used_number_type_list)
+            if num_type_checker == "integer":
+                number, number_latex = self._make_random_integer(max_number, min_number, "number")
+            elif num_type_checker == "frac":
+                number, number_latex = self._make_random_frac(max_number, min_number, "number")
+            elif num_type_checker == "decimal":
+                number, number_latex = self._make_random_decimal(max_number, min_number, 10, "number")
+        
+            operator_type_checker = choice(self._used_operator_type_list)
+            
+            # ここでxかどうかを付け加え
+            if operator_type_checker == "plus":
+                latex_problem += f"+ {number_latex}"
+                latex_string_for_eval += f"+ {number}"
+            elif operator_type_checker == "minus":
+                latex_problem += f"- {number_latex}"
+                latex_string_for_eval += f"- {number}"
+            elif operator_type_checker == "times":
+                latex_problem += f"\\times {number_latex}"
+                
+        # 演算をまとめてあげる
+        """
+        項数ごとにまとめ？
+        image
+        answer = first_number * second_number + third_number / 
+        evalで評価する
+        latexと計算用で分割
+            latex: + , -, \\times \\div
+            python: +, -, *, /
+        """
+        
         for _ in range(self._term_number-1):
             num_type_checker = choice(self._used_number_type_list)
             # plus, minus, times, divided
@@ -86,13 +128,17 @@ class CharacterMathProblem:
         return latex_answer, latex_problem
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(2, max_num)
-            denominator = randint(2, max_num)
-        else:
-            numerator = randint(min_num, -2)
-            denominator = randint(2, max_num)
+        while True:
+            checker = random()
+            if checker > 0.5:
+                numerator = randint(2, max_num)
+                denominator = randint(2, max_num)
+            else:
+                numerator = randint(min_num, -2)
+                denominator = randint(2, max_num)
+                
+            if numerator != denominator:
+                break
         
         frac = sy.Rational(numerator, denominator)
         
@@ -119,17 +165,18 @@ class CharacterMathProblem:
         
     
     def _make_random_decimal(self, max_num, min_num, denominator, number_or_character):
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(1, max_num)
-        else:
-            numerator = randint(min_num, -1)
+        while True:
+            checker = random()
+            if checker > 0.5:
+                numerator = randint(1, max_num)
+            else:
+                numerator = randint(min_num, -1)
+            
+            frac_for_decimal = sy.Rational(numerator, denominator)
+            if frac_for_decimal != 1:
+                break
         
-        frac_for_decimal = sy.Rational(numerator, denominator)
-        if frac_for_decimal == 1:
-            decimal = 1
-        else:
-            decimal = float(frac_for_decimal)
+        decimal = float(frac_for_decimal)
 
         if number_or_character == "character":
             used_character = choice(self._used_character_type_list)

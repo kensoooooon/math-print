@@ -93,7 +93,7 @@ class CharacterMathProblem:
                 else:
                     latex_string_for_eval += f"{operator_for_eval} ({number} * {character})"
                 
-                if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list):
+                if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
                     number = float(number)
                 if number < 0:
                     latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
@@ -108,7 +108,7 @@ class CharacterMathProblem:
                 else: 
                     latex_string_for_eval += f"{operator_for_eval} {number}"
                 
-                if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list):
+                if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
                     number = float(number)
                 if number < 0:
                     latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
@@ -120,9 +120,9 @@ class CharacterMathProblem:
         print(f"answer: {answer}")
         expanded_answer = sy.expand(answer)
         print(f"expanded_answer: {expanded_answer}")
-        collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
-        latex_answer = f" = {sy.latex(collected_answer)}"
-
+        # collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
+        latex_answer = f" = {sy.latex(expanded_answer)}"
+     
         return latex_answer, latex_problem
 
     def _make_random_frac_number(self, max_num, min_num):

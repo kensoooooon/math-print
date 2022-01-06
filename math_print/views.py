@@ -2,8 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from sympy.geometry import line
 
-from math_print.math_process.completing_the_square import CompletingTheSquareProblem
-
 from .math_process.character_calculate import CharacterMathProblem
 from .math_process.linear_equation import LinearEquationProblem
 from .math_process.number_calculate import NumberMathProblem
@@ -14,24 +12,16 @@ from .math_process.completing_the_square import CompletingTheSquareProblem
 from .math_process.proportional_expression import ProportionalExpressionProblem
 from .math_process.linear_function import LinearFunctionProblem
 from .math_process.power_calculate import PowerCalculateProblem
+from math_print.math_process.completing_the_square import CompletingTheSquareProblem
+from math_print.math_process.reduction import ReductionProblem
 
 
 # Create your views here.
 def index(request):
     return render(request, 'math_print/index.html', {})
 
-def make_math_print(request):
-    math_problem_tuple_list = []
-    NUMBER_OF_PROBLEM = 10
-    MAX_NUMBER_TO_FRAC = 10
-    MIN_NUMBER_TO_FRAC = -10
-    TERM_NUMBER = 3
-    for _ in range(NUMBER_OF_PROBLEM):
-        problem1 = NumberMathProblem(TERM_NUMBER, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC)
-        problem2 = NumberMathProblem(TERM_NUMBER, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC)
-        math_problem_tuple_list.append((problem1, problem2))
-
-    return render(request, 'math_print/calculate.html', {'math_problem_tuple_list': math_problem_tuple_list})
+def show_elementary_school5(request):
+    return render(request, 'math_print/elementary_school5/elementary_school5.html', {})
 
 def show_junior_highschool1(request):
     return render(request, 'math_print/junior_highschool1/junior_highschool1.html', {})
@@ -160,7 +150,7 @@ def print_linear_equation_problem(request):
 def print_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
     
-    linear_equation_type = request.POST["linear_equation_type"]
+    linear_equation_type_list = request.POST.getlist("linear_equation_type")
     number_to_use = request.POST.getlist("number_to_use")
     paper_number = int(request.POST["paper_number"])
     
@@ -169,10 +159,10 @@ def print_specific_linear_equation(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = SpecificLinearEquation(
-                used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+                used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
             )
             problem2 = SpecificLinearEquation(
-                used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+                used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -312,6 +302,27 @@ def print_power_calculate(request):
     
     return render(request, "math_print/junior_highschool1/power/power_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_reduction_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    fraction_type_list = request.POST.getlist("fraction_type")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = ReductionProblem(
+                fraction_type_list=fraction_type_list
+            )
+            problem2 = ReductionProblem(
+                fraction_type_list=fraction_type_list
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school5/reduction/reduction_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -409,16 +420,16 @@ def display_linear_equation_problem(request):
 def display_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
     
-    linear_equation_type = request.POST["linear_equation_type"]
+    linear_equation_type_list = request.POST.getlist("linear_equation_type")
     number_to_use = request.POST.getlist("number_to_use")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SpecificLinearEquation(
-            used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+            used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
             )
         problem2 = SpecificLinearEquation(
-            used_number_type_list=number_to_use, linear_equation_type=linear_equation_type
+            used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
         )
         math_problem_tuple_list.append((problem1, problem2))
     
@@ -532,3 +543,20 @@ def display_power_calculate(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool1/power/power_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_reduction_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    fraction_type_list = request.POST.getlist("fraction_type")
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = ReductionProblem(
+            fraction_type_list=fraction_type_list
+        )
+        problem2 = ReductionProblem(
+            fraction_type_list=fraction_type_list
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school5/reduction/reduction_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

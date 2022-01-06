@@ -8,25 +8,31 @@ class SpecificLinearEquation:
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
         self._used_number_type_list = settings['used_number_type_list']
-        self._answer_type = settings['linear_equation_type']
+        self._linear_equation_type_list = settings['linear_equation_type_list']
         self._used_character_type_list = ["x"]
         self._character_dict = {}
         for character in self._used_character_type_list:
             self._character_dict[character] = sy.Symbol(character, real=True)
-        if self._answer_type == "ax_equal_b_only_integer":
-            self.latex_answer, self.latex_problem = self._make_ax_equal_b_only_integer()
-        elif self._answer_type == "ax_equal_b_all_number":
-            self.latex_answer, self.latex_problem = self._make_ax_equal_b_all_number()
-        elif self._answer_type == 'ax_plus_b_equal_c_only_integer':
-            self.latex_answer, self.latex_problem = self._make_ax_plus_b_equal_c_only_integer()
-        elif self._answer_type == 'ax_plus_b_equal_c_all_number':
-            self.latex_answer, self.latex_problem = self._make_ax_plus_b_equal_c_all_number()
-        elif self._answer_type == 'ax_plus_b_equal_cx_plus_d_only_integer':
-            self.latex_answer, self.latex_problem = self._make_ax_plus_b_equal_cx_plus_d_only_integer()
-        elif self._answer_type == 'ax_plus_b_equal_cx_plus_d_all_number':
-            self.latex_answer, self.latex_problem = self._make_ax_plus_b_equal_cx_plus_d_all_number()
-        else:
-            raise ValueError("linear_equation_type may be wrong.")
+
+        self.latex_answer, self.latex_problem = self._make_specific_linear_equation_problem()
+    
+    def _make_specific_linear_equation_problem(self):
+        selected_linear_equation_type = choice(self._linear_equation_type_list)
+        if selected_linear_equation_type == "ax_equal_b_only_integer":
+            latex_answer, latex_problem = self._make_ax_equal_b_only_integer()
+        elif selected_linear_equation_type == "ax_equal_b_all_number":
+            latex_answer, latex_problem = self._make_ax_equal_b_all_number()
+        elif selected_linear_equation_type == 'ax_plus_b_equal_c_only_integer':
+            latex_answer, latex_problem = self._make_ax_plus_b_equal_c_only_integer()
+        elif selected_linear_equation_type == 'ax_plus_b_equal_c_all_number':
+            latex_answer, latex_problem = self._make_ax_plus_b_equal_c_all_number()
+        elif selected_linear_equation_type == 'ax_plus_b_equal_cx_plus_d_only_integer':
+            latex_answer, latex_problem = self._make_ax_plus_b_equal_cx_plus_d_only_integer()
+        elif selected_linear_equation_type == 'ax_plus_b_equal_cx_plus_d_all_number':
+            latex_answer, latex_problem = self._make_ax_plus_b_equal_cx_plus_d_all_number()
+        
+        return latex_answer, latex_problem
+        
 
     def _make_ax_equal_b_only_integer(self):
         print(f"number_type_checker: {self._used_number_type_list}")

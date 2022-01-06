@@ -20,157 +20,152 @@ class CharacterMathProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
+        """
+        基本方針
+        
+        x = sy.Symbol("x", real=True)
+        string_for_eval = "1 + 3 * x * 4 / 5"
+        answer = eval(string_for_eval)
+        latex_problem = ...
+        の同時並行作成 
+        """
         max_number = self._max_number_to_frac
         min_number = self._min_number_to_frac
-
-        first_number_checker = choice(self._used_number_type_list)
-        if first_number_checker == 'integer':
-            first_number, first_latex = self._make_random_integer(max_number, min_number, "character")
-        elif first_number_checker == 'frac':
-            first_number, first_latex = self._make_random_frac(max_number, min_number, "character")
-        elif first_number_checker == 'decimal':
-            first_number, first_latex = self._make_random_decimal(max_number, min_number, 10, "character")
+        
+        x = self._character_dict["x"]
+        y = self._character_dict["y"]
+        
+        latex_problem = ""
+        latex_string_for_eval = ""
+        first_num_type_checker = choice(self._used_number_type_list)
+        if first_num_type_checker == "integer":
+            number = self._make_random_integer_number(max_number, min_number)
+        elif first_num_type_checker == "frac":
+            number = self._make_random_frac_number(max_number, min_number)
+        elif first_num_type_checker == "decimal":
+            number = self._make_random_decimal_number(max_number, min_number, 10)
+        
+        first_term = number * x
+        first_term_latex = sy.latex(first_term)
+        if first_num_type_checker == "decimal":
+            latex_problem += f"{float(number)}x"
         else:
-            raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
+            latex_problem += f"{first_term_latex}"
 
-        answer = first_number
-        latex_problem = first_latex
+        if (first_num_type_checker == "frac") or (first_num_type_checker == "decimal"):
+            latex_string_for_eval += f"sy.Rational({number.numerator}, {number.denominator}) * x"
+        else:    
+            latex_string_for_eval += f"{number} * x"
+        
         for _ in range(self._term_number-1):
             num_type_checker = choice(self._used_number_type_list)
-            # plus, minus, times, divided
+            if num_type_checker == "integer":
+                number = self._make_random_integer_number(max_number, min_number)
+            elif num_type_checker == "frac":
+                number = self._make_random_frac_number(max_number, min_number)
+            elif num_type_checker == "decimal":
+                number = self._make_random_decimal_number(max_number, min_number, 10)
+        
             operator_type_checker = choice(self._used_operator_type_list)
-            
-            # decide number type and character or number within if block
-            if num_type_checker == 'integer':
-                if random() > 0.3:
-                    number, latex_number = self._make_random_integer(max_number, min_number, "character")
-                else:
-                    number, latex_number = self._make_random_integer(max_number, min_number, "number")
-            elif num_type_checker == 'frac':
-                if random() > 0.3:
-                    number, latex_number = self._make_random_frac(max_number, min_number, "character")
-                else:
-                    number, latex_number = self._make_random_frac(max_number, min_number, "number")
-            elif num_type_checker == 'decimal':
-                if random() > 0.3:
-                    number, latex_number = self._make_random_decimal(max_number, min_number, 10, "character")
-                else:
-                    number, latex_number = self._make_random_decimal(max_number, min_number, 10, "number")
-            else:
-                raise ValueError("The second and subsequent number may be wrong. Please check 'used_number_type_list'.")
-
-            # 足し算のとき
+            print(f"operator_type_checker: {operator_type_checker}")
             if operator_type_checker == "plus":
-                answer = answer + number
-                latex_problem = latex_problem + " + " + latex_number
-            # 引き算の時
+                operator_for_latex = "+"
+                operator_for_eval = "+"
             elif operator_type_checker == "minus":
-                answer = answer - number
-                latex_problem = latex_problem + " - " + latex_number
-            # 掛け算の時
+                operator_for_latex = "-"
+                operator_for_eval = "-"
             elif operator_type_checker == "times":
-                answer = answer * number
-                latex_problem =  latex_problem + " \\times " + latex_number
-            # 割り算の時
+                operator_for_latex = "\\times"
+                operator_for_eval = "*"
             elif operator_type_checker == "divided":
-                answer = answer / number
-                latex_problem = latex_problem + " \\div " + latex_number
+                operator_for_latex = "\\div"
+                operator_for_eval = "/"
+            
+            character = choice(self._used_character_type_list)
+            
+
+            if random() > 0.3:
+                term = number * self._character_dict[character]
+                term_latex = sy.latex(term)
+
+                if (num_type_checker == "frac") or (num_type_checker == "decimal"):
+                    latex_string_for_eval += f"{operator_for_eval} (sy.Rational({number.numerator}, {number.denominator}) * {character})"
+                else:
+                    latex_string_for_eval += f"{operator_for_eval} ({number} * {character})"
+                
+                if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
+                    number = float(number)
+                if number < 0:
+                    latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
+                else:
+                    latex_problem += f"{operator_for_latex} {term_latex}"
             else:
-                raise ValueError("operator_checker isn't in any condition.")              
+                term = number
+                term_latex = sy.latex(term)
+                
+                if (num_type_checker == "frac") or (num_type_checker == "decimal"):
+                    latex_string_for_eval += f"{operator_for_eval} (sy.Rational({number.numerator}, {number.denominator}))"
+                else: 
+                    latex_string_for_eval += f"{operator_for_eval} {number}"
+                
+                if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
+                    number = float(number)
+                if number < 0:
+                    latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
+                else:
+                    latex_problem += f"{operator_for_latex} {term_latex}"
+        
+        print(f"latex_string_for_eval: {latex_string_for_eval}")
+        answer = eval(latex_string_for_eval)
         print(f"answer: {answer}")
         expanded_answer = sy.expand(answer)
         print(f"expanded_answer: {expanded_answer}")
-        collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
-        latex_answer = f" = {sy.latex(collected_answer)}"
-
+        # collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
+        latex_answer = f" = {sy.latex(expanded_answer)}"
+     
         return latex_answer, latex_problem
 
-    def _make_random_frac(self, max_num, min_num, number_or_character):
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(2, max_num)
-            denominator = randint(2, max_num)
-        else:
-            numerator = randint(min_num, -2)
-            denominator = randint(2, max_num)
+    def _make_random_frac_number(self, max_num, min_num):
+        while True:
+            checker = random()
+            if checker > 0.5:
+                numerator = randint(2, max_num)
+                denominator = randint(2, max_num)
+            else:
+                numerator = randint(min_num, -2)
+                denominator = randint(2, max_num)
+                
+            if numerator != denominator:
+                break
         
         frac = sy.Rational(numerator, denominator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            frac_with_character = frac * self._character_dict[used_character]
-            # print(f"frac_with_character: {frac_with_character}, type: {type(frac_with_character)}")
-            frac_with_character_latex = sy.latex(frac_with_character)
-            # print(f"frac_with_character_latex: {frac_with_character_latex}, type: {type(frac_with_character_latex)}")
-            if frac < 0:
-                frac_with_character_latex = f"\\left({frac_with_character_latex}\\right)"
 
-            return frac_with_character, frac_with_character_latex
-
-        elif number_or_character == "number":
-            # print(f"frac: {frac}, type:{type(frac)}")
-            frac_with_number_latex = sy.latex(frac)
-            # print(f"frac_with_character_latex: {frac_with_number_latex}, type: {type(frac_with_number_latex)}")
-            if frac < 0:
-                frac_with_number_latex = f"\\left({frac_with_number_latex}\\right)"
-            return frac, frac_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
-        
+        return frac
     
-    def _make_random_decimal(self, max_num, min_num, denominator, number_or_character):
+    def _make_random_decimal_number(self, max_num, min_num, denominator):
+        while True:
+            checker = random()
+            if checker > 0.5:
+                numerator = randint(1, max_num)
+            else:
+                numerator = randint(min_num, -1)
+            
+            frac_for_decimal = sy.Rational(numerator, denominator)
+            if frac_for_decimal != 1:
+                break
+
+        decimal_with_number = frac_for_decimal
+        return decimal_with_number
+
+    
+    def _make_random_integer_number(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
         else:
             numerator = randint(min_num, -1)
-        
-        frac_for_decimal = sy.Rational(numerator, denominator)
-        if frac_for_decimal == 1:
-            decimal = 1
-        else:
-            decimal = float(frac_for_decimal)
 
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            character = self._character_dict[used_character]
-            decimal_with_character = frac_for_decimal * character
-            decimal_with_character_latex = sy.latex(decimal * character)
-            if decimal < 0:
-                decimal_with_character_latex = f"\\left({decimal_with_character_latex}\\right)"
-            return decimal_with_character, decimal_with_character_latex
-
-        elif number_or_character == "number":
-            decimal_with_number = frac_for_decimal
-            decimal_with_number_latex = sy.latex(decimal)
-            if decimal < 0:
-                decimal_with_number_latex = f"\\left({decimal_with_number_latex}\\right)"
-            return decimal_with_number, decimal_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
-    
-    def _make_random_integer(self, max_num, min_num, number_or_character):
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(1, max_num)
-        else:
-            numerator = randint(min_num, -1)
-        
-        # integer = numerator
         integer = sy.Integer(numerator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            integer_with_character = self._character_dict[used_character] * integer
-            integer_with_character_latex = sy.latex(integer_with_character)
-            if integer < 0:
-                integer_with_character_latex = f"\\left({integer_with_character_latex}\\right)"
-            return integer_with_character, integer_with_character_latex
 
-        elif number_or_character == "number":
-            integer_with_number_latex = sy.latex(integer)
-            if integer < 0:
-                integer_with_number_latex = f"\\left({integer_with_number_latex}\\right)"
-            return integer, integer_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        return integer
+

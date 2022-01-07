@@ -10,6 +10,8 @@ urlpatterns = [
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),
     path('reduction/print/', views.print_reduction_problem, name='reduction_print'),
     path('reduction/display/', views.display_reduction_problem, name='reduction_display'),
+    path('conversion_between_frac_and_decimal/print/', views.print_conversion_between_frac_and_decimal_problem, name='conversion_between_frac_and_decimal_print'),
+    path('conversion_between_frac_and_decimal/display/', views.display_conversion_between_frac_and_decimal_problem, name='conversion_between_frac_and_decimal_display'),
     ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),

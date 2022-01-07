@@ -12,8 +12,9 @@ from .math_process.completing_the_square import CompletingTheSquareProblem
 from .math_process.proportional_expression import ProportionalExpressionProblem
 from .math_process.linear_function import LinearFunctionProblem
 from .math_process.power_calculate import PowerCalculateProblem
-from math_print.math_process.completing_the_square import CompletingTheSquareProblem
-from math_print.math_process.reduction import ReductionProblem
+from .math_process.completing_the_square import CompletingTheSquareProblem
+from .math_process.reduction import ReductionProblem
+from .math_process.conversion_between_frac_and_decimal import ConversionBetweenFracAndDecimalProblem
 
 
 # Create your views here.
@@ -60,7 +61,7 @@ def print_number_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
-    return render(request, 'math_print/junior_highschool1/number/number_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/number/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_character_problem(request):
     PROBLEM_NUMBER = 20
@@ -80,10 +81,6 @@ def print_character_problem(request):
     character_to_use_list = ["x"]
     if character_to_use == "2":
         character_to_use_list += ["y"]
-    """
-    elif character_to_use == "3":
-        character_to_use_list += ["y", "z"]
-    """
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
@@ -105,7 +102,7 @@ def print_character_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
-    return render(request, 'math_print/junior_highschool1/character/character_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/character/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
@@ -145,7 +142,7 @@ def print_linear_equation_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
-    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
@@ -167,7 +164,7 @@ def print_specific_linear_equation(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_simultaneous_equation(request):
     PROBLEM_NUMBER = 20
@@ -189,7 +186,7 @@ def print_simultaneous_equation(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/junior_highschool2/simultaneous_equations/simultaneous_equations_for_print.html", {"math_problem_list_of_list": math_problem_list_of_list})
+    return render(request, "math_print/junior_highschool2/simultaneous_equations/for_print.html", {"math_problem_list_of_list": math_problem_list_of_list})
 
 def print_expand_equation(request):
     PROBLEM_NUMBER = 20
@@ -211,7 +208,7 @@ def print_expand_equation(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/junior_highschool3/expand_equation/expand_equation_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, "math_print/junior_highschool3/expand_equation/for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_completing_the_square(request):
     PROBLEM_NUMBER = 20
@@ -233,7 +230,7 @@ def print_completing_the_square(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/highschool1/completing_the_square/completing_the_square_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, "math_print/highschool1/completing_the_square/for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_proportional_expression(request):
 
@@ -256,7 +253,7 @@ def print_proportional_expression(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/junior_highschool1/proportional_expression/proportional_expression_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, "math_print/junior_highschool1/proportional_expression/for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_linear_function(request):
     PROBLEM_NUMBER = 20
@@ -278,7 +275,7 @@ def print_linear_function(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/junior_highschool2/linear_function/linear_function_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, "math_print/junior_highschool2/linear_function/for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_power_calculate(request):
     PROBLEM_NUMBER = 20
@@ -300,7 +297,7 @@ def print_power_calculate(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, "math_print/junior_highschool1/power/power_for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, "math_print/junior_highschool1/power/for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_reduction_problem(request):
     PROBLEM_NUMBER = 20
@@ -321,7 +318,29 @@ def print_reduction_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/elementary_school5/reduction/reduction_for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/elementary_school5/reduction/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_conversion_between_frac_and_decimal_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    conversion_type_list = request.POST.getlist("conversion_type")
+    below_the_decimal_point_with_string = request.POST.getlist("below_the_decimal_point")
+    below_the_decimal_point_with_int = [int(num) for num in below_the_decimal_point_with_string]
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = ConversionBetweenFracAndDecimalProblem(
+                conversion_type_list=conversion_type_list, below_the_decimal_point_list=below_the_decimal_point_with_int
+            )
+            problem2 = ConversionBetweenFracAndDecimalProblem(
+                conversion_type_list=conversion_type_list, below_the_decimal_point_list=below_the_decimal_point_with_int
+            )
+        math_problem_tuple_inner_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school5/conversion_between_frac_and_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -344,7 +363,7 @@ def display_number_problem(request):
         problem2 = NumberMathProblem(term_number, MAX_NUMBER_TO_FRAC, MIN_NUMBER_TO_FRAC, number_to_use, operator_to_use)
         math_problem_tuple_list.append((problem1, problem2))
 
-    return render(request, 'math_print/junior_highschool1/number/number_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/number/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_character_problem(request):
     PROBLEM_NUMBER = 20
@@ -382,7 +401,7 @@ def display_character_problem(request):
             )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool1/character/character_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/character/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
@@ -415,7 +434,7 @@ def display_linear_equation_problem(request):
             )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
@@ -433,7 +452,7 @@ def display_specific_linear_equation(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool1/linear_equation/linear_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/linear_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_simultaneous_equation(request):
     PROBLEM_NUMBER = 20
@@ -452,7 +471,7 @@ def display_simultaneous_equation(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool2/simultaneous_equations/simultaneous_equations_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool2/simultaneous_equations/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_expand_equation(request):
     PROBLEM_NUMBER = 20
@@ -470,7 +489,7 @@ def display_expand_equation(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool3/expand_equation/expand_equation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool3/expand_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_completing_the_square(request):
     PROBLEM_NUMBER = 20
@@ -488,7 +507,7 @@ def display_completing_the_square(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/highschool1/completing_the_square/completing_the_square_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/highschool1/completing_the_square/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_proportional_expression(request):
     PROBLEM_NUMBER = 20
@@ -506,7 +525,7 @@ def display_proportional_expression(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool2/linear_function/linear_function_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool2/linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_linear_function(request):
     PROBLEM_NUMBER = 20
@@ -524,7 +543,7 @@ def display_linear_function(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool2/linear_function/linear_function_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool2/linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     
 def display_power_calculate(request):
     PROBLEM_NUMBER = 20
@@ -542,7 +561,7 @@ def display_power_calculate(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool1/power/power_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/power/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_reduction_problem(request):
     PROBLEM_NUMBER = 20
@@ -559,4 +578,23 @@ def display_reduction_problem(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/elementary_school5/reduction/reduction_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/elementary_school5/reduction/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_conversion_between_frac_and_decimal_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    conversion_type_list = request.POST.getlist("conversion_type")
+    below_the_decimal_point_with_string = request.POST.getlist("below_the_decimal_point")
+    below_the_decimal_point_with_int = [int(num) for num in below_the_decimal_point_with_string]
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = ConversionBetweenFracAndDecimalProblem(
+            conversion_type_list=conversion_type_list, below_the_decimal_point_list=below_the_decimal_point_with_int
+        )
+        problem2 = ConversionBetweenFracAndDecimalProblem(
+            conversion_type_list=conversion_type_list, below_the_decimal_point_list=below_the_decimal_point_with_int
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school5/conversion_between_frac_and_decimal/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

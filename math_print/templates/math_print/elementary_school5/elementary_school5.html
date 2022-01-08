@@ -18,13 +18,11 @@
     function changeStatusOfFrationType(){
         let fraction_types = document.getElementsByName(`fraction_type`);
 
-        for (let i = 0; i < fraction_types.length; i++){
+        for (let i = 0; i < fraction_types.length; i++) {
             if (!(fraction_types[i].checked)){
                 fraction_types[i].checked = true;
             }
         }
-
-
     }
 </script>
 {% endblock %}
@@ -81,6 +79,65 @@
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'reduction_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'reduction_display' %}">      
+            </form>
+        </div>
+        <div class="col">
+            <p>小数と分数の相互変換</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">問題のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac_to_decimal" name="conversion_type" id="fracToDecimalCheck" checked>
+                        <label class="form-check-label" for="fracToDecimalCheck">
+                            分数→小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="decimal_to_frac" name="conversion_type" id="decimalToFracCheck">
+                        <label class="form-check-label" for="decimalToFracCheck">
+                            小数→分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">登場する小数のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="below_the_decimal_point" id="belowTheDecimalPointOneCheck" checked>
+                        <label class="form-check-label" for="belowTheDecimalPointOneCheck">
+                            小数第一位
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="below_the_decimal_point" id="belowTheDecimalPointTwoCheck">
+                        <label class="form-check-label" for="belowTheDecimalPointTwoCheck">
+                            小数第二位
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="ConversionFivePaperRadio" checked>
+                        <label class="form-check-label" for="ConversionivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="ConversionTenPaperRadio">
+                        <label class="form-check-label" for="ConversionTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="ConversionFifteenPaperRadio">
+                        <label class="form-check-label" for="ConversionFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'conversion_between_frac_and_decimal_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'conversion_between_frac_and_decimal_display' %}">      
             </form>
         </div>
     </div>

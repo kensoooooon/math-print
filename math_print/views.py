@@ -338,7 +338,8 @@ def print_conversion_between_frac_and_decimal_problem(request):
             problem2 = ConversionBetweenFracAndDecimalProblem(
                 conversion_type_list=conversion_type_list, below_the_decimal_point_list=below_the_decimal_point_with_int
             )
-        math_problem_tuple_inner_list.append((problem1, problem2))
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/elementary_school5/conversion_between_frac_and_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 

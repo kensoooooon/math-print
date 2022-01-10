@@ -48,6 +48,9 @@ urlpatterns = [
     # 展開
     path('expand_equation/print/', views.print_expand_equation, name='expand_equation_print'),
     path('expand_equation/display/', views.display_expand_equation, name='expand_equation_display'),
+    # 2次関数
+    path('quadratic_function/print/', views.print_quadratic_function, name='quadratic_function_print'),
+    path('quadratic_function/display/', views.display_quadratic_function, name='quadratic_function_display'),
     #########################################
     ### 高1 ###
     path('highschool1/', views.show_highschool1, name='highschool1'),

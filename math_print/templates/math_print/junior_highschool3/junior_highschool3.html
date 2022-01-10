@@ -13,6 +13,30 @@
     </div>
 {% endblock %}
 
+{% block script %}
+<script>
+    function changeStatusOfProblemType(){
+        let problem_types = document.getElementsByName(`problem_type`);
+
+        for (let i = 0; i < problem_types.length; i++) {
+            if (!(problem_types[i].checked)){
+                problem_types[i].checked = true;
+            }
+        }
+    }
+
+    function changeStatusOfExpandEquationType(){
+        let expand_equation_types = document.getElementsByName(`expand_equation_type`);
+
+        for (let i = 0; i < expand_equation_types.length; i++) {
+            if (!(expand_equation_types[i].checked)){
+                expand_equation_types[i].checked = true;
+            }
+        }
+    }
+</script>
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
     <div class="row">
@@ -38,41 +62,42 @@
                 <small class="text-muted">式のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="ax_times_bx_plus_c" name="expand_equation_type" id="ax_times_bx_plus_c" checked>
+                        <input class="form-check-input" type="checkbox" value="ax_times_bx_plus_c" name="expand_equation_type" id="ax_times_bx_plus_c" checked>
                         <label class="form-check-label" for="ax_times_bx_plus_c">
                             ax(bx+c)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="double_ax_times_bx_plus_c" name="expand_equation_type" id="double_ax_times_bx_plus_c">
+                        <input class="form-check-input" type="checkbox" value="double_ax_times_bx_plus_c" name="expand_equation_type" id="double_ax_times_bx_plus_c">
                         <label class="form-check-label" for="double_ax_times_bx_plus_c">
                             ax(bx+c) + dx(ex+f)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="double_ax_plus_b" name="expand_equation_type" id="double_ax_plus_b">
+                        <input class="form-check-input" type="checkbox" value="double_ax_plus_b" name="expand_equation_type" id="double_ax_plus_b">
                         <label class="form-check-label" for="double_ax_plus_b">
                             (ax+b)(cx+d)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="double_ax_plus_by" name="expand_equation_type" id="double_ax_plus_by">
+                        <input class="form-check-input" type="checkbox" value="double_ax_plus_by" name="expand_equation_type" id="double_ax_plus_by">
                         <label class="form-check-label" for="double_ax_plus_by">
                             (ax+by)(cx+dy)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="square_x_plus_a" name="expand_equation_type" id="square_x_plus_a">
+                        <input class="form-check-input" type="checkbox" value="square_x_plus_a" name="expand_equation_type" id="square_x_plus_a">
                         <label class="form-check-label" for="square_x_plus_a">
                             (x+a)^2
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="square_x_minus_a" name="expand_equation_type" id="square_x_minus_a">
+                        <input class="form-check-input" type="checkbox" value="square_x_minus_a" name="expand_equation_type" id="square_x_minus_a">
                         <label class="form-check-label" for="square_x_minus_a">
                             (x-a)^2
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfExpandEquationType()" value="全部のせ">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -99,6 +124,94 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'expand_equation_display' %}">      
             </form>
         </div>
+        <div class="col">
+            <p>2次関数や変化の割合を求める</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場するx座標</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="used_point_number_type" id="quadraticFunctionPointIntegerCheck" checked>
+                        <label class="form-check-label" for="quadraticFunctionPointIntegerCheck">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac" name="used_point_number_type" id="quadraticFunctionPointFracCheck">
+                        <label class="form-check-label" for="quadraticFunctionPointFracCheck">
+                            分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">登場する2次の係数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="used_coefficient_number_type" id="quadraticFunctionCoefficientIntegerCheck" checked>
+                        <label class="form-check-label" for="quadraticFunctionCoefficientIntegerCheck">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac" name="used_coefficient_number_type" id="quadraticFunctionCoefficientFracCheck">
+                        <label class="form-check-label" for="quadraticFunctionCoefficientFracCheck">
+                            分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">与えられる情報と求めるもの</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="one_point_to_quadratic" name="problem_type" id="one_point_to_quadratic" checked>
+                        <label class="form-check-label" for="one_point_to_quadratic">
+                            1点の座標→2次関数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="two_x_values_and_change_rate_to_quadratic" name="problem_type" id="two_x_values_and_change_rate_to_quadratic">
+                        <label class="form-check-label" for="two_x_values_and_change_rate_to_quadratic">
+                            2つのx座標と変化の割合→2次関数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="two_x_values_and_quadratic_to_change_rate" name="problem_type" id="two_x_values_and_quadratic_to_change_rate">
+                        <label class="form-check-label" for="two_x_values_and_quadratic_to_change_rate">
+                            2つのx座標と2次関数→変化の割合
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="change_rate_and_quadratic_to_delta_x" name="problem_type" id="change_rate_and_quadratic_to_delta_x">
+                        <label class="form-check-label" for="change_rate_and_quadratic_to_delta_x">
+                            変化の割合と2次関数→xの増加量
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfProblemType()" value="全部のせ">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="quadraticFunctionFivePaperRadio" checked>
+                        <label class="form-check-label" for="quadraticFunctionFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="quadraticFunctionTenPaperRadio">
+                        <label class="form-check-label" for="quadraticFunctionTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="quadraticFunctionFifteenPaperRadio">
+                        <label class="form-check-label" for="quadraticFunctionFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'quadratic_function_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'quadratic_function_display' %}">
+            </form>
+        </div>
+    </div>
     </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>

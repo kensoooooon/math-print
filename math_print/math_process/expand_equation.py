@@ -8,23 +8,32 @@ class ExpandEquationProblem:
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
         self._used_number_type_list = settings["used_number_type_list"]
-        self._expand_equation_type = settings["expand_equation_type"]
+        self._expand_equation_type_list = settings["expand_equation_type_list"]
         self._used_character_list = ["x", "y"]
         self._character_dict = {}
         for character in self._used_character_list:
             self._character_dict[character] = sy.Symbol(character, real=True)
-        if self._expand_equation_type == 'ax_times_bx_plus_c':
-            self.latex_answer, self.latex_problem = self._make_ax_times_bx_plus_c()
-        elif self._expand_equation_type == 'double_ax_times_bx_plus_c':
-            self.latex_answer, self.latex_problem = self._make_double_ax_times_bx_plus_c()
-        elif self._expand_equation_type == 'double_ax_plus_b':
-            self.latex_answer, self.latex_problem = self._make_double_ax_plus_b()
-        elif self._expand_equation_type == 'double_ax_plus_by':
-            self.latex_answer, self.latex_problem = self._make_double_ax_plus_by()
-        elif self._expand_equation_type == 'square_x_plus_a':
-            self.latex_answer, self.latex_problem = self._make_square_x_plus_a()
-        elif self._expand_equation_type == 'square_x_minus_a':
-            self.latex_answer, self.latex_problem = self._make_square_x_minus_a()
+        
+        self.latex_answer, self.latex_problem = self._make_problem()
+
+    def _make_problem(self):
+
+        selected_equation_type = choice(self._expand_equation_type_list)
+        
+        if selected_equation_type == 'ax_times_bx_plus_c':
+            latex_answer, latex_problem = self._make_ax_times_bx_plus_c()
+        elif selected_equation_type == 'double_ax_times_bx_plus_c':
+            latex_answer, latex_problem = self._make_double_ax_times_bx_plus_c()
+        elif selected_equation_type == 'double_ax_plus_b':
+            latex_answer, latex_problem = self._make_double_ax_plus_b()
+        elif selected_equation_type == 'double_ax_plus_by':
+            latex_answer, latex_problem = self._make_double_ax_plus_by()
+        elif selected_equation_type == 'square_x_plus_a':
+            latex_answer, latex_problem = self._make_square_x_plus_a()
+        elif selected_equation_type == 'square_x_minus_a':
+            latex_answer, latex_problem = self._make_square_x_minus_a()
+        
+        return latex_answer, latex_problem
     
     def _make_ax_times_bx_plus_c(self):
         a_checker = choice(self._used_number_type_list)

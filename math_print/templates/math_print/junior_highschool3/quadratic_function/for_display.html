@@ -55,8 +55,7 @@ function refresh() {
                 <div class="col-md-6">
                     <li>
                         <p>
-                            \( \quad \)
-                            {{ math_problem_tuple.0.latex_problem }}
+                            {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
                             {{ math_problem_tuple.0.latex_answer }}
@@ -66,8 +65,7 @@ function refresh() {
                 <div class="col-md-6">
                     <li>
                         <p>
-                            \( \quad \)
-                            {{ math_problem_tuple.1.latex_problem }}
+                            {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
                             {{ math_problem_tuple.1.latex_answer }}

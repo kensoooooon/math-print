@@ -72,7 +72,7 @@ class QuadraticFunctionProblem:
         large_x_latex = sy.latex(large_x)
         small_x_latex = sy.latex(small_x)
         
-        latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、"\
+        latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、\n"\
             f"変化の割合が\( {change_rate_latex} \)となる2次関数を求めよ。"
 
         return latex_answer, latex_problem
@@ -92,13 +92,13 @@ class QuadraticFunctionProblem:
         
         latex_answer = f"変化の割合: \( {change_rate_latex} \)"
         if a == 1:
-            latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、"\
+            latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、\n"\
                 "2次関数\( y = x ^ {{2}} \)の変化の割合を求めよ。"
         elif a == -1:
-            latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、"\
+            latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、\n"\
                 "2次関数\( y = -x ^ {{2}} \)の変化の割合を求めよ。"
         else:
-            latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、"\
+            latex_problem = f"\( x \)が\( {small_x_latex}\)から\( {large_x_latex} \)まで増加したとき、\n"\
                 f"2次関数\( y = {a_latex }x ^ {{2}} \)の変化の割合を求めよ。"
 
         return latex_answer, latex_problem

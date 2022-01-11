@@ -34,21 +34,6 @@ function showAnswer(){
         width: 50%;
     }
 </style>
-<style type="text/css" media="print">
-    .print_pages{
-        /*A4縦*/
-        width: 240mm;
-        height: 310mm;
-        page-break-after: always;
-    }
-    /*最後のページは改ページを入れない*/
-    .print_pages:last-child{
-        page-break-after: auto;
-    }
-    .hero_unit, .base_footer, .button_container{
-        display: none;
-    }
-</style>
 {% endblock %}
 
 {% block title %}
@@ -83,8 +68,7 @@ function showAnswer(){
                     <div>
                         <li>
                             <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.0.latex_problem }}
+                                {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                             </p>
                             <p class="answer" style="visibility:hidden;">
                                 {{ math_problem_tuple.0.latex_answer }}
@@ -94,8 +78,7 @@ function showAnswer(){
                     <div>
                         <li>
                             <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.1.latex_problem }}
+                                {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                             </p>
                             <p class="answer" style="visibility:hidden;">
                                 {{ math_problem_tuple.1.latex_answer }}
@@ -113,8 +96,7 @@ function showAnswer(){
                     <div>
                         <li>
                             <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.0.latex_problem }}
+                                {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                             </p>
                             <p class="answer" style="visibility:visible;">
                                 {{ math_problem_tuple.0.latex_answer }}
@@ -124,8 +106,7 @@ function showAnswer(){
                     <div>
                         <li>
                             <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.1.latex_problem }}
+                                {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                             </p>
                             <p class="answer" style="visibility:visible;">
                                 {{ math_problem_tuple.1.latex_answer }}

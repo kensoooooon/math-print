@@ -22,8 +22,10 @@ class QuadraticFunctionProblem:
             latex_answer, latex_problem = self._make_two_x_values_and_change_rate_to_quadratic_problem()
         elif selected_problem_type == "two_x_values_and_quadratic_to_change_rate":
             latex_answer, latex_problem = self._make_two_x_values_and_quadratic_to_change_rate_problem()
-        elif selected_problem_type == "change_rate_and_quadratic_to_delta_x":
-            latex_answer, latex_problem = self._make_change_rate_and_quadratic_to_delta_x_problem()
+        elif selected_problem_type == "x_range_and_quadratic_to_max_and_min":
+            latex_answer, latex_problem = self._make_x_range_and_quadratic_to_max_and_min_problem()
+        else:
+            raise ValueError(f"selected_problem_type: {selected_problem_type}, it may be wrong.")
         
         return latex_answer, latex_problem
 
@@ -102,29 +104,109 @@ class QuadraticFunctionProblem:
                 f"2次関数\( y = {a_latex }x ^ {{2}} \)の変化の割合を求めよ。"
 
         return latex_answer, latex_problem
-    
-    def _make_change_rate_and_quadratic_to_delta_x_problem(self):
-        a = self._make_coefficient_value(6, -6)
+
+    def _make_x_range_and_quadratic_to_max_and_min_problem(self):
+        
+        def check_which_far_from_zero(left_x, right_x):
+            distance_of_left_x_from_zero = abs(left_x - 0)
+            distance_of_right_x_from_zero = abs(right_x - 0)
+
+            if distance_of_left_x_from_zero > distance_of_right_x_from_zero:
+                return "left"
+            elif distance_of_left_x_from_zero < distance_of_right_x_from_zero:
+                return "right"
+            else:
+                return "both"
+        
+        right_x, left_x = self._make_large_and_small_x_values(6, -6)
+        right_x_latex = sy.latex(right_x)
+        left_x_latex = sy.latex(left_x)
+        a = self._make_coefficient_value(5, -5)
         a_latex = sy.latex(a)
+        if a == 1:
+            latex_problem = f"\( y = x ^ {{2}} \)の定義域が、"
+        elif a == -1:
+            latex_problem = f"\( y = -x ^ {{2}} \)の定義域が、"
+        else:
+            latex_problem = f"\( y = {a_latex} x ^ {{2}} \)の定義域が、"
+            
+            
+        latex_problem += f"\( x \)が\( {left_x_latex} \)以上\( {right_x_latex} \)以下のとき、\n"\
+                "最大値と最小値、およびそのときのx座標を求めよ。"
         
-        large_x, small_x = self._make_large_and_small_x_values(8, -8)
-        large_x_latex = sy.latex(large_x)
-        small_x_latex = sy.latex(small_x)
+        which_far_from_zero = check_which_far_from_zero(left_x, right_x)        
         
-        y_with_large_x = a * (large_x ** 2)
-        y_with_small_x = a * (small_x ** 2)
-        change_rate = (y_with_large_x - y_with_small_x) / (large_x - small_x)
-        change_rate_latex = sy.latex(change_rate)
+        if a > 0:
+            if which_far_from_zero == "left":
+                y_max = a * (left_x ** 2)
+                x_with_y_max = left_x
+            elif which_far_from_zero == "right":
+                y_max = a * (right_x ** 2)
+                x_with_y_max = right_x
+            elif which_far_from_zero == "both":
+                y_max = a * (right_x ** 2)
+                x_with_y_max = "both_x"
 
-        delta_x = large_x - small_x
-        delta_x_latex = sy.latex(delta_x)
-        latex_answer = f"\( x \)の変化量は\( {delta_x_latex} \)"
+            if (left_x <= 0) and (right_x >= 0):
+                y_min = 0
+                x_with_y_min = 0
+            else:
+                if which_far_from_zero == "left":
+                    y_min = a * (right_x ** 2)
+                    x_with_y_min = right_x
+                elif which_far_from_zero == "right":
+                    y_min = a * (left_x ** 2)
+                    x_with_y_min = left_x
+                elif which_far_from_zero == "both":
+                    y_min = a * (right_x ** 2)
+                    x_with_y_min = "both_x"
         
-        latex_problem = f"変化の割合が\( {change_rate_latex} \)になるような2次関数\( y = {a_latex} x ^ {{2}} \)"\
-            f"のxの変化量を求めよ。"
+        elif a < 0:
+            if which_far_from_zero == "left":
+                y_min = a * (left_x ** 2)
+                x_with_y_min = left_x
+            elif which_far_from_zero == "right":
+                y_min = a * (right_x ** 2)
+                x_with_y_min = right_x
+            elif which_far_from_zero == "both":
+                y_min = a * (right_x ** 2)
+                x_with_y_min = "both_x"
 
+            if (left_x <= 0) and (right_x >= 0):
+                y_max = 0
+                x_with_y_max = 0
+            else:
+                if which_far_from_zero == "left":
+                    y_max = a * (right_x ** 2)
+                    x_with_y_max = right_x
+                elif which_far_from_zero == "right":
+                    y_max = a * (left_x ** 2)
+                    x_with_y_max = left_x
+                elif which_far_from_zero == "both":
+                    y_max = a * (right_x ** 2)
+                    x_with_y_max = "both_x"
+        
+        y_max_latex = sy.latex(y_max)
+        x_with_y_max_latex = sy.latex(x_with_y_max)
+        
+        latex_answer = ""
+        if x_with_y_max == "both_x":
+            latex_answer += f"\( x = {left_x_latex}, {right_x_latex} \)のとき、"
+        else:
+            latex_answer += f"\( x = {x_with_y_max_latex} \)のとき、"
+        latex_answer += f"最大値\( {y_max_latex} \)。\n"
+
+        y_min_latex = sy.latex(y_min)
+        x_with_y_min_latex = sy.latex(x_with_y_min)
+        
+        if x_with_y_min == "both_x":
+            latex_answer += f"\( x = {left_x_latex}, {right_x_latex} \)のとき、"
+        else:
+            latex_answer += f"\( x = {x_with_y_min_latex} \)のとき、"
+        latex_answer += f"最小値\( {y_min_latex} \)。"
+        
         return latex_answer, latex_problem
-
+                    
     def _make_large_and_small_x_values(self, max_num, min_num):
         num_type_checker1 = choice(self._used_point_number_type_list)
         if num_type_checker1 == "integer":

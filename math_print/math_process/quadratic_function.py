@@ -22,8 +22,10 @@ class QuadraticFunctionProblem:
             latex_answer, latex_problem = self._make_two_x_values_and_change_rate_to_quadratic_problem()
         elif selected_problem_type == "two_x_values_and_quadratic_to_change_rate":
             latex_answer, latex_problem = self._make_two_x_values_and_quadratic_to_change_rate_problem()
-        elif selected_problem_type == "x_range_and_quadratic_to_max_or_min":
+        elif selected_problem_type == "x_range_and_quadratic_to_max_and_min":
             latex_answer, latex_problem = self._make_x_range_and_quadratic_to_max_and_min_problem()
+        else:
+            raise ValueError(f"selected_problem_type: {selected_problem_type}, it may be wrong.")
         
         return latex_answer, latex_problem
 

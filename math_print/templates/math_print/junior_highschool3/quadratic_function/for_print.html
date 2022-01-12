@@ -34,6 +34,21 @@ function showAnswer(){
         width: 50%;
     }
 </style>
+<style type="text/css" media="print">
+.print_pages{
+    /*A4縦*/
+    width: 240mm;
+    height: 290mm;
+    page-break-after: always;
+}
+/*最後のページは改ページを入れない*/
+.print_pages:last-child{
+    page-break-after: auto;
+}
+.hero_unit, .base_footer, .button_container, .nav{
+    display: none;
+}
+</style>
 {% endblock %}
 
 {% block title %}

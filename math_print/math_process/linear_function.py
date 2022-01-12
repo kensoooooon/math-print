@@ -7,16 +7,21 @@ class LinearFunctionProblem:
     
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
-        self._used_number_type_list = settings["number_to_use"]
-        self._given_information = settings["given_information"]
-        if self._given_information == "slope_and_one_point":
-            self.latex_answer, self.latex_problem = self._make_slope_and_one_point_problem()
-        elif self._given_information == "two_points":
-            self.latex_answer, self.latex_problem = self._make_two_points_problem()
-        elif self._given_information == "one_point_and_parallel_line":
-            self.latex_answer, self.latex_problem = self._make_one_point_and_parallel_line_problem()
-        elif self._given_information == "mixed":
-            self.latex_answer, self.latex_problem = self._choice_random_problem()
+        self._used_number_type_list = settings["number_to_use_list"]
+        self._given_information_list = settings["given_information_list"]
+        self.latex_answer, self.latex_problem = self._make_problem()
+    
+    def _make_problem(self):
+        selected_given_information = choice(self._given_information_list)
+        
+        if selected_given_information == "slope_and_one_point":
+            latex_answer, latex_problem = self._make_slope_and_one_point_problem()
+        elif selected_given_information == "two_points":
+            latex_answer, latex_problem = self._make_two_points_problem()
+        elif selected_given_information == "one_point_and_parallel_line":
+            latex_answer, latex_problem = self._make_one_point_and_parallel_line_problem()
+        
+        return latex_answer, latex_problem
     
     def _make_slope_and_one_point_problem(self):
         a_checker = choice(self._used_number_type_list)
@@ -185,16 +190,6 @@ class LinearFunctionProblem:
         latex_problem = f"点\( \\left({x1_latex}, {y1_latex}\\right) \)を通り、直線\({parallel_line_latex}\)に平行"
         
         return latex_answer, latex_problem
-
-    def _choice_random_problem(self):
-        chosen_problem_type = choice(["two_points", "one_point_and_parallel_line", "slope_and_one_point"])
-        
-        if chosen_problem_type == "two_points":
-            return self._make_two_points_problem()
-        elif chosen_problem_type == "one_point_and_parallel_line":
-            return self._make_one_point_and_parallel_line_problem()
-        elif chosen_problem_type == "slope_and_one_point":
-            return self._make_slope_and_one_point_problem()
         
     def _make_random_frac_number(self, max_num, min_num):
         checker = random()

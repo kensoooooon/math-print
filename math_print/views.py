@@ -259,8 +259,8 @@ def print_proportional_expression(request):
 def print_linear_function(request):
     PROBLEM_NUMBER = 20
     
-    number_to_use = request.POST.getlist("number_to_use")
-    given_information = request.POST["given_information"]
+    number_to_use_list = request.POST.getlist("number_to_use")
+    given_information_list = request.POST.getlist("given_information")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -268,10 +268,10 @@ def print_linear_function(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = LinearFunctionProblem(
-                number_to_use=number_to_use, given_information=given_information
+                number_to_use_list=number_to_use_list, given_information_list=given_information_list
             )
             problem2 = LinearFunctionProblem(
-                number_to_use=number_to_use, given_information=given_information
+                number_to_use_list=number_to_use_list, given_information_list=given_information_list
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -552,21 +552,21 @@ def display_proportional_expression(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool2/linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/proportional_expression/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_linear_function(request):
     PROBLEM_NUMBER = 20
     
-    number_to_use = request.POST.getlist("number_to_use")
-    given_information = request.POST["given_information"]
+    number_to_use_list = request.POST.getlist("number_to_use")
+    given_information_list = request.POST.getlist("given_information")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = LinearFunctionProblem(
-            number_to_use=number_to_use, given_information=given_information
+            number_to_use_list=number_to_use_list, given_information_list=given_information_list
         )
         problem2 = LinearFunctionProblem(
-            number_to_use=number_to_use, given_information=given_information
+            number_to_use_list=number_to_use_list, given_information_list=given_information_list
         )
         math_problem_tuple_list.append((problem1, problem2))
     

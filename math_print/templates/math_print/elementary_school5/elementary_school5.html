@@ -24,6 +24,26 @@
             }
         }
     }
+
+    function changeStatusOfFractionCalculateType(){
+        let fraction_calculate_types = document.getElementsByName('fraction_calculate_type');
+
+        for (let i = 0; i < fraction_calculate_types.length; i++){
+            if (!(fraction_types[i].checked)){
+                fraction_types[i].checked = true;
+            }
+        }
+    }
+
+    function changeStatusOfFrationTypeForCalculate(){
+        let fraction_types_for_calculate = document.getElementsByName(`fraction_type_for_calculate`);
+        
+        for (let i = 0; i < fraction_calculate_types.length; i++){
+            if (!(fraction_types_for_calculate[i].checked)){
+                fraction_types_for_calculate[i].checked = true;
+            }
+        }
+    }
 </script>
 {% endblock %}
 
@@ -138,6 +158,114 @@
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'conversion_between_frac_and_decimal_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'conversion_between_frac_and_decimal_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>小数の計算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="plus" name="fraction_calculate_type" id="fraction_calculate_plus_check" checked>
+                        <label class="form-check-label" for="calculate_fraction_plus_check">
+                            足し算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="minus" name="fraction_calculate_type" id="fraction_calculate_minus_check">
+                        <label class="form-check-label" for="calculate_fraction_minus_check">
+                            引き算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="times" name="fraction_calculate_type" id="fraction_calculate_times_check">
+                        <label class="form-check-label" for="fraction_calculate_times_check">
+                            かけ算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="division" name="fraction_calculate_type" id="fraction_division_check">
+                        <label class="form-check-label" for="fraction_calculate_division_check">
+                            割り算
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFractionCalculateType()" value="全部のせ">
+                </div>
+                <small class="text-muted">登場する分数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="proper_fraction" name="fraction_type_for_calculate" id="proper_fraction_for_calculate" checked>
+                        <label class="form-check-label" for="proper_fraction_for_calculate">
+                            真分数(分子が分母を超えない)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="improper_fraction" name="fraction_type_for_calculate" id="improper_fraction_for_calculate">
+                        <label class="form-check-label" for="improper_fraction_for_calculate">
+                            仮分数(分子が分母を超える)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="mixed_fraction" name="fraction_type_for_calculate" id="mixed_fraction_for_calculate">
+                        <label class="form-check-label" for="mixed_fraction_for_calculate">
+                            帯分数(横に数がくっついてくる)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationTypeForCalculate()" value="全部のせ">
+                </div>
+                <small class="text-muted">項数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="2" name="term_number_for_fraction_calculate" id="two_terms_for_fraction_calculate">
+                        <label class="form-check-label" for="two_terms_for_fraciton_caclculate">
+                            2項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="3" name="term_number_for_fraction_calculate" id="three_terms_sfor_fraction_calculate" checked>
+                        <label class="form-check-label" for="three_terms_for_fraction_calculate">
+                            3項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="4" name="term_number_for_fraction_calculate" id="four_terms_for_fraction_calculate">
+                        <label class="form-check-label" for="four_terms_for_fraciton_caclculate">
+                            4項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="term_number_for_fraction_calculate" id="five_terms_for_fraction_calculate">
+                        <label class="form-check-label" for="five_terms_for_fraciton_caclculate">
+                            4項
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="ConversionFivePaperRadio" checked>
+                        <label class="form-check-label" for="ConversionivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="ConversionTenPaperRadio">
+                        <label class="form-check-label" for="ConversionTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="ConversionFifteenPaperRadio">
+                        <label class="form-check-label" for="ConversionFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'fraction_calculate_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'fraction_calculate_display' %}">      
             </form>
         </div>
     </div>

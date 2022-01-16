@@ -40,7 +40,7 @@
 {% block body %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>正負混合四則演算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -144,7 +144,7 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'number_display' %}">
             </form>
         </div>
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>文字計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -262,7 +262,7 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'character_display' %}">
             </form>
         </div>
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>累乗の計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -349,7 +349,7 @@
     </div>
     <br>
     <div class="row">
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>1次方程式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -441,7 +441,7 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'linear_equation_display' %}">      
             </form>
         </div>
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>形が決まった1次方程式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -538,7 +538,7 @@
     </div>
     <br>
     <div class = "row">
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>比例の式を求める</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

@@ -30,7 +30,7 @@
 {% block body %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>連立方程式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -95,7 +95,7 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'simultaneous_equation_display' %}">      
             </form>
         </div>
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>文字計算</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -214,7 +214,7 @@
                 </form>
         </div>
         <div class="row">
-            <div class="col">
+            <div class="col border-end border-bottom">
                 <p>1次関数を求める</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}

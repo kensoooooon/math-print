@@ -1,7 +1,7 @@
 {% extends 'math_print/base.html' %}
 
 {% block title %}
-計算練習(小6)
+計算練習(小5)
 {% endblock %}
 
 {% block hero_unit %}
@@ -29,8 +29,8 @@
         let fraction_calculate_types = document.getElementsByName('fraction_calculate_type');
 
         for (let i = 0; i < fraction_calculate_types.length; i++){
-            if (!(fraction_types[i].checked)){
-                fraction_types[i].checked = true;
+            if (!(fraction_calculate_types[i].checked)){
+                fraction_calculate_types[i].checked = true;
             }
         }
     }
@@ -38,7 +38,7 @@
     function changeStatusOfFrationTypeForCalculate(){
         let fraction_types_for_calculate = document.getElementsByName(`fraction_type_for_calculate`);
         
-        for (let i = 0; i < fraction_calculate_types.length; i++){
+        for (let i = 0; i < fraction_types_for_calculate.length; i++){
             if (!(fraction_types_for_calculate[i].checked)){
                 fraction_types_for_calculate[i].checked = true;
             }
@@ -50,7 +50,7 @@
 {% block body %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>約分</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -101,7 +101,7 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'reduction_display' %}">      
             </form>
         </div>
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>小数と分数の相互変換</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -162,7 +162,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col border-end border-bottom">
             <p>小数の計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -170,13 +170,13 @@
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="plus" name="fraction_calculate_type" id="fraction_calculate_plus_check" checked>
-                        <label class="form-check-label" for="calculate_fraction_plus_check">
+                        <label class="form-check-label" for="fraction_calculate_plus_check">
                             足し算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="minus" name="fraction_calculate_type" id="fraction_calculate_minus_check">
-                        <label class="form-check-label" for="calculate_fraction_minus_check">
+                        <label class="form-check-label" for="fraction_calculate_minus_check">
                             引き算
                         </label>
                     </div>
@@ -187,7 +187,7 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="division" name="fraction_calculate_type" id="fraction_division_check">
+                        <input class="form-check-input" type="checkbox" value="division" name="fraction_calculate_type" id="fraction_calculate_division_check">
                         <label class="form-check-label" for="fraction_calculate_division_check">
                             割り算
                         </label>
@@ -219,27 +219,27 @@
                 <small class="text-muted">項数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="2" name="term_number_for_fraction_calculate" id="two_terms_for_fraction_calculate">
-                        <label class="form-check-label" for="two_terms_for_fraciton_caclculate">
+                        <input class="form-check-input" type="radio" value="2" name="term_number_for_fraction_calculate" id="two_terms_for_fraction_calculate" checked>
+                        <label class="form-check-label" for="two_terms_for_fraction_calculate">
                             2項
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="3" name="term_number_for_fraction_calculate" id="three_terms_sfor_fraction_calculate" checked>
+                        <input class="form-check-input" type="radio" value="3" name="term_number_for_fraction_calculate" id="three_terms_for_fraction_calculate">
                         <label class="form-check-label" for="three_terms_for_fraction_calculate">
                             3項
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="4" name="term_number_for_fraction_calculate" id="four_terms_for_fraction_calculate">
-                        <label class="form-check-label" for="four_terms_for_fraciton_caclculate">
+                        <label class="form-check-label" for="four_terms_for_fraction_calculate">
                             4項
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="term_number_for_fraction_calculate" id="five_terms_for_fraction_calculate">
-                        <label class="form-check-label" for="five_terms_for_fraciton_caclculate">
-                            4項
+                        <label class="form-check-label" for="five_terms_for_fraction_calculate">
+                            5項
                         </label>
                     </div>
                 </div>

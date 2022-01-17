@@ -16,6 +16,7 @@ from .math_process.completing_the_square import CompletingTheSquareProblem
 from .math_process.reduction import ReductionProblem
 from .math_process.conversion_between_frac_and_decimal import ConversionBetweenFracAndDecimalProblem
 from .math_process.quadratic_function import QuadraticFunctionProblem
+from .math_process.fraction_calculate import FractionCalculateProblem
 
 
 # Create your views here.
@@ -369,6 +370,53 @@ def print_quadratic_function(request):
     
     return render(request, 'math_print/junior_highschool3/quadratic_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_fraction_calculate_problem(request):
+    PROBLEM_NUMBER = 20
+
+    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
+    if min_number_to_denominator >= max_number_to_denominator:
+        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+
+    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
+    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
+    if min_number_to_numerator >= max_number_to_numerator:
+        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+
+    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
+    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
+    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
+        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
+    
+    calculate_type_list = request.POST.getlist("fraction_calculate_type")
+    fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
+    term_number = int(request.POST["term_number_for_fraction_calculate"])
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = FractionCalculateProblem(
+                calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
+                term_number=term_number,
+                min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+                min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+                min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
+            )
+            problem2 = FractionCalculateProblem(
+                calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
+                term_number=term_number,
+                min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+                min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+                min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school5/fraction_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -647,4 +695,46 @@ def display_quadratic_function(request):
     
     return render(request, 'math_print/junior_highschool3/quadratic_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
         
+def display_fraction_calculate_problem(request):
+    PROBLEM_NUMBER = 20
     
+    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
+    if min_number_to_denominator > max_number_to_denominator:
+        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+
+    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
+    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
+    if min_number_to_numerator > max_number_to_numerator:
+        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+    
+    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
+    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
+    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
+        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
+
+    
+    calculate_type_list = request.POST.getlist("fraction_calculate_type")
+    fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
+    term_number = int(request.POST["term_number_for_fraction_calculate"])
+
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = FractionCalculateProblem(
+            calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
+            term_number=term_number,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
+        )
+        problem2 = FractionCalculateProblem(
+            calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
+            term_number=term_number,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+
+    return render(request, 'math_print/elementary_school5/fraction_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

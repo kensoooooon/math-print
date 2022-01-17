@@ -372,6 +372,21 @@ def print_quadratic_function(request):
 
 def print_fraction_calculate_problem(request):
     PROBLEM_NUMBER = 20
+
+    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
+    if min_number_to_denominator >= max_number_to_denominator:
+        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+
+    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
+    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
+    if min_number_to_numerator >= max_number_to_numerator:
+        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+
+    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
+    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
+    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
+        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
     
     calculate_type_list = request.POST.getlist("fraction_calculate_type")
     fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
@@ -384,11 +399,17 @@ def print_fraction_calculate_problem(request):
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = FractionCalculateProblem(
                 calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
-                term_number=term_number
+                term_number=term_number,
+                min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+                min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+                min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
             )
             problem2 = FractionCalculateProblem(
                 calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
-                term_number=term_number
+                term_number=term_number,
+                min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+                min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+                min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -677,6 +698,22 @@ def display_quadratic_function(request):
 def display_fraction_calculate_problem(request):
     PROBLEM_NUMBER = 20
     
+    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
+    if min_number_to_denominator > max_number_to_denominator:
+        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+
+    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
+    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
+    if min_number_to_numerator > max_number_to_numerator:
+        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+    
+    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
+    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
+    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
+        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
+
+    
     calculate_type_list = request.POST.getlist("fraction_calculate_type")
     fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
     term_number = int(request.POST["term_number_for_fraction_calculate"])
@@ -686,11 +723,17 @@ def display_fraction_calculate_problem(request):
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = FractionCalculateProblem(
             calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
-            term_number=term_number
+            term_number=term_number,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
         )
         problem2 = FractionCalculateProblem(
             calculate_type_list=calculate_type_list, fraction_type_list=fraction_type_list,
-            term_number=term_number
+            term_number=term_number,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac
         )
         math_problem_tuple_list.append((problem1, problem2))
 

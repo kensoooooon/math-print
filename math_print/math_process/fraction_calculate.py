@@ -8,7 +8,14 @@ class FractionCalculateProblem:
         self._calculate_types_list = settings["calculate_type_list"]
         self._fraction_type_list = settings["fraction_type_list"]
         self._term_number = settings["term_number"]
+        self._min_number_to_denominator = settings["min_number_to_denominator"]
+        self._max_number_to_denominator = settings["max_number_to_denominator"]
+        self._min_number_to_numerator = settings["min_number_to_numerator"]
+        self._max_number_to_numerator = settings["max_number_to_numerator"]
+        self._min_number_on_the_left_of_frac = settings["min_number_on_the_left_of_frac"]
+        self._max_number_on_the_left_of_frac = settings["max_number_on_the_left_of_frac"]
         self.latex_answer, self.latex_problem = self._make_problem()
+        
     
     def _make_problem(self):
         while True:
@@ -18,24 +25,43 @@ class FractionCalculateProblem:
             selected_fraction_type = choice(self._fraction_type_list)
             
             if selected_fraction_type == "proper_fraction":
-                denominator = self._make_random_positive_integer(15, 2)
-                numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
+                denominator = self._make_random_positive_integer(self._max_number_to_denominator, self._min_number_to_denominator)
+                if denominator == 1:
+                    numerator = 1
+                else:
+                    numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
                 first_frac = sy.Rational(numerator, denominator)
-                latex_problem += f"\\frac{{ {numerator} }}{{ {denominator} }}"
+                if first_frac.denominator == 1:
+                    latex_problem += f"{first_frac.numerator}"
+                else:
+                    latex_problem += f"\\frac{{ {numerator} }}{{ {denominator} }}"
                 string_for_eval += f"sy.Rational({first_frac.numerator}, {first_frac.denominator})"
+
             elif selected_fraction_type == "improper_fraction":
-                denominator = self._make_random_positive_integer(15, 2)
-                numerator = self._make_random_positive_integer(30, 2)
+                denominator = self._make_random_positive_integer(self._max_number_to_denominator, self._min_number_to_denominator)
+                numerator = self._make_random_positive_integer(self._max_number_to_numerator, self._min_number_to_numerator)
                 first_frac = sy.Rational(numerator, denominator)
-                latex_problem += f"\\frac{{ {numerator} }}{{ {denominator} }}"
+                if first_frac.denominator == 1:
+                    latex_problem += f"{first_frac.numerator}"
+                else:
+                    latex_problem += f"\\frac{{ {numerator} }}{{ {denominator} }}"
                 string_for_eval = f"sy.Rational({first_frac.numerator}, {first_frac.denominator})"
+            
             elif selected_fraction_type == "mixed_fraction":
-                number_on_the_left_side_of_frac = self._make_random_positive_integer(6, 2)
-                denominator = self._make_random_positive_integer(15, 2)
-                numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
+                number_on_the_left_side_of_frac = self._make_random_positive_integer(self._max_number_on_the_left_of_frac, self._min_number_on_the_left_of_frac)
+                denominator = self._make_random_positive_integer(self._max_number_to_denominator, self._min_number_to_denominator)
+                if denominator == 1:
+                    numerator = 1
+                else:
+                    numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
+                
                 first_frac = number_on_the_left_side_of_frac + sy.Rational(numerator, denominator)
-                latex_problem += f"{number_on_the_left_side_of_frac} \\frac{{{numerator}}}{{{denominator}}}"
+                if first_frac.denominator == 1:
+                    latex_problem += f"{first_frac.numerator}"
+                else:
+                    latex_problem += f"{number_on_the_left_side_of_frac} \\frac{{{numerator}}}{{{denominator}}}"
                 string_for_eval += f"sy.Rational({first_frac.numerator}, {first_frac.denominator})"
+
             else:
                 raise ValueError(f"selected_fraction_type: {selected_fraction_type}. It may be wrong.")
             
@@ -59,30 +85,45 @@ class FractionCalculateProblem:
                 
                 selected_fraction_type = choice(self._fraction_type_list)
                 if selected_fraction_type == "proper_fraction":
-                    denominator = self._make_random_positive_integer(15, 2)
-                    numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
+                    denominator = self._make_random_positive_integer(self._max_number_to_denominator, self._min_number_to_denominator)
+                    if denominator == 1:
+                        numerator = 1
+                    else:
+                        numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
                     frac = sy.Rational(numerator, denominator)
-                    latex_problem += f"{operator_for_latex} \\frac{{{frac.numerator}}}{{{frac.denominator}}}"
+                    if frac.denominator == 1:
+                        latex_problem += f"{operator_for_latex} {frac.numerator}"
+                    else: 
+                        latex_problem += f"{operator_for_latex} \\frac{{{frac.numerator}}}{{{frac.denominator}}}"
                     string_for_eval += f"{operator_for_eval} sy.Rational({frac.numerator}, {frac.denominator})"
+
                 elif selected_fraction_type == "improper_fraction":
-                    denominator = self._make_random_positive_integer(15, 2)
-                    numerator = self._make_random_positive_integer(30, 2)
+                    denominator = self._make_random_positive_integer(self._max_number_to_denominator, self._min_number_to_denominator)
+                    numerator = self._make_random_positive_integer(self._max_number_to_numerator, self._max_number_to_numerator)
                     frac = sy.Rational(numerator, denominator)
-                    latex_problem += f"{operator_for_latex} \\frac{{{frac.numerator}}}{{{frac.denominator}}}"
+                    if frac.denominator == 1:
+                        latex_problem += f"{operator_for_latex} {frac.numerator}"
+                    else:
+                        latex_problem += f"{operator_for_latex} \\frac{{{frac.numerator}}}{{{frac.denominator}}}"
                     string_for_eval += f"{operator_for_eval} sy.Rational({frac.numerator}, {frac.denominator})"
+
                 elif selected_fraction_type == "mixed_fraction":
-                    number_on_the_left_side_of_frac = self._make_random_positive_integer(6, 2)
-                    denominator = self._make_random_positive_integer(15, 2)
-                    numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
+                    number_on_the_left_side_of_frac = self._make_random_positive_integer(self._max_number_on_the_left_of_frac, self._min_number_on_the_left_of_frac)
+                    denominator = self._make_random_positive_integer(self._max_number_to_denominator, self._min_number_to_denominator)
+                    if denominator == 1:
+                        numerator = 1
+                    else:
+                        numerator = denominator - self._make_random_positive_integer(denominator-1, 1)
                     frac = number_on_the_left_side_of_frac + sy.Rational(numerator, denominator)
-                    latex_problem += f"{operator_for_latex} {number_on_the_left_side_of_frac} \\frac{{{numerator}}}{{{denominator}}}"
+                    if frac.denominator == 1:
+                        latex_problem += f"{operator_for_latex} {frac.numerator}"
+                    else:
+                        latex_problem += f"{operator_for_latex} {number_on_the_left_side_of_frac} \\frac{{{numerator}}}{{{denominator}}}"
                     string_for_eval += f"{operator_for_eval} sy.Rational({frac.numerator}, {frac.denominator})"
                 else:
                     raise ValueError(f"selected_fraction_type: {selected_fraction_type}. It may be wrong.")
             
-            print(f"string_for_eval {string_for_eval}")
             answer = eval(string_for_eval)
-            print(f"answer: {answer}")
             if answer >= 0:
                 break
 

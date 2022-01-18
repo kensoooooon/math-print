@@ -306,16 +306,44 @@ def print_reduction_problem(request):
     
     fraction_type_list = request.POST.getlist("fraction_type")
     paper_number = int(request.POST["paper_number"])
+
+    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
+    if min_number_to_denominator > max_number_to_denominator:
+        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+
+    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
+    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
+    if min_number_to_numerator > max_number_to_numerator:
+        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+    
+    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
+    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
+    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
+        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
+    
+    min_number_to_reduction = int(request.POST["min_number_to_reduction"])
+    max_number_to_reduction = int(request.POST["max_number_to_reduction"])
+    if min_number_to_reduction > max_number_to_reduction:
+        min_number_to_reduction, max_number_to_reduction = max_number_to_reduction, min_number_to_reduction
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = ReductionProblem(
-                fraction_type_list=fraction_type_list
+                fraction_type_list=fraction_type_list,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac,
+            min_number_to_reduction=min_number_to_reduction, max_number_to_reduction=max_number_to_reduction
             )
             problem2 = ReductionProblem(
-                fraction_type_list=fraction_type_list
+                fraction_type_list=fraction_type_list,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac,
+            min_number_to_reduction=min_number_to_reduction, max_number_to_reduction=max_number_to_reduction
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -642,14 +670,42 @@ def display_reduction_problem(request):
     PROBLEM_NUMBER = 20
     
     fraction_type_list = request.POST.getlist("fraction_type")
+    
+    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
+    if min_number_to_denominator > max_number_to_denominator:
+        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+
+    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
+    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
+    if min_number_to_numerator > max_number_to_numerator:
+        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+    
+    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
+    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
+    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
+        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
+
+    min_number_to_reduction = int(request.POST["min_number_to_reduction"])
+    max_number_to_reduction = int(request.POST["max_number_to_reduction"])
+    if min_number_to_reduction > max_number_to_reduction:
+        min_number_to_reduction, max_number_to_reduction = max_number_to_reduction, min_number_to_reduction
 
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = ReductionProblem(
-            fraction_type_list=fraction_type_list
+            fraction_type_list=fraction_type_list,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac,
+            min_number_to_reduction=min_number_to_reduction, max_number_to_reduction=max_number_to_reduction
         )
         problem2 = ReductionProblem(
-            fraction_type_list=fraction_type_list
+            fraction_type_list=fraction_type_list,
+            min_number_to_denominator=min_number_to_denominator, max_number_to_denominator=max_number_to_denominator,
+            min_number_to_numerator=min_number_to_numerator, max_number_to_numerator=max_number_to_numerator,
+            min_number_on_the_left_of_frac=min_number_on_the_left_of_frac, max_number_on_the_left_of_frac=max_number_on_the_left_of_frac,
+            min_number_to_reduction=min_number_to_reduction, max_number_to_reduction=max_number_to_reduction
         )
         math_problem_tuple_list.append((problem1, problem2))
     

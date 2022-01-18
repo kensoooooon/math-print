@@ -76,6 +76,62 @@
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationType()" value="全部のせ">
                 </div>
+                <small class="text-muted">答えの分母に登場する数の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="number" name="min_number_to_denominator" value="2" min="1" max="100">
+                            </div>
+                            ~
+                            <div class="col">
+                                <input class="form-control" type="number" name="max_number_to_denominator" value="6" min="1" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">答えの分子に登場する数の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="number" name="min_number_to_numerator" value="2" min="1" max="100">
+                            </div>
+                            ~
+                            <div class="col">
+                                <input class="form-control" type="number" name="max_number_to_numerator" value="6" min="1" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">答えの帯分数の横に登場する数の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="number" name="min_number_on_the_left_of_frac" value="2" min="1" max="100">
+                            </div>
+                            ~
+                            <div class="col">
+                                <input class="form-control" type="number" name="max_number_on_the_left_of_frac" value="6" min="1" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">約分で割るときに使う数の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="number" name="min_number_to_reduction" value="2" min="2" max="100">
+                            </div>
+                            ~
+                            <div class="col">
+                                <input class="form-control" type="number" name="max_number_to_reduction" value="6" min="2" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
@@ -161,6 +217,7 @@
             </form>
         </div>
     </div>
+    <br>
     <div class="row">
         <div class="col border-end border-bottom">
             <p>分数の計算</p>

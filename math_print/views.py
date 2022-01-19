@@ -17,6 +17,7 @@ from .math_process.reduction import ReductionProblem
 from .math_process.conversion_between_frac_and_decimal import ConversionBetweenFracAndDecimalProblem
 from .math_process.quadratic_function import QuadraticFunctionProblem
 from .math_process.fraction_calculate import FractionCalculateProblem
+from .math_process.number_without_bracket_calculate import NumberWithoutBracketCalculateProblem
 
 
 # Create your views here.
@@ -443,6 +444,31 @@ def print_fraction_calculate_problem(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/elementary_school5/fraction_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_number_without_bracket_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    operator_to_use_list = request.POST.getlist("operator_to_use")
+    number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
+    term_number = int(request.POST["term_number"])
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = NumberWithoutBracketCalculateProblem(
+                operator_to_use_list=operator_to_use_list, number_to_use_list=number_to_use_list,
+                term_number=term_number
+            )
+            problem2 = NumberWithoutBracketCalculateProblem(
+                operator_to_use_list=operator_to_use_list, number_to_use_list=number_to_use_list,
+                term_number=term_number
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/junior_highschool1/number/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     
 
 def display_number_problem(request):
@@ -794,3 +820,25 @@ def display_fraction_calculate_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
 
     return render(request, 'math_print/elementary_school5/fraction_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_number_without_bracket_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    operator_to_use_list = request.POST.getlist("operator_to_use")
+    number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
+    term_number = int(request.POST["term_number"])
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = NumberWithoutBracketCalculateProblem(
+            term_number=term_number, operator_to_use_list=operator_to_use_list,
+            number_to_use_list=number_to_use_list
+        )
+        problem2 = NumberWithoutBracketCalculateProblem(
+            term_number=term_number, operator_to_use_list=operator_to_use_list,
+            number_to_use_list=number_to_use_list
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool1/number/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    

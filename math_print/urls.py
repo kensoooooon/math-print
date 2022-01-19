@@ -14,15 +14,18 @@ urlpatterns = [
     ### 小数と分数の変換 ###
     path('conversion_between_frac_and_decimal/print/', views.print_conversion_between_frac_and_decimal_problem, name='conversion_between_frac_and_decimal_print'),
     path('conversion_between_frac_and_decimal/display/', views.display_conversion_between_frac_and_decimal_problem, name='conversion_between_frac_and_decimal_display'),
-    ##########################################
     ### 分数の計算 ###
     path('fraction_calculate/print/', views.print_fraction_calculate_problem, name='fraction_calculate_print'),
     path('fraction_calculate/display', views.display_fraction_calculate_problem, name='fraction_calculate_display'),
+    ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),
     # 数の計算
     path('number/print/', views.print_number_problem, name='number_print'),
     path('number/display/', views.display_number_problem, name="number_display"),
+    # カッコなしの数の計算
+    path('number_without_bracket/print/', views.print_number_without_bracket_problem, name='number_without_bracket_print'),
+    path('number_without_bracket/display/', views.display_number_without_bracket_problem, name='number_without_bracket_display'),
     # 文字の計算
     path('character/print/', views.print_character_problem, name="character_print"),
     path('character/display', views.display_character_problem, name="character_display"),

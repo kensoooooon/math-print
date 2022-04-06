@@ -1,3 +1,16 @@
+"""
+Fixing
+4/1
+------
+数の範囲を入力する際に、数字が誤って消されてしまうと、(おそらく)ValueErrorを吐いてしまうことの修正
+->分数計算のなかでも約分と計算で発生する模様
+おそらく原因は、
+min_number_to_denominator = int(request.POST["min_number_to_denominator"])
+でnoneやそれに準じるなにかをintで読み込もうとしている点っぽい
+→int の前に、if is not Noneをはさむことで解決するとおもわれ
+"""
+import unicodedata
+
 from django.http import HttpResponse
 from django.shortcuts import render
 from sympy.geometry import line
@@ -303,30 +316,49 @@ def print_power_calculate(request):
     return render(request, "math_print/junior_highschool1/power/for_print.html", {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_reduction_problem(request):
+
+    def decide_max_and_min_number(max_number_in_post, min_number_in_post):
+        """POSTから送られた計算の設定に用いる数字の最大値最小値を処理
+
+        Args:
+            max_number_in_post (str): POSTに格納されている最大値。空欄の可能性あり
+            min_number_in_post (str): POSTに格納されている最小値。空欄の可能性あり 
+
+        Returns:
+            max_number (int): 用いる最大値
+            min_number (int): 用いる最小値
+        Considering:
+            全角数字が入力された場合や、文字が入力された場合を想定するのであれば、処理させるのはここになる可能性がある
+        """
+        
+        if bool(max_number_in_post):
+            max_number = int(unicodedata.normalize("NFKD", max_number_in_post))
+        else:
+            max_number = 6
+        
+        if bool(min_number_in_post):
+            min_number = int(unicodedata.normalize("NFKD", min_number_in_post))
+        else:
+            min_number = 2
+            
+        if max_number < min_number:
+            max_number, min_number = min_number, max_number
+        
+        if max_number == 0:
+            max_number += 2
+        if min_number == 0:
+            min_number += 1
+
+        return max_number, min_number
+    
     PROBLEM_NUMBER = 20
-    
-    fraction_type_list = request.POST.getlist("fraction_type")
     paper_number = int(request.POST["paper_number"])
-
-    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
-    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
-    if min_number_to_denominator > max_number_to_denominator:
-        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
-
-    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
-    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
-    if min_number_to_numerator > max_number_to_numerator:
-        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+    fraction_type_list = request.POST.getlist("fraction_type")
     
-    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
-    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
-    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
-        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
-    
-    min_number_to_reduction = int(request.POST["min_number_to_reduction"])
-    max_number_to_reduction = int(request.POST["max_number_to_reduction"])
-    if min_number_to_reduction > max_number_to_reduction:
-        min_number_to_reduction, max_number_to_reduction = max_number_to_reduction, min_number_to_reduction
+    max_number_to_denominator, min_number_to_denominator = decide_max_and_min_number(request.POST["max_number_to_denominator"], request.POST["min_number_to_denominator"])
+    max_number_to_numerator, min_number_to_numerator = decide_max_and_min_number(request.POST["max_number_to_numerator"], request.POST["min_number_to_numerator"])
+    max_number_on_the_left_of_frac, min_number_on_the_left_of_frac = decide_max_and_min_number(request.POST["max_number_on_the_left_of_frac"], request.POST["min_number_on_the_left_of_frac"])
+    max_number_to_reduction, min_number_to_reduction = decide_max_and_min_number(request.POST["max_number_to_reduction"], request.POST["min_number_to_reduction"])
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -401,21 +433,46 @@ def print_quadratic_function(request):
 
 def print_fraction_calculate_problem(request):
     PROBLEM_NUMBER = 20
+    def decide_max_and_min_number(max_number_in_post, min_number_in_post):
+        """POSTから送られた計算の設定に用いる数字の最大値最小値を処理
 
-    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
-    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
-    if min_number_to_denominator >= max_number_to_denominator:
-        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
+        Args:
+            max_number_in_post (str): POSTに格納されている最大値。空欄の可能性あり
+            min_number_in_post (str): POSTに格納されている最小値。空欄の可能性あり 
 
-    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
-    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
-    if min_number_to_numerator >= max_number_to_numerator:
-        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
+        Returns:
+            max_number (int): 用いる最大値
+            min_number (int): 用いる最小値
+        Considering:
+            全角数字が入力された場合や、文字が入力された場合を想定するのであれば、処理させるのはここになる可能性がある
+        """
+        
+        if bool(max_number_in_post):
+            max_number = int(unicodedata.normalize("NFKD", max_number_in_post))
+        else:
+            max_number = 6
+        
+        if bool(min_number_in_post):
+            min_number = int(unicodedata.normalize("NFKD", min_number_in_post))
+        else:
+            min_number = 2
+            
+        if max_number < min_number:
+            max_number, min_number = min_number, max_number
+        
+        if max_number == 0:
+            max_number += 2
+        if min_number == 0:
+            min_number += 1
 
-    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
-    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
-    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
-        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
+        return max_number, min_number
+    
+    fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
+    PROBLEM_NUMBER = 20
+    
+    max_number_to_denominator, min_number_to_denominator = decide_max_and_min_number(request.POST["max_number_to_denominator"], request.POST["min_number_to_denominator"])
+    max_number_to_numerator, min_number_to_numerator = decide_max_and_min_number(request.POST["max_number_to_numerator"], request.POST["min_number_to_numerator"])
+    max_number_on_the_left_of_frac, min_number_on_the_left_of_frac = decide_max_and_min_number(request.POST["max_number_on_the_left_of_frac"], request.POST["min_number_on_the_left_of_frac"])
     
     calculate_type_list = request.POST.getlist("fraction_calculate_type")
     fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
@@ -695,27 +752,46 @@ def display_power_calculate(request):
 def display_reduction_problem(request):
     PROBLEM_NUMBER = 20
     
+    def decide_max_and_min_number(max_number_in_post, min_number_in_post):
+        """POSTから送られた計算の設定に用いる数字の最大値最小値を処理
+
+        Args:
+            max_number_in_post (str): POSTに格納されている最大値。空欄の可能性あり
+            min_number_in_post (str): POSTに格納されている最小値。空欄の可能性あり 
+
+        Returns:
+            max_number (int): 用いる最大値
+            min_number (int): 用いる最小値
+        Considering:
+            全角数字が入力された場合や、文字が入力された場合を想定するのであれば、処理させるのはここになる可能性がある
+        """
+        
+        if bool(max_number_in_post):
+            max_number = int(unicodedata.normalize("NFKD", max_number_in_post))
+        else:
+            max_number = 6
+        
+        if bool(min_number_in_post):
+            min_number = int(unicodedata.normalize("NFKD", min_number_in_post))
+        else:
+            min_number = 2
+            
+        if max_number < min_number:
+            max_number, min_number = min_number, max_number
+        
+        if max_number == 0:
+            max_number += 2
+        if min_number == 0:
+            min_number += 1
+
+        return max_number, min_number
+
+    max_number_to_denominator, min_number_to_denominator = decide_max_and_min_number(request.POST["max_number_to_denominator"], request.POST["min_number_to_denominator"])
+    max_number_to_numerator, min_number_to_numerator = decide_max_and_min_number(request.POST["max_number_to_numerator"], request.POST["min_number_to_numerator"])
+    max_number_on_the_left_of_frac, min_number_on_the_left_of_frac = decide_max_and_min_number(request.POST["max_number_on_the_left_of_frac"], request.POST["min_number_on_the_left_of_frac"])
+    max_number_to_reduction, min_number_to_reduction = decide_max_and_min_number(request.POST["max_number_to_reduction"], request.POST["min_number_to_reduction"])
+
     fraction_type_list = request.POST.getlist("fraction_type")
-    
-    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
-    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
-    if min_number_to_denominator > max_number_to_denominator:
-        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
-
-    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
-    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
-    if min_number_to_numerator > max_number_to_numerator:
-        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
-    
-    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
-    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
-    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
-        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
-
-    min_number_to_reduction = int(request.POST["min_number_to_reduction"])
-    max_number_to_reduction = int(request.POST["max_number_to_reduction"])
-    if min_number_to_reduction > max_number_to_reduction:
-        min_number_to_reduction, max_number_to_reduction = max_number_to_reduction, min_number_to_reduction
 
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
@@ -778,29 +854,51 @@ def display_quadratic_function(request):
     return render(request, 'math_print/junior_highschool3/quadratic_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
         
 def display_fraction_calculate_problem(request):
+    
+    def decide_max_and_min_number(max_number_in_post, min_number_in_post):
+        """POSTから送られた計算の設定に用いる数字の最大値最小値を処理
+
+        Args:
+            max_number_in_post (str): POSTに格納されている最大値。空欄の可能性あり
+            min_number_in_post (str): POSTに格納されている最小値。空欄の可能性あり 
+
+        Returns:
+            max_number (int): 用いる最大値
+            min_number (int): 用いる最小値
+        Considering:
+            全角数字が入力された場合や、文字が入力された場合を想定するのであれば、処理させるのはここになる可能性がある
+        """
+        
+        if bool(max_number_in_post):
+            max_number = int(unicodedata.normalize("NFKD", max_number_in_post))
+        else:
+            max_number = 6
+        
+        if bool(min_number_in_post):
+            min_number = int(unicodedata.normalize("NFKD", min_number_in_post))
+        else:
+            min_number = 2
+            
+        if max_number < min_number:
+            max_number, min_number = min_number, max_number
+        
+        if max_number == 0:
+            max_number += 2
+        if min_number == 0:
+            min_number += 1
+
+        return max_number, min_number
+    
+    fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
     PROBLEM_NUMBER = 20
     
-    min_number_to_denominator = int(request.POST["min_number_to_denominator"])
-    max_number_to_denominator = int(request.POST["max_number_to_denominator"])
-    if min_number_to_denominator > max_number_to_denominator:
-        min_number_to_denominator, max_number_to_denominator = max_number_to_denominator, min_number_to_denominator
-
-    min_number_to_numerator = int(request.POST["min_number_to_numerator"])
-    max_number_to_numerator = int(request.POST["max_number_to_numerator"])
-    if min_number_to_numerator > max_number_to_numerator:
-        min_number_to_numerator, max_number_to_numerator = max_number_to_numerator, min_number_to_numerator
-    
-    min_number_on_the_left_of_frac = int(request.POST["min_number_on_the_left_of_frac"])
-    max_number_on_the_left_of_frac = int(request.POST["max_number_on_the_left_of_frac"])
-    if min_number_on_the_left_of_frac > max_number_on_the_left_of_frac:
-        min_number_on_the_left_of_frac, max_number_on_the_left_of_frac = max_number_on_the_left_of_frac, min_number_on_the_left_of_frac
-
+    max_number_to_denominator, min_number_to_denominator = decide_max_and_min_number(request.POST["max_number_to_denominator"], request.POST["min_number_to_denominator"])
+    max_number_to_numerator, min_number_to_numerator = decide_max_and_min_number(request.POST["max_number_to_numerator"], request.POST["min_number_to_numerator"])
+    max_number_on_the_left_of_frac, min_number_on_the_left_of_frac = decide_max_and_min_number(request.POST["max_number_on_the_left_of_frac"], request.POST["min_number_on_the_left_of_frac"])
     
     calculate_type_list = request.POST.getlist("fraction_calculate_type")
-    fraction_type_list = request.POST.getlist("fraction_type_for_calculate")
     term_number = int(request.POST["term_number_for_fraction_calculate"])
 
-    
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = FractionCalculateProblem(

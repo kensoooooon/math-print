@@ -68,9 +68,9 @@ class FractionCalculateProblem:
                 latex_problem += f"{operator_for_latex} {latex_problem_to_add}"
                 string_for_eval += f"{operator_for_eval} {string_for_eval_to_add}"
             
-            print(f"string_for_eval: {string_for_eval}")
+            # print(f"string_for_eval: {string_for_eval}")
             answer = eval(string_for_eval)
-            print(f"answer: {answer}")
+            # print(f"answer: {answer}")
             if answer >= 0:
                 break
 

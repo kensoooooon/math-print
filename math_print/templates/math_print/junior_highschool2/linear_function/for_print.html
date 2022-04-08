@@ -36,9 +36,11 @@ function showAnswer(){
 </style>
 <style type="text/css" media="print">
     .print_pages{
-        /*A4縦*/
-        width: 220mm;
-        height: 240mm;
+        /*A4縦 172,251*/
+        width: 240mm;
+        height: 260mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
         page-break-after: always;
     }
     /*最後のページは改ページを入れない*/
@@ -106,6 +108,9 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <footer class="container-fluid print_footer">
+            <small><a href="#">© 2022 有明学習振興</a></small>
+        </footer>
     </section>
     <section class="print_pages">
         <ol>
@@ -136,6 +141,9 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <footer class="container-fluid print_footer">
+            <small><a href="#">© 2022 有明学習振興</a></small>
+        </footer>
     </section>
 {% endfor %}
 {% endblock %}

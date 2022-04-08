@@ -67,7 +67,7 @@ class CharacterMathProblem:
                 number = self._make_random_decimal_number(max_number, min_number, 10)
         
             operator_type_checker = choice(self._used_operator_type_list)
-            print(f"operator_type_checker: {operator_type_checker}")
+            # print(f"operator_type_checker: {operator_type_checker}")
             if operator_type_checker == "plus":
                 operator_for_latex = "+"
                 operator_for_eval = "+"
@@ -115,11 +115,11 @@ class CharacterMathProblem:
                 else:
                     latex_problem += f"{operator_for_latex} {term_latex}"
         
-        print(f"latex_string_for_eval: {latex_string_for_eval}")
+        # print(f"latex_string_for_eval: {latex_string_for_eval}")
         answer = eval(latex_string_for_eval)
-        print(f"answer: {answer}")
+        # print(f"answer: {answer}")
         expanded_answer = sy.expand(answer)
-        print(f"expanded_answer: {expanded_answer}")
+        # print(f"expanded_answer: {expanded_answer}")
         # collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
         latex_answer = f" = {sy.latex(expanded_answer)}"
      

@@ -124,19 +124,15 @@ def print_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
     
     result = request.POST
-    print(f"result: {result}")
+    # print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
+    # print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
+    # print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    print(f"term_number: {term_number} \n type: {type(term_number)}")
+    # print(f"term_number: {term_number} \n type: {type(term_number)}")
     paper_number = int(request.POST["paper_number"])
-    print(f"paper_number: {paper_number}")
-    """
-    character_to_use_list = ["x"]
-    print(f"character_to_use_list: {character_to_use_list} \n type: {type(character_to_use_list)}")
-    """
+    # print(f"paper_number: {paper_number}")
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
@@ -593,15 +589,15 @@ def display_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
     
     result = request.POST
-    print(f"result: {result}")
+    # print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
+    # print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
+    # print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    print(f"term_number: {term_number} \n type: {type(term_number)}")
+    # print(f"term_number: {term_number} \n type: {type(term_number)}")
     character_to_use_list = ["x"]
-    print(f"character_to_use_list: {character_to_use_list} \n type: {type(character_to_use_list)}")
+    # print(f"character_to_use_list: {character_to_use_list} \n type: {type(character_to_use_list)}")
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10

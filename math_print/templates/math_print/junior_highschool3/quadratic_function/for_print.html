@@ -35,18 +35,20 @@ function showAnswer(){
     }
 </style>
 <style type="text/css" media="print">
-.print_pages{
-    /*A4縦*/
-    width: 240mm;
-    height: 290mm;
-    page-break-after: always;
-}
-/*最後のページは改ページを入れない*/
-.print_pages:last-child{
-    page-break-after: auto;
-}
-.hero_unit, .base_footer, .button_container, .nav{
-    display: none;
+    .print_pages{
+        /*A4縦 172,251*/
+        width: 230mm;
+        height: 260mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav{
+        display: none;
 }
 </style>
 {% endblock %}
@@ -103,6 +105,9 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <footer class="container-fluid print_footer">
+            <small><a href="#">© 2022 有明学習振興</a></small>
+        </footer>
     </section>
     <section class="print_pages">
         <ol>
@@ -131,6 +136,9 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <footer class="container-fluid print_footer">
+            <small><a href="#">© 2022 有明学習振興</a></small>
+        </footer>
     </section>
 {% endfor %}
 {% endblock %}

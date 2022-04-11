@@ -41,6 +41,9 @@ urlpatterns = [
     # 累乗の計算
     path('power/print/', views.print_power_calculate, name='power_print'),
     path('power/display/', views.display_power_calculate, name='power_display'),
+    # おうぎ形
+    path('sector/print/', views.print_sector_problem, name='sector_print'),
+    path('sector/display/', views.display_sector_problem, name='sector_display'),
     ###########################################
     ### 中2 ###
     path('junior_highschool2/', views.show_junior_highschool2, name='junior_highschool2'),

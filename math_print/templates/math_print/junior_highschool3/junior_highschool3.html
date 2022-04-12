@@ -125,6 +125,94 @@
             </form>
         </div>
         <div class="col border-end border-bottom">
+            <p>因数分解</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">使用する公式</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="ax+ab=a(x+b)" name="factorization_type" id="ax+ab=a(x+b)" checked>
+                        <label class="form-check-label" for="ax+ab=a(x+b)">
+                            ax+ab=a(x+b)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="x^2+2ax+a^2=(x+a)^2" name="factorization_type" id="x^2+2ax+a^2=(x+a)^2" checked>
+                        <label class="form-check-label" for="x^2+2ax+a^2=(x+a)^2">
+                            x^2+2ax+a^2=(x+a)^2
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="x^2-2ax+a^2=(x-a)^2" name="factorization_type" id="x^2-2ax+a^2=(x-a)^2" checked>
+                        <label class="form-check-label" for="x^2-2ax+a^2=(x-a)^2">
+                            x^2-2ax+a^2=(x-a)^2
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="x^2+(a+b)x+ab=(x+a)(x+b)" name="factorization_type" id="x^2+(a+b)x+ab=(x+a)(x+b)" checked>
+                        <label class="form-check-label" for="x^2+(a+b)x+ab=(x+a)(x+b)">
+                            x^2+(a+b)x+ab=(x+a)(x+b)
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">登場する係数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="only_integer" name="coefficient_used_for_factorization" id="only_integer" checked>
+                        <label class="form-check-label" for="only_integer">
+                            整数のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="integer_and_frac" name="coefficient_used_for_factorization" id="integer_and_frac">
+                        <label class="form-check-label" for="integer_and_frac">
+                            整数・分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">印刷時の公式の表示</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="show_factorization_formula" name="show_formula" id="show_factorization_formula" checked>
+                        <label class="form-check-label" for="show_factorization_formula">
+                            表示する
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="not_show_factorization_formula" name="show_formula" id="not_show_facotrization_formula">
+                        <label class="form-check-label" for="not_show_factorization_formula"> 
+                            表示しない
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FactorizationFivePaperRadio" checked>
+                        <label class="form-check-label" for="FactorizationFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FactorizationTenPaperRadio">
+                        <label class="form-check-label" for="FactorizationTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FactorizationFifteenPaperRadio">
+                        <label class="form-check-label" for="FactorizationFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'factorization_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'factorization_display' %}">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p>2次関数や変化の割合を求める</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -211,7 +299,6 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'quadratic_function_display' %}">
             </form>
         </div>
-    </div>
     </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>

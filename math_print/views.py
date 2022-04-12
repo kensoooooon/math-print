@@ -549,7 +549,7 @@ def print_sector_problem(request):
     
     return render(request, 'math_print/junior_highschool1/sector/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list, 'is_show_formula': is_show_formula})
 
-def print_factorization_problem(request):
+def print_factorization(request):
     PROBLEM_NUMBER = 20
     
     factorization_type_list = request.POST.getlist("factorization_type")
@@ -1024,11 +1024,14 @@ def display_sector_problem(request):
     
     return render(request, 'math_print/junior_highschool1/sector/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
-def display_factorization_problem(request):
+def display_factorization(request):
     PROBLEM_NUMBER = 20
+    
+    print(f"request.POST: {request.POST}")
     
     factorization_type_list = request.POST.getlist("factorization_type")
     used_coefficient = request.POST["coefficient_used_for_factorization"]
+    print(f"used_coefficient: {used_coefficient}")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

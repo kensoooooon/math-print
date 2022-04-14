@@ -50,6 +50,9 @@ function showAnswer(){
     .hero_unit, .base_footer, .button_container, .nav{
         display: none;
     }
+    .formula {
+        text-align: center;
+    }
 </style>
 {% endblock %}
 
@@ -107,11 +110,17 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+        {% if used_formula_list %}
+            <div class="formula-box" style="border: solid blue">
+                {% for formula in used_formula_list %}
+                    <p class="formula text-center">{{formula}}</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <br>
+            <br>
+            <br>
+        {% endif %}
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>

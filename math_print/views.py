@@ -554,7 +554,7 @@ def print_factorization(request):
     
     factorization_type_list = request.POST.getlist("factorization_type")
     used_coefficient = request.POST["coefficient_used_for_factorization"]
-    paper_number = int(request.POST["paper_nubmer"])
+    paper_number = int(request.POST["paper_number"])
     
     used_formula_list = []
     if request.POST["show_formula"] == "show_factorization_formula":
@@ -597,7 +597,7 @@ def print_factorization(request):
     context["math_problem_list_of_list"] = math_problem_list_of_list
     context["used_formula_list"] = used_formula_list
 
-    return render(request, 'math_print/junior_highschool3/factorization/for_display.html', context)
+    return render(request, 'math_print/junior_highschool3/factorization/for_print.html', context)
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1054,4 +1054,4 @@ def display_factorization(request):
     context = {}
     context["math_problem_tuple_list"] = math_problem_tuple_list
     context["used_formula_list"] = used_formula_list
-    return render(request, 'math_print/junior_highschool3/factorization/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool3/factorization/for_display.html', context)

@@ -15,8 +15,10 @@
 
 <script>
 function showFormula(){
-    var formula = document.getElementById('formula');
-    formula.style.visibility = 'visible';
+    var formulas = document.getElementsByClassName('formula');
+    for(var i = 0; i < formulas.length; i++){
+        formulas[i].style.visibility = 'visible';
+    }
 }
 
 function showAnswer(){
@@ -86,7 +88,7 @@ function refresh() {
 
 {% if used_formula_list %}
     {% for formula in used_formula_list %}
-        <p class="formula" id="formula" style="visibility:hidden;">\( {{formula}} \)</p>
+        <p class="formula text-center" style="visibility:hidden;">{{formula}}</p>
     {% endfor %}
 {% else %}
     <br>

@@ -107,6 +107,16 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        {% if used_formula_list %}
+            {% for formula in used_formula_list %}
+                <p class="formula">\( {{formula}} \)</p>
+            {% endfor %}
+        {% else %}
+            <br>
+            <br>
+            <br>
+        {% endif %}
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>

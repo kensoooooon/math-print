@@ -1026,12 +1026,24 @@ def display_sector_problem(request):
 
 def display_factorization(request):
     PROBLEM_NUMBER = 20
-    
-    print(f"request.POST: {request.POST}")
-    
+
     factorization_type_list = request.POST.getlist("factorization_type")
     used_coefficient = request.POST["coefficient_used_for_factorization"]
-    print(f"used_coefficient: {used_coefficient}")
+    
+    used_formula_list = []
+    if "ax+ab=a(x+b)" in factorization_type_list:
+        used_formula_list.append("\( ax + ab = a(x + b) \)")
+    
+    if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
+        used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+    
+    if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
+        used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+    
+    if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
+        used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
+    
+    print(f"used_formula_list: {used_formula_list}")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
@@ -1039,4 +1051,7 @@ def display_factorization(request):
         problem2 = FactorizationProblem(factorization_type_list=factorization_type_list, used_coefficient=used_coefficient)
         math_problem_tuple_list.append((problem1, problem2))
     
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    context["used_formula_list"] = used_formula_list
     return render(request, 'math_print/junior_highschool3/factorization/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

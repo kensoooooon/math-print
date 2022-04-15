@@ -33,6 +33,7 @@ from .math_process.fraction_calculate import FractionCalculateProblem
 from .math_process.number_without_bracket_calculate import NumberWithoutBracketCalculateProblem
 from .math_process.sector import SectorProblem
 from .math_process.factorization import FactorizationProblem
+from .math_process.quadratic_equation import QuadraticEquationProblem
 
 
 # Create your views here.
@@ -1049,6 +1050,37 @@ def display_factorization(request):
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = FactorizationProblem(factorization_type_list=factorization_type_list, used_coefficient=used_coefficient)
         problem2 = FactorizationProblem(factorization_type_list=factorization_type_list, used_coefficient=used_coefficient)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    context["used_formula_list"] = used_formula_list
+    return render(request, 'math_print/junior_highschool3/factorization/for_display.html', context)
+
+def display_quadratic_equation(request):
+    PROBLEM_NUMBER = 20
+
+    quadratic_equation_type_list = request.POST.getlist("quadratic_equation")
+    used_coefficient = request.POST["coefficient_used_for_quadratic_equation"]
+    
+    used_formula_list = []
+    if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
+        used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+    if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
+        used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+    if "x^2+(a+b)x+ab=(x+a)(x+b)" in quadratic_equation_type_list:
+        used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
+    if "x^2-a^2=(x+a)(x-a)" in quadratic_equation_type_list:
+        used_formula_list.append("\( x^2-a^2=(x+a)(x-a) \)")
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = QuadraticEquationProblem(
+            quadratic_equation_type_list=quadratic_equation_type_list, used_coefficient=used_coefficient
+        )
+        problem2 = QuadraticEquationProblem(
+            quadratic_equation_type_list=quadratic_equation_type_list, used_coefficient=used_coefficient
+        )
         math_problem_tuple_list.append((problem1, problem2))
     
     context = {}

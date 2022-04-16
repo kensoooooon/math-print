@@ -8,7 +8,7 @@ class QuadraticEquationProblem:
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
         self._quadratic_equation_type_list = settings["quadratic_equation_type_list"]
-        self._used_coefficient = settings["used_coefficient"]
+        self._is_factor_out = settings["factor_out"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -21,55 +21,101 @@ class QuadraticEquationProblem:
         elif selected_quadratic_equation_type == "x^2+(a+b)x+ab=(x+a)(x+b)":
             latex_answer, latex_problem = self._make_cross_multiplication_problem()
         elif selected_quadratic_equation_type == "x^2-a^2=(x+a)(x-a)":
-            latex_answer, latex_problem = self._make_square_mins_square_problem()
-        
+            latex_answer, latex_problem = self._make_square_minus_square_problem()
+        elif selected_quadratic_equation_type == "quadratic_formula":
+            latex_answer, latex_problem = self._make_quadratic_formula_problem()
+
         return latex_answer, latex_problem
         
     def _make_square_plus_problem(self):
         # (x+a)^2 => (ax+b)^2 <- after
         x = sy.Symbol("x", real=True)
-        number_mode = self._used_coefficient
-        # a = self._make_random_number(8, -8, number_mode)
-        if number_mode == "only_integer":
-            b = self._make_random_number(integer_or_frac_specification="integer", positive_or_negative_specification="positive")
-        else:
-            b = self._make_random_number(positive_or_negative_specification="positive")
+        b = self._make_random_number(positive_or_negative_specification="positive")
         problem = sy.expand((x + b) ** 2)
+        if self._is_factor_out:
+            if random() > 0.7:
+                k = self._make_random_number()
+                problem = k * problem
         latex_problem = sy.latex(problem)
-        answer = sy.factor(problem)
-        latex_answer = f"= {sy.latex(answer)}"
+        latex_problem += "= 0"
+        answers = sy.solve(problem, x)
+        latex_answer = f"x = {sy.latex(answers[0])}"
         
         return latex_answer, latex_problem
 
     def _make_square_minus_problem(self):
         x = sy.Symbol("x", real=True)
-        number_mode = self._used_coefficient
-        if number_mode == "only_integer":
-            b = self._make_random_number(integer_or_frac_specification="integer", positive_or_negative_specification="negative")
-        else:
-            b = self._make_random_number(positive_or_negative_specification="negative")
+        b = self._make_random_number(positive_or_negative_specification="negative")
         problem = sy.expand((x + b) ** 2)
+        if self._is_factor_out:
+            if random() > 0.7:
+                k = self._make_random_number()
+                problem = k * problem
         latex_problem = sy.latex(problem)
-        answer = sy.factor(problem)
-        latex_answer = f"= {sy.latex(answer)}"
+        latex_problem += "= 0"
+        answers = sy.solve(problem, x)
+        print(f"answer: {answers}, type: {type(answers)}")
+        latex_answer = f"x = {sy.latex(answers[0])}"
         
         return latex_answer, latex_problem
     
     def _make_cross_multiplication_problem(self):
+        """
+        (x+a)(x+b) = x^2+(a+b)x+ab
+        """
         x = sy.Symbol("x", real=True)
-        number_mode = self._used_coefficient
-        if number_mode == "only_integer":
-            a = self._make_random_number(integer_or_frac_specification="integer")
-            b = self._make_random_number(integer_or_frac_specification="integer")
-        else:
-            a = self._make_random_number()
-            b = self._make_random_number()
-        
+        a = self._make_random_number()
+        b = self._make_random_number(integer_or_frac_specification="integer")
+        if a == b:
+            b += randint(1, 3)
         problem = sy.expand((x + a) * (x + b))
+        if self._is_factor_out:
+            if random() > 0.7:
+                k = self._make_random_number()
+                problem = k * problem
         latex_problem = sy.latex(problem)
-        answer = sy.factor(problem)
-        latex_answer = f"= {sy.latex(answer)}"
+        latex_problem += "= 0"
+        answers = sy.solve(problem, x)
+        latex_answer = f"x = {sy.latex(answers[0])}, {sy.latex(answers[1])}"
         
+        return latex_answer, latex_problem
+
+    def _make_square_minus_square_problem(self):
+        """
+        x^2-a^2=(x+a)(x-a)
+        """
+        x = sy.Symbol("x", real=True)
+        a1 = self._make_random_number(positive_or_negative_specification="positive")
+        a2 = -1 * a1
+        problem = sy.expand((x + a1) * (x + a2))
+        if self._is_factor_out:
+            if random() > 0.7:
+                k = self._make_random_number()
+                problem = k * problem
+        latex_problem = sy.latex(problem)
+        latex_problem += "= 0"
+        answers = sy.solve(problem, x)
+        latex_answer = f"x = {sy.latex(answers[0])}"
+        
+        return latex_answer, latex_problem
+
+    def _make_quadratic_formula_problem(self):
+        """
+        x = (-b \pm \sqrt{b^2-4ac}) / 2a
+        """
+        x = sy.Symbol("x", real=True)
+        discriminant_value = self._make_random_number(integer_or_frac_specification="integer", positive_or_negative_specification="positive")
+        discriminant_value += randint(1, 8)
+        b = self._make_random_number(integer_or_frac_specification="integer")
+        a = self._make_random_number(integer_or_frac_specification="integer")
+        c = sy.Symbol("c", real=True)
+        c_value = sy.solve(b ** 2 - 4 * a * c - discriminant_value, c)[0]
+        problem = a * x ** 2 + b * x + c_value
+        latex_problem = sy.latex(problem)
+        latex_problem += "= 0"
+        answers = sy.solve(problem, x)
+        print(f"answers: {answers}")
+        latex_answer = f"x = \\frac{{{-1 * b} \pm \sqrt{discriminant_value}}}{{{2 * a}}}" 
         return latex_answer, latex_problem
 
     def _make_random_number(self, integer_or_frac_specification=None, positive_or_negative_specification=None):

@@ -242,19 +242,25 @@
                             x^2-a^2=(x+a)(x-a)
                         </label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="quadratic_formula" name="quadratic_equation_type" id="quadratic_formula">
+                        <label class="form-check-label" for="quadratic_formula">
+                            解の公式
+                        </label>
+                    </div>
                 </div>
-                <small class="text-muted">登場する係数</small>
+                <small class="text-muted">くくり出しを含むか</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="only_integer" name="coefficient_used_for_quadratic_equation" id="quadratic_equation_only_integer" checked>
-                        <label class="form-check-label" for="quadratic_equation_only_integer">
-                            整数のみ
+                        <input class="form-check-input" type="radio" value="factor_out" name="factor_out_or_not" id="factor_out" checked>
+                        <label class="form-check-label" for="factor_out">
+                            含む
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="integer_and_frac" name="coefficient_used_for_quadratic_equation" id="quadratic_equation_integer_and_frac">
-                        <label class="form-check-label" for="quadratic_equation_integer_and_frac">
-                            整数・分数
+                        <input class="form-check-input" type="radio" value="not_factor_out" name="factor_out_or_not" id="not_factor_out">
+                        <label class="form-check-label" for="not_factor_out">
+                            含まない
                         </label>
                     </div>
                 </div>

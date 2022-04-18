@@ -38,7 +38,7 @@ function showAnswer(){
     .print_pages{
         /*A4縦 172,251*/
         width: 230mm;
-        height: 260mm;
+        height: 290mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
         page-break-after: always;
@@ -111,11 +111,9 @@ function showAnswer(){
             {% endfor %}
         </ol>
         {% if used_formula_list %}
-            <div class="formula-box" style="border: solid blue">
-                {% for formula in used_formula_list %}
-                    <p class="formula text-center">{{formula}}</p>
-                {% endfor %}
-            </div>
+            {% for formula in used_formula_list %}
+                <p class="formula text-center">{{formula}}</p>
+            {% endfor %}
         {% else %}
             <br>
             <br>

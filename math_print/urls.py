@@ -65,6 +65,9 @@ urlpatterns = [
     # 因数分解
     path('factorization/print/', views.print_factorization, name='factorization_print'),
     path('factorization/display/', views.display_factorization, name='factorization_display'),
+    # 2次方程式
+    path('quadratic_equation/print/', views.print_quadratic_equation, name='quadratic_equation_print'),
+    path('quadratic_equation/display/', views.display_quadratic_equation, name='quadratic_equation_display'),
     #########################################
     ### 高1 ###
     path('highschool1/', views.show_highschool1, name='highschool1'),

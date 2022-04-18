@@ -113,9 +113,38 @@ class QuadraticEquationProblem:
         problem = a * x ** 2 + b * x + c_value
         latex_problem = sy.latex(problem)
         latex_problem += "= 0"
-        answers = sy.solve(problem, x)
-        print(f"answers: {answers}")
-        latex_answer = f"x = \\frac{{{-1 * b} \pm \sqrt{discriminant_value}}}{{{2 * a}}}" 
+        """
+        どうしても細かい調整がうまくいかない。
+        ->符号と平方根をいじっても、どうしても中身がーになってしまう
+        ratsimp()で一つにまとめる？
+        Rational
+        cancel
+        simplify
+        long_fraction
+        偶数で割れるかどうかだけ判定いれて主導が楽そう？
+
+        answer1, answer2 = sy.solve(problem, x)
+        print(f"answer1: {answer1}, answer2: {answer2}")
+        print(f"canceld_answer1: {sy.cancel(answer1)}, canceld_answer2: {sy.cancel(answer2)}")
+        latex_answer1 = sy.latex(answer1, long_frac_ratio=2)
+        latex_answer2 = sy.latex(answer2, long_frac_ratio=2)
+        latex_answer = f"x = {latex_answer1}, {latex_answer2}"
+        """
+        right_part = f"{sy.latex(sy.sqrt(discriminant_value))}" 
+        if (a < 0) and (b < 0):
+            denominator = sy.latex(-1 * 2 * a)
+            left_part = sy.latex(-1 * b)
+            if 
+            latex_answer = f"x = \\frac{{{left_part} \pm {right_part}}}{{{denominator}}}"
+        elif (a < 0) and (b > 0):
+            denominator = sy.latex(-1 * 2 * a)
+            left_part = sy.latex(b)
+            latex_answer = f"x = - \\frac{{{left_part} \pm {right_part}}}{{{denominator}}}"
+        else:
+            denominator = sy.latex(2 * a)
+            left_part = sy.latex(b)
+            latex_answer = f"x = \\frac{{{left_part} \pm {right_part}}}{{{denominator}}}"
+
         return latex_answer, latex_problem
 
     def _make_random_number(self, integer_or_frac_specification=None, positive_or_negative_specification=None):

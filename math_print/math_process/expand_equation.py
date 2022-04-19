@@ -32,7 +32,9 @@ class ExpandEquationProblem:
             latex_answer, latex_problem = self._make_square_x_plus_a()
         elif selected_equation_type == 'square_x_minus_a':
             latex_answer, latex_problem = self._make_square_x_minus_a()
-        
+        elif selected_equation_type == "x_plus_a_x_minus_a":
+            latex_answer, latex_problem = self._make_plus_minus_problem()
+                
         return latex_answer, latex_problem
     
     def _make_ax_times_bx_plus_c(self):
@@ -289,6 +291,26 @@ class ExpandEquationProblem:
         
         x = self._character_dict["x"]
         left = (x + a) ** 2
+        left_latex = sy.latex(left)
+        
+        right = sy.expand(left)
+        right_latex = sy.latex(right)
+        
+        latex_problem = left_latex
+        latex_answer = f"= {right_latex}"
+        
+        return latex_answer, latex_problem
+    
+    def _make_plus_minus_problem(self):
+        a_checker = choice(self._used_number_type_list)
+        
+        if a_checker == "integer":
+            a, a_latex = self._make_random_integer(6, -6, "number")
+        elif a_checker == "frac":
+            a, a_latex = self._make_random_frac(6, -6, "number")
+            
+        x = self._character_dict["x"]
+        left = (x + a) * (x - a)
         left_latex = sy.latex(left)
         
         right = sy.expand(left)

@@ -59,13 +59,9 @@ def print_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    print(f"operator_to_use: {operator_to_use} \n type; {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    print(f"term_number: {term_number} \n type: {type(term_number)}")
     paper_number = int(request.POST["paper_number"])
 
     MAX_NUMBER_TO_FRAC = 10
@@ -86,17 +82,11 @@ def print_character_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    print(f"operator_to_use: {operator_to_use} \n type; {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    print(f"term_number: {term_number} \n type: {type(term_number)}")
     paper_number = int(request.POST["paper_number"])
-    print(f"paper_number: {paper_number}")
     character_to_use = request.POST["character_to_use"]
-    print(f"character_to_use: {character_to_use}")
     character_to_use_list = ["x"]
     if character_to_use == "2":
         character_to_use_list += ["y"]
@@ -529,8 +519,6 @@ def print_number_without_bracket_problem(request):
 def print_sector_problem(request):
     PROBLEM_NUMBER = 20
     
-    # print(f"post: {request.POST}")
-    
     problem_type_list = request.POST.getlist("sector_problem_type")
     paper_number = int(request.POST["paper_number"])
     
@@ -570,6 +558,8 @@ def print_factorization(request):
         
         if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
             used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
+        if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
+            used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
     
     """
     使用される公式
@@ -645,13 +635,9 @@ def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    print(f"term_number: {term_number} \n type: {type(term_number)}")
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
@@ -668,17 +654,11 @@ def display_character_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    print(f"operator_to_use: {operator_to_use} \n type; {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    print(f"term_number: {term_number} \n type: {type(term_number)}")
     paper_number = int(request.POST["paper_number"])
-    print(f"paper_number: {paper_number}")
     character_to_use = request.POST["character_to_use"]
-    print(f"character_to_use: {character_to_use}")
     character_to_use_list = ["x"]
     if character_to_use == "2":
         character_to_use_list += ["y"]
@@ -758,7 +738,6 @@ def display_simultaneous_equation(request):
     
     simultaneous_equation_type = request.POST["simultaneous_equation_type"]
     used_number_type_list = request.POST.getlist("number_to_use")
-    print(f"used_number_type_list: {used_number_type_list}")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
@@ -1085,7 +1064,9 @@ def display_factorization(request):
     if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
         used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
     
-    print(f"used_formula_list: {used_formula_list}")
+    if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
+        used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
+    
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

@@ -22,7 +22,7 @@ class FractionCalculateProblem:
             latex_problem = ""
             string_for_eval = ""
             
-            selected_fraction_type = choice(self._fraction_type_list)
+            selected_fraction_type = self._fraction_type_selector()
             
             if selected_fraction_type == "proper_fraction":
                 latex_problem_to_add, string_for_eval_to_add = self._make_latex_and_eval_proper_fraction()
@@ -30,14 +30,12 @@ class FractionCalculateProblem:
                 latex_problem_to_add, string_for_eval_to_add = self._make_latex_and_eval_improper_fraction()
             elif selected_fraction_type == "mixed_fraction":
                 latex_problem_to_add, string_for_eval_to_add = self._make_latex_and_eval_mixed_fraction()
-            else:
-                raise ValueError(f"selected_fraction_type: {selected_fraction_type}. It may be wrong.")
             
             latex_problem += latex_problem_to_add
             string_for_eval += string_for_eval_to_add
             
             for _ in range(self._term_number - 1):
-                selected_operator_type = choice(self._calculate_types_list)
+                selected_operator_type = self._operator_type_selector()
                 
                 if selected_operator_type == "plus":
                     operator_for_eval = "+"
@@ -51,10 +49,8 @@ class FractionCalculateProblem:
                 elif selected_operator_type == "division":
                     operator_for_eval = "/"
                     operator_for_latex = "\\div"
-                else:
-                    raise ValueError(f"selected_operator_type: {selected_operator_type}. It may be wrong.")
                 
-                selected_fraction_type = choice(self._fraction_type_list)
+                selected_fraction_type = self._fraction_type_selector()
 
                 if selected_fraction_type == "proper_fraction":
                     latex_problem_to_add, string_for_eval_to_add = self._make_latex_and_eval_proper_fraction()
@@ -77,7 +73,26 @@ class FractionCalculateProblem:
         latex_answer = f"= {sy.latex(answer)}"
         
         return latex_answer, latex_problem
+    
+    def _fraction_type_selector(self):
+        if self._fraction_type_list:
+            selected_fraction_type = choice(self._fraction_type_list)
+        else:
+            selected_fraction_type = choice(
+                ["proper_fraction", "improper_fraction", "mixed_fraction"]
+            )
+        return selected_fraction_type
 
+    def _operator_type_selector(self):
+        if self._calculate_types_list:
+            selected_operator_type = choice(self._calculate_types_list)
+        else:
+            selected_operator_type = choice(
+                ["plus", "minus", "times", "division"]
+            )
+        
+        return selected_operator_type
+        
     def _make_random_positive_integer(self, max_num, min_num):
         
         integer = sy.Integer(randint(min_num, max_num))

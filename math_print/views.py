@@ -595,10 +595,10 @@ def print_quadratic_equation(request):
     
     quadratic_equation_type_list = request.POST.getlist("quadratic_equation_type")
     paper_number = int(request.POST["paper_number"])
-    if request.POST["factor_out_or_not"] == "factor_out":
-        factor_out = True
+    if request.POST["organization_coefficient_or_not"] == "organization_coefficient":
+        organization_coefficient = True
     else:
-        factor_out = False
+        organization_coefficient = False
     
     used_formula_list = []
     if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
@@ -617,10 +617,10 @@ def print_quadratic_equation(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = QuadraticEquationProblem(
-                quadratic_equation_type_list=quadratic_equation_type_list, factor_out=factor_out
+                quadratic_equation_type_list=quadratic_equation_type_list, organization_coefficient=organization_coefficient
             )
             problem2 = QuadraticEquationProblem(
-                quadratic_equation_type_list=quadratic_equation_type_list, factor_out=factor_out
+                quadratic_equation_type_list=quadratic_equation_type_list, organization_coefficient=organization_coefficient
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -1082,11 +1082,12 @@ def display_factorization(request):
 def display_quadratic_equation(request):
     PROBLEM_NUMBER = 20
 
+    print(f"request.POST: {request.POST}")
     quadratic_equation_type_list = request.POST.getlist("quadratic_equation_type")
-    if request.POST["factor_out_or_not"] == "factor_out":
-        factor_out = True
+    if request.POST["organization_coefficient_or_not"] == "organization_coefficient":
+        organization_coefficient = True
     else:
-        factor_out = False
+        organization_coefficient = False
     
     used_formula_list = []
     if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
@@ -1103,10 +1104,10 @@ def display_quadratic_equation(request):
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = QuadraticEquationProblem(
-            quadratic_equation_type_list=quadratic_equation_type_list, factor_out=factor_out
+            quadratic_equation_type_list=quadratic_equation_type_list, organization_coefficient=organization_coefficient
         )
         problem2 = QuadraticEquationProblem(
-            quadratic_equation_type_list=quadratic_equation_type_list, factor_out=factor_out
+            quadratic_equation_type_list=quadratic_equation_type_list, organization_coefficient=organization_coefficient
         )
         math_problem_tuple_list.append((problem1, problem2))
     

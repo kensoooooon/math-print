@@ -17,7 +17,12 @@ class ReductionProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_fraction_type = choice(self._fraction_type_list)
+        if self._fraction_type_list:
+            selected_fraction_type = choice(self._fraction_type_list)
+        else:
+            selected_fraction_type = choice(
+                ["proper_fraction", "improper_fraction", "mixed_fraction"]
+            )
         
         if selected_fraction_type == "proper_fraction":
             latex_answer, latex_problem = self._make_proper_fraction_problem()

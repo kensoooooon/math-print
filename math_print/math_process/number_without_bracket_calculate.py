@@ -16,7 +16,7 @@ class NumberWithoutBracketCalculateProblem:
         latex_problem = ""
         string_for_eval = ""
         
-        first_number_type = choice(self._number_to_use_list)
+        first_number_type = self._number_type_selector()
         
         if first_number_type == "one_digit_integer":
             latex_problem_to_add, string_for_eval_to_add = self._make_latex_and_eval_one_digit_integer()
@@ -35,7 +35,7 @@ class NumberWithoutBracketCalculateProblem:
         string_for_eval += string_for_eval_to_add
         
         for _ in range(self._term_number - 1):
-            selected_operator_type = choice(self._operator_to_use_list)
+            selected_operator_type = self._operator_type_selector()
             if selected_operator_type == "plus":
                 operator_for_eval = "+"
                 operator_for_latex = "+"
@@ -45,7 +45,7 @@ class NumberWithoutBracketCalculateProblem:
             else:
                 raise ValueError(f"selected_operator_type: {selected_operator_type}. It may be wrong.")
 
-            selected_number_type = choice(self._number_to_use_list)
+            selected_number_type = self._number_type_selector()
             if selected_number_type == "one_digit_integer":
                 latex_problem_to_add, string_for_eval_to_add = self._make_latex_and_eval_one_digit_integer()
             elif selected_number_type == "two_digit_integer":
@@ -68,6 +68,24 @@ class NumberWithoutBracketCalculateProblem:
         latex_answer = f"= {sy.latex(answer)}"
         
         return latex_answer, latex_problem
+
+    def _number_type_selector(self):
+        if self._number_to_use_list:
+            selected_number_type = choice(self._number_to_use_list)
+        else:
+            selected_number_type = choice(
+                ["one_digit_integer", "two_digit_integer", "frac", "decimal"]
+            )
+        return selected_number_type
+    
+    def _operator_type_selector(self):
+        if self._operator_to_use_list:
+            selected_operator_type = choice(self._operator_to_use_list)
+        else:
+            selected_operator_type = choice(
+                ["plus", "minus"]
+            )
+        return selected_operator_type
 
     def _make_latex_and_eval_one_digit_integer(self):
         number = randint(1, 9)

@@ -20,7 +20,7 @@ class NumberMathProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
 
     def _make_problem(self):
-        first_number_checker = choice(self._used_number_type_list)
+        first_number_checker = self._number_type_selector()
         if first_number_checker == 'one_digit_integer':
             first_number, first_latex = self._make_random_integer_number(9, -9)
         elif first_number_checker == 'two_digit_integer':
@@ -29,14 +29,12 @@ class NumberMathProblem:
             first_number, first_latex = self._make_random_frac_number(8, -8)
         elif first_number_checker == 'decimal':
             first_number, first_latex = self._make_random_decimal_number(100, -100, 10)
-        else:
-            raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
 
         answer = first_number
         latex_problem = first_latex
         # 後ろを追加していく
         for _ in range(self._term_number-1):
-            num_type_checker = choice(self._used_number_type_list)
+            num_type_checker = self._number_type_selector()
             # plus, minus, times, divided
             
             # 数字決定
@@ -51,7 +49,7 @@ class NumberMathProblem:
             else:
                 raise ValueError("The second and subsequent number may be wrong. Please check 'used_number_type_list'.")
             
-            operator_type_checker = choice(self._used_operator_type_list)
+            operator_type_checker = self._operator_type_selector()
             if operator_type_checker == "plus":
                 answer = answer + number
                 latex_problem = latex_problem + " + " + latex_number
@@ -70,13 +68,6 @@ class NumberMathProblem:
         used_number_type_set = set(self._used_number_type_list)
         used_operator_type_set = set(self._used_operator_type_list)
         
-        """
-        if used_number_type_set == {'decimal'}:
-            if 'divided' not in used_operator_type_set:
-                if self._is_finite_decimal(number):
-                    latex_answer = f"= {sy.latex(float(answer))}"
-                    return latex_answer, latex_problem
-        """
         if ('decimal' in used_number_type_set)  and ('frac' not in used_number_type_set):
             if 'divided' not in used_operator_type_set:
                 if not answer.is_Integer:
@@ -86,6 +77,24 @@ class NumberMathProblem:
         latex_answer = f"= {sy.latex(answer)}"
         
         return latex_answer, latex_problem
+
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(
+                ["one_digit_integer", "two_digit_integer", "frac", "decimal"]
+            )
+        return selected_number_type
+
+    def _operator_type_selector(self):
+        if self._used_operator_type_list:
+            selected_operator_type = choice(self._used_operator_type_list)
+        else:
+            selected_operator_type = choice(
+                ["plus", "minus", "times", "divided"]
+            )
+        return selected_operator_type
 
     def _make_random_frac_number(self, max_num, min_num):
         checker = random()

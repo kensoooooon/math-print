@@ -85,8 +85,18 @@ class FactorizationProblem:
         else:
             a = self._make_random_number()
             b = self._make_random_number()
-        
+        print(f"a = {a}, b = {b}")
+        if (a == b) or (abs(a) == abs(b)):
+            print("same!")
+            print(f"a = {a}, b = {b}")
+            if random() > 0.5:
+                b += sy.Integer(randint(1, 3))
+            else:
+                b -= sy.Integer(randint(1, 3))
+            print(f"a = {a}, b = {b}")
+            
         problem = sy.expand((x + a) * (x + b))
+        print(f"problem: {problem}")
         latex_problem = sy.latex(problem)
         answer = sy.factor(problem)
         latex_answer = f"= {sy.latex(answer)}"

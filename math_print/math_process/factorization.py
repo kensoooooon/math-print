@@ -22,6 +22,8 @@ class FactorizationProblem:
             latex_answer, latex_problem = self._make_square_minus_problem()
         elif selected_factorization_type == "x^2+(a+b)x+ab=(x+a)(x+b)":
             latex_answer, latex_problem = self._make_cross_multiplication_problem()
+        elif selected_factorization_type == "x^2-a^2=(x+a)(x-a)":
+            latex_answer, latex_problem = self._make_plus_and_minus_problem()
         
         return latex_answer, latex_problem
 
@@ -88,6 +90,22 @@ class FactorizationProblem:
         latex_problem = sy.latex(problem)
         answer = sy.factor(problem)
         latex_answer = f"= {sy.latex(answer)}"
+        
+        return latex_answer, latex_problem
+
+    def _make_plus_and_minus_problem(self):
+        x = sy.Symbol("x", real=True)
+        number_mode = self._used_coefficient
+        if number_mode == "only_integer":
+            a = self._make_random_number(integer_or_frac_specification="integer", positive_or_negative_specification="positive")
+        else:
+            a = self._make_random_number(positive_or_negative_specification="positive")
+        
+        problem = sy.expand((x + a) * (x - a))
+        latex_problem = sy.latex(problem)
+        # answer = sy.factor(problem)
+        a_latex = sy.latex(a)
+        latex_answer = f"= (x + {a_latex})(x - {a_latex})"
         
         return latex_answer, latex_problem
 

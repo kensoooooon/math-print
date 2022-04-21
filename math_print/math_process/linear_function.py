@@ -12,7 +12,12 @@ class LinearFunctionProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_given_information = choice(self._given_information_list)
+        if self._given_information_list:
+            selected_given_information = choice(self._given_information_list)
+        else:
+            selected_given_information = choice(
+                ["slope_and_one_point", "two_points", "one_point_and_parallel_line"]
+            )
         
         if selected_given_information == "slope_and_one_point":
             latex_answer, latex_problem = self._make_slope_and_one_point_problem()
@@ -24,24 +29,21 @@ class LinearFunctionProblem:
         return latex_answer, latex_problem
     
     def _make_slope_and_one_point_problem(self):
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
             a, a_latex = self._make_random_integer_number(8, -8)
         elif a_checker == "frac":
             a, a_latex = self._make_random_frac_number(8, -8)
         
-        b_checker = choice(self._used_number_type_list)
+        b_checker = self._number_type_selector()
         
         if b_checker == "integer":
             b, b_latex = self._make_random_integer_number(8, -8)
         elif b_checker == "frac":
             b, b_latex = self._make_random_frac_number(8, -8)
         
-        # print(f"b: {b}")
-        
-        # y = ax +b 
-        x1_checker = choice(self._used_number_type_list)
+        x1_checker = self._number_type_selector()
         if x1_checker == "integer":
             x1, x1_latex = self._make_random_integer_number(8, -8)
         elif x1_checker == "frac":
@@ -69,14 +71,14 @@ class LinearFunctionProblem:
         return latex_answer, latex_problem
 
     def _make_two_points_problem(self):
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
             a, a_latex = self._make_random_integer_number(6, -6)
         elif a_checker == "frac":
             a, a_latex = self._make_random_frac_number(6, -6)
         
-        b_checker = choice(self._used_number_type_list)
+        b_checker = self._number_type_selector()
         
         if b_checker == "integer":
             b, b_latex = self._make_random_integer_number(8, -8)
@@ -98,14 +100,14 @@ class LinearFunctionProblem:
         
         latex_answer = f"\( {latex_answer} \)"
         
-        x1_checker = choice(self._used_number_type_list)
+        x1_checker = self._number_type_selector()
         
         if x1_checker == "integer":
             x1, x1_latex = self._make_random_integer_number(8, -8)
         elif x1_checker == "frac":
             x1, x1_latex = self._make_random_frac_number(8, -8)
         
-        delta_checker = choice(self._used_number_type_list)
+        delta_checker = self._number_type_selector()
 
         if delta_checker == "integer":
             delta, _ = self._make_random_integer_number(8, -8)
@@ -125,14 +127,14 @@ class LinearFunctionProblem:
         return latex_answer, latex_problem
         
     def _make_one_point_and_parallel_line_problem(self):
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
             a, a_latex = self._make_random_integer_number(6, -6)
         elif a_checker == "frac":
             a, a_latex = self._make_random_frac_number(6, -6)
         
-        b_checker = choice(self._used_number_type_list)
+        b_checker = self._number_type_selector()
         
         if b_checker == "integer":
             b, b_latex = self._make_random_integer_number(8, -8)
@@ -157,7 +159,7 @@ class LinearFunctionProblem:
         a_for_parallel_line = a
         a_for_parallel_line_latex = sy.latex(a_for_parallel_line)
         
-        b_for_parallel_line_checker = choice(self._used_number_type_list)
+        b_for_parallel_line_checker = self._number_type_selector()
         
         if b_for_parallel_line_checker == "integer":
             b_for_parallel_line, b_for_parallel_line_latex = self._make_random_integer_number(10, -10)
@@ -177,7 +179,7 @@ class LinearFunctionProblem:
         elif b_for_parallel_line < 0:
             parallel_line_latex += f"{b_for_parallel_line_latex}"
         
-        x1_checker = choice(self._used_number_type_list)
+        x1_checker = self._number_type_selector()
         
         if x1_checker ==  "integer":
             x1, x1_latex = self._make_random_integer_number(7, -7)
@@ -190,6 +192,14 @@ class LinearFunctionProblem:
         latex_problem = f"点\( \\left({x1_latex}, {y1_latex}\\right) \)を通り、直線\({parallel_line_latex}\)に平行"
         
         return latex_answer, latex_problem
+    
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(["integer", "frac"])
+        
+        return selected_number_type
         
     def _make_random_frac_number(self, max_num, min_num):
         checker = random()

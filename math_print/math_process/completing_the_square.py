@@ -18,22 +18,22 @@ class CompletingTheSquareProblem:
     def _make_only_integer_completing_the_square(self):
         integer_in_bracket, integer_in_bracket_latex = self._make_random_integer(4, -4, "number")
         
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
-            a, a_latex = self._make_random_integer(4, -4, "number")
+            a, a_latex = self._make_random_integer(4, -4)
         elif a_checker == "frac":
-            a, a_latex = self._make_random_frac(8, -8, "number")
+            a, a_latex = self._make_random_frac(8, -8)
         
         b = 2 * a * integer_in_bracket
         b_latex = sy.latex(b)
         
-        c_checker = choice(self._used_number_type_list)
+        c_checker = self._number_type_selector()
         
         if c_checker == "integer":
-            c, c_latex = self._make_random_integer(10, -10, "number")
+            c, c_latex = self._make_random_integer(10, -10)
         elif c_checker == "frac":
-            c, c_latex =  self._make_random_frac(8, -8, "number")
+            c, c_latex =  self._make_random_frac(8, -8)
         
         x = self._character_dict["x"]
         
@@ -69,26 +69,26 @@ class CompletingTheSquareProblem:
         return latex_answer, latex_problem
     
     def _make_completing_the_square(self):
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
-            a, a_latex = self._make_random_integer(4, -4, "number")
+            a, a_latex = self._make_random_integer(4, -4)
         elif a_checker == "frac":
-            a, a_latex = self._make_random_frac(8, -8, "number")
+            a, a_latex = self._make_random_frac(8, -8)
         
-        b_checker = choice(self._used_number_type_list)
+        b_checker = self._number_type_selector()
         
         if b_checker == "integer":
-            b, b_latex = self._make_random_integer(4, -4, "number")
+            b, b_latex = self._make_random_integer(4, -4)
         elif b_checker == "frac":
-            b, b_latex = self._make_random_frac(8, -8, "number")
+            b, b_latex = self._make_random_frac(8, -8)
 
-        c_checker = choice(self._used_number_type_list)
+        c_checker = self._number_type_selector()
         
         if c_checker == "integer":
-            c, c_latex = self._make_random_integer(4, -4, "number")
+            c, c_latex = self._make_random_integer(4, -4)
         elif c_checker == "frac":
-            c, c_latex = self._make_random_frac(8, -8, "number")
+            c, c_latex = self._make_random_frac(8, -8)
         
         x = self._character_dict["x"]
         
@@ -125,6 +125,13 @@ class CompletingTheSquareProblem:
         
         return latex_answer, latex_problem
     
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(["integer", "frac"])
+        return selected_number_type
+    
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()
         if checker > 0.5:
@@ -135,21 +142,12 @@ class CompletingTheSquareProblem:
             denominator = randint(2, max_num)
         
         frac = sy.Rational(numerator, denominator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            frac_with_character = frac * self._character_dict[used_character]
-            frac_with_character_latex = sy.latex(frac_with_character)
-            return frac_with_character, frac_with_character_latex
+        frac_with_number_latex = sy.latex(frac)
+        return frac, frac_with_number_latex
 
-        elif number_or_character == "number":
-            frac_with_number_latex = sy.latex(frac)
-            return frac, frac_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
 
     
-    def _make_random_integer(self, max_num, min_num, number_or_character):
+    def _make_random_integer(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
@@ -157,15 +155,5 @@ class CompletingTheSquareProblem:
             numerator = randint(min_num, -1)
         
         integer = sy.Integer(numerator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            integer_with_character = self._character_dict[used_character] * integer
-            integer_with_character_latex = sy.latex(integer_with_character)
-            return integer_with_character, integer_with_character_latex
-
-        elif number_or_character == "number":
-            integer_with_number_latex = sy.latex(integer)
-            return integer, integer_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        integer_with_number_latex = sy.latex(integer)
+        return integer, integer_with_number_latex

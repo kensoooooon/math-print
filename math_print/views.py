@@ -547,34 +547,28 @@ def print_factorization(request):
     
     used_formula_list = []
     if request.POST["show_formula"] == "show_factorization_formula":
-        if "ax+ab=a(x+b)" in factorization_type_list:
+        if factorization_type_list:
+            if "ax+ab=a(x+b)" in factorization_type_list:
+                used_formula_list.append("\( ax + ab = a(x + b) \)")
+            
+            if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
+                used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+            
+            if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
+                used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+            
+            if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
+                used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
+            if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
+                used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
+        else:
             used_formula_list.append("\( ax + ab = a(x + b) \)")
-        
-        if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
-        
-        if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
             used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
-        
-        if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
             used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
-        if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
             used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
     
-    """
-    使用される公式
-    ax+ab=a(x+b)
-    \( ax + ab = a(x + b) \)
-    
-    x^2+2ax+a^2=(x+a)^2
-    \( x^2 + 2ax + a^2 = (x + a)^2 \)
 
-    x^2-2ax+a^2=(x-a)^2
-    \( x^2 - 2ax + a^2 = (x - a)^2 \)
-
-    x^2+(a+b)x+ab=(x+a)(x+b)
-    \( x^2 + (a + b)x + ab = (x + a)(x + b) \)
-    """
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -1052,21 +1046,29 @@ def display_factorization(request):
     used_coefficient = request.POST["coefficient_used_for_factorization"]
     
     used_formula_list = []
-    if "ax+ab=a(x+b)" in factorization_type_list:
+    
+    if factorization_type_list:
+        if "ax+ab=a(x+b)" in factorization_type_list:
+            used_formula_list.append("\( ax + ab = a(x + b) \)")
+        
+        if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
+            used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+        
+        if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
+            used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+        
+        if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
+            used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
+        
+        if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
+            used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
+    else:
         used_formula_list.append("\( ax + ab = a(x + b) \)")
-    
-    if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
-    
-    if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
-    
-    if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
         used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
-    
-    if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
         used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
-    
+        
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

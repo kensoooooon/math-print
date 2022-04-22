@@ -25,7 +25,13 @@ class SectorProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_problem_type = choice(self._problem_type_list)
+        if self._problem_type_list:
+            selected_problem_type = choice(self._problem_type_list)
+        else:
+            selected_problem_type = choice(
+                ["radius_and_central_angle_to_arc_length_and_area", "radius_and_arc_length_to_area",
+                 "radius_and_area_to_arc_length", "radius_and_area_to_central_angle"]
+            )
         
         if selected_problem_type == "radius_and_central_angle_to_arc_length_and_area":
             latex_answer, latex_problem = self._make_radius_and_central_angle_to_arc_length_and_area_problem()

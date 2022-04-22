@@ -17,7 +17,14 @@ class SpecificLinearEquation:
         self.latex_answer, self.latex_problem = self._make_specific_linear_equation_problem()
     
     def _make_specific_linear_equation_problem(self):
-        selected_linear_equation_type = choice(self._linear_equation_type_list)
+        if self._linear_equation_type_list:
+            selected_linear_equation_type = choice(self._linear_equation_type_list)
+        else:
+            selected_linear_equation_type = choice(
+                ["ax_equal_b_only_integer", "ax_equal_b_all_number",
+                 'ax_plus_b_equal_c_only_integer', 'ax_plus_b_equal_c_all_number',
+                 'ax_plus_b_equal_cx_plus_d_only_integer', 'ax_plus_b_equal_cx_plus_d_all_number',]
+            )
         if selected_linear_equation_type == "ax_equal_b_only_integer":
             latex_answer, latex_problem = self._make_ax_equal_b_only_integer()
         elif selected_linear_equation_type == "ax_equal_b_all_number":
@@ -35,10 +42,7 @@ class SpecificLinearEquation:
         
 
     def _make_ax_equal_b_only_integer(self):
-        print(f"number_type_checker: {self._used_number_type_list}")
-        number_type_checker = choice(self._used_number_type_list)
-        print(f"checked_number_type: {number_type_checker}")
-        
+        number_type_checker = self._number_type_selector()
         if number_type_checker == "integer":
             linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10, "number")
             answer, answer_latex = self._make_random_integer(10, -10, "number")
@@ -48,22 +52,14 @@ class SpecificLinearEquation:
         elif number_type_checker == "decimal":
             linear_coefficient, linear_coefficient_latex = self._make_random_decimal(10, -10, 10, "number")
             answer, answer_latex = self._make_random_integer(10, -10, "number")
-        else:
-            raise ValueError(f"number_type_checker may be wrong. value is {number_type_checker}")
         intercept = linear_coefficient * answer
-        
-        print(f"linear_coefficient: {linear_coefficient}")
-        print(f"answer: {answer}")
-        print(f"intercept: {intercept}")
 
-        # left = linear_coefficient * self._character_dict["x"]
         if linear_coefficient_latex == "1":
             left_latex = "x"
         elif linear_coefficient_latex == "-1":
             left_latex = "-x"
         else:
             left_latex = f"{linear_coefficient_latex} x"
-        print(f"left_latex: {left_latex}")
         
         right = intercept
         if number_type_checker == "decimal":
@@ -71,17 +67,13 @@ class SpecificLinearEquation:
         else:
             right_latex = sy.latex(right)
         
-        print(f"left_latex: {left_latex}")
-        print(f"right_latex: {right_latex}")
         latex_answer = f"x = {answer_latex}"
         latex_problem = f"{left_latex} = {right_latex}"
         
         return latex_answer, latex_problem
     
     def _make_ax_equal_b_all_number(self):
-        print(f"number_type_checker: {self._used_number_type_list}")
-        number_type_checker = choice(self._used_number_type_list)
-        print(f"checked_number_type: {number_type_checker}")
+        number_type_checker = self._number_type_selector()
 
         if number_type_checker == "integer":
             left, left_latex = self._make_random_integer(10, -10, "character")
@@ -94,7 +86,7 @@ class SpecificLinearEquation:
         elif number_type_checker == "decimal":
             left, left_latex = self._make_random_decimal(10, -10, 10, "character")
 
-        number_type_checker = choice(self._used_number_type_list)
+        number_type_checker = self._number_type_selector()
 
         if number_type_checker == "integer":
             right, right_latex = self._make_random_integer(10, -10, "number")
@@ -113,7 +105,7 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_c_only_integer(self):
-        a_type_checker = choice(self._used_number_type_list)
+        a_type_checker = self._number_type_selector()
         
         if a_type_checker == 'integer':
             a, a_latex = self._make_random_integer(10, -10, "number")
@@ -121,10 +113,8 @@ class SpecificLinearEquation:
             a, a_latex = self._make_random_frac(10, -10, "number")
         elif a_type_checker == 'decimal':
             a, a_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
         
-        c_type_checker = choice(self._used_number_type_list)
+        c_type_checker = self._number_type_selector()
         
         if c_type_checker == 'integer':
             c, c_latex = self._make_random_integer(10, -10, "number")
@@ -132,8 +122,6 @@ class SpecificLinearEquation:
             c, c_latex = self._make_random_frac(10, -10, "number")
         elif c_type_checker == 'decimal':
             c, c_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
         
         answer, answer_latex = self._make_random_integer(10, -10, "number")
         b = c - a * answer
@@ -167,7 +155,7 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_c_all_number(self):
-        a_type_checker = choice(self._used_number_type_list)
+        a_type_checker = self._number_type_selector()
         
         if a_type_checker == 'integer':
             a, a_latex = self._make_random_integer(10, -10, "number")
@@ -175,10 +163,8 @@ class SpecificLinearEquation:
             a, a_latex = self._make_random_frac(6, -6, "number")
         elif a_type_checker == 'decimal':
             a, a_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
     
-        b_type_checker = choice(self._used_number_type_list)
+        b_type_checker = self._number_type_selector()
         
         if b_type_checker == 'integer':
             b, b_latex = self._make_random_integer(10, -10, "number")
@@ -186,10 +172,8 @@ class SpecificLinearEquation:
             b, b_latex = self._make_random_frac(6, -6, "number")
         elif b_type_checker == 'decimal':
             b, b_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"b_type_checker is {b_type_checker}, it may be wrong.")
-        
-        c_type_checker = choice(self._used_number_type_list)
+
+        c_type_checker = self._number_type_selector()
         
         if c_type_checker == 'integer':
             c, c_latex = self._make_random_integer(10, -10, "number")
@@ -197,8 +181,6 @@ class SpecificLinearEquation:
             c, c_latex = self._make_random_frac(6, -6, "number")
         elif c_type_checker == 'decimal':
             c, c_latex = self._make_random_decimal(10, -10, 10, "number")
-        else:
-            raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
 
         left = a * self._character_dict["x"] + b
         right = c
@@ -207,7 +189,6 @@ class SpecificLinearEquation:
         answer = solve_result[0]
         answer_latex = sy.latex(answer)
         
-
         left_latex = ""
         if a == 1:
             left_latex = left_latex + "x"
@@ -235,7 +216,7 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_cx_plus_d_only_integer(self):
-        a_type_checker = choice(self._used_number_type_list)
+        a_type_checker = self._number_type_selector()
         
         if a_type_checker == 'integer':
             a, a_latex = self._make_random_integer(10, -10, "number")
@@ -243,11 +224,8 @@ class SpecificLinearEquation:
             a, a_latex = self._make_random_frac(6, -6, "number")
         elif a_type_checker == 'decimal':
             a, a_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
-        
 
-        c_type_checker = choice(self._used_number_type_list)
+        c_type_checker = self._number_type_selector()
         
         if c_type_checker == 'integer':
             c, c_latex = self._make_random_integer(10, -10, "number")
@@ -255,12 +233,9 @@ class SpecificLinearEquation:
             c, c_latex = self._make_random_frac(6, -6, "number")
         elif c_type_checker == 'decimal':
             c, c_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
 
-        # change not to be equal a
         while(c == a):
-            c_type_checker = choice(self._used_number_type_list)
+            c_type_checker = self._number_type_selector()
             
             if c_type_checker == 'integer':
                 c, c_latex = self._make_random_integer(10, -10, "number")
@@ -268,14 +243,11 @@ class SpecificLinearEquation:
                 c, c_latex = self._make_random_frac(6, -6, "number")
             elif c_type_checker == 'decimal':
                 c, c_latex = self._make_random_decimal(10, -10, 10, "number")
-            else:
-                raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
-            
         
         answer, answer_latex = self._make_random_integer(8, -8, "number")
         d_minus_b = (a - c) * answer
         
-        d_type_checker = choice(self._used_number_type_list)
+        d_type_checker = self._number_type_selector()
         
         if d_type_checker == 'integer':
             d, d_latex = self._make_random_integer(10, -10, "number")
@@ -283,8 +255,6 @@ class SpecificLinearEquation:
             d, d_latex = self._make_random_frac(6, -6, "number")
         elif d_type_checker == 'decimal':
             d, d_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"d_type_checker is {d_type_checker}, it may be wrong.")
         
         b = d - d_minus_b
         b_latex = sy.latex(b)
@@ -296,7 +266,6 @@ class SpecificLinearEquation:
             left_latex = left_latex + "-x"
         else:
             left_latex = left_latex + f"{a_latex}x"
-        
         
         if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
             b_latex = sy.latex(float(b))
@@ -329,19 +298,16 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_cx_plus_d_all_number(self):
-        a_type_checker = choice(self._used_number_type_list)
+        a_type_checker = self._number_type_selector()
         
         if a_type_checker == 'integer':
             a, a_latex = self._make_random_integer(10, -10, "number")
         elif a_type_checker == 'frac':
             a, a_latex = self._make_random_frac(6, -6, "number")
         elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
-        
+            a, a_latex = self._make_random_decimal(8, -8, 10, "number")        
 
-        c_type_checker = choice(self._used_number_type_list)
+        c_type_checker = self._number_type_selector()
         
         if c_type_checker == 'integer':
             c, c_latex = self._make_random_integer(10, -10, "number")
@@ -349,12 +315,9 @@ class SpecificLinearEquation:
             c, c_latex = self._make_random_frac(6, -6, "number")
         elif c_type_checker == 'decimal':
             c, c_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
 
-        # change not to be equal a
         while(c == a):
-            c_type_checker = choice(self._used_number_type_list)
+            c_type_checker = self._number_type_selector()
             
             if c_type_checker == 'integer':
                 c, c_latex = self._make_random_integer(10, -10, "number")
@@ -362,10 +325,8 @@ class SpecificLinearEquation:
                 c, c_latex = self._make_random_frac(6, -6, "number")
             elif c_type_checker == 'decimal':
                 c, c_latex = self._make_random_decimal(6, -6, 10, "number")
-            else:
-                raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
 
-        b_type_checker = choice(self._used_number_type_list)
+        b_type_checker = self._number_type_selector()
         
         if b_type_checker == 'integer':
             b, b_latex = self._make_random_integer(10, -10, "number")
@@ -373,10 +334,8 @@ class SpecificLinearEquation:
             b, b_latex = self._make_random_frac(6, -6, "number")
         elif b_type_checker == 'decimal':
             b, b_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"b_type_checker is {b_type_checker}, it may be wrong.")
 
-        d_type_checker = choice(self._used_number_type_list)
+        d_type_checker = self._number_type_selector()
         
         if d_type_checker == 'integer':
             d, d_latex = self._make_random_integer(10, -10, "number")
@@ -384,8 +343,6 @@ class SpecificLinearEquation:
             d, d_latex = self._make_random_frac(6, -6, "number")
         elif d_type_checker == 'decimal':
             d, d_latex = self._make_random_decimal(8, -8, 10, "number")
-        else:
-            raise ValueError(f"c_type_checker is {c_type_checker}, it may be wrong.")
         
         left = a * self._character_dict["x"] + b
         right = c * self._character_dict["x"] + d
@@ -402,12 +359,6 @@ class SpecificLinearEquation:
         else:
             left_latex = left_latex + f"{a_latex}x"
         
-        
-        """
-        if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
-            b_latex = sy.latex(float(b))
-            answer_latex = sy.latex(float(answer))
-        """
 
         if b > 0:
             left_latex = left_latex + f"+ {b_latex}"
@@ -434,6 +385,15 @@ class SpecificLinearEquation:
         latex_problem = f"{left_latex} = {right_latex}"
         latex_answer = f"x = {answer_latex}"     
         return latex_answer, latex_problem
+    
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(
+                ["integer", "frac", "decimal"]
+            )
+        return selected_number_type
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()

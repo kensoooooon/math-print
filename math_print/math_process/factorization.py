@@ -12,7 +12,14 @@ class FactorizationProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_factorization_type = choice(self._factorization_type_list)
+        if self._factorization_type_list:
+            selected_factorization_type = choice(self._factorization_type_list)
+        else:
+            selected_factorization_type = choice(
+                ["ax+ab=a(x+b)", "x^2+2ax+a^2=(x+a)^2",
+                 "x^2-2ax+a^2=(x-a)^2", "x^2+(a+b)x+ab=(x+a)(x+b)",
+                 "x^2-a^2=(x+a)(x-a)"]
+            )
         
         if selected_factorization_type == "ax+ab=a(x+b)":
             latex_answer, latex_problem = self._make_ax_plus_ab_problem()

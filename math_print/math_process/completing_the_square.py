@@ -16,7 +16,7 @@ class CompletingTheSquareProblem:
             self.latex_answer, self.latex_problem = self._make_completing_the_square()
     
     def _make_only_integer_completing_the_square(self):
-        integer_in_bracket, integer_in_bracket_latex = self._make_random_integer(4, -4, "number")
+        integer_in_bracket, integer_in_bracket_latex = self._make_random_integer(4, -4)
         
         a_checker = self._number_type_selector()
         
@@ -47,7 +47,7 @@ class CompletingTheSquareProblem:
         answer_constant_latex = sy.latex(answer_constant)
         
         right_latex = "="
-        # 1の入り方がおかしい
+
         if a != 1:
             if a == -1:
                 right_latex += "-"
@@ -132,7 +132,7 @@ class CompletingTheSquareProblem:
             selected_number_type = choice(["integer", "frac"])
         return selected_number_type
     
-    def _make_random_frac(self, max_num, min_num, number_or_character):
+    def _make_random_frac(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(2, max_num)

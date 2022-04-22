@@ -595,15 +595,22 @@ def print_quadratic_equation(request):
         organization_coefficient = False
     
     used_formula_list = []
-    if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
+    if quadratic_equation_type_list:
+        if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+        if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+        if "x^2+(a+b)x+ab=(x+a)(x+b)" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
+        if "x^2-a^2=(x+a)(x-a)" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2-a^2=(x+a)(x-a) \)")
+        if "quadratic_formula" in quadratic_equation_type_list:
+            used_formula_list.append("\( x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
+    else:
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
-    if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
-    if "x^2+(a+b)x+ab=(x+a)(x+b)" in quadratic_equation_type_list:
         used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
-    if "x^2-a^2=(x+a)(x-a)" in quadratic_equation_type_list:
         used_formula_list.append("\( x^2-a^2=(x+a)(x-a) \)")
-    if "quadratic_formula" in quadratic_equation_type_list:
         used_formula_list.append("\( x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
         
     math_problem_list_of_list = []
@@ -1092,15 +1099,22 @@ def display_quadratic_equation(request):
         organization_coefficient = False
     
     used_formula_list = []
-    if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
+    if quadratic_equation_type_list:
+        if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+        if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+        if "x^2+(a+b)x+ab=(x+a)(x+b)" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
+        if "x^2-a^2=(x+a)(x-a)" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2-a^2=(x+a)(x-a) \)")
+        if "quadratic_formula" in quadratic_equation_type_list:
+            used_formula_list.append("\( x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
+    else:
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
-    if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
-    if "x^2+(a+b)x+ab=(x+a)(x+b)" in quadratic_equation_type_list:
         used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
-    if "x^2-a^2=(x+a)(x-a)" in quadratic_equation_type_list:
         used_formula_list.append("\( x^2-a^2=(x+a)(x-a) \)")
-    if "quadratic_formula" in quadratic_equation_type_list:
         used_formula_list.append("\( x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
 
     math_problem_tuple_list = []

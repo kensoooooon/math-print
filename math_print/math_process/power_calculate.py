@@ -8,11 +8,11 @@ class PowerCalculateProblem:
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
         self._used_number_type_list = settings["number_to_use"]
-        self._calculate_type = settings["calculate_type"]
+        self._calculate_type_list = settings["calculate_type"]
         self.latex_answer, self.latex_problem = self._make_power_problem()
     
     def _make_power_problem(self):
-        selected_calculate_type = choice(self._calculate_type)
+        selected_calculate_type = self._calculate_type_selector()
         
         if selected_calculate_type == "single":
             latex_answer, latex_problem = self._make_single_problem()
@@ -117,6 +117,24 @@ class PowerCalculateProblem:
         
         return latex_answer, latex_problem
     
+    def _calculate_type_selector(self):
+        if self._calculate_type_list:
+            selected_calculate_type = choice(self._calculate_type_list)
+        else:
+            selected_calculate_type = choice(
+                ["single", "double_plus", "double_minus", "double_times", "double_div"]
+            )
+        return selected_calculate_type
+    
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(
+                ["integer", "decimal", "frac"]
+            )
+        return selected_number_type
+    
     def _make_single_pair_of_base_and_index(self, before_a_number_is, is_times_or_div=False):
         if before_a_number_is == "positive":
             before_a_number = sy.Integer(1)
@@ -125,7 +143,7 @@ class PowerCalculateProblem:
             before_a_number = sy.Integer(-1)
             before_a_number_latex = "-"
         
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
             if is_times_or_div:
@@ -167,7 +185,7 @@ class PowerCalculateProblem:
             before_a_number = sy.Integer(-1)
             before_a_number_latex = "-"
         
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
             a, a_latex = self._make_random_integer_number(6, -6)

@@ -14,7 +14,14 @@ class QuadraticFunctionProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_problem_type = choice(self._problem_type_list)
+        if self._problem_type_list:
+            selected_problem_type = choice(self._problem_type_list)
+        else:
+            selected_problem_type = choice(
+                ["one_point_to_quadratic", "two_x_values_and_change_rate_to_quadratic",
+                 "two_x_values_and_quadratic_to_change_rate", "x_range_and_quadratic_to_max_and_min"
+                ]
+            )
         
         if selected_problem_type == "one_point_to_quadratic":
             latex_answer, latex_problem = self._make_one_point_to_quadratic_problem()
@@ -24,8 +31,6 @@ class QuadraticFunctionProblem:
             latex_answer, latex_problem = self._make_two_x_values_and_quadratic_to_change_rate_problem()
         elif selected_problem_type == "x_range_and_quadratic_to_max_and_min":
             latex_answer, latex_problem = self._make_x_range_and_quadratic_to_max_and_min_problem()
-        else:
-            raise ValueError(f"selected_problem_type: {selected_problem_type}, it may be wrong.")
         
         return latex_answer, latex_problem
 
@@ -208,16 +213,24 @@ class QuadraticFunctionProblem:
         return latex_answer, latex_problem
                     
     def _make_large_and_small_x_values(self, max_num, min_num):
-        num_type_checker1 = choice(self._used_point_number_type_list)
+        if self._used_coefficient_number_type_list:
+            num_type_checker1 = choice(self._used_point_number_type_list)
+        else:
+            num_type_checker1 = choice(["integer", "frac"])
+            
         if num_type_checker1 == "integer":
             x1 = self._make_random_integer_number(max_num, min_num)
-        else:
+        elif num_type_checker1 == "frac":
             x1 = self._make_random_frac_number(max_num, min_num)
-        
-        num_type_checker2 = choice(self._used_point_number_type_list)
+
+        if self._used_coefficient_number_type_list:
+            num_type_checker2 = choice(self._used_point_number_type_list)
+        else:
+            num_type_checker2 = choice(["integer", "frac"])
+
         if num_type_checker2 == "integer":
             x2 = self._make_random_integer_number(max_num, min_num)
-        else:
+        elif num_type_checker2 == "frac":
             x2 = self._make_random_frac_number(max_num, min_num)    
         
         if x1 == x2:
@@ -233,17 +246,23 @@ class QuadraticFunctionProblem:
         return large_x, small_x
 
     def _make_coefficient_value(self, max_num, min_num):
-        num_type_checker = choice(self._used_coefficient_number_type_list)
+        if self._used_coefficient_number_type_list:
+            num_type_checker = choice(self._used_coefficient_number_type_list)
+        else:
+            num_type_checker = choice(["integer", "frac"])
         
         if num_type_checker == "integer":
             a = self._make_random_integer_number(max_num, min_num)
-        else:
+        elif num_type_checker == "frac":
             a = self._make_random_frac_number(max_num, min_num)
         
         return a
 
     def _make_single_x_value(self, max_num, min_num):
-        num_type_checker = choice(self._used_point_number_type_list)
+        if self._used_coefficient_number_type_list:
+            num_type_checker = choice(self._used_coefficient_number_type_list)
+        else:
+            num_type_checker = choice(["integer", "frac"])
         
         if num_type_checker == "integer":
             x = self._make_random_integer_number(max_num, min_num)

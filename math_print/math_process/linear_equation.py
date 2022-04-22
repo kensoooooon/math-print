@@ -28,35 +28,30 @@ class LinearEquationProblem:
         right = 0
         right_latex = ""
 
-        first_number_checker = choice(self._used_number_type_list)
+        first_number_checker = self._number_type_selector()
         if first_number_checker == 'integer':
             first_number, first_latex = self._make_random_integer(max_number, min_number, "character")
         elif first_number_checker == 'frac':
             first_number, first_latex = self._make_random_frac(max_number, min_number, "character")
         elif first_number_checker == 'decimal':
             first_number, first_latex = self._make_random_decimal(max_number, min_number, 10, "character")
-        else:
-            raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
 
         left += first_number
         left_latex += first_latex
 
-        second_number_checker = choice(self._used_number_type_list)
+        second_number_checker = self._number_type_selector()
         if second_number_checker == 'integer':
             second_number, second_latex = self._make_random_integer(max_number, min_number, "number")
         elif second_number_checker == 'frac':
             second_number, second_latex = self._make_random_frac(max_number, min_number, "number")
         elif second_number_checker == 'decimal':
             second_number, second_latex = self._make_random_decimal(max_number, min_number, 10, "number")
-        else:
-            raise ValueError("The first number choice may be wrong. Please check 'used_number_type_list'.")
 
         right += second_number
         right_latex += second_latex
 
         for i in range(self._term_number - 2):
-            num_type_checker = choice(self._used_number_type_list)
-            operator_type_checker = choice(self._used_operator_type_list)
+            num_type_checker = self._number_type_selector()
             
             if num_type_checker == 'integer':
                 if random() > 0.3:
@@ -73,10 +68,8 @@ class LinearEquationProblem:
                     number, latex_number = self._make_random_decimal(max_number, min_number, 10, "character")
                 else:
                     number, latex_number = self._make_random_decimal(max_number, min_number, 10, "number")
-            else:
-                raise ValueError("The second and subsequent number may be wrong. Please check 'used_number_type_list'.")
 
-            # 足し算のとき
+            operator_type_checker = self._operator_type_selector()
             if operator_type_checker == "plus":
                 if random() > 0.5:
                     left = left + number
@@ -110,6 +103,24 @@ class LinearEquationProblem:
         answer = sy.collect(equation_answer, self._character_dict["x"])
         latex_answer = f"x = {sy.latex(answer)}"
         return latex_answer, latex_problem
+    
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(
+                ["integer", "frac", "decimal"]
+            )
+        return selected_number_type
+    
+    def _operator_type_selector(self):
+        if self._used_operator_type_list:
+            selected_operator_type = choice(self._used_operator_type_list)
+        else:
+            selected_operator_type = choice(
+                ["plus", "minus"]
+            )
+        return selected_operator_type
 
     def _make_random_frac(self, max_num, min_num, number_or_character):
         checker = random()

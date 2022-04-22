@@ -8,11 +8,18 @@ class QuadraticEquationProblem:
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
         self._quadratic_equation_type_list = settings["quadratic_equation_type_list"]
-        self._is_factor_out = settings["factor_out"]
+        self._organization_coefficient = settings["organization_coefficient"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_quadratic_equation_type = choice(self._quadratic_equation_type_list)
+        if self._quadratic_equation_type_list:
+            selected_quadratic_equation_type = choice(self._quadratic_equation_type_list)
+        else:
+            selected_quadratic_equation_type = choice(
+                ["x^2+2ax+a^2=(x+a)^2", "x^2-2ax+a^2=(x-a)^2",
+                "x^2+(a+b)x+ab=(x+a)(x+b)", "x^2-a^2=(x+a)(x-a)",
+                "quadratic_formula"]
+            )
 
         if selected_quadratic_equation_type == "x^2+2ax+a^2=(x+a)^2":
             latex_answer, latex_problem = self._make_square_plus_problem()
@@ -23,7 +30,7 @@ class QuadraticEquationProblem:
         elif selected_quadratic_equation_type == "x^2-a^2=(x+a)(x-a)":
             latex_answer, latex_problem = self._make_square_minus_square_problem()
         elif selected_quadratic_equation_type == "quadratic_formula":
-            latex_answer, latex_problem = self._new_make_quadratic_formula_problem()
+            latex_answer, latex_problem = self._make_quadratic_formula_problem()
 
         return latex_answer, latex_problem
         
@@ -32,10 +39,12 @@ class QuadraticEquationProblem:
         x = sy.Symbol("x", real=True)
         b = self._make_random_number(positive_or_negative_specification="positive")
         problem = sy.expand((x + b) ** 2)
-        if self._is_factor_out:
+        if self._organization_coefficient:
             if random() > 0.7:
-                k = self._make_random_number()
-                problem = k * problem
+                k = self._make_random_number(integer_or_frac_specification="frac")
+            else:
+                k = self._make_random_number(integer_or_frac_specification="integer")
+            problem = k * problem
         latex_problem = sy.latex(problem)
         latex_problem += "= 0"
         answers = sy.solve(problem, x)
@@ -47,14 +56,15 @@ class QuadraticEquationProblem:
         x = sy.Symbol("x", real=True)
         b = self._make_random_number(positive_or_negative_specification="negative")
         problem = sy.expand((x + b) ** 2)
-        if self._is_factor_out:
+        if self._organization_coefficient:
             if random() > 0.7:
-                k = self._make_random_number()
-                problem = k * problem
+                k = self._make_random_number(integer_or_frac_specification="frac")
+            else:
+                k = self._make_random_number(integer_or_frac_specification="integer")
+            problem = k * problem
         latex_problem = sy.latex(problem)
         latex_problem += "= 0"
         answers = sy.solve(problem, x)
-        print(f"answer: {answers}, type: {type(answers)}")
         latex_answer = f"x = {sy.latex(answers[0])}"
         
         return latex_answer, latex_problem
@@ -64,19 +74,21 @@ class QuadraticEquationProblem:
         (x+a)(x+b) = x^2+(a+b)x+ab
         """
         x = sy.Symbol("x", real=True)
-        a = self._make_random_number()
-        b = self._make_random_number(integer_or_frac_specification="integer")
-        if a == b:
-            b += randint(1, 3)
-        problem = sy.expand((x + a) * (x + b))
-        if self._is_factor_out:
+        
+        answer1 = self._make_random_number(integer_or_frac_specification="integer")
+        answer2 = self._make_random_number(integer_or_frac_specification="integer")
+        if (answer1 == answer2) or (abs(answer1) == abs(answer2)):
+            answer2 += randint(1, 3)
+        problem = sy.expand((x - answer1) * (x - answer2))
+        if self._organization_coefficient:
             if random() > 0.7:
-                k = self._make_random_number()
-                problem = k * problem
+                k = self._make_random_number(integer_or_frac_specification="frac")
+            else:
+                k = self._make_random_number(integer_or_frac_specification="integer")
+            problem = k * problem
         latex_problem = sy.latex(problem)
-        latex_problem += "= 0"
-        answers = sy.solve(problem, x)
-        latex_answer = f"x = {sy.latex(answers[0])}, {sy.latex(answers[1])}"
+        latex_problem += "=0"
+        latex_answer = f"x = {sy.latex(answer1)}, {sy.latex(answer2)}"
         
         return latex_answer, latex_problem
 
@@ -85,71 +97,25 @@ class QuadraticEquationProblem:
         x^2-a^2=(x+a)(x-a)
         """
         x = sy.Symbol("x", real=True)
-        a1 = self._make_random_number(positive_or_negative_specification="positive")
-        a2 = -1 * a1
-        problem = sy.expand((x + a1) * (x + a2))
-        if self._is_factor_out:
+        
+        answer = self._make_random_number(positive_or_negative_specification="positive")
+        problem = sy.expand((x + answer) * (x - answer))
+        if self._organization_coefficient:
             if random() > 0.7:
-                k = self._make_random_number()
-                problem = k * problem
-        latex_problem = sy.latex(problem)
-        latex_problem += "= 0"
-        answers = sy.solve(problem, x)
-        latex_answer = f"x = {sy.latex(answers[0])}"
+                k = self._make_random_number(integer_or_frac_specification="frac")
+            else:
+                k = self._make_random_number(integer_or_frac_specification="integer")
+            problem = k * problem
+        latex_problem = f"{sy.latex(problem)} = 0"
+        latex_answer = f"x = {sy.latex(answer)}, {sy.latex(-1 * answer)}"
         
         return latex_answer, latex_problem
 
     def _make_quadratic_formula_problem(self):
-        """
-        x = (-b \pm \sqrt{b^2-4ac}) / 2a
-        """
-        x = sy.Symbol("x", real=True)
-        discriminant_value = self._make_random_number(integer_or_frac_specification="integer", positive_or_negative_specification="positive")
-        discriminant_value += randint(1, 8)
-        b = self._make_random_number(integer_or_frac_specification="integer")
-        a = self._make_random_number(integer_or_frac_specification="integer")
-        c = sy.Symbol("c", real=True)
-        c_value = sy.solve(b ** 2 - 4 * a * c - discriminant_value, c)[0]
-        problem = a * x ** 2 + b * x + c_value
-        latex_problem = f"{sy.latex(problem)} = 0"
-        
-        answer1, answer2 = sy.solve(problem, x)
-        print(f"answer1: {answer1}, type: {type(answer1)}")
-        print(f"answer2: {answer2}, type: {type(answer2)}")
-        latex_answer = f"x = {sy.latex(sy.factor(answer1, fraction=True, gaussian=True))}, {sy.latex(sy.factor(answer2, fraction=True, gaussian=True))}"
-        """
-        if b % 2 == 0:
-            denominator = a
-            left_part = -1 * b / 2
-            value_in_root = (b / 2) ** 2 - a * c_value
-        else:
-            denominator = 2 * a
-            left_part = -1 * b
-            value_in_root = b ** 2 - 4 * a * c_value
-        # right_part = f"{sy.latex(sy.sqrt(discriminant_value))}" 
-        if (denominator < 0) and (left_part < 0):
-            denominator_latex = sy.latex(-1 * denominator)
-            left_part_latex = sy.latex(-1 * left_part)
-            root_part_latex = sy.latex(sy.sqrt(value_in_root))
-            latex_answer = f"x = \\frac{{{left_part_latex} \pm {root_part_latex}}}{{{denominator_latex}}}"
-        elif (a < 0) and (b > 0):
-            denominator_latex = sy.latex(-1 * denominator)
-            left_part_latex = sy.latex(left_part)
-            root_part_latex = sy.latex(sy.sqrt(value_in_root))
-            latex_answer = f"x = - \\frac{{{left_part_latex} \pm {root_part_latex}}}{{{denominator_latex}}}"
-        else:
-            denominator_latex = sy.latex(denominator)
-            left_part_latex = sy.latex(left_part)
-            root_part_latex = sy.latex(sy.sqrt(value_in_root))
-            latex_answer = f"x = \\frac{{{left_part_latex} \pm {root_part_latex}}}{{{denominator_latex}}}"
-        """
-        return latex_answer, latex_problem
-    
-    def _new_make_quadratic_formula_problem(self):
         x = sy.Symbol("x", real=True)
         
         left_of_numerator = self._make_random_number(integer_or_frac_specification="integer")
-        value_before_root = sy.Integer(randint(2, 4))
+        value_before_root = sy.Integer(randint(1, 4))
         value_in_root = sy.Integer(choice([2, 3, 5, 7]))
         denominator = sy.Integer(randint(2, 4))
         
@@ -162,9 +128,6 @@ class QuadraticEquationProblem:
         answer2 = (left_of_numerator - value_before_root * sy.sqrt(value_in_root)) / (denominator)
         
         problem = sy.expand((x - answer1) * (x - answer2))
-        print(f"problem: {problem}")
-        print(f"coeff: {problem.coeff(x, 0)}, type: {type(problem.coeff(x, 0))}")
-        print(f"constant_number_of_problem: {problem.coeff(x, 0).denominator}")
         constant_number_of_problem = problem.coeff(x, 0).denominator
         if constant_number_of_problem != 1:
             problem = constant_number_of_problem * problem

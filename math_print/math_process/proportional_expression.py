@@ -12,14 +12,14 @@ class ProportionalExpressionProblem:
             self.latex_answer, self.latex_problem = self._make_x_and_y()
         
     def _make_x_and_y(self):
-        x_checker = choice(self._used_number_type_list)
+        x_checker = self._number_type_selector()
         
         if x_checker == "integer":
             x, x_latex = self._make_random_integer_number(8, -8)
         elif x_checker == "frac":
             x, x_latex = self._make_random_frac_number(8, -8)
         
-        a_checker = choice(self._used_number_type_list)
+        a_checker = self._number_type_selector()
         
         if a_checker == "integer":
             a, a_latex = self._make_random_integer_number(8, -8)
@@ -34,6 +34,13 @@ class ProportionalExpressionProblem:
         latex_problem = f"x = {x_latex}, y = {y_latex}"
         
         return latex_answer, latex_problem
+
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(["integer", "frac"])
+        return selected_number_type
 
     def _make_random_frac_number(self, max_num, min_num):
         checker = random()

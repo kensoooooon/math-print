@@ -12,7 +12,14 @@ class FactorizationProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        selected_factorization_type = choice(self._factorization_type_list)
+        if self._factorization_type_list:
+            selected_factorization_type = choice(self._factorization_type_list)
+        else:
+            selected_factorization_type = choice(
+                ["ax+ab=a(x+b)", "x^2+2ax+a^2=(x+a)^2",
+                 "x^2-2ax+a^2=(x-a)^2", "x^2+(a+b)x+ab=(x+a)(x+b)",
+                 "x^2-a^2=(x+a)(x-a)"]
+            )
         
         if selected_factorization_type == "ax+ab=a(x+b)":
             latex_answer, latex_problem = self._make_ax_plus_ab_problem()
@@ -85,8 +92,18 @@ class FactorizationProblem:
         else:
             a = self._make_random_number()
             b = self._make_random_number()
-        
+        print(f"a = {a}, b = {b}")
+        if (a == b) or (abs(a) == abs(b)):
+            print("same!")
+            print(f"a = {a}, b = {b}")
+            if random() > 0.5:
+                b += sy.Integer(randint(1, 3))
+            else:
+                b -= sy.Integer(randint(1, 3))
+            print(f"a = {a}, b = {b}")
+            
         problem = sy.expand((x + a) * (x + b))
+        print(f"problem: {problem}")
         latex_problem = sy.latex(problem)
         answer = sy.factor(problem)
         latex_answer = f"= {sy.latex(answer)}"

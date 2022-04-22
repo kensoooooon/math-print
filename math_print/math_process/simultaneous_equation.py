@@ -21,38 +21,29 @@ class SimultaneousEquation:
             raise ValueError("linear_equation_type may be wrong.")
 
     def _make_ax_plus_by_equal_c_only_integer(self):
-        x, x_latex = self._make_random_integer(8, -8, "number")
-        y, y_latex = self._make_random_integer(8, -8, "number")
+        x, x_latex = self._make_random_integer(8, -8)
+        y, y_latex = self._make_random_integer(8, -8)
         
         two_problems_list = []
         
         for _ in range(2):
-            # print(f"self._used_number_type_list: {self._used_number_type_list}")
-            a_type_checker = choice(self._used_number_type_list)
-            # print(f"a_type_checker: {a_type_checker}, type:{type(a_type_checker)}")
-            # print(f"a_type_checker is integer: {bool(a_type_checker == 'integer')}")
+            a_type_checker = self._number_type_selector()
             
             if a_type_checker == "integer":
-                a, a_latex = self._make_random_integer(8, -8, "number")
+                a, a_latex = self._make_random_integer(8, -8)
             elif a_type_checker == "frac":
-                a, a_latex = self._make_random_frac(8, -8, "number")
+                a, a_latex = self._make_random_frac(8, -8)
             elif a_type_checker == "decimal":
-                a, a_latex = self._make_random_decimal(8, -8, 10, "number")
-            else:
-                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+                a, a_latex = self._make_random_decimal(8, -8)
             
-            b_type_checker = choice(self._used_number_type_list)
-            # print(f"b_type_checker: {b_type_checker}, type:{type(b_type_checker)}")
-            # print(f"b_type_checker is integer: {bool(b_type_checker == 'integer')}")
+            b_type_checker = self._number_type_selector()
             
             if b_type_checker == "integer":
-                b, b_latex = self._make_random_integer(8, -8, "number")
+                b, b_latex = self._make_random_integer(8, -8)
             elif b_type_checker == "frac":
-                b, b_latex = self._make_random_frac(8, -8, "number")
+                b, b_latex = self._make_random_frac(8, -8)
             elif b_type_checker == "decimal":
-                b, b_latex = self._make_random_decimal(8, -8, 10, "number")
-            else:
-                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+                b, b_latex = self._make_random_decimal(8, -8)
 
             c = a * x + b * y
             c_latex = sy.latex(c)
@@ -75,11 +66,7 @@ class SimultaneousEquation:
                 left_latex = left_latex + f"{b_latex}y"
             
             if ("integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list) and ("decimal" in self._used_number_type_list):
-                # print("---------FLOAT!!------------")
                 right_latex = f"{sy.latex(float(c))}"
-                # print(f"c is {c}")
-                # print(f"floating c is {float(c)}")
-                # print(f"floating c_latex is {sy.latex(float(c))}")
             else:
                 right_latex = f"{c_latex}"
             
@@ -91,49 +78,45 @@ class SimultaneousEquation:
         return latex_answer, latex_problem
         
     def _make_ax_plus_by_equal_c_all_number(self):
-        answer_type_checker =choice(self._used_number_type_list)
+        answer_type_checker = self._number_type_selector()
         
         if answer_type_checker == "integer":
-            x, x_latex = self._make_random_integer(8, -8, "number")
+            x, x_latex = self._make_random_integer(8, -8)
         if answer_type_checker == "frac":
-            x, x_latex = self._make_random_frac(8, -8, "number")
+            x, x_latex = self._make_random_frac(8, -8)
         if answer_type_checker == "decimal":
-            x, x_latex = self._make_random_decimal(8, -8, 10, "number")
+            x, x_latex = self._make_random_decimal(8, -8)
 
-        answer_type_checker =choice(self._used_number_type_list)
+        answer_type_checker = self._number_type_selector()
         
         if answer_type_checker == "integer":
-            y, y_latex = self._make_random_integer(8, -8, "number")
+            y, y_latex = self._make_random_integer(8, -8)
         if answer_type_checker == "frac":
-            y, y_latex = self._make_random_frac(8, -8, "number")
+            y, y_latex = self._make_random_frac(8, -8)
         if answer_type_checker == "decimal":
-            y, y_latex = self._make_random_decimal(8, -8, 10, "number")
+            y, y_latex = self._make_random_decimal(8, -8)
         
         two_problems_list = []
         
         for _ in range(2):
-            a_type_checker = choice(self._used_number_type_list)
+            a_type_checker = self._number_type_selector()
             
             if a_type_checker == "integer":
-                a, a_latex = self._make_random_integer(8, -8, "number")
+                a, a_latex = self._make_random_integer(8, -8)
             elif a_type_checker == "frac":
-                a, a_latex = self._make_random_frac(8, -8, "number")
+                a, a_latex = self._make_random_frac(8, -8)
             elif a_type_checker == "decimal":
-                a, a_latex = self._make_random_decimal(8, -8, 10, "number")
-            else:
-                raise ValueError(f"a_type_checker is {a_type_checker}, it may be wrong.")
+                a, a_latex = self._make_random_decimal(8, -8)
             
-            b_type_checker = choice(self._used_number_type_list)
+            b_type_checker = self._number_type_selector()
             
             if b_type_checker == "integer":
-                b, b_latex = self._make_random_integer(8, -8, "number")
+                b, b_latex = self._make_random_integer(8, -8)
             elif b_type_checker == "frac":
-                b, b_latex = self._make_random_frac(8, -8, "number")
+                b, b_latex = self._make_random_frac(8, -8)
             elif b_type_checker == "decimal":
-                b, b_latex = self._make_random_decimal(8, -8, 10, "number")
-            else:
-                raise ValueError(f"b_type_checker is {b_type_checker}, it may be wrong.")
-
+                b, b_latex = self._make_random_decimal(8, -8)
+            
             c = a * x + b * y
             c_latex = sy.latex(c)
             
@@ -155,11 +138,7 @@ class SimultaneousEquation:
                 left_latex = left_latex + f"{b_latex}y"
             
             if ("integer" not in self._used_number_type_list) and ("frac" not in self._used_number_type_list) and ("decimal" in self._used_number_type_list):
-                # print("---------FLOAT!!------------")
                 right_latex = f"{sy.latex(float(c))}"
-                # print(f"c is {c}")
-                # print(f"floating c is {float(c)}")
-                # print(f"floating c_latex is {sy.latex(float(c))}")
             else:
                 right_latex = f"{c_latex}"
             
@@ -169,9 +148,17 @@ class SimultaneousEquation:
         latex_answer = f"x = {x_latex}, y = {y_latex}"
         
         return latex_answer, latex_problem
-        
+    
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(
+                ["integer", "frac", "decimal"]
+            )
+        return selected_number_type
 
-    def _make_random_frac(self, max_num, min_num, number_or_character):
+    def _make_random_frac(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(2, max_num)
@@ -181,48 +168,29 @@ class SimultaneousEquation:
             denominator = randint(2, max_num)
         
         frac = sy.Rational(numerator, denominator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            frac_with_character = frac * self._character_dict[used_character]
-            frac_with_character_latex = sy.latex(frac_with_character)
-            return frac_with_character, frac_with_character_latex
-
-        elif number_or_character == "number":
-            frac_with_number_latex = sy.latex(frac)
-            return frac, frac_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+    
+        frac_with_number_latex = sy.latex(frac)
+        return frac, frac_with_number_latex
         
     
-    def _make_random_decimal(self, max_num, min_num, denominator, number_or_character):
+    def _make_random_decimal(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
         else:
             numerator = randint(min_num, -1)
         
-        frac_for_decimal = sy.Rational(numerator, denominator)
+        frac_for_decimal = sy.Rational(numerator, 10)
         if frac_for_decimal == 1:
             decimal = 1
         else:
             decimal = float(frac_for_decimal)
 
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            character = self._character_dict[used_character]
-            decimal_with_character = frac_for_decimal * character
-            decimal_with_character_latex = sy.latex(decimal * character)
-            return decimal_with_character, decimal_with_character_latex
-
-        elif number_or_character == "number":
-            decimal_with_number = frac_for_decimal
-            decimal_with_number_latex = sy.latex(decimal)
-            return decimal_with_number, decimal_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        decimal_with_number = frac_for_decimal
+        decimal_with_number_latex = sy.latex(decimal)
+        return decimal_with_number, decimal_with_number_latex
     
-    def _make_random_integer(self, max_num, min_num, number_or_character):
+    def _make_random_integer(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
@@ -231,14 +199,5 @@ class SimultaneousEquation:
         
         integer = sy.Integer(numerator)
         
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            integer_with_character = self._character_dict[used_character] * integer
-            integer_with_character_latex = sy.latex(integer_with_character)
-            return integer_with_character, integer_with_character_latex
-
-        elif number_or_character == "number":
-            integer_with_number_latex = sy.latex(integer)
-            return integer, integer_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        integer_with_number_latex = sy.latex(integer)
+        return integer, integer_with_number_latex

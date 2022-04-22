@@ -37,7 +37,7 @@ class CharacterMathProblem:
         
         latex_problem = ""
         latex_string_for_eval = ""
-        first_num_type_checker = choice(self._used_number_type_list)
+        first_num_type_checker = self._number_type_selector()
         if first_num_type_checker == "integer":
             number = self._make_random_integer_number(max_number, min_number)
         elif first_num_type_checker == "frac":
@@ -58,7 +58,7 @@ class CharacterMathProblem:
             latex_string_for_eval += f"{number} * x"
         
         for _ in range(self._term_number-1):
-            num_type_checker = choice(self._used_number_type_list)
+            num_type_checker = self._number_type_selector()
             if num_type_checker == "integer":
                 number = self._make_random_integer_number(max_number, min_number)
             elif num_type_checker == "frac":
@@ -66,8 +66,7 @@ class CharacterMathProblem:
             elif num_type_checker == "decimal":
                 number = self._make_random_decimal_number(max_number, min_number, 10)
         
-            operator_type_checker = choice(self._used_operator_type_list)
-            # print(f"operator_type_checker: {operator_type_checker}")
+            operator_type_checker = self._operator_type_selector()
             if operator_type_checker == "plus":
                 operator_for_latex = "+"
                 operator_for_eval = "+"
@@ -83,7 +82,6 @@ class CharacterMathProblem:
             
             character = choice(self._used_character_type_list)
             
-
             if random() > 0.3:
                 term = number * self._character_dict[character]
                 term_latex = sy.latex(term)
@@ -124,6 +122,24 @@ class CharacterMathProblem:
         latex_answer = f" = {sy.latex(expanded_answer)}"
      
         return latex_answer, latex_problem
+    
+    def _number_type_selector(self):
+        if self._used_number_type_list:
+            selected_number_type = choice(self._used_number_type_list)
+        else:
+            selected_number_type = choice(
+                ["integer", "frac", "decimal"]
+            )
+        return selected_number_type
+    
+    def _operator_type_selector(self):
+        if self._used_operator_type_list:
+            selected_operator_type = choice(self._used_operator_type_list)
+        else:
+            selected_operator_type = choice(
+                ["plus", "minus", "times", "divided"]
+            )
+        return selected_operator_type
 
     def _make_random_frac_number(self, max_num, min_num):
         while True:

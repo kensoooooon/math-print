@@ -11,7 +11,12 @@ class ConversionBetweenFracAndDecimalProblem:
         self.latex_answer, self.latex_problem = self._make_conversion_problem()
     
     def _make_conversion_problem(self):
-        selected_conversion_type = choice(self._conversion_type_list)
+        if self._conversion_type_list:
+            selected_conversion_type = choice(self._conversion_type_list)
+        else:
+            selected_conversion_type = choice(
+                ["frac_to_decimal", "decimal_to_frac"]
+            )
         
         if selected_conversion_type == "frac_to_decimal":
             latex_answer, latex_problem = self._make_frac_to_decimal_problem()
@@ -21,7 +26,10 @@ class ConversionBetweenFracAndDecimalProblem:
         return latex_answer, latex_problem
     
     def _make_frac_to_decimal_problem(self):
-        selected_below_the_decimal_point = choice(self._below_the_decimal_point_list)
+        if self._below_the_decimal_point_list:
+            selected_below_the_decimal_point = choice(self._below_the_decimal_point_list)
+        else:
+            selected_below_the_decimal_point = choice([1, 2])
         frac, decimal = self._make_random_decimal_and_frac_by_frac(selected_below_the_decimal_point)
         
         latex_answer = f"= {sy.latex(decimal)}"
@@ -30,7 +38,10 @@ class ConversionBetweenFracAndDecimalProblem:
         return latex_answer, latex_problem
     
     def _make_decimal_to_frac_problem(self):
-        selected_below_the_decimal_point = choice(self._below_the_decimal_point_list)
+        if self._below_the_decimal_point_list:
+            selected_below_the_decimal_point = choice(self._below_the_decimal_point_list)
+        else:
+            selected_below_the_decimal_point = choice([1, 2])
         frac, decimal = self._make_random_decimal_and_frac_by_frac(selected_below_the_decimal_point)
         
         latex_answer = f"= {sy.latex(frac)}"

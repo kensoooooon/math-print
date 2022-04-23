@@ -34,6 +34,7 @@ from .math_process.number_without_bracket_calculate import NumberWithoutBracketC
 from .math_process.sector import SectorProblem
 from .math_process.factorization import FactorizationProblem
 from .math_process.quadratic_equation import QuadraticEquationProblem
+from .math_process.hs1_expand_equation import HS1ExpandEquationProblem
 
 
 # Create your views here.
@@ -632,6 +633,78 @@ def print_quadratic_equation(request):
 
     return render(request, 'math_print/junior_highschool3/quadratic_equation/for_print.html', context)
 
+def hs1_print_expand_equation(request):
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    """
+    '(a+b)^2=a^2+2ab+b^2', '(a-b)^2=a^2-2ab+b^2',
+    '(a+b)(a-b)=a^2-b^2',
+    '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab', '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca',
+    '(a+b)^3=a^3+3a^2b+3ab^2+b^3', '(a-b)^3=a^3-3a^2b+3ab^2-b^3',
+    '(a+b)(a^2-ab+b^2)=a^3+b^3', '(a-b)(a^2+ab+b^2)=a^3-b^3'
+    """
+    expand_equation_type_list = request.POST.getlist("used_formula")
+    if not(expand_equation_type_list):
+        expand_equation_type_list.append('(a+b)^2=a^2+2ab+b^2')
+        expand_equation_type_list.append('(a-b)^2=a^2-2ab+b^2')
+        expand_equation_type_list.append('(a+b)(a-b)=a^2-b^2')
+        expand_equation_type_list.append('(ax+b)(cx+d)=acx^2+(ad+bc)x+ab')
+        expand_equation_type_list.append('(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca')
+        expand_equation_type_list.append('(a+b)^3=a^3+3a^2b+3ab^2+b^3')
+        expand_equation_type_list.append('(a-b)^3=a^3-3a^2b+3ab^2-b^3')
+        expand_equation_type_list.append('(a+b)(a^2-ab+b^2)=a^3+b^3')
+        expand_equation_type_list.append('(a-b)(a^2+ab+b^2)=a^3-b^3')
+    
+    used_formula_list = []
+    if '(a+b)^2=a^2+2ab+b^2' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)^2=a^2+2ab+b^2 \)")
+    if '(a-b)^2=a^2-2ab+b^2' in expand_equation_type_list:
+        used_formula_list.append("\( (a-b)^2=a^2-2ab+b^2 \)")
+    if '(a+b)(a-b)=a^2-b^2' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)(a-b)=a^2-b^2 \)")
+    if '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab' in expand_equation_type_list:
+        used_formula_list.append("\( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)")
+    if '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)")
+    if '(a+b)^3=a^3+3a^2b+3ab^2+b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)")
+    if '(a-b)^3=a^3-3a^2b+3ab^2-b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)")
+    if '(a+b)(a^2-ab+b^2)=a^3+b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)(a^2-ab+b^2)=a^3+b^3 \)")
+    if '(a-b)(a^2+ab+b^2)=a^3-b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
+    
+    # divide used_formula_list
+    used_formula_tuple_in_list = []
+    used_formula_iterator = iter(used_formula_list)
+    for formula1, formula2 in zip(used_formula_iterator, used_formula_iterator):
+        used_formula_tuple_in_list.append((formula1, formula2))
+
+    if request.POST["another_character_exists_or_not"] == "exist":
+        another_character_existence = True
+    else:
+        another_character_existence = False
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = HS1ExpandEquationProblem(
+                expand_equation_type_list=expand_equation_type_list, another_character_existence=another_character_existence
+            )
+            problem2 = HS1ExpandEquationProblem(
+                expand_equation_type_list=expand_equation_type_list, another_character_existence=another_character_existence
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    context["used_formula_tuple_in_list"] = used_formula_tuple_in_list
+
+    return render(request, 'math_print/highschool1/expand_equation/for_print.html', context)
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1131,3 +1204,64 @@ def display_quadratic_equation(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     context["used_formula_list"] = used_formula_list
     return render(request, 'math_print/junior_highschool3/quadratic_equation/for_display.html', context)
+
+def hs1_display_expand_equation(request):
+    PROBLEM_NUMBER = 20
+    """
+    '(a+b)^2=a^2+2ab+b^2', '(a-b)^2=a^2-2ab+b^2',
+    '(a+b)(a-b)=a^2-b^2',
+    '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab', '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca',
+    '(a+b)^3=a^3+3a^2b+3ab^2+b^3', '(a-b)^3=a^3-3a^2b+3ab^2-b^3',
+    '(a+b)(a^2-ab+b^2)=a^3+b^3', '(a-b)(a^2+ab+b^2)=a^3-b^3'
+    """
+    expand_equation_type_list = request.POST.getlist("used_formula")
+    if not(expand_equation_type_list):
+        expand_equation_type_list.append('(a+b)^2=a^2+2ab+b^2')
+        expand_equation_type_list.append('(a-b)^2=a^2-2ab+b^2')
+        expand_equation_type_list.append('(a+b)(a-b)=a^2-b^2')
+        expand_equation_type_list.append('(ax+b)(cx+d)=acx^2+(ad+bc)x+ab')
+        expand_equation_type_list.append('(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca')
+        expand_equation_type_list.append('(a+b)^3=a^3+3a^2b+3ab^2+b^3')
+        expand_equation_type_list.append('(a-b)^3=a^3-3a^2b+3ab^2-b^3')
+        expand_equation_type_list.append('(a+b)(a^2-ab+b^2)=a^3+b^3')
+        expand_equation_type_list.append('(a-b)(a^2+ab+b^2)=a^3-b^3')
+    
+    used_formula_list = []
+    if '(a+b)^2=a^2+2ab+b^2' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)^2=a^2+2ab+b^2 \)")
+    if '(a-b)^2=a^2-2ab+b^2' in expand_equation_type_list:
+        used_formula_list.append("\( (a-b)^2=a^2-2ab+b^2 \)")
+    if '(a+b)(a-b)=a^2-b^2' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)(a-b)=a^2-b^2 \)")
+    if '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab' in expand_equation_type_list:
+        used_formula_list.append("\( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)")
+    if '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)")
+    if '(a+b)^3=a^3+3a^2b+3ab^2+b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)")
+    if '(a-b)^3=a^3-3a^2b+3ab^2-b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)")
+    if '(a+b)(a^2-ab+b^2)=a^3+b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a+b)(a^2-ab+b^2)=a^3+b^3 \)")
+    if '(a-b)(a^2+ab+b^2)=a^3-b^3' in expand_equation_type_list:
+        used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
+
+    if request.POST["another_character_exists_or_not"] == "exist":
+        another_character_existence = True
+    else:
+        another_character_existence = False
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = HS1ExpandEquationProblem(
+            expand_equation_type_list=expand_equation_type_list, another_character_existence=another_character_existence
+        )
+        problem2 = HS1ExpandEquationProblem(
+            expand_equation_type_list=expand_equation_type_list, another_character_existence=another_character_existence
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    context["used_formula_list"] = used_formula_list
+    return render(request, 'math_print/highschool1/expand_equation/for_display.html', context)

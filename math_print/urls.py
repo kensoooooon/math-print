@@ -74,4 +74,7 @@ urlpatterns = [
     # 平方完成
     path('completing_the_square/print/', views.print_completing_the_square, name='completing_the_square_print'),
     path('completing_the_square/display/', views.display_completing_the_square, name='completing_the_square_display'),
+    # 式の展開
+    path('hs1_expand_equation/print', views.hs1_print_expand_equation, name='hs1_expand_equation_print'),
+    path('hs1_expand_equation/display', views.hs1_display_expand_equation, name='hs1_expand_equation_display'),
 ]

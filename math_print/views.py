@@ -676,10 +676,29 @@ def hs1_print_expand_equation(request):
         used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
     
     # divide used_formula_list
+    """
+    奇数個だと動作がおかしい
+    """
     used_formula_tuple_in_list = []
+    """
     used_formula_iterator = iter(used_formula_list)
     for formula1, formula2 in zip(used_formula_iterator, used_formula_iterator):
+        print(f"formula1: {formula1}")
+        print(f"formula2: {formula2}")
         used_formula_tuple_in_list.append((formula1, formula2))
+    """
+    formula_list_length = len(used_formula_list)
+    print(f"formula_list_length: {formula_list_length}")
+    for index in range(0, formula_list_length, 2):
+        print(f"index: {index}")
+        print(f"index+1: {index+1}")
+        if (index + 1) >= formula_list_length:
+            inner_tuple = (used_formula_list[index],)
+        else:
+            inner_tuple = (used_formula_list[index], used_formula_list[index+1])
+        used_formula_tuple_in_list.append(inner_tuple)            
+    
+    print(f"used_formula_tuple_in_list: {used_formula_tuple_in_list}")
 
     if request.POST["another_character_exists_or_not"] == "exist":
         another_character_existence = True

@@ -13,8 +13,137 @@
     </div>
 {% endblock %}
 
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+<script>
+    function changeStatusOfUsedFormula(){
+        let used_formulas = document.getElementsByName(`used_formula`);
+
+        for (let i = 0; i < used_formulas.length; i++) {
+            if (!(used_formulas[i].checked)){
+                used_formulas[i].checked = true;
+            }
+        }
+    }
+</script>
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>式の展開・整理</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">使用する公式</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a+b)^2=a^2+2ab+b^2" name="used_formula" id="expand_(a+b)^2=a^2+2ab+b^2">
+                        <label class="form-check-label" for="expand_(a+b)^2=a^2+2ab+b^2">
+                            \( (a+b)^2=a^2+2ab+b^2 \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a-b)^2=a^2-2ab+b^2" name="used_formula" id="expand_(a-b)^2=a^2-2ab+b^2">
+                        <label class="form-check-label" for="expand_(a-b)^2=a^2-2ab+b^2">
+                            \( (a-b)^2=a^2-2ab+b^2 \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a+b)(a-b)=a^2-b^2" name="used_formula" id="expand_(a+b)(a-b)=a^2-b^2">
+                        <label class="form-check-label" for="expand_(a+b)(a-b)=a^2-b^2">
+                            \( (a+b)(a-b)=a^2-b^2 \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(ax+b)(cx+d)=acx^2+(ad+bc)x+ab" name="used_formula" id="expand_(ax+b)(cx+d)=acx^2+(ad+bc)x+ab" checked>
+                        <label class="form-check-label" for="expand_(ax+b)(cx+d)=acx^2+(ad+bc)x+ab">
+                            \( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca" name="used_formula" id="expand_(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca" checked>
+                        <label class="form-check-label" for="expand_(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca">
+                            \( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a+b)^3=a^3+3a^2b+3ab^2+b^3" name="used_formula" id="expand_(a+b)^3=a^3+3a^2b+3ab^2+b^3" checked>
+                        <label class="form-check-label" for="expand_(a+b)^3=a^3+3a^2b+3ab^2+b^3">
+                            \( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a-b)^3=a^3-3a^2b+3ab^2-b^3" name="used_formula" id="expand_(a-b)^3=a^3-3a^2b+3ab^2-b^3" checked>
+                        <label class="form-check-label" for="expand_(a-b)^3=a^3-3a^2b+3ab^2-b^3">
+                            \( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a+b)(a^2-ab+b^2)=a^3+b^3" name="used_formula" id="expand_(a+b)(a^2-ab+b^2)=a^3+b^3" checked>
+                        <label class="form-check-label" for="expand_(a+b)(a^2-ab+b^2)=a^3+b^3">
+                            \( (a+b)(a^2-ab+b^2)=a^3+b^3 \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="(a-b)(a^2+ab+b^2)=a^3-b^3" name="used_formula" id="expand_(a-b)(a^2+ab+b^2)=a^3-b^3" checked>
+                        <label class="form-check-label" for="expand_(a-b)(a^2+ab+b^2)=a^3-b^3">
+                            \( (a-b)(a^2+ab+b^2)=a^3-b^3 \)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfUsedFormula()" value="全部のせ">
+                </div>
+                <small class="text-muted">x以外の文字を含むか</small>
+                <div clas="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="exist" name="another_character_exists_or_not" id="another_character_exists">
+                        <label class="form-check-label" for="another_character_exists">
+                            含む
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="not_exist" name="another_character_exists_or_not" id="another_character_not_exist" checked>
+                        <label class="form-check-label" for="another_character_not_exist">
+                            含まない
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="ExpandSquareFivePaperRadio" checked>
+                        <label class="form-check-label" for="ExpandSquareFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="ExpandTenPaperRadio">
+                        <label class="form-check-label" for="ExpandTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="ExpandFifteenPaperRadio">
+                        <label class="form-check-label" for="ExpandFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs1_expand_equation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'hs1_expand_equation_display' %}">      
+            </form>
+        </div>
+    </div>
     <div class="row">
         <div class="col border-end border-bottom">
             <p>平方完成</p>

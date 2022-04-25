@@ -77,4 +77,7 @@ urlpatterns = [
     # 式の展開
     path('hs1_expand_equation/print', views.hs1_print_expand_equation, name='hs1_expand_equation_print'),
     path('hs1_expand_equation/display', views.hs1_display_expand_equation, name='hs1_expand_equation_display'),
+    # 因数分解
+    path('hs1_factorization/print', views.hs1_print_factorization, name='hs1_factorization_print'),
+    path('hs1_factorization/display', views.hs1_display_factorization, name='hs1_factorization_display'),
 ]

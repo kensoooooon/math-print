@@ -215,6 +215,58 @@
         </div>
         <div class="row">
             <div class="col border-end border-bottom">
+                <p>等式の変形</p>
+                <form action="?" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <small class="text-muted">含まれる操作</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="addition_and_subtraction" name="calculate_type" id="transformation_addition_and_subtraction" checked>
+                            <label class="form-check-label" for="transformation_addition_and_subtraction">
+                                移項のみ
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="multiplication_and_division" name="calculate_type" id="transformation_multiplication_and_division" checked>
+                            <label class="form-check-label" for="transformation_multiplication_and_division">
+                                かけ算、割り算のみ
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="mixed" name="calculate_type" id="transformation_mixed">
+                            <label class="form-check-label" for="transformation_mixed">
+                                移項、かけ算割り算の両方を含む
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">枚数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="linearFunctionFivePaperRadio" checked>
+                            <label class="form-check-label" for="linearFunctionFivePaperRadio">
+                                20問×5枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="linearFunctionTenPaperRadio">
+                            <label class="form-check-label" for="linearFunctionTenPaperRadio">
+                                20問×10枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="linearFunctionFifteenPaperRadio">
+                            <label class="form-check-label" for="linearFunctionFifteenPaperRadio">
+                                20問×15枚
+                            </label>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'transformation_of_equation_print' %}">
+                    <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'transformation_of_equation_display' %}">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col border-end border-bottom">
                 <p>1次関数を求める</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}

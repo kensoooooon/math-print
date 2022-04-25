@@ -53,6 +53,8 @@ urlpatterns = [
     # 1次関数
     path('linear_function/print/', views.print_linear_function, name='linear_function_print'),
     path('linear_function/display/', views.display_linear_function, name='linear_function_display'),
+    path('transformation_of_equation/print/', views.print_transformation_of_equation, name='transformation_of_equation_print'),
+    path('transformation_of_equation/display/', views.display_transformation_of_equation, name='transformation_of_equation_display'),
     ##########################################
     ### 中3 ###
     path('junior_highschool3/', views.show_junior_highschool3, name='junior_highschool3'),

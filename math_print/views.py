@@ -223,16 +223,22 @@ def print_completing_the_square(request):
     number_to_use = request.POST.getlist("number_to_use")
     number_including_in_bracket = request.POST["number_including_in_bracket"]
     paper_number = int(request.POST["paper_number"])
+    if request.POST["character_including_or_not"] == "including_character":
+        include_character_in_coefficient = True
+    else:
+        include_character_in_coefficient = False
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = CompletingTheSquareProblem(
-                used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+                used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket,
+                include_character_in_coefficient=include_character_in_coefficient
             )
             problem2 = CompletingTheSquareProblem(
-                used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+                used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket,
+                include_character_in_coefficient=include_character_in_coefficient
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -921,14 +927,20 @@ def display_completing_the_square(request):
     
     number_to_use = request.POST.getlist("number_to_use")
     number_including_in_bracket = request.POST["number_including_in_bracket"]
+    if request.POST["character_including_or_not"] == "including_character":
+        include_character_in_coefficient = True
+    else:
+        include_character_in_coefficient = False
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = CompletingTheSquareProblem(
-            used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+            used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket,
+            include_character_in_coefficient=include_character_in_coefficient
         )
         problem2 = CompletingTheSquareProblem(
-            used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket
+            used_number_type_list=number_to_use, number_including_in_bracket=number_including_in_bracket,
+            include_character_in_coefficient=include_character_in_coefficient
         )
         math_problem_tuple_list.append((problem1, problem2))
     

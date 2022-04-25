@@ -10,6 +10,11 @@ class CompletingTheSquareProblem:
         self._used_number_type_list = settings["used_number_type_list"]
         self._character_dict = {}
         self._character_dict["x"] = sy.Symbol("x", real=True)
+        # add to character in coefficient 4.25
+        self._character_dict["t"] = sy.Symbol("t", real=True)
+        # True or False
+        self._include_character_in_coefficient = settings["include_character_in_coefficient"]
+        
         if settings["number_including_in_bracket"] == "not_including_fraction":
             self.latex_answer, self.latex_problem = self._make_only_integer_completing_the_square()
         elif settings["number_including_in_bracket"] == "including_fraction":
@@ -25,15 +30,18 @@ class CompletingTheSquareProblem:
         elif a_checker == "frac":
             a, a_latex = self._make_random_frac(8, -8)
         
-        b = 2 * a * integer_in_bracket
-        b_latex = sy.latex(b)
+        if self._include_character_in_coefficient:
+            b = 2 * a * self._character_dict["t"] * integer_in_bracket
+        else:
+            b = 2 * a * integer_in_bracket
+        # b_latex = sy.latex(b)
         
         c_checker = self._number_type_selector()
         
         if c_checker == "integer":
-            c, c_latex = self._make_random_integer(10, -10)
+            c, _ = self._make_random_integer(10, -10)
         elif c_checker == "frac":
-            c, c_latex =  self._make_random_frac(8, -8)
+            c, _ =  self._make_random_frac(8, -8)
         
         x = self._character_dict["x"]
         
@@ -41,8 +49,8 @@ class CompletingTheSquareProblem:
         left_latex = sy.latex(left)
         latex_problem = left_latex
         
-        number_in_bracket  = b / 2 * a
-        number_in_bracket_latex = sy.latex(number_in_bracket)
+        # number_in_bracket  = b / 2 * a
+        # number_in_bracket_latex = sy.latex(number_in_bracket)
         answer_constant = - (b * b / (4 * a)) + c
         answer_constant_latex = sy.latex(answer_constant)
         
@@ -55,9 +63,15 @@ class CompletingTheSquareProblem:
                 right_latex += f"{a_latex}"
 
         if  integer_in_bracket > 0:
-            right_latex += f"\\left( x + {integer_in_bracket_latex}\\right)^2"
+            if self._include_character_in_coefficient:
+                right_latex += f"\\left( x + {integer_in_bracket_latex} t \\right)^2"
+            else:
+                right_latex += f"\\left( x + {integer_in_bracket} \\)right^2"
         elif integer_in_bracket < 0:
-            right_latex += f"\\left( x {integer_in_bracket_latex}\\right)^2"
+            if self._include_character_in_coefficient:
+                right_latex += f"\\left( x {integer_in_bracket_latex} t\\right)^2"
+            else:
+                right_latex += f"\\left( x {integer_in_bracket_latex}\\right)^2"
         
         if answer_constant > 0:
             right_latex += f"+ {answer_constant_latex}"
@@ -79,16 +93,16 @@ class CompletingTheSquareProblem:
         b_checker = self._number_type_selector()
         
         if b_checker == "integer":
-            b, b_latex = self._make_random_integer(4, -4)
+            b, _ = self._make_random_integer(4, -4)
         elif b_checker == "frac":
-            b, b_latex = self._make_random_frac(8, -8)
+            b, _ = self._make_random_frac(8, -8)
 
         c_checker = self._number_type_selector()
         
         if c_checker == "integer":
-            c, c_latex = self._make_random_integer(4, -4)
+            c, _ = self._make_random_integer(4, -4)
         elif c_checker == "frac":
-            c, c_latex = self._make_random_frac(8, -8)
+            c, _ = self._make_random_frac(8, -8)
         
         x = self._character_dict["x"]
         

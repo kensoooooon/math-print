@@ -35,6 +35,7 @@ from .math_process.sector import SectorProblem
 from .math_process.factorization import FactorizationProblem
 from .math_process.quadratic_equation import QuadraticEquationProblem
 from .math_process.hs1_expand_equation import HS1ExpandEquationProblem
+from .math_process.hs1_factorization import HS1FactorizationProblem
 
 
 # Create your views here.
@@ -643,7 +644,7 @@ def hs1_print_expand_equation(request):
     '(a+b)^3=a^3+3a^2b+3ab^2+b^3', '(a-b)^3=a^3-3a^2b+3ab^2-b^3',
     '(a+b)(a^2-ab+b^2)=a^3+b^3', '(a-b)(a^2+ab+b^2)=a^3-b^3'
     """
-    expand_equation_type_list = request.POST.getlist("used_formula")
+    expand_equation_type_list = request.POST.getlist("used_formula_for_expand")
     if not(expand_equation_type_list):
         expand_equation_type_list.append('(a+b)^2=a^2+2ab+b^2')
         expand_equation_type_list.append('(a-b)^2=a^2-2ab+b^2')
@@ -680,25 +681,13 @@ def hs1_print_expand_equation(request):
     奇数個だと動作がおかしい
     """
     used_formula_tuple_in_list = []
-    """
-    used_formula_iterator = iter(used_formula_list)
-    for formula1, formula2 in zip(used_formula_iterator, used_formula_iterator):
-        print(f"formula1: {formula1}")
-        print(f"formula2: {formula2}")
-        used_formula_tuple_in_list.append((formula1, formula2))
-    """
     formula_list_length = len(used_formula_list)
-    print(f"formula_list_length: {formula_list_length}")
     for index in range(0, formula_list_length, 2):
-        print(f"index: {index}")
-        print(f"index+1: {index+1}")
         if (index + 1) >= formula_list_length:
             inner_tuple = (used_formula_list[index],)
         else:
             inner_tuple = (used_formula_list[index], used_formula_list[index+1])
         used_formula_tuple_in_list.append(inner_tuple)            
-    
-    print(f"used_formula_tuple_in_list: {used_formula_tuple_in_list}")
 
     if request.POST["another_character_exists_or_not"] == "exist":
         another_character_existence = True
@@ -723,6 +712,78 @@ def hs1_print_expand_equation(request):
     context["used_formula_tuple_in_list"] = used_formula_tuple_in_list
 
     return render(request, 'math_print/highschool1/expand_equation/for_print.html', context)
+
+
+def hs1_print_factorization(request):
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+
+    factorization_type_list = request.POST.getlist("used_formula_for_factorization")
+    if not(factorization_type_list):
+        factorization_type_list.append('a^2+2ab+b^2=(a+b)^2')
+        factorization_type_list.append('a^2-2ab+b^2=(a-b)^2')
+        factorization_type_list.append('a^2-b^2=(a+b)(a-b)')
+        factorization_type_list.append('acx^2+(ad+bc)x+ab=(ax+b)(cx+d)')
+        factorization_type_list.append('a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2')
+        factorization_type_list.append('a^3+3a^2b+3ab^2+b^3=(a+b)^3')
+        factorization_type_list.append('a^3-3a^2b+3ab^2-b^3=(a-b)^3')
+        factorization_type_list.append('a^3+b^3=(a+b)(a^2-ab+b^2)')
+        factorization_type_list.append('a^3-b^3=(a-b)(a^2+ab+b^2)')
+    
+    used_formula_list = []
+    if 'a^2+2ab+b^2=(a+b)^2' in factorization_type_list:
+        used_formula_list.append("\( a^2+2ab+b^2=(a+b)^2 \)")
+    if 'a^2-2ab+b^2=(a-b)^2' in factorization_type_list:
+        used_formula_list.append("\( a^2-2ab+b^2=(a-b)^2 \)")
+    if 'a^2-b^2=(a+b)(a-b)' in factorization_type_list:
+        used_formula_list.append("\( a^2-b^2=(a+b)(a-b) \)")
+    if 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)' in factorization_type_list:
+        used_formula_list.append("\( acx^2+(ad+bc)x+ab=(ax+b)(cx+d) \)")
+    if 'a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2' in factorization_type_list:
+        used_formula_list.append("\( a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2 \)")
+    if 'a^3+3a^2b+3ab^2+b^3=(a+b)^3' in factorization_type_list:
+        used_formula_list.append("\( a^3+3a^2b+3ab^2+b^3=(a+b)^3 \)")
+    if 'a^3-3a^2b+3ab^2-b^3=(a-b)^3' in factorization_type_list:
+        used_formula_list.append("\( a^3-3a^2b+3ab^2-b^3=(a-b)^3 \)")
+    if 'a^3+b^3=(a+b)(a^2-ab+b^2)' in factorization_type_list:
+        used_formula_list.append("\( a^3+b^3=(a+b)(a^2-ab+b^2) \)")
+    if 'a^3-b^3=(a-b)(a^2+ab+b^2)' in factorization_type_list:
+        used_formula_list.append("\( a^3-b^3=(a-b)(a^2+ab+b^2) \)")
+    
+    # divide used_formula_list
+    used_formula_tuple_in_list = []
+    formula_list_length = len(used_formula_list)
+    for index in range(0, formula_list_length, 2):
+        if (index + 1) >= formula_list_length:
+            inner_tuple = (used_formula_list[index],)
+        else:
+            inner_tuple = (used_formula_list[index], used_formula_list[index+1])
+        used_formula_tuple_in_list.append(inner_tuple)            
+
+    if request.POST["another_character_exists_or_not"] == "exist":
+        another_character_existence = True
+    else:
+        another_character_existence = False
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = HS1FactorizationProblem(
+                factorization_type_list=factorization_type_list, another_character_existence=another_character_existence
+            )
+            problem2 = HS1FactorizationProblem(
+                factorization_type_list=factorization_type_list, another_character_existence=another_character_existence
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    context["used_formula_tuple_in_list"] = used_formula_tuple_in_list
+
+    return render(request, 'math_print/highschool1/factorization/for_print.html', context)
+
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -778,16 +839,9 @@ def display_character_problem(request):
 def display_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
     
-    result = request.POST
-    # print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    # print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    # print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    # print(f"term_number: {term_number} \n type: {type(term_number)}")
-    character_to_use_list = ["x"]
-    # print(f"character_to_use_list: {character_to_use_list} \n type: {type(character_to_use_list)}")
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
@@ -1183,7 +1237,6 @@ def display_factorization(request):
 def display_quadratic_equation(request):
     PROBLEM_NUMBER = 20
 
-    print(f"request.POST: {request.POST}")
     quadratic_equation_type_list = request.POST.getlist("quadratic_equation_type")
     if request.POST["organization_coefficient_or_not"] == "organization_coefficient":
         organization_coefficient = True
@@ -1284,3 +1337,60 @@ def hs1_display_expand_equation(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     context["used_formula_list"] = used_formula_list
     return render(request, 'math_print/highschool1/expand_equation/for_display.html', context)
+
+def hs1_display_factorization(request):
+    PROBLEM_NUMBER = 20
+
+    factorization_type_list = request.POST.getlist("used_formula_for_factorization")
+    if not(factorization_type_list):
+        factorization_type_list.append('a^2+2ab+b^2=(a+b)^2')
+        factorization_type_list.append('a^2-2ab+b^2=(a-b)^2')
+        factorization_type_list.append('a^2-b^2=(a+b)(a-b)')
+        factorization_type_list.append('acx^2+(ad+bc)x+ab=(ax+b)(cx+d)')
+        factorization_type_list.append('a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2')
+        factorization_type_list.append('a^3+3a^2b+3ab^2+b^3=(a+b)^3')
+        factorization_type_list.append('a^3-3a^2b+3ab^2-b^3=(a-b)^3')
+        factorization_type_list.append('a^3+b^3=(a+b)(a^2-ab+b^2)')
+        factorization_type_list.append('a^3-b^3=(a-b)(a^2+ab+b^2)')
+    
+    used_formula_list = []
+    if 'a^2+2ab+b^2=(a+b)^2' in factorization_type_list:
+        used_formula_list.append("\( a^2+2ab+b^2=(a+b)^2 \)")
+    if '(a^2-2ab+b^2=(a-b)^2' in factorization_type_list:
+        used_formula_list.append("\( a^2-2ab+b^2=(a-b)^2 \)")
+    if 'a^2-b^2=(a+b)(a-b)' in factorization_type_list:
+        used_formula_list.append("\( a^2-b^2=(a+b)(a-b) \)")
+    if 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)' in factorization_type_list:
+        used_formula_list.append("\( acx^2+(ad+bc)x+ab=(ax+b)(cx+d) \)")
+    if 'a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2' in factorization_type_list:
+        used_formula_list.append("\( a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2 \)")
+    if 'a^3+3a^2b+3ab^2+b^3=(a+b)^3' in factorization_type_list:
+        used_formula_list.append("\( a^3+3a^2b+3ab^2+b^3=(a+b)^3 \)")
+    if 'a^3-3a^2b+3ab^2-b^3=(a-b)^3' in factorization_type_list:
+        used_formula_list.append("\( a^3-3a^2b+3ab^2-b^3=(a-b)^3 \)")
+    if 'a^3+b^3=(a+b)(a^2-ab+b^2)' in factorization_type_list:
+        used_formula_list.append("\( a^3+b^3=(a+b)(a^2-ab+b^2) \)")
+    if 'a^3-b^3=(a-b)(a^2+ab+b^2)' in factorization_type_list:
+        used_formula_list.append("\( a^3-b^3=(a-b)(a^2+ab+b^2) \)")          
+    
+
+    if request.POST["another_character_exists_or_not"] == "exist":
+        another_character_existence = True
+    else:
+        another_character_existence = False
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = HS1FactorizationProblem(
+            factorization_type_list=factorization_type_list, another_character_existence=another_character_existence
+        )
+        problem2 = HS1FactorizationProblem(
+            factorization_type_list=factorization_type_list, another_character_existence=another_character_existence
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    context["used_formula_list"] = used_formula_list
+
+    return render(request, 'math_print/highschool1/factorization/for_display.html', context)

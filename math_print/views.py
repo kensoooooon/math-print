@@ -36,6 +36,7 @@ from .math_process.factorization import FactorizationProblem
 from .math_process.quadratic_equation import QuadraticEquationProblem
 from .math_process.hs1_expand_equation import HS1ExpandEquationProblem
 from .math_process.hs1_factorization import HS1FactorizationProblem
+from .math_process.transformation_of_equation import TransformationOfEquationProblem
 
 
 # Create your views here.
@@ -791,6 +792,31 @@ def hs1_print_factorization(request):
     return render(request, 'math_print/highschool1/factorization/for_print.html', context)
 
 
+def print_transformation_of_equation(request):
+    PROBLEM_NUMBER = 20
+    
+    paper_number = int(request.POST["paper_number"])
+    calculate_types = request.POST.getlist("calculate_type")
+    if not(calculate_types):
+        calculate_types.append("addition_and_subtraction")
+        calculate_types.append("multiplication_and_division")
+        calculate_types.append("mixed")
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = TransformationOfEquationProblem(calculate_types=calculate_types)
+            problem2 = TransformationOfEquationProblem(calculate_types=calculate_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+
+    return render(request, 'math_print/highschool1/factorization/for_print.html', context)
+
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1406,3 +1432,22 @@ def hs1_display_factorization(request):
     context["used_formula_list"] = used_formula_list
 
     return render(request, 'math_print/highschool1/factorization/for_display.html', context)
+
+def display_transformation_of_equation(request):
+    PROBLEM_NUMBER = 20
+    calculate_types = request.POST.getlist("calculate_type")
+    if not(calculate_types):
+        calculate_types.append("addition_and_subtraction")
+        calculate_types.append("multiplication_and_division")
+        calculate_types.append("mixed")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = TransformationOfEquationProblem(calculate_types=calculate_types)
+        problem2 = TransformationOfEquationProblem(calculate_types=calculate_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    
+    return render(request, 'math_print/junior_highschool2/transformation_of_equation/for_display.html', context)

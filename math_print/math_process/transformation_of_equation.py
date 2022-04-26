@@ -29,10 +29,9 @@ class TransformationOfEquationProblem:
             latex_answer, latex_problem = self._make_addition_or_subtraction_problem()
         elif selected_calculate_type == "multiplication_and_division":
             latex_answer, latex_problem = self._make_multiplication_and_division_problem()
-        """
         elif selected_calculate_type == "mixed":
             latex_answer, latex_problem = self._make_mixed_problem()
-        """
+
         return latex_answer, latex_problem
     
     def _make_addition_or_subtraction_problem(self):
@@ -122,33 +121,62 @@ class TransformationOfEquationProblem:
         c1 = self._character["character1"]
         c2 = self._character["character2"]
         characters= [c0, c1, c2]
-        shuffled_characters_for_left = sample(characters)
-        shuffled_characters_for_right = sample(characters)
+        shuffled_characters_for_left = sample(characters, 3)
+        shuffled_characters_for_right = sample(characters, 3)
         # left and right is composed of fraction
         
         left_denominator = randint(2, 6)
         left_numerator = 0
         # add -> multiplication
         # add
-        left_numerator += (self._make_random_number() * shuffled_characters_for_right.pop())
+        left_numerator += (self._make_random_number() * shuffled_characters_for_left.pop())
         if random() > 0.5:
-            left_numerator += (self._make_random_number() * shuffled_characters_for_right.pop())
+            left_numerator += (self._make_random_number() * shuffled_characters_for_left.pop())
         else:
             left_numerator += self._make_random_number()
         # multiplication
         if random() > 0.5:
             if random() > 0.5:
-                left_numerator *= (self._make_random_number() * shuffled_characters_for_right.pop())
+                left_numerator *= (self._make_random_number() * shuffled_characters_for_left.pop())
             else:
                 left_numerator *= self._make_random_number()
         
         right_denominator = randint(2, 6)
         right_numerator = 0
-        right_numerator += self._make_random_number * choice(characters)
+        right_numerator += (self._make_random_number() * shuffled_characters_for_right.pop())
+        if random() > 0.5:
+            right_numerator += (self._make_random_number() * shuffled_characters_for_right.pop())
+        else:
+            right_numerator += self._make_random_number()
+        if random() > 0.5:
+            if random() > 0.5:
+                right_numerator *= (self._make_random_number() * shuffled_characters_for_right.pop())
+            else:
+                right_numerator += self._make_random_number()
         
+        left = left_numerator / left_denominator
+        # print(f"left: {left}")
+        right = right_numerator / right_denominator
+        # print(f"right: {right}")    
+        # the phase of selecting character for answer.
+        remained_characters_set = set(shuffled_characters_for_left) & set(shuffled_characters_for_right)
+        # print(f"remained_characters_set: {remained_characters_set}, type:{type(remained_characters_set)}")
+        characters_set = set(characters)
+        # print(f"characters_set: {characters_set}")
+        characters_for_answer = set(characters) - remained_characters_set
+        # print(f"characters_for_answer: {characters_for_answer}")
+        character_for_answer = choice(list(characters_for_answer))
+        # print(f"character_for_answer: {character_for_answer}")
+        latex_problem = f"{sy.latex(left)} = {sy.latex(right)} \\quad [{sy.latex(character_for_answer)}]" 
+        answer = sy.solve(left-right, character_for_answer)[0]
+        # print(f"answer: {answer}")
+        ## expanded_answer = sy.expand(answer)
+        # print(f"expanded_answer: {expanded_answer}")
+        simplified_answer = sy.simplify(answer)
+        latex_answer = f"{sy.latex(character_for_answer)} = {sy.latex(simplified_answer)}"
+        print("---------------------------------")
         
         return latex_answer, latex_problem
-        
 
     def _make_random_number(self, positive_or_negative=None):
         number = sy.Integer(randint(1, 6))

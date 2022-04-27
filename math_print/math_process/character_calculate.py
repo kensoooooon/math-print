@@ -1,3 +1,8 @@
+"""
+Note 4.27
+全部のせの設定で、0.13333333....が発生。frac,decimal,floatあたりの設定が原因と考えられるが、いったん保留
+"""
+
 from collections import defaultdict
 from random import choice, randint, random
 

@@ -53,6 +53,9 @@ function showAnswer(){
     .formula {
         text-align: center;
     }
+    p.number_of_problem {
+        text-align: right;
+    }
 </style>
 {% endblock %}
 
@@ -82,6 +85,7 @@ function showAnswer(){
 </div>
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
+        <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -111,13 +115,6 @@ function showAnswer(){
             {% endfor %}
         </ol>
         {% if used_formula_tuple_in_list %}
-            <!--
-            <div class="formula-box" style="border: solid blue">
-                {% for formula in used_formula_list %}
-                    <p class="formula text-center">{{formula}}</p>
-                {% endfor %}
-            </div>
-            -->
             <table class="table">
                 <tbody>
                     {% for formula_tuple in used_formula_tuple_in_list %}
@@ -133,13 +130,12 @@ function showAnswer(){
             <br>
             <br>
         {% endif %}
-        <br>
-        <br>
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>
     </section>
     <section class="print_pages">
+        <p class="number_of_problem">解答: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -168,8 +164,6 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
-        <br>
-        <br>
         <br>
         <br>
         <br>

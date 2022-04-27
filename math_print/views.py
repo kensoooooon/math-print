@@ -665,29 +665,27 @@ def hs1_print_expand_equation(request):
         expand_equation_type_list.append('(a-b)(a^2+ab+b^2)=a^3-b^3')
     
     used_formula_list = []
-    if '(a+b)^2=a^2+2ab+b^2' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)^2=a^2+2ab+b^2 \)")
-    if '(a-b)^2=a^2-2ab+b^2' in expand_equation_type_list:
-        used_formula_list.append("\( (a-b)^2=a^2-2ab+b^2 \)")
-    if '(a+b)(a-b)=a^2-b^2' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)(a-b)=a^2-b^2 \)")
-    if '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab' in expand_equation_type_list:
-        used_formula_list.append("\( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)")
-    if '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)")
-    if '(a+b)^3=a^3+3a^2b+3ab^2+b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)")
-    if '(a-b)^3=a^3-3a^2b+3ab^2-b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)")
-    if '(a+b)(a^2-ab+b^2)=a^3+b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)(a^2-ab+b^2)=a^3+b^3 \)")
-    if '(a-b)(a^2+ab+b^2)=a^3-b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
+    if request.POST["show_formula"] == "show_expansion_formula":
+        if '(a+b)^2=a^2+2ab+b^2' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)^2=a^2+2ab+b^2 \)")
+        if '(a-b)^2=a^2-2ab+b^2' in expand_equation_type_list:
+            used_formula_list.append("\( (a-b)^2=a^2-2ab+b^2 \)")
+        if '(a+b)(a-b)=a^2-b^2' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)(a-b)=a^2-b^2 \)")
+        if '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab' in expand_equation_type_list:
+            used_formula_list.append("\( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)")
+        if '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)")
+        if '(a+b)^3=a^3+3a^2b+3ab^2+b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)")
+        if '(a-b)^3=a^3-3a^2b+3ab^2-b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)")
+        if '(a+b)(a^2-ab+b^2)=a^3+b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)(a^2-ab+b^2)=a^3+b^3 \)")
+        if '(a-b)(a^2+ab+b^2)=a^3-b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
     
     # divide used_formula_list
-    """
-    奇数個だと動作がおかしい
-    """
     used_formula_tuple_in_list = []
     formula_list_length = len(used_formula_list)
     for index in range(0, formula_list_length, 2):
@@ -739,24 +737,25 @@ def hs1_print_factorization(request):
         factorization_type_list.append('a^3-b^3=(a-b)(a^2+ab+b^2)')
     
     used_formula_list = []
-    if 'a^2+2ab+b^2=(a+b)^2' in factorization_type_list:
-        used_formula_list.append("\( a^2+2ab+b^2=(a+b)^2 \)")
-    if 'a^2-2ab+b^2=(a-b)^2' in factorization_type_list:
-        used_formula_list.append("\( a^2-2ab+b^2=(a-b)^2 \)")
-    if 'a^2-b^2=(a+b)(a-b)' in factorization_type_list:
-        used_formula_list.append("\( a^2-b^2=(a+b)(a-b) \)")
-    if 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)' in factorization_type_list:
-        used_formula_list.append("\( acx^2+(ad+bc)x+ab=(ax+b)(cx+d) \)")
-    if 'a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2' in factorization_type_list:
-        used_formula_list.append("\( a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2 \)")
-    if 'a^3+3a^2b+3ab^2+b^3=(a+b)^3' in factorization_type_list:
-        used_formula_list.append("\( a^3+3a^2b+3ab^2+b^3=(a+b)^3 \)")
-    if 'a^3-3a^2b+3ab^2-b^3=(a-b)^3' in factorization_type_list:
-        used_formula_list.append("\( a^3-3a^2b+3ab^2-b^3=(a-b)^3 \)")
-    if 'a^3+b^3=(a+b)(a^2-ab+b^2)' in factorization_type_list:
-        used_formula_list.append("\( a^3+b^3=(a+b)(a^2-ab+b^2) \)")
-    if 'a^3-b^3=(a-b)(a^2+ab+b^2)' in factorization_type_list:
-        used_formula_list.append("\( a^3-b^3=(a-b)(a^2+ab+b^2) \)")
+    if request.POST["show_formula"] == "show_factorization_formula":
+        if 'a^2+2ab+b^2=(a+b)^2' in factorization_type_list:
+            used_formula_list.append("\( a^2+2ab+b^2=(a+b)^2 \)")
+        if 'a^2-2ab+b^2=(a-b)^2' in factorization_type_list:
+            used_formula_list.append("\( a^2-2ab+b^2=(a-b)^2 \)")
+        if 'a^2-b^2=(a+b)(a-b)' in factorization_type_list:
+            used_formula_list.append("\( a^2-b^2=(a+b)(a-b) \)")
+        if 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)' in factorization_type_list:
+            used_formula_list.append("\( acx^2+(ad+bc)x+ab=(ax+b)(cx+d) \)")
+        if 'a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2' in factorization_type_list:
+            used_formula_list.append("\( a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2 \)")
+        if 'a^3+3a^2b+3ab^2+b^3=(a+b)^3' in factorization_type_list:
+            used_formula_list.append("\( a^3+3a^2b+3ab^2+b^3=(a+b)^3 \)")
+        if 'a^3-3a^2b+3ab^2-b^3=(a-b)^3' in factorization_type_list:
+            used_formula_list.append("\( a^3-3a^2b+3ab^2-b^3=(a-b)^3 \)")
+        if 'a^3+b^3=(a+b)(a^2-ab+b^2)' in factorization_type_list:
+            used_formula_list.append("\( a^3+b^3=(a+b)(a^2-ab+b^2) \)")
+        if 'a^3-b^3=(a-b)(a^2+ab+b^2)' in factorization_type_list:
+            used_formula_list.append("\( a^3-b^3=(a-b)(a^2+ab+b^2) \)")
     
     # divide used_formula_list
     used_formula_tuple_in_list = []

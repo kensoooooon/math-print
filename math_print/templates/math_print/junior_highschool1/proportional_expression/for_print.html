@@ -48,6 +48,9 @@ function showAnswer(){
     .hero_unit, .base_footer, .button_container, .nav{
         display: none;
     }
+    p.number_of_problem {
+        text-align: right;
+    }
 </style>
 {% endblock %}
 
@@ -77,6 +80,7 @@ function showAnswer(){
 </div>
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
+        <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
         <ol>
             <p>yはxに比例するとする。このとき、以下の条件で比例定数aを求めよ。</p>
             {% for math_problem_tuple in inner_list %}
@@ -111,6 +115,7 @@ function showAnswer(){
         </footer>
     </section>
     <section class="print_pages">
+        <p class="number_of_problem">解答: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">

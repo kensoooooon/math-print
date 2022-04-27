@@ -37,6 +37,7 @@ from .math_process.quadratic_equation import QuadraticEquationProblem
 from .math_process.hs1_expand_equation import HS1ExpandEquationProblem
 from .math_process.hs1_factorization import HS1FactorizationProblem
 from .math_process.transformation_of_equation import TransformationOfEquationProblem
+from .math_process.character_fraction import CharacterFractionProblem
 
 
 # Create your views here.
@@ -816,6 +817,26 @@ def print_transformation_of_equation(request):
 
     return render(request, 'math_print/highschool1/factorization/for_print.html', context)
 
+def print_character_fraction(request):
+    PROBLEM_NUMBER = 20
+    
+    term_number = int(request.POST["term_number"])
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = CharacterFractionProblem(term_number=term_number)
+            problem2 = CharacterFractionProblem(term_number=term_number)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    
+    return render(request, 'math_print/junior_highschool2/for_print.html', context)
+
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1451,3 +1472,18 @@ def display_transformation_of_equation(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     
     return render(request, 'math_print/junior_highschool2/transformation_of_equation/for_display.html', context)
+
+def display_character_fraction(request):
+    PROBLEM_NUMBER = 20
+    term_number = int(request.POST["term_number"])
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = CharacterFractionProblem(term_number=term_number)
+        problem2 = CharacterFractionProblem(term_number=term_number)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    
+    return render(request, 'math_print/junior_highschool2/character_fraction/for_display.html', context)

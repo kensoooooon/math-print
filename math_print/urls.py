@@ -53,8 +53,12 @@ urlpatterns = [
     # 1次関数
     path('linear_function/print/', views.print_linear_function, name='linear_function_print'),
     path('linear_function/display/', views.display_linear_function, name='linear_function_display'),
+    # 等式の変形
     path('transformation_of_equation/print/', views.print_transformation_of_equation, name='transformation_of_equation_print'),
     path('transformation_of_equation/display/', views.display_transformation_of_equation, name='transformation_of_equation_display'),
+    # 分数を使った文字の計算
+    path('character_fraction/print/', views.print_character_fraction, name='character_fraction_print'),
+    path('character_fraction/display/', views.display_character_fraction, name='character_fraction_display'),
     ##########################################
     ### 中3 ###
     path('junior_highschool3/', views.show_junior_highschool3, name='junior_highschool3'),

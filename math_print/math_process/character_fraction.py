@@ -18,7 +18,7 @@ class CharacterFractionProblem:
         c1 = self._character["character1"]
         problem = 0
         for index in range(self._term_number):
-            denominator_of_term = self._make_random_number(positive_or_negative="positive")
+            denominator_of_term = randint(2, 6)
             numerator_of_term = self._make_random_number() * c0 + self._make_random_number() * c1
             term = sy.Rational(1, denominator_of_term) * numerator_of_term
             if random() > 0.5:

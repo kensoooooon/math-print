@@ -835,7 +835,7 @@ def print_character_fraction(request):
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
     
-    return render(request, 'math_print/junior_highschool2/for_print.html', context)
+    return render(request, 'math_print/junior_highschool2/character_fraction/for_print.html', context)
 
 
 def display_number_problem(request):

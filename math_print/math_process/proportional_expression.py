@@ -31,7 +31,7 @@ class ProportionalExpressionProblem:
         
         latex_answer = f"a = {a_latex}"
         
-        latex_problem = f"x = {x_latex}, y = {y_latex}"
+        latex_problem = f"x = {x_latex}のとき、y = {y_latex}"
         
         return latex_answer, latex_problem
 

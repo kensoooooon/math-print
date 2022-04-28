@@ -63,8 +63,8 @@ def print_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("number_number_to_use")
+    operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
 
@@ -86,8 +86,8 @@ def print_character_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("character_number_to_use")
+    operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
     character_to_use = request.POST["character_to_use"]
@@ -295,8 +295,8 @@ def print_linear_function(request):
 def print_power_calculate(request):
     PROBLEM_NUMBER = 20
     
-    number_to_use = request.POST.getlist("number_to_use")
-    calculate_type = request.POST.getlist("calculate_type")
+    number_to_use = request.POST.getlist("power_number_to_use")
+    calculate_type = request.POST.getlist("power_calculate_type")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -814,7 +814,7 @@ def print_transformation_of_equation(request):
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
 
-    return render(request, 'math_print/highschool1/factorization/for_print.html', context)
+    return render(request, 'math_print/junior_highschool2/transformation_of_equation/for_print.html', context)
 
 def print_character_fraction(request):
     PROBLEM_NUMBER = 20
@@ -841,8 +841,8 @@ def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("number_number_to_use")
+    operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
 
     MAX_NUMBER_TO_FRAC = 10
@@ -860,8 +860,8 @@ def display_character_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("character_number_to_use")
+    operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
     character_to_use = request.POST["character_to_use"]
@@ -1031,8 +1031,8 @@ def display_linear_function(request):
 def display_power_calculate(request):
     PROBLEM_NUMBER = 20
     
-    number_to_use = request.POST.getlist("number_to_use")
-    calculate_type = request.POST.getlist("calculate_type")
+    number_to_use = request.POST.getlist("power_number_to_use")
+    calculate_type = request.POST.getlist("power_calculate_type")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
@@ -1219,7 +1219,7 @@ def display_fraction_calculate_problem(request):
 def display_number_without_bracket_problem(request):
     PROBLEM_NUMBER = 20
     
-    operator_to_use_list = request.POST.getlist("operator_to_use")
+    operator_to_use_list = request.POST.getlist("number_without_bracket_operator_to_use")
     number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
     term_number = int(request.POST["term_number"])
     

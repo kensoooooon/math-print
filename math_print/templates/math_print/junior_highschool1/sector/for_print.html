@@ -56,6 +56,9 @@ function showAnswer(){
         border-radius: 8px; /* 半径が8pxの角丸 */
         border-color: #031de2;
     }
+    p.number_of_problem {
+        text-align: right;
+    }
 </style>
 {% endblock %}
 
@@ -85,6 +88,7 @@ function showAnswer(){
 </div>
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
+        <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
         <ol>
             {% if is_show_formula %}
             <p>下部の公式を利用して指定された値を求めよ</p>
@@ -133,6 +137,7 @@ function showAnswer(){
         </footer>
     </section>
     <section class="print_pages">
+        <p class="number_of_problem">解答: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">

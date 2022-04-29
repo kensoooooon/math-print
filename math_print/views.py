@@ -550,35 +550,40 @@ def print_sector_problem(request):
 
 def print_factorization(request):
     PROBLEM_NUMBER = 20
-    
-    factorization_type_list = request.POST.getlist("factorization_type")
     used_coefficient = request.POST["coefficient_used_for_factorization"]
     paper_number = int(request.POST["paper_number"])
+
+    factorization_type_list = request.POST.getlist("factorization_type")
+    if not(factorization_type_list):
+        factorization_type_list.append('ax+ab=a(x+b)')
+        factorization_type_list.append('x^2+2ax+a^2=(x+a)^2')
+        factorization_type_list.append('x^2-2ax+a^2=(x-a)^2')
+        factorization_type_list.append('x^2+(a+b)x+ab=(x+a)(x+b)')
+        factorization_type_list.append('x^2-a^2=(x+a)(x-a)')
     
     used_formula_list = []
     if request.POST["show_formula"] == "show_factorization_formula":
-        if factorization_type_list:
-            if "ax+ab=a(x+b)" in factorization_type_list:
-                used_formula_list.append("\( ax + ab = a(x + b) \)")
-            
-            if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
-                used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
-            
-            if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
-                used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
-            
-            if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
-                used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
-            if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
-                used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
-        else:
+        if "ax+ab=a(x+b)" in factorization_type_list:
             used_formula_list.append("\( ax + ab = a(x + b) \)")
+        if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+        if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
             used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+        if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
             used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
+        if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
             used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
-    
 
+    # divide used_formula_list
+    used_formula_tuple_in_list = []
+    formula_list_length = len(used_formula_list)
+    for index in range(0, formula_list_length, 2):
+        if (index + 1) >= formula_list_length:
+            inner_tuple = (used_formula_list[index],)
+        else:
+            inner_tuple = (used_formula_list[index], used_formula_list[index+1])
+        used_formula_tuple_in_list.append(inner_tuple)
+    
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -590,7 +595,7 @@ def print_factorization(request):
     
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
-    context["used_formula_list"] = used_formula_list
+    context["used_formula_tuple_in_list"] = used_formula_tuple_in_list
 
     return render(request, 'math_print/junior_highschool3/factorization/for_print.html', context)
 

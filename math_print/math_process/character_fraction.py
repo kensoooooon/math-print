@@ -17,15 +17,17 @@ class CharacterFractionProblem:
         c0 = self._character["character0"]
         c1 = self._character["character1"]
         problem = 0
-        for index in range(self._term_number):
-            denominator_of_term = randint(2, 6)
-            numerator_of_term = self._make_random_number() * c0 + self._make_random_number() * c1
-            term = sy.Rational(1, denominator_of_term) * numerator_of_term
-            if random() > 0.5:
-                problem += sy.factor(term)
-            else:
-                problem -= sy.factor(term)
-
+        while True:
+            for _ in range(self._term_number):
+                denominator_of_term = randint(2, 6)
+                numerator_of_term = self._make_random_number() * c0 + self._make_random_number() * c1
+                term = sy.Rational(1, denominator_of_term) * numerator_of_term
+                if random() > 0.5:
+                    problem += sy.factor(term)
+                else:
+                    problem -= sy.factor(term)
+            if problem != 0:
+                break
         latex_problem = sy.latex(problem)
         answer = sy.simplify(problem)
         latex_answer = f"= {sy.latex(answer)}"       

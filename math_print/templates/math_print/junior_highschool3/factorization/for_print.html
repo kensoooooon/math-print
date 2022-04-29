@@ -56,6 +56,10 @@ function showAnswer(){
     p.number_of_problem {
         text-align: right;
     }
+    table {
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 {% endblock %}
 
@@ -114,13 +118,21 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
-        {% if used_formula_list %}
-            <div class="formula-box" style="border: solid blue">
-                {% for formula in used_formula_list %}
-                    <p class="formula text-center">{{formula}}</p>
-                {% endfor %}
-            </div>
+        {% if used_formula_tuple_in_list %}
+            <table class="table">
+                <tbody>
+                    {% for formula_tuple in used_formula_tuple_in_list %}
+                        <tr>
+                            <td class="align-middle">{{ formula_tuple.0 }}</td>
+                            <td class="align-middle">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ formula_tuple.1 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <br>
         {% else %}
+            <br>
+            <br>
             <br>
             <br>
             <br>

@@ -116,6 +116,11 @@ class TransformationOfEquationProblem:
         can't use operator -
         -> change set and subtract?
         may need information about character not used.
+        
+        4.29
+        list index out of range occurd.
+        -> same coefficient (eg. 5c 5c) is the cause.
+        check both coefficients and add character if is the same.
         """
         c0 = self._character["character0"]
         c1 = self._character["character1"]
@@ -164,17 +169,23 @@ class TransformationOfEquationProblem:
         characters_set = set(characters)
         # print(f"characters_set: {characters_set}")
         characters_for_answer = set(characters) - remained_characters_set
-        # print(f"characters_for_answer: {characters_for_answer}")
         character_for_answer = choice(list(characters_for_answer))
         # print(f"character_for_answer: {character_for_answer}")
+        # check whether answer exists or not
+        answer_before_selecting = sy.solve(left-right, character_for_answer)
+        if not(answer_before_selecting):
+            if random() > 0.5:
+                left += self._make_random_number() * character_for_answer
+            else:
+                right += self._make_random_number() * character_for_answer
         latex_problem = f"{sy.latex(left)} = {sy.latex(right)} \\quad [{sy.latex(character_for_answer)}]" 
         answer = sy.solve(left-right, character_for_answer)[0]
         # print(f"answer: {answer}")
         ## expanded_answer = sy.expand(answer)
-        # print(f"expanded_answer: {expanded_answer}")
+        ## print(f"expanded_answer: {expanded_answer}")
         simplified_answer = sy.simplify(answer)
         latex_answer = f"{sy.latex(character_for_answer)} = {sy.latex(simplified_answer)}"
-        print("---------------------------------")
+        # print("----------------------------------")
         
         return latex_answer, latex_problem
 

@@ -15,12 +15,22 @@
 
 {% block script %}
 <script>
-    function changeStatusOfGivenInformation(){
-        let given_informations = document.getElementsByName(`given_information`);
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < given_informations.length; i++) {
-            if (!(given_informations[i].checked)){
-                given_informations[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
+            }
+        }
+    }
+
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
             }
         }
     }
@@ -116,29 +126,31 @@
                     </div>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="plus" name="operator_to_use" id="characterPlusCheck" checked>
+                            <input class="form-check-input" type="checkbox" value="plus" name="character_operator_to_use" id="characterPlusCheck" checked>
                             <label class="form-check-label" for="characterPlusCheck">
                                 足し算
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="minus" name="operator_to_use" id="characterMinusCheck" checked>
+                            <input class="form-check-input" type="checkbox" value="minus" name="character_operator_to_use" id="characterMinusCheck" checked>
                             <label class="form-check-label" for="characterMinusCheck">
                                 引き算
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="times" name="operator_to_use" id="characterTimesCheck">
+                            <input class="form-check-input" type="checkbox" value="times" name="character_operator_to_use" id="characterTimesCheck">
                             <label class="form-check-label" for="characterTimesCheck">
                                 かけ算
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="divided" name="operator_to_use" id="characterDividedCheck">
+                            <input class="form-check-input" type="checkbox" value="divided" name="character_operator_to_use" id="characterDividedCheck">
                             <label class="form-check-label" for="characterDividedCheck">
                                 割り算
                             </label>
                         </div>
+                        <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('character_operator_to_use')" value="全部のせ">
+                        <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('character_operator_to_use')" value="全部はずし">
                     </div>
                     <small class="text-muted">使用する数のタイプ</small>
                     <div class="form-group">
@@ -292,20 +304,20 @@
                     <small class="text-muted">枚数</small>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="linearFunctionFivePaperRadio" checked>
-                            <label class="form-check-label" for="linearFunctionFivePaperRadio">
+                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="ChacterFractionFivePaperRadio" checked>
+                            <label class="form-check-label" for="ChacterFractionFivePaperRadio">
                                 20問×5枚
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="linearFunctionTenPaperRadio">
-                            <label class="form-check-label" for="linearFunctionTenPaperRadio">
+                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="ChacterFractionTenPaperRadio">
+                            <label class="form-check-label" for="ChacterFractionTenPaperRadio">
                                 20問×10枚
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="linearFunctionFifteenPaperRadio">
-                            <label class="form-check-label" for="linearFunctionFifteenPaperRadio">
+                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="ChacterFractionFifteenPaperRadio">
+                            <label class="form-check-label" for="ChacterFractionFifteenPaperRadio">
                                 20問×15枚
                             </label>
                         </div>
@@ -355,7 +367,6 @@
                                 1点の座標と平行な直線
                             </label>
                         </div>
-                        <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfGivenInformation()" value="全部のせ">
                     </div>
                     <small class="text-muted">枚数</small>
                     <div class="form-group">

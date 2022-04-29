@@ -85,7 +85,7 @@ function showAnswer(){
 </div>
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
-        <p class="number_of_problem">No. {{ forloop.counter }}</p>
+        <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -122,7 +122,7 @@ function showAnswer(){
         </footer>
     </section>
     <section class="print_pages">
-        <p class="number_of_problem">No. {{ forloop.counter }}</p>
+        <p class="number_of_problem">解答: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">

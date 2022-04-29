@@ -49,6 +49,10 @@ function showAnswer(){
     .hero_unit, .base_footer, .button_container, .nav{
         display: none;
     }
+
+    p.number_of_problem {
+        text-align: right;
+    }
 </style>
 {% endblock %}
 
@@ -78,6 +82,8 @@ function showAnswer(){
 </div>
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
+        <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
+        <p style="text-align: left;">小数は分数に、分数は小数に書きかえなさい</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -106,11 +112,13 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>
     </section>
     <section class="print_pages">
+        <p class="number_of_problem">解答: No. {{ forloop.counter }}</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -139,6 +147,7 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>

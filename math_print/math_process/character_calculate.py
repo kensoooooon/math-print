@@ -1,3 +1,8 @@
+"""
+Note 4.27
+全部のせの設定で、0.13333333....が発生。frac,decimal,floatあたりの設定が原因と考えられるが、いったん保留
+"""
+
 from collections import defaultdict
 from random import choice, randint, random
 
@@ -28,6 +33,12 @@ class CharacterMathProblem:
         answer = eval(string_for_eval)
         latex_problem = ...
         の同時並行作成 
+        
+        4.29
+        fixing
+        latex_string_for_eval: sy.Rational(5, 2) * x- -1/ 4- (sy.Rational(-1, 2) * x)/ (sy.Rational(-9, 10) * x)+ (sy.Rational(-9, 10) * x)
+        answer: 8*x/5 - 0.305555555555556
+        expanded_answer: 8*x/5 - 0.305555555555556
         """
         max_number = self._max_number_to_frac
         min_number = self._min_number_to_frac
@@ -89,9 +100,11 @@ class CharacterMathProblem:
                 if (num_type_checker == "frac") or (num_type_checker == "decimal"):
                     latex_string_for_eval += f"{operator_for_eval} (sy.Rational({number.numerator}, {number.denominator}) * {character})"
                 else:
-                    latex_string_for_eval += f"{operator_for_eval} ({number} * {character})"
+                    # add sy.integer(int()) not to display infinite decimal
+                    latex_string_for_eval += f"{operator_for_eval} (sy.Integer({int(number)}) * {character})"
                 
                 if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
+                    print("float!")
                     number = float(number)
                 if number < 0:
                     latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
@@ -103,10 +116,12 @@ class CharacterMathProblem:
                 
                 if (num_type_checker == "frac") or (num_type_checker == "decimal"):
                     latex_string_for_eval += f"{operator_for_eval} (sy.Rational({number.numerator}, {number.denominator}))"
-                else: 
-                    latex_string_for_eval += f"{operator_for_eval} {number}"
+                else:
+                    # add sy.integer(int()) not to display infinite decimal
+                    latex_string_for_eval += f"{operator_for_eval} sy.Integer({int(number)})"
                 
                 if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
+                    print("float!")
                     number = float(number)
                 if number < 0:
                     latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
@@ -118,7 +133,8 @@ class CharacterMathProblem:
         # print(f"answer: {answer}")
         expanded_answer = sy.expand(answer)
         # print(f"expanded_answer: {expanded_answer}")
-        # collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
+        # print("-----------------------------------")
+        collected_answer = sy.collect(expanded_answer, (self._character_dict["x"], self._character_dict["y"], sy.Integer(0)))
         latex_answer = f" = {sy.latex(expanded_answer)}"
      
         return latex_answer, latex_problem

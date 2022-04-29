@@ -1,7 +1,7 @@
 {% extends 'math_print/base.html' %}
 
 {% block title %}
-四則演算練習(中1)
+計算練習(中1)
 {% endblock %}
 
 {% block hero_unit %}
@@ -15,32 +15,22 @@
 
 {% block script %}
 <script>
-    function changeStatusOfCalculateType(){
-        let calculate_types = document.getElementsByName(`calculate_type`);
-        
-        for (let i = 0; i < calculate_types.length; i ++){
-            if (!(calculate_types[i].checked)){
-                calculate_types[i].checked = true;
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
             }
         }
     }
 
-    function changeStatusOfSpecificLinearEquationType(){
-        let specific_linear_equation_types = document.getElementsByName(`linear_equation_type`);
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < specific_linear_equation_types.length; i++){
-            if (!(specific_linear_equation_types[i].checked)){
-                specific_linear_equation_types[i].checked = true;
-            }
-        }
-    }
-
-    function changeStatusOfNumberToUse(){
-        let numbers_to_use_without_bracket_problem = document.getElementsByName(`number_to_use_without_bracket_problem`);
-
-        for (let i = 0; i < numbers_to_use_without_bracket_problem.length; i++){
-            if (!(numbers_to_use_without_bracket_problem[i].checked)){
-                numbers_to_use_without_bracket_problem[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
             }
         }
     }
@@ -57,56 +47,60 @@
                 <small class="text-muted">問題に使用する計算</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="plus" name="operator_to_use" id="numberPlusCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="plus" name="number_operator_to_use" id="numberPlusCheck" checked>
                         <label class="form-check-label" for="numberPlusCheck">
                             足し算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="minus" name="operator_to_use" id="numberMinusCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="minus" name="number_operator_to_use" id="numberMinusCheck" checked>
                         <label class="form-check-label" for="numberMinusCheck">
                             引き算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="times" name="operator_to_use" id="numberTimesCheck">
+                        <input class="form-check-input" type="checkbox" value="times" name="number_operator_to_use" id="numberTimesCheck">
                         <label class="form-check-label" for="numberTimesCheck">
                             かけ算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="divided" name="operator_to_use" id="numberDividedCheck">
+                        <input class="form-check-input" type="checkbox" value="divided" name="number_operator_to_use" id="numberDividedCheck">
                         <label class="form-check-label" for="numberDividedCheck">
                             割り算
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('number_operator_to_use')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('number_operator_to_use')" value="全部はずし">
                 </div>
                 <small class="text-muted">使用する数のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="one_digit_integer" name="number_to_use" id="numberOneDigitIntegerCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="one_digit_integer" name="number_number_to_use" id="numberOneDigitIntegerCheck" checked>
                         <label class="form-check-label" for="numberOneDigitIntegerCheck">
                             1桁の整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="two_digit_integer" name="number_to_use" id="numberTwoDigitIntegerCheck">
+                        <input class="form-check-input" type="checkbox" value="two_digit_integer" name="number_number_to_use" id="numberTwoDigitIntegerCheck">
                         <label class="form-check-label" for="numberTwoDigitIntegerCheck">
                             2桁の整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="numberDecimalCheck">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="number_number_to_use" id="numberDecimalCheck">
                         <label class="form-check-label" for="numberDecimalCheck">
                             小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="numberFracCheck">
+                        <input class="form-check-input" type="checkbox" value="frac" name="number_number_to_use" id="numberFracCheck">
                         <label class="form-check-label" for="numberFracCheck">
                             分数
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('number_number_to_use')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('number_number_to_use')" value="全部はずし">
                 </div>
                 <small class="text-muted">項数</small>
                 <div class="form-group">
@@ -161,13 +155,13 @@
                 <small class="text-muted">問題に使用する計算</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="plus" name="operator_to_use" id="numberWithoutBracketPlusCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="plus" name="number_without_bracket_operator_to_use" id="numberWithoutBracketPlusCheck" checked>
                         <label class="form-check-label" for="numberWithoutBracketPlusCheck">
                             足し算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="minus" name="operator_to_use" id="numberWithoutBracketMinusCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="minus" name="number_without_bracket_operator_to_use" id="numberWithoutBracketMinusCheck" checked>
                         <label class="form-check-label" for="numberWithoutBracketMinusCheck">
                             引き算
                         </label>
@@ -199,7 +193,8 @@
                             分数
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfNumberToUse()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('number_to_use_without_bracket_problem')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('number_to_use_without_bracket_problem')" value="全部はずし">
                 </div>
                 <small class="text-muted">項数</small>
                 <div class="form-group">
@@ -266,57 +261,60 @@
                 <small class="text-muted">使用する数のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="powerIntegerCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="integer" name="power_number_to_use" id="powerIntegerCheck" checked>
                         <label class="form-check-label" for="powerIntegerCheck">
                             整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="powerDecimalCheck">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="power_number_to_use" id="powerDecimalCheck">
                         <label class="form-check-label" for="powerDecimalCheck">
                             小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="powerFracCheck">
+                        <input class="form-check-input" type="checkbox" value="frac" name="power_number_to_use" id="powerFracCheck">
                         <label class="form-check-label" for="powerFracCheck">
                             分数
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('power_number_to_use')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('power_number_to_use')" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する計算のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="single" name="calculate_type" id="powerSingleCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="single" name="power_calculate_type" id="powerSingleCheck" checked>
                         <label class="form-check-label" for="powerSingleCheck">
                             単一項(a^b)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="double_plus" name="calculate_type" id="powerDoublePlusCheck">
+                        <input class="form-check-input" type="checkbox" value="double_plus" name="power_calculate_type" id="powerDoublePlusCheck">
                         <label class="form-check-label" for="powerDoublePlusCheck">
                             二項の足し算(a^b + c^d)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="double_minus" name="calculate_type" id="powerDoubleMinusCheck">
+                        <input class="form-check-input" type="checkbox" value="double_minus" name="power_calculate_type" id="powerDoubleMinusCheck">
                         <label class="form-check-label" for="powerDoubleMinusCheck">
                             二項の引き算(a^b - c^d)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="double_times" name="calculate_type" id="powerDoubleTimesCheck">
+                        <input class="form-check-input" type="checkbox" value="double_times" name="power_calculate_type" id="powerDoubleTimesCheck">
                         <label class="form-check-label" for="powerDoubleTimesCheck">
                             二項のかけ算(a^b × c^d)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="double_div" name="calculate_type" id="powerDoubleDivCheck">
+                        <input class="form-check-input" type="checkbox" value="double_div" name="power_calculate_type" id="powerDoubleDivCheck">
                         <label class="form-check-label" for="powerDoubleDivCheck">
                             二項の割り算(a^b ÷ c^d)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfCalculateType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('power_calculate_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('power_calculate_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -368,46 +366,48 @@
                 </div>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="plus" name="operator_to_use" id="characterPlusCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="plus" name="character_operator_to_use" id="characterPlusCheck" checked>
                         <label class="form-check-label" for="characterPlusCheck">
                             足し算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="minus" name="operator_to_use" id="characterMinusCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="minus" name="character_operator_to_use" id="characterMinusCheck" checked>
                         <label class="form-check-label" for="characterMinusCheck">
                             引き算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="times" name="operator_to_use" id="characterTimesCheck">
+                        <input class="form-check-input" type="checkbox" value="times" name="character_operator_to_use" id="characterTimesCheck">
                         <label class="form-check-label" for="characterTimesCheck">
                             かけ算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="divided" name="operator_to_use" id="characterDividedCheck">
+                        <input class="form-check-input" type="checkbox" value="divided" name="character_operator_to_use" id="characterDividedCheck">
                         <label class="form-check-label" for="characterDividedCheck">
                             割り算
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('character_operator_to_use')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('character_operator_to_use')" value="全部はずし">
                 </div>
                 <small class="text-muted">使用する数のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="characterIntegerCheck" checked>
+                        <input class="form-check-input" type="checkbox" value="integer" name="character_number_to_use" id="characterIntegerCheck" checked>
                         <label class="form-check-label" for="characterIntegerCheck">
                             整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="characterDecimalCheck">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="character_number_to_use" id="characterDecimalCheck">
                         <label class="form-check-label" for="characterDecimalCheck">
                             小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="characterFracCheck">
+                        <input class="form-check-input" type="checkbox" value="frac" name="character_number_to_use" id="characterFracCheck">
                         <label class="form-check-label" for="characterFracCheck">
                             分数
                         </label>
@@ -529,12 +529,6 @@
                             5項
                         </label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="6" name="term_number" id="linearEquationSixRadio">
-                        <label class="form-check-label" for="linearEquationSixRadio">
-                            6項
-                        </label>
-                    </div>
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -607,7 +601,8 @@
                             ax+b=cx+d(分数解もふくむ)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfSpecificLinearEquationType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('linear_equation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('linear_equation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">使用する係数のタイプ</small>
                 <div class="form-group">
@@ -751,6 +746,8 @@
                             半径,面積→中心角
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('sector_problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('sector_problem_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">印刷時の公式の表示</small>
                 <div class="form-group">

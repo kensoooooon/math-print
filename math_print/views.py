@@ -63,8 +63,8 @@ def print_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("number_number_to_use")
+    operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
 
@@ -86,8 +86,8 @@ def print_character_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("character_number_to_use")
+    operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
     character_to_use = request.POST["character_to_use"]
@@ -295,8 +295,8 @@ def print_linear_function(request):
 def print_power_calculate(request):
     PROBLEM_NUMBER = 20
     
-    number_to_use = request.POST.getlist("number_to_use")
-    calculate_type = request.POST.getlist("calculate_type")
+    number_to_use = request.POST.getlist("power_number_to_use")
+    calculate_type = request.POST.getlist("power_calculate_type")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -550,35 +550,40 @@ def print_sector_problem(request):
 
 def print_factorization(request):
     PROBLEM_NUMBER = 20
-    
-    factorization_type_list = request.POST.getlist("factorization_type")
     used_coefficient = request.POST["coefficient_used_for_factorization"]
     paper_number = int(request.POST["paper_number"])
+
+    factorization_type_list = request.POST.getlist("factorization_type")
+    if not(factorization_type_list):
+        factorization_type_list.append('ax+ab=a(x+b)')
+        factorization_type_list.append('x^2+2ax+a^2=(x+a)^2')
+        factorization_type_list.append('x^2-2ax+a^2=(x-a)^2')
+        factorization_type_list.append('x^2+(a+b)x+ab=(x+a)(x+b)')
+        factorization_type_list.append('x^2-a^2=(x+a)(x-a)')
     
     used_formula_list = []
     if request.POST["show_formula"] == "show_factorization_formula":
-        if factorization_type_list:
-            if "ax+ab=a(x+b)" in factorization_type_list:
-                used_formula_list.append("\( ax + ab = a(x + b) \)")
-            
-            if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
-                used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
-            
-            if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
-                used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
-            
-            if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
-                used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
-            if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
-                used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
-        else:
+        if "ax+ab=a(x+b)" in factorization_type_list:
             used_formula_list.append("\( ax + ab = a(x + b) \)")
+        if "x^2+2ax+a^2=(x+a)^2" in factorization_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
+        if "x^2-2ax+a^2=(x-a)^2" in factorization_type_list:
             used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
+        if "x^2+(a+b)x+ab=(x+a)(x+b)" in factorization_type_list:
             used_formula_list.append("\( x^2 + (a + b)x + ab = (x + a)(x + b) \)")
+        if "x^2-a^2=(x+a)(x-a)" in factorization_type_list:
             used_formula_list.append("\( x^2 - a^2 = (x + a)(x - a) \)")
-    
 
+    # divide used_formula_list
+    used_formula_tuple_in_list = []
+    formula_list_length = len(used_formula_list)
+    for index in range(0, formula_list_length, 2):
+        if (index + 1) >= formula_list_length:
+            inner_tuple = (used_formula_list[index],)
+        else:
+            inner_tuple = (used_formula_list[index], used_formula_list[index+1])
+        used_formula_tuple_in_list.append(inner_tuple)
+    
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -590,7 +595,7 @@ def print_factorization(request):
     
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
-    context["used_formula_list"] = used_formula_list
+    context["used_formula_tuple_in_list"] = used_formula_tuple_in_list
 
     return render(request, 'math_print/junior_highschool3/factorization/for_print.html', context)
 
@@ -665,29 +670,27 @@ def hs1_print_expand_equation(request):
         expand_equation_type_list.append('(a-b)(a^2+ab+b^2)=a^3-b^3')
     
     used_formula_list = []
-    if '(a+b)^2=a^2+2ab+b^2' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)^2=a^2+2ab+b^2 \)")
-    if '(a-b)^2=a^2-2ab+b^2' in expand_equation_type_list:
-        used_formula_list.append("\( (a-b)^2=a^2-2ab+b^2 \)")
-    if '(a+b)(a-b)=a^2-b^2' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)(a-b)=a^2-b^2 \)")
-    if '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab' in expand_equation_type_list:
-        used_formula_list.append("\( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)")
-    if '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)")
-    if '(a+b)^3=a^3+3a^2b+3ab^2+b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)")
-    if '(a-b)^3=a^3-3a^2b+3ab^2-b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)")
-    if '(a+b)(a^2-ab+b^2)=a^3+b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a+b)(a^2-ab+b^2)=a^3+b^3 \)")
-    if '(a-b)(a^2+ab+b^2)=a^3-b^3' in expand_equation_type_list:
-        used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
+    if request.POST["show_formula"] == "show_expansion_formula":
+        if '(a+b)^2=a^2+2ab+b^2' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)^2=a^2+2ab+b^2 \)")
+        if '(a-b)^2=a^2-2ab+b^2' in expand_equation_type_list:
+            used_formula_list.append("\( (a-b)^2=a^2-2ab+b^2 \)")
+        if '(a+b)(a-b)=a^2-b^2' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)(a-b)=a^2-b^2 \)")
+        if '(ax+b)(cx+d)=acx^2+(ad+bc)x+ab' in expand_equation_type_list:
+            used_formula_list.append("\( (ax+b)(cx+d)=acx^2+(ad+bc)x+ab \)")
+        if '(a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b+c)^2=a^2+b^2+c^2+2ab+2bc+2ca \)")
+        if '(a+b)^3=a^3+3a^2b+3ab^2+b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)^3=a^3+3a^2b+3ab^2+b^3 \)")
+        if '(a-b)^3=a^3-3a^2b+3ab^2-b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a-b)^3=a^3-3a^2b+3ab^2-b^3 \)")
+        if '(a+b)(a^2-ab+b^2)=a^3+b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a+b)(a^2-ab+b^2)=a^3+b^3 \)")
+        if '(a-b)(a^2+ab+b^2)=a^3-b^3' in expand_equation_type_list:
+            used_formula_list.append("\( (a-b)(a^2+ab+b^2)=a^3-b^3 \)")
     
     # divide used_formula_list
-    """
-    奇数個だと動作がおかしい
-    """
     used_formula_tuple_in_list = []
     formula_list_length = len(used_formula_list)
     for index in range(0, formula_list_length, 2):
@@ -739,24 +742,25 @@ def hs1_print_factorization(request):
         factorization_type_list.append('a^3-b^3=(a-b)(a^2+ab+b^2)')
     
     used_formula_list = []
-    if 'a^2+2ab+b^2=(a+b)^2' in factorization_type_list:
-        used_formula_list.append("\( a^2+2ab+b^2=(a+b)^2 \)")
-    if 'a^2-2ab+b^2=(a-b)^2' in factorization_type_list:
-        used_formula_list.append("\( a^2-2ab+b^2=(a-b)^2 \)")
-    if 'a^2-b^2=(a+b)(a-b)' in factorization_type_list:
-        used_formula_list.append("\( a^2-b^2=(a+b)(a-b) \)")
-    if 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)' in factorization_type_list:
-        used_formula_list.append("\( acx^2+(ad+bc)x+ab=(ax+b)(cx+d) \)")
-    if 'a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2' in factorization_type_list:
-        used_formula_list.append("\( a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2 \)")
-    if 'a^3+3a^2b+3ab^2+b^3=(a+b)^3' in factorization_type_list:
-        used_formula_list.append("\( a^3+3a^2b+3ab^2+b^3=(a+b)^3 \)")
-    if 'a^3-3a^2b+3ab^2-b^3=(a-b)^3' in factorization_type_list:
-        used_formula_list.append("\( a^3-3a^2b+3ab^2-b^3=(a-b)^3 \)")
-    if 'a^3+b^3=(a+b)(a^2-ab+b^2)' in factorization_type_list:
-        used_formula_list.append("\( a^3+b^3=(a+b)(a^2-ab+b^2) \)")
-    if 'a^3-b^3=(a-b)(a^2+ab+b^2)' in factorization_type_list:
-        used_formula_list.append("\( a^3-b^3=(a-b)(a^2+ab+b^2) \)")
+    if request.POST["show_formula"] == "show_factorization_formula":
+        if 'a^2+2ab+b^2=(a+b)^2' in factorization_type_list:
+            used_formula_list.append("\( a^2+2ab+b^2=(a+b)^2 \)")
+        if 'a^2-2ab+b^2=(a-b)^2' in factorization_type_list:
+            used_formula_list.append("\( a^2-2ab+b^2=(a-b)^2 \)")
+        if 'a^2-b^2=(a+b)(a-b)' in factorization_type_list:
+            used_formula_list.append("\( a^2-b^2=(a+b)(a-b) \)")
+        if 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)' in factorization_type_list:
+            used_formula_list.append("\( acx^2+(ad+bc)x+ab=(ax+b)(cx+d) \)")
+        if 'a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2' in factorization_type_list:
+            used_formula_list.append("\( a^2+b^2+c^2+2ab+2bc+2ca=(a+b+c)^2 \)")
+        if 'a^3+3a^2b+3ab^2+b^3=(a+b)^3' in factorization_type_list:
+            used_formula_list.append("\( a^3+3a^2b+3ab^2+b^3=(a+b)^3 \)")
+        if 'a^3-3a^2b+3ab^2-b^3=(a-b)^3' in factorization_type_list:
+            used_formula_list.append("\( a^3-3a^2b+3ab^2-b^3=(a-b)^3 \)")
+        if 'a^3+b^3=(a+b)(a^2-ab+b^2)' in factorization_type_list:
+            used_formula_list.append("\( a^3+b^3=(a+b)(a^2-ab+b^2) \)")
+        if 'a^3-b^3=(a-b)(a^2+ab+b^2)' in factorization_type_list:
+            used_formula_list.append("\( a^3-b^3=(a-b)(a^2+ab+b^2) \)")
     
     # divide used_formula_list
     used_formula_tuple_in_list = []
@@ -815,7 +819,7 @@ def print_transformation_of_equation(request):
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
 
-    return render(request, 'math_print/highschool1/factorization/for_print.html', context)
+    return render(request, 'math_print/junior_highschool2/transformation_of_equation/for_print.html', context)
 
 def print_character_fraction(request):
     PROBLEM_NUMBER = 20
@@ -842,8 +846,8 @@ def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("number_number_to_use")
+    operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
 
     MAX_NUMBER_TO_FRAC = 10
@@ -861,8 +865,8 @@ def display_character_problem(request):
     PROBLEM_NUMBER = 20
 
     result = request.POST
-    number_to_use = request.POST.getlist("number_to_use")
-    operator_to_use = request.POST.getlist("operator_to_use")
+    number_to_use = request.POST.getlist("character_number_to_use")
+    operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
     character_to_use = request.POST["character_to_use"]
@@ -1032,8 +1036,8 @@ def display_linear_function(request):
 def display_power_calculate(request):
     PROBLEM_NUMBER = 20
     
-    number_to_use = request.POST.getlist("number_to_use")
-    calculate_type = request.POST.getlist("calculate_type")
+    number_to_use = request.POST.getlist("power_number_to_use")
+    calculate_type = request.POST.getlist("power_calculate_type")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
@@ -1220,7 +1224,7 @@ def display_fraction_calculate_problem(request):
 def display_number_without_bracket_problem(request):
     PROBLEM_NUMBER = 20
     
-    operator_to_use_list = request.POST.getlist("operator_to_use")
+    operator_to_use_list = request.POST.getlist("number_without_bracket_operator_to_use")
     number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
     term_number = int(request.POST["term_number"])
     

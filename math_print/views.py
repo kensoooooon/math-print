@@ -38,6 +38,7 @@ from .math_process.hs1_expand_equation import HS1ExpandEquationProblem
 from .math_process.hs1_factorization import HS1FactorizationProblem
 from .math_process.transformation_of_equation import TransformationOfEquationProblem
 from .math_process.character_fraction import CharacterFractionProblem
+from .math_process.hs1_quadratic_function import HS1QuadraticFunctionProblem
 
 
 # Create your views here.
@@ -841,6 +842,30 @@ def print_character_fraction(request):
     
     return render(request, 'math_print/junior_highschool2/character_fraction/for_print.html', context)
 
+def hs1_print_quadratic_function(request):
+    PROBLEM_NUMBER = 20
+    given_information_list = request.POST.getlist("given_information")
+    if not(given_information_list):
+        given_information_list.append("vertex_and_one_point")
+        given_information_list.append("three_points")
+        given_information_list.append("the_axis_of_symmetry_and_two_points")
+        given_information_list.append("before_parabora_and_line_or_parabora_containing_vertex_and_one_point")
+
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = HS1QuadraticFunctionProblem(given_information_list=given_information_list)
+            problem2 = HS1QuadraticFunctionProblem(given_information_list=given_information_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    
+    return render(request, 'math_print/highschool1/quadratic_function/for_print.html', context)
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1491,3 +1516,23 @@ def display_character_fraction(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     
     return render(request, 'math_print/junior_highschool2/character_fraction/for_display.html', context)
+
+def hs1_display_quadratic_function(request):
+    PROBLEM_NUMBER = 20
+    given_information_list = request.POST.getlist("given_information")
+    if not(given_information_list):
+        given_information_list.append("vertex_and_one_point")
+        given_information_list.append("three_points")
+        given_information_list.append("the_axis_of_symmetry_and_two_points")
+        given_information_list.append("before_parabora_and_line_or_parabora_containing_vertex_and_one_point")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = HS1QuadraticFunctionProblem(given_information_list=given_information_list)
+        problem2 = HS1QuadraticFunctionProblem(given_information_list=given_information_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    
+    return render(request, 'math_print/highschool1/quadratic_function/for_display.html', context)

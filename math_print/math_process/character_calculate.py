@@ -104,7 +104,7 @@ class CharacterMathProblem:
                     latex_string_for_eval += f"{operator_for_eval} (sy.Integer({int(number)}) * {character})"
                 
                 if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
-                    print("float!")
+                    print(f"{self._used_number_type_list}, float!")
                     number = float(number)
                 if number < 0:
                     latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"
@@ -121,7 +121,7 @@ class CharacterMathProblem:
                     latex_string_for_eval += f"{operator_for_eval} sy.Integer({int(number)})"
                 
                 if ("frac" not in self._used_number_type_list) and ("integer" not in self._used_number_type_list) and ("divided" not in self._used_operator_type_list):
-                    print("float!")
+                    print(f"{self._used_number_type_list}, float!")
                     number = float(number)
                 if number < 0:
                     latex_problem += f"{operator_for_latex} \\left( {term_latex} \\right)"

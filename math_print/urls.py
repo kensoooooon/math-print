@@ -59,6 +59,9 @@ urlpatterns = [
     # 分数を使った文字の計算
     path('character_fraction/print/', views.print_character_fraction, name='character_fraction_print'),
     path('character_fraction/display/', views.display_character_fraction, name='character_fraction_display'),
+    # 文字の計算
+    path('jhs2_character/print/', views.jhs2_print_character_problem, name='jhs2_character_print'),
+    path('jhs2_character/display/', views.jhs2_display_character_problem, name='jhs2_character_display'),
     ##########################################
     ### 中3 ###
     path('junior_highschool3/', views.show_junior_highschool3, name='junior_highschool3'),

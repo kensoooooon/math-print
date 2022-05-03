@@ -867,6 +867,40 @@ def hs1_print_quadratic_function(request):
     
     return render(request, 'math_print/highschool1/quadratic_function/for_print.html', context)
 
+def jhs2_print_character_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    number_to_use = request.POST.getlist("character_number_to_use")
+    operator_to_use = request.POST.getlist("character_operator_to_use")
+    term_number = int(request.POST["term_number"])
+    paper_number = int(request.POST["paper_number"])
+    character_to_use = request.POST["character_to_use"]
+    character_to_use_list = ["x"]
+    if character_to_use == "2":
+        character_to_use_list += ["y"]
+
+    MAX_NUMBER_TO_FRAC = 10
+    MIN_NUMBER_TO_FRAC = -10
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER/2)):
+            problem1 = CharacterMathProblem(
+                term_number=term_number, max_number_to_frac=MAX_NUMBER_TO_FRAC,
+                min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
+                used_operator_type_list=operator_to_use, used_character_type_list=character_to_use_list
+                )
+            problem2 = CharacterMathProblem(
+                term_number=term_number, max_number_to_frac=MAX_NUMBER_TO_FRAC,
+                min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
+                used_operator_type_list=operator_to_use, used_character_type_list=character_to_use_list
+                )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+
+    return render(request, 'math_print/junior_highschool2/character/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -891,6 +925,7 @@ def display_character_problem(request):
 
     result = request.POST
     number_to_use = request.POST.getlist("character_number_to_use")
+    print(f"number_to_use: {number_to_use}")
     operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
     paper_number = int(request.POST["paper_number"])
@@ -1536,3 +1571,33 @@ def hs1_display_quadratic_function(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     
     return render(request, 'math_print/highschool1/quadratic_function/for_display.html', context)
+
+def jhs2_display_character_problem(request):
+    PROBLEM_NUMBER = 20
+
+    number_to_use = request.POST.getlist("character_number_to_use")
+    operator_to_use = request.POST.getlist("character_operator_to_use")
+    term_number = int(request.POST["term_number"])
+    character_to_use = request.POST["character_to_use"]
+    character_to_use_list = ["x"]
+    if character_to_use == "2":
+        character_to_use_list += ["y"]
+
+    MAX_NUMBER_TO_FRAC = 10
+    MIN_NUMBER_TO_FRAC = -10
+
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER/2)):
+        problem1 = CharacterMathProblem(
+            term_number=term_number, max_number_to_frac=MAX_NUMBER_TO_FRAC,
+            min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
+            used_operator_type_list=operator_to_use, used_character_type_list=character_to_use_list
+            )
+        problem2 = CharacterMathProblem(
+            term_number=term_number, max_number_to_frac=MAX_NUMBER_TO_FRAC,
+            min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
+            used_operator_type_list=operator_to_use, used_character_type_list=character_to_use_list
+            )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool2/character/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

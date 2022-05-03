@@ -155,19 +155,19 @@
                     <small class="text-muted">使用する数のタイプ</small>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="characterIntegerCheck" checked>
+                            <input class="form-check-input" type="checkbox" value="integer" name="character_number_to_use" id="characterIntegerCheck" checked>
                             <label class="form-check-label" for="characterIntegerCheck">
                                 整数
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="characterDecimalCheck">
+                            <input class="form-check-input" type="checkbox" value="decimal" name="character_number_to_use" id="characterDecimalCheck">
                             <label class="form-check-label" for="characterDecimalCheck">
                                 小数
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="characterFracCheck">
+                            <input class="form-check-input" type="checkbox" value="frac" name="character_number_to_use" id="characterFracCheck">
                             <label class="form-check-label" for="characterFracCheck">
                                 分数
                             </label>
@@ -221,8 +221,8 @@
                             </label>
                         </div>
                     </div>
-                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'character_print' %}">
-                    <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'character_display' %}">
+                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'jhs2_character_print' %}">
+                    <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'jhs2_character_display' %}">
                 </form>
         </div>
         <div class="row">

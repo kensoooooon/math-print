@@ -26,25 +26,26 @@
         });
 </script>
 <script>
-    function checkStatusOfUsedFormula(problem_type){
-        let used_formulas = document.getElementsByName(problem_type);
+    function checkAllCheckBoxes(checkbox_name){
+        let checkboxes = document.getElementsByName(checkbox_name);
 
-        for (let i = 0; i < used_formulas.length; i++) {
-            if (!(used_formulas[i].checked)){
-                used_formulas[i].checked = true;
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (!(checkboxes[i].checked)) {
+                checkboxes[i].checked = true;
             }
         }
     }
 
-    function uncheckStatusOfUsedFormula(problem_type){
-        let used_formulas = document.getElementsByName(problem_type);
+    function uncheckAllCheckBoxes(checkbox_name){
+        let checkboxes = document.getElementsByName(checkbox_name);
 
-        for (let i = 0; i < used_formulas.length; i++) {
-            if (used_formulas[i].checked) {
-                used_formulas[i].checked = false;
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxes[i].checked = false;
             }
         }
     }
+
 </script>
 {% endblock %}
 
@@ -111,8 +112,8 @@
                             \( (a-b)(a^2+ab+b^2)=a^3-b^3 \)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkStatusOfUsedFormula(`used_formula_for_expand`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckStatusOfUsedFormula(`used_formula_for_expand`)" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`used_formula_for_expand`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`used_formula_for_expand`)" value="全部はずし">
                 </div>
                 <small class="text-muted">x以外の文字を含むか</small>
                 <div clas="form-group">
@@ -229,8 +230,8 @@
                             \( a^3-b^3=(a-b)(a^2+ab+b^2) \)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkStatusOfUsedFormula(`used_formula_for_factorization`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckStatusOfUsedFormula(`used_formula_for_factorization`)" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`used_formula_for_factorization`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`used_formula_for_factorization`)" value="全部はずし">
                 </div>
                 <small class="text-muted">x以外の文字を含むか</small>
                 <div clas="form-group">
@@ -289,6 +290,64 @@
         </div>
     </div>
     <div class="row">
+        <div class="col border-end border-bottom">
+            <p>2次関数を求める</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">与えられる情報</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="vertex_and_one_point" name="given_information" id="hs1_quadratic_function_vertex_and_one_point" checked>
+                        <label class="form-check-label" for="hs1_quadratic_function_vertex_and_one_point">
+                            頂点+1点
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="three_points" name="given_information" id="hs1_quadratic_function_three_points" checked>
+                        <label class="form-check-label" for="hs1_quadratic_function_three_points">
+                            3点
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="the_axis_of_symmetry_and_two_points" name="given_information" id="hs1_quadratic_function_the_axis_of_symmetry_and_two_points">
+                        <label class="form-check-label" for="hs1_quadratic_function_the_axis_of_symmetry_and_two_points">
+                            軸+2点
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="before_parabora_and_line_or_parabora_containing_vertex_and_one_point" name="given_information" id="hs1_quadratic_function_before_parabora_and_line_or_parabora_containing_vertex_and_one_point">
+                        <label class="form-check-label" for="hs1_quadratic_function_before_parabora_and_line_or_parabora_containing_vertex_and_one_point">
+                            平行移動前の放物線+頂点がある直線・放物線+1点
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`given_information`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`given_information`)" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="HS1QuadraticFunctionFivePaperRadio" checked>
+                        <label class="form-check-label" for="HS1QuadraticFunctionFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="HS1QuadraticFunctionTenPaperRadio">
+                        <label class="form-check-label" for="HS1QuadraticFunctionTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="HS1QuadraticFunctionFifteenPaperRadio">
+                        <label class="form-check-label" for="HS1QuadraticFunctionFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs1_quadratic_function_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'hs1_quadratic_function_display' %}">      
+            </form>
+        </div>
         <div class="col border-end border-bottom">
             <p>平方完成</p>
             <form action="?" method="post" enctype="multipart/form-data">

@@ -86,4 +86,7 @@ urlpatterns = [
     # 因数分解
     path('hs1_factorization/print', views.hs1_print_factorization, name='hs1_factorization_print'),
     path('hs1_factorization/display', views.hs1_display_factorization, name='hs1_factorization_display'),
+    # 2次関数の決定
+    path('hs1_quadratic_function/print', views.hs1_print_quadratic_function, name='hs1_quadratic_function_print'),
+    path('hs1_quadratic_function/display', views.hs1_display_quadratic_function, name='hs1_quadratic_function_display'),
 ]

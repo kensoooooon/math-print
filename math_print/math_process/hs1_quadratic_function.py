@@ -137,24 +137,24 @@ class HS1QuadraticFunctionProblem:
         elif vertex_function_checker == "parabora":
             # y = ax^2 + bx + c
             quadratic_function_for_vertex = self._make_random_number(max_num=2, integer_or_frac="integer") * x ** 2 + self._make_random_number(max_num=3, integer_or_frac="integer") * x + self._make_random_number(max_num=3, integer_or_frac="integer")
-            x_vertex1 = self._make_random_number()
+            x_vertex1 = self._make_random_number(max_num=2, integer_or_frac="integer")
             y_vertex1 = quadratic_function_for_vertex.subs(x, x_vertex1)
-            x_vertex2 = self._make_random_number()
+            x_vertex2 = self._make_random_number(max_num=2, integer_or_frac="integer")
+            if x_vertex1 == x_vertex2:
+                x_vertex2 += self._make_random_number(max_num=2, integer_or_frac="integer")
             y_vertex2 = quadratic_function_for_vertex.subs(x, x_vertex2)
             quadratic_function1 = sy.expand(a_num * (x - x_vertex1) ** 2 + y_vertex1)
-            print(f"quadratic_function1: {quadratic_function1}")
             quadratic_function2 = sy.expand(a_num * (x - x_vertex2) ** 2 + y_vertex2)
-            print(f"quadratic_function2: {quadratic_function2}")
-            latex_answer = f"\( y = {sy.latex(quadratic_function1)} \)\n"\
-            f"\( y = {sy.latex(quadratic_function2)}\)"
-            x1 = self._make_random_number(integer_or_frac="integer", max_num=3)
-            y1 = quadratic_function1.subs(x, x1)
-            # x2 = self._make_random_number(integer_or_frac="integer", max_num=3)
-            y2 = quadratic_function2.subs(x, x1)
-            if (y1 != y2):
-                raise ValueError(f"y1: {y1}, y2: {y2}")
-            latex_answer = f"放物線\( y = {sy.latex(a_num)} x^2 \)を平行移動した曲線で、"\
-            f"点\( \left( {sy.latex(x1)}, {sy.latex(y1)} \\right) \)を通り、\n"\
+            latex_answer = f"\( y = {sy.latex(quadratic_function1)}\),"\
+            f"\( \quad y = {sy.latex(quadratic_function2)}\)"
+            common_xs = sy.solve(quadratic_function1 - quadratic_function2, x)
+            common_x = common_xs[0]
+            common_y1 = quadratic_function1.subs(x, common_x)
+            common_y2 = quadratic_function2.subs(x, common_x)
+            if (common_y1 != common_y2):
+                raise ValueError(f"common_y1: {common_y1}, common_y2: {common_y2}")
+            latex_problem = f"放物線\( y = {sy.latex(a_num)} x^2 \)を平行移動した曲線で、"\
+            f"点\( \left( {sy.latex(common_x)}, {sy.latex(common_y1)} \\right) \)を通り、\n"\
             f"頂点が放物線\( y = {sy.latex(quadratic_function_for_vertex)} \)上にある。"
 
         return latex_answer, latex_problem
@@ -193,5 +193,8 @@ class HS1QuadraticFunctionProblem:
         
         if positive_or_negative == "negative":
             number = -1 * number
+        else:
+            if random() > 0.5:
+                number = -1 * number
         
         return number

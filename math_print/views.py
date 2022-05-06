@@ -909,14 +909,18 @@ def hs1_print_quadratic_function_max_min(request):
     if not(moving_part_list):
         moving_part_list.append("the_axis_of_symmetry")
         moving_part_list.append("domain")
+    max_min_list = request.POST.getlist("max_min")
+    if not(max_min_list):
+        max_min_list.append("max")
+        max_min_list.append("min")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list)
-            problem2 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list)
+            problem1 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
+            problem2 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
@@ -1640,8 +1644,8 @@ def hs1_display_quadratic_function_max_min(request):
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list)
-        problem2 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list)
+        problem1 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
+        problem2 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
         math_problem_tuple_list.append((problem1, problem2))
     
     context = {}

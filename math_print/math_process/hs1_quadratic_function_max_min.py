@@ -19,17 +19,14 @@ class HS1QuadraticFunctionMaxMinProblem:
         selected_max_min = choice(self._max_min_list)
         
         if selected_moving_part == "the_axis_of_symmetry":
-            if selected_max_min == "max":
-                latex_answer, latex_problem = self._make_the_axis_of_symmetry_max_problem()
-            elif selected_max_min == "min":
-                latex_answer, latex_problem = self._make_the_axis_of_symmetry_min_problem
+            latex_answer, latex_problem = self._make_the_axis_of_symmetry_problem(max_or_min=selected_max_min)
         """
         elif selected_moving_part == "domain":
             latex_answer, latex_problem = self._make_domain_problem()
         """
         return latex_answer, latex_problem
 
-    def _make_the_axis_of_symmetry_max_problem(self):
+    def _make_the_axis_of_symmetry_problem(self, max_or_min):
         """
         domain: fixed
         moving: the axis of symmetry
@@ -41,19 +38,30 @@ class HS1QuadraticFunctionMaxMinProblem:
         coefficient_of_x_squared = self._make_random_number()
         x_vertex = self._make_random_number(integer_or_frac="integer") * a
         y_vertex = self._make_random_number() * a
-        quadratic_function_before_collecting = coefficient_of_x_squared * (x - x_vertex) ** 2 * y_vertex
-        quadratic_function = sy.collect(quadratic_function_before_collecting, x)
+        quadratic_function_before_collecting = coefficient_of_x_squared * (x - x_vertex) ** 2 + y_vertex
+        quadratic_function = sy.collect(sy.expand(quadratic_function_before_collecting), x)
+        print(f"quadratic_function: {quadratic_function}")
+        if max_or_min == "max":
+            problem_mode = "最大値"
+        elif max_or_min == "min":
+            problem_mode = "最小値" 
+        latex_problem = f"\( y = {sy.latex(quadratic_function)}\)"\
+            f"\( \left( {sy.latex(domain_left)} \leqq x \leqq {sy.latex(domain_right)} \\right) \) \n"\
+            f"の{problem_mode}を求めよ。"
+        patterns_and_values = self._calculate_patterns(max_or_min, domain_left, domain_right, quadratic_function)
         
-        if coefficient_of_x_squared > 0:
-            domain_middle = (domain_left + domain_right) / 2
-            standard_point = sy.solve(x_vertex - domain_middle, a)
+        latex_answer = f"{patterns_and_values.pattern1_latex}のとき、{patterns_and_values.value1_latex} \n"\
+            f"{patterns_and_values.pattern2_latex}のとき、{patterns_and_values.value2_latex} \n"\
+            f"{patterns_and_values.pattern3_latex}のとき、{patterns_and_values.value3_latex}"
+        
+        return latex_answer, latex_problem
         
     def _calculate_patterns(self, max_or_min, domain_left, domain_right, quadratic_function):
         # 中で判別して、left_a, right_aにして、そこと値を紐づける感じ？
         class PatternsAndValues(NamedTuple):
             pattern1_latex : str
             value1_latex: str
-            pattern_latex : str
+            pattern2_latex : str
             value2_latex: str
             pattern3_latex : str
             value3_latex: str
@@ -61,8 +69,11 @@ class HS1QuadraticFunctionMaxMinProblem:
         a = self._character["a"]
         x = self._character["x"]
         quadratic_coefficient = quadratic_function.coeff(x, 2)
+        print(f"quadratic_coefficient: {quadratic_coefficient}")
         linear_coefficient = quadratic_function.coeff(x, 1)
+        print(f"linear_coefficient: {linear_coefficient}")
         the_axis_of_symmetry = (-1 * linear_coefficient) / (2 * quadratic_coefficient)
+        print(f"the_axis_of_symmetry: {the_axis_of_symmetry}")
         
         # far from axis
         if ((quadratic_coefficient > 0) and (max_or_min == "max")) or ((quadratic_coefficient < 0) and (max_or_min == "min")):
@@ -113,7 +124,7 @@ class HS1QuadraticFunctionMaxMinProblem:
                 value1_latex = f"\( {sy.latex(left_value)} \)"
                 pattern2_latex = f"\( {sy.latex(left_a_point)} \leqq a \leqq {sy.latex(right_a_point)} \)"
                 value2_latex = f"\( {sy.latex(quadratic_function.subs(x, the_axis_of_symmetry))} \)"
-                patter3_latex = f"\( a > {sy.latex(right_a_point)} \)"
+                pattern3_latex = f"\( a > {sy.latex(right_a_point)} \)"
                 value3_latex = f"\( {sy.latex(right_value)} \)"
             elif axis_coefficient < 0:
                 print("negative")

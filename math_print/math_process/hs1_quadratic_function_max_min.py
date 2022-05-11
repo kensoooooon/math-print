@@ -62,10 +62,10 @@ class HS1QuadraticFunctionMaxMinProblem:
         print("----------------domain!!!!!!-------------")
         x = self._character["x"]
         y = self._character["y"]
-        domain_left = self._make_random_number(integer_or_frac="integer", positive_or_negative="positive") * y
+        domain_left = self._make_random_number(integer_or_frac="integer", positive_or_negative="positive", max_num=2) * y
         domain_right = domain_left + self._make_random_number(integer_or_frac="integer", positive_or_negative="positive")
         print(f"domain_left: {domain_left} domain_right: {domain_right}")
-        coefficient_of_x_squared = self._make_random_number(integer_or_frac="integer")
+        coefficient_of_x_squared = self._make_random_number(integer_or_frac="integer", max_num=3)
         x_vertex = self._make_random_number(integer_or_frac="integer", max_num=2)
         y_vertex = self._make_random_number(integer_or_frac="integer", max_num=3)
         quadratic_function_before_collecting = coefficient_of_x_squared * (x - x_vertex) ** 2 + y_vertex
@@ -237,6 +237,8 @@ class HS1QuadraticFunctionMaxMinProblem:
             
         if max_num == min_num:
             max_num += 1
+        if max_num < min_num:
+            max_num, min_num = min_num, max_num
         
         def _make_positive_integer():
             integer = sy.Integer(randint(min_num, max_num))          

@@ -423,6 +423,71 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>2次関数の最大最小</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">動くもの</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="the_axis_of_symmetry" name="moving_part" id="hs1_quadratic_function_the_axis_of_symmetry" checked>
+                        <label class="form-check-label" for="hs1_quadratic_function_the_axis_of_symmetry">
+                            軸(定義域は固定)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="domain" name="moving_part" id="hs1_quadratic_function_domain" checked>
+                        <label class="form-check-label" for="hs1_quadratic_function_domain">
+                            定義域(軸は固定)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`moving_part`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`moving_part`)" value="全部はずし">
+                </div>
+                <small class="text-muted">求める値</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="max" name="max_min" id="hs1_quadratic_function_max" checked>
+                        <label class="form-check-label" for="hs1_quadratic_function_max">
+                            最大値
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="min" name="max_min" id="hs1_quadratic_function_min" checked>
+                        <label class="form-check-label" for="hs1_quadratic_function_min">
+                            最小値
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`moving_part`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`moving_part`)" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="HS1QuadraticFunctionFivePaperRadio" checked>
+                        <label class="form-check-label" for="HS1QuadraticFunctionFivePaperRadio">
+                            14問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="HS1QuadraticFunctionTenPaperRadio">
+                        <label class="form-check-label" for="HS1QuadraticFunctionTenPaperRadio">
+                            14問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="HS1QuadraticFunctionFifteenPaperRadio">
+                        <label class="form-check-label" for="HS1QuadraticFunctionFifteenPaperRadio">
+                            14問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs1_quadratic_function_max_min_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'hs1_quadratic_function_max_min_display' %}">      
+            </form>
+        </div>
+    </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

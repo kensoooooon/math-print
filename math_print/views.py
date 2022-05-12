@@ -39,6 +39,7 @@ from .math_process.hs1_factorization import HS1FactorizationProblem
 from .math_process.transformation_of_equation import TransformationOfEquationProblem
 from .math_process.character_fraction import CharacterFractionProblem
 from .math_process.hs1_quadratic_function import HS1QuadraticFunctionProblem
+from .math_process.hs1_quadratic_function_max_min import HS1QuadraticFunctionMaxMinProblem
 
 
 # Create your views here.
@@ -885,7 +886,7 @@ def jhs2_print_character_problem(request):
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
-        for _ in range(int(PROBLEM_NUMBER/2)):
+        for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = CharacterMathProblem(
                 term_number=term_number, max_number_to_frac=MAX_NUMBER_TO_FRAC,
                 min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
@@ -900,6 +901,33 @@ def jhs2_print_character_problem(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
 
     return render(request, 'math_print/junior_highschool2/character/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def hs1_print_quadratic_function_max_min(request):
+    PROBLEM_NUMBER = 14
+    
+    moving_part_list = request.POST.getlist("moving_part")
+    if not(moving_part_list):
+        moving_part_list.append("the_axis_of_symmetry")
+        moving_part_list.append("domain")
+    max_min_list = request.POST.getlist("max_min")
+    if not(max_min_list):
+        max_min_list.append("max")
+        max_min_list.append("min")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
+            problem2 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    
+    return render(request, 'math_print/highschool1/quadratic_function_max_min/for_print.html', context)
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1553,7 +1581,7 @@ def display_character_fraction(request):
     return render(request, 'math_print/junior_highschool2/character_fraction/for_display.html', context)
 
 def hs1_display_quadratic_function(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 14
     given_information_list = request.POST.getlist("given_information")
     if not(given_information_list):
         given_information_list.append("vertex_and_one_point")
@@ -1587,7 +1615,7 @@ def jhs2_display_character_problem(request):
     MIN_NUMBER_TO_FRAC = -10
 
     math_problem_tuple_list = []
-    for _ in range(int(PROBLEM_NUMBER/2)):
+    for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = CharacterMathProblem(
             term_number=term_number, max_number_to_frac=MAX_NUMBER_TO_FRAC,
             min_number_to_frac=MIN_NUMBER_TO_FRAC, used_number_type_list=number_to_use,
@@ -1601,3 +1629,26 @@ def jhs2_display_character_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool2/character/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def hs1_display_quadratic_function_max_min(request):
+    PROBLEM_NUMBER = 14
+    
+    moving_part_list = request.POST.getlist("moving_part")
+    if not(moving_part_list):
+        moving_part_list.append("the_axis_of_symmetry")
+        moving_part_list.append("domain")
+    max_min_list = request.POST.getlist("max_min")
+    if not(max_min_list):
+        max_min_list.append("max")
+        max_min_list.append("min")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
+        problem2 = HS1QuadraticFunctionMaxMinProblem(moving_part_list=moving_part_list, max_min_list=max_min_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    
+    return render(request, 'math_print/highschool1/quadratic_function_max_min/for_display.html', context)

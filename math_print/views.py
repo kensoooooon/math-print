@@ -903,7 +903,7 @@ def jhs2_print_character_problem(request):
     return render(request, 'math_print/junior_highschool2/character/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def hs1_print_quadratic_function_max_min(request):
-    PROBLEM_NUMBER = 10
+    PROBLEM_NUMBER = 14
     
     moving_part_list = request.POST.getlist("moving_part")
     if not(moving_part_list):
@@ -1581,7 +1581,7 @@ def display_character_fraction(request):
     return render(request, 'math_print/junior_highschool2/character_fraction/for_display.html', context)
 
 def hs1_display_quadratic_function(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 14
     given_information_list = request.POST.getlist("given_information")
     if not(given_information_list):
         given_information_list.append("vertex_and_one_point")
@@ -1631,7 +1631,7 @@ def jhs2_display_character_problem(request):
     return render(request, 'math_print/junior_highschool2/character/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def hs1_display_quadratic_function_max_min(request):
-    PROBLEM_NUMBER = 10
+    PROBLEM_NUMBER = 14
     
     moving_part_list = request.POST.getlist("moving_part")
     if not(moving_part_list):

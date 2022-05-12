@@ -34,13 +34,11 @@ class HS1QuadraticFunctionMaxMinProblem:
         y = self._character["y"]
         domain_left = self._make_random_number(integer_or_frac="integer")
         domain_right = domain_left + self._make_random_number(integer_or_frac="integer", positive_or_negative="positive")
-        print(f"domain_left: {domain_left} domain_right: {domain_right}")
         coefficient_of_x_squared = self._make_random_number(integer_or_frac="integer")
         x_vertex = self._make_random_number(integer_or_frac="integer", max_num=2) * y
         y_vertex = self._make_random_number(integer_or_frac="integer", max_num=3) * y
         quadratic_function_before_collecting = coefficient_of_x_squared * (x - x_vertex) ** 2 + y_vertex
         quadratic_function = sy.collect(sy.expand(quadratic_function_before_collecting), x)
-        print(f"quadratic_function: {quadratic_function}")
         if max_or_min == "max":
             problem_mode = "最大値"
         elif max_or_min == "min":
@@ -59,18 +57,15 @@ class HS1QuadraticFunctionMaxMinProblem:
         return latex_answer, latex_problem
     
     def _make_domain_problem(self, max_or_min):
-        print("----------------domain!!!!!!-------------")
         x = self._character["x"]
         y = self._character["y"]
         domain_left = self._make_random_number(integer_or_frac="integer", positive_or_negative="positive", max_num=2) * y
         domain_right = domain_left + self._make_random_number(integer_or_frac="integer", positive_or_negative="positive")
-        print(f"domain_left: {domain_left} domain_right: {domain_right}")
         coefficient_of_x_squared = self._make_random_number(integer_or_frac="integer", max_num=3)
         x_vertex = self._make_random_number(integer_or_frac="integer", max_num=2)
         y_vertex = self._make_random_number(integer_or_frac="integer", max_num=3)
         quadratic_function_before_collecting = coefficient_of_x_squared * (x - x_vertex) ** 2 + y_vertex
         quadratic_function = sy.collect(sy.expand(quadratic_function_before_collecting), x)
-        print(f"quadratic_function: {quadratic_function}")
         if max_or_min == "max":
             problem_mode = "最大値"
         elif max_or_min == "min":
@@ -109,12 +104,8 @@ class HS1QuadraticFunctionMaxMinProblem:
         
         # far from axis
         if ((quadratic_coefficient > 0) and (max_or_min == "max")) or ((quadratic_coefficient < 0) and (max_or_min == "min")):
-            print(f"quadratic_function: {quadratic_function}")
-            print(f"the_axis_of_symmetry: {the_axis_of_symmetry}")
             middle_domain = (domain_left + domain_right) / 2
-            print(f"middle_domain: {middle_domain}")
             middle_y_point = sy.solve(the_axis_of_symmetry-middle_domain, y)[0]
-            print(f"middle_y_point: {middle_y_point}")
             left_value = sy.expand(quadratic_function.subs(x, domain_left))
             right_value = sy.expand(quadratic_function.subs(x, domain_right))
             middle_value = sy.expand(quadratic_function.subs(y, middle_y_point).subs(x, domain_left))
@@ -156,22 +147,16 @@ class HS1QuadraticFunctionMaxMinProblem:
         y = self._character["y"]
         x = self._character["x"]
         quadratic_coefficient = quadratic_function.coeff(x, 2)
-        print(f"quadratic_coefficient: {quadratic_coefficient}")
         linear_coefficient = quadratic_function.coeff(x, 1)
-        print(f"linear_coefficient: {linear_coefficient}")
         the_axis_of_symmetry = (-1 * linear_coefficient) / (2 * quadratic_coefficient)
-        print(f"the_axis_of_symmetry: {the_axis_of_symmetry}")
-        
+
         # far from axis
         if ((quadratic_coefficient > 0) and (max_or_min == "max")) or ((quadratic_coefficient < 0) and (max_or_min == "min")):
             middle_domain = (domain_left + domain_right) / 2
-            print(f"middle_domain: {middle_domain}")
             middle_y_point = sy.solve(the_axis_of_symmetry-middle_domain, y)[0]
-            print(f"middle_y_point: {middle_y_point}")
             axis_coefficient = the_axis_of_symmetry.coeff(y, 1)
             # when axis on left->value is right
             right_value = quadratic_function.subs(x, domain_right)
-            print(f"right_value: {right_value}")
             left_value = quadratic_function.subs(x, domain_left)
             middle_value = quadratic_function.subs(y, middle_y_point).subs(x, domain_left)
             if axis_coefficient > 0:
@@ -194,10 +179,6 @@ class HS1QuadraticFunctionMaxMinProblem:
         # near by axis
         elif ((quadratic_coefficient > 0) and (max_or_min == "min")) or ((quadratic_coefficient < 0) and (max_or_min == "max")):
             left_y_point = sy.solve(the_axis_of_symmetry-domain_left, y)[0]
-            print("check!!")
-            print(f"the_axis_of_symmetry: {the_axis_of_symmetry}")
-            print(f"domain_left: {domain_left}")
-            print(f"left_a_point: {left_y_point}")
             right_y_point = sy.solve(the_axis_of_symmetry-domain_right, y)[0]
 
             left_value = quadratic_function.subs(x, domain_left)
@@ -206,7 +187,6 @@ class HS1QuadraticFunctionMaxMinProblem:
             axis_coefficient = the_axis_of_symmetry.coeff(y, 1)
 
             if axis_coefficient > 0:
-                print("positive")
                 pattern1_latex = f"\( y < {sy.latex(left_y_point)} \)"
                 value1_latex = f"\( {sy.latex(left_value)} \)"
                 pattern2_latex = f"\( {sy.latex(left_y_point)} \leqq y \leqq {sy.latex(right_y_point)} \)"
@@ -214,7 +194,6 @@ class HS1QuadraticFunctionMaxMinProblem:
                 pattern3_latex = f"\( y > {sy.latex(right_y_point)} \)"
                 value3_latex = f"\( {sy.latex(right_value)} \)"
             elif axis_coefficient < 0:
-                print("negative")
                 pattern1_latex = f"\( y < {sy.latex(right_y_point)} \)"
                 value1_latex = f"\( {sy.latex(right_value)} \)"
                 pattern2_latex = f"\( {sy.latex(right_y_point)} \leqq y \leqq {sy.latex(left_y_point)} \)"
@@ -225,8 +204,6 @@ class HS1QuadraticFunctionMaxMinProblem:
                 raise ValueError(f"axis_coefficient: {axis_coefficient}, the_axis_of_symmetry: {the_axis_of_symmetry} may be wrong.")
         
         patterns_and_values = PatternsAndValues(pattern1_latex, value1_latex, pattern2_latex, value2_latex, pattern3_latex, value3_latex)
-        print(patterns_and_values)
-
         return patterns_and_values
 
     def _make_random_number(self, integer_or_frac=None, positive_or_negative=None, max_num=None, min_num=None):

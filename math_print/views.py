@@ -929,10 +929,19 @@ def hs1_print_quadratic_function_max_min(request):
     
     return render(request, 'math_print/highschool1/quadratic_function_max_min/for_print.html', context)
 
+
+def print_parallel_lines_and_angle(request):
+    print(f"request: {request}")
+    
+    context = {}
+    context["message"] = "This is parallel lines and angle print problem page."
+    
+    return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
+
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
-    result = request.POST
     number_to_use = request.POST.getlist("number_number_to_use")
     operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
@@ -1652,3 +1661,13 @@ def hs1_display_quadratic_function_max_min(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     
     return render(request, 'math_print/highschool1/quadratic_function_max_min/for_display.html', context)
+
+
+def display_parallel_lines_and_angle(request):
+    print(f"request: {request}")
+    # https://stackoverflow.com/questions/50432295/using-tikz-in-a-browser-like-mathjax
+    
+    context = {}
+    context["message"] = "This is parallel lines and angle display problem page."
+
+    return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_display.html', context)

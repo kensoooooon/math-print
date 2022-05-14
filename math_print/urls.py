@@ -63,8 +63,8 @@ urlpatterns = [
     path('jhs2_character/print/', views.jhs2_print_character_problem, name='jhs2_character_print'),
     path('jhs2_character/display/', views.jhs2_display_character_problem, name='jhs2_character_display'),
     # 平行線と図形の角
-    path('parallel_lines_and_angle', views.print_parallel_lines_and_angle, name='parallel_lines_and_angle_print'),
-    path('parallel_lines_and_angle', views.display_parallel_lines_and_angle, name='parallel_lines_and_angle_display'),
+    path('parallel_lines_and_angle/print/', views.print_parallel_lines_and_angle, name='parallel_lines_and_angle_print'),
+    path('parallel_lines_and_angle/display/', views.display_parallel_lines_and_angle, name='parallel_lines_and_angle_display'),
     ##########################################
     ### 中3 ###
     path('junior_highschool3/', views.show_junior_highschool3, name='junior_highschool3'),

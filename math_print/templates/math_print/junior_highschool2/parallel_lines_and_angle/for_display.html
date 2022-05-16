@@ -3,7 +3,7 @@
   <meta charset="utf-8" />
   <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
   <script>
-    window.addEventListener("load", draw);
+    window.addEventListener("load", sample_draw);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -14,6 +14,38 @@
         var shape = new createjs.Shape(graphic);
         stage.addChild(shape);
 
+    }
+
+    function drawLineWithAngle(stage, start_x, start_y, angle) {
+        // draw line detemined by angle
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.moveTo(start_x, start_y);
+        var radian = angle * Math.PI / 180;
+        var end_x = start_x + 200 * Math.cos(radian);
+        var end_y = start_y + 200 * Math.sin(radian);
+        graphic.lineTo(end_x, end_y);
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+    }
+
+    function drawArc(stage, center_x, center_y, start_angle, end_angle, anticlockwise=false) {
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        var start_radian = start_angle * Math.PI / 180;
+        var end_radian = end_angle * Math.PI / 180;
+        graphic.arc(center_x, center_y, start_radian, end_radian);
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+    }
+
+    function sample_draw () {
+        var stage = new createjs.Stage("myCanvas");
+        drawLine(stage, 30, 160, 610, 160);
+        drawLineWithAngle(stage, 320, 160, 312);
+        drawArc(stage, 320, 160, )
+        stage.update();
     }
 
     function draw() {

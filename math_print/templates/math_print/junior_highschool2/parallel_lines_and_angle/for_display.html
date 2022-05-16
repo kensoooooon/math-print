@@ -1,46 +1,49 @@
-<!DOCTYPE html>
-<!--https://webmanab-html.com/tip/polar-coordinates/-->
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>canvasで図形を描く</title>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script>
+    window.addEventListener("load", draw);
 
-        <script type="text/javascript">
-        function draw() {
-            var canvases = document.getElementsByClassName(`canvas`);
-            canvas0 = canvases[0]
-            if (canvas0.getContext) {
-                var context = canvas0.getContext('2d');
-                context.beginPath();
-                context.moveTo(50, 100);
-                context.lineTo(250, 100);
-                context.stroke();
-            }
-            canvas1 = canvases[1]
-            if (canvas1.getContext) {
-                var context = canvas1.getContext('2d');
-                context.beginPath();
-                context.arc(75, 75, 50, 0, Math.PI * 2, true); // 外の円
-                context.moveTo(110, 75);
-                context.arc(75, 75, 35, 0, Math.PI, false);  // 口 (時計回り)
-                context.moveTo(65, 65);
-                context.arc(60, 65, 5, 0, Math.PI * 2, true);  // 左目
-                context.moveTo(95, 65);
-                context.arc(90, 65, 5, 0, Math.PI * 2, true);  // 右目
-                context.stroke();
-            }
+    function drawLine(stage, start_x, start_y, end_x, end_y) {
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.moveTo(start_x, start_y);
+        graphic.lineTo(end_x, end_y);
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+
+    }
+
+    function draw() {
+        // Stageオブジェクトを作成します
+        var stage = new createjs.Stage("myCanvas");
+        /*
+        drawLine(stage, 30, 20, 400, 20);
+        var angle = 135;
+        var radian = angle * Math.PI / 180;
+        var end_x = 200 * Math.cos(radian) + 400;
+        var end_y = 200 * Math.sin(radian) + 20;
+        drawLine(stage, 400, 20, end_x, end_y);
+        */
+        // ( x  y  radius  startAngle  endAngle  anticlockwise )
+        var g = new createjs.Graphics();
+        //線の色を指定
+        g.beginStroke("#000");
+        //円を描く(x:0,y:0を中心とした、半円）
+        // arc(x位置, y位置, 半径, 開始ラジアン, 終了ラジアン);
+        g.arc(320, 160, 100, 0, Math.PI/2);
+        //Displayオブジェクトを作成
+        var shape=new createjs.Shape(g);
+        // シェイプオブジェクトをステージに追加する
+        stage.addChild(shape);
+        //ステージを更新して描画を完了
+        stage.update();
         }
-
-        </script>
-    </head>
-
-    <body onload="draw();">
-    <h2>canvasで図形を描く</h2>
-    <canvas id="sample1" class="canvas" width="300" height="300" style="background-color:#CCFFCC;">
-        キャンバスの表示内容を説明する代替テキストです。
-    </canvas>
-    <canvas id="sample2" class="canvas" width="300" height="300" style="background-color:#CCFFCC;">
-        キャンバスの表示内容を説明する代替テキストです。
-    </canvas>
-    </body>
+  </script>
+</head>
+<body>
+  <canvas id="myCanvas" width="640" height="320" style="background-color:#CCFFFF;"></canvas>
+</body>
 </html>

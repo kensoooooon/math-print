@@ -1,9 +1,9 @@
-<html>
+<html><!--django??function_call??????-->
 <head>
   <meta charset="utf-8" />
   <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
   <script>
-    window.addEventListener("load", sample_draw);
+    window.addEventListener("load", random_draw);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -30,21 +30,60 @@
         stage.addChild(shape);
     }
 
-    function drawArc(stage, center_x, center_y, start_angle, end_angle, anticlockwise=false) {
+    function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
         var graphic = new createjs.Graphics();
         graphic.beginStroke("#000000");
         var start_radian = start_angle * Math.PI / 180;
         var end_radian = end_angle * Math.PI / 180;
-        graphic.arc(center_x, center_y, start_radian, end_radian);
+        graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
         var shape = new createjs.Shape(graphic);
         stage.addChild(shape);
+    }
+    
+    function drawDegreeCharacter(stage, x, y, character) {
+      //文字オブジェクトを作成する
+      var text = new createjs.Text(character, "20px Arial", "#000000");
+      //描画位置の指定
+      text.x = x;
+      text.y = y;
+      stage.addChild(text);
+    }
+
+    function random_draw () {
+      var stage = new createjs.Stage("myCanvas");
+      var answer_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
+      console.log("answer_angle: "+answer_angle);
+      var random_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
+      console.log("random_angle: "+random_angle);
+      var remained_angle = 180 - (answer_angle + random_angle);
+      console.log("remained_angle: "+remained_angle);
+      drawLine(stage, 30, 160, 610, 160);
+      drawLineWithAngle(stage, 320, 160, -1*random_angle);
+      drawLineWithAngle(stage, 320, 160, -1*random_angle+180);
+      drawArc(stage, 320, 160, 50, 0, -1*random_angle, anticlockwise=true);
+      drawDegreeCharacter(stage, 320+100, 160-40, random_angle+"°");
+      drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle);
+      drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle+180);
+      drawArc(stage, 320, 160, 50, -1*random_angle+180, -1*random_angle-remained_angle+180, anticlockwise=true);
+      drawDegreeCharacter(stage, 320-10, 160+120, remained_angle+"°");
+      drawArc(stage, 320, 160, 50, -1*random_angle-remained_angle, 180, anticlockwise=true);
+      drawDegreeCharacter(stage, 320-100, 160-40, "x");
+      stage.update();
     }
 
     function sample_draw () {
         var stage = new createjs.Stage("myCanvas");
         drawLine(stage, 30, 160, 610, 160);
-        drawLineWithAngle(stage, 320, 160, 312);
-        drawArc(stage, 320, 160, )
+        drawLineWithAngle(stage, 320, 160, -48);
+        drawLineWithAngle(stage, 320, 160, -48+180);
+        drawArc(stage, 320, 160, 50, 0, -48, anticlockwise=true);
+        drawDegreeCharacter(stage, 320+50, 160-40, "48°");
+        drawLineWithAngle(stage, 320, 160, -123);
+        drawLineWithAngle(stage, 320, 160, -123+180);
+        drawArc(stage, 320, 160, 50, -48+180, -123+180, anticlockwise=true);
+        drawDegreeCharacter(stage, 320-10, 160+60, "75°");
+        drawArc(stage, 320, 160, 50, -123, 180, anticlockwise=true);
+        drawDegreeCharacter(stage, 320-60, 160-60, "x");
         stage.update();
     }
 

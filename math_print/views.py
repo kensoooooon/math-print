@@ -1664,14 +1664,14 @@ def hs1_display_quadratic_function_max_min(request):
 
 
 def display_parallel_lines_and_angle(request):
-    import math
+    import random
     print(f"request: {request}")
     # https://stackoverflow.com/questions/50432295/using-tikz-in-a-browser-like-mathjax
     
     context = {}
     context["message"] = "This is parallel lines and angle display problem page."
     # とりあえず仮生成
-    answer_angle_list = [math.randint(1, 100) for _ in range(20)]
+    answer_angle_list = [random.randint(25, 100) for _ in range(20)]
     context["answer_angle_list"] = answer_angle_list
 
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_display.html', context)

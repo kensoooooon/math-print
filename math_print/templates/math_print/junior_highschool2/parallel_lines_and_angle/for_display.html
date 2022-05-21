@@ -3,7 +3,7 @@
   <meta charset="utf-8" />
   <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
   <script>
-    window.addEventListener("load", draw);
+    window.addEventListener("load", sample_draw);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -16,14 +16,14 @@
 
     }
 
-    function drawLineWithAngle(stage, start_x, start_y, angle) {
+    function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
         // draw line detemined by angle
         var graphic = new createjs.Graphics();
         graphic.beginStroke("#000000");
         graphic.moveTo(start_x, start_y);
         var radian = angle * Math.PI / 180;
-        var end_x = start_x + 200 * Math.cos(radian);
-        var end_y = start_y + 200 * Math.sin(radian);
+        var end_x = start_x + radius * Math.cos(radian);
+        var end_y = start_y + radius * Math.sin(radian);
         graphic.lineTo(end_x, end_y);
         graphic.endStroke();
         var shape = new createjs.Shape(graphic);
@@ -49,7 +49,7 @@
       stage.addChild(text);
     }
 
-    function random_draw (stage, answer_angle) {
+    function random_vertical_angle_draw (stage, answer_angle) {
       // var stage = new createjs.Stage("myCanvas");
       // var answer_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
       console.log("answer_angle: "+answer_angle);
@@ -71,30 +71,56 @@
       stage.update();
     }
 
-    function sample_draw () {
-      var stage = new createjs.Stage("myCanvas");
-      drawLine(stage, 30, 160, 610, 160);
-      drawLineWithAngle(stage, 320, 160, -48);
-      drawLineWithAngle(stage, 320, 160, -48+180);
-      drawArc(stage, 320, 160, 50, 0, -48, anticlockwise=true);
-      drawDegreeCharacter(stage, 320+50, 160-40, "48°");
-      drawLineWithAngle(stage, 320, 160, -123);
-      drawLineWithAngle(stage, 320, 160, -123+180);
-      drawArc(stage, 320, 160, 50, -48+180, -123+180, anticlockwise=true);
-      drawDegreeCharacter(stage, 320-10, 160+60, "75°");
-      drawArc(stage, 320, 160, 50, -123, 180, anticlockwise=true);
-      drawDegreeCharacter(stage, 320-60, 160-60, "x");
+    function random_parallel_angle_draw (stage, answer_angle) {
+      // var stage = new createjs.Stage("sample_canvas");
+      drawLine(stage, 10, 310, 630, 310);
+      drawLine(stage, 10, 10, 630, 10);
+      // drawLine(stage, 10, 160, 630, 160);
+      var angle1 = 30;
+      var radian1 = angle1 * Math.PI / 180;
+      var radius1 = 150 / Math.sin(radian1);
+      console.log("radius1: " + radius1)
+      drawLineWithAngle(stage, 320, 160, angle1, radius=radius1);
+      drawArc(stage, 320, 160, 50, 0, angle1);
+      // the phase to calculate end line point.
+      var end_x1 = 320 + radius1 * Math.cos(radian1);
+      var end_y1 = 160 + radius1 * Math.sin(radian1);
+      drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
+      drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
+      //
+      drawDegreeCharacter(stage, 400, 200, angle1+"°");
+      var angle2 = 40;
+      var radian2 = angle2 * Math.PI / 180;
+      var radius2 = 150 / Math.sin(radian2);
+      console.log("radius2: " + radius2)
+      drawLineWithAngle(stage, 320, 160, -angle2, radius=radius2);
+      drawArc(stage, 320, 160, 50, 0, -angle2, anticlockwise=true);
+      drawDegreeCharacter(stage, 400, 120, angle2+"°");
       stage.update();
     }
 
-    {% for answer_angle in answer_angle_list %}
-    function draw() {
+    function sample_draw () {
+      var stage = new createjs.Stage("sample_canvas");
+      random_parallel_angle_draw(stage, 150);
+    }
 
+    function draw() {
+      {% for answer_angle in answer_angle_list %}
+      var canvas = document.createElement('canvas');
+      var canvas_id = "canvas" + {{ forloop.counter }};
+      canvas.id = canvas_id;
+      console.log(canvas.id);
+      canvas.width = 640;
+      canvas.height = 320;
+      canvas.style = "background-color:#CCFFFF";
+      document.body.appendChild(canvas);
+      var stage = new createjs.Stage(canvas_id);
+      random_vertical_angle_draw(stage, {{ answer_angle }});
+      {% endfor %}
     }
   </script>
 </head>
 <body>
-  <canvas id="myCanvas" width="640" height="320" style="background-color:#CCFFFF;"></canvas>
-   {% endfor %}
+  <canvas id="sample_canvas" width="640" height="320" style="background-color:#CCFFFF;"></canvas>
 </body>
 </html>

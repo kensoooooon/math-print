@@ -86,16 +86,23 @@
       var end_x1 = 320 + radius1 * Math.cos(radian1);
       var end_y1 = 160 + radius1 * Math.sin(radian1);
       drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
+      console.log("angle1: " + angle1);
       drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
       //
-      drawDegreeCharacter(stage, 400, 200, angle1+"°");
       var angle2 = 40;
       var radian2 = angle2 * Math.PI / 180;
       var radius2 = 150 / Math.sin(radian2);
       console.log("radius2: " + radius2)
       drawLineWithAngle(stage, 320, 160, -angle2, radius=radius2);
       drawArc(stage, 320, 160, 50, 0, -angle2, anticlockwise=true);
-      drawDegreeCharacter(stage, 400, 120, angle2+"°");
+      // the phase to calculate end line point.
+      var end_x2 = 320 + radius2 * Math.cos(-radian2);
+      console.log("end_x2: " + end_x2);
+      var end_y2 = 160 + radius2 * Math.sin(-radian2);
+      console.log("end_y2: " + end_y2);
+      console.log("angle2: " + angle2);
+      drawArc(stage, end_x2, end_y2, 50, 180-angle2, 180);
+      drawDegreeCharacter(stage, end_x2-90, end_y2+10, angle2+"°");
       stage.update();
     }
 

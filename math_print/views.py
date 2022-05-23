@@ -1671,7 +1671,7 @@ def display_parallel_lines_and_angle(request):
     context = {}
     context["message"] = "This is parallel lines and angle display problem page."
     # とりあえず仮生成
-    answer_angle_list = [random.randint(25, 100) for _ in range(20)]
+    answer_angle_list = [random.randint(40, 120) for _ in range(20)]
     context["answer_angle_list"] = answer_angle_list
 
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_display.html', context)

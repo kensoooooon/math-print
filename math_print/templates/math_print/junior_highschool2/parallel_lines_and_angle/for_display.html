@@ -3,7 +3,7 @@
   <meta charset="utf-8" />
   <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
   <script>
-    window.addEventListener("load", draw2);
+    window.addEventListener("load", draw);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -128,7 +128,7 @@
     }
 
     function draw() {
-      {% for answer_angle in answer_angle_list %}
+      {% for problem_type_and_answer_angle_tuple in problem_type_and_answer_angle_tuple_list %}
       var canvas = document.createElement('canvas');
       var canvas_id = "canvas" + {{ forloop.counter }};
       canvas.id = canvas_id;
@@ -138,6 +138,11 @@
       canvas.style = "background-color:#CCFFFF";
       document.body.appendChild(canvas);
       var stage = new createjs.Stage(canvas_id);
+      {% if {{problem_type_and_answer_angle_tuple.0}} == "corresponding_and_alternate_angle"%}
+        
+      {% elif {{problem_type_and_answer_angle_tuple.0}} == "interior_and_exterior_angle"%}
+
+      {% endif %}
       random_vertical_angle_draw(stage, {{ answer_angle }});
       {% endfor %}
     }

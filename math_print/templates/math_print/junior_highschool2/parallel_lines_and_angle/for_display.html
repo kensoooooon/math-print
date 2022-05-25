@@ -1,169 +1,300 @@
-<html><!--django??function_call??????-->
-<head>
-  <meta charset="utf-8" />
-  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-  <script>
-    window.addEventListener("load", draw);
+{% extends 'math_print/base.html' %}
 
-    function drawLine(stage, start_x, start_y, end_x, end_y) {
-        var graphic = new createjs.Graphics();
-        graphic.beginStroke("#000000");
-        graphic.moveTo(start_x, start_y);
-        graphic.lineTo(end_x, end_y);
-        graphic.endStroke();
-        var shape = new createjs.Shape(graphic);
-        stage.addChild(shape);
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
 
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
     }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
 
-    function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
-        // draw line detemined by angle
-        var graphic = new createjs.Graphics();
-        graphic.beginStroke("#000000");
-        graphic.moveTo(start_x, start_y);
-        var radian = angle * Math.PI / 180;
-        var end_x = start_x + radius * Math.cos(radian);
-        var end_y = start_y + radius * Math.sin(radian);
-        graphic.lineTo(end_x, end_y);
-        graphic.endStroke();
-        var shape = new createjs.Shape(graphic);
-        stage.addChild(shape);
-    }
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
 
-    function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
-        var graphic = new createjs.Graphics();
-        graphic.beginStroke("#000000");
-        var start_radian = start_angle * Math.PI / 180;
-        var end_radian = end_angle * Math.PI / 180;
-        graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
-        var shape = new createjs.Shape(graphic);
-        stage.addChild(shape);
-    }
-    
-    function drawDegreeCharacter(stage, x, y, character) {
-      //文字オブジェクトを作成する
-      var text = new createjs.Text(character, "20px Arial", "#000000");
-      //描画位置の指定
-      text.x = x;
-      text.y = y;
-      stage.addChild(text);
-    }
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+  window.addEventListener("load", draw);
 
-    function random_vertical_angle_draw (stage, answer_angle) {
-      // var stage = new createjs.Stage("myCanvas");
-      // var answer_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
-      console.log("answer_angle: "+answer_angle);
-      var random_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
-      console.log("random_angle: "+random_angle);
-      var remained_angle = 180 - (answer_angle + random_angle);
-      console.log("remained_angle: "+remained_angle);
-      drawLine(stage, 30, 160, 610, 160);
-      drawLineWithAngle(stage, 320, 160, -1*random_angle);
-      drawLineWithAngle(stage, 320, 160, -1*random_angle+180);
-      drawArc(stage, 320, 160, 50, 0, -1*random_angle, anticlockwise=true);
-      drawDegreeCharacter(stage, 320+100, 160-40, random_angle+"°");
-      drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle);
-      drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle+180);
-      drawArc(stage, 320, 160, 50, -1*random_angle+180, -1*random_angle-remained_angle+180, anticlockwise=true);
-      drawDegreeCharacter(stage, 320-10, 160+120, remained_angle+"°");
-      drawArc(stage, 320, 160, 50, -1*random_angle-remained_angle, 180, anticlockwise=true);
-      drawDegreeCharacter(stage, 320-100, 160-40, "x");
-      stage.update();
-    }
+  function drawLine(stage, start_x, start_y, end_x, end_y) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
 
-    function random_parallel_angle_draw (stage, answer_angle) {
-      // var stage = new createjs.Stage("sample_canvas");
-      var docking_x = 150;
-      var docking_y = 160;
-      drawLine(stage, 10, 310, 630, 310);
-      drawLine(stage, 10, 10, 630, 10);
-      // drawLine(stage, 10, 160, 630, 160);
-      // var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
-      var random_angle = Math.floor(Math.random() * ((answer_angle - 20) + 1 - 20) + 20)
-      // var angle1 = 120;
-      var angle1 = random_angle;
-      var radian1 = angle1 * Math.PI / 180;
-      var radius1 = 150 / Math.sin(radian1);
-      console.log("radius1: " + radius1)
-      // drawLineWithAngle(stage, 320, 160, angle1, radius=radius1);
-      drawLineWithAngle(stage, docking_x, docking_y, angle1, radius=radius1);
-      // drawArc(stage, 320, 160, 50, 0, angle1);
-      drawArc(stage, docking_x, docking_y, 50, 0, angle1);
-      // the phase to calculate end line point.
-      // var end_x1 = 320 + radius1 * Math.cos(radian1);
-      var end_x1 = docking_x + radius1 * Math.cos(radian1);
-      // var end_y1 = 160 + radius1 * Math.sin(radian1);
-      var end_y1 = docking_y + radius1 * Math.sin(radian1);
-      drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
-      console.log("angle1: " + angle1);
-      drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
-      //
-      // var angle2 = 100;
-      var angle2 = answer_angle - random_angle;
-      var radian2 = angle2 * Math.PI / 180;
-      var radius2 = 150 / Math.sin(radian2);
-      console.log("radius2: " + radius2)
-      // drawLineWithAngle(stage, 320, 160, -angle2, radius=radius2);
-      drawLineWithAngle(stage, docking_x, docking_y, -angle2, radius=radius2)
-      // drawArc(stage, 320, 160, 50, 0, -angle2, anticlockwise=true);
-      drawArc(stage, docking_x, docking_y, 50, 0, -angle2, anticlockwise=true);
-      // the phase to calculate end line point.
-      // var end_x2 = 320 + radius2 * Math.cos(-radian2);
-      var end_x2 = docking_x + radius2 * Math.cos(-radian2);
-      console.log("end_x2: " + end_x2);
-      // var end_y2 = 160 + radius2 * Math.sin(-radian2);
-      var end_y2 = docking_y + radius2 * Math.sin(-radian2);
-      console.log("end_y2: " + end_y2);
-      console.log("angle2: " + angle2);
-      drawArc(stage, end_x2, end_y2, 50, 180-angle2, 180);
-      // drawDegreeCharacter(stage, end_x2-90, end_y2+10, angle2+"°");
-      drawDegreeCharacter(stage, end_x2-100, end_y2+10, angle2+"°");
-      drawDegreeCharacter(stage, docking_x+60, docking_y-20, "x°");
-      stage.update();
-    }
+  }
 
-    function sample_draw () {
-      var stage = new createjs.Stage("sample_canvas");
-      random_parallel_angle_draw(stage, 150);
-    }
+  function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
+      // draw line detemined by angle
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      var radian = angle * Math.PI / 180;
+      var end_x = start_x + radius * Math.cos(radian);
+      var end_y = start_y + radius * Math.sin(radian);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
 
-    function draw() {
-      {% for problem_type_and_answer_angle_tuple in problem_type_and_answer_angle_tuple_list %}
-      var canvas = document.createElement('canvas');
-      var canvas_id = "canvas" + {{ forloop.counter }};
-      canvas.id = canvas_id;
-      console.log(canvas.id);
-      canvas.width = 640;
-      canvas.height = 320;
-      canvas.style = "background-color:#CCFFFF";
-      document.body.appendChild(canvas);
-      var stage = new createjs.Stage(canvas_id);
-      {% if {{problem_type_and_answer_angle_tuple.0}} == "corresponding_and_alternate_angle"%}
-        
-      {% elif {{problem_type_and_answer_angle_tuple.0}} == "interior_and_exterior_angle"%}
+  function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      var start_radian = start_angle * Math.PI / 180;
+      var end_radian = end_angle * Math.PI / 180;
+      graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+  
+  function drawDegreeCharacter(stage, x, y, character) {
+    //文字オブジェクトを作成する
+    var text = new createjs.Text(character, "20px Arial", "#000000");
+    //描画位置の指定
+    text.x = x;
+    text.y = y;
+    stage.addChild(text);
+  }
 
-      {% endif %}
-      random_vertical_angle_draw(stage, {{ answer_angle }});
-      {% endfor %}
-    }
+  function random_vertical_angle_draw (stage, answer_angle) {
+    // var stage = new createjs.Stage("myCanvas");
+    // var answer_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
+    console.log("answer_angle: "+answer_angle);
+    var random_angle = Math.floor(Math.random() * (80 + 1 - 20)) + 20;
+    console.log("random_angle: "+random_angle);
+    var remained_angle = 180 - (answer_angle + random_angle);
+    console.log("remained_angle: "+remained_angle);
+    drawLine(stage, 30, 160, 610, 160);
+    drawLineWithAngle(stage, 320, 160, -1*random_angle);
+    drawLineWithAngle(stage, 320, 160, -1*random_angle+180);
+    drawArc(stage, 320, 160, 50, 0, -1*random_angle, anticlockwise=true);
+    drawDegreeCharacter(stage, 320+100, 160-40, random_angle+"°");
+    drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle);
+    drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle+180);
+    drawArc(stage, 320, 160, 50, -1*random_angle+180, -1*random_angle-remained_angle+180, anticlockwise=true);
+    drawDegreeCharacter(stage, 320-10, 160+120, remained_angle+"°");
+    drawArc(stage, 320, 160, 50, -1*random_angle-remained_angle, 180, anticlockwise=true);
+    drawDegreeCharacter(stage, 320-100, 160-40, "x");
+    stage.update();
+  }
 
-    function draw2() {
-      {% for answer_angle in answer_angle_list %}
-      var canvas = document.createElement('canvas');
-      var canvas_id = "canvas" + {{ forloop.counter }};
-      canvas.id = canvas_id;
-      console.log(canvas.id);
-      canvas.width = 640;
-      canvas.height = 320;
-      canvas.style = "background-color:#CCFFFF";
-      document.body.appendChild(canvas);
-      var stage = new createjs.Stage(canvas_id);
-      random_parallel_angle_draw(stage, {{ answer_angle }});
-      {% endfor %}
+  function random_parallel_angle_draw (stage, answer_angle) {
+    // var stage = new createjs.Stage("sample_canvas");
+    var docking_x = 150;
+    var docking_y = 160;
+    drawLine(stage, 10, 310, 630, 310);
+    drawLine(stage, 10, 10, 630, 10);
+    // drawLine(stage, 10, 160, 630, 160);
+    // var a = Math.floor( Math.random() * (max + 1 - min) ) + min ;
+    var random_angle = Math.floor(Math.random() * ((answer_angle - 20) + 1 - 20) + 20)
+    // var angle1 = 120;
+    var angle1 = random_angle;
+    var radian1 = angle1 * Math.PI / 180;
+    var radius1 = 150 / Math.sin(radian1);
+    console.log("radius1: " + radius1)
+    // drawLineWithAngle(stage, 320, 160, angle1, radius=radius1);
+    drawLineWithAngle(stage, docking_x, docking_y, angle1, radius=radius1);
+    // drawArc(stage, 320, 160, 50, 0, angle1);
+    drawArc(stage, docking_x, docking_y, 50, 0, angle1);
+    // the phase to calculate end line point.
+    // var end_x1 = 320 + radius1 * Math.cos(radian1);
+    var end_x1 = docking_x + radius1 * Math.cos(radian1);
+    // var end_y1 = 160 + radius1 * Math.sin(radian1);
+    var end_y1 = docking_y + radius1 * Math.sin(radian1);
+    drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
+    console.log("angle1: " + angle1);
+    drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
+    //
+    // var angle2 = 100;
+    var angle2 = answer_angle - random_angle;
+    var radian2 = angle2 * Math.PI / 180;
+    var radius2 = 150 / Math.sin(radian2);
+    console.log("radius2: " + radius2)
+    // drawLineWithAngle(stage, 320, 160, -angle2, radius=radius2);
+    drawLineWithAngle(stage, docking_x, docking_y, -angle2, radius=radius2)
+    // drawArc(stage, 320, 160, 50, 0, -angle2, anticlockwise=true);
+    drawArc(stage, docking_x, docking_y, 50, 0, -angle2, anticlockwise=true);
+    // the phase to calculate end line point.
+    // var end_x2 = 320 + radius2 * Math.cos(-radian2);
+    var end_x2 = docking_x + radius2 * Math.cos(-radian2);
+    console.log("end_x2: " + end_x2);
+    // var end_y2 = 160 + radius2 * Math.sin(-radian2);
+    var end_y2 = docking_y + radius2 * Math.sin(-radian2);
+    console.log("end_y2: " + end_y2);
+    console.log("angle2: " + angle2);
+    drawArc(stage, end_x2, end_y2, 50, 180-angle2, 180);
+    // drawDegreeCharacter(stage, end_x2-90, end_y2+10, angle2+"°");
+    drawDegreeCharacter(stage, end_x2-100, end_y2+10, angle2+"°");
+    drawDegreeCharacter(stage, docking_x+60, docking_y-20, "x°");
+    stage.update();
+  }
+
+  function sample_draw () {
+    var stage = new createjs.Stage("sample_canvas");
+    random_parallel_angle_draw(stage, 150);
+  }
+
+  function call_problem_maker (stage, problem_type, answer_angle) {
+    if (problem_type == "corresponding_and_alternate_angle") {
+      random_parallel_angle_draw(stage, answer_angle);
     }
-  </script>
-</head>
-<body>
-  <canvas id="sample_canvas" width="640" height="320" style="background-color:#CCFFFF;"></canvas>
-</body>
-</html>
+    else if (problem_type == "interior_and_exterior_angle") {
+      random_vertical_angle_draw(stage, answer_angle);
+    }
+  }
+
+  function draw() {
+    {% for information_tuple in problem_type_and_answer_angle_tuple_list %}
+    console.log("infromation_tupe.0.problem_type: " + "{{ information_tuple.0.problem_type }}");
+    console.log("information_tuple.0.angle: " + {{ information_tuple.0.angle }});
+    console.log("infromation_tupe.1.problem_type: " + "{{ information_tuple.1.problem_type }}");
+    console.log("information_tuple.1.angle: " + {{ information_tuple.1.angle }});
+    var container_div = document.createElement("div");
+    container_div.class = "container-fluid";
+
+    var row_container = document.createElement("div");
+    row_container.class = "row";
+
+    var left_div = document.createElement("div");
+    left_div.class = "col-md-6";
+
+    var left_canvas = document.createElement('canvas');
+    var left_canvas_id = "canvas" + {{ forloop.counter }};
+    console.log("left_canvas_id: " + left_canvas_id);
+    left_canvas.id = left_canvas_id;
+    left_canvas.width = 640;
+    left_canvas.height = 320;
+    left_canvas.style = "background-color:#CCFFFF";
+
+    var right_div = document.createElement("div");
+    right_div.class = "col-md-6";
+
+    var right_canvas = document.createElement('canvas');
+    var right_canvas_id = "canvas" + {{ forloop.counter|add:"1" }};
+    console.log("right_canvas_id: " + right_canvas_id);
+    right_canvas.id = right_canvas_id;
+    right_canvas.width = 640;
+    right_canvas.height = 320;
+    right_canvas.style = "background-color:#CCFFFF";
+
+    // insert part
+    // can accquire before adding?<-another part check<<-may be not.
+    left_div.appendChild(left_canvas);
+    right_div.appendChild(right_canvas);
+    row_container.appendChild(left_div);
+    row_container.appendChild(right_div);
+    container_div.appendChild(row_container);
+    document.body.appendChild(container_div);
+
+    var left_stage = new createjs.Stage(left_canvas_id);
+    call_problem_maker(left_stage, "{{ information_tuple.0.problem_type }}", {{ information_tuple.0.angle }});
+    var right_stage = new createjs.Stage(right_canvas_id);
+    call_problem_maker(right_stage, "{{ information_tuple.1.problem_type }}", {{ information_tuple.1.angle }});
+    // var canvas = document.createElement('canvas');
+    // var canvas_id = "canvas" + {{ forloop.counter }};
+    // canvas.id = canvas_id;
+    // console.log(canvas.id);
+    // canvas.width = 640;
+    // canvas.height = 320;
+    // canvas.style = "background-color:#CCFFFF";
+    // add canvas to last part of body
+    // ->add div div div....
+    /// document.body.appendChild(canvas);
+    // var stage = new createjs.Stage(canvas_id);
+    // call_problem_maker(stage, {{ information_tuple.0.problem_type }}, {{ information_tuple.0.answer_angle }});
+    console.log("--------------------------------")
+    {% endfor %}
+  }
+
+  function check_draw () {
+    var canvas = document.createElement("canvas");
+    var canvas_id = "sample_canvas";
+    canvas.id = canvas_id;
+    var stage = new createjs.Stage("sample_canvas");
+    call_problem_maker(stage, "corresponding_and_alternate_angle", 45);
+    document.body.appendChild(canvas);
+  }
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+角度を求める
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">角度を求める</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<ol>
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-md-6">
+              <li>
+                  <!--canvas?-->
+                  <p class="answer" style="visibility:hidden;">
+                      \({{ math_problem_tuple.0.latex_answer }}\)
+                  </p>
+              </li>
+          </div>
+          <div class="col-md-6">
+              <li>
+                  <!--canvas?-->
+                  <p class="answer" style="visibility:hidden;">
+                      \({{ math_problem_tuple.1.latex_answer }}\)
+                  </p>
+              </li>
+          </div>
+      </div>
+  </div>
+</ol>
+
+{% if used_formula_list %}
+  {% for formula in used_formula_list %}
+      <p class="formula text-center" style="visibility:hidden;">{{formula}}</p>
+  {% endfor %}
+{% else %}
+  <br>
+  <br>
+  <br>
+{% endif %}
+
+<div class="d-grid gap-3 col-6 mx-auto">
+  <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
+  <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
+  <a href="{% url 'junior_highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+  <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+<footer class="container-fluid print_footer">
+  <small><a href="#">© 2022 有明学習振興</a></small>
+</footer>
+{% endblock %}

@@ -1665,6 +1665,12 @@ def hs1_display_quadratic_function_max_min(request):
 
 def display_parallel_lines_and_angle(request):
     import random
+    from typing import NamedTuple
+    
+    class ProblemTypeAndAnswerAngle(NamedTuple):
+        problem_type: str
+        angle: int
+
     print(f"request: {request}")
     
     used_information_list = request.POST.getlist("used_information")
@@ -1672,17 +1678,20 @@ def display_parallel_lines_and_angle(request):
         used_information_list.append("corresponding_and_alternate_angle")
         used_information_list.append("interior_and_exterior_angle")
     
-    context = {}
-    context["message"] = "This is parallel lines and angle display problem page."
     # とりあえず仮生成
     # 平行型と対頂角型をチェック<- tuple
-    # 
     problem_type_and_answer_angle_tuple_list = []
-    for _ in range(20):
-        selected_problem_type = random.choice(used_information_list)
-        answer_angle = random.randint(40, 120)
-        problem_type_and_answer_angle_tuple_list.append((selected_problem_type, answer_angle))
+    # double loop
+    for _ in range(20//2):
+        problem_type1 = random.choice(used_information_list)
+        answer_angle1 = random.randint(40, 120)
+        problem_type_and_answer_angle1 = ProblemTypeAndAnswerAngle(problem_type1, answer_angle1)
+        problem_type2 = random.choice(used_information_list)
+        answer_angle2 = random.randint(40, 120)
+        problem_type_and_answer_angle2 = ProblemTypeAndAnswerAngle(problem_type2, answer_angle2)   
+        problem_type_and_answer_angle_tuple_list.append((problem_type_and_answer_angle1, problem_type_and_answer_angle2))
         
+    context = {}
     context["problem_type_and_answer_angle_tuple_list"] = problem_type_and_answer_angle_tuple_list
 
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_display.html', context)

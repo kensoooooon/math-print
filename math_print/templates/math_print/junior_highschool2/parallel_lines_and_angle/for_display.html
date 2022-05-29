@@ -171,16 +171,16 @@ function refresh() {
     console.log("infromation_tupe.1.problem_type: " + "{{ information_tuple.1.problem_type }}");
     console.log("information_tuple.1.angle: " + {{ information_tuple.1.angle }});
     var container_div = document.createElement("div");
-    container_div.class = "container-fluid";
+    container_div.className = "container-fluid";
 
     var row_container = document.createElement("div");
-    row_container.class = "row";
+    row_container.className = "row";
 
     var left_div = document.createElement("div");
-    left_div.class = "col-md-6";
+    left_div.className = "col-md-6";
 
     var left_canvas = document.createElement('canvas');
-    var left_canvas_id = "canvas" + {{ forloop.counter }};
+    var left_canvas_id = "left_canvas" + {{ forloop.counter }};
     console.log("left_canvas_id: " + left_canvas_id);
     left_canvas.id = left_canvas_id;
     left_canvas.width = 640;
@@ -191,7 +191,7 @@ function refresh() {
     right_div.class = "col-md-6";
 
     var right_canvas = document.createElement('canvas');
-    var right_canvas_id = "canvas" + {{ forloop.counter|add:"1" }};
+    var right_canvas_id = "right_canvas" + {{ forloop.counter }};
     console.log("right_canvas_id: " + right_canvas_id);
     right_canvas.id = right_canvas_id;
     right_canvas.width = 640;
@@ -211,18 +211,6 @@ function refresh() {
     call_problem_maker(left_stage, "{{ information_tuple.0.problem_type }}", {{ information_tuple.0.angle }});
     var right_stage = new createjs.Stage(right_canvas_id);
     call_problem_maker(right_stage, "{{ information_tuple.1.problem_type }}", {{ information_tuple.1.angle }});
-    // var canvas = document.createElement('canvas');
-    // var canvas_id = "canvas" + {{ forloop.counter }};
-    // canvas.id = canvas_id;
-    // console.log(canvas.id);
-    // canvas.width = 640;
-    // canvas.height = 320;
-    // canvas.style = "background-color:#CCFFFF";
-    // add canvas to last part of body
-    // ->add div div div....
-    /// document.body.appendChild(canvas);
-    // var stage = new createjs.Stage(canvas_id);
-    // call_problem_maker(stage, {{ information_tuple.0.problem_type }}, {{ information_tuple.0.answer_angle }});
     console.log("--------------------------------")
     {% endfor %}
   }

@@ -1,6 +1,7 @@
 {% extends 'math_print/base.html' %}
 
 {% block script %}
+
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -209,16 +210,14 @@ function refresh() {
     left_div.appendChild(left_canvas);
     // add left answer to left_div
     var left_answer = document.createElement('p');
-    left_answer.innerHTML = "\\(x = {{ information_tuple.0.angle }} ^ \circ \\)";
+    left_answer.innerHTML = "\\\(x = {{ information_tuple.0.angle }} ^ \\\circ \\\)";
     left_div.appendChild(left_answer);
 
     right_div.appendChild(right_canvas);
     // add right answer to right_div
     var right_answer = document.createElement('p');
-    right_answer.innerHTML = "\\(x = {{ information_tuple.1.angle }} ^ \circ \\)";
+    right_answer.innerHTML = "\\\(x = {{ information_tuple.1.angle }} ^ \\\circ \\\)";
     right_div.appendChild(right_answer);
-    
-    right_div.appendChild(right_canvas);
 
     row_container.appendChild(left_div);
     row_container.appendChild(right_div);
@@ -269,7 +268,7 @@ function refresh() {
               <li>
                   <!--canvas?-->
                   <p class="answer" style="visibility:hidden;">
-                      \({{ math_problem_tuple.0.latex_answer }}\)
+                      \(x = 200 ^{\circ} \)
                   </p>
               </li>
           </div>
@@ -277,7 +276,7 @@ function refresh() {
               <li>
                   <!--canvas?-->
                   <p class="answer" style="visibility:hidden;">
-                      \({{ math_problem_tuple.1.latex_answer }}\)
+
                   </p>
               </li>
           </div>

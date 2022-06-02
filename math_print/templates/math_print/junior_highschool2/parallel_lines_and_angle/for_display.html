@@ -188,6 +188,9 @@ function refresh() {
     // left_canvas.height = 320;
     left_canvas.height = 160;
     left_canvas.style = "background-color:#CCFFFF";
+    // add left answer to left_div
+    var left_answer = document.createElement('p');
+    left_answer.innerHTML = "\({{ information_tuple.0.angle }}\)";
 
     var right_div = document.createElement("div");
     right_div.className = "col-md-6";
@@ -204,7 +207,19 @@ function refresh() {
     // insert part
     // can accquire before adding?<-another part check<<-may be not.
     left_div.appendChild(left_canvas);
+    // add left answer to left_div
+    var left_answer = document.createElement('p');
+    left_answer.innerHTML = "\\(x = {{ information_tuple.0.angle }} ^ \circ \\)";
+    left_div.appendChild(left_answer);
+
     right_div.appendChild(right_canvas);
+    // add right answer to right_div
+    var right_answer = document.createElement('p');
+    right_answer.innerHTML = "\\(x = {{ information_tuple.1.angle }} ^ \circ \\)";
+    right_div.appendChild(right_answer);
+    
+    right_div.appendChild(right_canvas);
+
     row_container.appendChild(left_div);
     row_container.appendChild(right_div);
     container_div.appendChild(row_container);

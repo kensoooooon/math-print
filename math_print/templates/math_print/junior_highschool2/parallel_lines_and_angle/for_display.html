@@ -19,7 +19,7 @@ function refresh() {
 
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 <script>
-  window.addEventListener("load", draw);
+  window.addEventListener("load", make);
 
   function drawLine(stage, start_x, start_y, end_x, end_y) {
       var graphic = new createjs.Graphics();
@@ -194,21 +194,20 @@ function refresh() {
     left_div.appendChild(left_canvas);
     // add left answer to left_div
     var left_answer_p = document.createElement('p');
-    // left_answer.textContent = "\\\(x = {{ information_tuple.0.angle }} ^ \\\circ \\\)";
-    // p要素を作成
-    // var newElemP = document.createElement("p");
- 
-    // p要素に追加する内容を設定します。
-    // var newElemPText = document.createTextNode("テキストを変更しました。");
-    var left_answer = document.createTextNode("\\\( x = {{ information_tuple.0.angle }}^{circ} \\\)");
+    left_answer_p.style = "visibility:hidden";
+    left_answer_p.className = "answer";
+    var left_answer = document.createTextNode("\\( x = {{ information_tuple.0.angle }}^ \\circ \\)");
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
     right_div.appendChild(right_canvas);
     // add right answer to right_div
-    var right_answer = document.createElement('p');
-    right_answer.innerHTML = "\\\(x = {{ information_tuple.1.angle }} ^ \\\circ \\\)";
-    right_div.appendChild(right_answer);
+    var right_answer_p = document.createElement('p');
+    right_answer_p.style = "visibility:hidden";
+    right_answer_p.className = "answer";
+    var right_answer = document.createTextNode("\\( x = {{ information_tuple.1.angle }}^ \\circ \\)");
+    right_answer_p.appendChild(right_answer);
+    right_div.appendChild(right_answer_p);
 
     row_container.appendChild(left_div);
     row_container.appendChild(right_div);
@@ -216,22 +215,79 @@ function refresh() {
     document.body.appendChild(container_div);
 
     var left_stage = new createjs.Stage(left_canvas_id);
+    //
     call_problem_maker(left_stage, "{{ information_tuple.0.problem_type }}", {{ information_tuple.0.angle }});
     var right_stage = new createjs.Stage(right_canvas_id);
     console.log("--------------------------------");
     call_problem_maker(right_stage, "{{ information_tuple.1.problem_type }}", {{ information_tuple.1.angle }});
     console.log("--------------------------------");
     {% endfor %}
+    MathJax.typeset();
   }
 
-  function check_draw () {
-    var canvas = document.createElement("canvas");
-    var canvas_id = "sample_canvas";
-    canvas.id = canvas_id;
-    var stage = new createjs.Stage("sample_canvas");
-    call_problem_maker(stage, "corresponding_and_alternate_angle", 45);
-    document.body.appendChild(canvas);
+  function add_other_parts() {
+    // hero unit phase
+    var hero_outer_div = document.createElement('div');
+    hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
+    var hero_inner_div = document.createElement('div');
+    hero_inner_div.setAttribute("class", "container");
+    var h1_in_hero = document.createElement('h1');
+    h1_in_hero.setAttribute("class", "display-4");
+    h1_in_hero.innerHTML = "ようこそ!";
+    var p_in_hero = document.createElement('p');
+    p_in_hero.setAttribute("class", "text-dark");
+    p_in_hero.innerHTML = "角度を求める";
+    //// hero unit add phase
+    hero_inner_div.appendChild(h1_in_hero);
+    hero_inner_div.appendChild(p_in_hero);
+    hero_outer_div.appendChild(hero_inner_div);
+    document.body.prepend(hero_outer_div);
+    // button unit phase
+    var button_div = document.createElement('div');
+    button_div.setAttribute("class", "d-grid gap-3 col-6 mx-auto");
+    var show_answer_button = document.createElement('button');
+    show_answer_button.setAttribute("class", "btn btn-outline-success");
+    show_answer_button.setAttribute("type", "button");
+    show_answer_button.setAttribute("onclick", "showAnswer()");
+    show_answer_button.innerHTML = "答えを表示する";
+    var reload_button = document.createElement('button');
+    reload_button.setAttribute("class", "btn btn-outline-success");
+    reload_button.setAttribute("type", "button");
+    reload_button.setAttribute("onclick", "location.reload(false)");
+    reload_button.innerHTML = "もう一度解く";
+    var problem_choice_a = document.createElement("a");
+    problem_choice_a.setAttribute("href", "{% url 'junior_highschool2' %}");
+    problem_choice_a.setAttribute("class", "btn btn-primary");
+    problem_choice_a.setAttribute("type", "button");
+    problem_choice_a.innerHTML = "問題選択へ戻る";
+    var top_a = document.createElement("a");
+    top_a.setAttribute("href", "{% url 'index' %}");
+    top_a.setAttribute("class", "btn btn-primary");
+    top_a.setAttribute("type", "button");
+    top_a.innerHTML = "トップへ戻る";
+    //// buttonunit add phase
+    button_div.appendChild(show_answer_button);
+    button_div.appendChild(reload_button);
+    button_div.appendChild(problem_choice_a);
+    button_div.appendChild(top_a);
+    document.body.appendChild(button_div);
+    // footer phase
+    var footer = document.createElement("footer");
+    footer.setAttribute("class", "container-fluid print_footer");
+    var small = document.createElement("small");
+    var footer_a = document.createElement("a");
+    footer_a.setAttribute("href", "#");
+    footer_a.innerHTML = "© 2022 有明学習振興";
+    //// footer add phase
+    small.appendChild(footer_a);
+    footer.appendChild(small);
   }
+
+  function make() {
+    draw();
+    add_other_parts();
+  }
+
 </script>
 {% endblock %}
 
@@ -242,58 +298,7 @@ function refresh() {
 角度を求める
 {% endblock %}
 
-{% block hero_unit %}
-<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
-    <div class="container">
-        <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">角度を求める</p>
-    </div>
-</div>
-{% endblock %}
-
 {% block body %}
-<ol>
-  <div class="container-fluid">
-      <div class="row">
-          <div class="col-md-6">
-              <li>
-                  <!--canvas?-->
-                  <p class="answer" style="visibility:hidden;">
-                      \(x = 200 ^{\circ} \)
-                  </p>
-              </li>
-          </div>
-          <div class="col-md-6">
-              <li>
-                  <!--canvas?-->
-                  <p class="answer" style="visibility:hidden;">
-
-                  </p>
-              </li>
-          </div>
-      </div>
-  </div>
-</ol>
-
-{% if used_formula_list %}
-  {% for formula in used_formula_list %}
-      <p class="formula text-center" style="visibility:hidden;">{{formula}}</p>
-  {% endfor %}
-{% else %}
-  <br>
-  <br>
-  <br>
-{% endif %}
-
-<div class="d-grid gap-3 col-6 mx-auto">
-  <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
-  <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
-  <a href="{% url 'junior_highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
-  <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
-</div>
-<footer class="container-fluid print_footer">
-  <small><a href="#">© 2022 有明学習振興</a></small>
-</footer>
 
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">

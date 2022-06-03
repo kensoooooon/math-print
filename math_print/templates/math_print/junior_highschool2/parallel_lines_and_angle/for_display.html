@@ -281,6 +281,12 @@ function refresh() {
     //// footer add phase
     small.appendChild(footer_a);
     footer.appendChild(small);
+    document.body.appendChild(footer);
+    // top page remove and add phase
+    var navdiv = document.getElementById("top_page_nav");
+    var new_navdiv = navdiv.cloneNode(true);
+    navdiv.remove();
+    document.body.prepend(new_navdiv);
   }
 
   function make() {

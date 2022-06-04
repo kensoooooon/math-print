@@ -10,6 +10,7 @@ min_number_to_denominator = int(request.POST["min_number_to_denominator"])
 →int の前に、if is not Noneをはさむことで解決するとおもわれ
 """
 import unicodedata
+import pprint
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -931,11 +932,37 @@ def hs1_print_quadratic_function_max_min(request):
 
 
 def print_parallel_lines_and_angle(request):
-    print(f"request: {request}")
+    import random
+    from typing import NamedTuple
+    
+    class ProblemTypeAndAnswerAngle(NamedTuple):
+        problem_type: str
+        angle: int
+
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    used_information_list = request.POST.getlist("used_information")
+    if not(used_information_list):
+        used_information_list.append("corresponding_and_alternate_angle")
+        used_information_list.append("interior_and_exterior_angle")
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem_type1 = random.choice(used_information_list)
+            answer_angle1 = random.randint(40, 120)
+            problem_type_and_answer_angle1 = ProblemTypeAndAnswerAngle(problem_type1, answer_angle1)
+            problem_type2 = random.choice(used_information_list)
+            answer_angle2 = random.randint(40, 120)
+            problem_type_and_answer_angle2 = ProblemTypeAndAnswerAngle(problem_type2, answer_angle2)
+            math_problem_tuple_inner_list.append((problem_type_and_answer_angle1, problem_type_and_answer_angle2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     context = {}
-    context["message"] = "This is parallel lines and angle print problem page."
-    
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    pprint.pprint(math_problem_list_of_list)
+
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
 
 
@@ -959,13 +986,11 @@ def display_number_problem(request):
 
 def display_character_problem(request):
     PROBLEM_NUMBER = 20
-
-    result = request.POST
+    
     number_to_use = request.POST.getlist("character_number_to_use")
     print(f"number_to_use: {number_to_use}")
     operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
-    paper_number = int(request.POST["paper_number"])
     character_to_use = request.POST["character_to_use"]
     character_to_use_list = ["x"]
     if character_to_use == "2":

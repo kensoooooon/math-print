@@ -98,12 +98,9 @@ function refresh() {
   }
 
   function random_vertical_angle_draw (stage, answer_angle) {
-    console.log("answer_angle: "+answer_angle);
     var max_angle = (180 - answer_angle) - 10; // 10 is buffer. no much evidence.
     var random_angle = Math.floor(Math.random() * (max_angle + 1 - 20) + 20);
-    console.log("random_angle: "+random_angle);
     var remained_angle = 180 - (answer_angle + random_angle);
-    console.log("remained_angle: "+remained_angle);
     // drawLine(stage, 30, 160, 610, 160);
     drawLine(stage, 15, 80, 305, 80);
     // drawLineWithAngle(stage, 320, 160, -1*random_angle);
@@ -151,7 +148,6 @@ function refresh() {
     var end_y1 = docking_y + radius1 * Math.sin(radian1);
     // drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
     drawArc(stage, end_x1, end_y1, 25, 180, 180+angle1);
-    console.log("angle1: " + angle1);
     // drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
     drawDegreeCharacter(stage, end_x1-70, end_y1-20, angle1+"°");
     var angle2 = answer_angle - random_angle;
@@ -167,7 +163,6 @@ function refresh() {
     var end_y2 = docking_y + radius2 * Math.sin(-radian2);
     // drawArc(stage, end_x2, end_y2, 50, 180-angle2, 180);
     drawArc(stage, end_x2, end_y2, 25, 180-angle2, 180);
-    console.log("angle2: " + angle2);
     // drawDegreeCharacter(stage, end_x2-100, end_y2+10, angle2+"°");
     drawDegreeCharacter(stage, end_x2-70, end_y2+5, angle2+"°");
     // drawDegreeCharacter(stage, docking_x+60, docking_y-20, "x°");
@@ -191,7 +186,7 @@ function refresh() {
 
   function draw() {
     {% for inner_list in math_problem_list_of_list %}
-        // problem section
+        // problem section //
         var problem_print_section = document.createElement("section");
         problem_print_section.setAttribute("class", "print_pages");
         // add body to read canvas
@@ -210,7 +205,8 @@ function refresh() {
             var left_div = document.createElement("div");
             var left_li = document.createElement("li");
             var left_canvas = document.createElement("canvas");
-            var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counterloop }} + "-" + {{ forloop.counter }};
+            var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+            console.log("problem_left_canvas_id: " + left_canvas_id);
             left_canvas.setAttribute("id", left_canvas_id);
             left_canvas.setAttribute("width", 320);
             left_canvas.setAttribute("height", 160);
@@ -227,7 +223,8 @@ function refresh() {
             var right_div = document.createElement("div");
             var right_li = document.createElement("li");
             var right_canvas = document.createElement("canvas");
-            var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counterloop }} + "-" + {{ forloop.counter }};
+            var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+            console.log("problem_right_canvas_id: " + right_canvas_id);
             right_canvas.setAttribute("id", right_canvas_id);
             right_canvas.setAttribute("width", 320);
             right_canvas.setAttribute("height", 160);
@@ -248,12 +245,10 @@ function refresh() {
 
             var left_stage = new createjs.Stage(left_canvas_id);
             call_problem_maker(left_stage, "{{ math_problem_tuple.0.problem_type }}", {{ math_problem_tuple.0.angle }});
-            console.log("--------------------");
             var right_stage = new createjs.Stage(right_canvas_id);
             call_problem_maker(right_stage, "{{ math_problem_tuple.1.problem_type }}", {{ math_problem_tuple.1.angle }});
-            console.log("--------------------");
-            console.log("----------inner1---------------");
         {% endfor %}
+        console.log("---------problem_loop_end-----------");
         // footer phase
         var footer = document.createElement("footer");
         footer.setAttribute("class", "container-fluid print_footer");
@@ -266,7 +261,7 @@ function refresh() {
         footer.appendChild(small);
         problem_print_section.appendChild(footer);
 
-        // answer section
+        // answer section //
         var answer_print_section = document.createElement("section");
         answer_print_section.setAttribute("class", "print_pages");
         // add body to read canvas
@@ -284,35 +279,20 @@ function refresh() {
             // left_div
             var left_div = document.createElement("div");
             var left_li = document.createElement("li");
-            var left_canvas = document.createElement("canvas");
-            var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counterloop }} + "-" + {{ forloop.counter }};
-            left_canvas.setAttribute("id", left_canvas_id);
-            left_canvas.setAttribute("width", 320);
-            left_canvas.setAttribute("height", 160);
-            left_canvas.setAttribute("style", "background-color:#CCFFFF");
             var left_answer_p = document.createElement("p");
             left_answer_p.setAttribute("class", "answer");
             left_answer_p.setAttribute("style", "visibility:visible");
             left_answer_p.innerHTML = "\\( x = {{ math_problem_tuple.0.angle }} ^\\circ \\)";
-            // left_div add part
-            left_li.appendChild(left_canvas);
             left_li.appendChild(left_answer_p);
             left_div.appendChild(left_li);
 
             var right_div = document.createElement("div");
             var right_li = document.createElement("li");
-            var right_canvas = document.createElement("canvas");
-            var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counterloop }} + "-" + {{ forloop.counter }};
-            right_canvas.setAttribute("id", right_canvas_id);
-            right_canvas.setAttribute("width", 320);
-            right_canvas.setAttribute("height", 160);
-            right_canvas.setAttribute("style", "background-color:#CCFFFF");
             var right_answer_p = document.createElement("p");
             right_answer_p.setAttribute("class", "answer");
             right_answer_p.setAttribute("style", "visibility:visible");
             right_answer_p.innerHTML = "\\( x = {{ math_problem_tuple.1.angle }} ^\\circ \\)";
             // right_div add part
-            right_li.appendChild(right_canvas);
             right_li.appendChild(right_answer_p);
             right_div.appendChild(right_li);
 
@@ -321,14 +301,12 @@ function refresh() {
             answer_ol.appendChild(answer_div);
             answer_print_section.appendChild(answer_ol);
 
-            var left_stage = new createjs.Stage(left_canvas_id);
-            call_problem_maker(left_stage, "{{ math_problem_tuple.0.problem_type }}", {{ math_problem_tuple.0.angle }});
-            console.log("---------------------");
-            var right_stage = new createjs.Stage(right_canvas_id);
-            call_problem_maker(right_stage, "{{ math_problem_tuple.1.problem_type }}", {{ math_problem_tuple.1.angle }});
-            console.log("-----------------------");
-            console.log("---------inner2----------");
+            // var left_stage = new createjs.Stage(left_canvas_id);
+            // call_problem_maker(left_stage, "{{ math_problem_tuple.0.problem_type }}", {{ math_problem_tuple.0.angle }});
+            // var right_stage = new createjs.Stage(right_canvas_id);
+            // call_problem_maker(right_stage, "{{ math_problem_tuple.1.problem_type }}", {{ math_problem_tuple.1.angle }});
         {% endfor %}
+        console.log("------answer_loop_end-----------------");
         // footer phase
         var footer = document.createElement("footer");
         footer.setAttribute("class", "container-fluid print_footer");
@@ -339,13 +317,33 @@ function refresh() {
         //// footer add phase
         small.appendChild(footer_a);
         footer.appendChild(small);
-        problem_print_section.appendChild(footer);
-        console.log("-------outer-----------");
+        answer_print_section.appendChild(footer);
     {% endfor %}
     MathJax.typeset();
   }
 
   function add_other_parts() {
+    // print button phase
+    var print_button_div = document.createElement("div");
+    print_button_div.setAttribute("class", "container button_container");
+    var inner_div = document.createElement("div");
+    inner_div.setAttribute("class", "row justify-content-start");
+    var break_line = document.createElement("br");
+    var innermost_div = document.createElement("div");
+    innermost_div.setAttribute("class", "col-6");
+    var button_form = document.createElement("form");
+    var print_button_input = document.createElement("input");
+    print_button_input.setAttribute("type", "button");
+    print_button_input.setAttribute("class", "btn btn-outline-primary");
+    print_button_input.setAttribute("value", "印刷する");
+    print_button_input.setAttribute("onclick", "window.print()");
+    //// print button add phase
+    button_form.appendChild(print_button_input);
+    innermost_div.appendChild(button_form);
+    inner_div.appendChild(innermost_div);
+    print_button_div.append(inner_div);
+    print_button_div.append(break_line);
+    document.body.prepend(print_button_div);
     // hero unit phase
     var hero_outer_div = document.createElement('div');
     hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
@@ -381,12 +379,6 @@ function refresh() {
 {% endblock %}
 
 {% block hero_unit %}
-<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
-    <div class="container">
-        <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">等式の変形</p>
-    </div>
-</div>
 {% endblock %}
 
 {% block body %}

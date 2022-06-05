@@ -939,7 +939,7 @@ def print_parallel_lines_and_angle(request):
         problem_type: str
         angle: int
 
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 10
     paper_number = int(request.POST["paper_number"])
     used_information_list = request.POST.getlist("used_information")
     if not(used_information_list):
@@ -961,7 +961,7 @@ def print_parallel_lines_and_angle(request):
     
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
-    pprint.pprint(math_problem_list_of_list)
+    # pprint.pprint(math_problem_list_of_list)
 
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
 

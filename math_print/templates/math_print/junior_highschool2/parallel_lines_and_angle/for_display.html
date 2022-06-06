@@ -66,12 +66,9 @@ function refresh() {
   }
 
   function random_vertical_angle_draw (stage, answer_angle) {
-    console.log("answer_angle: "+answer_angle);
     var max_angle = (180 - answer_angle) - 10; // 10 is buffer. no much evidence.
     var random_angle = Math.floor(Math.random() * (max_angle + 1 - 20) + 20);
-    console.log("random_angle: "+random_angle);
     var remained_angle = 180 - (answer_angle + random_angle);
-    console.log("remained_angle: "+remained_angle);
     // drawLine(stage, 30, 160, 610, 160);
     drawLine(stage, 15, 80, 305, 80);
     // drawLineWithAngle(stage, 320, 160, -1*random_angle);
@@ -97,6 +94,45 @@ function refresh() {
     stage.update();
   }
 
+  function random_multiple_parallel_angle_draw (stage, answer_angle) {
+    // draw the top line
+    drawLine(stage, 0, 5, 320, 5);
+    // draw the bottom line
+    drawLine(stage, 0, 155, 320, 155);
+    // start from bottom line
+    var start_x = 100;
+    var start_y = 155;
+    var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
+    console.log("answer_angle: " + answer_angle);
+    console.log("max_angle: " + max_angle);
+    var min_angle = 20;
+    var bottom_angle = Math.floor(Math.random() * (max_angle + 1 - min_angle) + min_angle);
+    console.log("bottom_angle: " + bottom_angle);
+    var bottom_radian = bottom_angle * Math.PI / 180;
+    console.log("Math.sin(bottom_angle): " + Math.sin(bottom_radian));
+    var radius1 = 50 / Math.sin(bottom_radian);
+    console.log("radius1: " + radius1);
+    var x1 = start_x + radius1 * Math.cos(bottom_radian);
+    console.log("x1: " + x1);
+    var y1 = 105;
+    drawLine(stage, start_x, start_y, x1, y1);
+    //second line
+    var middle_angle = 180 - (answer_angle - bottom_angle);
+    console.log("middle_angle: " + middle_angle);
+    var middle_radian = middle_angle * Math.PI / 180;
+    console.log("Math.sin(middle_radian): " + Math.sin(middle_radian))
+    var radius2 = 50 / Math.sin(middle_radian);
+    console.log("radius2: " + radius2);
+    var x2 = x1 + radius2 * Math.cos(middle_radian);
+    var y2 = 55;
+    drawLine(stage, x1, y1, x2, y2);
+    //last line
+    
+    // after finish
+    console.log("--------------------");
+    stage.update();
+  }
+
   function random_parallel_angle_draw (stage, answer_angle) {
     // var docking_x = 150;
     var docking_x = 75;
@@ -119,7 +155,6 @@ function refresh() {
     var end_y1 = docking_y + radius1 * Math.sin(radian1);
     // drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
     drawArc(stage, end_x1, end_y1, 25, 180, 180+angle1);
-    console.log("angle1: " + angle1);
     // drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
     drawDegreeCharacter(stage, end_x1-70, end_y1-20, angle1+"°");
     var angle2 = answer_angle - random_angle;
@@ -135,7 +170,6 @@ function refresh() {
     var end_y2 = docking_y + radius2 * Math.sin(-radian2);
     // drawArc(stage, end_x2, end_y2, 50, 180-angle2, 180);
     drawArc(stage, end_x2, end_y2, 25, 180-angle2, 180);
-    console.log("angle2: " + angle2);
     // drawDegreeCharacter(stage, end_x2-100, end_y2+10, angle2+"°");
     drawDegreeCharacter(stage, end_x2-70, end_y2+5, angle2+"°");
     // drawDegreeCharacter(stage, docking_x+60, docking_y-20, "x°");
@@ -152,7 +186,10 @@ function refresh() {
     if (problem_type == "corresponding_and_alternate_angle") {
       random_parallel_angle_draw(stage, answer_angle);
     }
-    else if (problem_type == "interior_and_exterior_angle") {
+    else if (problem_type == "multiple_corresponding_and_alternate_angle") {
+      random_multiple_parallel_angle_draw(stage, answer_angle);
+    }
+    else if (problem_type == "vertical_angle") {
       random_vertical_angle_draw(stage, answer_angle);
     }
   }
@@ -218,9 +255,7 @@ function refresh() {
     //
     call_problem_maker(left_stage, "{{ information_tuple.0.problem_type }}", {{ information_tuple.0.angle }});
     var right_stage = new createjs.Stage(right_canvas_id);
-    console.log("--------------------------------");
     call_problem_maker(right_stage, "{{ information_tuple.1.problem_type }}", {{ information_tuple.1.angle }});
-    console.log("--------------------------------");
     {% endfor %}
     MathJax.typeset();
   }

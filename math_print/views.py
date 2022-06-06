@@ -944,7 +944,7 @@ def print_parallel_lines_and_angle(request):
     used_information_list = request.POST.getlist("used_information")
     if not(used_information_list):
         used_information_list.append("corresponding_and_alternate_angle")
-        used_information_list.append("interior_and_exterior_angle")
+        used_information_list.append("vertical_angle")
 
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -1701,7 +1701,8 @@ def display_parallel_lines_and_angle(request):
     used_information_list = request.POST.getlist("used_information")
     if not(used_information_list):
         used_information_list.append("corresponding_and_alternate_angle")
-        used_information_list.append("interior_and_exterior_angle")
+        used_information_list.append("multiple_corresponding_and_alternate_angle")
+        used_information_list.append("vertical_angle")
     
     # とりあえず仮生成
     # 平行型と対頂角型をチェック<- tuple

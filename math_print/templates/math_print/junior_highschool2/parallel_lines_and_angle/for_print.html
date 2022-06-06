@@ -179,7 +179,7 @@ function refresh() {
     if (problem_type == "corresponding_and_alternate_angle") {
       random_parallel_angle_draw(stage, answer_angle);
     }
-    else if (problem_type == "interior_and_exterior_angle") {
+    else if (problem_type == "vertical_angle") {
       random_vertical_angle_draw(stage, answer_angle);
     }
   }
@@ -206,7 +206,6 @@ function refresh() {
             var left_li = document.createElement("li");
             var left_canvas = document.createElement("canvas");
             var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
-            console.log("problem_left_canvas_id: " + left_canvas_id);
             left_canvas.setAttribute("id", left_canvas_id);
             left_canvas.setAttribute("width", 320);
             left_canvas.setAttribute("height", 160);
@@ -224,7 +223,6 @@ function refresh() {
             var right_li = document.createElement("li");
             var right_canvas = document.createElement("canvas");
             var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
-            console.log("problem_right_canvas_id: " + right_canvas_id);
             right_canvas.setAttribute("id", right_canvas_id);
             right_canvas.setAttribute("width", 320);
             right_canvas.setAttribute("height", 160);
@@ -244,11 +242,12 @@ function refresh() {
             problem_print_section.appendChild(problem_ol);
 
             var left_stage = new createjs.Stage(left_canvas_id);
+            console.log("problem_type: " + "{{ math_problem_tuple.0.problem_type }}");
             call_problem_maker(left_stage, "{{ math_problem_tuple.0.problem_type }}", {{ math_problem_tuple.0.angle }});
             var right_stage = new createjs.Stage(right_canvas_id);
+            console.log("problem_type: " + "{{ math_problem_tuple.1.problem_type }}");
             call_problem_maker(right_stage, "{{ math_problem_tuple.1.problem_type }}", {{ math_problem_tuple.1.angle }});
         {% endfor %}
-        console.log("---------problem_loop_end-----------");
         // footer phase
         var footer = document.createElement("footer");
         footer.setAttribute("class", "container-fluid print_footer");
@@ -306,7 +305,6 @@ function refresh() {
             // var right_stage = new createjs.Stage(right_canvas_id);
             // call_problem_maker(right_stage, "{{ math_problem_tuple.1.problem_type }}", {{ math_problem_tuple.1.angle }});
         {% endfor %}
-        console.log("------answer_loop_end-----------------");
         // footer phase
         var footer = document.createElement("footer");
         footer.setAttribute("class", "container-fluid print_footer");

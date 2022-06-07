@@ -56,9 +56,9 @@ function refresh() {
       stage.addChild(shape);
   }
   
-  function drawDegreeCharacter(stage, x, y, character, font_point=20) {
+  function drawDegreeCharacter(stage, x, y, character) {
     //文字オブジェクトを作成する
-    var text = new createjs.Text(character, font_point+"px Arial", "#000000");
+    var text = new createjs.Text(character, "15px Arial", "#000000");
     //描画位置の指定
     text.x = x;
     text.y = y;
@@ -71,25 +71,15 @@ function refresh() {
     var remained_angle = 180 - (answer_angle + random_angle);
     // drawLine(stage, 30, 160, 610, 160);
     drawLine(stage, 15, 80, 305, 80);
-    // drawLineWithAngle(stage, 320, 160, -1*random_angle);
     drawLineWithAngle(stage, 160, 80, -1*random_angle);
-    // drawLineWithAngle(stage, 320, 160, -1*random_angle+180);
     drawLineWithAngle(stage, 160, 80, -1*random_angle+180);
-    // drawArc(stage, 320, 160, 50, 0, -1*random_angle, anticlockwise=true);
     drawArc(stage, 160, 80, 25, 0, -1*random_angle, anticlockwise=true);
-    // drawDegreeCharacter(stage, 320+100, 160-40, random_angle+"°");
     drawDegreeCharacter(stage, 160+50, 80-20, random_angle+"°");
-    // drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle);
     drawLineWithAngle(stage, 160, 80, -1*random_angle-remained_angle);
-    // drawLineWithAngle(stage, 320, 160, -1*random_angle-remained_angle+180);
     drawLineWithAngle(stage, 160, 80, -1*random_angle-remained_angle+180);
-    // drawArc(stage, 320, 160, 50, -1*random_angle+180, -1*random_angle-remained_angle+180, anticlockwise=true);
     drawArc(stage, 160, 80, 25, -1*random_angle+180, -1*random_angle-remained_angle+180, anticlockwise=true);
-    // drawDegreeCharacter(stage, 320-10, 160+120, remained_angle+"°");
     drawDegreeCharacter(stage, 160-5, 80+60, remained_angle+"°");
-    // drawArc(stage, 320, 160, 50, -1*random_angle-remained_angle, 180, anticlockwise=true);
     drawArc(stage, 160, 80, 25, -1*random_angle-remained_angle, 180, anticlockwise=true);
-    // drawDegreeCharacter(stage, 320-100, 160-40, "x");
     drawDegreeCharacter(stage, 160-50, 80-20, "x");
     stage.update();
   }
@@ -103,35 +93,26 @@ function refresh() {
     var start_x = 70;
     var start_y = 155;
     var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
-    console.log("answer_angle: " + answer_angle);
-    console.log("max_angle: " + max_angle);
     var min_angle = 20;
     var bottom_angle = Math.floor(Math.random() * (max_angle + 1 - min_angle) + min_angle);
-    console.log("bottom_angle: " + bottom_angle);
     var bottom_radian = bottom_angle * Math.PI / 180;
-    console.log("Math.sin(bottom_angle): " + Math.sin(bottom_radian));
     var radius1 = 50 / Math.sin(bottom_radian);
-    console.log("radius1: " + radius1);
     var x1 = start_x + radius1 * Math.cos(bottom_radian);
-    console.log("x1: " + x1);
     var y1 = 105;
     drawLine(stage, start_x, start_y, x1, y1);
     //// bottom_arc
     drawArc(stage, start_x, start_y, 20, 0, -bottom_angle, anticlockwise=true);
-    drawDegreeCharacter(stage, start_x+40, start_y-15, bottom_angle+"°", font_point=15);
+    drawDegreeCharacter(stage, start_x+40, start_y-15, bottom_angle+"°");
     //second line
     var middle_angle = 180 - (answer_angle - bottom_angle);
-    console.log("middle_angle: " + middle_angle);
     var middle_radian = middle_angle * Math.PI / 180;
-    console.log("Math.sin(middle_radian): " + Math.sin(middle_radian))
     var radius2 = 50 / Math.sin(middle_radian);
-    console.log("radius2: " + radius2);
     var x2 = x1 + radius2 * Math.cos(middle_radian);
     var y2 = 55;
     drawLine(stage, x1, y1, x2, y2);
     //// middle_arc
     drawArc(stage, x1, y1, 20, 180-bottom_angle, 180-bottom_angle+answer_angle);
-    drawDegreeCharacter(stage, x1-40, y1-10, "x°", font_point=15);
+    drawDegreeCharacter(stage, x1-40, y1-10, "x°");
     //last line
     var upper_angle = Math.floor(Math.random() * (85 + 1 - 30) + 30); // max=85, min=30 no much evidence.
     var upper_radian = upper_angle * Math.PI / 180;
@@ -141,55 +122,42 @@ function refresh() {
     drawLine(stage, x2, y2, x3, y3);
     //// before last arc
     drawArc(stage, x2, y2, 20, -upper_angle, answer_angle-bottom_angle);
-    drawDegreeCharacter(stage, x2+25, y2-10, (answer_angle-bottom_angle+upper_angle)+"°", font_point=15);
+    drawDegreeCharacter(stage, x2+25, y2-10, (answer_angle-bottom_angle+upper_angle)+"°");
     //// lastarc
     drawArc(stage, x3, y3, 20, 180-upper_angle, 180);
-    drawDegreeCharacter(stage, x3-50, y3+5, upper_angle+"°", font_point=15);
+    drawDegreeCharacter(stage, x3-50, y3+5, upper_angle+"°");
     // after finish
-    console.log("--------------------");
     stage.update();
   }
 
   function random_parallel_angle_draw (stage, answer_angle) {
     // var docking_x = 150;
     var docking_x = 75;
-    // var docking_y = 160;
     var docking_y = 80;
-    // drawLine(stage, 10, 310, 630, 310);
     drawLine(stage, 5, 155, 315, 155);
-    // drawLine(stage, 10, 10, 630, 10);
     drawLine(stage, 5, 5, 315, 5);
     var random_angle = Math.floor(Math.random() * ((answer_angle - 20) + 1 - 20) + 20);
     var angle1 = random_angle;
     var radian1 = angle1 * Math.PI / 180;
-    // var radius1 = 150 / Math.sin(radian1);
     var radius1 = 75 / Math.sin(radian1);
     drawLineWithAngle(stage, docking_x, docking_y, angle1, radius=radius1);
-    // drawArc(stage, docking_x, docking_y, 50, 0, angle1);
     drawArc(stage, docking_x, docking_y, 25, 0, angle1);
     // the phase to calculate end line point.
     var end_x1 = docking_x + radius1 * Math.cos(radian1);
     var end_y1 = docking_y + radius1 * Math.sin(radian1);
-    // drawArc(stage, end_x1, end_y1, 50, 180, 180+angle1);
     drawArc(stage, end_x1, end_y1, 25, 180, 180+angle1);
-    // drawDegreeCharacter(stage, end_x1-100, end_y1-30, angle1+"°");
     drawDegreeCharacter(stage, end_x1-70, end_y1-20, angle1+"°");
     var angle2 = answer_angle - random_angle;
     var radian2 = angle2 * Math.PI / 180;
-    // var radius2 = 150 / Math.sin(radian2);
     var radius2 = 75 / Math.sin(radian2);
 
     drawLineWithAngle(stage, docking_x, docking_y, -angle2, radius=radius2);
-    // drawArc(stage, docking_x, docking_y, 50, 0, -angle2, anticlockwise=true);
     drawArc(stage, docking_x, docking_y, 25, 0, -angle2, anticlockwise=true);
     // the phase to calculate end line point.
     var end_x2 = docking_x + radius2 * Math.cos(-radian2);
     var end_y2 = docking_y + radius2 * Math.sin(-radian2);
-    // drawArc(stage, end_x2, end_y2, 50, 180-angle2, 180);
     drawArc(stage, end_x2, end_y2, 25, 180-angle2, 180);
-    // drawDegreeCharacter(stage, end_x2-100, end_y2+10, angle2+"°");
     drawDegreeCharacter(stage, end_x2-70, end_y2+5, angle2+"°");
-    // drawDegreeCharacter(stage, docking_x+60, docking_y-20, "x°");
     drawDegreeCharacter(stage, docking_x+30, docking_y-10, "x°");
     stage.update();
   }

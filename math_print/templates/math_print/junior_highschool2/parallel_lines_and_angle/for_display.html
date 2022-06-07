@@ -56,9 +56,9 @@ function refresh() {
       stage.addChild(shape);
   }
   
-  function drawDegreeCharacter(stage, x, y, character) {
+  function drawDegreeCharacter(stage, x, y, character, font_point=20) {
     //文字オブジェクトを作成する
-    var text = new createjs.Text(character, "20px Arial", "#000000");
+    var text = new createjs.Text(character, font_point+"px Arial", "#000000");
     //描画位置の指定
     text.x = x;
     text.y = y;
@@ -100,7 +100,7 @@ function refresh() {
     // draw the bottom line
     drawLine(stage, 0, 155, 320, 155);
     // start from bottom line
-    var start_x = 100;
+    var start_x = 70;
     var start_y = 155;
     var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
     console.log("answer_angle: " + answer_angle);
@@ -116,6 +116,9 @@ function refresh() {
     console.log("x1: " + x1);
     var y1 = 105;
     drawLine(stage, start_x, start_y, x1, y1);
+    //// bottom_arc
+    drawArc(stage, start_x, start_y, 20, 0, -bottom_angle, anticlockwise=true);
+    drawDegreeCharacter(stage, start_x+40, start_y-15, bottom_angle+"°", font_point=15);
     //second line
     var middle_angle = 180 - (answer_angle - bottom_angle);
     console.log("middle_angle: " + middle_angle);
@@ -126,8 +129,22 @@ function refresh() {
     var x2 = x1 + radius2 * Math.cos(middle_radian);
     var y2 = 55;
     drawLine(stage, x1, y1, x2, y2);
+    //// middle_arc
+    drawArc(stage, x1, y1, 20, 180-bottom_angle, 180-bottom_angle+answer_angle);
+    drawDegreeCharacter(stage, x1-40, y1-10, "x°", font_point=15);
     //last line
-    
+    var upper_angle = Math.floor(Math.random() * (85 + 1 - 30) + 30); // max=85, min=30 no much evidence.
+    var upper_radian = upper_angle * Math.PI / 180;
+    var radius3 = 50 / Math.sin(upper_radian);
+    var x3 = x2 + radius3 * Math.cos(upper_radian);
+    var y3 = 5;
+    drawLine(stage, x2, y2, x3, y3);
+    //// before last arc
+    drawArc(stage, x2, y2, 20, -upper_angle, answer_angle-bottom_angle);
+    drawDegreeCharacter(stage, x2+25, y2-10, (answer_angle-bottom_angle+upper_angle)+"°", font_point=15);
+    //// lastarc
+    drawArc(stage, x3, y3, 20, 180-upper_angle, 180);
+    drawDegreeCharacter(stage, x3-50, y3+5, upper_angle+"°", font_point=15);
     // after finish
     console.log("--------------------");
     stage.update();

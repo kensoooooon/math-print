@@ -162,14 +162,46 @@ function refresh() {
     stage.update();
   }
 
-  function sample_draw () {
-    var stage = new createjs.Stage("sample_canvas");
-    random_parallel_angle_draw(stage, 150);
+  function random_parallel_out_angle_draw (stage, answer_angle) {
+    console.log("answer_angle: " + answer_angle);
+    // upper line
+    drawLine(stage, 0, 5, 320, 5);
+    // middle line
+    drawLine(stage, 0, 80, 320, 80);
+    // hidden line (will become invisible after finishing.)
+    drawLine(stage, 0, 120, 320, 120);
+    // line from top to the point on hidden line
+    var start_x = 200;
+    var start_y = 5;
+    var top_angle = Math.floor(Math.random() * (60 + 1 - 30) + 30);
+    console.log("top_angle: " + top_angle);
+    var top_radian = top_angle * Math.PI / 180;
+    var radius1 = 115 / Math.sin(top_radian);
+    var x1 = start_x + radius1 * Math.cos(Math.PI - top_radian);
+    var y1 = 120;
+    drawLine(stage, start_x, start_y, x1, y1);
+    // line from hidden under point to answer point
+    var answer_radian = answer_angle * Math.PI / 180;
+    var radius2 = 40 / Math.sin(answer_radian);
+    var bottom_angle = 360 - top_angle;
+    console.log("bottom_angle: " + bottom_angle);
+    var bottom_radian = bottom_angle * Math.PI / 180;
+    var x2 = x1 + radius2 * Math.cos(bottom_radian);
+    var y2 = 80;
+    drawLine(stage, x1, y1, x2, y2);
+    console.log("----------------------");
+    stage.update();
   }
 
   function call_problem_maker (stage, problem_type, answer_angle) {
     if (problem_type == "corresponding_and_alternate_angle") {
-      random_parallel_angle_draw(stage, answer_angle);
+      var random_selector = Math.random();
+      if (random_selector <= 0.5) {
+        random_parallel_angle_draw(stage, answer_angle);
+      }
+      else {
+        random_parallel_out_angle_draw(stage, answer_angle);
+      }
     }
     else if (problem_type == "multiple_corresponding_and_alternate_angle") {
       random_multiple_parallel_angle_draw(stage, answer_angle);

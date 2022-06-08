@@ -143,7 +143,7 @@ function refresh() {
     drawLine(stage, x1, y1, x2, y2);
     //// middle_arc
     drawArc(stage, x1, y1, 20, 180-bottom_angle, 180-bottom_angle+answer_angle);
-    drawDegreeCharacter(stage, x1-40, y1-10, "x°");
+    drawDegreeCharacter(stage, x1-40, y1-10, "x");
     //last line
     var upper_angle = Math.floor(Math.random() * (85 + 1 - 30) + 30); // max=85, min=30 no much evidence.
     var upper_radian = upper_angle * Math.PI / 180;
@@ -188,18 +188,24 @@ function refresh() {
     var end_y2 = docking_y + radius2 * Math.sin(-radian2);
     drawArc(stage, end_x2, end_y2, 25, 180-angle2, 180);
     drawDegreeCharacter(stage, end_x2-70, end_y2+5, angle2+"°");
-    drawDegreeCharacter(stage, docking_x+30, docking_y-10, "x°");
+    drawDegreeCharacter(stage, docking_x+30, docking_y-10, "x");
     stage.update();
   }
 
-  function sample_draw () {
-    var stage = new createjs.Stage("sample_canvas");
-    random_parallel_angle_draw(stage, 150);
+  function random_parallel_out_angle_draw (stage, answer_angle) {
+
+    stage.update();
   }
 
   function call_problem_maker (stage, problem_type, answer_angle) {
     if (problem_type == "corresponding_and_alternate_angle") {
-      random_parallel_angle_draw(stage, answer_angle);
+      var random_selector = Math.random();
+      if (random_selector <= 0.5) {
+        random_parallel_angle_draw(stage, answer_angle);
+      }
+      else {
+        random_parallel_out_angle_draw(stage, answer_angle);
+      }
     }
     else if (problem_type == "multiple_corresponding_and_alternate_angle") {
       random_multiple_parallel_angle_draw(stage, answer_angle);
@@ -221,6 +227,9 @@ function refresh() {
         problem_number_p.setAttribute("class", "number_of_problem");
         problem_number_p.innerHTML = "問題: No. {{ forloop.counter }}";
         problem_print_section.appendChild(problem_number_p);
+        var problem_sentence_p = document.createElement("p");
+        problem_sentence_p.innerHTML = "xの値を求めよ。なお、水平な線はすべて平行であるとする。";
+        problem_print_section.appendChild(problem_sentence_p);
         
         var problem_ol = document.createElement("ol");
         {% for math_problem_tuple in inner_list %}

@@ -10,6 +10,7 @@ min_number_to_denominator = int(request.POST["min_number_to_denominator"])
 →int の前に、if is not Noneをはさむことで解決するとおもわれ
 """
 import unicodedata
+import pprint
 
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -929,10 +930,45 @@ def hs1_print_quadratic_function_max_min(request):
     
     return render(request, 'math_print/highschool1/quadratic_function_max_min/for_print.html', context)
 
+
+def print_parallel_lines_and_angle(request):
+    import random
+    from typing import NamedTuple
+    
+    class ProblemTypeAndAnswerAngle(NamedTuple):
+        problem_type: str
+        angle: int
+
+    PROBLEM_NUMBER = 10
+    paper_number = int(request.POST["paper_number"])
+    used_information_list = request.POST.getlist("used_information")
+    if not(used_information_list):
+        used_information_list.append("corresponding_and_alternate_angle")
+        used_information_list.append("vertical_angle")
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem_type1 = random.choice(used_information_list)
+            answer_angle1 = random.randint(40, 120)
+            problem_type_and_answer_angle1 = ProblemTypeAndAnswerAngle(problem_type1, answer_angle1)
+            problem_type2 = random.choice(used_information_list)
+            answer_angle2 = random.randint(40, 120)
+            problem_type_and_answer_angle2 = ProblemTypeAndAnswerAngle(problem_type2, answer_angle2)
+            math_problem_tuple_inner_list.append((problem_type_and_answer_angle1, problem_type_and_answer_angle2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    # pprint.pprint(math_problem_list_of_list)
+
+    return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
+
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
-    result = request.POST
     number_to_use = request.POST.getlist("number_number_to_use")
     operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
@@ -950,13 +986,11 @@ def display_number_problem(request):
 
 def display_character_problem(request):
     PROBLEM_NUMBER = 20
-
-    result = request.POST
+    
     number_to_use = request.POST.getlist("character_number_to_use")
     print(f"number_to_use: {number_to_use}")
     operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
-    paper_number = int(request.POST["paper_number"])
     character_to_use = request.POST["character_to_use"]
     character_to_use_list = ["x"]
     if character_to_use == "2":
@@ -1652,3 +1686,38 @@ def hs1_display_quadratic_function_max_min(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     
     return render(request, 'math_print/highschool1/quadratic_function_max_min/for_display.html', context)
+
+
+def display_parallel_lines_and_angle(request):
+    import random
+    from typing import NamedTuple
+    
+    class ProblemTypeAndAnswerAngle(NamedTuple):
+        problem_type: str
+        angle: int
+
+    print(f"request: {request}")
+    
+    used_information_list = request.POST.getlist("used_information")
+    if not(used_information_list):
+        used_information_list.append("corresponding_and_alternate_angle")
+        used_information_list.append("multiple_corresponding_and_alternate_angle")
+        used_information_list.append("vertical_angle")
+    
+    # とりあえず仮生成
+    # 平行型と対頂角型をチェック<- tuple
+    problem_type_and_answer_angle_tuple_list = []
+    # double loop
+    for _ in range(20//2):
+        problem_type1 = random.choice(used_information_list)
+        answer_angle1 = random.randint(40, 120)
+        problem_type_and_answer_angle1 = ProblemTypeAndAnswerAngle(problem_type1, answer_angle1)
+        problem_type2 = random.choice(used_information_list)
+        answer_angle2 = random.randint(40, 120)
+        problem_type_and_answer_angle2 = ProblemTypeAndAnswerAngle(problem_type2, answer_angle2)   
+        problem_type_and_answer_angle_tuple_list.append((problem_type_and_answer_angle1, problem_type_and_answer_angle2))
+        
+    context = {}
+    context["problem_type_and_answer_angle_tuple_list"] = problem_type_and_answer_angle_tuple_list
+
+    return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_display.html', context)

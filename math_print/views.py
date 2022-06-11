@@ -47,6 +47,9 @@ from .math_process.hs1_quadratic_function_max_min import HS1QuadraticFunctionMax
 def index(request):
     return render(request, 'math_print/index.html', {})
 
+def show_elementary_school3(request):
+    return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
+
 def show_elementary_school5(request):
     return render(request, 'math_print/elementary_school5/elementary_school5.html', {})
 

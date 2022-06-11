@@ -6,6 +6,9 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     ##########################################
+    ### 小3 ###
+    path('elementary_school3/', views.show_elementary_school3, name='elementary_school3'),
+    ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),
     ### 約分 ###

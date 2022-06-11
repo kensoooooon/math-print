@@ -1,0 +1,175 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+計算練習(小5)
+{% endblock %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
+            }
+        }
+    }
+
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
+            }
+        }
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>単位の変換</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する単位</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="length" name="unit_type" id="length_unit_checkbox" checked>
+                        <label class="form-check-label" for="length_unit_checkbox">
+                            長さ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="weight" name="unit_type" id="weight_unit_checkbox" checked>
+                        <label class="form-check-label" for="weight_unit_checkbox">
+                            重さ
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('unit_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('unit_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">登場する分数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="proper_fraction" name="fraction_type_for_calculate" id="proper_fraction_for_calculate" checked>
+                        <label class="form-check-label" for="proper_fraction_for_calculate">
+                            真分数(分子が分母を超えない)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="improper_fraction" name="fraction_type_for_calculate" id="improper_fraction_for_calculate">
+                        <label class="form-check-label" for="improper_fraction_for_calculate">
+                            仮分数(分子が分母を超える)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="mixed_fraction" name="fraction_type_for_calculate" id="mixed_fraction_for_calculate">
+                        <label class="form-check-label" for="mixed_fraction_for_calculate">
+                            帯分数(横に数がくっついてくる)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationTypeForCalculate()" value="全部のせ">
+                </div>
+                <small class="text-muted">分子に登場する数の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="number" name="min_number_to_numerator" value="2" min="1" max="100">
+                            </div>
+                            ~
+                            <div class="col">
+                                <input class="form-control" type="number" name="max_number_to_numerator" value="6" min="1" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">帯分数の横に登場する数の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="number" name="min_number_on_the_left_of_frac" value="2" min="1" max="100">
+                            </div>
+                            ~
+                            <div class="col">
+                                <input class="form-control" type="number" name="max_number_on_the_left_of_frac" value="6" min="1" max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <small class="text-muted">項数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="2" name="term_number_for_fraction_calculate" id="two_terms_for_fraction_calculate" checked>
+                        <label class="form-check-label" for="two_terms_for_fraction_calculate">
+                            2項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="3" name="term_number_for_fraction_calculate" id="three_terms_for_fraction_calculate">
+                        <label class="form-check-label" for="three_terms_for_fraction_calculate">
+                            3項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="4" name="term_number_for_fraction_calculate" id="four_terms_for_fraction_calculate">
+                        <label class="form-check-label" for="four_terms_for_fraction_calculate">
+                            4項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="term_number_for_fraction_calculate" id="five_terms_for_fraction_calculate">
+                        <label class="form-check-label" for="five_terms_for_fraction_calculate">
+                            5項
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FractionCalculateFivePaperRadio" checked>
+                        <label class="form-check-label" for="FractionCalculateFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FractionCalculateTenPaperRadio">
+                        <label class="form-check-label" for="FractionCalculateTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FractionCalculateFifteenPaperRadio">
+                        <label class="form-check-label" for="FractionCalculateFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'fraction_calculate_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'fraction_calculate_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2022 有明学習振興</a></small>
+    </footer>
+</div>
+{% endblock %}

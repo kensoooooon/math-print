@@ -8,6 +8,9 @@ urlpatterns = [
     ##########################################
     ### 小3 ###
     path('elementary_school3/', views.show_elementary_school3, name='elementary_school3'),
+    ### 単位の変換 ###
+    path('unit_conversion/print', views.print_unit_conversion_problem, name='unit_conversion_print'),
+    path('unit_conversion/display', views.display_unit_conversion_problem, name='unit_conversion_display'),
     ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),

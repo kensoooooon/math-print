@@ -22,6 +22,8 @@ class UnitConversionProblem:
             latex_answer, latex_problem = self._make_area_problem()
         elif selected_unit_type == "volume":
             latex_answer, latex_problem = self._make_volume_problem()
+        elif selected_unit_type == "time":
+            latex_answer, latex_problem = self._make_time_problem()
                 
         return latex_answer, latex_problem
     
@@ -36,7 +38,11 @@ class UnitConversionProblem:
         centimeter_unit = LengthUnit(unit="cm", ratio_to_kilometer=10**5)
         millimeter_unit = LengthUnit(unit="mm", ratio_to_kilometer=10**6)
         unit_list = [kilometer_unit, meter_unit, centimeter_unit, millimeter_unit]
-        larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        larger_index = randint(0, len(unit_list) - 2)
+        smaller_index = larger_index + randint(1, 2)
+        if smaller_index > (len(unit_list) - 1):
+            smaller_index = len(unit_list) - 1
         larger_unit = unit_list[larger_index]
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
@@ -68,7 +74,11 @@ class UnitConversionProblem:
         gram_unit = LengthUnit(unit="g", ratio_to_ton=10**6)
         milligram_unit = LengthUnit(unit="mg", ratio_to_ton=10**9)
         unit_list = [ton_unit, kilogram_unit, gram_unit, milligram_unit]
-        larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        larger_index = randint(0, len(unit_list) - 2)
+        smaller_index = larger_index + randint(1, 2)
+        if smaller_index > (len(unit_list) - 1):
+            smaller_index = len(unit_list) - 1
         larger_unit = unit_list[larger_index]
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
@@ -96,15 +106,19 @@ class UnitConversionProblem:
             ratio_to_square_kilometer : int
 
         square_kilometer_unit = AreaUnit(unit="km^2", ratio_to_square_kilometer=1)
+        hectare_unit = AreaUnit("ha", ratio_to_square_kilometer=10**2)
+        are_unit = AreaUnit("a", ratio_to_square_kilometer=10**4)
         square_meter_unit = AreaUnit(unit="m^2", ratio_to_square_kilometer=10**6)
-        are_unit = AreaUnit("a", ratio_to_square_kilometer=10**8)
         square_centimeter_unit = AreaUnit(unit="cm^2", ratio_to_square_kilometer=10**12)
-        hectare_unit = AreaUnit("ha", ratio_to_square_kilometer=10**11)
         square_millimeter_unit = AreaUnit(unit="mm^2", ratio_to_square_kilometer=10**14)
         unit_list = [square_kilometer_unit, square_meter_unit, are_unit,
                      square_centimeter_unit, hectare_unit, square_millimeter_unit,
                      ]
-        larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        larger_index = randint(0, len(unit_list) - 2)
+        smaller_index = larger_index + randint(1, 2)
+        if smaller_index > (len(unit_list) - 1):
+            smaller_index = len(unit_list) - 1
         larger_unit = unit_list[larger_index]
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
@@ -142,8 +156,11 @@ class UnitConversionProblem:
                      liter_unit, deciliter_unit,
                      cubic_centimeter_unit, milliliter_unit,
                      cubic_millimeter_unit]
-        
-        larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
+        larger_index = randint(0, len(unit_list) - 2)
+        smaller_index = larger_index + 1
+        if smaller_index > (len(unit_list) - 1):
+            smaller_index = len(unit_list) - 1
         larger_unit = unit_list[larger_index]
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
@@ -163,3 +180,10 @@ class UnitConversionProblem:
         # print(f"latex_problem: {latex_problem}")
         
         return latex_answer, latex_problem
+    
+    def _make_time_problem(self):
+        import datetime
+        
+        class TimeUnit(NamedTuple):
+            unit: str
+            ratio_to_hour: int

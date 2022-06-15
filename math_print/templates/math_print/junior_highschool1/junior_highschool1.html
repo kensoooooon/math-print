@@ -789,6 +789,85 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'sector_display' %}">      
             </form>
         </div>
+        <div class="col border-end border-bottom">
+            <p>おうぎ形の弧の長さや中心角、面積を求める(図形つき)</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">与えられるもの→求めるもの</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="radius_and_central_angle_to_arc_length_and_area" name="sector_with_figure_problem_type" id="sector_with_figure_radius_and_central_angle_to_arc_length_and_area" checked>
+                        <label class="form-check-label" for="sector_with_figure_radius_and_central_angle_to_arc_length_and_area">
+                            半径,中心角→弧の長さ,面積
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="radius_and_arc_length_to_area" name="sector_with_figure_problem_type" id="sector_with_figure_radius_and_arc_length_to_area" checked>
+                        <label class="form-check-label" for="sector_with_figure_radius_and_arc_length_to_area">
+                            半径,弧の長さ→面積
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="radius_and_area_to_arc_length" name="sector_with_figure_problem_type" id="sector_with_figure_radius_and_area_to_arc_length" checked>
+                        <label class="form-check-label" for="sector_with_figure_radius_and_area_to_arc_length">
+                            半径,面積→弧の長さ
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="radius_and_area_to_central_angle" name="sector_with_figure_problem_type" id="sector_with_figure_radius_and_area_to_central_angle" checked>
+                        <label class="form-check-label" for="sector_with_figure_radius_and_area_to_central_angle">
+                            半径,面積→中心角
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('sector_with_figure_problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('sector_with_figure_problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">印刷時の公式の表示</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="show_sector_formula" name="show_formula" id="show_sector_with_figure_formula" checked>
+                        <label class="form-check-label" for="show_sector_with_figure_formula">
+                            表示する
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="not_show_sector_formula" name="show_formula" id="not_show_sector_with_figure_formula">
+                        <label class="form-check-label" for="not_show_sector_with_figure_formula"> 
+                            表示しない
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SectorWithFigureProblemFivePaperRadio" checked>
+                        <label class="form-check-label" for="SectorWithFigureFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SectorWithFigureTenPaperRadio">
+                        <label class="form-check-label" for="SectorWithFigureTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SectorWithFigureFifteenPaperRadio">
+                        <label class="form-check-label" for="SectorWithFigureFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'sector_with_figure_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'sector_with_figure_display' %}">      
+            </form>
+        </div>
     </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>

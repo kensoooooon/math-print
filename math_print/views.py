@@ -42,6 +42,7 @@ from .math_process.character_fraction import CharacterFractionProblem
 from .math_process.hs1_quadratic_function import HS1QuadraticFunctionProblem
 from .math_process.hs1_quadratic_function_max_min import HS1QuadraticFunctionMaxMinProblem
 from .math_process.unit_conversion import UnitConversionProblem
+from .math_process.sector_with_figure import SectorWithFigureProblem
 
 
 # Create your views here.
@@ -995,6 +996,28 @@ def print_unit_conversion_problem(request):
     
     return render(request, 'math_print/elementary_school3/unit_conversion/for_print.html', context)
 
+def print_sector_with_figure_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    problem_type_list = request.POST.getlist("sector_problem_type")
+    paper_number = int(request.POST["paper_number"])
+    
+    if request.POST["show_formula"] == "show_sector_formula":
+        is_show_formula = True
+    else:
+        is_show_formula = False
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+            problem2 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/junior_highschool1/sector/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list, 'is_show_formula': is_show_formula})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1771,3 +1794,16 @@ def display_unit_conversion_problem(request):
     context["math_problem_tuple_list"] = math_problem_tuple_list
     
     return render(request, 'math_print/elementary_school3/unit_conversion/for_display.html', context)
+
+def display_sector_with_figure_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    problem_type_list = request.POST.getlist("sector_problem_type")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+        problem2 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool1/sector/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

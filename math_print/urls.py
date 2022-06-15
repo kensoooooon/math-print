@@ -50,6 +50,9 @@ urlpatterns = [
     # おうぎ形
     path('sector/print/', views.print_sector_problem, name='sector_print'),
     path('sector/display/', views.display_sector_problem, name='sector_display'),
+    # おうぎ形(図つき)
+    path('sector_with_figure/print/', views.print_sector_with_figure_problem, name='sector_with_figure_print'),
+    path('sector_with_figure/display/', views.display_sector_with_figure_problem, name='sector_with_figure_display'),
     ###########################################
     ### 中2 ###
     path('junior_highschool2/', views.show_junior_highschool2, name='junior_highschool2'),

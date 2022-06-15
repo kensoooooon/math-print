@@ -41,11 +41,15 @@ from .math_process.transformation_of_equation import TransformationOfEquationPro
 from .math_process.character_fraction import CharacterFractionProblem
 from .math_process.hs1_quadratic_function import HS1QuadraticFunctionProblem
 from .math_process.hs1_quadratic_function_max_min import HS1QuadraticFunctionMaxMinProblem
+from .math_process.unit_conversion import UnitConversionProblem
 
 
 # Create your views here.
 def index(request):
     return render(request, 'math_print/index.html', {})
+
+def show_elementary_school3(request):
+    return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
 
 def show_elementary_school5(request):
     return render(request, 'math_print/elementary_school5/elementary_school5.html', {})
@@ -965,6 +969,31 @@ def print_parallel_lines_and_angle(request):
 
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
 
+def print_unit_conversion_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    paper_number = int(request.POST["paper_number"])
+    used_unit_list = request.POST.getlist("unit_type")
+    if not(used_unit_list):
+        used_unit_list.append("length")
+        used_unit_list.append("weight")
+        used_unit_list.append("area")
+        used_unit_list.append("volume")
+        used_unit_list.append("time")
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = UnitConversionProblem(used_unit_list=used_unit_list)
+            problem2 = UnitConversionProblem(used_unit_list=used_unit_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    context = {}
+    context["math_problem_list_of_list"] = math_problem_list_of_list
+    
+    return render(request, 'math_print/elementary_school3/unit_conversion/for_print.html', context)
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1695,8 +1724,6 @@ def display_parallel_lines_and_angle(request):
     class ProblemTypeAndAnswerAngle(NamedTuple):
         problem_type: str
         angle: int
-
-    print(f"request: {request}")
     
     used_information_list = request.POST.getlist("used_information")
     if not(used_information_list):
@@ -1721,3 +1748,26 @@ def display_parallel_lines_and_angle(request):
     context["problem_type_and_answer_angle_tuple_list"] = problem_type_and_answer_angle_tuple_list
 
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_display.html', context)
+
+def display_unit_conversion_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    print(f"request: {request}")
+    used_unit_list = request.POST.getlist("unit_type")
+    if not(used_unit_list):
+        used_unit_list.append("length")
+        used_unit_list.append("weight")
+        used_unit_list.append("area")
+        used_unit_list.append("volume")
+        used_unit_list.append("time")
+        
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = UnitConversionProblem(used_unit_list=used_unit_list)
+        problem2 = UnitConversionProblem(used_unit_list=used_unit_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    context = {}
+    context["math_problem_tuple_list"] = math_problem_tuple_list
+    
+    return render(request, 'math_print/elementary_school3/unit_conversion/for_display.html', context)

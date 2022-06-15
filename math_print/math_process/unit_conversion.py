@@ -1,5 +1,4 @@
-import math
-from random import choice, randint, random, sample
+from random import choice, randint, random
 from typing import NamedTuple
 
 import sympy as sy
@@ -52,11 +51,11 @@ class UnitConversionProblem:
         # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
         
         if random() > 0.5:
-            latex_problem = f"{sy.latex(larger_value)} \\mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
-            latex_answer = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}}"
+            latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
+            latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
-            latex_problem = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
-            latex_answer = f"{sy.latex(larger_value)}  \\mathrm{{{larger_unit.unit}}}"
+            latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
+            latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
         
         # print(f"latex_answer: {latex_problem}")
         # print(f"latex_problem: {latex_problem}")
@@ -88,11 +87,11 @@ class UnitConversionProblem:
         # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
         
         if random() > 0.5:
-            latex_problem = f"{sy.latex(larger_value)} \\mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
-            latex_answer = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}}"
+            latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
+            latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
-            latex_problem = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
-            latex_answer = f"{sy.latex(larger_value)}  \\mathrm{{{larger_unit.unit}}}"
+            latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
+            latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
         
         # print(f"latex_answer: {latex_problem}")
         # print(f"latex_problem: {latex_problem}")
@@ -109,10 +108,10 @@ class UnitConversionProblem:
         hectare_unit = AreaUnit("ha", ratio_to_square_kilometer=10**2)
         are_unit = AreaUnit("a", ratio_to_square_kilometer=10**4)
         square_meter_unit = AreaUnit(unit="m^2", ratio_to_square_kilometer=10**6)
-        square_centimeter_unit = AreaUnit(unit="cm^2", ratio_to_square_kilometer=10**12)
-        square_millimeter_unit = AreaUnit(unit="mm^2", ratio_to_square_kilometer=10**14)
-        unit_list = [square_kilometer_unit, square_meter_unit, are_unit,
-                     square_centimeter_unit, hectare_unit, square_millimeter_unit,
+        square_centimeter_unit = AreaUnit(unit="cm^2", ratio_to_square_kilometer=10**10)
+        square_millimeter_unit = AreaUnit(unit="mm^2", ratio_to_square_kilometer=10**12)
+        unit_list = [square_kilometer_unit, hectare_unit, are_unit, 
+                     square_meter_unit, square_centimeter_unit, square_millimeter_unit,
                      ]
         # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
         larger_index = randint(0, len(unit_list) - 2)
@@ -128,11 +127,11 @@ class UnitConversionProblem:
         # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
         
         if random() > 0.5:
-            latex_problem = f"{sy.latex(larger_value)} \\mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
-            latex_answer = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}}"
+            latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
+            latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
-            latex_problem = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
-            latex_answer = f"{sy.latex(larger_value)}  \\mathrm{{{larger_unit.unit}}}"
+            latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
+            latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
         
         # print(f"latex_answer: {latex_problem}")
         # print(f"latex_problem: {latex_problem}")
@@ -170,11 +169,11 @@ class UnitConversionProblem:
         # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
         
         if random() > 0.5:
-            latex_problem = f"{sy.latex(larger_value)} \\mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
-            latex_answer = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}}"
+            latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
+            latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
-            latex_problem = f"{sy.latex(smaller_value)} \\mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
-            latex_answer = f"{sy.latex(larger_value)}  \\mathrm{{{larger_unit.unit}}}"
+            latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
+            latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
         
         # print(f"latex_answer: {latex_problem}")
         # print(f"latex_problem: {latex_problem}")
@@ -184,14 +183,13 @@ class UnitConversionProblem:
     def _make_time_problem(self):
         
         from datetime import timedelta
-        from random import randint
+        import re
 
         def get_hours_minutes_seconds(timedelta_value):
             minutes, seconds = divmod(timedelta_value.seconds, 60)
             hours, minutes = divmod(minutes, 60)
             return hours, minutes, seconds
         
-        # 秒→時, 分,秒
         seconds = randint(1, 10000)
         seconds_str = f"{sy.latex(seconds)}秒"
         
@@ -205,10 +203,12 @@ class UnitConversionProblem:
             hours_minutes_seconds_str += f"{sy.latex(seconds)}秒"
         
         if random() > 0.5:
-            latex_problem = seconds_str
+            replaced_hours_minutes_seconds_str = re.sub(r"\d+", r"\\square", hours_minutes_seconds_str)
+            latex_problem = f"{seconds_str} = {replaced_hours_minutes_seconds_str}"
             latex_answer = hours_minutes_seconds_str
         else:
-            latex_problem = hours_minutes_seconds_str
+            replaced_seconds_str = re.sub(r"\d+", r"\\square", seconds_str)
+            latex_problem = f"{hours_minutes_seconds_str} = {replaced_seconds_str}"
             latex_answer = seconds_str
         
         return latex_answer, latex_problem

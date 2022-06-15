@@ -182,8 +182,33 @@ class UnitConversionProblem:
         return latex_answer, latex_problem
     
     def _make_time_problem(self):
-        import datetime
         
-        class TimeUnit(NamedTuple):
-            unit: str
-            ratio_to_hour: int
+        from datetime import timedelta
+        from random import randint
+
+        def get_hours_minutes_seconds(timedelta_value):
+            minutes, seconds = divmod(timedelta_value.seconds, 60)
+            hours, minutes = divmod(minutes, 60)
+            return hours, minutes, seconds
+        
+        # 秒→時, 分,秒
+        seconds = randint(1, 10000)
+        seconds_str = f"{sy.latex(seconds)}秒"
+        
+        hours, minutes, seconds = get_hours_minutes_seconds(timedelta(seconds=seconds))
+        hours_minutes_seconds_str = ""
+        if hours:
+            hours_minutes_seconds_str += f"{sy.latex(hours)}時間"
+        if minutes:
+            hours_minutes_seconds_str += f"{sy.latex(minutes)}分"
+        if seconds:
+            hours_minutes_seconds_str += f"{sy.latex(seconds)}秒"
+        
+        if random() > 0.5:
+            latex_problem = seconds_str
+            latex_answer = hours_minutes_seconds_str
+        else:
+            latex_problem = hours_minutes_seconds_str
+            latex_answer = seconds_str
+        
+        return latex_answer, latex_problem

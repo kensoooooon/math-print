@@ -68,17 +68,17 @@ function refresh() {
   function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
     drawArc(stage, center_x, center_y, sector_radius, 0, sector_angle);
     sector_radian = sector_angle * Math.PI / 180;
-    start_x = center_x + radius * Math.cos(0);
-    start_y = center_y + radius * Math.sin(0);
-    drwaLine(stage, center_x, center_y, start_x, start_y);
-    end_x = center_x + radius * Math.cos(sector_radian);
-    end_y = center_y + radius * Math.sin(sector_radian);
+    start_x = center_x + sector_radius * Math.cos(0);
+    start_y = center_y + sector_radius * Math.sin(0);
+    drawLine(stage, center_x, center_y, start_x, start_y);
+    end_x = center_x + sector_radius * Math.cos(sector_radian);
+    end_y = center_y + sector_radius * Math.sin(sector_radian);
     drawLine(stage, center_x, center_y, end_x, end_y);
     stage.update();
   }
 
   function draw() {
-    {% for information_tuple in problem_type_and_answer_angle_tuple_list %}
+    {% for information_tuple in math_problem_tuple_list %}
     var container_div = document.createElement("div");
     container_div.className = "container-fluid";
 
@@ -116,13 +116,16 @@ function refresh() {
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    var left_problem = document.createTextNode("\\( {{ information_tuple.0.latex_problem }} \\)");
-    left_problem_p.appendChild(left_problem);
+    left_problem_p.innerHTML = "{{ information_tuple.0.latex_problem }}"
+    // var left_problem = document.createTextNode("{{ information_tuple.0.latex_problem }}");
+    console.log("left_problem: " + "{{ information_tuple.0.latex_problem }}");
+    // left_problem_p.appendChild(left_problem);
     left_div.appendChild(left_problem_p);
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
-    var left_answer = document.createTextNode("\\( {{ information_tuple.0.latex_answer }} \\)");
+    var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
+    console.log("left_answer: " + "{{ information_tuple.0.latex_answer }}");
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
@@ -132,12 +135,14 @@ function refresh() {
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
     var right_problem = document.createTextNode("\\( {{ information_tuple.1.latex_problem }} \\)");
+    console.log("right_problem: " + "{{ information_tuple.1.latex_problem }}");
     right_problem_p.appendChild(right_problem);
     right_div.appendChild(right_problem_p);
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
     var right_answer = document.createTextNode("\\( {{ information_tuple.1.latex_answer }} \\)");
+    console.log("right_answer: " + "{{ information_tuple.1.latex_problem }}");
     right_answer_p.appendChild(left_answer);
     right_div.appendChild(left_answer_p);
 
@@ -153,12 +158,18 @@ function refresh() {
     // radius_and_area_to_central_angle
     var left_stage = new createjs.Stage(left_canvas_id);
     var left_radius = Number({{ information_tuple.0.information_for_shape.radius }});
+    console.log("left_radius: " + left_radius);
     var left_central_angle = Number({{ information_tuple.0.information_for_shape.central_angle }});
-    drawSector(stage, 160, 80, left_radius, left_central_angle);
+    console.log("left_central_angle: " + left_central_angle);
+    drawSector(left_stage, 160, 80, 60, left_central_angle);
+
     var right_stage = new createjs.Stage(right_canvas_id);
     var right_radius = Number({{ information_tuple.1.information_for_shape.radius }});
+    console.log("right_radius: " + right_radius);
     var right_central_angle = Number({{ information_tuple.1.information_for_shape.central_angle }});
-    drawSector(stage, 160, 80, right_radius, right_central_angle);
+    console.log("right_central_angle: " + right_central_angle);
+    drawSector(right_stage, 160, 80, 60, right_central_angle);
+    console.log("------------------");
     {% endfor %}
     MathJax.typeset();
   }

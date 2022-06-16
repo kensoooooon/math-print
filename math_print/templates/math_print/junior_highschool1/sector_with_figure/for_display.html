@@ -112,33 +112,53 @@ function refresh() {
     // insert part
     // can accquire before adding?<-another part check<<-may be not.
     left_div.appendChild(left_canvas);
-    // add left answer to left_div
+    // add left problem and answer to left_div
+    var left_problem_p = document.createElement('p');
+    left_problem_p.style = "visibility:visible";
+    left_problem_p.className = "problem";
+    var left_problem = document.createTextNode("\\( {{ information_tuple.0.latex_problem }} \\)");
+    left_problem_p.appendChild(left_problem);
+    left_div.appendChild(left_problem_p);
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
-    var left_answer = document.createTextNode("\\( x = {{ information_tuple.0.angle }}^ \\circ \\)");
+    var left_answer = document.createTextNode("\\( {{ information_tuple.0.latex_answer }} \\)");
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
     right_div.appendChild(right_canvas);
-    // add right answer to right_div
+    // add right problem and answer to right_div
+    var right_problem_p = document.createElement('p');
+    right_problem_p.style = "visibility:visible";
+    right_problem_p.className = "problem";
+    var right_problem = document.createTextNode("\\( {{ information_tuple.1.latex_problem }} \\)");
+    right_problem_p.appendChild(right_problem);
+    right_div.appendChild(right_problem_p);
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
-    var right_answer = document.createTextNode("\\( x = {{ information_tuple.1.angle }}^ \\circ \\)");
-    right_answer_p.appendChild(right_answer);
-    right_div.appendChild(right_answer_p);
+    var right_answer = document.createTextNode("\\( {{ information_tuple.1.latex_answer }} \\)");
+    right_answer_p.appendChild(left_answer);
+    right_div.appendChild(left_answer_p);
 
     row_container.appendChild(left_div);
     row_container.appendChild(right_div);
     container_div.appendChild(row_container);
     document.body.appendChild(container_div);
 
+    // str1.includes(str2)で描画の書き換えが必要
+    // radius_and_central_angle_to_arc_length_and_area
+    // radius_and_arc_length_to_area
+    // radius_and_area_to_arc_length
+    // radius_and_area_to_central_angle
     var left_stage = new createjs.Stage(left_canvas_id);
-    //
-    call_problem_maker(left_stage, "{{ information_tuple.0.problem_type }}", {{ information_tuple.0.angle }});
+    var left_radius = Number({{ information_tuple.0.information_for_shape.radius }});
+    var left_central_angle = Number({{ information_tuple.0.information_for_shape.central_angle }});
+    drawSector(stage, 160, 80, left_radius, left_central_angle);
     var right_stage = new createjs.Stage(right_canvas_id);
-    call_problem_maker(right_stage, "{{ information_tuple.1.problem_type }}", {{ information_tuple.1.angle }});
+    var right_radius = Number({{ information_tuple.1.information_for_shape.radius }});
+    var right_central_angle = Number({{ information_tuple.1.information_for_shape.central_angle }});
+    drawSector(stage, 160, 80, right_radius, right_central_angle);
     {% endfor %}
     MathJax.typeset();
   }

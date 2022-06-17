@@ -59,7 +59,7 @@ class SectorWithFigureProblem:
         sector, information_for_shape = self._decide_sector_status()
         
         latex_problem = f"半径{sector.radius_latex}、面積{sector.area_latex}のおうぎ形の中心角"
-        latex_answer = f"中心角{sector.central_angle_latex}"
+        latex_answer = f"中心角: {sector.central_angle_latex}"
         
         return latex_answer, latex_problem, information_for_shape
     
@@ -76,19 +76,19 @@ class SectorWithFigureProblem:
             central_angle: str
         
         radius = randint(1, 10)
-        radius_latex = f"\( {sy.latex(radius)} \\mathrm{{ cm }} \)"
+        radius_latex = f"\( {sy.latex(radius)} \\mathrm{{ cm }} \)".replace("\\", "\\\\")
         
         if random() > 0.5:
             central_angle = 30 * randint(1, 11)
         else:
             central_angle = 45 * randint(1, 7)
-        central_angle_latex = f"\\( {sy.latex(central_angle)} ^{{ \circ }} \\\)"
+        central_angle_latex = f"\( {sy.latex(central_angle)} ^{{ \circ }} \)".replace("\\", "\\\\")
 
         coefficient_of_arc_length = sy.Integer(2) * sy.Rational(central_angle, 360) * sy.Integer(radius)
-        arc_length_latex = f"\\( {sy.latex(coefficient_of_arc_length)} \\pi \\mathrm{{ cm }} \\)"
+        arc_length_latex = f"\( {sy.latex(coefficient_of_arc_length)} \\pi \\mathrm{{ cm }} \)".replace("\\", "\\\\")
         
         coefficient_of_area = sy.Integer(radius**2) * sy.Rational(central_angle, 360)
-        area_latex = f"\\( {sy.latex(coefficient_of_area)} \\pi \\mathrm{{ cm^2 }} \\)"
+        area_latex = f"\( {sy.latex(coefficient_of_area)} \\pi \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
         
         sector = Sector(radius_latex, arc_length_latex, central_angle_latex, area_latex)
         information_for_shape = InformationForShape(str(radius), str(central_angle))

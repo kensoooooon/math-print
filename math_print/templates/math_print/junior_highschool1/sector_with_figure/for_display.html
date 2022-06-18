@@ -77,6 +77,30 @@ function refresh() {
     stage.update();
   }
 
+  function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
+    // add radius
+    drawDegreeCharacter(stage, 160+80, 80, radius+"cm");
+    // add central_angle
+    drawArc(stage, 160, 80, 20, 0, sector_angle);
+    drawDegreeCharacter(stage, 160+20, 80+10, central_angle+"°");
+  }
+
+  function call_problem_string(selected_problem_type) {
+    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+      var problem_string = "弧の長さと面積を求めよ。"
+    }
+    else if (selected_problem_type == "radius_and_arc_length_to_area") {
+      var problem_string = "面積を求めよ。";
+    }
+    else if (selected_problem_type == "radius_and_area_to_arc_length") {
+      var problem_string = "弧の長さを求めよ。";
+    }
+    else if (selected_problem_type == "radius_and_area_to_central_angle") {
+      var problem_string = "中心角を求めよ。";
+    }
+    return problem_string;
+  }
+
   function draw() {
     {% for information_tuple in math_problem_tuple_list %}
     var container_div = document.createElement("div");
@@ -110,39 +134,38 @@ function refresh() {
     right_canvas.style = "background-color:#CCFFFF";
 
     // insert part
-    // can accquire before adding?<-another part check<<-may be not.
     left_div.appendChild(left_canvas);
     // add left problem and answer to left_div
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    left_problem_p.innerHTML = "{{ information_tuple.0.latex_problem }}"
-    // var left_problem = document.createTextNode("{{ information_tuple.0.latex_problem }}");
-    console.log("left_problem: " + "{{ information_tuple.0.latex_problem }}");
-    // left_problem_p.appendChild(left_problem);
+    var left_problem_string = call_problem_string({{ information_tuple.0.selected_problem_type }});
+    var left_problem = document.createTextNode(left_problem_string);
+    left_problem_p.appendChild(left_problem);
     left_div.appendChild(left_problem_p);
+    
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
     var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
-    console.log("left_answer: " + "{{ information_tuple.0.latex_answer }}");
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
+
 
     right_div.appendChild(right_canvas);
     // add right problem and answer to right_div
     var right_problem_p = document.createElement('p');
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
-    var right_problem = document.createTextNode("{{ information_tuple.1.latex_problem }} ");
-    console.log("right_problem: " + "{{ information_tuple.1.latex_problem }}");
+    var right_problem_string = call_problem_string({{ information_tuple.1.selected_problem_type }});
+    var right_problem = document.createTextNode(right_problem_string);
     right_problem_p.appendChild(right_problem);
     right_div.appendChild(right_problem_p);
+
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
     var right_answer = document.createTextNode("{{ information_tuple.1.latex_answer }}");
-    console.log("right_answer: " + "{{ information_tuple.1.latex_problem }}");
     right_answer_p.appendChild(right_answer);
     right_div.appendChild(right_answer_p);
 
@@ -151,17 +174,26 @@ function refresh() {
     container_div.appendChild(row_container);
     document.body.appendChild(container_div);
 
-    // str1.includes(str2)で描画の書き換えが必要
-    // radius_and_central_angle_to_arc_length_and_area
-    // radius_and_arc_length_to_area
-    // radius_and_area_to_arc_length
-    // radius_and_area_to_central_angle
     var left_stage = new createjs.Stage(left_canvas_id);
-    var left_radius = Number({{ information_tuple.0.information_for_shape.radius }});
+    var left_radius = Number({{ information_tuple.0.sector.radius }});
     console.log("left_radius: " + left_radius);
-    var left_central_angle = Number({{ information_tuple.0.information_for_shape.central_angle }});
+    var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
     console.log("left_central_angle: " + left_central_angle);
     drawSector(left_stage, 160, 80, 60, left_central_angle);
+    
+    var selected_problem_type = {{ information_tuple.0.selected_problem_type }};
+    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+      addRadiusAndCentralAngleToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.central_angle }});
+    }
+    else if (selected_problem_type == "radius_and_arc_length_to_area") {
+      addRadiusAndArcLengthToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.coefficient_of_arc_length }});
+    }
+    else if (selected_problem_type == "radius_and_area_to_arc_length") {
+      addRadiusAndAreaToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+    }
+    else if (selected_problem_type == "radius_and_area_to_central_angle") {
+      addRadiusAndAreaToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+    }
 
     var right_stage = new createjs.Stage(right_canvas_id);
     var right_radius = Number({{ information_tuple.1.information_for_shape.radius }});
@@ -169,12 +201,26 @@ function refresh() {
     var right_central_angle = Number({{ information_tuple.1.information_for_shape.central_angle }});
     console.log("right_central_angle: " + right_central_angle);
     drawSector(right_stage, 160, 80, 60, right_central_angle);
-    console.log("------------------");
+
+    var selected_problem_type = {{ information_tuple.1.selected_problem_type }};
+    
+    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+      addRadiusAndCentralAngleToSector(right_stage, {{ information_tuple.1.sector.radius }}, {{ information_tuple.0.sector.central_angle }});
+    }
+    else if (selected_problem_type == "radius_and_arc_length_to_area") {
+      addRadiusAndArcLengthToSector(right_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.coefficient_of_arc_length }});
+    }
+    else if (selected_problem_type == "radius_and_area_to_arc_length") {
+      addRadiusAndAreaToSector(right_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+    }
+    else if (selected_problem_type == "radius_and_area_to_central_angle") {
+      addRadiusAndAreaToSector(right_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+    }
     {% endfor %}
     MathJax.typeset();
   }
 
-  function add_other_parts() {
+  function add_other_parts_to_page() {
     // hero unit phase
     var hero_outer_div = document.createElement('div');
     hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
@@ -240,7 +286,7 @@ function refresh() {
 
   function make() {
     draw();
-    add_other_parts();
+    add_other_parts_to_page();
   }
 
 </script>

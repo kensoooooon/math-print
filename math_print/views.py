@@ -1795,7 +1795,8 @@ def display_unit_conversion_problem(request):
     
     return render(request, 'math_print/elementary_school3/unit_conversion/for_display.html', context)
 
-def display_sector_with_figure_problem(request):
+def display_sector_with_figure_problem(request):    
+        
     PROBLEM_NUMBER = 20
     
     problem_type_list = request.POST.getlist("sector_problem_type")
@@ -1803,14 +1804,7 @@ def display_sector_with_figure_problem(request):
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SectorWithFigureProblem(problem_type_list=problem_type_list)
-        print(f"problem1.latex_answer: {problem1.latex_answer}")
-        print(f"problem1.latex_problem: {problem1.latex_problem}")
-        print(f"problem1.information_for_shape: {problem1.information_for_shape}")
         problem2 = SectorWithFigureProblem(problem_type_list=problem_type_list)
-        print(f"problem2.latex_answer: {problem2.latex_answer}")
-        print(f"problem2.latex_problem: {problem2.latex_problem}")
-        print(f"problem2.information_for_shape: {problem2.information_for_shape}")
         math_problem_tuple_list.append((problem1, problem2))
-        print("-----------------------------------")
     
     return render(request, 'math_print/junior_highschool1/sector_with_figure/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

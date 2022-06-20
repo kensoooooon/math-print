@@ -79,10 +79,27 @@ function refresh() {
 
   function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
     // add radius
-    drawDegreeCharacter(stage, 160+80, 80, radius+"cm");
+    drawDegreeCharacter(stage, 160+10, 80+10, radius+" cm");
     // add central_angle
-    drawArc(stage, 160, 80, 20, 0, sector_angle);
-    drawDegreeCharacter(stage, 160+20, 80+10, central_angle+"°");
+    drawArc(stage, 160, 80, 10, 0, central_angle);
+    drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
+    stage.update();
+  }
+
+  function addRadiusAndArcLengthToSector(stage, radius, coefficient_of_arc_length) {
+    // add radius
+    drawDegreeCharacter(stage, 160+10, 80+10, radius+" cm");
+    // add arc length
+    drawDegreeCharacter(stage, 180, 140, "弧の長さ: " + coefficient_of_arc_length + "π cm");
+    stage.update();
+  }
+
+  function addRadiusAndAreaToSector(stage, radius, coefficient_of_area) {
+    // add radius
+    drawDegreeCharacter(stage, 160+10, 80+10, radius+" cm");
+    // add area
+    drawDegreeCharacter(stage, 200, 20, "面積: " + coefficient_of_area + "π ㎠");
+    stage.update();
   }
 
   function call_problem_string(selected_problem_type) {
@@ -139,7 +156,7 @@ function refresh() {
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    var left_problem_string = call_problem_string({{ information_tuple.0.selected_problem_type }});
+    var left_problem_string = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
     var left_problem = document.createTextNode(left_problem_string);
     left_problem_p.appendChild(left_problem);
     left_div.appendChild(left_problem_p);
@@ -157,7 +174,7 @@ function refresh() {
     var right_problem_p = document.createElement('p');
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
-    var right_problem_string = call_problem_string({{ information_tuple.1.selected_problem_type }});
+    var right_problem_string = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
     var right_problem = document.createTextNode(right_problem_string);
     right_problem_p.appendChild(right_problem);
     right_div.appendChild(right_problem_p);
@@ -181,40 +198,40 @@ function refresh() {
     console.log("left_central_angle: " + left_central_angle);
     drawSector(left_stage, 160, 80, 60, left_central_angle);
     
-    var selected_problem_type = {{ information_tuple.0.selected_problem_type }};
+    var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
     if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-      addRadiusAndCentralAngleToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.central_angle }});
+      addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
     }
     else if (selected_problem_type == "radius_and_arc_length_to_area") {
-      addRadiusAndArcLengthToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.coefficient_of_arc_length }});
+      addRadiusAndArcLengthToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_arc_length }}");
     }
     else if (selected_problem_type == "radius_and_area_to_arc_length") {
-      addRadiusAndAreaToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+      addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
     }
     else if (selected_problem_type == "radius_and_area_to_central_angle") {
-      addRadiusAndAreaToSector(left_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+      addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
     }
 
     var right_stage = new createjs.Stage(right_canvas_id);
-    var right_radius = Number({{ information_tuple.1.information_for_shape.radius }});
+    var right_radius = Number({{ information_tuple.1.sector.radius }});
     console.log("right_radius: " + right_radius);
-    var right_central_angle = Number({{ information_tuple.1.information_for_shape.central_angle }});
+    var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
     console.log("right_central_angle: " + right_central_angle);
     drawSector(right_stage, 160, 80, 60, right_central_angle);
 
-    var selected_problem_type = {{ information_tuple.1.selected_problem_type }};
+    var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
     
     if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-      addRadiusAndCentralAngleToSector(right_stage, {{ information_tuple.1.sector.radius }}, {{ information_tuple.0.sector.central_angle }});
+      addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
     }
     else if (selected_problem_type == "radius_and_arc_length_to_area") {
-      addRadiusAndArcLengthToSector(right_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.coefficient_of_arc_length }});
+      addRadiusAndArcLengthToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_arc_length }}");
     }
     else if (selected_problem_type == "radius_and_area_to_arc_length") {
-      addRadiusAndAreaToSector(right_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+      addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
     }
     else if (selected_problem_type == "radius_and_area_to_central_angle") {
-      addRadiusAndAreaToSector(right_stage, {{ information_tuple.0.sector.radius }}, {{ information_tuple.0.sector.area }});
+      addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
     }
     {% endfor %}
     MathJax.typeset();

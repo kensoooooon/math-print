@@ -35,15 +35,15 @@ class SectorWithFigureProblem:
         sector = self._decide_sector_status()
         
         # latex_problem = f"半径{sector.radius_latex}、中心角{sector.central_angle_latex}のおうぎ形の弧の長さと面積"
-        latex_answer = f"弧の長さ: \( {sy.latex(sector.coefficient_of_arc_length)} \\\\pi \\\\mathrm{{ cm }} \)、"\
-            f"面積: \( {sy.latex(sector.coefficient_of_area)} \\\\pi \\\\mathrm{{ cm^2 }} \)"
+        latex_answer = f"弧の長さ: \( {sy.latex(sector.coefficient_of_arc_length)} \\pi \\mathrm{{ cm }} \)、"\
+            f"面積: \( {sy.latex(sector.coefficient_of_area)} \\pi \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
 
         return latex_answer, sector
     
     def _make_radius_and_arc_length_to_area_problem(self):
         sector = self._decide_sector_status()
 
-        latex_answer = f"面積: \( {sy.latex(sector.coefficient_of_area)} \\\\pi \\\\mathrm{{ cm^2 }} \)"
+        latex_answer = f"面積: \( {sy.latex(sector.coefficient_of_area)} \\pi \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
         
         return latex_answer, sector
     
@@ -51,7 +51,7 @@ class SectorWithFigureProblem:
         sector = self._decide_sector_status()
         
         # latex_problem = f"半径{sector.radius_latex}、面積{sector.area_latex}のおうぎ形の弧の長さ"
-        latex_answer = f"弧の長さ: \( {sy.latex(sector.coefficient_of_arc_length)} \\\\pi \\\\mathrm{{ cm }} \)"
+        latex_answer = f"弧の長さ: \( {sy.latex(sector.coefficient_of_arc_length)} \\pi \\mathrm{{ cm }} \)".replace("\\", "\\\\")
         
         return latex_answer, sector
     
@@ -59,7 +59,7 @@ class SectorWithFigureProblem:
         sector = self._decide_sector_status()
         
         # latex_problem = f"半径{sector.radius_latex}、面積{sector.area_latex}のおうぎ形の中心角"
-        latex_answer = f"中心角: \( {sector.central_angle} ^\\\\circ \)"
+        latex_answer = f"中心角: \( {sector.central_angle}^\\circ \)".replace("\\", "\\\\")
         
         return latex_answer, sector
     

@@ -997,15 +997,10 @@ def print_unit_conversion_problem(request):
     return render(request, 'math_print/elementary_school3/unit_conversion/for_print.html', context)
 
 def print_sector_with_figure_problem(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 10
     
     problem_type_list = request.POST.getlist("sector_problem_type")
     paper_number = int(request.POST["paper_number"])
-    
-    if request.POST["show_formula"] == "show_sector_formula":
-        is_show_formula = True
-    else:
-        is_show_formula = False
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -1016,7 +1011,7 @@ def print_sector_with_figure_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/junior_highschool1/sector/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list, 'is_show_formula': is_show_formula})
+    return render(request, 'math_print/junior_highschool1/sector_with_figure/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20

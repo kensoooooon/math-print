@@ -193,9 +193,7 @@ function refresh() {
 
     var left_stage = new createjs.Stage(left_canvas_id);
     var left_radius = Number({{ information_tuple.0.sector.radius }});
-    console.log("left_radius: " + left_radius);
     var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
-    console.log("left_central_angle: " + left_central_angle);
     drawSector(left_stage, 160, 80, 60, left_central_angle);
     
     var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
@@ -214,9 +212,7 @@ function refresh() {
 
     var right_stage = new createjs.Stage(right_canvas_id);
     var right_radius = Number({{ information_tuple.1.sector.radius }});
-    console.log("right_radius: " + right_radius);
     var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
-    console.log("right_central_angle: " + right_central_angle);
     drawSector(right_stage, 160, 80, 60, right_central_angle);
 
     var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";

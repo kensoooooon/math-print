@@ -14,7 +14,7 @@
     .print_pages{
         /*A4縦 172,251*/
         width: 240mm;
-        height: 260mm;
+        height: 280mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
         page-break-after: always;
@@ -180,14 +180,14 @@ function refresh() {
             left_problem_p.setAttribute("class", "problem");
             left_problem_p.setAttribute("style", "visibility:visible");
             left_problem_p.innerHTML = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
-            var left_answer_p = document.createElement("p");
-            left_answer_p.setAttribute("class", "answer");
-            left_answer_p.setAttribute("style", "visibility:hidden");
-            left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
+            // var left_answer_p = document.createElement("p");
+            // left_answer_p.setAttribute("class", "answer");
+            // left_answer_p.setAttribute("style", "visibility:hidden");
+            //left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
             // left_div add part
             left_li.appendChild(left_canvas);
             left_li.appendChild(left_problem_p);
-            left_li.appendChild(left_answer_p);
+            // left_li.appendChild(left_answer_p);
             left_div.appendChild(left_li);
 
             var right_div = document.createElement("div");
@@ -202,14 +202,14 @@ function refresh() {
             right_problem_p.setAttribute("class", "problem");
             right_problem_p.setAttribute("style", "visibility:visible");
             right_problem_p.innerHTML = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
-            var right_answer_p = document.createElement("p");
-            right_answer_p.setAttribute("class", "answer");
-            right_answer_p.setAttribute("style", "visibility:hidden");
-            right_answer_p.innerHTML =  "{{ information_tuple.1.latex_answer }}";
+            // var right_answer_p = document.createElement("p");
+            // right_answer_p.setAttribute("class", "answer");
+            // right_answer_p.setAttribute("style", "visibility:hidden");
+            // right_answer_p.innerHTML =  "{{ information_tuple.1.latex_answer }}";
             // right_div add part
             right_li.appendChild(right_canvas);
             right_li.appendChild(right_problem_p);
-            right_li.appendChild(right_answer_p);
+            // right_li.appendChild(right_answer_p);
             right_div.appendChild(right_li);
 
             problem_div.appendChild(left_div);
@@ -279,7 +279,7 @@ function refresh() {
         answer_print_section.appendChild(answer_number_p);
         
         var answer_ol = document.createElement("ol");
-        {% for math_problem_tuple in inner_list %}
+        {% for information_tuple in inner_list %}
             var answer_div = document.createElement("div");
             answer_div.setAttribute("class", "problem");
             // left_div

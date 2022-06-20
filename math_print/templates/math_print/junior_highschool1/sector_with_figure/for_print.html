@@ -111,7 +111,21 @@ function refresh() {
 
   function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
     // add radius
-    drawDegreeCharacter(stage, 160+10, 80+10, radius+" cm");
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
     // add central_angle
     drawArc(stage, 160, 80, 10, 0, central_angle);
     drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
@@ -120,7 +134,21 @@ function refresh() {
 
   function addRadiusAndArcLengthToSector(stage, radius, coefficient_of_arc_length) {
     // add radius
-    drawDegreeCharacter(stage, 160+10, 80+10, radius+" cm");
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
     // add arc length
     drawDegreeCharacter(stage, 180, 140, "弧の長さ: " + coefficient_of_arc_length + "π cm");
     stage.update();
@@ -128,7 +156,21 @@ function refresh() {
 
   function addRadiusAndAreaToSector(stage, radius, coefficient_of_area) {
     // add radius
-    drawDegreeCharacter(stage, 160+10, 80+10, radius+" cm");
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
     // add area
     drawDegreeCharacter(stage, 200, 20, "面積: " + coefficient_of_area + "π ㎠");
     stage.update();
@@ -175,7 +217,7 @@ function refresh() {
             left_canvas.setAttribute("id", left_canvas_id);
             left_canvas.setAttribute("width", 320);
             left_canvas.setAttribute("height", 160);
-            left_canvas.setAttribute("style", "background-color:#CCFFFF");
+            // left_canvas.setAttribute("style", "background-color:#CCFFFF");
             var left_problem_p = document.createElement("p");
             left_problem_p.setAttribute("class", "problem");
             left_problem_p.setAttribute("style", "visibility:visible");
@@ -197,7 +239,7 @@ function refresh() {
             right_canvas.setAttribute("id", right_canvas_id);
             right_canvas.setAttribute("width", 320);
             right_canvas.setAttribute("height", 160);
-            right_canvas.setAttribute("style", "background-color:#CCFFFF");
+            // right_canvas.setAttribute("style", "background-color:#CCFFFF");
             var right_problem_p = document.createElement("p");
             right_problem_p.setAttribute("class", "problem");
             right_problem_p.setAttribute("style", "visibility:visible");

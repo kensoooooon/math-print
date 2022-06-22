@@ -111,6 +111,6 @@ urlpatterns = [
     ### 高2 ###
     path('highschool2/', views.show_highschool2, name='highschool2'),
     # 対数の計算
-    path('logarithm_calculate/print', views.print_logarithm_calculate, name='logarithm_calculate_print'),
-    path('logarithm_calculate/display', views.display_logarithm_calculate, name='logarithm_calculate_display'),
+    path('logarithm_calculate/print', views.print_logarithm_calculation, name='logarithm_calculation_print'),
+    path('logarithm_calculate/display', views.display_logarithm_calculation, name='logarithm_calculation_display'),
 ]

@@ -43,7 +43,7 @@ from .math_process.hs1_quadratic_function import HS1QuadraticFunctionProblem
 from .math_process.hs1_quadratic_function_max_min import HS1QuadraticFunctionMaxMinProblem
 from .math_process.unit_conversion import UnitConversionProblem
 from .math_process.sector_with_figure import SectorWithFigureProblem
-from .math_process.logarithm_calculate import LogarithmCalculateProblem
+from .math_process.logarithm_calculation import LogarithmCalculationProblem
 
 
 # Create your views here.
@@ -1017,20 +1017,21 @@ def print_sector_with_figure_problem(request):
     
     return render(request, 'math_print/junior_highschool1/sector_with_figure/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-def print_logarithm_calculate(request):
+def print_logarithm_calculation(request):
     PROBLEM_NUMBER = 20
     
-    problem_type_list = request.POST.getlist("logarithm_calculate_type")
+    problem_type_list = request.POST.getlist("logarithm_calculation_type")
     if not(problem_type_list):
         problem_type_list.append("change_of_base_formula")
+        problem_type_list.append("add_and_subtraction_without_change_of_base_formula")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = LogarithmCalculateProblem(problem_type_list=problem_type_list)
-            problem2 = LogarithmCalculateProblem(problem_type_list=problem_type_list)
+            problem1 = LogarithmCalculationProblem(problem_type_list=problem_type_list)
+            problem2 = LogarithmCalculationProblem(problem_type_list=problem_type_list)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
@@ -1827,17 +1828,18 @@ def display_sector_with_figure_problem(request):
     
     return render(request, 'math_print/junior_highschool1/sector_with_figure/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
-def print_logarithm_calculate(request):
+def display_logarithm_calculation(request):
     PROBLEM_NUMBER = 20
     
-    problem_type_list = request.POST.getlist("logarithm_calculate_type")
+    problem_type_list = request.POST.getlist("logarithm_calculation_type")
     if not(problem_type_list):
         problem_type_list.append("change_of_base_formula")
+        problem_type_list.append("add_and_subtraction_without_change_of_base_formula")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = LogarithmCalculateProblem(problem_type_list=problem_type_list)
-        problem2 = LogarithmCalculateProblem(problem_type_list=problem_type_list)
+        problem1 = LogarithmCalculationProblem(problem_type_list=problem_type_list)
+        problem2 = LogarithmCalculationProblem(problem_type_list=problem_type_list)
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/logarithm_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

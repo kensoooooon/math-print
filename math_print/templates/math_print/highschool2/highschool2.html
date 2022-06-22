@@ -59,13 +59,19 @@
                 <small class="text-muted">登場する計算</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="change_of_base_formula" name="logarithm_calculate_type" id="logarithm_calculate_change_of_base_formula" checked>
-                        <label class="form-check-label" for="logarithm_calculate_change_of_base_formula">
-                            底の変換公式の利用
+                        <input class="form-check-input" type="checkbox" value="change_of_base_formula" name="logarithm_calculation_type" id="logarithm_calculation_change_of_base_formula" checked>
+                        <label class="form-check-label" for="logarithm_calculation_change_of_base_formula">
+                            底の変換公式
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`logarithm_calculate_type`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`logarithm_calculate_type`)" value="全部はずし">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="add_and_subtraction_without_change_of_base_formula" name="logarithm_calculation_type" id="logarithm_calculation_add_and_subtraction_without_change_of_base_formula" checked>
+                        <label class="form-check-label" for="logarithm_calculation_add_and_subtraction_without_change_of_base_formula">
+                            対数の和と差(底の変換公式なし)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`logarithm_calculation_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`logarithm_calculation_type`)" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -88,8 +94,8 @@
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'logarithm_calculate_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'logarithm_calculate_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'logarithm_calculation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'logarithm_calculation_display' %}">      
             </form>
         </div>
     </div>

@@ -1,4 +1,4 @@
-from random import choice, randint, random
+from random import choice, randint, random, shuffle
 
 import sympy as sy
 
@@ -89,30 +89,45 @@ class LogarithmCalculationProblem:
         logarithm_base = common_base ** randint(2, 10 - common_base)
         logarithm_antilog = common_base ** randint(2, 10 - common_base)
         latex_problem = f"\log_{{{logarithm_base}}} {logarithm_antilog}"
-        print(f"latex_problem: {latex_problem}")
         
         denominator = int(sy.log(logarithm_base, common_base))
         numerator = int(sy.log(logarithm_antilog, common_base))
         answer = sy.Rational(numerator, denominator)
         latex_answer = f" = {sy.latex(answer)}"
-        print(f"latex_answer: {latex_answer}") 
         
         return latex_answer, latex_problem
     
     def _make_add_and_subtraction_without_change_of_base_formula(self):
-        """
-        # not use pop
-        from random import choice, randint, random
 
-        base_and_antilog_list = [2, 3, 5, 7, 11, 13]
+        def random_pop_from_two_list(list1, list2):
+            while True:
+                if not(list1):
+                    selected_list = list2
+                    selected_type = "minus"
+                elif not(list2):
+                    selected_list = list1
+                    selected_type = "plus"
+                else:
+                    if random() > 0.5:
+                        selected_list = list1
+                        selected_type = "plus"
+                    else:
+                        selected_list = list2
+                        selected_type = "minus"
+                popped_value = selected_list.pop()
+                yield (popped_value, selected_type)
+                
+                if not(list1) and not(list2):
+                    break
+
+        base_and_antilog_list = [2, 3, 5, 7, 11]
         common_base = choice(base_and_antilog_list)
-        print(common_base)
 
         numerator_list = []
         denominator_list = []
 
-        for _ in range(5):
-            if random() > 0.7:
+        for _ in range(4):
+            if random() > 0.6:
                 antilog_base = common_base
                 if random() > 0.5:
                     numerator_list.append(antilog_base)
@@ -122,10 +137,7 @@ class LogarithmCalculationProblem:
                 antilog_base = choice(base_and_antilog_list)
                 numerator_list.append(antilog_base)
                 denominator_list.append(antilog_base)
-
-        print(f"numerator_list: {numerator_list}")
-        print(f"denominator_list: {denominator_list}")
-
+                
         multiplied_logarithm_antilog_list = []
         first_num = numerator_list.pop()
         multiplied_logarithm_antilog_list.append(first_num)
@@ -136,7 +148,6 @@ class LogarithmCalculationProblem:
             else:
                 multiplied_logarithm_antilog_list[-1] = num * multiplied_logarithm_antilog_list[-1]
 
-        print(f"multiplied_logarithm_antilog_list: {multiplied_logarithm_antilog_list}")
 
         divided_logarithm_antilog_list = []
         first_num = denominator_list.pop()
@@ -148,10 +159,33 @@ class LogarithmCalculationProblem:
             else:
                 divided_logarithm_antilog_list[-1] = num * divided_logarithm_antilog_list[-1]
 
-        print(f"divided_logarithm_antilog_list: {divided_logarithm_antilog_list}")
-        """
-            
-            
+        shuffle(multiplied_logarithm_antilog_list)
+        shuffle(divided_logarithm_antilog_list)
+
+        antilog_numerator = 1
+        for antilog in multiplied_logarithm_antilog_list:
+            antilog_numerator = antilog_numerator * antilog
+
+        antilog_denominator = 1
+        for antilog in divided_logarithm_antilog_list:
+            antilog_denominator = antilog_denominator * antilog
+
+        frac = sy.Rational(antilog_numerator, antilog_denominator)
+
+        log = sy.log(frac, common_base)
+
+        problem = ""
+        first_antilog = multiplied_logarithm_antilog_list.pop()
+        problem += f"\log_{{{common_base}}} {first_antilog}"
+
+        for antilog, selected_type in random_pop_from_two_list(multiplied_logarithm_antilog_list, divided_logarithm_antilog_list):
+            if selected_type == "plus":
+                problem += f"+ \log_{{{common_base}}} {antilog}"
+            elif selected_type == "minus":
+                problem += f"- \log_{{{common_base}}} {antilog}"
+        
+        latex_answer = f"= {sy.latex(log)}"
+        latex_problem = problem
         
         return latex_answer, latex_problem
     

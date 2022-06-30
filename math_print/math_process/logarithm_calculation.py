@@ -81,6 +81,8 @@ class LogarithmCalculationProblem:
             latex_answer, latex_problem = self._make_change_of_base_problem()
         elif selected_problem_type == "add_and_subtraction_without_change_of_base_formula":
             latex_answer, latex_problem = self._make_add_and_subtraction_without_change_of_base_formula()
+        elif selected_problem_type == "add_and_subtraction_with_change_of_base_formula":
+            latex_answer, latex_problem = self._make_add_and_subtraction_with_change_of_base_formula()
         
         return latex_answer, latex_problem
     
@@ -186,6 +188,12 @@ class LogarithmCalculationProblem:
         
         latex_answer = f"= {sy.latex(log)}"
         latex_problem = problem
+        
+        return latex_answer, latex_problem
+    
+    def _make_add_and_subtraction_with_change_of_base_formula(self):
+        latex_answer = "=3"
+        latex_problem = "1+2"
         
         return latex_answer, latex_problem
     

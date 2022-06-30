@@ -1,4 +1,4 @@
-from random import choice, randint
+from random import choice, randint, random
 
 import sympy as sy
 
@@ -100,10 +100,56 @@ class LogarithmCalculationProblem:
         return latex_answer, latex_problem
     
     def _make_add_and_subtraction_without_change_of_base_formula(self):
-        common_base = choice([2, 3, 5, 7, 11, 13])
-        num = 0
-        
-        for _ in range(3):
+        """
+        # not use pop
+        from random import choice, randint, random
+
+        base_and_antilog_list = [2, 3, 5, 7, 11, 13]
+        common_base = choice(base_and_antilog_list)
+        print(common_base)
+
+        numerator_list = []
+        denominator_list = []
+
+        for _ in range(5):
+            if random() > 0.7:
+                antilog_base = common_base
+                if random() > 0.5:
+                    numerator_list.append(antilog_base)
+                else:
+                    denominator_list.append(antilog_base)
+            else:
+                antilog_base = choice(base_and_antilog_list)
+                numerator_list.append(antilog_base)
+                denominator_list.append(antilog_base)
+
+        print(f"numerator_list: {numerator_list}")
+        print(f"denominator_list: {denominator_list}")
+
+        multiplied_logarithm_antilog_list = []
+        first_num = numerator_list.pop()
+        multiplied_logarithm_antilog_list.append(first_num)
+
+        for num in numerator_list:
+            if random() > 0.5:
+                multiplied_logarithm_antilog_list.append(num)
+            else:
+                multiplied_logarithm_antilog_list[-1] = num * multiplied_logarithm_antilog_list[-1]
+
+        print(f"multiplied_logarithm_antilog_list: {multiplied_logarithm_antilog_list}")
+
+        divided_logarithm_antilog_list = []
+        first_num = denominator_list.pop()
+        divided_logarithm_antilog_list.append(first_num)
+
+        for num in denominator_list:
+            if random() > 0.3:
+                divided_logarithm_antilog_list.append(num)
+            else:
+                divided_logarithm_antilog_list[-1] = num * divided_logarithm_antilog_list[-1]
+
+        print(f"divided_logarithm_antilog_list: {divided_logarithm_antilog_list}")
+        """
             
             
         

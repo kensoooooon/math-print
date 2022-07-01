@@ -3,7 +3,6 @@ from random import choice, randint, random, shuffle
 import sympy as sy
 
 """
-# inheritance?
 import sympy as sy
 
 class Log:
@@ -11,61 +10,64 @@ class Log:
     def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1):
         base = sy.Rational(base_numerator, base_denominator)
         antilog = sy.Rational(antilog_numerator, antilog_denominator)
-        if (base <= 0) or (antilog < 0):
-            raise ValueError(f"base must be more than 0, and antilog must be 0 or more than 0.")
+        if (base <= 0) or (antilog <= 0):
+            raise ValueError(f"base must be more than 0, and antilog must also be more than 0.")
             
         self.base = base
         self.antilog = antilog
-        self.other_log_part = 0  # = 0
+        self.coefficient = 1
     
     def __str__(self):
         return f"\log_{{{self.base}}} {self.antilog}"
     
     def __add__(self, other_num):
+        print("Log's add")
         if isinstance(other_num, Log):
             if self.base == other_num.base:
-                return Log(self.base, self.antilog * other_num.antilog)
-        else:
-            new_antilog = self.base ** other_num
-            return Log(self.base, self.antilog * new_antilog)
-    
-    def __radd__(self, other_num):
-        new_antilog = self.base ** other_num
-        return Log(self.base, new_antilog * self.antilog)
-    
-    def __sub__(self, other_num):
-        if isinstance(other_num, Log):
-            if self.base == other_num.base:
-                return Log(self.base, self.antilog / other_num.antilog)
-        else:
-            new_antilog = self.base ** other_num
-            return Log(self.base, self.antilog / new_antilog)
-    
-    def __rsub__(self, other_num):
-        new_antilog = self.base ** other_num
-        return Log(self.base, new_antilog / self.antilog)
-    
-    def __mul__(self, other_num):
-        if not(isinstance(other_num, Log)):
-            new_antilog = self.antilog ** other_num
-            return Log(self.base, new_antilog)
-    
-    def __rmul__(self, other_num):
-        new_antilog = self.antilog ** other_num
-        return Log(self.base, new_antilog)
-        
+                new_antilog = self.antilog * other_num.antilog
+                return Log(self.base, new_antilog)
+            else:
+                return AddedLog(self, other_num)
 
             
+class AddedLog:
+    
+    def __init__(self, one_num, other_num):
+        # one_num and other_num should be log
+
+        # defaultdict{2
+        
+        # change to dictionary?
+        self.added_log_list = []
+        self.added_log_list.append(one_num)
+        self.added_log_list.append(other_num)
+    
+    def __str__(self):
+        returned_str = ""
+        for index, num in enumerate(self.added_log_list):
+            if index == 0:
+                returned_str += str(num)
+            else:
+                returned_str += f"+ {str(num)}"
+        return returned_str
+    
+    def __add__(self, other_num):
+        print("AddedLog's add!")
+        if isinstance(other_num, Log):
+            self.added_log_list.append(other_num)
+        elif isinstance(other_num, AddedLog):
+            self.added_log_list += other_num.added_log_list
+        return self
+
+
+
 num1 = Log(2, 3)
-num2 = Log(2, 5)
-print(num1 + num2)
-print(num1 - num2)
-print(num1 + 2)
-print(2 + num1)
-print(num1 - 2)
-print(2 - num1)
-print(2 * num1)
-print(num1 * 2)
+num2 = Log(3, 5)
+add1 = num1 + num2
+num3 = Log(7, 11)
+num4 = Log(11, 17)
+add2 = num3 + num4
+print(add1 + add2)
 """
 
 class LogarithmCalculationProblem:

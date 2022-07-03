@@ -3,11 +3,16 @@ from random import choice, randint, random, shuffle
 import sympy as sy
 
 """
+# defaultdict での　設定
+# defaultdict の log
+from collections import defaultdict
+
 import sympy as sy
+
 
 class Log:
     
-    def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1):
+    def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1, coefficient=1):
         base = sy.Rational(base_numerator, base_denominator)
         antilog = sy.Rational(antilog_numerator, antilog_denominator)
         if (base <= 0) or (antilog <= 0):
@@ -15,10 +20,13 @@ class Log:
             
         self.base = base
         self.antilog = antilog
-        self.coefficient = 1
+        self.coefficient = coefficient
     
     def __str__(self):
-        return f"\log_{{{self.base}}} {self.antilog}"
+        if self.coefficient == 1:
+            return f"\log_{{{self.base}}} {self.antilog}"
+        else:
+            return f"{self.coefficient} \log_{{{self.base}}} {self.antilog}"
     
     def __add__(self, other_num):
         print("Log's add")
@@ -28,46 +36,70 @@ class Log:
                 return Log(self.base, new_antilog)
             else:
                 return AddedLog(self, other_num)
-
+        elif isinstance(other_num, AddedLog):
+            # transfer to addedlog class
+            return other_num + self
+    
+    def __mul__(self, other_num):
+        print("Log's mul")
+        if not(isinstance(other_num, Log)):
+            new_coefficient = self.coefficient * other_num
+            if new_coefficient == 0:
+                return 0
+            else:
+                return Log(self.base, self.antilog, coefficient=new_coefficient)
+    
+    def __rmul__(self, other_num):
+        print("Log's rmul")
+        if not(isinstance(other_num, Log)):
+            new_coefficient = self.coefficient * other_num
+            if new_coefficient == 0:
+                return 0
+            else:
+                return Log(self.base, self.antilog, coefficient=new_coefficient)
+            
             
 class AddedLog:
     
-    def __init__(self, one_num, other_num):
+    def __init__(self, initiated_log1=0, initiated_log2=0, inherited_dict=None):
         # one_num and other_num should be log
+        # first log + log
+        if inherited_dict is None:
+            self.added_log_dict = defaultdict(int)
+            self.added_log_dict[(initiated_log1.base, initiated_log1.antilog)] += initiated_log1.coefficient
+            self.added_log_dict[(initiated_log2.base, initiated_log2.antilog)] += initiated_log2.coefficient
+        # addedlog
+        else:
+            self.added_log_dict = inherited_dict
 
-        # defaultdict{2
-        
-        # change to dictionary?
-        self.added_log_list = []
-        self.added_log_list.append(one_num)
-        self.added_log_list.append(other_num)
-    
     def __str__(self):
         returned_str = ""
-        for index, num in enumerate(self.added_log_list):
+        for index, ((base, antilog), log_coefficient) in enumerate(self.added_log_dict.items()):
             if index == 0:
-                returned_str += str(num)
+                returned_str += f"{log_coefficient} \log_{{{base}}} {antilog}"
             else:
-                returned_str += f"+ {str(num)}"
+                returned_str += f"+ {log_coefficient} \log_{{{base}}} {antilog}"
         return returned_str
     
     def __add__(self, other_num):
         print("AddedLog's add!")
         if isinstance(other_num, Log):
-            self.added_log_list.append(other_num)
+            self.added_log_dict[(other_num.base, other_num.antilog)] += other_num.coefficient
+            new_added_log_dict = self.added_log_dict
+            return AddedLog(inherited_dict=new_added_log_dict)
+        
         elif isinstance(other_num, AddedLog):
-            self.added_log_list += other_num.added_log_list
-        return self
+            for key, value in other_num.added_log_dict.items():
+                self.added_log_dict[key] += value
+            new_added_log_dict = self.added_log_dict
+            return AddedLog(inherited_dict=new_added_log_dict)
 
-
-
-num1 = Log(2, 3)
-num2 = Log(3, 5)
-add1 = num1 + num2
-num3 = Log(7, 11)
-num4 = Log(11, 17)
-add2 = num3 + num4
-print(add1 + add2)
+add1 = 2 * Log(3, 5) + 3 * Log(2, 5)
+print(f"add1: {add1}")
+add2 = 3 * Log(3, 5) + 7 * Log(2, 5)
+print(f"add2: {add2}")
+added_add = add1 + add2
+print(added_add)
 """
 
 class LogarithmCalculationProblem:

@@ -3,8 +3,6 @@ from random import choice, randint, random, shuffle
 import sympy as sy
 
 """
-# defaultdict での　設定
-# defaultdict の log
 from collections import defaultdict
 
 import sympy as sy
@@ -77,11 +75,6 @@ class Log:
                 return 0
             else:
                 return Log(self.base, self.antilog, coefficient=new_coefficient)
-    
-    # this is strange.
-    def __pow__(self, other_num):
-        print("Log's pow")
-        return Log(self.base, self.antilog, coefficient=self.coefficient * other_num)
             
 class AddedLog:
     # including add and subtraction
@@ -120,10 +113,31 @@ class AddedLog:
             return AddedLog(inherited_dict=new_added_log_dict)
         
         elif isinstance(other_num, AddedLog):
-            for key, value in other_num.added_log_dict.items():
-                self.added_log_dict[key] += value
+            for base_and_antilog, coefficient in other_num.added_log_dict.items():
+                self.added_log_dict[base_and_antilog] += coefficient
             new_added_log_dict = self.added_log_dict
             return AddedLog(inherited_dict=new_added_log_dict)
+    
+    def latex(self):
+        latex_str = ""
+        for (base, antilog), log_coefficient in self.added_log_dict.items():
+            if latex_str != "":
+                if log_coefficient > 0:
+                    latex_str += " + "
+                elif log_coefficient < 0:
+                    latex_str += " - "
+        
+            if (log_coefficient == 1) or (log_coefficient == -1):
+                latex_str += f"\log_{{{sy.latex(base)}}} {sy.latex(antilog)}"
+            else:
+                latex_str += f"{sy.latex(log_coefficient)} \log_{{{base}}} {sy.latex(antilog)}"
+
+        return latex_str
+
+class MultipliedLog:
+    
+    def __init__(self, initiated_log1=0, initiated_log2=0, inherited_dict=None):
+        
 
 num1 = Log(2, 3)
 num2 = Log(3, 5)
@@ -132,6 +146,7 @@ num3 = Log(3, 5, base_index=2)
 print(num3)
 num4 = Log(3, 5, antilog_index=2)
 print(num4)
+print((num3 + num4).latex())
 """
 
 class LogarithmCalculationProblem:

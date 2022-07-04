@@ -12,15 +12,15 @@ import sympy as sy
 
 class Log:
     
-    def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1, coefficient=1):
+    def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1, base_index=1, coefficient=1):         
         base = sy.Rational(base_numerator, base_denominator)
         antilog = sy.Rational(antilog_numerator, antilog_denominator)
         if (base <= 0) or (antilog <= 0):
             raise ValueError(f"base must be more than 0, and antilog must also be more than 0.")
-            
+        
+        self.coefficient = sy.Rational(coefficient, base_index)
         self.base = base
         self.antilog = antilog
-        self.coefficient = coefficient
     
     def __str__(self):
         if self.coefficient == 1:
@@ -31,11 +31,16 @@ class Log:
     def __add__(self, other_num):
         print("Log's add")
         if isinstance(other_num, Log):
+            print("Same Base Log add")
             if self.base == other_num.base:
-                new_antilog = self.antilog * other_num.antilog
-                return Log(self.base, new_antilog)
+                if self.antilog == other_num.antilog:
+                    return AddedLog(initiated_log1=self, initiated_log2=other_num)
+                else:
+                    new_antilog = self.antilog * other_num.antilog
+                    return Log(self.base, new_antilog)
             else:
-                return AddedLog(self, other_num)
+                print("Different Base Log Add")
+                return AddedLog(initiated_log1=self, initiated_log2=other_num)
         elif isinstance(other_num, AddedLog):
             # transfer to addedlog class
             return other_num + self
@@ -57,7 +62,11 @@ class Log:
                 return 0
             else:
                 return Log(self.base, self.antilog, coefficient=new_coefficient)
-            
+    
+    def __pow__(self, other_num):
+        print("Log's pow")
+        return Log(self.base, self.antilog, coefficient=self.coefficient * other_num)
+
             
 class AddedLog:
     
@@ -74,11 +83,15 @@ class AddedLog:
 
     def __str__(self):
         returned_str = ""
-        for index, ((base, antilog), log_coefficient) in enumerate(self.added_log_dict.items()):
-            if index == 0:
-                returned_str += f"{log_coefficient} \log_{{{base}}} {antilog}"
+        for (base, antilog), log_coefficient in self.added_log_dict.items():
+            if returned_str != "":
+                returned_str += " + "
+        
+            if log_coefficient == 1:
+                returned_str += f"\log_{{{base}}} {antilog}"
             else:
-                returned_str += f"+ {log_coefficient} \log_{{{base}}} {antilog}"
+                returned_str += f"{log_coefficient} \log_{{{base}}} {antilog}"
+
         return returned_str
     
     def __add__(self, other_num):
@@ -95,11 +108,21 @@ class AddedLog:
             return AddedLog(inherited_dict=new_added_log_dict)
 
 add1 = 2 * Log(3, 5) + 3 * Log(2, 5)
-print(f"add1: {add1}")
 add2 = 3 * Log(3, 5) + 7 * Log(2, 5)
-print(f"add2: {add2}")
 added_add = add1 + add2
 print(added_add)
+print("------------------")
+pow_num1 = Log(3, 5) ** 3
+print(pow_num1)
+print(pow_num1.coefficient)
+pow_num2 = Log(3, 5) ** 4
+print(pow_num2)
+print(pow_num2.coefficient)
+print("-------------------")
+print(pow_num1 + pow_num2)
+print("-----------------")
+different_add = Log(3, 5) + Log(2, 7)
+print(different_add)
 """
 
 class LogarithmCalculationProblem:

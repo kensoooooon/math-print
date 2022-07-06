@@ -10,7 +10,7 @@ import sympy as sy
 
 class Log:
     
-    def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1, base_index=1, antilog_index=1, coefficient=1):         
+    def __init__(self, base_numerator, antilog_numerator, base_denominator=1, antilog_denominator=1, base_index=1, antilog_index=1, coefficient=1, all_index=1):         
         base = sy.Rational(base_numerator, base_denominator)
         antilog = sy.Rational(antilog_numerator, antilog_denominator)
         if (base <= 0) or (antilog <= 0):
@@ -19,12 +19,19 @@ class Log:
         self.coefficient = sy.Rational(coefficient * antilog_index, base_index)
         self.base = base
         self.antilog = antilog
+        self.all_index = all_index
     
     def __str__(self):
-        if self.coefficient == 1:
-            return f"\log_{{{self.base}}} {self.antilog}"
+        if self.all_index == 1:
+            if self.coefficient == 1:
+                return f"\log_{{{self.base}}} {self.antilog}"
+            else:
+                return f"{self.coefficient} \log_{{{self.base}}} {self.antilog}"
         else:
-            return f"{self.coefficient} \log_{{{self.base}}} {self.antilog}"
+            if self.coefficient == 1:
+                return f"(\log_{{{self.base}}} {self.antilog})^{self.all_index}"
+            else:
+                return f"({self.coefficient} \log_{{{self.base}}} {self.antilog})^{self.all_index}"
     
     def __add__(self, other_num):
         print("Log's add")
@@ -59,13 +66,16 @@ class Log:
                 return AddedLog(initiated_log1=self, initiated_log2=minus_other_num)
         
     def __mul__(self, other_num):
-        print("Log's mul")
         if not(isinstance(other_num, Log)):
+            print("Log and other number type mul")
             new_coefficient = self.coefficient * other_num
             if new_coefficient == 0:
                 return 0
             else:
                 return Log(self.base, self.antilog, coefficient=new_coefficient)
+        elif isinstance(other_num, Log):
+            print("Log and Log mul")
+            return MultipliedLog(initiated_log1=self, initiated_log2=other_num)
     
     def __rmul__(self, other_num):
         print("Log's rmul")
@@ -75,6 +85,12 @@ class Log:
                 return 0
             else:
                 return Log(self.base, self.antilog, coefficient=new_coefficient)
+    
+    def __pow__(self, other_num):
+        print("Log's pow")
+        new_all_index = self.all_index * other_num
+        return Log(self.base, self.antilog, all_index=new_all_index, coefficient=self.coefficient)
+
             
 class AddedLog:
     # including add and subtraction
@@ -135,18 +151,92 @@ class AddedLog:
         return latex_str
 
 class MultipliedLog:
-    
-    def __init__(self, initiated_log1=0, initiated_log2=0, inherited_dict=None):
+    # k (log_a b)^x * (log_c d)^y 
+    def __init__(self, initiated_log1=1, initiated_log2=1, inherited_dict=None):
         
+        class LogInformation:
+            
+            def __init__(self, log_index=1, coefficient=1):
+                self.log_index = log_index
+                self.coefficient = coefficient
+        
+        if inherited_dict is None:
+            self.multiplied_log_dict = defaultdict(LogInformation)
+            # k (log_a b)^x
+            if (initiated_log1.base == initiated_log2.base) and (initiated_log1.antilog == initiated_log2.antilog):
+                print("Same Base and Antilog Multiplied Log")
+                log1_all_index = initiated_log1.all_index
+                print(f"log1_all_index: {log1_all_index}")
+                log2_all_index = initiated_log2.all_index
+                print(f"log2_all_index: {log2_all_index}")
+                new_log_index = log1_all_index + log2_all_index
+                log1_coefficient = initiated_log1.coefficient
+                log2_coefficient = initiated_log2.coefficient
+                new_coefficient = (log1_coefficient ** log1_all_index) * (log2_coefficient ** log2_all_index)
+                print(f"new_coefficient: {new_coefficient}")
+                self.multiplied_log_dict[(initiated_log1.base, initiated_log1.antilog)] = LogInformation(log_index=new_log_index, coefficient=new_coefficient)
+            else:
+                log1_index = initiated_log1.all_index
+                # apart from log
+                log1_coefficient = initiated_log1.coefficient ** initiated_log1.all_index
+                self.multiplied_log_dict[(iniated_log1.base, initiated_log1.antilog)] = LogInformation(log_index=log1_index, coefficient=log1_coefficient)
+                
+                log2_index = initiated_log2.all_index
+                # apart from log
+                log1_coefficient = initiated_log2.coefficient ** initiated_log2.all_index
+                self.multiplied_log_dict[(iniated_log2.base, initiated_log2.antilog)] = LogInformation(log_index=log2_index, coefficient=log2_coefficient) 
+        
+        # multiplication
+        else:
+            self.multiplied_log_dict = inherited_dict
+    
+    def __str__(self):
+        returned_str = ""
+        for (base, antilog), log_information in self.multiplied_log_dict.items():
+            if returned_str == "":
+                returned_str += f"({log_information.coefficient} \log_{{{base}}} {antilog})^{{{log_information.log_index}}})"
+            else:
+                returned_str += f"* ({log_information.coefficient} \log_{{{base}}} {antilog})^{{{log_information.log_index}}})"
+        
+        return returned_str
+    
+    def __mul__ (self, other_num):
+        if isinstance(other_num, Log):
+            print("MultipliedLog and Log multiplication")
+            # default is 1
+            existed_coefficient = self.multiplied_log_dict[(other_num.base, other_num.antilog)].coefficient
+            # default is 1
+            existed_log_index = self.multiplied_log_dict[(other_num.base, other_num.antilog)].log_index
+            
+            incoming_coefficient = other_num.coefficient ** other_num.all_index
+            incoming_log_index  = other_num.all_index
+            
+            new_coefficient = existed_coefficient * incoming_coefficient
+            new_log_index = existed_log_index + incoming_log_index
+            
+            self.multiplied_log_dict[(other_num.base, other_num.antilog)].coefficient = new_coefficient
+            self.multiplied_log_dict[(other_num.base, other_num.antilog)].log_index = new_log_index
+            
+            return MultipliedLog(inherited_dict=self.multiplied_log_dict)
 
-num1 = Log(2, 3)
-num2 = Log(3, 5)
-print(3 * num1 - 2 * num2)
-num3 = Log(3, 5, base_index=2)
-print(num3)
-num4 = Log(3, 5, antilog_index=2)
-print(num4)
-print((num3 + num4).latex())
+num1 = 2 * Log(2, 3)
+print(f"num1: {num1}")
+print(f"num1.coefficient: {num1.coefficient}")
+print("-------------------")
+
+powed_num1 = num1 ** 2
+print(f"powed_num1: {powed_num1}")
+print(f"powed_num1.coefficient: {powed_num1.coefficient}")
+print(f"")
+print("--------------------")
+
+num2 = 3 * Log(2, 3)
+print(f"num2: {num2}")
+powed_num2 = num2 ** 3
+print(f"powed_num2: {powed_num2}")
+print("-------------------------")
+
+print(num1 * num2)
 """
 
 class LogarithmCalculationProblem:

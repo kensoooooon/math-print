@@ -113,4 +113,7 @@ urlpatterns = [
     # 対数の計算
     path('logarithm_calculate/print', views.print_logarithm_calculation, name='logarithm_calculation_print'),
     path('logarithm_calculate/display', views.display_logarithm_calculation, name='logarithm_calculation_display'),
+    # 指数の計算
+    # path('exponent_calculate/print', views.print_exponent_calculation, name='exponent_calculation_print'),
+    # path('exponent_calculate/display', views.display_exponent_calculation, name='exponent_calculation_display'),
 ]

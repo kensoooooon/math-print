@@ -130,7 +130,8 @@ class LogarithmCalculationProblem:
         base_and_antilog_candidate = [2, 3, 5, 7]
         x, y = sample(base_and_antilog_candidate, 2)
         
-        if random() > 0.5:
+        num_checker = random()
+        if num_checker < 0.33:
             # log(log + log) type
             a, b, c, d, e, f = [randint(1, 3) for _ in range(6)]
             
@@ -169,7 +170,7 @@ class LogarithmCalculationProblem:
 
             return latex_answer, latex_problem
         
-        else:
+        elif (num_checker >= 0.33) and (num_checker <= 0.66):
             # (log \pm log)(log \pm log) type
             a, b, c, d, e, f, g, h = [randint(1, 3) for _ in range(8)]
             left_term1 = sy.Rational(a, b)
@@ -214,3 +215,38 @@ class LogarithmCalculationProblem:
                 latex_problem = f"({left_term1_latex} - {left_term2_latex})({right_term1_latex} - {right_term2_latex})"
                 
             return latex_answer, latex_problem
+
+        elif num_checker > 0.66:
+            # log - log + log - log
+            a, b, c, k = [randint(1, 3) for _ in range(4)]
+            
+            if random() > 0.5:
+                plus_log1_latex = f" + {k} \log_{{{x}}} {y}"
+                minus_log1_latex = f" - \log_{{{x}}} \sqrt[{k}]{y}"
+            else:
+                plus_log1_latex = f" + \log_{{{x}}} \sqrt[{k}]{y}"
+                minus_log1_latex = f" - {k} \log_{{{x}}} {y}"
+
+            if random() > 0.5:
+                plus_log2_latex = f" + \log_{{{x}}} {(x ** y) * a * b}"
+                minus_log2_latex = f" - \log_{{{x}}} {a * b}"
+                latex_answer = f"= {sy.latex(y)}"
+            else:
+                plus_log2_latex = f" + \log_{{{x}}} {a * b}"
+                minus_log2_latex = f" - \log_{{{x}}} {(x ** y) * a * b}"
+                latex_answer = f"= {sy.latex(sy.Rational(1, y))}"
+            
+            num_list = [plus_log1_latex, minus_log1_latex, plus_log2_latex, minus_log2_latex]
+            shuffle(num_list)
+            
+            latex_problem = ""
+            first_num = num_list.pop()
+            if " + " in first_num:
+                first_num = first_num.replace("+", "")
+                print(f"first_num: {first_num}")
+            latex_problem += first_num
+            for num in num_list:
+                latex_problem += num
+            
+            return latex_answer, latex_problem
+        

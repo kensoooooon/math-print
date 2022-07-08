@@ -56,52 +56,46 @@
             <p>指数の計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">登場する計算</small>
+                <small class="text-muted">登場する指数の計算法則</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="change_of_base_formula" name="logarithm_calculation_type" id="logarithm_calculation_change_of_base_formula" checked>
-                        <label class="form-check-label" for="logarithm_calculation_change_of_base_formula">
-                            底の変換公式
+                        <input class="form-check-input" type="checkbox" value="times_and_division" name="exponent_calculation_type" id="exponent_calculation_times_and_division" checked>
+                        <label class="form-check-label" for="exponent_calculation_times_and_division">
+                            \( a^m \times a^n \), \( a^m \div a^n \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="add_and_subtraction_without_change_of_base_formula" name="logarithm_calculation_type" id="logarithm_calculation_add_and_subtraction_without_change_of_base_formula" checked>
-                        <label class="form-check-label" for="logarithm_calculation_add_and_subtraction_without_change_of_base_formula">
-                            対数の和と差(底の変換公式なし)
+                        <input class="form-check-input" type="checkbox" value="power" name="exponent_calculation_type" id="exponent_calculation_power" checked>
+                        <label class="form-check-label" for="exponent_calculation_power">
+                            \( (a^m)^n \)
                         </label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="add_and_subtraction_with_change_of_base_formula" name="logarithm_calculation_type" id="logarithm_calculation_add_and_subtraction_with_change_of_base_formula" checked>
-                        <label class="form-check-label" for="logarithm_calculation_add_and_subtraction_with_change_of_base_formula">
-                            対数の和と差(底の変換公式あり)
-                        </label>
-                    </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`logarithm_calculation_type`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`logarithm_calculation_type`)" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`exponent_calculation_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`exponent_calculation_type`)" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="LogarithmCalculateFivePaperRadio" checked>
-                        <label class="form-check-label" for="LogarithmCalculateFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="ExponentCalculateFivePaperRadio" checked>
+                        <label class="form-check-label" for="ExponentCalculateFivePaperRadio">
                             20問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="LogarithmCalculateTenPaperRadio">
-                        <label class="form-check-label" for="LogarithmCalculateTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="ExponentCalculateTenPaperRadio">
+                        <label class="form-check-label" for="ExponentCalculateTenPaperRadio">
                             20問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="LogarithmCalculateFifteenPaperRadio">
-                        <label class="form-check-label" for="LogarithmCalculateFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="ExponentCalculateFifteenPaperRadio">
+                        <label class="form-check-label" for="ExponentCalculateFifteenPaperRadio">
                             20問×15枚
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'logarithm_calculation_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'logarithm_calculation_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'exponent_calculation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'exponent_calculation_display' %}">      
             </form>
         </div>
     </div>

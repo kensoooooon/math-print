@@ -1037,6 +1037,11 @@ def print_logarithm_calculation(request):
     
     return render(request, 'math_print/highschool2/logarithm_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_exponent_calculation(request):
+    context = {"message": "This is sample site."}
+    
+    return render(request, 'math_print/highschool2/exponent_calculate/for_print.html', context)
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1843,3 +1848,8 @@ def display_logarithm_calculation(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/logarithm_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_exponent_calculation(request):
+    context = {"message": "This is sample site."}
+    
+    return render(request, 'math_print/highschool2/exponent_calculate/for_display.html', context)

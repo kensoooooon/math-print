@@ -218,23 +218,50 @@ class LogarithmCalculationProblem:
 
         elif num_checker > 0.66:
             # log - log + log - log
+            
+            def log_latex_maker(base, antilog, coefficient=1):
+                """
+                need add \sqrt disturbance system?
+                """
+                # k log_x y -> k log_x y, log_x y^k , l log_x^l y^k 
+                
+                num_checker = random()
+                if num_checker < 0.33:
+                    # k log_x y
+                    if coefficient == 1:
+                        log_latex = f"\log_{{{base}}} {antilog}"
+                    else:
+                        log_latex = f"{coefficient} \log_{{{base}}} {antilog}"
+                # log_x y^k
+                elif (0.33 <= num_checker) and (num_checker <= 0.66): 
+                    if random() > 0.5:
+                        log_latex = f"\log_{{{base}}} {antilog ** coefficient}"
+                    else:
+                        disturbance_num = randint(2, 5)
+                        log_latex = f"{disturbance_num} \log_{{{base}}} \sqrt[{disturbance_num}]{{{antilog ** coefficient}}}"
+                # l log_x^l y^k
+                else:
+                    disturbance_num = randint(2, 3)
+                    log_latex = f"{disturbance_num} \log_{{{base ** disturbance_num}}} {antilog ** coefficient}"
+                
+                return log_latex
+            
+            # redefine to suppress too high value
+            base_and_antilog_candidate = [2, 3, 5]
+            x, y = sample(base_and_antilog_candidate, 2)
             a, b, c, k = [randint(1, 3) for _ in range(4)]
             
-            if random() > 0.5:
-                plus_log1_latex = f" + {k} \log_{{{x}}} {y}"
-                minus_log1_latex = f" - \log_{{{x}}} \sqrt[{k}]{y}"
-            else:
-                plus_log1_latex = f" + \log_{{{x}}} \sqrt[{k}]{y}"
-                minus_log1_latex = f" - {k} \log_{{{x}}} {y}"
+            plus_log1_latex = " + " + log_latex_maker(x, y, k)
+            minus_log1_latex = " - " + log_latex_maker(x, y, k)
 
             if random() > 0.5:
-                plus_log2_latex = f" + \log_{{{x}}} {(x ** y) * a * b}"
-                minus_log2_latex = f" - \log_{{{x}}} {a * b}"
+                plus_log2_latex = " + " + log_latex_maker(x, (x ** y) * a * b)
+                minus_log2_latex = " - " + log_latex_maker(x, a * b)
                 latex_answer = f"= {sy.latex(y)}"
             else:
-                plus_log2_latex = f" + \log_{{{x}}} {a * b}"
-                minus_log2_latex = f" - \log_{{{x}}} {(x ** y) * a * b}"
-                latex_answer = f"= {sy.latex(sy.Rational(1, y))}"
+                plus_log2_latex = " + " + log_latex_maker(x, a * b)
+                minus_log2_latex = " - " + log_latex_maker(x, (x ** y) * a * b)
+                latex_answer = f"= {sy.latex(-y)}"
             
             num_list = [plus_log1_latex, minus_log1_latex, plus_log2_latex, minus_log2_latex]
             shuffle(num_list)
@@ -249,4 +276,3 @@ class LogarithmCalculationProblem:
                 latex_problem += num
             
             return latex_answer, latex_problem
-        

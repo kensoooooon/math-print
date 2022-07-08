@@ -234,7 +234,11 @@ class LogarithmCalculationProblem:
                         log_latex = f"{coefficient} \log_{{{base}}} {antilog}"
                 # log_x y^k
                 elif (0.33 <= num_checker) and (num_checker <= 0.66): 
-                    log_latex = f"\log_{{{x}}} {antilog ** coefficient}"
+                    if random() > 0.5:
+                        log_latex = f"\log_{{{base}}} {antilog ** coefficient}"
+                    else:
+                        disturbance_num = randint(2, 5)
+                        log_latex = f"{disturbance_num} \log_{{{base}}} \sqrt[{disturbance_num}]{{{antilog ** coefficient}}}"
                 # l log_x^l y^k
                 else:
                     disturbance_num = randint(2, 3)

@@ -1042,12 +1042,7 @@ def print_logarithm_calculation(request):
 def print_exponent_calculation(request):
     PROBLEM_NUMBER = 20
     
-    calculation_type_list = request.POST.getlist("exponent_calculation_type")
-    if not(calculation_type_list):
-        calculation_type_list.append("times")
-        calculation_type_list.append("division")
-        calculation_type_list.append("power")
-        calculation_type_list.append("root")
+    calculation_type = request.POST["exponent_calculation_type"]
 
     base_type_list = request.POST.getlist("exponent_base_type")
     if not(base_type_list):
@@ -1060,8 +1055,8 @@ def print_exponent_calculation(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = ExponentCalculation(calculation_type_list=calculation_type_list, base_type_list=base_type_list)
-            problem2 = ExponentCalculation(calculation_type_list=calculation_type_list, base_type_list=base_type_list)
+            problem1 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
+            problem2 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
             math_problem_tuple_inner_list.append(problem1, problem2)
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
@@ -1878,12 +1873,7 @@ def display_logarithm_calculation(request):
 def display_exponent_calculation(request):
     PROBLEM_NUMBER = 20
     
-    calculation_type_list = request.POST.getlist("exponent_calculation_type")
-    if not(calculation_type_list):
-        calculation_type_list.append("times")
-        calculation_type_list.append("division")
-        calculation_type_list.append("power")
-        calculation_type_list.append("root")
+    calculation_type = request.POST["exponent_calculation_type"]
 
     base_type_list = request.POST.getlist("exponent_base_type")
     if not(base_type_list):
@@ -1892,8 +1882,8 @@ def display_exponent_calculation(request):
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = ExponentCalculation(calculation_type_list=calculation_type_list, base_type_list=base_type_list)
-        problem2 = ExponentCalculation(calculation_type_list=calculation_type_list, base_type_list=base_type_list)
+        problem1 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
+        problem2 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/exponent_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

@@ -59,31 +59,23 @@
                 <small class="text-muted">登場する指数の計算法則</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="times" name="exponent_calculation_type" id="exponent_calculation_times" checked>
-                        <label class="form-check-label" for="exponent_calculation_times">
-                            \( a^m \times a^n  = a^{m+n} \)
+                        <input class="form-check-input" type="radio" value="only_times_and_division" name="exponent_calculation_type" id="exponent_only_times_and_division" checked>
+                        <label class="form-check-label" for="exponent_only_times_and_division">
+                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n} \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="division" name="exponent_calculation_type" id="exponent_calculation_division" checked>
-                        <label class="form-check-label" for="exponent_calculation_division">
-                            \( a^m \div a^n = a^{m-n}\)
+                        <input class="form-check-input" type="radio" value="include_power" name="exponent_calculation_type" id="exponent_include_power">
+                        <label class="form-check-label" for="exponent_include_power">
+                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n}, (a^m)^n = a^{mn} \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="power" name="exponent_calculation_type" id="exponent_calculation_power" checked>
-                        <label class="form-check-label" for="exponent_calculation_power">
-                            \( (a^m)^n = a^{mn} \)
+                        <input class="form-check-input" type="radio" value="include_power_and_root" name="exponent_calculation_type" id="exponent_include_power_and_root">
+                        <label class="form-check-label" for="exponent_include_power_and_root">
+                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n}, (a^m)^n = a^{mn}, \sqrt[m]{a^n} = a^{\frac{n}{m}} \)
                         </label>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="root" name="exponent_calculation_type" id="exponent_calculation_root" checked>
-                        <label class="form-check-label" for="exponent_calculation_root">
-                            \( \sqrt[m]{a^n} = a^{\frac{n}{m}} \)
-                        </label>
-                    </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`exponent_calculation_type`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`exponent_calculation_type`)" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する底</small>
                 <div class="form-group">

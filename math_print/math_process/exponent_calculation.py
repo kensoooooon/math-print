@@ -88,32 +88,25 @@ class ExponentCalculation:
         selected_base_type = choice(self._base_type_list)
         
         if selected_base_type == "character":
-            base1 = sy.Symbol("a", real=True)
+            base = sy.Symbol("a", real=True)
             index1 = self._random_index_without_zero_and_one(min_num=-8, max_num=8)
-            base2 = sy.Symbol("b", real=True)
             index2 = self._random_index_without_zero_and_one(min_num=-8, max_num=8)
-            base3 = sy.Symbol("c", real=True)
             index3 = self._random_index_without_zero_and_one(min_num=-8, max_num=8)
-            num1, num1_latex = exp(base1, index1)
-            num2, num2_latex = exp(base2, index2)
-            num3, num3_latex = exp(base3, index3)
+            index4 = self._random_index_without_zero_and_one(min_num=-8, max_num=8)
+            index_list = [index1, index2, index3, index4]
             
-            answer = num1
-            latex_problem = f"{num1_latex}"
-            
-            if random() > 0.5:
-                answer *= num2
-                latex_problem += f"\\times {num2_latex}"
-            else:
-                answer /= num2
-                latex_problem += f"\\div {num2_latex}"
-
-            if random() > 0.5:
-                answer *= num3
-                latex_problem += f"\\times {num3_latex}"
-            else:
-                answer /= num2
-                latex_problem += f"\\div {num3_latex}"
+            first_index = index_list.pop()
+            first_num, first_latex = exp(base, first_index)
+            answer = first_num
+            latex_problem = first_latex
+            for index in index_list:
+                num, num_latex = exp(base, index)
+                if random() > 0.5:
+                    answer *= num
+                    latex_problem += f"\\times {num_latex}"
+                else:
+                    answer /= num
+                    latex_problem += f"\\div {num_latex}"
             
             latex_answer = f"= {sy.latex(answer)}"
             
@@ -122,7 +115,7 @@ class ExponentCalculation:
         elif selected_base_type == "number":
             base = choice([2, 3, 5, 7])
             # redefine 2->6, 3->5, 4->4, 5->3: 
-            final_index = self._random_index_without_zero_and_one(-(8 - base), 8 - base)
+            final_index = self._random_index_without_zero_and_one(min_num=-(8 - base), max_num=8 - base)
             index1 = self._random_index_without_zero_and_one(min_num=-6, max_num=6)
             index2 = self._random_index_without_zero_and_one(min_num=-6, max_num=6)
             index3 = final_index - (index1 + index2)
@@ -149,74 +142,129 @@ class ExponentCalculation:
             return latex_answer, latex_problem
 
     def _make_include_power_problem(self):
-        def exp_num_latex(number):
-            if random() > 0.5:
-                # a^k
-                index = randint(2, 5)
-                if random() > 0.5:
-                    index *= -1
-                exp_num = sy.Rational(number ** index)
-                exp_num_latex = f"{number} ^ {{{index}}}"
+        def exp(base, inner_index=1, outer_index=1):
+            if (inner_index == 1) and (outer_index == 1):
+                exp_num = sy.Pow(base, 1)
+                exp_num_latex = f"{base}"
+            elif (inner_index == 1) and (outer_index != 1):
+                exp_num = sy.Pow(base, outer_index)
+                exp_num_latex = f"{base}^{{{outer_index}}}"
+            elif (inner_index != 1) and (outer_index == 1):
+                exp_num = sy.Pow(base, inner_index)
+                exp_num_latex = f"{base}^{{{inner_index}}}"
             else:
-                # (a ^ k) ^ l
-                base_index = randint(2, 3)
-                index_coefficient = randint(2, 3)
-                index = base_index * index_coefficient
-                if random() > 0.5:
-                    index *= -1
-                    exp_num = sy.Rational(number ** index)
-                    if random() > 0.5:
-                        exp_num_latex = f"\left( {number} ^ {{{base_index}}} \right) ^ {{{-1 * index_coefficient}}}"
-                    else:
-                        exp_num_latex = f"\left( {number} ^ {{{-1 * base_index}}} \right) ^ {{{index_coefficient}}}"
-                else:
-                    exp_num = sy.Rational(number ** (index))
-                    exp_num_latex = f"\left( {number} ^ {{{base_index}}} \right) ^ {{{index_coefficient}}}"
+                exp_num = sy.Pow(base, inner_index * outer_index)
+                exp_num_latex = f"\\left( {base}^{{{inner_index}}} \\right)^{{{outer_index}}}"
             return exp_num, exp_num_latex
-        
-        def exp_character_latex(character):
-            index = randint(2, 5)
-            exp_character = character ** index
-            exp_character_latex = f"{sy.latex(exp_character)}"
-            return exp_character, exp_character_latex
         
         selected_base_type = choice(self._base_type_list)
         
         if selected_base_type == "character":
-            base1 = sy.Symbol("a", real=True)
-            base2 = sy.Symbol("b", real=True)
-            base3 = sy.Symbol("c", real=True)
-            num1, num1_latex = exp_num_latex(base1, randint(1, 5))
-            num2, num2_latex = exp_num_latex(base2, randint(1, 5))
-            num3, num3_latex = exp_num_latex(base3, randint(1, 5))
+            base = sy.Symbol("a", real=True)
+            inner_index1 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            outer_index1 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            index1 = (inner_index1, outer_index1)
+            inner_index2 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            outer_index2 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            index2 = (inner_index2, outer_index2)
+            inner_index3 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            outer_index3 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            index3 = (inner_index3, outer_index3)
+            inner_index4 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            outer_index4 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            index4 = (inner_index4, outer_index4)
+            index_list = [index1, index2, index3, index4]
             
-        elif selected_base_type == "number":
-            base1 = randint(2, 5)
-            base2 = randint(2, 5)
-            base3 = randint(2, 5)
-            num1, num1_latex = exp_num_latex(base1, randint(2, 4))
-            num2, num2_latex = exp_num_latex(base2, randint(2, 4))
-        
-        answer = num1
-        latex_problem = f"{num1_latex}"
-        
-        if random() > 0.5:
-            answer *= num2
-            latex_problem += f"\\times {num2_latex}"
-        else:
-            answer /= num2
-            latex_problem += f"\\div {num2_latex}"
+            first_inner_index, first_outer_index = index_list.pop()
+            first_num, first_latex = exp(base, inner_index=first_inner_index, outer_index=first_outer_index)
+            answer = first_num
+            latex_problem = first_latex
+            for inner_index, outer_index in index_list:
+                num, num_latex = exp(base, inner_index=inner_index, outer_index=outer_index)
+                if random() > 0.5:
+                    answer *= num
+                    latex_problem += f"\\times {num_latex}"
+                else:
+                    answer /= num
+                    latex_problem += f"\\div {num_latex}"
+            
+            latex_answer = f"= {sy.latex(answer)}"
 
-        if random() > 0.5:
-            answer *= num3
-            latex_problem += f"\\times {num3_latex}"
-        else:
-            answer /= num2
-            latex_problem += f"\\div {num3_latex}"
-        
-        latex_answer = f"= {sy.latex(answer)}"
-        
-        return latex_answer, latex_problem
+            return latex_answer, latex_problem
+
+        elif selected_base_type == "number":
+            base = choice([2, 3, 5, 7])
+            final_index = self._random_index_without_zero_and_one(min_num=-(8 - base), max_num=8 - base)
+            print(f"final_index: {final_index}")
+            inner_index1 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            outer_index1 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            index1 = (inner_index1, outer_index1)
+            print(f"index1: {index1}")
+            inner_index2 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            outer_index2 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
+            index2 = (inner_index2, outer_index2)
+            print(f"index2: {index2}")
+            coordinate_index = final_index - (inner_index1 * outer_index1 + inner_index2 * outer_index2)
+            print(f"coordinate_index: {coordinate_index}")
+            if coordinate_index > 0:
+                for num_for_div in range(coordinate_index - 1, 1, -1):
+                    # print(f"num_for_div: {num_for_div}")
+                    # print(f"coordinate_index: {coordinate_index}")
+                    if (coordinate_index % num_for_div == 0):
+                        inner_index3 = num_for_div
+                        outer_index3 = int(coordinate_index / num_for_div)
+                        # print(f"inner_index3 is {inner_index3}, outer_index is {outer_index3}")
+                        break
+                else:
+                    inner_index3 = 1
+                    outer_index3 = coordinate_index
+            elif coordinate_index < 0:
+                for num_for_div in range(coordinate_index + 1, -1, 1):
+                    # print(f"num_for_div: {num_for_div}")
+                    # print(f"coordinate_index: {coordinate_index}")
+                    if (coordinate_index % num_for_div == 0):
+                        inner_index3 = num_for_div
+                        outer_index3 = int(coordinate_index / num_for_div)
+                        # print(f"inner_index3 is {inner_index3}, outer_index is {outer_index3}")
+                        break
+                else:
+                    inner_index3 = 1
+                    outer_index3 = coordinate_index
+            else:
+                inner_index3 = 1
+                outer_index3 = 0
+            # print("--------------------")
+            index3 = (inner_index3, outer_index3)
+            print(f"index3: {index3}")
+            index_list = [index1, index2, index3]
+            shuffle(index_list)
+            
+            first_inner_index, first_outer_index = index_list.pop()
+            print(f"first_inner_index: {first_inner_index}, first_outer_index: {first_outer_index}")
+            first_num, first_latex = exp(base, inner_index=first_inner_index, outer_index=first_outer_index)
+            print(f"first_num: {first_num}, first_latex: {first_latex}")
+            answer = first_num
+            latex_problem = first_latex
+            
+            for inner_index, outer_index in index_list:
+                if random() > 0.5:  # add as times
+                    if random() > 0.5:
+                        num, num_latex = exp(base, inner_index=inner_index, outer_index=outer_index)
+                    else:
+                        num, num_latex = exp(base, inner_index=-inner_index, outer_index=-outer_index)
+                    answer *= num
+                    latex_problem += f" \\times {num_latex}"
+                else:  # add as division
+                    if random() > 0.5:
+                        num, num_latex = exp(base, inner_index=-inner_index, outer_index=outer_index)
+                    else: 
+                        num, num_latex = exp(base, inner_index=inner_index, outer_index=-outer_index)
+                    answer /= num
+                    latex_problem += f"\\div {num_latex}"
+                
+            latex_answer = f"= {sy.latex(answer)}"
+            print("------------------------------")
+            return latex_answer, latex_problem
     
     def _random_index_without_zero_and_one(self, min_num=-5, max_num=5):
         index = randint(min_num, max_num)

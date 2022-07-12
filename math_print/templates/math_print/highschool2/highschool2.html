@@ -56,24 +56,24 @@
             <p>指数の計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">登場する指数の計算法則</small>
+                <small class="text-muted">追加で登場する指数の計算法則</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="only_times_and_division" name="exponent_calculation_type" id="exponent_only_times_and_division" checked>
                         <label class="form-check-label" for="exponent_only_times_and_division">
-                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n} \)
+                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n} \)のみ
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="include_power" name="exponent_calculation_type" id="exponent_include_power">
                         <label class="form-check-label" for="exponent_include_power">
-                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n}, (a^m)^n = a^{mn} \)
+                            \( (a^m)^n = a^{mn} \)追加
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="include_power_and_root" name="exponent_calculation_type" id="exponent_include_power_and_root">
                         <label class="form-check-label" for="exponent_include_power_and_root">
-                            \( a^m \times a^n = a^{m+n}, a^m \div a^n = a^{m-n}, (a^m)^n = a^{mn}, \sqrt[m]{a^n} = a^{\frac{n}{m}} \)
+                            \( \sqrt[m]{a^n} = a^{\frac{n}{m}}, \sqrt[m]{\sqrt[n]{a}} = \sqrt[mn]{a} \)追加
                         </label>
                     </div>
                 </div>

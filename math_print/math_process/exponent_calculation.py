@@ -227,21 +227,15 @@ class ExponentCalculation:
         
         if selected_base_type == "character":
             base = sy.Symbol("a", real=True)
-            inner_index1 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            outer_index1 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            index1 = (inner_index1, outer_index1)
-            inner_index2 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            outer_index2 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            index2 = (inner_index2, outer_index2)
-            inner_index3 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            outer_index3 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            index3 = (inner_index3, outer_index3)
-            inner_index4 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            outer_index4 = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
-            index4 = (inner_index4, outer_index4)
-            index_list = [index1, index2, index3, index4]
+            index_list = []
+            for _ in range(4):
+                index_numerator = self._random_index_without_zero_and_one(min_num=-8, max_num=8)
+                index_denominator1 = self._random_index_without_zero_and_one(min_num=-4, max_num=4)
+                index_denominator2 = self._random_index_without_zero_and_one(min_num=-4, max_num=4)
+                index = (index_numerator, index_denominator1, index_denominator2)
+                index_list.append(index)
             
-            first_inner_index, first_outer_index = index_list.pop()
+            first_index_numerator, first_denominator1, first_denominator2 = index_list.pop()
             first_num, first_latex = exp(base, inner_index=first_inner_index, outer_index=first_outer_index)
             answer = first_num
             latex_problem = first_latex

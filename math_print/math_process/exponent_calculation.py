@@ -2,6 +2,82 @@ from random import choice, randint, random, shuffle
 
 import sympy as sy
 
+"""
+# num working correctly?
+import sympy as sy
+
+from random import random
+
+
+def exp(base, index_numerator=1, index_denominator1=1, index_denominator2=1):
+    # a^{n/m} = \root[m]{a^n}
+    index = sy.Rational(index_numerator, index_denominator1 * index_denominator2)
+    print(f"in_index: {index}")
+    exp_num = sy.Pow(base, index)
+    print(f"in_exp_num: {exp_num}")
+
+    base_latex = sy.latex(base)
+    index_latex = sy.latex(index)
+    index_numerator_latex = sy.latex(index_numerator)
+    index_denominator1_latex = sy.latex(index_denominator1)
+    index_denominator2_latex = sy.latex(index_denominator2)
+
+    type_checker = random()
+    if (index_denominator1 == 1) and (index_denominator2 == 1):
+        exp_num_latex = f"{base_latex}^{{{index_numerator_latex}}}"
+    elif (index_denominator1 != 1) and (index_denominator2 == 1):
+        if random() > 0.5:
+            # a ^ {n/m}
+            exp_num_latex = f"{base_latex}^{{{index_latex}}}"
+        else:
+            # m√a^n
+            exp_num_latex = f"\\sqrt[{index_denominator1_latex}]{{{base_latex}^{{{index_numerator_latex}}}}}"
+    elif (index_denominator1 == 1) and (index_denominator2 != 1):
+        if random() > 0.5:
+            # a ^ {n/m}
+            exp_num_latex = f"{base_latex}^{{{index_latex}}}"
+        else:
+            # m√a^n
+            exp_num_latex = f"\\sqrt[{index_denominator2_latex}]{{{base_latex}^{{{index_numerator_latex}}}}}"
+    else:
+        type_checker = random()
+        if type_checker < 0.33:
+            # a ^ {n/(d1*d2)}
+            exp_num_latex = f"{base_latex}^{{{index_latex}}}"
+        elif (0.33 <= type_checker) and (type_checker < 0.66):
+            # \\sqrt[d1*d2]{a^n}
+            exp_num_latex = f"\\sqrt[{sy.latex(index_denominator1 * index_denominator2)}]{{{sy.latex(base ** index_numerator)}}}"
+        else:
+            # \\sqrt[d1]{\\sqrt[d2]}{a^n}
+            exp_num_latex = f"\\sqrt[{index_denominator1}]{{\\sqrt[{index_denominator2}]{{{sy.latex(base ** index_numerator)}}}}}"
+
+    return exp_num, exp_num_latex
+
+num1, num1_latex = exp(2, index_numerator=3, index_denominator1=2)
+print(f"num1: {num1}")
+print(f"num1_latex: {num1_latex}")
+num2, num2_latex = exp(2, index_numerator=3, index_denominator1=2)
+print(f"num2: {num2}")
+print(f"num2_latex: {num2_latex}")
+ans = num1 * num2
+print(ans)
+print("-----------------------------")
+
+num3, num3_latex = exp(2, index_numerator=3, index_denominator1=2)
+print(f"num3: {num3}")
+print(f"num3_latex: {num3_latex}")
+num4, num4_latex = exp(2, index_numerator=3, index_denominator1=4)
+print(f"num4: {num4}")
+print(f"num4_latex: {num4_latex}")
+ans2 = num3 * num4
+print(ans2)
+print(ans2.simplify())
+display(ans2)
+# print(type(ans2))
+x = sy.Symbol("x", real=True)
+print(sy.solve(2**x-ans2, x))
+"""
+
 
 class ExponentCalculation:
     
@@ -205,23 +281,42 @@ class ExponentCalculation:
             # a^{n/m} = \root[m]{a^n}
             index = sy.Rational(index_numerator, index_denominator1 * index_denominator2)
             exp_num = sy.Pow(base, index)
+            
+            base_latex = sy.latex(base)
+            index_latex = sy.latex(index)
+            index_numerator_latex = sy.latex(index_numerator)
+            index_denominator1_latex = sy.latex(index_denominator1)
+            index_denominator2_latex = sy.latex(index_denominator2)
+            
             type_checker = random()
-            if index_denominator2 == 1:
-                if type_checker < 0.5:
-                    # a^{n/m}
-                    exp_num_latex = f"{base}^{{{sy.latex(index)}}}"
+            if (index_denominator1 == 1) and (index_denominator2 == 1):
+                exp_num_latex = f"{base_latex}^{{{index_numerator_latex}}}"
+            elif (index_denominator1 != 1) and (index_denominator2 == 1):
+                if random() > 0.5:
+                    # a ^ {n/m}
+                    exp_num_latex = f"{base_latex}^{{{index_latex}}}"
                 else:
-                    print(f"base ** index_numerator: {base ** index_numerator}")
-                    exp_num_latex = f"\\sqrt[{index_denominator1}]{{{sy.latex(base ** index_numerator)}}}"
+                    # m√a^n
+                    exp_num_latex = f"\\sqrt[{index_denominator1_latex}]{{{base_latex}^{{{index_numerator_latex}}}}}"
+            elif (index_denominator1 == 1) and (index_denominator2 != 1):
+                if random() > 0.5:
+                    # a ^ {n/m}
+                    exp_num_latex = f"{base_latex}^{{{index_latex}}}"
+                else:
+                    # m√a^n
+                    exp_num_latex = f"\\sqrt[{index_denominator2_latex}]{{{base_latex}^{{{index_numerator_latex}}}}}"
             else:
+                type_checker = random()
                 if type_checker < 0.33:
-                    exp_num_latex = f"{base}^{{{sy.latex(index)}}}"
+                    # a ^ {n/(d1*d2)}
+                    exp_num_latex = f"{base_latex}^{{{index_latex}}}"
                 elif (0.33 <= type_checker) and (type_checker < 0.66):
-                    exp_num_latex = f"\\sqrt[{index_denominator1}]{{\\sqrt[{index_denominator2}]{{{base ** index_numerator}}}}}"
+                    # \\sqrt[d1*d2]{a^n}
+                    exp_num_latex = f"\\sqrt[{sy.latex(index_denominator1 * index_denominator2)}]{{{sy.latex(base ** index_numerator)}}}"
                 else:
-                    exp_num_latex = f"\\sqrt[{index_denominator1 * index_denominator2}]{{{sy.latex(base ** index_numerator)}}}"
-                
-                
+                    # \\sqrt[d1]{\\sqrt[d2]}{a^n}
+                    exp_num_latex = f"\\sqrt[{index_denominator1}]{{\\sqrt[{index_denominator2}]{{{sy.latex(base ** index_numerator)}}}}}"
+            
             return exp_num, exp_num_latex
         
         selected_base_type = choice(self._base_type_list)
@@ -256,6 +351,7 @@ class ExponentCalculation:
 
         elif selected_base_type == "number":
             base = choice([2, 3, 5, 7])
+            print(f"base: {base}")
             final_index = self._random_index_without_zero_and_one(min_num=-(8 - base), max_num=8 - base)
             print(f"final_index: {final_index}")
             final_index = sy.Rational(final_index, 1)
@@ -263,8 +359,8 @@ class ExponentCalculation:
             index1_numerator = self._random_index_without_zero_and_one(min_num=2, max_num=6)
             print(f"index1_numerator: {index1_numerator}")
             if random() > 0.7:
-                index1_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=6)
-                index1_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=6)
+                index1_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
+                index1_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
             else:
                 index1_denominator1 = 1
                 index1_denominator2 = 1
@@ -275,8 +371,8 @@ class ExponentCalculation:
             index2_numerator = self._random_index_without_zero_and_one(min_num=2, max_num=6)
             print(f"index2_numerator: {index2_numerator}")
             if random() > 0.7:
-                index2_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=6)
-                index2_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=6)
+                index2_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
+                index2_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
             else:
                 index2_denominator1 = 1
                 index2_denominator2 = 1
@@ -288,13 +384,13 @@ class ExponentCalculation:
             print(f"type(coordinate_index): {type(coordinate_index)}")
             print(f"coordinate_index: {coordinate_index}")
             if random() > 0.5:
-                disturbance_num = randint(2, 4)
+                disturbance_num = randint(2, 3)
                 coordinate_index *= disturbance_num
                 index_denominator1 = disturbance_num
             else:
                 index_denominator1 = 1
             if random() > 0.5:
-                disturbance_num = randint(2, 4)
+                disturbance_num = randint(2, 3)
                 coordinate_index *= disturbance_num
                 index_denominator2 = disturbance_num
             else:
@@ -308,6 +404,8 @@ class ExponentCalculation:
             
             first_index_numerator, first_index_denominator1, first_index_denominator2 = index_list.pop()
             first_num, first_latex = exp(base, index_numerator=first_index_numerator, index_denominator1=first_index_denominator1, index_denominator2=first_index_denominator2)
+            print(f"first_num: {first_num}")
+            print(f"first_latex: {first_latex}")
             answer = first_num
             latex_problem = first_latex
             
@@ -318,14 +416,23 @@ class ExponentCalculation:
                     print(f"num_latex: {num_latex}")
                     answer *= num
                     latex_problem += f" \\times {num_latex}"
+                    print(f"after times answer: {answer}")
+                    print(f"after times latex_problem: {latex_problem}")
+                    print("----times finish----")
                 else:  # add as division
                     num, num_latex = exp(base, index_numerator=index_numerator, index_denominator1=index_denominator1, index_denominator2=index_denominator2)
                     print(f"num: {num}")
                     print(f"num_latex: {num_latex}")
                     answer /= num
                     latex_problem += f"\\div {num_latex}"
+                    print(f"after times answer: {answer}")
+                    print(f"after times latex_problem: {latex_problem}")
+                    print("----div finish----")
                 
             latex_answer = f"= {sy.latex(answer)}"
+            print(f"answer: {answer}")
+            print(f"latex_answer: {sy.latex(answer)}")
+            print(f"latex_problem: {latex_problem}")
             print("-------------------------")
             return latex_answer, latex_problem
     

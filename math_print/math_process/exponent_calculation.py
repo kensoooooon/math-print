@@ -279,33 +279,63 @@ class ExponentCalculation:
     def _make_include_power_and_root_problem(self):
         def exp(base, index_numerator=1, index_denominator1=1, index_denominator2=1):
             # a^{n/m} = \root[m]{a^n}
+            print(f"****base: {base}")
+            print(f"****index_numerator: {index_numerator}")
+            print(f"****index_denominator1: {index_denominator1}")
+            print(f"****index_denominator2: {index_denominator2}")
             index = sy.Rational(index_numerator, index_denominator1 * index_denominator2)
+            print(f"****index: {index}")
             exp_num = sy.Pow(base, index)
+            print(f"****exp_num: {exp_num}")
             
             base_latex = sy.latex(base)
+            print(f"****base_latex: {base_latex}")
             index_latex = sy.latex(index)
+            print(f"****index_latex: {index_latex}")
             index_numerator_latex = sy.latex(index_numerator)
+            print(f"****index_numerator_latex: {index_numerator_latex}")
             index_denominator1_latex = sy.latex(index_denominator1)
+            print(f"****index_denominator1_latex: {index_denominator1_latex}")
             index_denominator2_latex = sy.latex(index_denominator2)
+            print(f"****index_denominator2_latex: {index_denominator2_latex}")
             
-            type_checker = random()
             if (index_denominator1 == 1) and (index_denominator2 == 1):
-                exp_num_latex = f"{base_latex}^{{{index_numerator_latex}}}"
-            elif (index_denominator1 != 1) and (index_denominator2 == 1):
+                print("**** **** 1 and 1")
                 if random() > 0.5:
+                    # a^m
+                    exp_num_latex = f"{base_latex}^{{{index_numerator_latex}}}"
+                else:
+                    # (a^m)
+                    exp_num_latex = f"{sy.latex(sy.Pow(base, index_numerator))}"
+                print(f"**** ****exp_num_latex: {exp_num_latex}")
+            elif (index_denominator1 != 1) and (index_denominator2 == 1):
+                print("**** **** not1 and 1")
+                type_checker = random()
+                if type_checker < 0.33:
                     # a ^ {n/m}
                     exp_num_latex = f"{base_latex}^{{{index_latex}}}"
-                else:
+                elif (0.33 <= type_checker) and (type_checker < 0.66):
                     # m√a^n
                     exp_num_latex = f"\\sqrt[{index_denominator1_latex}]{{{base_latex}^{{{index_numerator_latex}}}}}"
+                else:
+                    # m√(a^n)
+                    exp_num_latex = f"\\sqrt[{index_denominator1_latex}]{{{sy.latex(sy.Pow(base, index_numerator))}}}"
+                print(f"**** ****exp_num_latex: {exp_num_latex}")
             elif (index_denominator1 == 1) and (index_denominator2 != 1):
-                if random() > 0.5:
+                print("**** **** 1 and not1")
+                type_checker = random()
+                if type_checker < 0.33:
                     # a ^ {n/m}
                     exp_num_latex = f"{base_latex}^{{{index_latex}}}"
-                else:
+                elif (0.33 <= type_checker) and (type_checker < 0.66):
                     # m√a^n
                     exp_num_latex = f"\\sqrt[{index_denominator2_latex}]{{{base_latex}^{{{index_numerator_latex}}}}}"
+                else:
+                    # m√(a^n)
+                    exp_num_latex = f"\\sqrt[{index_denominator2_latex}]{{{sy.latex(sy.Pow(base, index_numerator))}}}"
+                print(f"**** ****exp_num_latex: {exp_num_latex}")
             else:
+                print("**** **** not1 and not1")
                 type_checker = random()
                 if type_checker < 0.33:
                     # a ^ {n/(d1*d2)}
@@ -316,7 +346,7 @@ class ExponentCalculation:
                 else:
                     # \\sqrt[d1]{\\sqrt[d2]}{a^n}
                     exp_num_latex = f"\\sqrt[{index_denominator1}]{{\\sqrt[{index_denominator2}]{{{sy.latex(sy.Pow(base, index_numerator))}}}}}"
-            
+                print(f"**** ****exp_num_latex: {exp_num_latex}")
             return exp_num, exp_num_latex
         
         selected_base_type = choice(self._base_type_list)
@@ -359,8 +389,8 @@ class ExponentCalculation:
             index1_numerator = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
             print(f"index1_numerator: {index1_numerator}")
             if random() > 0.7:
-                index1_denominator1 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
-                index1_denominator2 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
+                index1_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
+                index1_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
             else:
                 index1_denominator1 = 1
                 index1_denominator2 = 1
@@ -371,8 +401,8 @@ class ExponentCalculation:
             index2_numerator = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
             print(f"index2_numerator: {index2_numerator}")
             if random() > 0.7:
-                index2_denominator1 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
-                index2_denominator2 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
+                index2_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
+                index2_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
             else:
                 index2_denominator1 = 1
                 index2_denominator2 = 1

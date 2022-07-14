@@ -312,10 +312,10 @@ class ExponentCalculation:
                     exp_num_latex = f"{base_latex}^{{{index_latex}}}"
                 elif (0.33 <= type_checker) and (type_checker < 0.66):
                     # \\sqrt[d1*d2]{a^n}
-                    exp_num_latex = f"\\sqrt[{sy.latex(index_denominator1 * index_denominator2)}]{{{sy.latex(base ** index_numerator)}}}"
+                    exp_num_latex = f"\\sqrt[{sy.latex(index_denominator1 * index_denominator2)}]{{{sy.latex(sy.Pow(base, index_numerator))}}}"
                 else:
                     # \\sqrt[d1]{\\sqrt[d2]}{a^n}
-                    exp_num_latex = f"\\sqrt[{index_denominator1}]{{\\sqrt[{index_denominator2}]{{{sy.latex(base ** index_numerator)}}}}}"
+                    exp_num_latex = f"\\sqrt[{index_denominator1}]{{\\sqrt[{index_denominator2}]{{{sy.latex(sy.Pow(base, index_numerator))}}}}}"
             
             return exp_num, exp_num_latex
         
@@ -356,11 +356,11 @@ class ExponentCalculation:
             print(f"final_index: {final_index}")
             final_index = sy.Rational(final_index, 1)
             print(f"final_index: {final_index}")
-            index1_numerator = self._random_index_without_zero_and_one(min_num=2, max_num=6)
+            index1_numerator = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
             print(f"index1_numerator: {index1_numerator}")
             if random() > 0.7:
-                index1_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
-                index1_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
+                index1_denominator1 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
+                index1_denominator2 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
             else:
                 index1_denominator1 = 1
                 index1_denominator2 = 1
@@ -368,11 +368,11 @@ class ExponentCalculation:
             print(f"index1_denominator2: {index1_denominator2}")
             index1 = (index1_numerator, index1_denominator1, index1_denominator2)
             
-            index2_numerator = self._random_index_without_zero_and_one(min_num=2, max_num=6)
+            index2_numerator = self._random_index_without_zero_and_one(min_num=-3, max_num=3)
             print(f"index2_numerator: {index2_numerator}")
             if random() > 0.7:
-                index2_denominator1 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
-                index2_denominator2 = self._random_index_without_zero_and_one(min_num=2, max_num=3)
+                index2_denominator1 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
+                index2_denominator2 = self._random_index_without_zero_and_one(min_num=-2, max_num=2)
             else:
                 index2_denominator1 = 1
                 index2_denominator2 = 1
@@ -381,6 +381,8 @@ class ExponentCalculation:
             index2 = (index2_numerator, index2_denominator1, index2_denominator2)
             
             coordinate_index = final_index - (sy.Rational(index1_numerator, index1_denominator1 * index1_denominator2) + sy.Rational(index2_numerator, index2_denominator1 * index2_denominator2))
+            # excess?(possibly be frac)
+            """
             print(f"type(coordinate_index): {type(coordinate_index)}")
             print(f"coordinate_index: {coordinate_index}")
             if random() > 0.5:
@@ -398,10 +400,15 @@ class ExponentCalculation:
             print(f"after coordinate_index: {coordinate_index}")
             print(f"index_denominator1: {index_denominator1}")
             print(f"index_denominator2: {index_denominator2}")
+            """
+            # always is 1
+            index_denominator1 = 1
+            index_denominator2 = 1
             index3 = (coordinate_index, index_denominator1, index_denominator2)
             index_list = [index1, index2, index3]
             shuffle(index_list)
             
+            print(f"index_list: {index_list}")
             first_index_numerator, first_index_denominator1, first_index_denominator2 = index_list.pop()
             first_num, first_latex = exp(base, index_numerator=first_index_numerator, index_denominator1=first_index_denominator1, index_denominator2=first_index_denominator2)
             print(f"first_num: {first_num}")
@@ -420,7 +427,7 @@ class ExponentCalculation:
                     print(f"after times latex_problem: {latex_problem}")
                     print("----times finish----")
                 else:  # add as division
-                    num, num_latex = exp(base, index_numerator=index_numerator, index_denominator1=index_denominator1, index_denominator2=index_denominator2)
+                    num, num_latex = exp(base, index_numerator=-index_numerator, index_denominator1=index_denominator1, index_denominator2=index_denominator2)
                     print(f"num: {num}")
                     print(f"num_latex: {num_latex}")
                     answer /= num

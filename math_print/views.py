@@ -16,6 +16,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from sympy.geometry import line
 
+
 from .math_process.character_calculate import CharacterMathProblem
 from .math_process.linear_equation import LinearEquationProblem
 from .math_process.number_calculate import NumberMathProblem
@@ -44,6 +45,7 @@ from .math_process.hs1_quadratic_function_max_min import HS1QuadraticFunctionMax
 from .math_process.unit_conversion import UnitConversionProblem
 from .math_process.sector_with_figure import SectorWithFigureProblem
 from .math_process.logarithm_calculation import LogarithmCalculationProblem
+from .math_process.exponent_calculation import ExponentCalculation
 
 
 # Create your views here.
@@ -1037,6 +1039,30 @@ def print_logarithm_calculation(request):
     
     return render(request, 'math_print/highschool2/logarithm_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_exponent_calculation(request):
+    PROBLEM_NUMBER = 20
+    
+    calculation_type = request.POST["exponent_calculation_type"]
+
+    base_type_list = request.POST.getlist("exponent_base_type")
+    if not(base_type_list):
+        base_type_list.append("number")
+        base_type_list.append("character")
+    
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
+            problem2 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    
+    return render(request, 'math_print/highschool2/exponent_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1773,10 +1799,7 @@ def display_parallel_lines_and_angle(request):
         used_information_list.append("multiple_corresponding_and_alternate_angle")
         used_information_list.append("vertical_angle")
     
-    # とりあえず仮生成
-    # 平行型と対頂角型をチェック<- tuple
     problem_type_and_answer_angle_tuple_list = []
-    # double loop
     for _ in range(20//2):
         problem_type1 = random.choice(used_information_list)
         answer_angle1 = random.randint(40, 120)
@@ -1843,3 +1866,21 @@ def display_logarithm_calculation(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/logarithm_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_exponent_calculation(request):
+    PROBLEM_NUMBER = 20
+    
+    calculation_type = request.POST["exponent_calculation_type"]
+
+    base_type_list = request.POST.getlist("exponent_base_type")
+    if not(base_type_list):
+        base_type_list.append("number")
+        base_type_list.append("character")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
+        problem2 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/highschool2/exponent_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

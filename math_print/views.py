@@ -1057,7 +1057,7 @@ def print_exponent_calculation(request):
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
             problem2 = ExponentCalculation(calculation_type=calculation_type, base_type_list=base_type_list)
-            math_problem_tuple_inner_list.append(problem1, problem2)
+            math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     
@@ -1799,10 +1799,7 @@ def display_parallel_lines_and_angle(request):
         used_information_list.append("multiple_corresponding_and_alternate_angle")
         used_information_list.append("vertical_angle")
     
-    # とりあえず仮生成
-    # 平行型と対頂角型をチェック<- tuple
     problem_type_and_answer_angle_tuple_list = []
-    # double loop
     for _ in range(20//2):
         problem_type1 = random.choice(used_information_list)
         answer_angle1 = random.randint(40, 120)

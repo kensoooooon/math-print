@@ -51,6 +51,51 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col border-end border-bottom">
+            <p>公倍数と公約数</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する問題タイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="lcm" name="problem_type" id="lcm_and_gcd_lcm" checked>
+                        <label class="form-check-label" for="lcm_and_gcd_lcm">
+                            公倍数を求める
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="gcd" name="problem_type" id="lcm_and_gcd_gcd" checked>
+                        <label class="form-check-label" for="lcm_and_gcd_gcd">
+                            公約数を求める
+                        </label>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="LCMAndGCDFivePaperRadio" checked>
+                        <label class="form-check-label" for="LCMAndGCDFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="LCMAndGCDTenPaperRadio">
+                        <label class="form-check-label" for="LCMAndGCDTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="LCMAndGCDFifteenPaperRadio">
+                        <label class="form-check-label" for="LCMAndGCDFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'lcm_and_gcd_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'lcm_and_gcd_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p>約分</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

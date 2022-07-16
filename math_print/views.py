@@ -941,7 +941,6 @@ def hs1_print_quadratic_function_max_min(request):
     
     return render(request, 'math_print/highschool1/quadratic_function_max_min/for_print.html', context)
 
-
 def print_parallel_lines_and_angle(request):
     import random
     from typing import NamedTuple
@@ -1080,8 +1079,7 @@ def print_lcm_and_gcd_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    
-    return render(request, 'math_print/junior_highschool5/lcm_and_gcd/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1919,4 +1917,4 @@ def display_lcm_and_gcd_problem(request):
         problem2 = LCMAndGCD(problem_type_list=problem_type_list)
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/highschool2/exponent_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

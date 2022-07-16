@@ -75,15 +75,72 @@ class LCMAndGCD:
         return latex_answer, latex_problem
 
     def _make_lcm_problem(self):
+        """最小公倍数を求める問題の生成
+
+        Returns:
+            latex_answer (str): latexで記述された最小公倍数
+            latex_problem (str): latexで記述された問題文
         
+        Note:
+            latex_problemに日本語を含むため、\(\)は手動で追加すること。
+        """
+        def lcms(x, y):
+            """2つの数x,yの公倍数を小さい順に出力する関数
+
+            Args:
+                x (int): もととなる数その1
+                y (int): もととなる数その2
+
+            Returns:
+                lcms (list): 最大公約数を含め5つの公倍数が含まれたリスト
+            """
+            import math
+            lcms = [((x * y) // math.gcd(x, y)) * i for i in range(1, 6)]
+            return lcms
+        
+        num1, num2 = self._base_num_maker()
+        latex_problem = f"\({num1}, {num2}\)の公倍数を、小さい順に5つ求めよ。"
+        lcms_list = lcms(num1, num2)
+        latex_answer = str(lcms_list).replace("[", "").replace("]", "")
         
         return latex_answer, latex_problem
 
     def _make_gcd_problem(self):
+        def divisors(x, y):
+            """2つの数x,yの公約数をすべて出力する関数
+
+            Args:
+                x (_type_): _description_
+                y (_type_): _description_
+
+            Returns:
+                _type_: _description_
+            """
+            import math
+            gcd = math.gcd(x, y)
+            lower_divisors, upper_divisors = [], []
+            i = 1
+            while i * i <= gcd:
+                if gcd % i == 0:
+                    lower_divisors.append(i)
+                    if i != gcd // i:
+                        upper_divisors.append(gcd // i)
+                i += 1
+            return lower_divisors + upper_divisors[::-1]
         
         return latex_answer, latex_problem
     
-    def base_num_maker(self):
+    def _base_num_maker(self):
+        """最小公倍数と最大公約数を求める問題の生成に利用する2つの数を求める関数
+        
+        Return:
+            num1 (int): 対象となる数その1
+            num2 (int): 対象となる数その2
+        
+        Note:
+            いずれの数も1以上100以下
+            等しくない数を生成する
+        """
         def max_indexer(num, base):
             """その数にかけたときに、100を超えない最大の指数を求める関数
 
@@ -104,13 +161,20 @@ class LCMAndGCD:
             return max_index
 
         bases = [2, 3, 4, 5, 6, 7, 8]
-        num1, num2 = 1, 1
-        for base in bases:
-            min_index = 0
-            max_index1 = max_indexer(num1, base)
-            max_index2 = max_indexer(num2, base)
-            num1_index = randint(min_index, max_index1)
-            num2_index = randint(min_index, max_index2)
-            num1 *= (base ** num1_index)
-            num2 *= (base ** num2_index)
+        while True:
+            num1, num2 = 1, 1
+            for base in bases:
+                min_index = 0
+                max_index1 = max_indexer(num1, base)
+                max_index2 = max_indexer(num2, base)
+                if (max_index1 == 0) and (max_index2 == 0):
+                    break
+                num1_index = randint(min_index, max_index1)
+                num2_index = randint(min_index, max_index2)
+                num1 *= (base ** num1_index)
+                num2 *= (base ** num2_index)
+            if (num1 != 1) and (num2 != 1) and (num1 != num2):
+                break
+        return num1, num2
+            
     

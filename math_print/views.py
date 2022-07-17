@@ -1068,14 +1068,19 @@ def print_lcm_and_gcd_problem(request):
     if not(problem_type_list):
         problem_type_list.append("lcm")
         problem_type_list.append("gcd")
+    max_problem_number_in_post = request.POST["max_problem_number"]
+    if bool(max_problem_number_in_post):
+        max_problem_number = int(unicodedata.normalize("NFKD", max_problem_number_in_post))
+    else:
+        max_problem_number = 100
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = LCMAndGCD(problem_type_list=problem_type_list)
-            problem2 = LCMAndGCD(problem_type_list=problem_type_list)
+            problem1 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
+            problem2 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
@@ -1910,11 +1915,16 @@ def display_lcm_and_gcd_problem(request):
     if not(problem_type_list):
         problem_type_list.append("lcm")
         problem_type_list.append("gcd")
+    max_problem_number_in_post = request.POST["max_problem_number"]
+    if bool(max_problem_number_in_post):
+        max_problem_number = int(unicodedata.normalize("NFKD", max_problem_number_in_post))
+    else:
+        max_problem_number = 100
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = LCMAndGCD(problem_type_list=problem_type_list)
-        problem2 = LCMAndGCD(problem_type_list=problem_type_list)
+        problem1 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
+        problem2 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

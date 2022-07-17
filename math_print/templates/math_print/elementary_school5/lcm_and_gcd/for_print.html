@@ -83,7 +83,6 @@ function showAnswer(){
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
-        <p style="text-align: left;">それぞれ指定された値を求めなさい。</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">

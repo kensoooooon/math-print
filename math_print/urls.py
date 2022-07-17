@@ -23,6 +23,9 @@ urlpatterns = [
     ### 分数の計算 ###
     path('fraction_calculate/print/', views.print_fraction_calculate_problem, name='fraction_calculate_print'),
     path('fraction_calculate/display', views.display_fraction_calculate_problem, name='fraction_calculate_display'),
+    ### 最小公倍数と最大公約数 ###
+    path('lcm_and_gcd/print/', views.print_lcm_and_gcd_problem, name='lcm_and_gcd_print'),
+    path('lcm_and_gcd/display/', views.display_lcm_and_gcd_problem, name='lcm_and_gcd_display'),
     ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),

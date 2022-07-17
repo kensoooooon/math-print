@@ -46,6 +46,7 @@ from .math_process.unit_conversion import UnitConversionProblem
 from .math_process.sector_with_figure import SectorWithFigureProblem
 from .math_process.logarithm_calculation import LogarithmCalculationProblem
 from .math_process.exponent_calculation import ExponentCalculation
+from .math_process.lcm_and_gcd import LCMAndGCD
 
 
 # Create your views here.
@@ -76,7 +77,6 @@ def show_highschool2(request):
 def print_number_problem(request):
     PROBLEM_NUMBER = 20
 
-    result = request.POST
     number_to_use = request.POST.getlist("number_number_to_use")
     operator_to_use = request.POST.getlist("number_operator_to_use")
     term_number = int(request.POST["term_number"])
@@ -941,7 +941,6 @@ def hs1_print_quadratic_function_max_min(request):
     
     return render(request, 'math_print/highschool1/quadratic_function_max_min/for_print.html', context)
 
-
 def print_parallel_lines_and_angle(request):
     import random
     from typing import NamedTuple
@@ -1062,6 +1061,30 @@ def print_exponent_calculation(request):
     
     
     return render(request, 'math_print/highschool2/exponent_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_lcm_and_gcd_problem(request):
+    PROBLEM_NUMBER = 20
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("lcm")
+        problem_type_list.append("gcd")
+    max_problem_number_in_post = request.POST["max_problem_number"]
+    if bool(max_problem_number_in_post):
+        max_problem_number = int(unicodedata.normalize("NFKD", max_problem_number_in_post))
+    else:
+        max_problem_number = 100
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
+            problem2 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1884,3 +1907,24 @@ def display_exponent_calculation(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/exponent_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_lcm_and_gcd_problem(request):
+    PROBLEM_NUMBER = 20
+
+    problem_type_list = request.POST.getlist("problem")
+    if not(problem_type_list):
+        problem_type_list.append("lcm")
+        problem_type_list.append("gcd")
+    max_problem_number_in_post = request.POST["max_problem_number"]
+    if bool(max_problem_number_in_post):
+        max_problem_number = int(unicodedata.normalize("NFKD", max_problem_number_in_post))
+    else:
+        max_problem_number = 100
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
+        problem2 = LCMAndGCD(problem_type_list=problem_type_list, max_problem_number=max_problem_number)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

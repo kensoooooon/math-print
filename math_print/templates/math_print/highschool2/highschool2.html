@@ -120,6 +120,7 @@
             </form>
         </div>
     </div>
+    <div class="row">
         <div class="col border-end border-bottom">
             <p>対数の計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
@@ -170,6 +171,52 @@
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'logarithm_calculation_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'logarithm_calculation_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>交点の位置ベクトルを求める</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">求めるベクトル</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="cross_point_of_two_line" name="problem_type" id="vector_cross_point_of_two_line" checked>
+                        <label class="form-check-label" for="vector_cross_point_of_two_line">
+                            二直線の交点の位置ベクトル
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="cross_point_of_plane_and_line" name="problem_type" id="vector_cross_point_of_plane_and_line" checked>
+                        <label class="form-check-label" for="vector_cross_point_of_plane_and_line">
+                            平面と直線の交点の位置ベクトル
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="VectorCrossPointFivePaperRadio" checked>
+                        <label class="form-check-label" for="VectorCrossPointFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="VectorCrossPointTenPaperRadio">
+                        <label class="form-check-label" for="VectorCrossPointTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="VectorCrossPointFifteenPaperRadio">
+                        <label class="form-check-label" for="VectorCrossPointFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'vector_cross_point_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'vector_cross_point_display' %}">      
             </form>
         </div>
     </div>

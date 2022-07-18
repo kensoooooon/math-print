@@ -7,11 +7,10 @@ class LCMAndGCD:
     """公倍数と公約数を求める問題
     
     Attributes:
-        _problem_type_list (str): 問題タイプ
+        _problem_type_list (list): 問題タイプ
         _max_problem_number (int): 問題に登場する数の最大値
         latex_answer (str): latexで記述された解答
         latex_problem (str): latexで記述された問題
-    
     """
     def __init__(self, **settings):
         """
@@ -23,6 +22,12 @@ class LCMAndGCD:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
+        """問題作成のコントローラー
+
+        Returns:
+            latex_answer (str): latexで記述された解答
+            latex_problem (str): latexで記述された問題
+        """
         selected_problem_type = choice(self._problem_type_list)
         if selected_problem_type == "lcm":
             latex_answer, latex_problem = self._make_lcm_problem()

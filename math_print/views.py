@@ -47,6 +47,7 @@ from .math_process.sector_with_figure import SectorWithFigureProblem
 from .math_process.logarithm_calculation import LogarithmCalculationProblem
 from .math_process.exponent_calculation import ExponentCalculation
 from .math_process.lcm_and_gcd import LCMAndGCD
+from .math_process.vector_cross_point import VectorCrossPoint
 
 
 # Create your views here.
@@ -1086,6 +1087,26 @@ def print_lcm_and_gcd_problem(request):
     
     return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_vector_cross_point(request):
+    PROBLEM_NUMBER = 20
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("cross_point_of_two_line")
+        problem_type_list.append("cross_point_of_plane_and_line")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = VectorCrossPoint(problem_type_list=problem_type_list)
+            problem2 = VectorCrossPoint(problem_type_list=problem_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/highschool2/vector_cross_point/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1928,3 +1949,19 @@ def display_lcm_and_gcd_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_vector_cross_point(request):
+    PROBLEM_NUMBER = 20
+
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("cross_point_of_two_line")
+        problem_type_list.append("cross_point_of_plane_and_line")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = VectorCrossPoint(problem_type_list=problem_type_list)
+        problem2 = VectorCrossPoint(problem_type_list=problem_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/highschool2/vector_cross_point/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

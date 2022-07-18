@@ -61,6 +61,8 @@ class VectorCrossPoint:
         a_coeff_latex = sy.latex(a_coeff)
         b_coeff = sy.Rational(l2 * r1, l1 * r2 + l2 * r1 + l2 * r2)
         b_coeff_latex = sy.latex(b_coeff)
+        k = sy.Rational(1, a_coeff + b_coeff)
+        k_latex = sy.latex(k)
         
         latex_problem = "\\( \\triangle{{OAB}}\\)において、"\
             f"辺\\( OA \\)を\\( {sy.latex(l1)}:{sy.latex(l2)} \\)に内分する点を\\( M \\)、\n"\
@@ -69,7 +71,7 @@ class VectorCrossPoint:
             "\\( (1) \\) \\( \\vec{{OP}} \\)を\\( \\vec{{OA}} = \\vec{{a}}, \\vec{{OB}} = \\vec{{b}} \\)を用いて表せ。\n"\
             "\\( (2) \\) \\( \\vec{{OP}} \\)を\\( \\vec{{OA}} = \\vec{{a}}, \\vec{{OB}} = \\vec{{b}} \\)を用いて表せ。"
         
-        latex_answer = "\\( MP:PB = s:1-s, AP:PN = 1-t:t \\)とする。"\
+        latex_answer = "(1) \\( MP:PB = s:1-s, AP:PN = 1-t:t \\)とする。"\
             f"点Pは線分\\( MB \\)を\\( s:1-s \\)に内分する点であるため、内分の公式より、\n"\
             "\\( \\vec{{OP}} = (1-s)\\vec{{OM}} + s\\vec{{OB}} \\)"\
             f"\\( = (1-s) ({l_coeff_latex} \\vec{{a}}) + s \\vec{{b}} \\)"\
@@ -79,10 +81,14 @@ class VectorCrossPoint:
             f"\\( = t\\vec{{a}}) + (1-t)({r_coeff_latex} \\vec{{b}}) \\)"\
             f"\\( = t\\vec{{a}} + ({r_coeff_latex} - {r_coeff_latex}t) \\vec{{b}}\\)と表せる。\n"\
             "\\( \\vec{{a}} \\)と\\( \\vec{{b}} \\)は一次独立であるため、\n"\
-            f"\\( {l_coeff_latex} - {l_coeff_latex}s = t \\\\ s = {r_coeff_latex} - {r_coeff_latex}t \\)\n"\
+            f"\\( \\left\\{{ \\begin{{array}}{{l}} {l_coeff_latex} - {l_coeff_latex}s = t \\\\ s = {r_coeff_latex} - {r_coeff_latex}t \\end{{array}} \\right. \\)\n"\
             "が成り立つ。これを解くと、\n"\
-            f"\\( s = {s_latex} \\\\ t = {t_latex} \\)となり、\n"\
-            f"\\( \\vec{{OP}} = {a_coeff_latex} \\vec{{a}} + {b_coeff_latex} \\vec{{b}} \\)"
+            f"\\( s = {s_latex}, t = {t_latex} \\)となり、\n"\
+            f"\\( \\vec{{OP}} = {a_coeff_latex} \\vec{{a}} + {b_coeff_latex} \\vec{{b}} \\)となる。\n"\
+            f"(2) 点Qは直線OP上にあるため\\( \\vec{{OQ}} = k \\vec{{OP}} = {a_coeff_latex} k \\vec{{a}} + {b_coeff_latex} k \\vec{{b}} \\)とおける。\n"\
+            f"ここで、点Qは直線AB上の点でもあるため、\\( {a_coeff_latex} k + {b_coeff_latex} k = 1\\)が成立し、"\
+            f"これを解くと、\\( k = {k_latex} \\)となる。\n"\
+            f"よって答えは、\\( \\vec{{OQ}} = {sy.latex(k * a_coeff)} \\vec{{a}} + {sy.latex(k * b_coeff)} \\vec{{b}} \\)である。"
 
         return latex_answer, latex_problem
     

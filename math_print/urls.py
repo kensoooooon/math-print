@@ -119,4 +119,7 @@ urlpatterns = [
     # 指数の計算
     path('exponent_calculate/print', views.print_exponent_calculation, name='exponent_calculation_print'),
     path('exponent_calculate/display', views.display_exponent_calculation, name='exponent_calculation_display'),
+    # ベクトルの交点
+    path('vector_cross_point/print', views.print_vector_cross_point, name='vector_cross_point_print'),
+    path('vector_cross_point/display', views.display_vector_cross_point, name='vector_cross_point_display'),
 ]

@@ -92,9 +92,6 @@ function showAnswer(){
                                 \( \quad \)
                                 {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                             </p>
-                            <p class="answer" style="visibility:hidden;">
-                                {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
-                            </p>
                         </li>
                     </div>
                     <div>
@@ -103,14 +100,45 @@ function showAnswer(){
                                 \( \quad \)
                                 {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                             </p>
-                            <p class="answer" style="visibility:hidden;">
-                                {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
-                            </p>
                         </li>
                     </div>
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
@@ -123,23 +151,15 @@ function showAnswer(){
                 <div class="problem">
                     <div>
                         <li>
-                            <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.0.latex_problem }}
-                            </p>
                             <p class="answer" style="visibility:visible;">
-                                {{ math_problem_tuple.0.latex_answer }}
+                                {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
                             </p>
                         </li>
                     </div>
                     <div>
                         <li>
-                            <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.1.latex_problem }}
-                            </p>
                             <p class="answer" style="visibility:visible;">
-                                {{ math_problem_tuple.1.latex_answer }}
+                                {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
                             </p>
                         </li>
                     </div>

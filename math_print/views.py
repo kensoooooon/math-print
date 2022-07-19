@@ -1088,7 +1088,7 @@ def print_lcm_and_gcd_problem(request):
     return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_vector_cross_point(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 2
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("cross_point_of_two_line")
@@ -1951,7 +1951,7 @@ def display_lcm_and_gcd_problem(request):
     return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_vector_cross_point(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 6
 
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):

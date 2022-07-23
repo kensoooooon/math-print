@@ -60,8 +60,8 @@ urlpatterns = [
     ### 中2 ###
     path('junior_highschool2/', views.show_junior_highschool2, name='junior_highschool2'),
     # 連立方程式
-    path('simultaneous_equations/print/', views.print_simultaneous_equation, name='simultaneous_equation_print'),
-    path('simultaneous_equations/display/', views.display_simultaneous_equation, name='simultaneous_equation_display'),
+    path('simultaneous_equations/print/', views.print_simultaneous_equations, name='simultaneous_equations_print'),
+    path('simultaneous_equations/display/', views.display_simultaneous_equations, name='simultaneous_equations_display'),
     # 1次関数
     path('linear_function/print/', views.print_linear_function, name='linear_function_print'),
     path('linear_function/display/', views.display_linear_function, name='linear_function_display'),

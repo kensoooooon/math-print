@@ -1,3 +1,146 @@
+"""
+# randomのやつ
+import sympy as sy
+
+from random import choice, randint, random
+from time import perf_counter
+
+def random_num_maker(used_coefficients, max_num=6, min_num=-6):
+    """問題設定と最大最小から任意の数を値とlatex形式でランダムに出力
+
+    Args:
+        max_num (int, optional): 最大値
+        min_num (int, optional): 最小値
+
+    Returns:
+        num (sy.Integer or sy.Rational): 計算に用いる数
+        num_latex (str): 表記に用いる数
+
+    Note:
+        _make_random_decimalは、分母10で計算されるため、最大最小を5倍している
+
+    Caution:
+        小数についてはnumがsy.Rational型で、num_latexは小数を変換した文字列である食い違いに注意
+    """
+    def _make_random_frac(max_num=6, min_num=-6):
+        """ランダムな分数を返す
+
+        Args:
+            max_num (int, optional): 分母と分子の最大値
+            min_num (int, optional): 分母と分子の最小値
+
+        Returns:
+            frac (sy.Rational): 分数
+            frac_latex (str): latex形式で記述された分数
+        """
+        checker = random()
+        if checker > 0.5:
+            numerator = randint(2, max_num)
+            denominator = randint(2, max_num)
+        else:
+            numerator = randint(min_num, -2)
+            denominator = randint(2, max_num)
+
+        frac = sy.Rational(numerator, denominator)
+
+        frac_latex = sy.latex(frac)
+        return frac, frac_latex
+
+    def _make_random_decimal(max_num=60, min_num=-60):
+        """ランダムで小数を返す
+
+        Args:
+            max_num (int, optional): 小数作成用分数の分子の最大値
+            min_num (int, optional): 小数作成用分数の分子の最小値
+        Returns:
+            frac_as_decimal (sy.Rational): 計算に用いる分数
+            decimal_latex (str): 表記に用いる小数
+        Note:
+            計算自体は分数で行うため、表記に用いているものと型が違うことに注意
+        """
+        checker = random()
+        if checker > 0.5:
+            numerator = randint(1, max_num)
+        else:
+            numerator = randint(min_num, -1)
+
+        if numerator % 10 == 0:
+            numerator += randint(1, 5)
+        frac_as_decimal = sy.Rational(numerator, 10)
+        decimal = float(frac_as_decimal)
+        decimal_latex = sy.latex(decimal)
+        return frac_as_decimal, decimal_latex
+
+    def _make_random_integer(max_num=6, min_num=-6):
+        """ランダムな整数を作成する
+
+        Args:
+            max_num (int, optional): 値の最大値
+            min_num (int, optional): 値の最小値
+
+        Returns:
+            integer (sy.Integer): 計算に用いる整数
+            integer_latex (str): 表示に用いる整数
+        """
+        checker = random()
+        if checker > 0.5:
+            numerator = randint(1, max_num)
+        else:
+            numerator = randint(min_num, -1)
+
+        integer = sy.Integer(numerator)
+        integer_latex = sy.latex(integer)
+        return integer, integer_latex
+    
+    number_type = choice(used_coefficients)
+    if number_type == "integer":
+        num, num_latex = _make_random_integer(max_num=max_num, min_num=min_num)
+    elif number_type == "frac":
+        num, num_latex = _make_random_frac(max_num=max_num, min_num=min_num)
+    elif number_type == "decimal":
+        num, num_latex = _make_random_decimal(max_num=max_num * 5, min_num=min_num * 5)
+    return num, num_latex
+
+def denominator_checker(numbers_list):
+    for number in numbers_list:
+        denominator = number.denominator
+        numerator = number.numerator
+        if (denominator >= 10) or (numerator >=10):
+            break
+    else:
+        return True
+    return False
+
+start_time = perf_counter()
+
+used_coefficients = ["integer", "frac", "decimal"]
+
+x, y = sy.symbols("x y")
+
+while True:
+
+    a1, _ = random_num_maker(used_coefficients)
+    b1, _ = random_num_maker(used_coefficients)
+    c1, _ = random_num_maker(used_coefficients)
+
+    a2, _ = random_num_maker(used_coefficients)
+    b2, _ = random_num_maker(used_coefficients)
+    c2, _ = random_num_maker(used_coefficients)
+    
+    eq1 = sy.Eq(a1 * x + b1 * y, c1)
+    eq2 = sy.Eq(a2 * x + b2 * y, c2)
+    answers = sy.solve([eq1, eq2], [x, y])
+    x_value, y_value = answers.values()
+    
+    numbers = [a1, b1, c1, a2, b2, c2, x_value, y_value]
+    if denominator_checker:
+        print(numbers)
+        break
+    
+
+end_time = perf_counter()
+print(f"time: {end_time - start_time}")
+"""
 from random import choice, randint, random
 
 import sympy as sy

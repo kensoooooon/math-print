@@ -117,25 +117,29 @@ used_coefficients = ["integer", "frac", "decimal"]
 
 x, y = sy.symbols("x y")
 
-while True:
+for _ in range(20):
+    while True:
 
-    a1, _ = random_num_maker(used_coefficients)
-    b1, _ = random_num_maker(used_coefficients)
-    c1, _ = random_num_maker(used_coefficients)
+        a1, _ = random_num_maker(used_coefficients)
+        b1, _ = random_num_maker(used_coefficients)
+        c1, _ = random_num_maker(used_coefficients)
 
-    a2, _ = random_num_maker(used_coefficients)
-    b2, _ = random_num_maker(used_coefficients)
-    c2, _ = random_num_maker(used_coefficients)
-    
-    eq1 = sy.Eq(a1 * x + b1 * y, c1)
-    eq2 = sy.Eq(a2 * x + b2 * y, c2)
-    answers = sy.solve([eq1, eq2], [x, y])
-    x_value, y_value = answers.values()
-    
-    numbers = [a1, b1, c1, a2, b2, c2, x_value, y_value]
-    if denominator_checker:
-        print(numbers)
-        break
+        a2, _ = random_num_maker(used_coefficients)
+        b2, _ = random_num_maker(used_coefficients)
+        c2, _ = random_num_maker(used_coefficients)
+
+        eq1 = sy.Eq(a1 * x + b1 * y, c1)
+        eq2 = sy.Eq(a2 * x + b2 * y, c2)
+        answers = sy.solve([eq1, eq2], [x, y])
+        if (isinstance(answers, list)):
+            continue
+        x_value, y_value = answers.values()
+
+        numbers = [a1, b1, c1, a2, b2, c2, x_value, y_value]
+        
+        if denominator_checker(numbers):
+            break
+    print(numbers)
     
 
 end_time = perf_counter()

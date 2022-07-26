@@ -2,37 +2,14 @@
 # randomのやつ
 import sympy as sy
 
+from pprint import pprint
 from random import choice, randint, random
 from time import perf_counter
 
-def random_num_maker(used_coefficients, max_num=6, min_num=-6):
-    """問題設定と最大最小から任意の数を値とlatex形式でランダムに出力
+def random_num_maker(used_coefficients, max_num=3, min_num=-3):
 
-    Args:
-        max_num (int, optional): 最大値
-        min_num (int, optional): 最小値
-
-    Returns:
-        num (sy.Integer or sy.Rational): 計算に用いる数
-        num_latex (str): 表記に用いる数
-
-    Note:
-        _make_random_decimalは、分母10で計算されるため、最大最小を5倍している
-
-    Caution:
-        小数についてはnumがsy.Rational型で、num_latexは小数を変換した文字列である食い違いに注意
-    """
     def _make_random_frac(max_num=6, min_num=-6):
-        """ランダムな分数を返す
 
-        Args:
-            max_num (int, optional): 分母と分子の最大値
-            min_num (int, optional): 分母と分子の最小値
-
-        Returns:
-            frac (sy.Rational): 分数
-            frac_latex (str): latex形式で記述された分数
-        """
         checker = random()
         if checker > 0.5:
             numerator = randint(2, max_num)
@@ -47,17 +24,7 @@ def random_num_maker(used_coefficients, max_num=6, min_num=-6):
         return frac, frac_latex
 
     def _make_random_decimal(max_num=60, min_num=-60):
-        """ランダムで小数を返す
 
-        Args:
-            max_num (int, optional): 小数作成用分数の分子の最大値
-            min_num (int, optional): 小数作成用分数の分子の最小値
-        Returns:
-            frac_as_decimal (sy.Rational): 計算に用いる分数
-            decimal_latex (str): 表記に用いる小数
-        Note:
-            計算自体は分数で行うため、表記に用いているものと型が違うことに注意
-        """
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
@@ -72,16 +39,7 @@ def random_num_maker(used_coefficients, max_num=6, min_num=-6):
         return frac_as_decimal, decimal_latex
 
     def _make_random_integer(max_num=6, min_num=-6):
-        """ランダムな整数を作成する
 
-        Args:
-            max_num (int, optional): 値の最大値
-            min_num (int, optional): 値の最小値
-
-        Returns:
-            integer (sy.Integer): 計算に用いる整数
-            integer_latex (str): 表示に用いる整数
-        """
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
@@ -105,11 +63,10 @@ def denominator_checker(numbers_list):
     for number in numbers_list:
         denominator = number.denominator
         numerator = number.numerator
-        if (denominator >= 10) or (numerator >=10):
-            break
+        if (denominator >= 10) or (numerator >=10) or (numerator <= -10):
+            return False
     else:
         return True
-    return False
 
 start_time = perf_counter()
 
@@ -117,7 +74,8 @@ used_coefficients = ["integer", "frac", "decimal"]
 
 x, y = sy.symbols("x y")
 
-for _ in range(20):
+all_numbers_list = []
+for _ in range(100):
     while True:
 
         a1, _ = random_num_maker(used_coefficients)
@@ -133,17 +91,24 @@ for _ in range(20):
         answers = sy.solve([eq1, eq2], [x, y])
         if (isinstance(answers, list)):
             continue
-        x_value, y_value = answers.values()
-
+        # print(answers)
+        if y in answers.keys():
+            x_value, y_value = answers.values()
+        else:
+            pass
         numbers = [a1, b1, c1, a2, b2, c2, x_value, y_value]
         
         if denominator_checker(numbers):
             break
-    print(numbers)
+    # print(f"numbers have been appended: {numbers}")
+    all_numbers_list.append(numbers)
+    print("------------------------")
     
 
 end_time = perf_counter()
 print(f"time: {end_time - start_time}")
+print(f"count: {len(all_numbers_list)}")
+pprint(all_numbers_list)
 """
 from random import choice, randint, random
 

@@ -1,9 +1,11 @@
 """
+#  while trueでのごり押し
 # randomのやつ
 import sympy as sy
 
 from pprint import pprint
 from random import choice, randint, random
+from statistics import mean
 from time import perf_counter
 
 def random_num_maker(used_coefficients, max_num=3, min_num=-3):
@@ -65,8 +67,7 @@ def denominator_checker(numbers_list):
         numerator = number.numerator
         if (denominator >= 10) or (numerator >=10) or (numerator <= -10):
             return False
-    else:
-        return True
+    return True
 
 start_time = perf_counter()
 
@@ -75,6 +76,9 @@ used_coefficients = ["integer", "frac", "decimal"]
 x, y = sy.symbols("x y")
 
 all_numbers_list = []
+times_list = []
+
+# ax + by = c
 for _ in range(100):
     while True:
 
@@ -85,7 +89,7 @@ for _ in range(100):
         a2, _ = random_num_maker(used_coefficients)
         b2, _ = random_num_maker(used_coefficients)
         c2, _ = random_num_maker(used_coefficients)
-
+        
         eq1 = sy.Eq(a1 * x + b1 * y, c1)
         eq2 = sy.Eq(a2 * x + b2 * y, c2)
         answers = sy.solve([eq1, eq2], [x, y])
@@ -102,13 +106,99 @@ for _ in range(100):
             break
     # print(f"numbers have been appended: {numbers}")
     all_numbers_list.append(numbers)
-    print("------------------------")
     
 
 end_time = perf_counter()
-print(f"time: {end_time - start_time}")
+time = end_time - start_time
+times_list.append(time)
+print(f"time: {time}")
 print(f"count: {len(all_numbers_list)}")
-pprint(all_numbers_list)
+
+start_time = perf_counter()
+# ax+by=c+dx+ey
+for _ in range(100):
+    while True:
+
+        a1, _ = random_num_maker(used_coefficients)
+        b1, _ = random_num_maker(used_coefficients)
+        c1, _ = random_num_maker(used_coefficients)
+        d1, _ = random_num_maker(used_coefficients)
+        e1, _ = random_num_maker(used_coefficients)
+
+        a2, _ = random_num_maker(used_coefficients)
+        b2, _ = random_num_maker(used_coefficients)
+        c2, _ = random_num_maker(used_coefficients)
+        d2, _ = random_num_maker(used_coefficients)
+        e2, _ = random_num_maker(used_coefficients)
+        
+        eq1 = sy.Eq(a1 * x + b1 * y, c1 + d1 * x + e1 * y)
+        eq2 = sy.Eq(a2 * x + b2 * y, c2 + d2 * x + e2 * y)
+        answers = sy.solve([eq1, eq2], [x, y])
+        if (isinstance(answers, list)):
+            continue
+        # print(answers)
+        if y in answers.keys():
+            x_value, y_value = answers.values()
+        else:
+            pass
+        numbers = [a1, b1, c1, a2, b2, c2, x_value, y_value]
+        
+        if denominator_checker(numbers):
+            break
+    # print(f"numbers have been appended: {numbers}")
+    all_numbers_list.append(numbers)
+    
+
+end_time = perf_counter()
+time = end_time - start_time
+times_list.append(time)
+print(f"time: {time}")
+print(f"count: {len(all_numbers_list)}")
+
+start_time = perf_counter()
+# ax+by=c+d(ex+fy)
+for _ in range(100):
+    while True:
+
+        a1, _ = random_num_maker(used_coefficients)
+        b1, _ = random_num_maker(used_coefficients)
+        c1, _ = random_num_maker(used_coefficients)
+        d1, _ = random_num_maker(used_coefficients)
+        e1, _ = random_num_maker(used_coefficients)
+        f1, _ = random_num_maker(used_coefficients)
+
+        a2, _ = random_num_maker(used_coefficients)
+        b2, _ = random_num_maker(used_coefficients)
+        c2, _ = random_num_maker(used_coefficients)
+        d2, _ = random_num_maker(used_coefficients)
+        e2, _ = random_num_maker(used_coefficients)
+        f2, _ = random_num_maker(used_coefficients)
+        
+        eq1 = sy.Eq(a1 * x + b1 * y, c1 + d1 * (e1 * x + f1 * y))
+        eq2 = sy.Eq(a2 * x + b2 * y, c2 + d2 * (e2 * x + f2 * y))
+        answers = sy.solve([eq1, eq2], [x, y])
+        if (isinstance(answers, list)):
+            continue
+        # print(answers)
+        if y in answers.keys():
+            x_value, y_value = answers.values()
+        else:
+            pass
+        numbers = [a1, b1, c1, a2, b2, c2, x_value, y_value]
+        
+        if denominator_checker(numbers):
+            break
+    # print(f"numbers have been appended: {numbers}")
+    all_numbers_list.append(numbers)
+    
+
+end_time = perf_counter()
+time = end_time - start_time
+times_list.append(time)
+print(f"time: {time}")
+print(f"count: {len(all_numbers_list)}")
+
+print(f"mean_time: {mean(times_list)}")
 """
 from random import choice, randint, random
 

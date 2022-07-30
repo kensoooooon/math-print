@@ -240,20 +240,23 @@ class SimultaneousEquations:
         while True:
             equations_list = []
             latex_equations_list = []
-            for _ in range(2):
-                selected_equation_type = choice(self._equation_types)
-                if selected_equation_type == "ax+by=c":
-                    equation, latex_equation = self._make_simple_problem(x, y)
-                elif selected_equation_type == "ax+by=c+dx+ey":
-                    equation, latex_equation = self._make_including_transposition_problem(x, y)
-                elif selected_equation_type == "ax+by=c+d(ex+fy)":
-                    equation, latex_equation = self._make_including_expansion_and_transposition_problem(x, y)
-                equations_list.append(equation)
-                latex_equations_list.append(latex_equation)
-            equation1, equation2 = equations_list
-            latex_equation1, latex_equation2 = latex_equations_list
-            latex_problem = f"{latex_equation1} \\\\ {latex_equation2}"
-            answers = sy.solve([equation1, equation2], [x, y])
+            while True:
+                for _ in range(2):
+                    selected_equation_type = choice(self._equation_types)
+                    if selected_equation_type == "ax+by=c":
+                        equation, latex_equation = self._make_simple_problem(x, y)
+                    elif selected_equation_type == "ax+by=c+dx+ey":
+                        equation, latex_equation = self._make_including_transposition_problem(x, y)
+                    elif selected_equation_type == "ax+by=c+d(ex+fy)":
+                        equation, latex_equation = self._make_including_expansion_and_transposition_problem(x, y)
+                    equations_list.append(equation)
+                    latex_equations_list.append(latex_equation)
+                equation1, equation2 = equations_list
+                latex_equation1, latex_equation2 = latex_equations_list
+                latex_problem = f"{latex_equation1} \\\\ {latex_equation2}"
+                answers = sy.solve([equation1, equation2], [x, y])
+                if not(isinstance(answers, list)):
+                    break
             if (x not in answers.keys()) or (y not in answers.keys()):
                 continue
             x_latex = sy.latex(answers[x])

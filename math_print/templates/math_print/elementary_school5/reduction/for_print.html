@@ -82,6 +82,7 @@ function showAnswer(){
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
+        <p style="text-align: left;">以下の分数をそれ以上割れなくなるまで約分しなさい</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">

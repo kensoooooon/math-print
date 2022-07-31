@@ -136,10 +136,10 @@ class SimultaneousEquations:
         Note:
             cは登場する係数に小数しか選択されていない場合、かつ有限小数で、さらに整数でない時だけfloat型に変換する
         """        
-        a, a_latex = self._random_num_maker()
-        b, b_latex = self._random_num_maker()
-        d, d_latex = self._random_num_maker()
-        e, e_latex = self._random_num_maker()
+        a, a_latex = self._random_num_maker(min_num=-4, max_num=4)
+        b, b_latex = self._random_num_maker(min_num=-4, max_num=4)
+        d, d_latex = self._random_num_maker(min_num=-3, max_num=3)
+        e, e_latex = self._random_num_maker(min_num=-3, max_num=3)
         c = (a - d) * answer1 + (b - e) * answer2
         if (self._used_coefficients == ["decimal"]) and (self._is_finite_decimal(c)) and (not(c.is_Integer)):
             c_latex = sy.latex(float(c))
@@ -163,7 +163,10 @@ class SimultaneousEquations:
         else:
             latex_equation += f" {b_latex}y"
         
-        latex_equation += f" = {c_latex}"
+        if c!= 0:
+            latex_equation += f" = {c_latex}"
+        else:
+            latex_equation += "="
         
         if d == 1:
             latex_equation += " + x"
@@ -198,11 +201,11 @@ class SimultaneousEquations:
         Note:
             cは登場する係数に小数しか選択されていない場合、かつ有限小数で、さらに整数でない時だけfloat型に変換する
         """
-        a, a_latex = self._random_num_maker()
-        b, b_latex = self._random_num_maker()
-        d, d_latex = self._random_num_maker()
-        e, e_latex = self._random_num_maker()
-        f, f_latex = self._random_num_maker()
+        a, a_latex = self._random_num_maker(min_num=-4, max_num=4)
+        b, b_latex = self._random_num_maker(min_num=-4, max_num=4)
+        d, d_latex = self._random_num_maker(min_num=-2, max_num=2)
+        e, e_latex = self._random_num_maker(min_num=-2, max_num=2)
+        f, f_latex = self._random_num_maker(min_num=-2, max_num=2)
         c = (a - d * e) * answer1 + (b - d * f) * answer2
         if (self._used_coefficients == ["decimal"]) and (self._is_finite_decimal(c)) and (not(c.is_Integer)):
             c_latex = sy.latex(float(c))
@@ -227,7 +230,10 @@ class SimultaneousEquations:
         else:
             latex_equation += f" {b_latex}y"
         
-        latex_equation += f" = {c_latex}"
+        if c != 0:
+            latex_equation += f" = {c_latex}"
+        else:
+            latex_equation += "="
         
         if d == 1:
             latex_equation += f"+ \\left("
@@ -278,7 +284,7 @@ class SimultaneousEquations:
         elif number_type == "frac":
             num, num_latex = self._make_random_frac(max_num=max_num, min_num=min_num)
         elif number_type == "decimal":
-            num, num_latex = self._make_random_decimal(max_num=max_num * 5, min_num=min_num * 5)
+            num, num_latex = self._make_random_decimal(max_num=max_num * 2, min_num=min_num * 2)
         return num, num_latex
     
     def _make_random_frac(self, max_num=6, min_num=-6):
@@ -305,8 +311,8 @@ class SimultaneousEquations:
         frac_latex = sy.latex(frac)
         return frac, frac_latex
         
-    def _make_random_decimal(self, max_num=60, min_num=-60):
-        """ランダムで小数を返す
+    def _make_random_decimal(self, max_num=30, min_num=-30):
+        """ランダムで0.5刻みの小数を返す
 
         Args:
             max_num (int, optional): 小数作成用分数の分子の最大値

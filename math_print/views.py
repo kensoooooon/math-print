@@ -21,7 +21,7 @@ from .math_process.character_calculate import CharacterMathProblem
 from .math_process.linear_equation import LinearEquationProblem
 from .math_process.number_calculate import NumberMathProblem
 from .math_process.specific_linear_equation import SpecificLinearEquation
-from .math_process.simultaneous_equations2 import SimultaneousEquations
+from .math_process.simultaneous_equations import SimultaneousEquations
 from .math_process.expand_equation import ExpandEquationProblem
 from .math_process.completing_the_square import CompletingTheSquareProblem
 from .math_process.proportional_expression import ProportionalExpressionProblem

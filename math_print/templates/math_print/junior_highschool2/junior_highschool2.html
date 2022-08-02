@@ -44,39 +44,60 @@
             <p>連立方程式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">登場する係数</small>
+                <small class="text-muted">優先的に登場する係数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="simutaneousEquationIntegerCheck" checked>
-                        <label class="form-check-label" for="simutaneousEquationIntegerCheck">
+                        <input class="form-check-input" type="checkbox" value="integer" name="used_coefficient" id="simultaneous_equations_coefficient_integer" checked>
+                        <label class="form-check-label" for="simultaneous_equations_coefficient_integer">
                             整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="decimal" name="number_to_use" id="simultaneousEquationDecimalCheck">
-                        <label class="form-check-label" for="simultaneousEquationDecimalCheck">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="used_coefficient" id="simultaneous_equations_coefficient_decimal">
+                        <label class="form-check-label" for="simultaneous_equations_coefficient_decimal">
                             小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="frac" name="number_to_use" id="simultaneousEquationFracCheck">
-                        <label class="form-check-label" for="simultaneousEquationFracCheck">
+                        <input class="form-check-input" type="checkbox" value="frac" name="used_coefficient" id="simultaneous_equations_coefficient_frac">
+                        <label class="form-check-label" for="simultaneous_equations_coefficient_frac">
                             分数
                         </label>
                     </div>
                 </div>
-                <small class="text-muted">方程式のタイプ</small>
+                <small class="text-muted">登場する方程式のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="ax_plus_by_equal_c_only_integer" name="simultaneous_equation_type" id="ax_plus_by_equal_c_only_integer" checked>
-                        <label class="form-check-label" for="ax_plus_by_equal_c_only_integer">
-                            ax+by=c(整数解のみ)
+                        <input class="form-check-input" type="checkbox" value="ax+by=c" name="equation_types" id="ax+by=c" checked>
+                        <label class="form-check-label" for="ax+by=c">
+                            ax+by=c
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="ax_plus_by_equal_c_all_number" name="simultaneous_equation_type" id="ax_plus_by_equal_c_all_number">
-                        <label class="form-check-label" for="ax_plus_by_equal_c_all_number">
-                            ax+by=c(分数解もふくむ)
+                        <input class="form-check-input" type="checkbox" value="ax+by=c+dx+ey" name="equation_types" id="ax+by=c+dx+ey">
+                        <label class="form-check-label" for="ax+by=c+dx+ey">
+                            ax+by=c+dx+ey
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="ax+by=c+d(ex+fy)" name="equation_types" id="ax+by=c+d(ex+fy)">
+                        <label class="form-check-label" for="ax+by=c+d(ex+fy)">
+                            ax+by=c+f(dx+ey)
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">解のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="only_integer" name="answer_type" id="simultaneous_equations_only_integer" checked>
+                        <label class="form-check-label" for="simultaneous_equations_only_integer">
+                            整数解のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="including_fraction" name="answer_type" id="simultaneous_equtions_including_fraction">
+                        <label class="form-check-label" for="simultaneous_equtions_including_fraction">
+                            分数解も含む
                         </label>
                     </div>
                 </div>
@@ -101,8 +122,8 @@
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'simultaneous_equation_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'simultaneous_equation_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'simultaneous_equations_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'simultaneous_equations_display' %}">      
             </form>
         </div>
         <div class="col border-end border-bottom">

@@ -36,8 +36,8 @@ function showAnswer(){
 <style type="text/css" media="print">
     .print_pages{
         /*A4縦 172,251*/
-        width: 260mm;
-        height: 349mm;
+        width: 280mm;
+        height: 389mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
         page-break-after: always;
@@ -82,6 +82,7 @@ function showAnswer(){
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
+        <p style="text-align: left;">以下の分数をそれ以上割れなくなるまで約分しなさい</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">

@@ -83,6 +83,7 @@ function showAnswer(){
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
+        <p style="text-align: left;">xを変数だとみなした上で、以下の式を平方完成せよ。</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -111,6 +112,10 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <footer class="container-fluid print_footer">
@@ -147,6 +152,10 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <footer class="container-fluid print_footer">

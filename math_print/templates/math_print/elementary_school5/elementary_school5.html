@@ -15,32 +15,22 @@
 
 {% block script %}
 <script>
-    function changeStatusOfFrationType(){
-        let fraction_types = document.getElementsByName(`fraction_type`);
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < fraction_types.length; i++) {
-            if (!(fraction_types[i].checked)){
-                fraction_types[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
             }
         }
     }
 
-    function changeStatusOfFractionCalculateType(){
-        let fraction_calculate_types = document.getElementsByName('fraction_calculate_type');
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < fraction_calculate_types.length; i++){
-            if (!(fraction_calculate_types[i].checked)){
-                fraction_calculate_types[i].checked = true;
-            }
-        }
-    }
-
-    function changeStatusOfFrationTypeForCalculate(){
-        let fraction_types_for_calculate = document.getElementsByName(`fraction_type_for_calculate`);
-        
-        for (let i = 0; i < fraction_types_for_calculate.length; i++){
-            if (!(fraction_types_for_calculate[i].checked)){
-                fraction_types_for_calculate[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
             }
         }
     }
@@ -126,7 +116,8 @@
                             帯分数(横に数がくっついてくる)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">答えの分母に登場する数の範囲</small>
                 <div class="form-group">
@@ -301,7 +292,8 @@
                             割り算
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFractionCalculateType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_calculate_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_calculate_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する分数</small>
                 <div class="form-group">
@@ -323,7 +315,8 @@
                             帯分数(横に数がくっついてくる)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationTypeForCalculate()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_type_for_calculate')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_type_for_calculate')" value="全部はずし">
                 </div>
                 <small class="text-muted">分母に登場する数の範囲</small>
                 <div class="form-group">
@@ -420,6 +413,48 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>おうぎ形の面積</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">図形のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="baumkuchen" name="shape_type" id="baumkuchenCheck" checked>
+                        <label class="form-check-label" for="baumkuchenCheck">
+                            バウムクーヘン型
+                        </label>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('shape_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('shape_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="ReductionFivePaperRadio" checked>
+                        <label class="form-check-label" for="ReductionFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="ReductionTenPaperRadio">
+                        <label class="form-check-label" for="ReductionTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="ReductionFifteenPaperRadio">
+                        <label class="form-check-label" for="ReductionFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'elementary5_sector_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'elementary5_sector_display' %}">      
+            </form>
+        </div>
+    </div>
+    <br>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

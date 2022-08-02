@@ -1117,6 +1117,10 @@ def print_vector_cross_point(request):
     return render(request, 'math_print/highschool2/vector_cross_point/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+def print_elementary5_sector_problem(request):
+    return HttpResponse("this is elementary5_sector_problem")
+
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1902,8 +1906,7 @@ def display_unit_conversion_problem(request):
     
     return render(request, 'math_print/elementary_school3/unit_conversion/for_display.html', context)
 
-def display_sector_with_figure_problem(request):    
-        
+def display_sector_with_figure_problem(request):      
     PROBLEM_NUMBER = 20
     
     problem_type_list = request.POST.getlist("sector_problem_type")
@@ -1986,3 +1989,19 @@ def display_vector_cross_point(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/vector_cross_point/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_elementary5_sector_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    shape_type_list = request.POST.getlist("shape_type")
+    if not(shape_type_list):
+        shape_type_list.append("baumkuchen")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+        problem2 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool1/sector_with_figure/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

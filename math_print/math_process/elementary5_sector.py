@@ -8,15 +8,28 @@ class SectorWithFigureProblem:
     
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
-        self._shape_type_list = settings["shape_type_list"]
+        self._problem_type_list = settings["problem_type_list"]
         self.selected_problem_type, self.latex_answer, self.sector = self._make_problem()
     
     def _make_problem(self):
-        selected_shape_type = choice(self._shape_type_list)        
-        if selected_shape_type == "radius_and_central_angle_to_arc_length_and_area":
+        if self._problem_type_list:
+            selected_problem_type = choice(self._problem_type_list)
+        else:
+            selected_problem_type = choice(
+                ["radius_and_central_angle_to_arc_length_and_area", "radius_and_arc_length_to_area",
+                 "radius_and_area_to_arc_length", "radius_and_area_to_central_angle"]
+            )
+        
+        if selected_problem_type == "radius_and_central_angle_to_arc_length_and_area":
             latex_answer, sector = self._make_radius_and_central_angle_to_arc_length_and_area_problem()
+        elif selected_problem_type == "radius_and_arc_length_to_area":
+            latex_answer, sector = self._make_radius_and_arc_length_to_area_problem()
+        elif selected_problem_type == "radius_and_area_to_arc_length":
+            latex_answer, sector = self._make_radius_and_area_to_arc_length_problem()
+        elif selected_problem_type == "radius_and_area_to_central_angle":
+            latex_answer, sector = self._make_radius_and_area_to_central_angle_problem()
 
-        return shape, latex_answer, sector
+        return selected_problem_type, latex_answer, sector
 
     def _make_radius_and_central_angle_to_arc_length_and_area_problem(self):
         sector = self._decide_sector_status()
@@ -70,4 +83,3 @@ class SectorWithFigureProblem:
                         coefficient_of_area=coefficient_of_area, central_angle=central_angle)
         
         return sector    
-        

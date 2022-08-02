@@ -4,6 +4,7 @@ from django.urls.resolvers import URLPattern
 from . import views
 
 urlpatterns = [
+    ### 全体共通 ###
     path('', views.index, name='index'),
     ##########################################
     ### 小3 ###

@@ -50,7 +50,6 @@ from .math_process.lcm_and_gcd import LCMAndGCD
 from .math_process.vector_cross_point import VectorCrossPoint
 
 
-# Create your views here.
 def index(request):
     return render(request, 'math_print/index.html', {})
 

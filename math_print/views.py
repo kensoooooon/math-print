@@ -1,14 +1,3 @@
-"""
-Fixing
-4/1
-------
-数の範囲を入力する際に、数字が誤って消されてしまうと、(おそらく)ValueErrorを吐いてしまうことの修正
-->分数計算のなかでも約分と計算で発生する模様
-おそらく原因は、
-min_number_to_denominator = int(request.POST["min_number_to_denominator"])
-でnoneやそれに準じるなにかをintで読み込もうとしている点っぽい
-→int の前に、if is not Noneをはさむことで解決するとおもわれ
-"""
 import unicodedata
 import pprint
 
@@ -48,6 +37,7 @@ from .math_process.logarithm_calculation import LogarithmCalculationProblem
 from .math_process.exponent_calculation import ExponentCalculation
 from .math_process.lcm_and_gcd import LCMAndGCD
 from .math_process.vector_cross_point import VectorCrossPoint
+from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
 
 
 def index(request):
@@ -1118,7 +1108,24 @@ def print_vector_cross_point(request):
 
 
 def print_elementary5_sector_problem(request):
-    return HttpResponse("this is elementary5_sector_problem")
+    PROBLEM_NUMBER = 10
+    
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("basic")
+        problem_type_list.append("advance")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+            problem2 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school5/sector/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
 def display_number_problem(request):
@@ -1996,12 +2003,15 @@ def display_elementary5_sector_problem(request):
     
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
-        problem_type_list.append("baumkuchen")
+        problem_type_list.append("basic")
+        problem_type_list.append("advance")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = SectorWithFigureProblem(problem_type_list=problem_type_list)
-        problem2 = SectorWithFigureProblem(problem_type_list=problem_type_list)
+        problem1 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+        problem2 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool1/sector_with_figure/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    print(math_problem_tuple_list)
+    
+    return render(request, 'math_print/elementary_school5/sector/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

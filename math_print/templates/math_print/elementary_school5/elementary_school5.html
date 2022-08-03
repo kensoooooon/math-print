@@ -418,13 +418,20 @@
             <p>おうぎ形の面積</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">図形のタイプ</small>
+                <small class="text-muted">問題のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="baumkuchen" name="problem_type" id="baumkuchenCheck" checked>
-                        <label class="form-check-label" for="baumkuchenCheck">
-                            バウムクーヘン型
+                        <input class="form-check-input" type="checkbox" value="basic" name="problem_type" id="basicCheck" checked>
+                        <label class="form-check-label" for="basicCheck">
+                            基本
                         </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="advance" name="problem_type" id="advanceCheck">
+                        <label class="form-check-label" for="advanceCheck">
+                            応用
+                        </label>
+                    </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>

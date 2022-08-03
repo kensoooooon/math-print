@@ -28,8 +28,8 @@ urlpatterns = [
     path('lcm_and_gcd/print/', views.print_lcm_and_gcd_problem, name='lcm_and_gcd_print'),
     path('lcm_and_gcd/display/', views.display_lcm_and_gcd_problem, name='lcm_and_gcd_display'),
     ### 扇形 ###
-    path('elementary5_sector', views.print_elementary5_sector_problem, name='elementary5_sector_print'),
-    path('elementary5_sector', views.display_elementary5_sector_problem, name='elementary5_sector_display'),
+    path('elementary5_sector/print/', views.print_elementary5_sector_problem, name='elementary5_sector_print'),
+    path('elementary5_sector/display/', views.display_elementary5_sector_problem, name='elementary5_sector_display'),
     ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),

@@ -1994,9 +1994,9 @@ def display_vector_cross_point(request):
 def display_elementary5_sector_problem(request):
     PROBLEM_NUMBER = 20
     
-    shape_type_list = request.POST.getlist("shape_type")
-    if not(shape_type_list):
-        shape_type_list.append("baumkuchen")
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("baumkuchen")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

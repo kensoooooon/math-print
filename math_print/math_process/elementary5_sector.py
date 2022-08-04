@@ -28,25 +28,20 @@ class Elementary5SectorWithFigureProblem:
         return latex_answer, sector
     
     def _decide_sector_status(self):
-        """おうぎ形にまつわる数値を決定する
-
-        Returns:
-            _type_: _description_
-        
-        Making:
-            denominatorからの逆算？
-            replaceは甘い
-        """
         class Sector(NamedTuple):
             radius: str
             area: str
             central_angle: str
 
-        radius = randint(1, 10)
+        # radius = randint(1, 10)
         if random() > 0.5:
-            central_angle = str(30 * randint(1, 11))
+            central_angle = 30 * randint(1, 11)
         else:
-            central_angle = str(45 * randint(1, 7))
+            central_angle = 45 * randint(1, 7)
+        ratio_by_circle = sy.Rational(central_angle, 360)
+        radius = ratio_by_circle.denominator
         area = str(sy.Integer(radius**2) * sy.Rational(central_angle, 360) * 3.14).replace("0", "")
+        central_angle = str(central_angle)
+        radius = str(radius)
         sector = Sector(radius=radius, area=area, central_angle=central_angle)
-        return sector    
+        return sector     

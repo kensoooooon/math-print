@@ -28,7 +28,15 @@ class Elementary5SectorWithFigureProblem:
         return latex_answer, sector
     
     def _decide_sector_status(self):
+        """おうぎ形にまつわる数値を決定する
 
+        Returns:
+            _type_: _description_
+        
+        Making:
+            denominatorからの逆算？
+            replaceは甘い
+        """
         class Sector(NamedTuple):
             radius: str
             area: str

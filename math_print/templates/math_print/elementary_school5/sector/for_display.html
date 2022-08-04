@@ -274,7 +274,7 @@ function refresh() {
     reload_button.setAttribute("onclick", "location.reload(false)");
     reload_button.innerHTML = "もう一度解く";
     var problem_choice_a = document.createElement("a");
-    problem_choice_a.setAttribute("href", "{% url elementary_school5 %}");
+    problem_choice_a.setAttribute("href", "{% url 'elementary_school5' %}");
     problem_choice_a.setAttribute("class", "btn btn-primary");
     problem_choice_a.setAttribute("type", "button");
     problem_choice_a.innerHTML = "問題選択へ戻る";

@@ -2012,6 +2012,4 @@ def display_elementary5_sector_problem(request):
         problem2 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
         math_problem_tuple_list.append((problem1, problem2))
     
-    print(math_problem_tuple_list)
-    
     return render(request, 'math_print/elementary_school5/sector/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

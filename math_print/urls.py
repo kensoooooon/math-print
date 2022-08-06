@@ -6,6 +6,8 @@ from . import views
 urlpatterns = [
     ### 全体共通 ###
     path('', views.index, name='index'),
+    # sample
+    path('graphic_sample/', views.graphic_sample, name='graphic_sample'),
     ##########################################
     ### 小3 ###
     path('elementary_school3/', views.show_elementary_school3, name='elementary_school3'),

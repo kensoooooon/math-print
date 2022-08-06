@@ -1,1 +1,85 @@
-{{ result }}
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+<script>
+    window.addEventListener("load", make);
+
+    function drawLine(stage, start_x, start_y, end_x, end_y) {
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#ff0000");
+        graphic.moveTo(start_x, start_y);
+        graphic.lineTo(end_x, end_y);
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+  
+    }
+  
+    function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
+        // draw line detemined by angle
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#00ff00");
+        graphic.moveTo(start_x, start_y);
+        var radian = angle * Math.PI / 180;
+        var end_x = start_x + radius * Math.cos(radian);
+        var end_y = start_y + radius * Math.sin(radian);
+        graphic.lineTo(end_x, end_y);
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+    }
+  
+    function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        // ここだけぬられてる->三角形とこれ？
+        graphic.beginFill("#0000ff");
+        var start_radian = start_angle * Math.PI / 180;
+        var end_radian = end_angle * Math.PI / 180;
+        graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+    }
+    
+    function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
+        drawArc(stage, center_x, center_y, sector_radius, 0, sector_angle);
+        sector_radian = sector_angle * Math.PI / 180;
+        start_x = center_x + sector_radius * Math.cos(0);
+        start_y = center_y + sector_radius * Math.sin(0);
+        drawLine(stage, center_x, center_y, start_x, start_y);
+        end_x = center_x + sector_radius * Math.cos(sector_radian);
+        end_y = center_y + sector_radius * Math.sin(sector_radian);
+        drawLine(stage, center_x, center_y, end_x, end_y);
+        stage.update();
+    }
+
+    function make() {
+        // var stage = new createjs.Stage("sample_canvas");
+        // var radius = Number("7");
+        // var central_angle = Number("120");
+        // drawSector(stage, 160, 80, 60, central_angle);
+        // line arc lineでいける？
+        var stage = new createjs.Stage("sample_canvas2");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#0000ff");
+        var start_radian = 0
+        var end_radian = 180 * Math.Pi / 180;
+        graphic.arc(160, 80, 80, start_radian, end_radian, true);
+        var shape = new
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<canvas id="sample_canvas" width="320" height="160"></canvas>
+<br>
+<br>
+<canvas id="sample_canvas2" width="320" height="160"></canvas>
+<br>
+<br>
+{% endblock %}

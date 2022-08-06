@@ -43,6 +43,10 @@ from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
 def index(request):
     return render(request, 'math_print/index.html', {})
 
+# for graphic sample
+def graphic_sample(request):
+    return render(request, 'math_print/result.html', {})
+
 def show_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
 
@@ -88,8 +92,7 @@ def print_number_problem(request):
 
 def print_character_problem(request):
     PROBLEM_NUMBER = 20
-
-    result = request.POST
+    
     number_to_use = request.POST.getlist("character_number_to_use")
     operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
@@ -124,16 +127,10 @@ def print_character_problem(request):
 def print_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
     
-    result = request.POST
-    # print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    # print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    # print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    # print(f"term_number: {term_number} \n type: {type(term_number)}")
     paper_number = int(request.POST["paper_number"])
-    # print(f"paper_number: {paper_number}")
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10

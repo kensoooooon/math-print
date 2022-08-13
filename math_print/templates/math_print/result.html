@@ -4,7 +4,7 @@
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
 <script>
-    window.addEventListener("load", make);
+    window.addEventListener("load", make4);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -58,19 +58,117 @@
     }
 
     function make() {
-        // var stage = new createjs.Stage("sample_canvas");
-        // var radius = Number("7");
-        // var central_angle = Number("120");
-        // drawSector(stage, 160, 80, 60, central_angle);
+        //// stage1
+        var stage = new createjs.Stage("sample_canvas");
+        var radius = Number("7");
+        var central_angle = Number("120");
+        drawSector(stage, 160, 80, 60, central_angle);
+        //// stage2
         // line arc lineでいける？
-        var stage = new createjs.Stage("sample_canvas2");
-        var graphic = new createjs.Graphics();
-        graphic.beginStroke("#000000");
-        graphic.beginFill("#0000ff");
-        var start_radian = 0
-        var end_radian = 180 * Math.Pi / 180;
-        graphic.arc(160, 80, 80, start_radian, end_radian, true);
-        var shape = new
+        // arc to line to??????
+        // circle + anti circle?<-exist?
+        var stage2 = new createjs.Stage("sample_canvas2");
+        var graphic2 = new createjs.Graphics();
+        graphic2.beginStroke("#000000");
+        graphic2.beginFill("ff0000");
+        graphic2.moveTo(0, 0);
+        graphic2.lineTo(160, 80);
+        graphic2.moveTo(160, 80);
+        graphic2.lineTo(0, 160);
+        graphic2.moveTo(0, 160);
+        graphic2.lineTo(0, 0);
+        graphic2.endStroke();
+        graphic2.endFill();
+        var shape2 = new createjs.Shape(graphic2);
+        stage2.addChild(shape2);
+        stage2.update();
+        // graphic2.beginStroke("#000000");
+        // graphic2.beginFill("#0000ff");
+        // var start_radian2 = 0
+        // var end_radian2 = 180 * Math.Pi / 180;
+        // graphic2.arc(160, 80, 80, start_radian2, end_radian2, true);
+        // var shape2 = new createjs.Shape(graphic2);
+        // stage2.addChild(shape2);
+        // stage2.update();
+    }
+
+    function make2() {
+        // ステージを作成します。
+        var stage = new createjs.Stage(document.getElementById("sample_canvas3"));
+
+        // Graphicsのインスタンスを作成します。
+        var graphics = new createjs.Graphics();
+
+        // 色の指定（線と塗りつぶしとそれぞれ色を指定する）
+        graphics.beginStroke("#cccccc");
+        graphics.beginFill("#7aeac8");
+
+        // 図形の描画を行う（ここのバリエーションを後述します）
+        // graphics.moveTo(80,80).lineTo(240,80).lineTo(240,240).lineTo(80,240).closePath();
+        // graphics.moveTo(500, 500).lineTo(500, 200).arcTo(500, 200, 500, 800, 300).closePath();
+        // graphics.moveTo(50, 20).arcTo(150, 20, 150, 70, 50);
+        graphics.moveTo(500, 500).arcTo(500, 200, 800, 500, 300).closePath();
+        // Shapeとして、Stageに追加します。
+        var shape = new createjs.Shape(graphics);
+        shape.x = 0;
+        shape.y = 0;
+        stage.addChild(shape);
+
+        // ステージの更新を行う。
+        stage.update();
+    }
+
+    function make3() {
+        var canvas = document.getElementById('sample_canvas3');
+        if (canvas.getContext) {
+          var context = canvas.getContext('2d');
+          // context.fillStyle = "red";
+          //ここに具体的な描画内容を指定する
+          //新しいパスを開始する
+          context.beginPath();
+          //(140,80)を中心点とする、半径50の円弧を、開始角度90度、終了角度180度で、半時計回りに作成する
+          context.arc(140,80,50,45/180*Math.PI,135/180*Math.PI,true).fill();
+          //現在のパスを輪郭表示する
+          context.stroke();
+        }
+    }
+
+    function make4() {
+  //コンテキストを生成
+        var cvs = document.getElementById("sample_canvas3");
+        var ctx = cvs.getContext("2d");
+        
+        //色を指定
+        ctx.strokeStyle="blue";  //線の色を青に指定
+        ctx.fillStyle="red";     //塗りつぶしの色を赤に指定
+        
+        //円
+        ctx.beginPath();
+        ctx.arc(100, 100, 40, 0, Math.PI*2, false);
+        ctx.stroke();
+        
+        //円（塗りつぶし）
+        ctx.beginPath();
+        ctx.arc(200, 100, 40, 0, Math.PI*2, false);
+        ctx.fill();
+        
+        //半円
+        ctx.beginPath();
+        ctx.arc(300, 100, 40, 0, Math.PI, false);
+        ctx.stroke();
+        
+        //半円（塗りつぶし）
+        ctx.beginPath();
+        ctx.arc(400, 100, 40, 0, Math.PI, false);
+        ctx.fill();
+    }
+
+    function make5() {
+        var canvas = document.getElementById("sample_canvas3");
+        var context = canvas.getContext("2d");
+        context.fillStyle="#f0f8ff";
+        context.beginPath();
+        context.arc(500, 500, 200, )
     }
 </script>
 {% endblock %}
@@ -82,4 +180,5 @@
 <canvas id="sample_canvas2" width="320" height="160"></canvas>
 <br>
 <br>
+<canvas id="sample_canvas3" width="1000" height="1000" style="background-color:yellow;"></canvas>
 {% endblock %}

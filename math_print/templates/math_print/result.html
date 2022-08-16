@@ -4,7 +4,7 @@
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
 <script>
-    window.addEventListener("load", make4);
+    window.addEventListener("load", make2);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -168,8 +168,14 @@
         var context = canvas.getContext("2d");
         context.fillStyle="#f0f8ff";
         context.beginPath();
-        context.arc(500, 500, 200, )
+        // void ctx.arc(x, y, radius, startAngle, endAngle [, counterclockwise]);
+        start_radian = 0 * Math.PI / 180;
+        end_radian = 120 * Math.PI / 180;
+        context.arc(500, 500, 200, start_radian, end_radian);
+        // context.fill();
+        context.stroke();
     }
+
 </script>
 {% endblock %}
 

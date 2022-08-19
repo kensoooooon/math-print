@@ -1,3 +1,9 @@
+"""
+8/19
+ax = bでa=1になる問題
+→characterとnumberでごちゃごちゃになっているのが問題？
+→→整理した上で判定ではじくる
+"""
 from random import choice, randint, random
 
 import sympy as sy
@@ -43,20 +49,24 @@ class SpecificLinearEquation:
 
     def _make_ax_equal_b_only_integer(self):
         number_type_checker = self._number_type_selector()
-        if number_type_checker == "integer":
-            linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10, "number")
-            answer, answer_latex = self._make_random_integer(10, -10, "number")
-        elif number_type_checker == "frac":
-            linear_coefficient, linear_coefficient_latex = self._make_random_frac(10, -10, "number")
-            answer, answer_latex = self._make_random_integer(10, -10, "number")
-        elif number_type_checker == "decimal":
-            linear_coefficient, linear_coefficient_latex = self._make_random_decimal(10, -10, 10, "number")
-            answer, answer_latex = self._make_random_integer(10, -10, "number")
+        while True:
+            if number_type_checker == "integer":
+                linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10, "number")
+                answer, answer_latex = self._make_random_integer(10, -10, "number")
+            elif number_type_checker == "frac":
+                linear_coefficient, linear_coefficient_latex = self._make_random_frac(10, -10, "number")
+                answer, answer_latex = self._make_random_integer(10, -10, "number")
+            elif number_type_checker == "decimal":
+                linear_coefficient, linear_coefficient_latex = self._make_random_decimal(10, -10, 10, "number")
+                answer, answer_latex = self._make_random_integer(10, -10, "number")
+            
+            if linear_coefficient != 1:
+                break
+        print(f"linear_coefficient: {linear_coefficient}")
+            
         intercept = linear_coefficient * answer
-
-        if linear_coefficient_latex == "1":
-            left_latex = "x"
-        elif linear_coefficient_latex == "-1":
+        
+        if linear_coefficient_latex == "-1":
             left_latex = "-x"
         else:
             left_latex = f"{linear_coefficient_latex} x"
@@ -74,17 +84,20 @@ class SpecificLinearEquation:
     
     def _make_ax_equal_b_all_number(self):
         number_type_checker = self._number_type_selector()
-
-        if number_type_checker == "integer":
-            left, left_latex = self._make_random_integer(10, -10, "character")
-            if left == 1:
-                left_latex = "x"
-            elif left == -1:
-                left_latex = "-x"
-        elif number_type_checker == "frac":
-            left, left_latex = self._make_random_frac(10, -10, "character")
-        elif number_type_checker == "decimal":
-            left, left_latex = self._make_random_decimal(10, -10, 10, "character")
+        while True:
+            if number_type_checker == "integer":
+                left, left_latex = self._make_random_integer(10, -10, "character")
+                print(f"before_left: {left}")
+                print(f"before_left_latex: {left_latex}")
+                if left == -1:
+                    left_latex = "-x"
+            elif number_type_checker == "frac":
+                left, left_latex = self._make_random_frac(10, -10, "character")
+            elif number_type_checker == "decimal":
+                left, left_latex = self._make_random_decimal(10, -10, 10, "character")
+            if left != 1:
+                break
+        print(f"left: {left}")
 
         number_type_checker = self._number_type_selector()
 

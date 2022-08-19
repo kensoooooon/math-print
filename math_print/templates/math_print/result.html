@@ -4,7 +4,7 @@
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
 <script>
-    window.addEventListener("load", make2);
+    window.addEventListener("load", make5);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -164,16 +164,26 @@
     }
 
     function make5() {
-        var canvas = document.getElementById("sample_canvas3");
-        var context = canvas.getContext("2d");
-        context.fillStyle="#f0f8ff";
-        context.beginPath();
-        // void ctx.arc(x, y, radius, startAngle, endAngle [, counterclockwise]);
-        start_radian = 0 * Math.PI / 180;
-        end_radian = 120 * Math.PI / 180;
-        context.arc(500, 500, 200, start_radian, end_radian);
-        // context.fill();
-        context.stroke();
+        var stage = new createjs.Stage("myCanvas");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#ff0000");
+        graphic.beginFill("#ff0000");
+        // 線の幅を指定
+        // graphic.setStrokeStyle(5);
+        // 円を描く
+        graphic.drawCircle(500, 500, 0.01);
+        // graphic.setStrokeStyle(0.5);
+        var center_x = 500;
+        var center_y = 500;
+        var radius = 200;
+        var start_radian = 0 * Math.PI / 180;
+        var end_radian = 250 * Math.PI / 180;
+        graphic.arc(center_x , center_y, radius, start_radian, end_radian);
+        graphic.endStroke();
+        graphic.endFill();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
     }
 
 </script>
@@ -187,4 +197,7 @@
 <br>
 <br>
 <canvas id="sample_canvas3" width="1000" height="1000" style="background-color:yellow;"></canvas>
+<br>
+<br>
+<canvas id="myCanvas" width="1000" height="1000" style="background-color:yellow;"></canvas>
 {% endblock %}

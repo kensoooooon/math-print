@@ -4,7 +4,7 @@
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
 <script>
-    window.addEventListener("load", make5);
+    window.addEventListener("load", make6);
 
     function drawLine(stage, start_x, start_y, end_x, end_y) {
         var graphic = new createjs.Graphics();
@@ -186,18 +186,42 @@
         stage.update();
     }
 
+    function make6() {
+        var stage = new createjs.Stage("sample_canvas");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        // graphic.beginFill("#bfe4ff");
+        var start_x = 90;
+        var start_y = 10;
+        var width = 140;
+        var height = 140;
+        graphic.drawRect(start_x, start_y, width, height);
+        // not need end stroke and beginstroke?
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff");
+        var center_x1 = 90;
+        var center_y1 = 10;
+        var radius1 = 140;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1, anticlockwise=false);
+        var center_x2 = 230;
+        var center_y2 = 150;
+        var radius2 = 140;
+        var start_radian2 = 180 * Math.PI / 180;
+        var end_radian2 = 270 * Math.PI / 180;
+        graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2, anticlockwise=false);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
 </script>
 {% endblock %}
 
 {% block body %}
-<canvas id="sample_canvas" width="320" height="160"></canvas>
-<br>
-<br>
-<canvas id="sample_canvas2" width="320" height="160"></canvas>
-<br>
-<br>
-<canvas id="sample_canvas3" width="1000" height="1000" style="background-color:yellow;"></canvas>
-<br>
-<br>
-<canvas id="myCanvas" width="1000" height="1000" style="background-color:yellow;"></canvas>
+<canvas id="sample_canvas" width="320" height="160" style="background-color:white"></canvas>
 {% endblock %}

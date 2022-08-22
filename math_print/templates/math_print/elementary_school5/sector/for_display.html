@@ -66,14 +66,18 @@ function refresh() {
   }
 
   function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
-    drawArc(stage, center_x, center_y, sector_radius, 0, sector_angle);
-    sector_radian = sector_angle * Math.PI / 180;
-    start_x = center_x + sector_radius * Math.cos(0);
-    start_y = center_y + sector_radius * Math.sin(0);
-    drawLine(stage, center_x, center_y, start_x, start_y);
-    end_x = center_x + sector_radius * Math.cos(sector_radian);
-    end_y = center_y + sector_radius * Math.sin(sector_radian);
-    drawLine(stage, center_x, center_y, end_x, end_y);
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.1);
+    graphic.beginFill("#bfe4ff");
+    graphic.drawCircle(center_x, center_y, 0.01);
+    var start_radian = 0;
+    var end_radian = sector_angle * Math.PI / 180;
+    graphic.arc(center_x, center_y, sector_radius, start_radian, end_radian);
+    graphic.endStroke();
+    graphic.endFill();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
     stage.update();
   }
 
@@ -165,7 +169,7 @@ function refresh() {
     left_canvas.id = left_canvas_id;
     left_canvas.width = 320;
     left_canvas.height = 160;
-    left_canvas.style = "background-color:#CCFFFF";
+    // left_canvas.style = "background-color:#CCFFFF";
 
     var right_div = document.createElement("div");
     right_div.className = "col-md-6";
@@ -175,7 +179,7 @@ function refresh() {
     right_canvas.id = right_canvas_id;
     right_canvas.width = 320;
     right_canvas.height = 160;
-    right_canvas.style = "background-color:#CCFFFF";
+    // right_canvas.style = "background-color:#CCFFFF";
 
     // insert part
     left_div.appendChild(left_canvas);

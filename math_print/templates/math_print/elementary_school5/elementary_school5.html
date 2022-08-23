@@ -14,7 +14,106 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
 <script>
+    window.addEventListener("load", add_graphic_to_sector_problem);
+
+    function draw_standard_sector(){
+        var stage = new createjs.Stage("standard_sector");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#bfe4ff");
+        graphic.beginFill("#bfe4ff");
+        graphic.drawCircle(80, 40, 0.01);
+        var center_x = 80;
+        var center_y = 40;
+        var radius = 25;
+        var start_radian = 0 * Math.PI / 180;
+        var end_radian = 210 * Math.PI / 180;
+        graphic.arc(center_x, center_y, radius, start_radian, end_radian);
+        graphic.endStroke();
+        graphic.endFill();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function draw_in_rugby(){
+        var stage = new createjs.Stage("in_rugby");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(2.5);
+        var start_x = 50;
+        var start_y = 10;
+        var width = 60;
+        var height = 60;
+        graphic.drawRect(start_x, start_y, width, height);
+        // not need end stroke and beginstroke?
+        graphic.endStroke();
+        graphic.beginStroke("#bfe4ff");
+        graphic.setStrokeStyle(0.01);
+        graphic.beginFill("#bfe4ff");
+        var center_x1 = 50;
+        var center_y1 = 10;
+        var radius1 = 60;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1, anticlockwise=false);
+        var center_x2 = 110;
+        var center_y2 = 70;
+        var radius2 = 60;
+        var start_radian2 = 180 * Math.PI / 180;
+        var end_radian2 = 270 * Math.PI / 180;
+        graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2, anticlockwise=false);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function draw_out_rugby(){
+        var stage = new createjs.Stage("out_rugby");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff")
+        graphic.setStrokeStyle(2.5);
+        var start_x = 50;
+        var start_y = 10;
+        var width = 60;
+        var height = 60;
+        graphic.drawRect(start_x, start_y, width, height);
+        // not need end stroke and beginstroke?
+        graphic.endStroke();
+        graphic.endFill();
+        graphic.beginStroke("#bfe4ff");
+        graphic.setStrokeStyle(0.01);
+        graphic.beginFill("#ffffff");
+        var center_x1 = 50;
+        var center_y1 = 10;
+        var radius1 = 60;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1, anticlockwise=false);
+        var center_x2 = 110;
+        var center_y2 = 70;
+        var radius2 = 60;
+        var start_radian2 = 180 * Math.PI / 180;
+        var end_radian2 = 270 * Math.PI / 180;
+        graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2, anticlockwise=false);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function add_graphic_to_sector_problem(){
+        draw_standard_sector();
+        draw_in_rugby();
+        draw_out_rugby();
+    }
+
     function checkAllStatus(target){
         let statuses = document.getElementsByName(target);
 
@@ -421,15 +520,21 @@
                 <small class="text-muted">問題のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="basic" name="problem_type" id="basicCheck" checked>
-                        <label class="form-check-label" for="basicCheck">
-                            基本
+                        <input class="form-check-input" type="checkbox" value="standard_sector" name="problem_type" id="standard_sectorCheck" checked>
+                        <label class="form-check-label" for="standard_sectorCheck">
+                            <canvas id ="standard_sector" width="160" height="80"></canvas>
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="advance" name="problem_type" id="advanceCheck">
-                        <label class="form-check-label" for="advanceCheck">
-                            応用
+                        <input class="form-check-input" type="checkbox" value="in_rugby" name="problem_type" id="in_rugbyCheck">
+                        <label class="form-check-label" for="in_rugbyCheck">
+                            <canvas id ="in_rugby" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="out_rugby" name="problem_type" id="out_rugbyCheck">
+                        <label class="form-check-label" for="out_rugbyCheck">
+                            <canvas id ="out_rugby" width="160" height="80"></canvas>
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">

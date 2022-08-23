@@ -81,6 +81,68 @@ function refresh() {
     stage.update();
   }
 
+  function drawInRugby(stage){
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(2);
+    var middle_x = 160;
+    var middle_y = 80;
+    var width = 160;
+    var height = 160;
+    var start_x = middle_x - (width / 2);
+    var start_y = middle_y - (height / 2);
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.beginStroke("#bfe4ff");
+    graphic.setStrokeStyle(0.01);
+    graphic.beginFill("#bfe4ff");
+    if (Math.random() > 0.5){
+      console.log("left up right down");
+      var center_x1 = middle_x - (width / 2);
+      console.log("center_x1: " + center_x1);
+      var center_y1 = middle_y - (height / 2);
+      console.log("center_y1: " + center_y1);
+      var start_radian1 = 0 * Math.PI / 180;
+      console.log("start_radian1: " + start_radian1);
+      var end_radian1 = 90 * Math.PI / 180;
+      console.log("end_radian1: " + end_radian1);
+      var center_x2 = middle_x + (width / 2);
+      console.log("center_x2: " + center_x2);
+      var center_y2 = middle_y + (height / 2);
+      console.log("center_y2: " + center_y2);
+      var start_radian2 = 180 * Math.PI / 180;
+      console.log("start_radian2: " + start_radian2);
+      var end_radian2 = 270 * Math.PI / 180;
+      console.log("end_radian2: " + end_radian2);
+    }
+    else {
+      console.log("left down right up");
+      var center_x1 = middle_x - (width / 2);
+      console.log("center_x1: " + center_x1);
+      var center_y1 = middle_y + (height / 2);
+      console.log("center_y1: " + center_y1);
+      var start_radian1 = 270 * Math.PI / 180;
+      console.log("start_radian1: " + start_radian1);
+      var end_radian1 = 360 * Math.PI / 180;
+      console.log("end_radian1: " + end_radian1);
+      var center_x2 = middle_x + (width / 2);
+      console.log("center_x2: " + center_x2);
+      var center_y2 = middle_y - (height / 2);
+      console.log("center_y2: " + center_y2);
+      var start_radian2 = 90 * Math.PI / 180;
+      console.log("start_radian2: " + start_radian2);
+      var end_radian2 = 180 * Math.PI / 180;
+      console.log("end_radian2: " + end_radian2);
+    }
+    graphic.arc(center_x1, center_y1, width, start_radian1, end_radian1);
+    graphic.arc(center_x2, center_y2, width, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
   function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
     // add radius
     drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
@@ -104,55 +166,6 @@ function refresh() {
     stage.update();
   }
 
-  function addRadiusAndArcLengthToSector(stage, radius, coefficient_of_arc_length) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add arc length
-    drawDegreeCharacter(stage, 180, 140, "弧の長さ: " + coefficient_of_arc_length + "π cm");
-    stage.update();
-  }
-
-  function addRadiusAndAreaToSector(stage, radius, coefficient_of_area) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add area
-    drawDegreeCharacter(stage, 200, 20, "面積: " + coefficient_of_area + "π ㎠");
-    stage.update();
-  }
-
-  function call_problem_string(selected_problem_type) {
-    var problem_string = "影がついた部分の面積を求めよ。";
-    return problem_string;
-  }
-
   function draw() {
     {% for information_tuple in math_problem_tuple_list %}
     var container_div = document.createElement("div");
@@ -169,7 +182,6 @@ function refresh() {
     left_canvas.id = left_canvas_id;
     left_canvas.width = 320;
     left_canvas.height = 160;
-    // left_canvas.style = "background-color:#CCFFFF";
 
     var right_div = document.createElement("div");
     right_div.className = "col-md-6";
@@ -179,19 +191,9 @@ function refresh() {
     right_canvas.id = right_canvas_id;
     right_canvas.width = 320;
     right_canvas.height = 160;
-    // right_canvas.style = "background-color:#CCFFFF";
 
     // insert part
-    left_div.appendChild(left_canvas);
-    // add left problem and answer to left_div
-    var left_problem_p = document.createElement('p');
-    left_problem_p.style = "visibility:visible";
-    left_problem_p.className = "problem";
-    var left_problem_string = "影がついた部分の面積を求めよ。";
-    var left_problem = document.createTextNode(left_problem_string);
-    left_problem_p.appendChild(left_problem);
-    left_div.appendChild(left_problem_p);
-    
+    left_div.appendChild(left_canvas);    
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
@@ -201,14 +203,6 @@ function refresh() {
 
 
     right_div.appendChild(right_canvas);
-    // add right problem and answer to right_div
-    var right_problem_p = document.createElement('p');
-    right_problem_p.style = "visibility:visible";
-    right_problem_p.className = "problem";
-    var right_problem_string = "影がついた部分の面積を求めよ。";
-    var right_problem = document.createTextNode(right_problem_string);
-    right_problem_p.appendChild(right_problem);
-    right_div.appendChild(right_problem_p);
 
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
@@ -223,30 +217,47 @@ function refresh() {
     document.body.appendChild(container_div);
 
     var left_stage = new createjs.Stage(left_canvas_id);
-    var left_radius = Number({{ information_tuple.0.sector.radius }});
-    var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
-    drawSector(left_stage, 160, 80, 60, left_central_angle);
-    
     var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
-    if (selected_problem_type == "basic") {
+
+    if (selected_problem_type == "standard_sector") {
+      var left_radius = Number({{ information_tuple.0.sector.radius }});
+      var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
+      drawSector(left_stage, 160, 80, 60, left_central_angle);
       addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "in_rugby") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      console.log("one_side_of_square: " + one_side_of_square);
+      drawInRugby(left_stage);
+      // addOneSideOfSquareToInRugby(left_stage, one_side_of_square);
     }
 
     var right_stage = new createjs.Stage(right_canvas_id);
-    var right_radius = Number({{ information_tuple.1.sector.radius }});
-    var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
-    drawSector(right_stage, 160, 80, 60, right_central_angle);
-
     var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
     
-    if (selected_problem_type == "basic") {
+    if (selected_problem_type == "standard_sector") {
+      var right_radius = Number({{ information_tuple.1.sector.radius }});
+      var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
+      drawSector(right_stage, 160, 80, 60, right_central_angle);
       addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "in_rugby") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      console.log("one_side_of_square: " + one_side_of_square);
+      drawInRugby(right_stage);
+      // addOneSideOfSquareToInRugby(right_stage, one_side_of_square);
     }
     {% endfor %}
     MathJax.typeset();
   }
 
   function add_other_parts_to_page() {
+  
+    // problem sentence phase
+    var problem_p = document.createElement('p');
+    problem_p.innerHTML = "色がついた部分の面積を求めよ。";
+    //// problem sentence add phase
+    document.body.prepend(problem_p);
     // hero unit phase
     var hero_outer_div = document.createElement('div');
     hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");

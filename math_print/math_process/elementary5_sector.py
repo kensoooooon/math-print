@@ -85,7 +85,7 @@ class Elementary5SectorWithFigureProblem:
             値の複雑化を防ぐために、正方形の一辺を5の倍数に限定している。必要があれば複数候補からの選出等に切り替え
         
         Developing:
-            .が残っている軽
+            .が残っている
         """
         one_side_of_square = randint(1, 10) * 5
         one_side_of_square_str = str(one_side_of_square)

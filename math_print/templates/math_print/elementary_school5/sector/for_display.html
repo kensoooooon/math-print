@@ -67,7 +67,7 @@ function refresh() {
 
   function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
     var graphic = new createjs.Graphics();
-    graphic.beginStroke("#000000");
+    graphic.beginStroke("#ffffff");
     graphic.setStrokeStyle(0.1);
     graphic.beginFill("#bfe4ff");
     graphic.drawCircle(center_x, center_y, 0.01);
@@ -93,46 +93,28 @@ function refresh() {
     var start_y = middle_y - (height / 2);
     graphic.drawRect(start_x, start_y, width, height);
     graphic.endStroke();
-    graphic.beginStroke("#bfe4ff");
-    graphic.setStrokeStyle(0.01);
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(2);
     graphic.beginFill("#bfe4ff");
     if (Math.random() > 0.5){
-      console.log("left up right down");
       var center_x1 = middle_x - (width / 2);
-      console.log("center_x1: " + center_x1);
       var center_y1 = middle_y - (height / 2);
-      console.log("center_y1: " + center_y1);
       var start_radian1 = 0 * Math.PI / 180;
-      console.log("start_radian1: " + start_radian1);
       var end_radian1 = 90 * Math.PI / 180;
-      console.log("end_radian1: " + end_radian1);
       var center_x2 = middle_x + (width / 2);
-      console.log("center_x2: " + center_x2);
       var center_y2 = middle_y + (height / 2);
-      console.log("center_y2: " + center_y2);
       var start_radian2 = 180 * Math.PI / 180;
-      console.log("start_radian2: " + start_radian2);
       var end_radian2 = 270 * Math.PI / 180;
-      console.log("end_radian2: " + end_radian2);
     }
     else {
-      console.log("left down right up");
       var center_x1 = middle_x - (width / 2);
-      console.log("center_x1: " + center_x1);
       var center_y1 = middle_y + (height / 2);
-      console.log("center_y1: " + center_y1);
       var start_radian1 = 270 * Math.PI / 180;
-      console.log("start_radian1: " + start_radian1);
       var end_radian1 = 360 * Math.PI / 180;
-      console.log("end_radian1: " + end_radian1);
       var center_x2 = middle_x + (width / 2);
-      console.log("center_x2: " + center_x2);
       var center_y2 = middle_y - (height / 2);
-      console.log("center_y2: " + center_y2);
       var start_radian2 = 90 * Math.PI / 180;
-      console.log("start_radian2: " + start_radian2);
       var end_radian2 = 180 * Math.PI / 180;
-      console.log("end_radian2: " + end_radian2);
     }
     graphic.arc(center_x1, center_y1, width, start_radian1, end_radian1);
     graphic.arc(center_x2, center_y2, width, start_radian2, end_radian2);
@@ -140,6 +122,12 @@ function refresh() {
     graphic.endStroke();
     var shape = new createjs.Shape(graphic);
     stage.addChild(shape);
+    stage.update();
+  }
+
+  function addOneSideOfSquareToInRugby(stage, one_side_of_square){
+    var one_side_of_square = String(one_side_of_square);
+    drawDegreeCharacter(stage, 250, 80, one_side_of_square + "cm");
     stage.update();
   }
 
@@ -226,10 +214,10 @@ function refresh() {
       addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
     }
     else if (selected_problem_type == "in_rugby") {
-      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
       console.log("one_side_of_square: " + one_side_of_square);
       drawInRugby(left_stage);
-      // addOneSideOfSquareToInRugby(left_stage, one_side_of_square);
+      addOneSideOfSquareToInRugby(left_stage, one_side_of_square);
     }
 
     var right_stage = new createjs.Stage(right_canvas_id);
@@ -243,9 +231,8 @@ function refresh() {
     }
     else if (selected_problem_type == "in_rugby") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
-      console.log("one_side_of_square: " + one_side_of_square);
       drawInRugby(right_stage);
-      // addOneSideOfSquareToInRugby(right_stage, one_side_of_square);
+      addOneSideOfSquareToInRugby(right_stage, one_side_of_square);
     }
     {% endfor %}
     MathJax.typeset();

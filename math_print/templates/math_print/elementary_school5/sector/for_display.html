@@ -126,7 +126,47 @@ function refresh() {
   }
 
   function drawOutRugby(stage) {
-    
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    var middle_x = 160;
+    var middle_y = 80;
+    var width = 160;
+    var height = 160;
+    var start_x = middle_x - (width / 2);
+    var start_y = middle_y - (height / 2);
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.endFill();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    if (Math.random() > 0.5){
+      var center_x1 = middle_x - (width / 2);
+      var center_y1 = middle_y - (height / 2);
+      var start_radian1 = 0 * Math.PI / 180;
+      var end_radian1 = 90 * Math.PI / 180;
+      var center_x2 = middle_x + (width / 2);
+      var center_y2 = middle_y + (height / 2);
+      var start_radian2 = 180 * Math.PI / 180;
+      var end_radian2 = 270 * Math.PI / 180;
+    }
+    else {
+      var center_x1 = middle_x - (width / 2);
+      var center_y1 = middle_y + (height / 2);
+      var start_radian1 = 270 * Math.PI / 180;
+      var end_radian1 = 360 * Math.PI / 180;
+      var center_x2 = middle_x + (width / 2);
+      var center_y2 = middle_y - (height / 2);
+      var start_radian2 = 90 * Math.PI / 180;
+      var end_radian2 = 180 * Math.PI / 180;
+    }
+    graphic.arc(center_x1, center_y1, width, start_radian1, end_radian1);
+    graphic.arc(center_x2, center_y2, width, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
   }
 
   function addOneSideOfSquareToRugby(stage, one_side_of_square){
@@ -223,7 +263,7 @@ function refresh() {
       addOneSideOfSquareToRugby(left_stage, one_side_of_square);
     }
     else if (selected_problem_type == "out_rugby") {
-      var one_side_square = "{{information_tuple.0.one_side_of_square_str";
+      var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
       drawOutRugby(left_stage);
       addOneSideOfSquareToRugby(left_stage, one_side_of_square);
     }
@@ -238,14 +278,14 @@ function refresh() {
       addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
     }
     else if (selected_problem_type == "in_rugby") {
-      var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
-      drawInRugby(left_stage);
-      addOneSideOfSquareToRugby(left_stage, one_side_of_square);
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawInRugby(right_stage);
+      addOneSideOfSquareToRugby(right_stage, one_side_of_square);
     }
     else if (selected_problem_type == "out_rugby") {
-      var one_side_square = "{{information_tuple.0.one_side_of_square_str";
-      drawOutRugby(left_stage);
-      addOneSideOfSquareToRugby(left_stage, one_side_of_square);
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawOutRugby(right_stage);
+      addOneSideOfSquareToRugby(right_stage, one_side_of_square);
     }
     {% endfor %}
     MathJax.typeset();

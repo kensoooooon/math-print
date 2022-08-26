@@ -99,9 +99,18 @@ class Elementary5SectorWithFigureProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             one_side_of_square_str (str): ラグビーボール型を作る正方形の一辺
+        
+        Note:
+            値の複雑化を防ぐために、正方形の一辺を5の倍数に限定している。必要があれば複数候補からの選手等に切り替え
         """
         one_side_of_square = randint(1, 10) * 5
         one_side_of_square_str = str(one_side_of_square)
-        latex_answer = ""
+        square_area = sy.Integer(one_side_of_square ** 2)
+        sector_area = sy.Float(3.14) * (one_side_of_square ** 2) * sy.Rational(90, 360)
+        triangle_area = sy.Rational(1, 2) * (one_side_of_square ** 2)
+        in_rugby_area = 2 * (sector_area - triangle_area)
+        out_rugby_area = square_area - in_rugby_area
+        area_str = sy.latex(out_rugby_area).replace("0", "").rstrip(".")
+        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
         return latex_answer, one_side_of_square_str
     

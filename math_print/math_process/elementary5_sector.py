@@ -74,6 +74,43 @@ class Elementary5SectorWithFigureProblem:
         latex_answer = f"\( {sy.latex(sector.area)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
         return latex_answer, sector
     
+    def _make_in_star_problem(self):
+        """星型の内側の面積を求める問題の解答と描画に必要な情報を返す
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            one_side_of_square (str): 星型を作る正方形の一辺
+        
+        Note:
+            値の複雑化を防ぐために、正方形の一辺を2の倍数に限定している。必要があれば複数候補からの選出等に切り替え
+        """
+        one_side_of_square = randint(1, 10) * 2
+        one_side_of_square_str = str(one_side_of_square)
+        square_area = sy.Integer(one_side_of_square ** 2)
+        inner_sector_total_area = 3.14 * ((one_side_of_square / 2) ** 2)
+        area = square_area - inner_sector_total_area
+        area_str = sy.latex(area).replace("0", "").rstrip(".")
+        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        return latex_answer, one_side_of_square_str
+    
+    def _make_out_star_problem(self):
+        """星型の外側の面積を求める問題の解凍と描画に必要な情報を返す
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            one_side_of_square (str): 星型を作る正方形の一辺
+
+        Note:
+            値の複雑化を防ぐために、正方形の一辺を2の倍数に限定している。必要があれば複数候補からの選出等に切り替え
+        """
+        one_side_of_square = randint(1, 10) * 2
+        one_side_of_square_str = str(one_side_of_square)
+        inner_sector_total_area = 3.14 * ((one_side_of_square / 2) ** 2)
+        area = inner_sector_total_area
+        area_str = sy.latex(area).replace("0", "").rstrip(".")
+        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        return latex_answer, one_side_of_square_str
+    
     def _make_in_rugby_problem(self):
         """ラグビーボール型の内側の面積を求める問題の解答と描画に必要な情報を返す
 

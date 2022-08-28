@@ -2001,6 +2001,8 @@ def display_elementary5_sector_problem(request):
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("standard_sector")
+        problem_type_list.append("in_star")
+        problem_type_list.append("out_star")
         problem_type_list.append("in_rugby")
         problem_type_list.append("out_rugby")
     

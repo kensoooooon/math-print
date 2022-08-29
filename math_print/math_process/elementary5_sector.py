@@ -29,6 +29,10 @@ class Elementary5SectorWithFigureProblem:
         self.selected_problem_type = selected_problem_type
         if selected_problem_type == "standard_sector":
             self.latex_answer, self.sector = self._make_standard_sector_problem()
+        elif selected_problem_type == "in_star":
+            self.latex_answer, self.one_side_of_square_str = self._make_in_star_problem()
+        elif selected_problem_type == "out_star":
+            self.latex_answer, self.one_side_of_square_str = self._make_out_star_problem()
         elif selected_problem_type == "in_rugby":
             self.latex_answer, self.one_side_of_square_str = self._make_in_rugby_problem()
         elif selected_problem_type == "out_rugby":

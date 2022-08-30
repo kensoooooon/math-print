@@ -84,7 +84,7 @@ function refresh() {
   function drawInRugby(stage){
     var graphic = new createjs.Graphics();
     graphic.beginStroke("#000000");
-    graphic.setStrokeStyle(2);
+    // graphic.setStrokeStyle(2);
     var middle_x = 160;
     var middle_y = 80;
     var width = 160;
@@ -94,7 +94,7 @@ function refresh() {
     graphic.drawRect(start_x, start_y, width, height);
     graphic.endStroke();
     graphic.beginStroke("#000000");
-    graphic.setStrokeStyle(2);
+    // graphic.setStrokeStyle(2);
     graphic.beginFill("#bfe4ff");
     if (Math.random() > 0.5){
       var center_x1 = middle_x - (width / 2);
@@ -232,11 +232,75 @@ function refresh() {
     stage.update();
   }
 
-  function addOneSideOfSquareToRugby(stage, one_side_of_square){
+  function drawOutStar(stage) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(2);
+    var start_x = 90;
+    var start_y = 10;
+    var width = 140;
+    var height = 140;
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.endFill();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    // clockwise from up left
+    var radius = 70;
+    var center_x1 = 160 - width / 2;
+    var center_y1 = 80 - height / 2;
+    var start_radian1 = 0 * Math.PI / 180;
+    var end_radian1 = 90 * Math.PI / 180;
+    graphic.drawCircle(center_x1, center_y1, 0.01);
+    graphic.arc(center_x1, center_y1, radius, start_radian1, end_radian1);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    var center_x2 = 160 + width / 2;
+    var center_y2 = 80 - height / 2;
+    var start_radian2 = 90 * Math.PI / 180;
+    var end_radian2 = 180 * Math.PI / 180;
+    graphic.drawCircle(center_x2, center_y2, 0.01);
+    graphic.arc(center_x2, center_y2, radius, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    var center_x3 = 160 + width / 2;
+    var center_y3 = 80 + height / 2;
+    var start_radian3 = 180 * Math.PI / 180;
+    var end_radian3 = 270 * Math.PI / 180;
+    graphic.drawCircle(center_x3, center_y3, 0.01);
+    graphic.arc(center_x3, center_y3, radius, start_radian3, end_radian3);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    var center_x4 = 160 - width / 2;
+    var center_y4 = 80 + height / 2;
+    var start_radian4 = 270 * Math.PI / 180;
+    var end_radian4 = 360 * Math.PI / 180;
+    graphic.drawCircle(center_x4, center_y4, 0.01);
+    graphic.arc(center_x4, center_y4, radius, start_radian4, end_radian4);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function addOneSideOfSquare(stage, one_side_of_square){
     var one_side_of_square = String(one_side_of_square);
     drawDegreeCharacter(stage, 250, 80, one_side_of_square + "cm");
     stage.update();
   }
+
 
   function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
     // add radius
@@ -323,22 +387,22 @@ function refresh() {
     else if (selected_problem_type == "in_star") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
       drawInStar(left_stage);
-      addOneSideOfSquareToRugby(left_stage, one_side_of_square);
+      addOneSideOfSquare(left_stage, one_side_of_square);
     }
     else if (selected_problem_type == "out_star") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
       drawOutStar(left_stage);
-      addOneSideOfSquareToRugby(left, one_side_of_square);
+      addOneSideOfSquare(left_stage, one_side_of_square);
     }
     else if (selected_problem_type == "in_rugby") {
       var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
       drawInRugby(left_stage);
-      addOneSideOfSquareToRugby(left_stage, one_side_of_square);
+      addOneSideOfSquare(left_stage, one_side_of_square);
     }
     else if (selected_problem_type == "out_rugby") {
       var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
       drawOutRugby(left_stage);
-      addOneSideOfSquareToRugby(left_stage, one_side_of_square);
+      addOneSideOfSquare(left_stage, one_side_of_square);
     }
 
     var right_stage = new createjs.Stage(right_canvas_id);
@@ -353,22 +417,22 @@ function refresh() {
     else if (selected_problem_type == "in_star") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
       drawInStar(right_stage);
-      addOneSideOfSquareToRugby(right_stage, one_side_of_square);
+      addOneSideOfSquare(right_stage, one_side_of_square);
     }
     else if (selected_problem_type == "out_star") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
       drawOutStar(right_stage);
-      addOneSideOfSquareToRugby(right_stage, one_side_of_square);
+      addOneSideOfSquare(right_stage, one_side_of_square);
     }
     else if (selected_problem_type == "in_rugby") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
       drawInRugby(right_stage);
-      addOneSideOfSquareToRugby(right_stage, one_side_of_square);
+      addOneSideOfSquare(right_stage, one_side_of_square);
     }
     else if (selected_problem_type == "out_rugby") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
       drawOutRugby(right_stage);
-      addOneSideOfSquareToRugby(right_stage, one_side_of_square);
+      addOneSideOfSquare(right_stage, one_side_of_square);
     }
     {% endfor %}
     MathJax.typeset();

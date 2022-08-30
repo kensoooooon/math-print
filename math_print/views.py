@@ -1109,8 +1109,11 @@ def print_elementary5_sector_problem(request):
     
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
-        problem_type_list.append("basic")
-        problem_type_list.append("advance")
+        problem_type_list.append("standard_sector")
+        problem_type_list.append("in_star")
+        problem_type_list.append("out_star")
+        problem_type_list.append("in_rugby")
+        problem_type_list.append("out_rugby")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []

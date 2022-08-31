@@ -379,7 +379,13 @@ function refresh() {
             left_canvas.setAttribute("width", 320);
             left_canvas.setAttribute("height", 160);
             left_li.appendChild(left_canvas);
+            // adjust for making tight space more space
             left_div.appendChild(left_li);
+            left_div.appendChild(document.createElement("br"));
+            left_div.appendChild(document.createElement("br"));
+
+
+
 
             var right_div = document.createElement("div");
             var right_li = document.createElement("li");
@@ -389,7 +395,10 @@ function refresh() {
             right_canvas.setAttribute("width", 320);
             right_canvas.setAttribute("height", 160);
             right_li.appendChild(right_canvas);
+            // same as above
             right_div.appendChild(right_li);
+            right_div.appendChild(document.createElement("br"));
+            right_div.appendChild(document.createElement("br"));
 
             problem_div.appendChild(left_div);
             problem_div.appendChild(right_div);
@@ -466,6 +475,8 @@ function refresh() {
         //// footer add phase
         small.appendChild(footer_a);
         footer.appendChild(small);
+        problem_print_section.appendChild(document.createElement("br"));
+        problem_print_section.appendChild(document.createElement("br"));
         problem_print_section.appendChild(footer);
 
         // answer section //
@@ -545,6 +556,10 @@ function refresh() {
     print_button_div.append(inner_div);
     print_button_div.append(break_line);
     document.body.prepend(print_button_div);
+    // problme sentence phase
+    var problem_p = document.createElement("p");
+    problem_p.innerHTML = "色がついた部分の面積を求めよ。";
+    document.body.prepend(problem_p);
     // hero unit phase
     var hero_outer_div = document.createElement('div');
     hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
@@ -555,7 +570,7 @@ function refresh() {
     h1_in_hero.innerHTML = "ようこそ!";
     var p_in_hero = document.createElement('p');
     p_in_hero.setAttribute("class", "text-dark");
-    p_in_hero.innerHTML = "おうぎ形を求める";
+    p_in_hero.innerHTML = "面積を求める";
     //// hero unit add phase
     hero_inner_div.appendChild(h1_in_hero);
     hero_inner_div.appendChild(p_in_hero);

@@ -83,14 +83,14 @@ class SpecificLinearEquation:
         number_type_checker = choice(self._number_to_use_list)
         while True:
             if number_type_checker == "integer":
-                linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10, "number")
-                answer, answer_latex = self._make_random_integer(10, -10, "number")
+                linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10)
+                answer, answer_latex = self._make_random_integer(10, -10)
             elif number_type_checker == "frac":
-                linear_coefficient, linear_coefficient_latex = self._make_random_frac(10, -10, "number")
-                answer, answer_latex = self._make_random_integer(10, -10, "number")
+                linear_coefficient, linear_coefficient_latex = self._make_random_frac(10, -10)
+                answer, answer_latex = self._make_random_integer(10, -10)
             elif number_type_checker == "decimal":
-                linear_coefficient, linear_coefficient_latex = self._make_random_decimal(10, -10, 10, "number")
-                answer, answer_latex = self._make_random_integer(10, -10, "number")
+                linear_coefficient, linear_coefficient_latex = self._make_random_decimal(10, -10)
+                answer, answer_latex = self._make_random_integer(10, -10)
             
             if linear_coefficient != 1:
                 break
@@ -115,30 +115,30 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
     
     def _make_ax_equal_b_all_number(self):
-        number_type_checker = self._number_type_selector()
+        number_type_checker = choice(self._number_to_use_list)
         while True:
             if number_type_checker == "integer":
-                left, left_latex = self._make_random_integer(10, -10, "character")
+                left, left_latex = self._make_random_integer(10, -10)
                 print(f"before_left: {left}")
                 print(f"before_left_latex: {left_latex}")
                 if left == -1:
                     left_latex = "-x"
             elif number_type_checker == "frac":
-                left, left_latex = self._make_random_frac(10, -10, "character")
+                left, left_latex = self._make_random_frac(10, -10)
             elif number_type_checker == "decimal":
-                left, left_latex = self._make_random_decimal(10, -10, 10, "character")
+                left, left_latex = self._make_random_decimal(50, -50)
             if left != 1:
                 break
         print(f"left: {left}")
 
-        number_type_checker = self._number_type_selector()
+        number_type_checker = choice(self._number_to_use_list)
 
         if number_type_checker == "integer":
-            right, right_latex = self._make_random_integer(10, -10, "number")
+            right, right_latex = self._make_random_integer(10, -10)
         elif number_type_checker == "frac":
-            right, right_latex = self._make_random_frac(10, -10, "number")
+            right, right_latex = self._make_random_frac(10, -10)
         elif number_type_checker == "decimal":
-            right, right_latex = self._make_random_decimal(10, -10, 10, "number")
+            right, right_latex = self._make_random_decimal(50, -50)
         
 
         latex_problem = f"{left_latex} = {right_latex}"
@@ -150,25 +150,25 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_c_only_integer(self):
-        a_type_checker = self._number_type_selector()
+        a_type_checker = choice(self._number_to_use_list)
         
         if a_type_checker == 'integer':
-            a, a_latex = self._make_random_integer(10, -10, "number")
+            a, a_latex = self._make_random_integer(10, -10)
         elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(10, -10, "number")
+            a, a_latex = self._make_random_frac(10, -10)
         elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(10, -10, 10, "number")
+            a, a_latex = self._make_random_decimal(10, -10)
         
-        c_type_checker = self._number_type_selector()
+        c_type_checker = choice(self._number_to_use_list)
         
         if c_type_checker == 'integer':
-            c, c_latex = self._make_random_integer(10, -10, "number")
+            c, c_latex = self._make_random_integer(10, -10)
         elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(10, -10, "number")
+            c, c_latex = self._make_random_frac(10, -10)
         elif c_type_checker == 'decimal':
-            c, c_latex = self._make_random_decimal(10, -10, 10, "number")
+            c, c_latex = self._make_random_decimal(10, -10)
         
-        answer, answer_latex = self._make_random_integer(10, -10, "number")
+        answer, answer_latex = self._make_random_integer(10, -10)
         b = c - a * answer
         b_latex = sy.latex(b)
         
@@ -200,32 +200,32 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_c_all_number(self):
-        a_type_checker = self._number_type_selector()
+        a_type_checker = choice(self._number_to_use_list)
         
         if a_type_checker == 'integer':
-            a, a_latex = self._make_random_integer(10, -10, "number")
+            a, a_latex = self._make_random_integer(10, -10)
         elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(6, -6, "number")
+            a, a_latex = self._make_random_frac(6, -6)
         elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(10, -10, 10, "number")
+            a, a_latex = self._make_random_decimal(10, -10)
     
-        b_type_checker = self._number_type_selector()
+        b_type_checker = choice(self._number_to_use_list)
         
         if b_type_checker == 'integer':
-            b, b_latex = self._make_random_integer(10, -10, "number")
+            b, b_latex = self._make_random_integer(10, -10)
         elif b_type_checker == 'frac':
-            b, b_latex = self._make_random_frac(6, -6, "number")
+            b, b_latex = self._make_random_frac(6, -6)
         elif b_type_checker == 'decimal':
-            b, b_latex = self._make_random_decimal(10, -10, 10, "number")
+            b, b_latex = self._make_random_decimal(10, -10)
 
-        c_type_checker = self._number_type_selector()
+        c_type_checker = choice(self._number_to_use_list)
         
         if c_type_checker == 'integer':
-            c, c_latex = self._make_random_integer(10, -10, "number")
+            c, c_latex = self._make_random_integer(10, -10)
         elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(6, -6, "number")
+            c, c_latex = self._make_random_frac(6, -6)
         elif c_type_checker == 'decimal':
-            c, c_latex = self._make_random_decimal(10, -10, 10, "number")
+            c, c_latex = self._make_random_decimal(10, -10)
 
         left = a * self._character_dict["x"] + b
         right = c
@@ -261,45 +261,45 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_cx_plus_d_only_integer(self):
-        a_type_checker = self._number_type_selector()
+        a_type_checker = choice(self._number_to_use_list)
         
         if a_type_checker == 'integer':
-            a, a_latex = self._make_random_integer(10, -10, "number")
+            a, a_latex = self._make_random_integer(10, -10)
         elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(6, -6, "number")
+            a, a_latex = self._make_random_frac(6, -6)
         elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(8, -8, 10, "number")
+            a, a_latex = self._make_random_decimal(8, -8)
 
-        c_type_checker = self._number_type_selector()
+        c_type_checker = choice(self._number_to_use_list)
         
         if c_type_checker == 'integer':
-            c, c_latex = self._make_random_integer(10, -10, "number")
+            c, c_latex = self._make_random_integer(10, -10)
         elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(6, -6, "number")
+            c, c_latex = self._make_random_frac(6, -6)
         elif c_type_checker == 'decimal':
-            c, c_latex = self._make_random_decimal(8, -8, 10, "number")
+            c, c_latex = self._make_random_decimal(8, -8)
 
         while(c == a):
-            c_type_checker = self._number_type_selector()
+            c_type_checker = choice(self._number_to_use_list)
             
             if c_type_checker == 'integer':
-                c, c_latex = self._make_random_integer(10, -10, "number")
+                c, c_latex = self._make_random_integer(10, -10)
             elif c_type_checker == 'frac':
-                c, c_latex = self._make_random_frac(6, -6, "number")
+                c, c_latex = self._make_random_frac(6, -6)
             elif c_type_checker == 'decimal':
-                c, c_latex = self._make_random_decimal(10, -10, 10, "number")
+                c, c_latex = self._make_random_decimal(10, -10)
         
-        answer, answer_latex = self._make_random_integer(8, -8, "number")
+        answer, answer_latex = self._make_random_integer(8, -8)
         d_minus_b = (a - c) * answer
         
-        d_type_checker = self._number_type_selector()
+        d_type_checker = choice(self._number_to_use_list)
         
         if d_type_checker == 'integer':
-            d, d_latex = self._make_random_integer(10, -10, "number")
+            d, d_latex = self._make_random_integer(10, -10)
         elif d_type_checker == 'frac':
-            d, d_latex = self._make_random_frac(6, -6, "number")
+            d, d_latex = self._make_random_frac(6, -6)
         elif d_type_checker == 'decimal':
-            d, d_latex = self._make_random_decimal(8, -8, 10, "number")
+            d, d_latex = self._make_random_decimal(8, -8)
         
         b = d - d_minus_b
         b_latex = sy.latex(b)
@@ -343,51 +343,51 @@ class SpecificLinearEquation:
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_cx_plus_d_all_number(self):
-        a_type_checker = self._number_type_selector()
+        a_type_checker = choice(self._number_to_use_list)
         
         if a_type_checker == 'integer':
-            a, a_latex = self._make_random_integer(10, -10, "number")
+            a, a_latex = self._make_random_integer(10, -10)
         elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(6, -6, "number")
+            a, a_latex = self._make_random_frac(6, -6)
         elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(8, -8, 10, "number")        
+            a, a_latex = self._make_random_decimal(8, -8)        
 
-        c_type_checker = self._number_type_selector()
+        c_type_checker = choice(self._number_to_use_list)
         
         if c_type_checker == 'integer':
-            c, c_latex = self._make_random_integer(10, -10, "number")
+            c, c_latex = self._make_random_integer(10, -10)
         elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(6, -6, "number")
+            c, c_latex = self._make_random_frac(6, -6)
         elif c_type_checker == 'decimal':
-            c, c_latex = self._make_random_decimal(8, -8, 10, "number")
+            c, c_latex = self._make_random_decimal(8, -8)
 
         while(c == a):
-            c_type_checker = self._number_type_selector()
+            c_type_checker = choice(self._number_to_use_list)
             
             if c_type_checker == 'integer':
-                c, c_latex = self._make_random_integer(10, -10, "number")
+                c, c_latex = self._make_random_integer(10, -10)
             elif c_type_checker == 'frac':
-                c, c_latex = self._make_random_frac(6, -6, "number")
+                c, c_latex = self._make_random_frac(6, -6)
             elif c_type_checker == 'decimal':
-                c, c_latex = self._make_random_decimal(6, -6, 10, "number")
+                c, c_latex = self._make_random_decimal(6, -6)
 
-        b_type_checker = self._number_type_selector()
+        b_type_checker = choice(self._number_to_use_list)
         
         if b_type_checker == 'integer':
-            b, b_latex = self._make_random_integer(10, -10, "number")
+            b, b_latex = self._make_random_integer(10, -10)
         elif b_type_checker == 'frac':
-            b, b_latex = self._make_random_frac(6, -6, "number")
+            b, b_latex = self._make_random_frac(6, -6)
         elif b_type_checker == 'decimal':
-            b, b_latex = self._make_random_decimal(8, -8, 10, "number")
+            b, b_latex = self._make_random_decimal(8, -8)
 
-        d_type_checker = self._number_type_selector()
+        d_type_checker = choice(self._number_to_use_list)
         
         if d_type_checker == 'integer':
-            d, d_latex = self._make_random_integer(10, -10, "number")
+            d, d_latex = self._make_random_integer(10, -10)
         elif d_type_checker == 'frac':
-            d, d_latex = self._make_random_frac(6, -6, "number")
+            d, d_latex = self._make_random_frac(6, -6)
         elif d_type_checker == 'decimal':
-            d, d_latex = self._make_random_decimal(8, -8, 10, "number")
+            d, d_latex = self._make_random_decimal(8, -8)
         
         left = a * self._character_dict["x"] + b
         right = c * self._character_dict["x"] + d
@@ -431,7 +431,7 @@ class SpecificLinearEquation:
         latex_answer = f"x = {answer_latex}"     
         return latex_answer, latex_problem
 
-    def _make_random_frac(self, max_num, min_num):
+    def _make_random_frac(self, max_num=10, min_num=-10):
         """ランダムな分数とlatexを返す
 
         Args:
@@ -455,22 +455,45 @@ class SpecificLinearEquation:
         return frac, frac_latex
         
     
-    def _make_random_decimal(self, max_num, min_num, denominator):
+    def _make_random_decimal(self, max_num=10, min_num=-10):
+        """ランダムな小数とlatexを返す
+
+        Args:
+            max_num (int): 値決定に使用される数の最大値
+            min_num (int): 値決定に使用される数の最小値
+
+        Returns:
+            frac_for_decimal (sy.Rational): 計算用の分数
+            decimal_latex (str): latex形式で記述された小数
+        
+        Note:
+            小数と分数が混在している時の計算は分数で進める原則と、
+            本当にランダムな値を与えると無限小数が出てくることを鑑みて、
+            実際の計算は分数で、表示は小数でという設計になっている。
+        
+        Developing:
+            9/2: 値の範囲を-1~1から拡大できるようにするにあたって、弾く内容が変わってくる?
+            num = sy.Rational(50, 10)
+        ->isinstanceで弾く？
+        print(num)
+        print(type(num))
+        print(isinstance(num, sy.Integer))
+        """
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
         else:
             numerator = randint(min_num, -1)
-        
-        frac_for_decimal = sy.Rational(numerator, denominator)
+
+        frac_for_decimal = sy.Rational(numerator, 10)
+
         if frac_for_decimal == 1:
             decimal = 1
         else:
             decimal = float(frac_for_decimal)
-
-        decimal_with_number = frac_for_decimal
-        decimal_with_number_latex = sy.latex(decimal)
-        return decimal_with_number, decimal_with_number_latex
+        
+        decimal_latex = sy.latex(decimal)
+        return frac_for_decimal, decimal_latex
     
     def _make_random_integer(self, max_num, min_num):
         checker = random()

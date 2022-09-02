@@ -3,6 +3,38 @@
 ax = bでa=1になる問題
 →characterとnumberでごちゃごちゃになっているのが問題？
 →→整理した上で判定ではじくる
+
+9/2
+ax=b型でa=1....
+from random import randint, random
+
+import sympy as sy
+
+def make_random_decimal(max_num, min_num):
+
+    checker = random()
+    if checker > 0.5:
+        numerator = randint(1, max_num)
+    else:
+        numerator = randint(min_num, -1)
+
+    frac_for_decimal = sy.Rational(numerator, 10)
+
+    if frac_for_decimal == 1:
+        decimal = 1
+    else:
+        decimal = float(frac_for_decimal)
+    
+    decimal_latex = sy.latex(decimal)
+    return frac_for_decimal, decimal_latex
+
+for _ in range(10):
+    decimal, decimal_latex = make_random_decimal(10, -10)
+    print(f"decimal: {decimal}")
+    print(f"decimal_latex: {decimal_latex}")
+    print("-------------------")
+
+に変更？
 """
 from random import choice, randint, random
 
@@ -13,7 +45,7 @@ class SpecificLinearEquation:
     
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
-        self._used_number_type_list = settings['used_number_type_list']
+        self._number_to_use_list = settings['number_to_use_list']
         self._linear_equation_type_list = settings['linear_equation_type_list']
         self._used_character_type_list = ["x"]
         self._character_dict = {}
@@ -48,7 +80,7 @@ class SpecificLinearEquation:
         
 
     def _make_ax_equal_b_only_integer(self):
-        number_type_checker = self._number_type_selector()
+        number_type_checker = choice(self._number_to_use_list)
         while True:
             if number_type_checker == "integer":
                 linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10, "number")
@@ -149,7 +181,7 @@ class SpecificLinearEquation:
         else:
             left_latex = left_latex + f"{a_latex}x"
         
-        if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
+        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
             b_latex = sy.latex(float(b))
             answer_latex = sy.latex(float(answer))
 
@@ -210,7 +242,7 @@ class SpecificLinearEquation:
         else:
             left_latex = left_latex + f"{a_latex}x"
         
-        if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
+        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
             b_latex = sy.latex(float(b))
             answer_latex = sy.latex(float(answer))
 
@@ -280,7 +312,7 @@ class SpecificLinearEquation:
         else:
             left_latex = left_latex + f"{a_latex}x"
         
-        if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
+        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
             b_latex = sy.latex(float(b))
             answer_latex = sy.latex(float(answer))
 
@@ -298,7 +330,7 @@ class SpecificLinearEquation:
         else:
             right_latex = right_latex +  f"{c_latex}x"
         
-        if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
+        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
             d_latex = sy.latex(float(d))
         
         if d > 0:
@@ -387,7 +419,7 @@ class SpecificLinearEquation:
         else:
             right_latex = right_latex +  f"{c_latex}x"
         
-        if ('decimal' in self._used_number_type_list) and ('frac' not in self._used_number_type_list):
+        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
             d_latex = sy.latex(float(d))
         
         if d > 0:
@@ -398,17 +430,18 @@ class SpecificLinearEquation:
         latex_problem = f"{left_latex} = {right_latex}"
         latex_answer = f"x = {answer_latex}"     
         return latex_answer, latex_problem
-    
-    def _number_type_selector(self):
-        if self._used_number_type_list:
-            selected_number_type = choice(self._used_number_type_list)
-        else:
-            selected_number_type = choice(
-                ["integer", "frac", "decimal"]
-            )
-        return selected_number_type
 
-    def _make_random_frac(self, max_num, min_num, number_or_character):
+    def _make_random_frac(self, max_num, min_num):
+        """ランダムな分数とlatexを返す
+
+        Args:
+            max_num (int): 値決定に使用される数の最大値
+            min_num (int): 値決定に使用される数の最小値
+
+        Returns:
+            frac (sy.Rational): 計算用の分数
+            frac_latex (str): latex形式で記述された表示用の分数
+        """
         checker = random()
         if checker > 0.5:
             numerator = randint(2, max_num)
@@ -418,21 +451,11 @@ class SpecificLinearEquation:
             denominator = randint(2, max_num)
         
         frac = sy.Rational(numerator, denominator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            frac_with_character = frac * self._character_dict[used_character]
-            frac_with_character_latex = sy.latex(frac_with_character)
-            return frac_with_character, frac_with_character_latex
-
-        elif number_or_character == "number":
-            frac_with_number_latex = sy.latex(frac)
-            return frac, frac_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        frac_latex = sy.latex(frac)
+        return frac, frac_latex
         
     
-    def _make_random_decimal(self, max_num, min_num, denominator, number_or_character):
+    def _make_random_decimal(self, max_num, min_num, denominator):
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
@@ -445,21 +468,11 @@ class SpecificLinearEquation:
         else:
             decimal = float(frac_for_decimal)
 
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            character = self._character_dict[used_character]
-            decimal_with_character = frac_for_decimal * character
-            decimal_with_character_latex = sy.latex(decimal * character)
-            return decimal_with_character, decimal_with_character_latex
-
-        elif number_or_character == "number":
-            decimal_with_number = frac_for_decimal
-            decimal_with_number_latex = sy.latex(decimal)
-            return decimal_with_number, decimal_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        decimal_with_number = frac_for_decimal
+        decimal_with_number_latex = sy.latex(decimal)
+        return decimal_with_number, decimal_with_number_latex
     
-    def _make_random_integer(self, max_num, min_num, number_or_character):
+    def _make_random_integer(self, max_num, min_num):
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)
@@ -467,15 +480,6 @@ class SpecificLinearEquation:
             numerator = randint(min_num, -1)
         
         integer = sy.Integer(numerator)
-        
-        if number_or_character == "character":
-            used_character = choice(self._used_character_type_list)
-            integer_with_character = self._character_dict[used_character] * integer
-            integer_with_character_latex = sy.latex(integer_with_character)
-            return integer_with_character, integer_with_character_latex
-
-        elif number_or_character == "number":
-            integer_with_number_latex = sy.latex(integer)
-            return integer, integer_with_number_latex
-        else:
-            raise ValueError("There is something wrong with 'add_number_or_character'.")
+        integer_with_number_latex = sy.latex(integer)
+        return integer, integer_with_number_latex
+    

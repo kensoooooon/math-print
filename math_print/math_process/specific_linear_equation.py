@@ -74,21 +74,10 @@ class SpecificLinearEquation:
         
 
     def _make_ax_equal_b_only_integer(self):
-        number_type_checker = choice(self._number_to_use_list)
-        while True:
-            if number_type_checker == "integer":
-                linear_coefficient, linear_coefficient_latex = self._make_random_integer(10, -10)
-                answer, answer_latex = self._make_random_integer(10, -10)
-            elif number_type_checker == "frac":
-                linear_coefficient, linear_coefficient_latex = self._make_random_frac(10, -10)
-                answer, answer_latex = self._make_random_integer(10, -10)
-            elif number_type_checker == "decimal":
-                linear_coefficient, linear_coefficient_latex = self._make_random_decimal(10, -10)
-                answer, answer_latex = self._make_random_integer(10, -10)
-            
-            if linear_coefficient != 1:
-                break
-        print(f"linear_coefficient: {linear_coefficient}")
+        answer_number_type = choice(self._number_to_use_list)
+        
+        if answer_number_type == "integer":
+            answer = self._make_random_integer()
             
         intercept = linear_coefficient * answer
         
@@ -464,14 +453,6 @@ class SpecificLinearEquation:
             小数と分数が混在している時の計算は分数で進める原則と、
             本当にランダムな値を与えると無限小数が出てくることを鑑みて、
             実際の計算は分数で、表示は小数でという設計になっている。
-        
-        Developing:
-            9/2: 値の範囲を-1~1から拡大できるようにするにあたって、弾く内容が変わってくる?
-            num = sy.Rational(50, 10)
-        ->isinstanceで弾く？
-        print(num)
-        print(type(num))
-        print(isinstance(num, sy.Integer))
         """
         checker = random()
         if checker > 0.5:
@@ -489,7 +470,16 @@ class SpecificLinearEquation:
         decimal_latex = sy.latex(decimal)
         return frac_for_decimal, decimal_latex
     
-    def _make_random_integer(self, max_num, min_num):
+    def _make_random_integer(self, max_num=10, min_num=-10):
+        """ランダムな整数とlatexを返す
+
+        Args:
+            max_num (int default 10): 値決定に使用される数の最大値
+            min_num (int default -10): 値決定に使用される数の最小値
+
+        Returns:
+            _type_: _description_
+        """
         checker = random()
         if checker > 0.5:
             numerator = randint(1, max_num)

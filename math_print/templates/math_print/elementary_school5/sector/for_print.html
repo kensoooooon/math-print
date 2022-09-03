@@ -100,7 +100,7 @@ function refresh() {
   function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
     var graphic = new createjs.Graphics();
     graphic.beginStroke("#ffffff");
-    graphic.setStrokeStyle(0.1);
+    graphic.setStrokeStyle(2);
     graphic.beginFill("#bfe4ff");
     graphic.drawCircle(center_x, center_y, 0.01);
     var start_radian = 0;
@@ -117,7 +117,7 @@ function refresh() {
   function drawInRugby(stage){
     var graphic = new createjs.Graphics();
     graphic.beginStroke("#000000");
-    // graphic.setStrokeStyle(2);
+    graphic.setStrokeStyle(2);
     var middle_x = 160;
     var middle_y = 80;
     var width = 160;
@@ -127,7 +127,7 @@ function refresh() {
     graphic.drawRect(start_x, start_y, width, height);
     graphic.endStroke();
     graphic.beginStroke("#000000");
-    // graphic.setStrokeStyle(2);
+    graphic.setStrokeStyle(0.5);
     graphic.beginFill("#bfe4ff");
     if (Math.random() > 0.5){
       var center_x1 = middle_x - (width / 2);
@@ -161,6 +161,7 @@ function refresh() {
   function drawOutRugby(stage) {
     var graphic = new createjs.Graphics();
     graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(2);
     graphic.beginFill("#bfe4ff");
     var middle_x = 160;
     var middle_y = 80;
@@ -172,6 +173,7 @@ function refresh() {
     graphic.endStroke();
     graphic.endFill();
     graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
     graphic.beginFill("#ffffff");
     if (Math.random() > 0.5){
       var center_x1 = middle_x - (width / 2);

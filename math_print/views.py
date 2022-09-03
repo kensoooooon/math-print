@@ -177,10 +177,10 @@ def print_specific_linear_equation(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = SpecificLinearEquation(
-                linear_equation_type_list=linear_equation_type_list, number_to_ues_list=number_to_use_list
+                linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
             )
             problem2 = SpecificLinearEquation(
-                linear_equation_type_list=linear_equation_type_list, number_to_ues_list=number_to_use_list
+                linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -1218,15 +1218,26 @@ def display_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
     
     linear_equation_type_list = request.POST.getlist("linear_equation_type")
-    number_to_use = request.POST.getlist("number_to_use")
+    if not(linear_equation_type_list):
+        linear_equation_type_list.append("ax_equal_b_only_integer")
+        linear_equation_type_list.append("ax_equal_b_all_number")
+        linear_equation_type_list.append("ax_plus_b_equal_c_only_integer")
+        linear_equation_type_list.append("ax_plus_b_equal_c_all_number")
+        linear_equation_type_list.append("ax_plus_b_equal_cx_plus_d_only_integer")
+        linear_equation_type_list.append("ax_plus_b_equal_cx_plus_d_all_number")
+    number_to_use_list = request.POST.getlist("number_to_use")
+    if not(number_to_use_list):
+        number_to_use_list.append("integer")
+        number_to_use_list.append("decimal")
+        number_to_use_list.append("frac") 
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SpecificLinearEquation(
-            used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
-            )
+            linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
+        )
         problem2 = SpecificLinearEquation(
-            used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
+            linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
         )
         math_problem_tuple_list.append((problem1, problem2))
     

@@ -55,14 +55,8 @@ class SpecificLinearEquation:
         self.latex_answer, self.latex_problem = self._make_specific_linear_equation_problem()
     
     def _make_specific_linear_equation_problem(self):
-        if self._linear_equation_type_list:
-            selected_linear_equation_type = choice(self._linear_equation_type_list)
-        else:
-            selected_linear_equation_type = choice(
-                ["ax_equal_b_only_integer", "ax_equal_b_all_number",
-                 'ax_plus_b_equal_c_only_integer', 'ax_plus_b_equal_c_all_number',
-                 'ax_plus_b_equal_cx_plus_d_only_integer', 'ax_plus_b_equal_cx_plus_d_all_number',]
-            )
+        selected_linear_equation_type = choice(self._linear_equation_type_list)
+        
         if selected_linear_equation_type == "ax_equal_b_only_integer":
             latex_answer, latex_problem = self._make_ax_equal_b_only_integer()
         elif selected_linear_equation_type == "ax_equal_b_all_number":
@@ -487,8 +481,8 @@ class SpecificLinearEquation:
 
         frac_for_decimal = sy.Rational(numerator, 10)
 
-        if frac_for_decimal == 1:
-            decimal = 1
+        if isinstance(frac_for_decimal, sy.Integer):
+            decimal = frac_for_decimal
         else:
             decimal = float(frac_for_decimal)
         

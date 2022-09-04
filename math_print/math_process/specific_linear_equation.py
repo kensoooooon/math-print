@@ -74,176 +74,159 @@ class SpecificLinearEquation:
         
 
     def _make_ax_equal_b_only_integer(self):
-        answer_number_type = choice(self._number_to_use_list)
-        
-        if answer_number_type == "integer":
-            answer = self._make_random_integer()
-            
-        intercept = linear_coefficient * answer
-        
-        if linear_coefficient_latex == "-1":
-            left_latex = "-x"
-        else:
-            left_latex = f"{linear_coefficient_latex} x"
-        
-        right = intercept
-        if number_type_checker == "decimal":
-            right_latex = sy.latex(float(right))
-        else:
-            right_latex = sy.latex(right)
-        
+        """ax=b型(整数解)の1次方程式を作成
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        answer, answer_latex = self._make_random_number(number_type="integer")
         latex_answer = f"x = {answer_latex}"
-        latex_problem = f"{left_latex} = {right_latex}"
+        
+        while True:
+            a, a_latex = self._make_random_number()
+            if (a != 1) and (a != 0):
+                break
+        
+        b =  a * answer
+        if ("decimal" in self._number_to_use_list) and ("frac" not in self._number_to_use_list) and ("integer" not in self._number_to_use_list):
+            b_latex = sy.latex(sy.Float(b))
+        else:
+            b_latex = sy.latex(b)
+        
+        if a == -1:
+            latex_problem = f"-x = {b_latex}"
+        else:
+            latex_problem = f"{a_latex}x = {b_latex}"
         
         return latex_answer, latex_problem
     
     def _make_ax_equal_b_all_number(self):
-        number_type_checker = choice(self._number_to_use_list)
-        while True:
-            if number_type_checker == "integer":
-                left, left_latex = self._make_random_integer(10, -10)
-                print(f"before_left: {left}")
-                print(f"before_left_latex: {left_latex}")
-                if left == -1:
-                    left_latex = "-x"
-            elif number_type_checker == "frac":
-                left, left_latex = self._make_random_frac(10, -10)
-            elif number_type_checker == "decimal":
-                left, left_latex = self._make_random_decimal(50, -50)
-            if left != 1:
-                break
-        print(f"left: {left}")
+        """ax=b型(分数、小数解含む)の1次方程式を作成
 
-        number_type_checker = choice(self._number_to_use_list)
-
-        if number_type_checker == "integer":
-            right, right_latex = self._make_random_integer(10, -10)
-        elif number_type_checker == "frac":
-            right, right_latex = self._make_random_frac(10, -10)
-        elif number_type_checker == "decimal":
-            right, right_latex = self._make_random_decimal(50, -50)
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        if ("decimal" in self._number_to_use_list) and ("frac" not in self._number_to_use_list) and ("integer" not in self._number_to_use_list):
+            answer, answer_latex = self._make_random_number(number_type="decimal")
+        else:
+            answer, answer_latex = self._make_random_number(number_type=choice(["frac", "integer"]))
+        latex_answer = f"x = {answer_latex}"
         
-
-        latex_problem = f"{left_latex} = {right_latex}"
-        diff = left - right
-        solve_result = sy.solve(diff, self._character_dict["x"])
-        equation_answer = solve_result[0]
-        answer = sy.collect(equation_answer, self._character_dict["x"])
-        latex_answer = f"x = {sy.latex(answer)}"
+        while True:
+            a, a_latex = self._make_random_number()
+            if (a != 1) and (a != 0):
+                break
+        
+        b =  a * answer
+        if ("decimal" in self._number_to_use_list) and ("frac" not in self._number_to_use_list) and ("integer" not in self._number_to_use_list):
+            b_latex = sy.latex(sy.Float(b))
+        else:
+            b_latex = sy.latex(b)
+        
+        if a == -1:
+            latex_problem = f"-x = {b_latex}"
+        else:
+            latex_problem = f"{a_latex}x = {b_latex}"
+        
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_c_only_integer(self):
-        a_type_checker = choice(self._number_to_use_list)
-        
-        if a_type_checker == 'integer':
-            a, a_latex = self._make_random_integer(10, -10)
-        elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(10, -10)
-        elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(10, -10)
-        
-        c_type_checker = choice(self._number_to_use_list)
-        
-        if c_type_checker == 'integer':
-            c, c_latex = self._make_random_integer(10, -10)
-        elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(10, -10)
-        elif c_type_checker == 'decimal':
-            c, c_latex = self._make_random_decimal(10, -10)
-        
-        answer, answer_latex = self._make_random_integer(10, -10)
+        """ax+b=c型(整数解)の1次方程式を作成
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        answer, answer_latex = self._make_random_number(number_type="integer")
+        latex_answer = f"x = {answer_latex}"
+        while True:
+            a, a_latex = self._make_random_number()
+            if a != 0:
+                break
+        c, c_latex = self._make_random_number()
         b = c - a * answer
-        b_latex = sy.latex(b)
         
-        left = a * self._character_dict["x"] + b
-        left_latex = ""
+        if ("decimal" in self._number_to_use_list) and ("frac" not in self._number_to_use_list) and ("integer" not in self._number_to_use_list):
+            b_latex = sy.latex(sy.Float(b))
+        else:
+            b_latex = sy.latex(b)
+        
+        latex_problem = ""
+        # a add part
         if a == 1:
-            left_latex = left_latex + "x"
+            latex_problem += "x"
         elif a == -1:
-            left_latex = left_latex + "-x"
+            latex_problem += "-x"
         else:
-            left_latex = left_latex + f"{a_latex}x"
+            latex_problem += f"{a_latex}x"
+        # b add part
+        if b == 0:
+            pass
+        elif b > 0:
+            latex_problem += f"+ {b_latex}"
+        else:
+            latex_problem += f"{b_latex}"
+        # c add part
+        latex_problem += f"= {c_latex}"
         
-        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
-            b_latex = sy.latex(float(b))
-            answer_latex = sy.latex(float(answer))
-
-        if b > 0:
-            left_latex = left_latex + f"+ {b_latex}"
-        elif b < 0:
-            left_latex = left_latex + f"{b_latex}"
-
-        right_latex = ""
-        if c_type_checker == 'decimal':
-            right_latex = right_latex + f"{sy.latex(float(c))}"
-        else:
-            right_latex = right_latex + f"{c_latex}"
-        latex_problem = f"{left_latex} = {right_latex}"
-        latex_answer = f"x = {answer_latex}"     
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_c_all_number(self):
-        a_type_checker = choice(self._number_to_use_list)
-        
-        if a_type_checker == 'integer':
-            a, a_latex = self._make_random_integer(10, -10)
-        elif a_type_checker == 'frac':
-            a, a_latex = self._make_random_frac(6, -6)
-        elif a_type_checker == 'decimal':
-            a, a_latex = self._make_random_decimal(10, -10)
-    
-        b_type_checker = choice(self._number_to_use_list)
-        
-        if b_type_checker == 'integer':
-            b, b_latex = self._make_random_integer(10, -10)
-        elif b_type_checker == 'frac':
-            b, b_latex = self._make_random_frac(6, -6)
-        elif b_type_checker == 'decimal':
-            b, b_latex = self._make_random_decimal(10, -10)
+        """ax+b=c型(分数解含む)の1次方程式を作成
 
-        c_type_checker = choice(self._number_to_use_list)
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        if ("decimal" in self._number_to_use_list) and ("frac" not in self._number_to_use_list) and ("integer" not in self._number_to_use_list):
+            answer, answer_latex = self._make_random_number(number_type="decimal")
+        else:
+            answer, answer_latex = self._make_random_number(number_type=choice(["frac", "integer"]))
+        latex_answer = f"x = {answer_latex}"
+        while True:
+            a, a_latex = self._make_random_number()
+            if a != 0:
+                break
+        c, c_latex = self._make_random_number()
+        b = c - a * answer
         
-        if c_type_checker == 'integer':
-            c, c_latex = self._make_random_integer(10, -10)
-        elif c_type_checker == 'frac':
-            c, c_latex = self._make_random_frac(6, -6)
-        elif c_type_checker == 'decimal':
-            c, c_latex = self._make_random_decimal(10, -10)
-
-        left = a * self._character_dict["x"] + b
-        right = c
-        diff = left - right
-        solve_result = sy.solve(diff, self._character_dict["x"])
-        answer = solve_result[0]
-        answer_latex = sy.latex(answer)
+        if ("decimal" in self._number_to_use_list) and ("frac" not in self._number_to_use_list) and ("integer" not in self._number_to_use_list):
+            b_latex = sy.latex(sy.Float(b))
+        else:
+            b_latex = sy.latex(b)
         
-        left_latex = ""
+        latex_problem = ""
+        # a add part
         if a == 1:
-            left_latex = left_latex + "x"
+            latex_problem += "x"
         elif a == -1:
-            left_latex = left_latex + "-x"
+            latex_problem += "-x"
         else:
-            left_latex = left_latex + f"{a_latex}x"
+            latex_problem += f"{a_latex}x"
+        # b add part
+        if b == 0:
+            pass
+        elif b > 0:
+            latex_problem += f"+ {b_latex}"
+        else:
+            latex_problem += f"{b_latex}"
+        # c add part
+        latex_problem += f"= {c_latex}"
         
-        if ('decimal' in self._number_to_use_list) and ('frac' not in self._number_to_use_list):
-            b_latex = sy.latex(float(b))
-            answer_latex = sy.latex(float(answer))
-
-        if b > 0:
-            left_latex = left_latex + f"+ {b_latex}"
-        elif b < 0:
-            left_latex = left_latex + f"{b_latex}"
-
-        right_latex = ""
-        if c_type_checker == 'decimal':
-            right_latex = right_latex + f"{sy.latex(float(c))}"
-        else:
-            right_latex = right_latex + f"{c_latex}"
-        latex_problem = f"{left_latex} = {right_latex}"
-        latex_answer = f"x = {answer_latex}"        
         return latex_answer, latex_problem
 
     def _make_ax_plus_b_equal_cx_plus_d_only_integer(self):
+        """ax+b=cx+d型(整数解のみ)の1次方程式を作成
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        answer = self._make_random_number()
+        
+        
         a_type_checker = choice(self._number_to_use_list)
         
         if a_type_checker == 'integer':
@@ -413,80 +396,113 @@ class SpecificLinearEquation:
         latex_problem = f"{left_latex} = {right_latex}"
         latex_answer = f"x = {answer_latex}"     
         return latex_answer, latex_problem
-
-    def _make_random_frac(self, max_num=10, min_num=-10):
-        """ランダムな分数とlatexを返す
+    
+    def _make_random_number(self, number_type=None, max_num=5, min_num=-5):
+        """指定された型のランダムな数を出力する
 
         Args:
-            max_num (int): 値決定に使用される数の最大値
-            min_num (int): 値決定に使用される数の最小値
-
+            number_type (Union[str, NoneType], optional): 整数、分数、小数のいずれかの型を指定
+            max_num (int, optional): 値決定に使用される数の最大値
+            min_num (int, optional): 値決定に使用される数の最小値
+        
         Returns:
-            frac (sy.Rational): 計算用の分数
-            frac_latex (str): latex形式で記述された表示用の分数
+            number (Union[sy.Integer, sy.Rational]): 計算に使用される数
+            number_latex (str): latex形式で記述された数
+        
+        Raises:
+            ValueError: 指定された数の型が存在しない場合発生
         """
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(2, max_num)
-            denominator = randint(2, max_num)
+        
+        def make_random_frac(max_num, min_num):
+            """ランダムな分数とlatexを返す
+
+            Args:
+                max_num (int): 値決定に使用される数の最大値
+                min_num (int): 値決定に使用される数の最小値
+
+            Returns:
+                frac (sy.Rational): 計算用の分数
+                frac_latex (str): latex形式で記述された表示用の分数
+            """
+            checker = random()
+            if checker > 0.5:
+                numerator = randint(2, max_num)
+                denominator = randint(2, max_num)
+            else:
+                numerator = randint(min_num, -2)
+                denominator = randint(2, max_num)
+            
+            frac = sy.Rational(numerator, denominator)
+            frac_latex = sy.latex(frac)
+            return frac, frac_latex
+            
+        
+        def make_random_decimal(max_num, min_num):
+            """ランダムな小数とlatexを返す
+
+            Args:
+                max_num (int): 値決定に使用される数の最大値
+                min_num (int): 値決定に使用される数の最小値
+
+            Returns:
+                decimal_as_frac (sy.Rational): 計算用の分数
+                decimal_latex or integer_latex (str): latex形式で記述された整数もしくは分数
+            
+            Note:
+                小数と分数が混在している時の計算は分数で進める原則と、
+                本当にランダムな値を与えると無限小数が出てくることを鑑みて、
+                実際の計算は分数で、表示は小数でという設計になっている。
+            """
+            checker = random()
+            if checker > 0.5:
+                numerator = randint(1, max_num * 10)
+            else:
+                numerator = randint(min_num * 10, -1)
+
+            decimal_as_frac = sy.Rational(numerator, 10)
+
+            if isinstance(decimal_as_frac, sy.Integer):
+                integer = decimal_as_frac
+                integer_latex = sy.latex(integer)
+                return decimal_as_frac, integer_latex
+            else:
+                decimal = sy.Float(decimal_as_frac)
+                decimal_latex = sy.latex(decimal)
+                return decimal_as_frac, decimal_latex
+        
+        def make_random_integer(max_num, min_num):
+            """ランダムな整数とlatexを返す
+
+            Args:
+                max_num (int): 値決定に使用される数の最大値
+                min_num (int): 値決定に使用される数の最小値
+
+            Returns:
+                integer (sy.Integer): 計算用の整数
+                integer_latex (str): latex形式で記述された整数
+            """
+            checker = random()
+            if checker > 0.5:
+                number = randint(1, max_num)
+            else:
+                number = randint(min_num, -1)
+            
+            integer = sy.Integer(number)
+            integer_latex = sy.latex(integer)
+            return integer, integer_latex
+        
+        if number_type is not None:
+            selected_number_type = number_type
         else:
-            numerator = randint(min_num, -2)
-            denominator = randint(2, max_num)
-        
-        frac = sy.Rational(numerator, denominator)
-        frac_latex = sy.latex(frac)
-        return frac, frac_latex
-        
-    
-    def _make_random_decimal(self, max_num=10, min_num=-10):
-        """ランダムな小数とlatexを返す
-
-        Args:
-            max_num (int): 値決定に使用される数の最大値
-            min_num (int): 値決定に使用される数の最小値
-
-        Returns:
-            frac_for_decimal (sy.Rational): 計算用の分数
-            decimal_latex (str): latex形式で記述された小数
-        
-        Note:
-            小数と分数が混在している時の計算は分数で進める原則と、
-            本当にランダムな値を与えると無限小数が出てくることを鑑みて、
-            実際の計算は分数で、表示は小数でという設計になっている。
-        """
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(1, max_num)
+            selected_number_type = choice(self._number_to_use_list)
+            
+        if selected_number_type == "integer":
+            number, number_latex = make_random_integer(max_num=max_num, min_num=min_num)
+        elif selected_number_type == "frac":
+            number, number_latex = make_random_frac(max_num=max_num, min_num=min_num)
+        elif selected_number_type == "decimal":
+            number, number_latex = make_random_decimal(max_num=max_num, min_num=min_num)
         else:
-            numerator = randint(min_num, -1)
-
-        frac_for_decimal = sy.Rational(numerator, 10)
-
-        if isinstance(frac_for_decimal, sy.Integer):
-            decimal = frac_for_decimal
-        else:
-            decimal = float(frac_for_decimal)
+            raise ValueError(f"'selected_number_type' is {selected_number_type}. This may be wrong.")
         
-        decimal_latex = sy.latex(decimal)
-        return frac_for_decimal, decimal_latex
-    
-    def _make_random_integer(self, max_num=10, min_num=-10):
-        """ランダムな整数とlatexを返す
-
-        Args:
-            max_num (int default 10): 値決定に使用される数の最大値
-            min_num (int default -10): 値決定に使用される数の最小値
-
-        Returns:
-            _type_: _description_
-        """
-        checker = random()
-        if checker > 0.5:
-            numerator = randint(1, max_num)
-        else:
-            numerator = randint(min_num, -1)
-        
-        integer = sy.Integer(numerator)
-        integer_with_number_latex = sy.latex(integer)
-        return integer, integer_with_number_latex
-    
+        return number, number_latex

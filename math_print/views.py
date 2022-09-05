@@ -53,6 +53,9 @@ def show_elementary_school3(request):
 def show_elementary_school5(request):
     return render(request, 'math_print/elementary_school5/elementary_school5.html', {})
 
+def show_elementary_school6(request):
+    return render(request, 'math_print/elementary_school6/elementary_school6.html', {})
+
 def show_junior_highschool1(request):
     return render(request, 'math_print/junior_highschool1/junior_highschool1.html', {})
 

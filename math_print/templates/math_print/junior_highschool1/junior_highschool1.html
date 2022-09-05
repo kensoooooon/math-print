@@ -73,7 +73,7 @@
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('number_operator_to_use')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('number_operator_to_use')" value="全部はずし">
                 </div>
-                <small class="text-muted">使用する数のタイプ</small>
+                <small class="text-muted">底として使用する数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="one_digit_integer" name="number_number_to_use" id="numberOneDigitIntegerCheck" checked>
@@ -167,7 +167,7 @@
                         </label>
                     </div>
                 </div>
-                <small class="text-muted">使用する数のタイプ</small>
+                <small class="text-muted">項として使用する数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="one_digit_integer" name="number_to_use_without_bracket_problem" id="numberWithoutBracketOneDigitIntegerCheck" checked>
@@ -258,7 +258,7 @@
             <p>累乗の計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">使用する数のタイプ</small>
+                <small class="text-muted">底として使用する数のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="integer" name="power_number_to_use" id="powerIntegerCheck" checked>
@@ -281,7 +281,7 @@
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('power_number_to_use')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('power_number_to_use')" value="全部はずし">
                 </div>
-                <small class="text-muted">登場する計算のタイプ</small>
+                <small class="text-muted">登場する計算</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="single" name="power_calculate_type" id="powerSingleCheck" checked>
@@ -392,7 +392,7 @@
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('character_operator_to_use')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('character_operator_to_use')" value="全部はずし">
                 </div>
-                <small class="text-muted">使用する数のタイプ</small>
+                <small class="text-muted">使用する係数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="integer" name="character_number_to_use" id="characterIntegerCheck" checked>
@@ -488,7 +488,7 @@
                         </label>
                     </div>
                 </div>
-                <small class="text-muted">使用する係数のタイプ</small>
+                <small class="text-muted">使用する係数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="linearEquationIntegerCheck" checked>
@@ -570,7 +570,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="ax_equal_b_all_number" name="linear_equation_type" id="ax_equal_b_all_number">
                         <label class="form-check-label" for="ax_equal_b_all_number">
-                            ax=b(分数解もふくむ)
+                            ax=b(小数,分数解もふくむ)
                         </label>
                     </div>
                 </div>
@@ -584,7 +584,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="ax_plus_b_equal_c_all_number" name="linear_equation_type" id="ax_plus_b_equal_c_all_number">
                         <label class="form-check-label" for="ax_plus_b_equal_c_all_number">
-                            ax+b=c(分数解もふくむ)
+                            ax+b=c(小数,分数解もふくむ)
                         </label>
                     </div>
                 </div>
@@ -598,13 +598,13 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="ax_plus_b_equal_cx_plus_d_all_number" name="linear_equation_type" id="ax_plus_b_equal_cx_plus_d_all_number">
                         <label class="form-check-label" for="ax_plus_b_equal_cx_plus_d_all_number">
-                            ax+b=cx+d(分数解もふくむ)
+                            ax+b=cx+d(小数,分数解もふくむ)
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('linear_equation_type')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('linear_equation_type')" value="全部はずし">
                 </div>
-                <small class="text-muted">使用する係数のタイプ</small>
+                <small class="text-muted">使用する係数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="limitedLinearEquationIntegerCheck" checked>
@@ -667,7 +667,7 @@
                         </label>
                     </div>
                 </div>
-                <small class="text-muted">答えとして登場する比例定数のタイプ</small>
+                <small class="text-muted">答えとして登場する比例定数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="integer" name="number_to_use" id="proportionalExpressionIntegerCheck" checked>

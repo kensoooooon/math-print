@@ -1,0 +1,539 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+  window.addEventListener("load", make);
+
+  function drawLine(stage, start_x, start_y, end_x, end_y) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+
+  }
+
+  function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
+      // draw line detemined by angle
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      var radian = angle * Math.PI / 180;
+      var end_x = start_x + radius * Math.cos(radian);
+      var end_y = start_y + radius * Math.sin(radian);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+
+  function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      var start_radian = start_angle * Math.PI / 180;
+      var end_radian = end_angle * Math.PI / 180;
+      graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+  
+  function drawDegreeCharacter(stage, x, y, character) {
+    //文字オブジェクトを作成する
+    var text = new createjs.Text(character, "15px Arial", "#000000");
+    //描画位置の指定
+    text.x = x;
+    text.y = y;
+    stage.addChild(text);
+  }
+
+  function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#ffffff");
+    graphic.setStrokeStyle(0.1);
+    graphic.beginFill("#bfe4ff");
+    graphic.drawCircle(center_x, center_y, 0.01);
+    var start_radian = 0;
+    var end_radian = sector_angle * Math.PI / 180;
+    graphic.arc(center_x, center_y, sector_radius, start_radian, end_radian);
+    graphic.endStroke();
+    graphic.endFill();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function drawInRugby(stage){
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    // graphic.setStrokeStyle(2);
+    var middle_x = 160;
+    var middle_y = 80;
+    var width = 160;
+    var height = 160;
+    var start_x = middle_x - (width / 2);
+    var start_y = middle_y - (height / 2);
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    // graphic.setStrokeStyle(2);
+    graphic.beginFill("#bfe4ff");
+    if (Math.random() > 0.5){
+      var center_x1 = middle_x - (width / 2);
+      var center_y1 = middle_y - (height / 2);
+      var start_radian1 = 0 * Math.PI / 180;
+      var end_radian1 = 90 * Math.PI / 180;
+      var center_x2 = middle_x + (width / 2);
+      var center_y2 = middle_y + (height / 2);
+      var start_radian2 = 180 * Math.PI / 180;
+      var end_radian2 = 270 * Math.PI / 180;
+    }
+    else {
+      var center_x1 = middle_x - (width / 2);
+      var center_y1 = middle_y + (height / 2);
+      var start_radian1 = 270 * Math.PI / 180;
+      var end_radian1 = 360 * Math.PI / 180;
+      var center_x2 = middle_x + (width / 2);
+      var center_y2 = middle_y - (height / 2);
+      var start_radian2 = 90 * Math.PI / 180;
+      var end_radian2 = 180 * Math.PI / 180;
+    }
+    graphic.arc(center_x1, center_y1, width, start_radian1, end_radian1);
+    graphic.arc(center_x2, center_y2, width, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function drawOutRugby(stage) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    var middle_x = 160;
+    var middle_y = 80;
+    var width = 160;
+    var height = 160;
+    var start_x = middle_x - (width / 2);
+    var start_y = middle_y - (height / 2);
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.endFill();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    if (Math.random() > 0.5){
+      var center_x1 = middle_x - (width / 2);
+      var center_y1 = middle_y - (height / 2);
+      var start_radian1 = 0 * Math.PI / 180;
+      var end_radian1 = 90 * Math.PI / 180;
+      var center_x2 = middle_x + (width / 2);
+      var center_y2 = middle_y + (height / 2);
+      var start_radian2 = 180 * Math.PI / 180;
+      var end_radian2 = 270 * Math.PI / 180;
+    }
+    else {
+      var center_x1 = middle_x - (width / 2);
+      var center_y1 = middle_y + (height / 2);
+      var start_radian1 = 270 * Math.PI / 180;
+      var end_radian1 = 360 * Math.PI / 180;
+      var center_x2 = middle_x + (width / 2);
+      var center_y2 = middle_y - (height / 2);
+      var start_radian2 = 90 * Math.PI / 180;
+      var end_radian2 = 180 * Math.PI / 180;
+    }
+    graphic.arc(center_x1, center_y1, width, start_radian1, end_radian1);
+    graphic.arc(center_x2, center_y2, width, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function drawInStar(stage) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(2);
+    var start_x = 90;
+    var start_y = 10;
+    var width = 140;
+    var height = 140;
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.endFill();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#ffffff");
+    // clockwise from up left
+    var radius = 70;
+    var center_x1 = 160 - width / 2;
+    var center_y1 = 80 - height / 2;
+    var start_radian1 = 0 * Math.PI / 180;
+    var end_radian1 = 90 * Math.PI / 180;
+    graphic.drawCircle(center_x1, center_y1, 0.01);
+    graphic.arc(center_x1, center_y1, radius, start_radian1, end_radian1);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#ffffff");
+    var center_x2 = 160 + width / 2;
+    var center_y2 = 80 - height / 2;
+    var start_radian2 = 90 * Math.PI / 180;
+    var end_radian2 = 180 * Math.PI / 180;
+    graphic.drawCircle(center_x2, center_y2, 0.01);
+    graphic.arc(center_x2, center_y2, radius, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#ffffff");
+    var center_x3 = 160 + width / 2;
+    var center_y3 = 80 + height / 2;
+    var start_radian3 = 180 * Math.PI / 180;
+    var end_radian3 = 270 * Math.PI / 180;
+    graphic.drawCircle(center_x3, center_y3, 0.01);
+    graphic.arc(center_x3, center_y3, radius, start_radian3, end_radian3);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#ffffff");
+    var center_x4 = 160 - width / 2;
+    var center_y4 = 80 + height / 2;
+    var start_radian4 = 270 * Math.PI / 180;
+    var end_radian4 = 360 * Math.PI / 180;
+    graphic.drawCircle(center_x4, center_y4, 0.01);
+    graphic.arc(center_x4, center_y4, radius, start_radian4, end_radian4);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function drawOutStar(stage) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(2);
+    var start_x = 90;
+    var start_y = 10;
+    var width = 140;
+    var height = 140;
+    graphic.drawRect(start_x, start_y, width, height);
+    graphic.endStroke();
+    graphic.endFill();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    // clockwise from up left
+    var radius = 70;
+    var center_x1 = 160 - width / 2;
+    var center_y1 = 80 - height / 2;
+    var start_radian1 = 0 * Math.PI / 180;
+    var end_radian1 = 90 * Math.PI / 180;
+    graphic.drawCircle(center_x1, center_y1, 0.01);
+    graphic.arc(center_x1, center_y1, radius, start_radian1, end_radian1);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    var center_x2 = 160 + width / 2;
+    var center_y2 = 80 - height / 2;
+    var start_radian2 = 90 * Math.PI / 180;
+    var end_radian2 = 180 * Math.PI / 180;
+    graphic.drawCircle(center_x2, center_y2, 0.01);
+    graphic.arc(center_x2, center_y2, radius, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    var center_x3 = 160 + width / 2;
+    var center_y3 = 80 + height / 2;
+    var start_radian3 = 180 * Math.PI / 180;
+    var end_radian3 = 270 * Math.PI / 180;
+    graphic.drawCircle(center_x3, center_y3, 0.01);
+    graphic.arc(center_x3, center_y3, radius, start_radian3, end_radian3);
+    graphic.endFill();
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.beginFill("#bfe4ff");
+    var center_x4 = 160 - width / 2;
+    var center_y4 = 80 + height / 2;
+    var start_radian4 = 270 * Math.PI / 180;
+    var end_radian4 = 360 * Math.PI / 180;
+    graphic.drawCircle(center_x4, center_y4, 0.01);
+    graphic.arc(center_x4, center_y4, radius, start_radian4, end_radian4);
+    graphic.endFill();
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function addOneSideOfSquare(stage, one_side_of_square){
+    var one_side_of_square = String(one_side_of_square);
+    drawDegreeCharacter(stage, 250, 80, one_side_of_square + "cm\nの正方形");
+    stage.update();
+  }
+
+
+  function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
+    // add radius
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
+    // add central_angle
+    drawArc(stage, 160, 80, 10, 0, central_angle);
+    drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
+    stage.update();
+  }
+
+  function draw() {
+    {% for information_tuple in math_problem_tuple_list %}
+    var container_div = document.createElement("div");
+    container_div.className = "container-fluid";
+
+    var row_container = document.createElement("div");
+    row_container.className = "row";
+
+    var left_div = document.createElement("div");
+    left_div.className = "col-md-6";
+
+    var left_canvas = document.createElement('canvas');
+    var left_canvas_id = "left_canvas" + {{ forloop.counter }};
+    left_canvas.id = left_canvas_id;
+    left_canvas.width = 320;
+    left_canvas.height = 160;
+
+    var right_div = document.createElement("div");
+    right_div.className = "col-md-6";
+
+    var right_canvas = document.createElement('canvas');
+    var right_canvas_id = "right_canvas" + {{ forloop.counter }};
+    right_canvas.id = right_canvas_id;
+    right_canvas.width = 320;
+    right_canvas.height = 160;
+
+    // insert part
+    left_div.appendChild(left_canvas);    
+    var left_answer_p = document.createElement('p');
+    left_answer_p.style = "visibility:hidden";
+    left_answer_p.className = "answer";
+    var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
+    left_answer_p.appendChild(left_answer);
+    left_div.appendChild(left_answer_p);
+
+
+    right_div.appendChild(right_canvas);
+
+    var right_answer_p = document.createElement('p');
+    right_answer_p.style = "visibility:hidden";
+    right_answer_p.className = "answer";
+    var right_answer = document.createTextNode("{{ information_tuple.1.latex_answer }}");
+    right_answer_p.appendChild(right_answer);
+    right_div.appendChild(right_answer_p);
+
+    row_container.appendChild(left_div);
+    row_container.appendChild(right_div);
+    container_div.appendChild(row_container);
+    document.body.appendChild(container_div);
+
+    var left_stage = new createjs.Stage(left_canvas_id);
+    var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
+
+    if (selected_problem_type == "standard_sector") {
+      var left_radius = Number({{ information_tuple.0.sector.radius }});
+      var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
+      drawSector(left_stage, 160, 80, 60, left_central_angle);
+      addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "in_star") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawInStar(left_stage);
+      addOneSideOfSquare(left_stage, one_side_of_square);
+    }
+    else if (selected_problem_type == "out_star") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawOutStar(left_stage);
+      addOneSideOfSquare(left_stage, one_side_of_square);
+    }
+    else if (selected_problem_type == "in_rugby") {
+      var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
+      drawInRugby(left_stage);
+      addOneSideOfSquare(left_stage, one_side_of_square);
+    }
+    else if (selected_problem_type == "out_rugby") {
+      var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
+      drawOutRugby(left_stage);
+      addOneSideOfSquare(left_stage, one_side_of_square);
+    }
+
+    var right_stage = new createjs.Stage(right_canvas_id);
+    var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
+    
+    if (selected_problem_type == "standard_sector") {
+      var right_radius = Number({{ information_tuple.1.sector.radius }});
+      var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
+      drawSector(right_stage, 160, 80, 60, right_central_angle);
+      addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "in_star") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawInStar(right_stage);
+      addOneSideOfSquare(right_stage, one_side_of_square);
+    }
+    else if (selected_problem_type == "out_star") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawOutStar(right_stage);
+      addOneSideOfSquare(right_stage, one_side_of_square);
+    }
+    else if (selected_problem_type == "in_rugby") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawInRugby(right_stage);
+      addOneSideOfSquare(right_stage, one_side_of_square);
+    }
+    else if (selected_problem_type == "out_rugby") {
+      var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+      drawOutRugby(right_stage);
+      addOneSideOfSquare(right_stage, one_side_of_square);
+    }
+    {% endfor %}
+    MathJax.typeset();
+  }
+
+  function add_other_parts_to_page() {
+  
+    // problem sentence phase
+    var problem_p = document.createElement('p');
+    problem_p.innerHTML = "色がついた部分の面積を求めよ。";
+    //// problem sentence add phase
+    document.body.prepend(problem_p);
+    // hero unit phase
+    var hero_outer_div = document.createElement('div');
+    hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
+    var hero_inner_div = document.createElement('div');
+    hero_inner_div.setAttribute("class", "container");
+    var h1_in_hero = document.createElement('h1');
+    h1_in_hero.setAttribute("class", "display-4");
+    h1_in_hero.innerHTML = "ようこそ!";
+    var p_in_hero = document.createElement('p');
+    p_in_hero.setAttribute("class", "text-dark");
+    p_in_hero.innerHTML = "面積を求める";
+    //// hero unit add phase
+    hero_inner_div.appendChild(h1_in_hero);
+    hero_inner_div.appendChild(p_in_hero);
+    hero_outer_div.appendChild(hero_inner_div);
+    document.body.prepend(hero_outer_div);
+    // button unit phase
+    var button_div = document.createElement('div');
+    button_div.setAttribute("class", "d-grid gap-3 col-6 mx-auto");
+    var show_answer_button = document.createElement('button');
+    show_answer_button.setAttribute("class", "btn btn-outline-success");
+    show_answer_button.setAttribute("type", "button");
+    show_answer_button.setAttribute("onclick", "showAnswer()");
+    show_answer_button.innerHTML = "答えを表示する";
+    var reload_button = document.createElement('button');
+    reload_button.setAttribute("class", "btn btn-outline-success");
+    reload_button.setAttribute("type", "button");
+    reload_button.setAttribute("onclick", "location.reload(false)");
+    reload_button.innerHTML = "もう一度解く";
+    var problem_choice_a = document.createElement("a");
+    problem_choice_a.setAttribute("href", "{% url 'elementary_school5' %}");
+    problem_choice_a.setAttribute("class", "btn btn-primary");
+    problem_choice_a.setAttribute("type", "button");
+    problem_choice_a.innerHTML = "問題選択へ戻る";
+    var top_a = document.createElement("a");
+    top_a.setAttribute("href", "{% url 'index' %}");
+    top_a.setAttribute("class", "btn btn-primary");
+    top_a.setAttribute("type", "button");
+    top_a.innerHTML = "トップへ戻る";
+    //// buttonunit add phase
+    button_div.appendChild(show_answer_button);
+    button_div.appendChild(reload_button);
+    button_div.appendChild(problem_choice_a);
+    button_div.appendChild(top_a);
+    document.body.appendChild(button_div);
+    // footer phase
+    var footer = document.createElement("footer");
+    footer.setAttribute("class", "container-fluid print_footer");
+    var small = document.createElement("small");
+    var footer_a = document.createElement("a");
+    footer_a.setAttribute("href", "#");
+    footer_a.innerHTML = "© 2022 有明学習振興";
+    //// footer add phase
+    small.appendChild(footer_a);
+    footer.appendChild(small);
+    document.body.appendChild(footer);
+    // top page remove and add phase
+    var navdiv = document.getElementById("top_page_nav");
+    var new_navdiv = navdiv.cloneNode(true);
+    navdiv.remove();
+    document.body.prepend(new_navdiv);
+  }
+
+  function make() {
+    draw();
+    add_other_parts_to_page();
+  }
+
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+面積を求める
+{% endblock %}
+
+{% block body %}
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+{% endblock %}

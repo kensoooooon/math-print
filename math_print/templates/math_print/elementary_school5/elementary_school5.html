@@ -14,33 +14,252 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
 <script>
-    function changeStatusOfFrationType(){
-        let fraction_types = document.getElementsByName(`fraction_type`);
+    window.addEventListener("load", add_graphic_to_sector_problem);
 
-        for (let i = 0; i < fraction_types.length; i++) {
-            if (!(fraction_types[i].checked)){
-                fraction_types[i].checked = true;
+    function draw_standard_sector(){
+        var stage = new createjs.Stage("standard_sector");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#bfe4ff");
+        graphic.beginFill("#bfe4ff");
+        graphic.drawCircle(80, 40, 0.01);
+        var center_x = 80;
+        var center_y = 40;
+        var radius = 25;
+        var start_radian = 0 * Math.PI / 180;
+        var end_radian = 210 * Math.PI / 180;
+        graphic.arc(center_x, center_y, radius, start_radian, end_radian);
+        graphic.endStroke();
+        graphic.endFill();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function draw_in_rugby(){
+        var stage = new createjs.Stage("in_rugby");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(1);
+        var start_x = 50;
+        var start_y = 10;
+        var width = 60;
+        var height = 60;
+        graphic.drawRect(start_x, start_y, width, height);
+        // not need end stroke and beginstroke?
+        graphic.endStroke();
+        graphic.beginStroke("#bfe4ff");
+        graphic.setStrokeStyle(0.01);
+        graphic.beginFill("#bfe4ff");
+        var center_x1 = 50;
+        var center_y1 = 10;
+        var radius1 = 60;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1, anticlockwise=false);
+        var center_x2 = 110;
+        var center_y2 = 70;
+        var radius2 = 60;
+        var start_radian2 = 180 * Math.PI / 180;
+        var end_radian2 = 270 * Math.PI / 180;
+        graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2, anticlockwise=false);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function draw_out_rugby(){
+        var stage = new createjs.Stage("out_rugby");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff")
+        graphic.setStrokeStyle(1);
+        var start_x = 50;
+        var start_y = 10;
+        var width = 60;
+        var height = 60;
+        graphic.drawRect(start_x, start_y, width, height);
+        // not need end stroke and beginstroke?
+        graphic.endStroke();
+        graphic.endFill();
+        graphic.beginStroke("#bfe4ff");
+        graphic.setStrokeStyle(0.01);
+        graphic.beginFill("#ffffff");
+        var center_x1 = 50;
+        var center_y1 = 10;
+        var radius1 = 60;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1, anticlockwise=false);
+        var center_x2 = 110;
+        var center_y2 = 70;
+        var radius2 = 60;
+        var start_radian2 = 180 * Math.PI / 180;
+        var end_radian2 = 270 * Math.PI / 180;
+        graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2, anticlockwise=false);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function draw_in_star() {
+        var stage = new createjs.Stage("in_star");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff");
+        graphic.setStrokeStyle(2);
+        var start_x = 50;
+        var start_y = 10;
+        var width = 60;
+        var height = 60;
+        graphic.drawRect(start_x, start_y, width, height);
+        graphic.endStroke();
+        graphic.endFill();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#ffffff");
+        // clockwise from up left
+        var radius = 30;
+        var center_x1 = 80 - width / 2;
+        var center_y1 = 40 - height / 2;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.drawCircle(center_x1, center_y1, 0.01);
+        graphic.arc(center_x1, center_y1, radius, start_radian1, end_radian1);
+        graphic.endFill();
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#ffffff");
+        var center_x2 = 80 + width / 2;
+        var center_y2 = 40 - height / 2;
+        var start_radian2 = 90 * Math.PI / 180;
+        var end_radian2 = 180 * Math.PI / 180;
+        graphic.drawCircle(center_x2, center_y2, 0.01);
+        graphic.arc(center_x2, center_y2, radius, start_radian2, end_radian2);
+        graphic.endFill();
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#ffffff");
+        var center_x3 = 80 + width / 2;
+        var center_y3 = 40 + height / 2;
+        var start_radian3 = 180 * Math.PI / 180;
+        var end_radian3 = 270 * Math.PI / 180;
+        graphic.drawCircle(center_x3, center_y3, 0.01);
+        graphic.arc(center_x3, center_y3, radius, start_radian3, end_radian3);
+        graphic.endFill();
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#ffffff");
+        var center_x4 = 80 - width / 2;
+        var center_y4 = 40 + height / 2;
+        var start_radian4 = 270 * Math.PI / 180;
+        var end_radian4 = 360 * Math.PI / 180;
+        graphic.drawCircle(center_x4, center_y4, 0.01);
+        graphic.arc(center_x4, center_y4, radius, start_radian4, end_radian4);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function draw_out_star() {
+        var stage = new createjs.Stage("out_star");
+        var graphic = new createjs.Graphics();
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#ffffff");
+        graphic.setStrokeStyle(2);
+        var start_x = 50;
+        var start_y = 10;
+        var width = 60;
+        var height = 60;
+        graphic.drawRect(start_x, start_y, width, height);
+        graphic.endStroke();
+        graphic.endFill();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#bfe4ff");
+        // clockwise from up left
+        var radius = 30;
+        var center_x1 = 80 - width / 2;
+        var center_y1 = 40 - height / 2;
+        var start_radian1 = 0 * Math.PI / 180;
+        var end_radian1 = 90 * Math.PI / 180;
+        graphic.drawCircle(center_x1, center_y1, 0.01);
+        graphic.arc(center_x1, center_y1, radius, start_radian1, end_radian1);
+        graphic.endFill();
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#bfe4ff");
+        var center_x2 = 80 + width / 2;
+        var center_y2 = 40 - height / 2;
+        var start_radian2 = 90 * Math.PI / 180;
+        var end_radian2 = 180 * Math.PI / 180;
+        graphic.drawCircle(center_x2, center_y2, 0.01);
+        graphic.arc(center_x2, center_y2, radius, start_radian2, end_radian2);
+        graphic.endFill();
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#bfe4ff");
+        var center_x3 = 80 + width / 2;
+        var center_y3 = 40 + height / 2;
+        var start_radian3 = 180 * Math.PI / 180;
+        var end_radian3 = 270 * Math.PI / 180;
+        graphic.drawCircle(center_x3, center_y3, 0.01);
+        graphic.arc(center_x3, center_y3, radius, start_radian3, end_radian3);
+        graphic.endFill();
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        graphic.beginFill("#bfe4ff");
+        var center_x4 = 80 - width / 2;
+        var center_y4 = 40 + height / 2;
+        var start_radian4 = 270 * Math.PI / 180;
+        var end_radian4 = 360 * Math.PI / 180;
+        graphic.drawCircle(center_x4, center_y4, 0.01);
+        graphic.arc(center_x4, center_y4, radius, start_radian4, end_radian4);
+        graphic.endFill();
+        graphic.endStroke();
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
+    function add_graphic_to_sector_problem(){
+        draw_standard_sector();
+        draw_in_star();
+        draw_out_star();
+        draw_in_rugby();
+        draw_out_rugby();
+    }
+
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
             }
         }
     }
 
-    function changeStatusOfFractionCalculateType(){
-        let fraction_calculate_types = document.getElementsByName('fraction_calculate_type');
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < fraction_calculate_types.length; i++){
-            if (!(fraction_calculate_types[i].checked)){
-                fraction_calculate_types[i].checked = true;
-            }
-        }
-    }
-
-    function changeStatusOfFrationTypeForCalculate(){
-        let fraction_types_for_calculate = document.getElementsByName(`fraction_type_for_calculate`);
-        
-        for (let i = 0; i < fraction_types_for_calculate.length; i++){
-            if (!(fraction_types_for_calculate[i].checked)){
-                fraction_types_for_calculate[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
             }
         }
     }
@@ -126,7 +345,8 @@
                             帯分数(横に数がくっついてくる)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">答えの分母に登場する数の範囲</small>
                 <div class="form-group">
@@ -301,7 +521,8 @@
                             割り算
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFractionCalculateType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_calculate_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_calculate_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する分数</small>
                 <div class="form-group">
@@ -323,7 +544,8 @@
                             帯分数(横に数がくっついてくる)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfFrationTypeForCalculate()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_type_for_calculate')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_type_for_calculate')" value="全部はずし">
                 </div>
                 <small class="text-muted">分母に登場する数の範囲</small>
                 <div class="form-group">
@@ -420,6 +642,73 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>おうぎ形の面積</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">問題のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="standard_sector" name="problem_type" id="standard_sectorCheck" checked>
+                        <label class="form-check-label" for="standard_sectorCheck">
+                            <canvas id ="standard_sector" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="in_star" name="problem_type" id="in_starCheck" checked>
+                        <label class="form-check-label" for="in_starCheck">
+                            <canvas id ="in_star" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="out_star" name="problem_type" id="out_starCheck" checked>
+                        <label class="form-check-label" for="out_starCheck">
+                            <canvas id ="out_star" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="in_rugby" name="problem_type" id="in_rugbyCheck">
+                        <label class="form-check-label" for="in_rugbyCheck">
+                            <canvas id ="in_rugby" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="out_rugby" name="problem_type" id="out_rugbyCheck">
+                        <label class="form-check-label" for="out_rugbyCheck">
+                            <canvas id ="out_rugby" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SectorWithFigureFivePaperRadio" checked>
+                        <label class="form-check-label" for="SectorWithFigureFivePaperRadio">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SectorWithFigureTenPaperRadio">
+                        <label class="form-check-label" for="SectorWithFigureTenPaperRadio">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SectorWithFigureFifteenPaperRadio">
+                        <label class="form-check-label" for="SectorWithFigureFifteenPaperRadio">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'elementary5_sector_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'elementary5_sector_display' %}">      
+            </form>
+        </div>
+    </div>
+    <br>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

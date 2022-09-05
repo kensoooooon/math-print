@@ -1,14 +1,3 @@
-"""
-Fixing
-4/1
-------
-数の範囲を入力する際に、数字が誤って消されてしまうと、(おそらく)ValueErrorを吐いてしまうことの修正
-->分数計算のなかでも約分と計算で発生する模様
-おそらく原因は、
-min_number_to_denominator = int(request.POST["min_number_to_denominator"])
-でnoneやそれに準じるなにかをintで読み込もうとしている点っぽい
-→int の前に、if is not Noneをはさむことで解決するとおもわれ
-"""
 import unicodedata
 import pprint
 
@@ -48,10 +37,15 @@ from .math_process.logarithm_calculation import LogarithmCalculationProblem
 from .math_process.exponent_calculation import ExponentCalculation
 from .math_process.lcm_and_gcd import LCMAndGCD
 from .math_process.vector_cross_point import VectorCrossPoint
+from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
 
 
 def index(request):
     return render(request, 'math_print/index.html', {})
+
+# for graphic sample
+def graphic_sample(request):
+    return render(request, 'math_print/result.html', {})
 
 def show_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
@@ -98,8 +92,7 @@ def print_number_problem(request):
 
 def print_character_problem(request):
     PROBLEM_NUMBER = 20
-
-    result = request.POST
+    
     number_to_use = request.POST.getlist("character_number_to_use")
     operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
@@ -134,16 +127,10 @@ def print_character_problem(request):
 def print_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
     
-    result = request.POST
-    # print(f"result: {result}")
     number_to_use = request.POST.getlist("number_to_use")
-    # print(f"number_to_use: {number_to_use} \n type: {type(number_to_use)}")
     operator_to_use = request.POST.getlist("operator_to_use")
-    # print(f"operator_to_use: {operator_to_use} \n type: {type(operator_to_use)}")
     term_number = int(request.POST["term_number"])
-    # print(f"term_number: {term_number} \n type: {type(term_number)}")
     paper_number = int(request.POST["paper_number"])
-    # print(f"paper_number: {paper_number}")
 
     MAX_NUMBER_TO_FRAC = 10
     MIN_NUMBER_TO_FRAC = -10
@@ -171,7 +158,18 @@ def print_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
     
     linear_equation_type_list = request.POST.getlist("linear_equation_type")
-    number_to_use = request.POST.getlist("number_to_use")
+    if not(linear_equation_type_list):
+        linear_equation_type_list.append("ax_equal_b_only_integer")
+        linear_equation_type_list.append("ax_equal_b_all_number")
+        linear_equation_type_list.append("ax_plus_b_equal_c_only_integer")
+        linear_equation_type_list.append("ax_plus_b_equal_c_all_number")
+        linear_equation_type_list.append("ax_plus_b_equal_cx_plus_d_only_integer")
+        linear_equation_type_list.append("ax_plus_b_equal_cx_plus_d_all_number")
+    number_to_use_list = request.POST.getlist("number_to_use")
+    if not(number_to_use_list):
+        number_to_use_list.append("integer")
+        number_to_use_list.append("decimal")
+        number_to_use_list.append("frac") 
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -179,10 +177,10 @@ def print_specific_linear_equation(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = SpecificLinearEquation(
-                used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
+                linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
             )
             problem2 = SpecificLinearEquation(
-                used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
+                linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -1117,6 +1115,30 @@ def print_vector_cross_point(request):
     return render(request, 'math_print/highschool2/vector_cross_point/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+def print_elementary5_sector_problem(request):
+    PROBLEM_NUMBER = 10
+    
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("standard_sector")
+        problem_type_list.append("in_star")
+        problem_type_list.append("out_star")
+        problem_type_list.append("in_rugby")
+        problem_type_list.append("out_rugby")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+            problem2 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school5/sector/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1196,15 +1218,26 @@ def display_specific_linear_equation(request):
     PROBLEM_NUMBER = 20
     
     linear_equation_type_list = request.POST.getlist("linear_equation_type")
-    number_to_use = request.POST.getlist("number_to_use")
+    if not(linear_equation_type_list):
+        linear_equation_type_list.append("ax_equal_b_only_integer")
+        linear_equation_type_list.append("ax_equal_b_all_number")
+        linear_equation_type_list.append("ax_plus_b_equal_c_only_integer")
+        linear_equation_type_list.append("ax_plus_b_equal_c_all_number")
+        linear_equation_type_list.append("ax_plus_b_equal_cx_plus_d_only_integer")
+        linear_equation_type_list.append("ax_plus_b_equal_cx_plus_d_all_number")
+    number_to_use_list = request.POST.getlist("number_to_use")
+    if not(number_to_use_list):
+        number_to_use_list.append("integer")
+        number_to_use_list.append("decimal")
+        number_to_use_list.append("frac") 
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SpecificLinearEquation(
-            used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
-            )
+            linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
+        )
         problem2 = SpecificLinearEquation(
-            used_number_type_list=number_to_use, linear_equation_type_list=linear_equation_type_list
+            linear_equation_type_list=linear_equation_type_list, number_to_use_list=number_to_use_list
         )
         math_problem_tuple_list.append((problem1, problem2))
     
@@ -1902,8 +1935,7 @@ def display_unit_conversion_problem(request):
     
     return render(request, 'math_print/elementary_school3/unit_conversion/for_display.html', context)
 
-def display_sector_with_figure_problem(request):    
-        
+def display_sector_with_figure_problem(request):      
     PROBLEM_NUMBER = 20
     
     problem_type_list = request.POST.getlist("sector_problem_type")
@@ -1986,3 +2018,23 @@ def display_vector_cross_point(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/vector_cross_point/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_elementary5_sector_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("standard_sector")
+        problem_type_list.append("in_star")
+        problem_type_list.append("out_star")
+        problem_type_list.append("in_rugby")
+        problem_type_list.append("out_rugby")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+        problem2 = Elementary5SectorWithFigureProblem(problem_type_list=problem_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school5/sector/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

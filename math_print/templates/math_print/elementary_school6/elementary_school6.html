@@ -47,49 +47,49 @@ function uncheckAllStatus(target){
                 <small class="text-muted">登場する計算</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="standard_sector" name="problem_type" id="standard_sectorCheck" checked>
-                        <label class="form-check-label" for="standard_sectorCheck">
+                        <input class="form-check-input" type="checkbox" value="addition_only" name="calculation_type" id="addition_onlyCheck" checked>
+                        <label class="form-check-label" for="addition_onlyCheck">
                             足し算のみ
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="in_star" name="problem_type" id="in_starCheck" checked>
-                        <label class="form-check-label" for="in_starCheck">
+                        <input class="form-check-input" type="checkbox" value="subtraction_only" name="calculation_type" id="subtraction_onlyCheck" checked>
+                        <label class="form-check-label" for="subtraction_onlyCheck">
                             引き算のみ
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="out_star" name="problem_type" id="out_starCheck" checked>
-                        <label class="form-check-label" for="out_starCheck">
+                        <input class="form-check-input" type="checkbox" value="multiplication_only" name="calculation_type""problem_type" id="multiplication_onlyCheck" checked>
+                        <label class="form-check-label" for="multiplication_onlyCheck">
                             かけ算のみ
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="in_rugby" name="problem_type" id="in_rugbyCheck">
-                        <label class="form-check-label" for="in_rugbyCheck">
+                        <input class="form-check-input" type="checkbox" value="division_only" name="calculation_type" id="division_onlyCheck">
+                        <label class="form-check-label" for="division_onlyCheck">
                             割り算のみ
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="out_rugby" name="problem_type" id="out_rugbyCheck">
-                        <label class="form-check-label" for="out_rugbyCheck">
+                        <input class="form-check-input" type="checkbox" value="addition_and_subtraction" name="calculation_type" id="addition_and_subtractionCheck">
+                        <label class="form-check-label" for="addition_and_subtractionCheck">
                             足し算と引き算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="out_rugby" name="problem_type" id="out_rugbyCheck">
-                        <label class="form-check-label" for="out_rugbyCheck">
+                        <input class="form-check-input" type="checkbox" value="multiplication_and_division" name="calculation_type" id="multiplication_and_divisionCheck">
+                        <label class="form-check-label" for="multiplication_and_divisionCheck">
                             かけ算と割り算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="out_rugby" name="problem_type" id="out_rugbyCheck">
-                        <label class="form-check-label" for="out_rugbyCheck">
+                        <input class="form-check-input" type="checkbox" value="all_calculations" name="calculation_type" id="all_calculationsCheck">
+                        <label class="form-check-label" for="all_calculationsCheck">
                             すべての計算
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

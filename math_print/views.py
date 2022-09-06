@@ -38,6 +38,7 @@ from .math_process.exponent_calculation import ExponentCalculation
 from .math_process.lcm_and_gcd import LCMAndGCD
 from .math_process.vector_cross_point import VectorCrossPoint
 from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
+from .math_process.fill_in_the_square import FillInTheSquareProblem
 
 
 def index(request):
@@ -1141,6 +1142,31 @@ def print_elementary5_sector_problem(request):
     
     return render(request, 'math_print/elementary_school5/sector/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_fill_in_the_square_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    calculation_type_list = request.POST.getlist("calculation_type")
+    if not(calculation_type_list):
+        calculation_type_list.append("addition_only")
+        calculation_type_list.append("subtraction_only")
+        calculation_type_list.append("multiplication_only")
+        calculation_type_list.append("division_only")
+        calculation_type_list.append("addition_and_subtraction")
+        calculation_type_list.append("multiplication_and_division")
+        calculation_type_list.append("all_calculations")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
+            problem2 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_print.html', {})
+        
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2041,3 +2067,24 @@ def display_elementary5_sector_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/elementary_school5/sector/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_fill_in_the_square_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    calculation_type_list = request.POST.getlist("calculation_type")
+    if not(calculation_type_list):
+        calculation_type_list.append("addition_only")
+        calculation_type_list.append("subtraction_only")
+        calculation_type_list.append("multiplication_only")
+        calculation_type_list.append("division_only")
+        calculation_type_list.append("addition_and_subtraction")
+        calculation_type_list.append("multiplication_and_division")
+        calculation_type_list.append("all_calculations")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
+        problem2 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

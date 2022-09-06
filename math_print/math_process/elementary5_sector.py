@@ -12,16 +12,11 @@ class Elementary5SectorWithFigureProblem:
         selected_problem_type (str): 選択された問題形式
         latex_answer (str): latex形式で記述された問題
         sector (Sector): 扇形のステータス
-    
-    Developing:
-        ・一律で扇形を表示していた中2用とは異なり、そもそもステータス自体が共通のものではなくなっている
-        ・それに伴い、選択された問題形式の扱いも少し変わると思われる
-            選択された問題形式は変わらずに、ステータスを場合によって切り替える？
     """
     def __init__(self, **settings):
         """
         Args:
-            settings (dict): 問題の設定
+            settings (dict): 問題の設定が格納されている
         """
         sy.init_printing(order='grevlex')
         self._problem_type_list = settings["problem_type_list"]

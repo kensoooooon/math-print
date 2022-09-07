@@ -16,6 +16,7 @@
 {% block script %}
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
+<script>
 function checkAllStatus(target){
     let statuses = document.getElementsByName(target);
 
@@ -35,6 +36,7 @@ function uncheckAllStatus(target){
         }
     }
 }
+</script>
 {% endblock %}
 
 {% block body %}
@@ -96,24 +98,24 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="FillInTheSquareFivePaperRadio" checked>
                         <label class="form-check-label" for="FillInTheSquareFivePaperRadio">
-                            10問×5枚
+                            20問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="FillInTheSquareTenPaperRadio">
                         <label class="form-check-label" for="FillInTheSquareTenPaperRadio">
-                            10問×10枚
+                            20問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="FillInTheSquareFifteenPaperRadio">
                         <label class="form-check-label" for="FillInTheSquareFifteenPaperRadio">
-                            10問×15枚
+                            20問×15枚
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'elementary5_sector_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'elementary5_sector_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'fill_in_the_square_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'fill_in_the_square_display' %}">      
             </form>
         </div>
     </div>

@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, randint, random
 
 import sympy as sy
 
@@ -54,11 +54,27 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        Raises:
+            ValueError: square_value == cで計算が不要な問題が出力されるときに挙上
         
+        Note:
+            解も係数も整数で統一。要望があれば分数の設定等も追加予定
         Developing:
             要するにx+a=c, a+x=c型の方程式と考え方は同じ
-            a=c-xでここは正負を問わない。正でなければならないのはxになる
+            a,c,xともに正である。
         """
+        square_value, square_value_latex = self._make_random_integer()
+        latex_answer = f"\\square = {square_value_latex}"
+        a, a_latex = self._make_random_integer()
+        c = square_value + a
+        c_latex = sy.latex(c)
+        # left square pattern
+        if random() > 0.5:
+            latex_problem = f"\\square + {a_latex} = {c_latex}"
+        # right square pattern
+        else:
+            latex_problem = f"{a_latex} + \\square = {c_latex}"
+        
         return latex_answer, latex_problem
 
     def _make_subtraction_only_problem(self):
@@ -68,6 +84,8 @@ class FillInTheSquareProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
+        latex_answer = ""
+        latex_problem = ""
         return latex_answer, latex_problem
 
     def _make_multiplication_only_problem(self):
@@ -77,6 +95,8 @@ class FillInTheSquareProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
+        latex_answer = ""
+        latex_problem = ""
         return latex_answer, latex_problem
 
     def _make_division_only_problem(self):
@@ -86,6 +106,8 @@ class FillInTheSquareProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
+        latex_answer = ""
+        latex_problem = ""
         return latex_answer, latex_problem
 
     def _make_addition_and_subtraction_problem(self):
@@ -95,6 +117,8 @@ class FillInTheSquareProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
+        latex_answer = ""
+        latex_problem = ""
         return latex_answer, latex_problem
 
     def _make_multiplication_and_division_problem(self):
@@ -104,6 +128,8 @@ class FillInTheSquareProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
+        latex_answer = ""
+        latex_problem = ""
         return latex_answer, latex_problem
     
     def _make_all_calculations_problem(self):
@@ -113,12 +139,23 @@ class FillInTheSquareProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
+        latex_answer = ""
+        latex_problem = ""
         return latex_answer, latex_problem
     
-    def _make_random_integer(self, max_num=10, min_num=-10):
-        """_summary_
+    def _make_random_integer(self, max_num=10, min_num=1):
+        """ランダムな自然数とそのlatexを生成する
 
         Args:
-            max_num (int, optional): _description_. Defaults to 10.
-            min_num (int, optional): _description_. Defaults to -10.
+            max_num (int, optional): 生成される数の最大値 Defaults to 10.
+            min_num (int, optional): 生成される数の最小値 Defaults to 1.
+        
+        Returns:
+            integer (sy.Integer): 計算に用いられる自然数
+            integer_latex (str): 表示に用いられるlatex形式の自然数
         """
+        integer = sy.Integer(randint(min_num, max_num))
+        integer_latex = sy.latex(integer)
+        
+        return integer, integer_latex
+        

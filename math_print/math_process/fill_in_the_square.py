@@ -88,13 +88,13 @@ class FillInTheSquareProblem:
         if random() > 0.5:  # □-a=c
             if random() > 0.5:  # a>c(□>a>c>0)
                 c, c_latex = self._make_random_integer()
-                a = c + randint(1, 5)
+                a = c + sy.Integer(randint(1, 5))
                 a_latex = sy.latex(a)
                 square_value = a + c
                 square_value_latex = sy.latex(square_value)
             else:  # c>a(□>c>a>0)
                 a, a_latex = self._make_random_integer()
-                c = a + randint(1, 5)
+                c = a + sy.Integer(randint(1, 5))
                 c_latex = sy.latex(c)
                 square_value = a + c
                 square_value_latex = sy.latex(square_value)
@@ -103,13 +103,13 @@ class FillInTheSquareProblem:
         else:  # a-□=c
             if random() > 0.5:  # □>c(a>□>c>0)
                 c, c_latex = self._make_random_integer()
-                square_value = c + randint(1, 5)
+                square_value = c + sy.Integer(randint(1, 5))
                 square_value_latex = sy.latex(square_value)
                 a = square_value + c
                 a_latex = sy.latex(a)
             else:  # c>□(a>c>□>0)
                 square_value, square_value_latex = self._make_random_integer()
-                c = square_value + randint(1, 5)
+                c = square_value + sy.Integer(randint(1, 5))
                 c_latex = sy.latex(c)
                 a = square_value + c
                 a_latex = sy.latex(a)
@@ -175,9 +175,33 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Notes:
+            □+a-b=c, a+□-b=c 
+            □-a+b=c, b-a+□=c
         """
-        latex_answer = ""
-        latex_problem = ""
+        square_value, square_value_latex = self._make_random_integer()
+        latex_answer = f"\\square = {square_value_latex}"
+        if random() < 0.5:  # □+a-b=c or a+□-b=c, □+a>b
+            a, a_latex = self._make_random_integer()
+            b = sy.Integer(randint(1, square_value + a - 1))
+            b_latex = sy.latex(b)
+            c = square_value + a - b
+            c_latex = sy.latex(c)
+            if random() > 0.5:  # □+a-b=c
+                latex_problem = f"\\square + {a_latex} - {b_latex} = {c_latex}"
+            else:  # a+□-b=c
+                latex_problem = f"{a_latex} + \\square - {b_latex} = {c_latex}"
+        else:  # □-a+b=c and b-a+□=c, □+b>a
+            b, b_latex = self._make_random_integer()
+            a = sy.Integer(randint(1, square_value + b - 1))
+            a_latex = sy.latex(a)
+            c = square_value - a + b
+            c_latex = sy.latex(c)
+            if random() > 0.5:  # □-a+b=c
+                latex_problem = f"\\square - {a_latex} + {b_latex} = {c_latex}"
+            else:  # b-a+□=c
+                latex_problem = f"{b_latex} - {a_latex} + \\square = {c_latex}"
         return latex_answer, latex_problem
 
     def _make_multiplication_and_division_problem(self):
@@ -186,9 +210,97 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Notes:
+            □×a×b=c
+            □×a÷b=c
+            □÷a×b=c
+            □÷a÷b=c
+            それぞれ□=...で分母から決めて、分数が出ないように
+        
+        Developing:
+        from random import randint, random
+
+        import sympy as sy
+
+        b = randint(2, 15)
+        print(f"b: {b}")
+        c = randint(2, 15)
+        print(f"c: {c}")
+
+        num = b * c
+        print(f"num: {num}")
+        print(sy.factorint(num))
+        print("--------------------")
+        a = 1
+        for base, index in sy.factorint(num).items():
+            print(f"key: {base}")
+            print(f"value: {index}")
+            if random() > 0.4:
+                a *= (base ** randint(1, index))
+            print("----------------")
+
+        print(a)
         """
-        latex_answer = ""
-        latex_problem = ""
+        problem_type_checker = random()
+        if problem_type_checker < 0.25:  # □×a×b=c, a×□×b=c, a×b×□=c
+            square_value, square_value_latex = self._make_random_integer(max_num=10, min_num=2)
+            latex_answer = f"\\square = {square_value_latex}"
+            a, a_latex = self._make_random_integer(max_num=10, min_num=2)
+            b, b_latex = self._make_random_integer(max_num=10, min_num=2)
+            c = a * b * square_value
+            c_latex = sy.latex(c)
+            display_type_checker = random()
+            if display_type_checker < 0.33:  # □×a×b=c
+                latex_problem = f"\\square \\times {a_latex} \\times {b_latex} = {c_latex}"
+            elif 0.33 <= display_type_checker < 0.66:  # a×□×b=c
+                latex_problem = f"{a_latex} \\times \\square \\times {b_latex} = {c_latex}"
+            else:  # a×b×□=c
+                latex_problem = f"{a_latex} \\times {b_latex} \\times \\square = {c_latex}"
+        elif 0.25 <= problem_type_checker < 0.5:  # □×a÷b=c, a×□÷b=c, a÷b×□=c
+            b, b_latex = self._make_random_integer(max_num=10, min_num=2)
+            c, c_latex = self._make_random_integer(max_num=10, min_num=2)
+            a = 1
+            for base, index in sy.factorint(b * c).items():
+                if random() > 0.3:
+                    a *= (base ** randint(1, index))
+            a_latex = sy.latex(a)
+            square_value = sy.Rational(b * c, a)
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            display_type_checker = random()
+            if display_type_checker < 0.33:  # □×a÷b=c
+                latex_problem = f"\\square \\times {a_latex} \\div {b_latex} = {c_latex}"
+            elif 0.33 <= display_type_checker < 0.66:  # a×□÷b=c
+                latex_problem = f"{a_latex} \\times \\square \\div {b_latex} = {c_latex}"
+            else:  # a÷b×□=c
+                latex_problem = f"{a_latex} \\div {b_latex} \\times \\square = {c_latex}"
+        elif 0.5 <= problem_type_checker < 0.75:  # □÷a×b=c, b×□÷a=c, b÷a×□=c
+            a, a_latex = self._make_random_integer(max_num=10, min_num=2)
+            c, c_latex = self._make_random_integer(max_num=10, min_num=2)
+            b = 1
+            for base, index in sy.factorint(a * c).items():
+                if random() > 0.3:
+                    b *= (base ** randint(1, index))
+            b_latex = sy.latex(b)
+            square_value = sy.Rational(a * c, b)
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            display_type_checker = random()
+            if display_type_checker < 0.33:  # □÷a×b=c
+                latex_problem = f"\\square \\div {a_latex} \\times {b_latex} = {c_latex}"
+            elif 0.33 <= display_type_checker < 0.66:  # b×□÷a=c
+                latex_problem = f"{b_latex} \\times \\square \\div {a_latex} = {c_latex}"
+            else:  # b÷a×□=c
+                latex_problem = f"{b_latex} \\div {a_latex} \\times \\square = {c_latex}"
+        else:  # □÷a÷b=c
+            a, a_latex = self._make_random_integer(max_num=10, min_num=2)
+            b, b_latex = self._make_random_integer(max_num=10, min_num=2)
+            c, c_latex = self._make_random_integer(max_num=10, min_num=2)
+            square_value = a * b * c
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"\\square \\div {a_latex} \\div {b_latex} = {c_latex}"            
         return latex_answer, latex_problem
     
     def _make_all_calculations_problem(self):

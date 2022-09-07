@@ -54,8 +54,6 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        Raises:
-            ValueError: square_value == cで計算が不要な問題が出力されるときに挙上
         
         Note:
             解も係数も整数で統一。要望があれば分数の設定等も追加予定
@@ -68,11 +66,9 @@ class FillInTheSquareProblem:
         a, a_latex = self._make_random_integer()
         c = square_value + a
         c_latex = sy.latex(c)
-        # left square pattern
-        if random() > 0.5:
+        if random() > 0.5:  # □+a=c
             latex_problem = f"\\square + {a_latex} = {c_latex}"
-        # right square pattern
-        else:
+        else:  # a+□=c
             latex_problem = f"{a_latex} + \\square = {c_latex}"
         
         return latex_answer, latex_problem
@@ -83,9 +79,42 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Notes:
+            □-a=c, a-□=cの2タイプ
+            小さいほうから値を決定している
+            どちらでも正しく答えが出る場合は、random経由で決定
         """
-        latex_answer = ""
-        latex_problem = ""
+        if random() > 0.5:  # □-a=c
+            if random() > 0.5:  # a>c(□>a>c>0)
+                c, c_latex = self._make_random_integer()
+                a = c + randint(1, 5)
+                a_latex = sy.latex(a)
+                square_value = a + c
+                square_value_latex = sy.latex(square_value)
+            else:  # c>a(□>c>a>0)
+                a, a_latex = self._make_random_integer()
+                c = a + randint(1, 5)
+                c_latex = sy.latex(c)
+                square_value = a + c
+                square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"\\square - {a_latex} = {c_latex}"
+        else:  # a-□=c
+            if random() > 0.5:  # □>c(a>□>c>0)
+                c, c_latex = self._make_random_integer()
+                square_value = c + randint(1, 5)
+                square_value_latex = sy.latex(square_value)
+                a = square_value + c
+                a_latex = sy.latex(a)
+            else:  # c>□(a>c>□>0)
+                square_value, square_value_latex = self._make_random_integer()
+                c = square_value + randint(1, 5)
+                c_latex = sy.latex(c)
+                a = square_value + c
+                a_latex = sy.latex(a)
+            latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"{a_latex} - \\square = {c_latex}"
         return latex_answer, latex_problem
 
     def _make_multiplication_only_problem(self):
@@ -94,9 +123,24 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Notes:
+            □×a=c, a×□=cの2タイプ
         """
-        latex_answer = ""
-        latex_problem = ""
+        if random() > 0.5:  # □×a=c
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a, a_latex = self._make_random_integer()
+            c = square_value * a
+            c_latex = sy.latex(c)
+            latex_problem = f"\\square \\times {a_latex} = {c_latex}"
+        else:  # a×□=c
+            a, a_latex = self._make_random_integer()
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            c = a * square_value
+            c_latex = sy.latex(c)
+            latex_problem = f"{a_latex} \\times \\square = {c_latex}"
         return latex_answer, latex_problem
 
     def _make_division_only_problem(self):
@@ -105,9 +149,24 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Notes:
+            □÷a=c, a÷□=cの2タイプ
         """
-        latex_answer = ""
-        latex_problem = ""
+        if random() > 0.5:  # □÷a=c
+            a, a_latex = self._make_random_integer()
+            c, c_latex = self._make_random_integer()
+            square_value = c * a
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"\\square \\div {a_latex} = {c_latex}"
+        else:  # a÷□=c
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            c, c_latex = self._make_random_integer()
+            a = c * square_value
+            a_latex = sy.latex(a)
+            latex_problem = f"{a_latex} \\div \\square = {c_latex}"
         return latex_answer, latex_problem
 
     def _make_addition_and_subtraction_problem(self):

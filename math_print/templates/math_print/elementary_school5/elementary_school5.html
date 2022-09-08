@@ -236,12 +236,85 @@
         stage.update();
     }
 
+    function draw_seed_and_flower() {
+        var stage = new createjs.Stage("seed_and_flower");
+        var graphic = new createjs.Graphics();
+        // out sector
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff");
+        graphic.setStrokeStyle(0.5);
+        var center_x = 40;
+        var center_y = 70;
+        graphic.drawCircle(center_x, center_y, 0.01);
+        var radius = 60;
+        var start_radian = 270 * Math.PI / 180;
+        var end_radian = 360 * Math.PI / 180;
+        graphic.arc(center_x, center_y, radius, start_radian, end_radian);
+        graphic.endFill();
+        graphic.endStroke();
+        // remained line
+        graphic.setStrokeStyle(0.5);
+        graphic.beginStroke("#000000");
+        graphic.moveTo(center_x, center_y);
+        var end_x = 100;
+        var end_y = 70;
+        graphic.lineTo(end_x, end_y);
+        graphic.endStroke();
+        // bottom right half circle
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#ffffff");
+        graphic.setStrokeStyle(0.5);
+        var center_x2 = (center_x + end_x) / 2;
+        var center_y2 = (center_y + end_y) / 2;
+        graphic.drawCircle(center_x2, center_y2, 0.01);
+        var radius2 = 30;
+        var start_radian2 = 180 * Math.PI / 180;
+        var end_radian2 = 360 * Math.PI / 180;
+        graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2);
+        graphic.endFill();
+        graphic.endStroke();
+        // remained line of bottom right half circle
+        graphic.beginStroke("#000000");
+        graphic.moveTo(70, 70);
+        var end_x2 = 100;
+        var end_y2 = 70;
+        graphic.lineTo(end_x2, end_y2);
+        graphic.endStroke();
+        // up left half circle
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#ffffff");
+        graphic.setStrokeStyle(0.5);
+        var center_x3 = (center_x + 40) / 2;
+        var center_y3 = (center_y + 10) / 2;
+        graphic.drawCircle(center_x3, center_y3, 0.01);
+        var radius3 = 30;
+        var start_radian3 = 270 * Math.PI / 180;
+        var end_radian3 = 450 * Math.PI / 180;
+        graphic.arc(center_x3, center_y3, radius3, start_radian3, end_radian3);
+        graphic.endFill();
+        graphic.endStroke();
+        //remained line of up left half circle
+        graphic.beginStroke("#000000");
+        graphic.moveTo(40, 40);
+        var end_x3 = 40;
+        var end_y3 = 70;
+        graphic.lineTo(end_x3, end_y3);
+        graphic.endStroke();
+        // remained arc area
+        graphic.beginStroke()
+        // final addition
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
     function add_graphic_to_sector_problem(){
         draw_standard_sector();
         draw_in_star();
         draw_out_star();
         draw_in_rugby();
         draw_out_rugby();
+        draw_seed_and_flower();
     }
 
     function checkAllStatus(target){
@@ -679,6 +752,14 @@
                             <canvas id ="out_rugby" width="160" height="80"></canvas>
                         </label>
                     </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="seed_and_flower" name="problem_type" id="seed_and_flowerCheck">
+                        <label class="form-check-label" for="seed_and_flowerCheck">
+                            <canvas id ="seed_and_flower" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <br>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>

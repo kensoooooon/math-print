@@ -1,0 +1,130 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+計算練習(小6)
+{% endblock %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+<script>
+function checkAllStatus(target){
+    let statuses = document.getElementsByName(target);
+
+    for (let i =0; i < statuses.length; i++){
+        if (!(statuses[i].checked)){
+            statuses[i].checked = true;
+        }
+    }
+}
+
+function uncheckAllStatus(target){
+    let statuses = document.getElementsByName(target);
+
+    for (let i =0; i < statuses.length; i++){
+        if (statuses[i].checked){
+            statuses[i].checked = false;
+        }
+    }
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>穴埋め算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition_only" name="calculation_type" id="addition_onlyCheck" checked>
+                        <label class="form-check-label" for="addition_onlyCheck">
+                            足し算のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="subtraction_only" name="calculation_type" id="subtraction_onlyCheck" checked>
+                        <label class="form-check-label" for="subtraction_onlyCheck">
+                            引き算のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="multiplication_only" name="calculation_type""problem_type" id="multiplication_onlyCheck" checked>
+                        <label class="form-check-label" for="multiplication_onlyCheck">
+                            かけ算のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="division_only" name="calculation_type" id="division_onlyCheck" checked>
+                        <label class="form-check-label" for="division_onlyCheck">
+                            割り算のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition_and_subtraction" name="calculation_type" id="addition_and_subtractionCheck">
+                        <label class="form-check-label" for="addition_and_subtractionCheck">
+                            足し算と引き算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="multiplication_and_division" name="calculation_type" id="multiplication_and_divisionCheck">
+                        <label class="form-check-label" for="multiplication_and_divisionCheck">
+                            かけ算と割り算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="all_calculations" name="calculation_type" id="all_calculationsCheck">
+                        <label class="form-check-label" for="all_calculationsCheck">
+                            すべての計算
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FillInTheSquareFivePaperRadio" checked>
+                        <label class="form-check-label" for="FillInTheSquareFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FillInTheSquareTenPaperRadio">
+                        <label class="form-check-label" for="FillInTheSquareTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FillInTheSquareFifteenPaperRadio">
+                        <label class="form-check-label" for="FillInTheSquareFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'fill_in_the_square_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'fill_in_the_square_display' %}">      
+            </form>
+        </div>
+    </div>
+    <br>
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2022 有明学習振興</a></small>
+    </footer>
+</div>
+{% endblock %}

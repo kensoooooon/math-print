@@ -33,6 +33,12 @@ urlpatterns = [
     path('elementary5_sector/print/', views.print_elementary5_sector_problem, name='elementary5_sector_print'),
     path('elementary5_sector/display/', views.display_elementary5_sector_problem, name='elementary5_sector_display'),
     ##########################################
+    ### 小6 ###
+    path('elementary_school6/', views.show_elementary_school6, name='elementary_school6'),
+    ### 穴埋め算 ###
+    path('fill_in_the_square/print', views.print_fill_in_the_square_problem, name='fill_in_the_square_print'),
+    path('fill_in_the_square/display', views.display_fill_in_the_square_problem, name='fill_in_the_square_display'),
+    ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),
     # 数の計算

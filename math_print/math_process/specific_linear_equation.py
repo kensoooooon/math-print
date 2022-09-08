@@ -4,19 +4,36 @@ import sympy as sy
 
 
 class SpecificLinearEquation:
+    """特定の形を持つ1次方程式の解を求める問題を出力する
     
+    Attributes:
+        _number_to_use_list (list): 係数に利用する数字のタイプを格納する
+        _linear_equation_type_list (list): 問題に出力される1次方程式の形を格納する
+        latex_answer (str): latex形式で記述された解答
+        latex_problem (str): latex形式で記述された問題
+    
+    Note:
+        解としては基本的に整数、分数が優先されて、小数だけが選択されているときに例外的に小数へと変換される
+        また、解とつじつま合わせをするために計算されて出てくる係数も、同様の仕様となっている。
+    """
     def __init__(self, **settings):
+        """初期化
+        
+        Args:
+            settings (dict): 問題の設定が格納されている
+        """
         sy.init_printing(order='grevlex')
         self._number_to_use_list = settings['number_to_use_list']
         self._linear_equation_type_list = settings['linear_equation_type_list']
-        self._used_character_type_list = ["x"]
-        self._character_dict = {}
-        for character in self._used_character_type_list:
-            self._character_dict[character] = sy.Symbol(character, real=True)
-
         self.latex_answer, self.latex_problem = self._make_specific_linear_equation_problem()
     
     def _make_specific_linear_equation_problem(self):
+        """選択された1次方程式の形に応じて、問題と解答を出力する
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述されたされた問題
+        """
         selected_linear_equation_type = choice(self._linear_equation_type_list)
         
         if selected_linear_equation_type == "ax_equal_b_only_integer":
@@ -34,7 +51,6 @@ class SpecificLinearEquation:
         
         return latex_answer, latex_problem
         
-
     def _make_ax_equal_b_only_integer(self):
         """ax=b型(整数解)の1次方程式を作成
 

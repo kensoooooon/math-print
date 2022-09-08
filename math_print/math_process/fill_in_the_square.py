@@ -311,7 +311,7 @@ class FillInTheSquareProblem:
             elif 0.25 <= display_type_checker < 0.5:  # a×□+b=c
                 latex_problem = f"{a_latex} \\times \\square + {b_latex} = {c_latex}"
             elif 0.5 <= display_type_checker < 0.75:  # b+□×a=c
-                latex_problem = f"{b_latex} + \\square \\tiems {a_latex} = {c_latex}"
+                latex_problem = f"{b_latex} + \\square \\times {a_latex} = {c_latex}"
             else:
                 latex_problem = f"{b_latex} + {a_latex} \\times \\square = {c_latex}"
         elif sy.Rational(1, 13) <= problem_type_checker < sy.Rational(2, 13):  # □÷a+b=c, b+□÷a=c

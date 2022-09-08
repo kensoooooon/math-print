@@ -84,6 +84,7 @@ function showAnswer(){
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
         <ol>
+            <p>次の□に当てはまる値を求めよ。</p>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
                     <div>
@@ -111,6 +112,8 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
         <br>
         <br>
         <br>
@@ -150,6 +153,8 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
         <br>
         <br>
         <br>

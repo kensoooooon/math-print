@@ -1165,7 +1165,7 @@ def print_fill_in_the_square_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_print.html', {})
+    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
         
 
 def display_number_problem(request):

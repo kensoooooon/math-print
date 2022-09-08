@@ -286,7 +286,7 @@ class FillInTheSquareProblem:
             □×a+b=c, a×□+b=c, b+□×a=c, b+a×□=c
             □÷a+b=c, b+□÷a=c
             a÷□+b=c, b+a÷□=c
-            □÷a-b=c, 
+            □÷a-b=c
             a÷□-b=c
             (□+a)×b=c, (a+□)×b=c
             (□-a)×b=c
@@ -315,9 +315,131 @@ class FillInTheSquareProblem:
             else:
                 latex_problem = f"{b_latex} + {a_latex} \\times \\square = {c_latex}"
         elif sy.Rational(1, 13) <= problem_type_checker < sy.Rational(2, 13):  # □÷a+b=c, b+□÷a=c
-            
-        latex_answer = ""
-        latex_problem = ""
+            b, b_latex = self._make_random_integer()
+            c = b + randint(1, 10)
+            c_latex = sy.latex(c)
+            a, a_latex = self._make_random_integer()
+            square_value = a * (c - b)
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            if random() > 0.5:  # □÷a+b=c
+                latex_problem = f"\\square \\div {a_latex} + {b_latex} = {c_latex}"
+            else:  # b+□÷a=c  
+                latex_problem = f"{b_latex} + \\square \\div {a_latex} = {c_latex}"
+        elif sy.Rational(2, 13) <= problem_type_checker < sy.Rational(3, 13):  # a÷□+b=c, b+a÷□=c
+            b, b_latex = self._make_random_integer()
+            c = b + randint(1, 10)
+            c_latex = sy.latex(c)
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a = square_value * (c - b)
+            a_latex = sy.latex(a)
+            if random() > 0.5:  # a÷□+b=c
+                latex_problem = f"{a_latex} \\div \\square + {b_latex} = {c_latex}"
+            else:  # b+a÷□=c
+                latex_problem = f"{b_latex} + {a_latex} \\div \\square = {c_latex}"
+        elif sy.Rational(3, 13) <= problem_type_checker < sy.Rational(4, 13):  # □÷a-b=c
+            b, b_latex = self._make_random_integer()
+            c, c_latex = self._make_random_integer()
+            a, a_latex = self._make_random_integer()
+            square_value = a * (b + c)
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"\\square \\div {a_latex} - {b_latex} = {c_latex}"
+        elif sy.Rational(4, 13) <= problem_type_checker < sy.Rational(5, 13):  # a÷□-b=c
+            b, b_latex = self._make_random_integer()
+            c, c_latex = self._make_random_integer()
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a = square_value * (b + c)
+            a_latex = sy.latex(a)
+            latex_problem = f"{a_latex} \\div \\square - {b_latex} = {c_latex}"
+        elif sy.Rational(5, 13) <= problem_type_checker < sy.Rational(6, 13):  # (□+a)×b=c, (a+□)×b=c
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a, a_latex = self._make_random_integer()
+            b, b_latex = self._make_random_integer()
+            c = (square_value + a) * b
+            c_latex = sy.latex(c)
+            if random() > 0.5:  # (□+a)×b=c
+                latex_problem = f"(\\square + {a_latex}) \\times {b_latex} = {c_latex}"
+            else:  # (a+□)×b=c
+                latex_problem = f"({a_latex} + \\square) \\times {b_latex} = {c_latex}"
+        elif sy.Rational(6, 13) <= problem_type_checker < sy.Rational(7, 13):  # (□-a)×b=c
+            a, a_latex = self._make_random_integer()
+            square_value = a + randint(1, 10)
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            b, b_latex = self._make_random_integer()
+            c = (square_value - a) * b
+            c_latex = sy.latex(c)
+            latex_problem = f"(\\square - {a_latex}) \\times {b_latex} = {c_latex}"
+        elif sy.Rational(7, 13) <= problem_type_checker < sy.Rational(8, 13):  # (□-a)÷b=c
+            a, a_latex = self._make_random_integer()
+            square_value = a + randint(1, 10)
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            b = 1
+            for base, index in sy.factorint(square_value - a).items():
+                if random() > 0.3:
+                    b *= (base ** randint(1, index))
+            b_latex = sy.latex(b)
+            c = sy.Rational(square_value - a, b)
+            c_latex = sy.latex(c)
+            latex_problem = f"(\\square - {a_latex}) \\div {b_latex} = {c_latex}"
+        elif sy.Rational(8, 13) <= problem_type_checker < sy.Rational(9, 13):  # (a-□)×b=c
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a = square_value + randint(1, 10)
+            a_latex = sy.latex(a)
+            b, b_latex = self._make_random_integer()
+            c = (a - square_value) * b
+            c_latex = sy.latex(c)
+            latex_problem = f"({a_latex} - \\square) \\times {b_latex} = {c_latex}"
+        elif sy.Rational(9, 13) <= problem_type_checker < sy.Rational(10, 13):  # (a-□)÷b=c
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a = square_value + randint(1, 10)
+            a_latex = sy.latex(a)
+            b = 1
+            for base, index in sy.factorint(a - square_value).items():
+                if random() > 0.3:
+                    b *= (base ** randint(1, index))
+            b_latex = sy.latex(b)
+            c = sy.Rational(a - square_value, b)
+            c_latex = sy.latex(c)
+            latex_problem = f"({a_latex} - \\square) \\div {b_latex} = {c_latex}"
+        elif sy.Rational(10, 13) <= problem_type_checker < sy.Rational(11, 13):  # (a+b)×□=c, □×(a+b)=c
+            a, a_latex = self._make_random_integer()
+            b, b_latex = self._make_random_integer()
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            c = (a + b) * square_value
+            c_latex = sy.latex(c)
+            if random() > 0.5:  # (a+b)×□=c
+                latex_problem = f"({a_latex} + {b_latex}) \\times \\square = {c_latex}"
+            else:  # □×(a+b)=c
+                latex_problem = f"\\square \\times ({a_latex} + {b_latex}) = {c_latex}"
+        elif sy.Rational(11, 13) <= problem_type_checker < sy.Rational(12, 13):  # (a+b)÷□=c
+            a, a_latex = self._make_random_integer()
+            b, b_latex = self._make_random_integer()
+            square_value = 1
+            for base, index in sy.factorint(a + b).items():
+                if random() > 0.3:
+                    square_value *= (base ** randint(1, index))
+            square_value_latex =sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            c = sy.Rational(a + b, square_value)
+            c_latex = sy.latex(c)
+            latex_problem = f"({a_latex} + {b_latex}) \\div \\square = {c_latex}"
+        else:  # □÷(a+b)=c
+            a, a_latex = self._make_random_integer()
+            b, b_latex = self._make_random_integer()
+            c, c_latex = self._make_random_integer()
+            square_value = (a + b) * c
+            square_value_latex = sy.latex(square_value)
+            latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"\\square \\div ({a_latex} + {b_latex}) = {c_latex}"
         return latex_answer, latex_problem
     
     def _make_random_integer(self, max_num=10, min_num=1):

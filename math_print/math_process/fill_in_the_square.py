@@ -212,35 +212,7 @@ class FillInTheSquareProblem:
             latex_problem (str): latex形式で記述された問題
         
         Notes:
-            □×a×b=c
-            □×a÷b=c
-            □÷a×b=c
-            □÷a÷b=c
-            それぞれ□=...で分母から決めて、分数が出ないように
-        
-        Developing:
-        from random import randint, random
-
-        import sympy as sy
-
-        b = randint(2, 15)
-        print(f"b: {b}")
-        c = randint(2, 15)
-        print(f"c: {c}")
-
-        num = b * c
-        print(f"num: {num}")
-        print(sy.factorint(num))
-        print("--------------------")
-        a = 1
-        for base, index in sy.factorint(num).items():
-            print(f"key: {base}")
-            print(f"value: {index}")
-            if random() > 0.4:
-                a *= (base ** randint(1, index))
-            print("----------------")
-
-        print(a)
+            それぞれ分数にならないように設計
         """
         problem_type_checker = random()
         if problem_type_checker < 0.25:  # □×a×b=c, a×□×b=c, a×b×□=c
@@ -309,7 +281,41 @@ class FillInTheSquareProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Developing:
+            □×a+b=c, a×□+b=c, b+□×a=c, b+a×□=c
+            □÷a+b=c, b+□÷a=c
+            a÷□+b=c, b+a÷□=c
+            □÷a-b=c, 
+            a÷□-b=c
+            (□+a)×b=c, (a+□)×b=c
+            (□-a)×b=c
+            (□-a)÷b=c
+            (a-□)×b=c
+            (a-□)÷b=c
+            (a+b)×□=c, □×(a+b)=c
+            (a+b)÷□=c
+            □÷(a+b)=c
         """
+        problem_type_checker = random()
+        if problem_type_checker < sy.Rational(1, 13):  # □×a+b=c, a×□+b=c, b+□×a=c, b+a×□=c
+            square_value, square_value_latex = self._make_random_integer()
+            latex_answer = f"\\square = {square_value_latex}"
+            a, a_latex = self._make_random_integer()
+            b, b_latex = self._make_random_integer()
+            c = square_value * a + b
+            c_latex = sy.latex(c)
+            display_type_checker = random()
+            if display_type_checker < 0.25:  # □×a+b=c
+                latex_problem = f"\\square \\times {a_latex} + {b_latex} = {c_latex}"
+            elif 0.25 <= display_type_checker < 0.5:  # a×□+b=c
+                latex_problem = f"{a_latex} \\times \\square + {b_latex} = {c_latex}"
+            elif 0.5 <= display_type_checker < 0.75:  # b+□×a=c
+                latex_problem = f"{b_latex} + \\square \\tiems {a_latex} = {c_latex}"
+            else:
+                latex_problem = f"{b_latex} + {a_latex} \\times \\square = {c_latex}"
+        elif sy.Rational(1, 13) <= problem_type_checker < sy.Rational(2, 13):  # □÷a+b=c, b+□÷a=c
+            
         latex_answer = ""
         latex_problem = ""
         return latex_answer, latex_problem

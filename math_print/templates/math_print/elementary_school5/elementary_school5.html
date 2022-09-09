@@ -301,7 +301,23 @@
         graphic.lineTo(end_x3, end_y3);
         graphic.endStroke();
         // remained arc area
-        graphic.beginStroke()
+        //// arc from up left in little square
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff");
+        graphic.setStrokeStyle(0.5);
+        var center_x4 = 40;
+        var center_y4 = 40;
+        var radius4 = 30;
+        var start_radian4 = 0 * Math.PI / 180;
+        var end_radian4 = 90 * Math.PI / 180;
+        graphic.arc(center_x4, center_y4, radius4, start_radian4, end_radian4);
+        //// arc from bottom right in little square
+        var center_x5 = 70;
+        var center_y5 = 70;
+        var radius5 = 30;
+        var start_radian5 = 180 * Math.PI / 180;
+        var end_radian5 = 270 * Math.PI / 180;
+        graphic.arc(center_x5, center_y5, radius5, start_radian5, end_radian5);
         // final addition
         var shape = new createjs.Shape(graphic);
         stage.addChild(shape);

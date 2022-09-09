@@ -17,6 +17,9 @@ class Elementary5SectorWithFigureProblem:
         """
         Args:
             settings (dict): 問題の設定が格納されている
+        
+        Raises:
+            ValueError: 問題の設定に存在しないものが選択されたときに挙上
         """
         sy.init_printing(order='grevlex')
         self._problem_type_list = settings["problem_type_list"]
@@ -32,6 +35,10 @@ class Elementary5SectorWithFigureProblem:
             self.latex_answer, self.one_side_of_square_str = self._make_in_rugby_problem()
         elif selected_problem_type == "out_rugby":
             self.latex_answer, self.one_side_of_square_str = self._make_out_rugby_problem()
+        elif selected_problem_type == "in_seed_and_flower":
+            self.latex_answer, self.radius_of_quarter_circle = self._make_in_seed_and_flower_problem()
+        else:
+            raise ValueError(f"'selected_problem_type' is {selected_problem_type}. This may be wrong.")
     
     def _make_standard_sector_problem(self):
         """標準的な扇形問題の解答と描画に必要な情報を返す
@@ -137,7 +144,7 @@ class Elementary5SectorWithFigureProblem:
             one_side_of_square_str (str): ラグビーボール型を作る正方形の一辺
         
         Note:
-            値の複雑化を防ぐために、正方形の一辺を5の倍数に限定している。必要があれば複数候補からの選手等に切り替え
+            値の複雑化を防ぐために、正方形の一辺を5の倍数に限定している。必要があれば候補の拡大
         """
         one_side_of_square = randint(1, 10) * 5
         one_side_of_square_str = str(one_side_of_square)
@@ -149,4 +156,31 @@ class Elementary5SectorWithFigureProblem:
         area_str = sy.latex(out_rugby_area).replace("0", "").rstrip(".")
         latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
         return latex_answer, one_side_of_square_str
+    
+    def _make_in_seed_and_flower_problem(self):
+        """四分円の中に配置された種と花型の内側の面積を求める問題の解答と、描画に必要な情報を返す
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            radius_of_quarter_circle_str (str): 四分円の半径
+        
+        Note:
+            値の複雑化を防ぐために、四分円の半径を偶数に限定している。必要があれば候補の拡大
+
+        Developing:
+            quarter_circle_area: 28.2600000000000
+            triangle_area: 18
+            in_seed_and_flower_area: 10.2600000000000
+            latex_answer: \\( \\mathtt{\\text{1.26}} \\mathrm{ cm^2 } \\)
+            が発生。途中のゼロを消してしまっている。
+            ->正規表現かなにかに切り替えるべき？
+        """
+        radius_of_quarter_circle = randint(1, 20) * 2
+        radius_of_quarter_circle_str = str(radius_of_quarter_circle)
+        quarter_circle_area = sy.Float(3.14) * (radius_of_quarter_circle **2) * sy.Rational(90, 360)
+        triangle_area = sy.Rational(1, 2) * (radius_of_quarter_circle ** 2)
+        in_seed_and_flower_area = quarter_circle_area - triangle_area
+        area_str = sy.latex(in_seed_and_flower_area).replace("0", "").rstrip(".")
+        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        return latex_answer, radius_of_quarter_circle_str    
     

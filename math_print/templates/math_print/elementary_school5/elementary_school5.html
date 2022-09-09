@@ -236,8 +236,8 @@
         stage.update();
     }
 
-    function draw_seed_and_flower() {
-        var stage = new createjs.Stage("seed_and_flower");
+    function draw_in_seed_and_flower() {
+        var stage = new createjs.Stage("in_seed_and_flower");
         var graphic = new createjs.Graphics();
         // out sector
         graphic.beginStroke("#000000");
@@ -330,7 +330,7 @@
         draw_out_star();
         draw_in_rugby();
         draw_out_rugby();
-        draw_seed_and_flower();
+        draw_in_seed_and_flower();
     }
 
     function checkAllStatus(target){
@@ -770,9 +770,9 @@
                     </div>
                     <br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="seed_and_flower" name="problem_type" id="seed_and_flowerCheck">
-                        <label class="form-check-label" for="seed_and_flowerCheck">
-                            <canvas id ="seed_and_flower" width="160" height="80"></canvas>
+                        <input class="form-check-input" type="checkbox" value="in_seed_and_flower" name="problem_type" id="in_seed_and_flowerCheck">
+                        <label class="form-check-label" for="in_seed_and_flowerCheck">
+                            <canvas id ="in_seed_and_flower" width="160" height="80"></canvas>
                         </label>
                     </div>
                     <br>

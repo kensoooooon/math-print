@@ -2059,6 +2059,7 @@ def display_elementary5_sector_problem(request):
         problem_type_list.append("out_star")
         problem_type_list.append("in_rugby")
         problem_type_list.append("out_rugby")
+        problem_type_list.append("in_seed_and_flower")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

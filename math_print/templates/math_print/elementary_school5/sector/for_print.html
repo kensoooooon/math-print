@@ -417,6 +417,93 @@ function refresh() {
     stage.update();
   }
 
+  function drawOutSeedAndFlower(stage) {
+    var graphic = new createjs.Graphics();
+    // out sector
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    var center_x = 80;
+    var center_y = 150;
+    graphic.drawCircle(center_x, center_y, 0.01);
+    var radius = 130;
+    var start_radian = 270 * Math.PI / 180;
+    var end_radian = 360 * Math.PI / 180;
+    graphic.arc(center_x, center_y, radius, start_radian, end_radian);
+    graphic.endFill();
+    graphic.endStroke();
+    // remained line
+    graphic.setStrokeStyle(0.5);
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x, center_y);
+    var end_x = center_x + radius;
+    var end_y = center_y;
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    // bottom right half circle
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var center_x2 = (center_x + end_x) / 2;
+    var center_y2 = (center_y + end_y) / 2;
+    graphic.drawCircle(center_x2, center_y2, 0.01);
+    var radius2 = radius / 2;
+    var start_radian2 = 180 * Math.PI / 180;
+    var end_radian2 = 360 * Math.PI / 180;
+    graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    // remained line of bottom right half circle
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x2, center_y2);
+    var end_x2 = center_x2 + radius2;
+    var end_y2 = center_y2;
+    graphic.lineTo(end_x2, end_y2);
+    graphic.endStroke();
+    // up left half circle
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var center_x3 = center_x;
+    var center_y3 = (center_y + (center_y - radius)) / 2;
+    graphic.drawCircle(center_x3, center_y3, 0.01);
+    var radius3 = radius / 2;
+    var start_radian3 = 270 * Math.PI / 180;
+    var end_radian3 = 450 * Math.PI / 180;
+    graphic.arc(center_x3, center_y3, radius3, start_radian3, end_radian3);
+    graphic.endFill();
+    graphic.endStroke();
+    //remained line of up left half circle
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x3, center_y3);
+    var end_x3 = center_x3;
+    var end_y3 = center_y3 + radius3;
+    graphic.lineTo(end_x3, end_y3);
+    graphic.endStroke();
+    // remained arc area
+    //// arc from up left in little square
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    var center_x4 = center_x3;
+    var center_y4 = center_y3;
+    var radius4 = radius3;
+    var start_radian4 = 0 * Math.PI / 180;
+    var end_radian4 = 90 * Math.PI / 180;
+    graphic.arc(center_x4, center_y4, radius4, start_radian4, end_radian4);
+    //// arc from bottom right in little square
+    var center_x5 = center_x2;
+    var center_y5 = center_y2;
+    var radius5 = radius2;
+    var start_radian5 = 180 * Math.PI / 180;
+    var end_radian5 = 270 * Math.PI / 180;
+    graphic.arc(center_x5, center_y5, radius5, start_radian5, end_radian5);
+    // final addition
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
   function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
     // add radius
     drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
@@ -446,7 +533,7 @@ function refresh() {
   }
 
   function addRadiusToQuarterCircle(stage, radius_of_quarter_circle) {
-    drawDegreeCharacter(stage, 250, 50, "半径\n" + radius_of_quarter_circle + "cm\nの扇形");
+    drawDegreeCharacter(stage, 240, 50, "半径" + radius_of_quarter_circle + "cm\n中心角90°\nのおうぎ形");
     stage.update();
   }
 
@@ -516,12 +603,12 @@ function refresh() {
               addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
             }
             else if (selected_problem_type == "in_star") {
-              var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+              var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
               drawInStar(left_stage);
               addOneSideOfSquare(left_stage, one_side_of_square);
             }
             else if (selected_problem_type == "out_star") {
-              var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+              var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
               drawOutStar(left_stage);
               addOneSideOfSquare(left_stage, one_side_of_square);
             }
@@ -538,6 +625,11 @@ function refresh() {
             else if (selected_problem_type == "in_seed_and_flower") {
               var radius_of_quarter_circle = "{{ information_tuple.0.radius_of_quarter_circle_str }}";
               drawInSeedAndFlower(left_stage);
+              addRadiusToQuarterCircle(left_stage, radius_of_quarter_circle);
+            }
+            else if (selected_problem_type == "out_seed_and_flower") {
+              var radius_of_quarter_circle = "{{ information_tuple.0.radius_of_quarter_circle_str }}";
+              drawOutSeedAndFlower(left_stage);
               addRadiusToQuarterCircle(left_stage, radius_of_quarter_circle);
             }
         
@@ -573,6 +665,11 @@ function refresh() {
             else if (selected_problem_type == "in_seed_and_flower") {
               var radius_of_quarter_circle = "{{ information_tuple.1.radius_of_quarter_circle_str }}";
               drawInSeedAndFlower(right_stage);
+              addRadiusToQuarterCircle(right_stage, radius_of_quarter_circle);
+            }
+            else if (selected_problem_type == "out_seed_and_flower") {
+              var radius_of_quarter_circle = "{{ information_tuple.1.radius_of_quarter_circle_str }}";
+              drawOutSeedAndFlower(right_stage);
               addRadiusToQuarterCircle(right_stage, radius_of_quarter_circle);
             }
         {% endfor %}

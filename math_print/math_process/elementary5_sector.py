@@ -36,7 +36,7 @@ class Elementary5SectorWithFigureProblem:
         elif selected_problem_type == "out_rugby":
             self.latex_answer, self.one_side_of_square_str = self._make_out_rugby_problem()
         elif selected_problem_type == "in_seed_and_flower":
-            self.latex_answer, self.radius_of_quarter_circle = self._make_in_seed_and_flower_problem()
+            self.latex_answer, self.radius_of_quarter_circle_str = self._make_in_seed_and_flower_problem()
         else:
             raise ValueError(f"'selected_problem_type' is {selected_problem_type}. This may be wrong.")
     
@@ -77,7 +77,7 @@ class Elementary5SectorWithFigureProblem:
             sector = Sector(radius=radius, area=area, central_angle=central_angle)
             return sector     
         sector = decide_sector_status()
-        latex_answer = f"\( {sy.latex(sector.area)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        latex_answer = self._area_value_to_latex_answer(sector.area)
         return latex_answer, sector
     
     def _make_in_star_problem(self):
@@ -94,9 +94,8 @@ class Elementary5SectorWithFigureProblem:
         one_side_of_square_str = str(one_side_of_square)
         square_area = sy.Integer(one_side_of_square ** 2)
         inner_sector_total_area = 3.14 * ((one_side_of_square / 2) ** 2)
-        area = square_area - inner_sector_total_area
-        area_str = sy.latex(area).replace("0", "").rstrip(".")
-        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        in_star_area = square_area - inner_sector_total_area
+        latex_answer = self._area_value_to_latex_answer(in_star_area)
         return latex_answer, one_side_of_square_str
     
     def _make_out_star_problem(self):
@@ -111,10 +110,8 @@ class Elementary5SectorWithFigureProblem:
         """
         one_side_of_square = randint(1, 10) * 2
         one_side_of_square_str = str(one_side_of_square)
-        inner_sector_total_area = 3.14 * ((one_side_of_square / 2) ** 2)
-        area = inner_sector_total_area
-        area_str = sy.latex(area).replace("0", "").rstrip(".")
-        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        out_star_area = 3.14 * ((one_side_of_square / 2) ** 2)
+        latex_answer = self._area_value_to_latex_answer(out_star_area)
         return latex_answer, one_side_of_square_str
     
     def _make_in_rugby_problem(self):
@@ -131,9 +128,8 @@ class Elementary5SectorWithFigureProblem:
         one_side_of_square_str = str(one_side_of_square)
         sector_area = (one_side_of_square ** 2) * 3.14 *  sy.Rational(90, 360)
         triangle_area = sy.Rational(1, 2) * (one_side_of_square) ** 2
-        area = 2 * (sector_area - triangle_area)
-        area_str = sy.latex(area).replace("0", "").rstrip(".")
-        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        in_rugby_area = 2 * (sector_area - triangle_area)
+        latex_answer = self._area_value_to_latex_answer(in_rugby_area)
         return latex_answer, one_side_of_square_str
     
     def _make_out_rugby_problem(self):
@@ -153,8 +149,7 @@ class Elementary5SectorWithFigureProblem:
         triangle_area = sy.Rational(1, 2) * (one_side_of_square ** 2)
         in_rugby_area = 2 * (sector_area - triangle_area)
         out_rugby_area = square_area - in_rugby_area
-        area_str = sy.latex(out_rugby_area).replace("0", "").rstrip(".")
-        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        latex_answer = self._area_value_to_latex_answer(out_rugby_area)
         return latex_answer, one_side_of_square_str
     
     def _make_in_seed_and_flower_problem(self):
@@ -174,13 +169,39 @@ class Elementary5SectorWithFigureProblem:
             latex_answer: \\( \\mathtt{\\text{1.26}} \\mathrm{ cm^2 } \\)
             が発生。途中のゼロを消してしまっている。
             ->正規表現かなにかに切り替えるべき？
+            ->
+            def decimal_normalize(f):
+                text = str(f)
+                while True:
+                    if ("." in text and text[-1] == "0") or (text[-1] == "."):
+                        text = text[:-1]
+                        continue
+                    break
+                return text
+            がある。大体全部の面積がこれを必要としているので、self中で関数化してしまうのがよさそう
         """
         radius_of_quarter_circle = randint(1, 20) * 2
         radius_of_quarter_circle_str = str(radius_of_quarter_circle)
         quarter_circle_area = sy.Float(3.14) * (radius_of_quarter_circle **2) * sy.Rational(90, 360)
         triangle_area = sy.Rational(1, 2) * (radius_of_quarter_circle ** 2)
         in_seed_and_flower_area = quarter_circle_area - triangle_area
-        area_str = sy.latex(in_seed_and_flower_area).replace("0", "").rstrip(".")
-        latex_answer = f"\( {sy.latex(area_str)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        latex_answer = self._area_value_to_latex_answer(in_seed_and_flower_area)
         return latex_answer, radius_of_quarter_circle_str    
+    
+    def _area_value_to_latex_answer(self, area_value):
+        """面積の値を受け取って、小数点以下で連続する0を切り捨てて、単位がついた面積の文字列を返す
+
+        Args:
+            area_value (Union[sy.Integer, sy.Float]): 計算で出てきた面積
+        Returns:
+            latex_area_with_unit (str): latex形式で記述された単位付きの面積
+        """
+        area_text = str(area_value)
+        while True:
+            if ("." in area_text and area_text[-1] == "0") or (area_text[-1] == "."):
+                area_text = area_text[:-1]
+                continue
+            break                
+        latex_area_with_unit = f"\( {sy.latex(area_text)} \\mathrm{{ cm^2 }} \)".replace("\\", "\\\\")
+        return latex_area_with_unit
     

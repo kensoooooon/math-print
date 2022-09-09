@@ -38,6 +38,43 @@
         stage.update();
     }
 
+    function draw_baumkuchen() {
+        var stage = new createjs.Stage("baumkuchen");
+        var graphic = new createjs.Graphics();
+        // outer sector
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#bfe4ff");
+        graphic.setStrokeStyle(0.5);
+        var start_x = 80;
+        var start_y = 70;
+        graphic.drawCircle(start_x, start_y, 0.01);
+        var radius = 50;
+        var start_radian = 210 * Math.PI / 180;
+        var end_radian = 360 * Math.PI / 180;
+        graphic.arc(start_x, start_y, radius, start_radian, end_radian);
+        graphic.endFill();
+        graphic.endStroke();
+        // inner sector
+        graphic.beginStroke("#000000");
+        graphic.beginFill("#ffffff");
+        graphic.setStrokeStyle(0.5);
+        var radius2 = 25;
+        graphic.drawCircle(start_x, start_y, 0.01);
+        graphic.arc(start_x, start_y, radius2, start_radian, end_radian);
+        graphic.endStroke();
+        graphic.endFill();
+        // remained line
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.6);
+        graphic.moveTo(start_x, start_y);
+        graphic.lineTo(start_x+radius, start_y);
+        graphic.endStroke();
+        // at last addition
+        var shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+
     function draw_in_rugby(){
         var stage = new createjs.Stage("in_rugby");
         var graphic = new createjs.Graphics();
@@ -414,6 +451,7 @@
 
     function add_graphic_to_sector_problem(){
         draw_standard_sector();
+        draw_baumkuchen();
         draw_in_star();
         draw_out_star();
         draw_in_rugby();
@@ -822,7 +860,7 @@
     </div>
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>おうぎ形の面積</p>
+            <p>おうぎ形の面積(色がついた部分の面積を求める)</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">問題のタイプ</small>
@@ -831,6 +869,12 @@
                         <input class="form-check-input" type="checkbox" value="standard_sector" name="problem_type" id="standard_sectorCheck">
                         <label class="form-check-label" for="standard_sectorCheck">
                             <canvas id ="standard_sector" width="160" height="80"></canvas>
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="baumkuchen" name="problem_type" id="baumkuchenCheck">
+                        <label class="form-check-label" for="baumkuchenCheck">
+                            <canvas id ="baumkuchen" width="160" height="80"></canvas>
                         </label>
                     </div>
                     <div class="form-check form-check-inline">

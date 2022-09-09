@@ -81,6 +81,19 @@ function refresh() {
     stage.update();
   }
 
+  function drawBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
+    var inner_radius = Number(inner_radius);
+    var outer_radius = Number(outer_radius);
+    var inner_radius_value = 70 * (inner_radius / (inner_radius + outer_radius));
+    var outer_radius_value = 70 * (outer_radius / (inner_radius + outer_radius));
+    var central_angle = Number(central_angle);
+    var graphic = new createjs.Graphics();
+    // outer sector
+    // inner sector
+    // remained line
+    // final addition
+  }
+
   function drawInRugby(stage){
     var graphic = new createjs.Graphics();
     graphic.beginStroke("#000000");
@@ -563,6 +576,13 @@ function refresh() {
       drawSector(left_stage, 160, 80, 60, left_central_angle);
       addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
     }
+    else if (selected_problem_type == "baumkuchen") {
+      var inner_radius = "{{ information_tuple.0.baumkuchen.inner_radius }}";
+      var outer_radius = "{{ information_tuple.0.baumkuchen.outer_radius }}";
+      var central_angle = "{{ information_tuple.0.baumkuchen.central_angle }}";
+      drawBaumkuchen(left_stage, inner_radius, outer_radius, central_angle);
+      addBothRadiusAndCentralAngleToBaumkuchen(left_stage, inner_radius, outer_radius, central_angle);
+    }
     else if (selected_problem_type == "in_star") {
       var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
       drawInStar(left_stage);
@@ -602,6 +622,13 @@ function refresh() {
       var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
       drawSector(right_stage, 160, 80, 60, right_central_angle);
       addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "baumkuchen") {
+      var inner_radius = "{{ information_tuple.1.baumkuchen.inner_radius }}";
+      var outer_radius = "{{ information_tuple.1.baumkuchen.outer_radius }}";
+      var central_angle = "{{ information_tuple.1.baumkuchen.central_angle }}";
+      drawBaumkuchen(right_stage, inner_radius, outer_radius, central_angle);
+      addBothRadiusAndCentralAngleToBaumkuchen(right_stage, inner_radius, outer_radius, central_angle);
     }
     else if (selected_problem_type == "in_star") {
       var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";

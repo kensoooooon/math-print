@@ -27,6 +27,8 @@ class Elementary5SectorWithFigureProblem:
         self.selected_problem_type = selected_problem_type
         if selected_problem_type == "standard_sector":
             self.latex_answer, self.sector = self._make_standard_sector_problem()
+        elif selected_problem_type == "baumkuchen":
+            self.latex_answer, self.baumkuchen = self._make_baumkuchen_problem()
         elif selected_problem_type == "in_star":
             self.latex_answer, self.one_side_of_square_str = self._make_in_star_problem()
         elif selected_problem_type == "out_star":
@@ -81,6 +83,55 @@ class Elementary5SectorWithFigureProblem:
         sector = decide_sector_status()
         latex_answer = self._area_value_to_latex_answer(sector.area)
         return latex_answer, sector
+    
+    def _make_baumkuchen_problem(self):
+        """バウムクーヘンの面積を求める問題の解答と描画に必要な情報を返す
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            baumkuchen (Baumkuchen): バウムクーヘンのステータス
+        """
+        def decide_baumkuchen_status():
+            """バウムクーヘンのステータスを決定する
+            
+            Returns:
+                baumkuchen (Baumkuchen): バウムクーヘンのステータスを内包している
+            """
+            class Baumkuchen(NamedTuple):
+                """バウムクーヘンのステータスを内包する
+                
+                Attributes:
+                    inner_radius (str): 内側の円の半径
+                    outer_radius (str): 外側の円の半径
+                    central_angle (str): 上記の2つに共通する中心角
+                    area (str): 面積
+                """
+                inner_radius: str
+                outer_radius: str
+                central_angle: str
+                area: str
+            if random() > 0.5:
+                central_angle = 30 * randint(1, 11)
+            else:
+                central_angle = 45 * randint(1, 7)
+            central_angle_str = str(central_angle)
+            ratio_by_circle = sy.Rational(central_angle, 360)
+            inner_radius = ratio_by_circle.denominator
+            inner_radius_str = str(inner_radius)
+            outer_radius = inner_radius + randint(1, 10)
+            outer_radius_str = str(outer_radius)
+            inner_circle_area = sy.Float(3.14) * sy.Integer(inner_radius**2) * sy.Rational(central_angle, 360)
+            outer_circle_area = sy.Float(3.14) * sy.Integer(outer_radius**2) * sy.Rational(central_angle, 360)
+            baumkuchen_area = outer_circle_area - inner_circle_area
+            baumkuchen_area_str = self._area_value_to_latex_answer(baumkuchen_area)
+            baumkuchen = Baumkuchen(
+                inner_radius=inner_radius_str, outer_radius=outer_radius_str,
+                central_angle=central_angle_str, area=baumkuchen_area_str
+                )
+            return baumkuchen
+        baumkuchen = decide_baumkuchen_status()
+        latex_answer = baumkuchen.area
+        return latex_answer, baumkuchen
     
     def _make_in_star_problem(self):
         """星型の内側の面積を求める問題の解答と描画に必要な情報を返す

@@ -85,7 +85,8 @@ function refresh() {
     var inner_radius = Number(inner_radius);
     var outer_radius = Number(outer_radius);
     var inner_radius_value = 70 * (inner_radius / (inner_radius + outer_radius));
-    var outer_radius_value = 70 * (outer_radius / (inner_radius + outer_radius));
+    // var outer_radius_value = 70 * (outer_radius / (inner_radius + outer_radius));
+    var outer_radius_value = 70;
     var central_angle = Number(central_angle);
     var graphic = new createjs.Graphics();
     // outer sector
@@ -112,7 +113,7 @@ function refresh() {
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.6);
     graphic.moveTo(start_x, start_y);
-    graphic.lineTo(start_x+outer_radius, start_y);
+    graphic.lineTo(start_x+outer_radius_value, start_y);
     graphic.endStroke();
     // at last addition
     var shape = new createjs.Shape(graphic);
@@ -544,7 +545,7 @@ function refresh() {
   }
 
   function addBothRadiusAndCentralAngleToBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
-    drawDegreeCharacter(stage, 220, 100, inner_radius + "cm");
+    drawDegreeCharacter(stage, 180, 100, inner_radius + "cm");
     // outer radius drawing
     //// calculate circle radius and center by three points: (160, 80), (230, 80), (195, 100)
     var graphic = new createjs.Graphics();

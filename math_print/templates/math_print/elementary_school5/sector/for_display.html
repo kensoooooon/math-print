@@ -89,9 +89,35 @@ function refresh() {
     var central_angle = Number(central_angle);
     var graphic = new createjs.Graphics();
     // outer sector
-    // inner sector
-    // remained line
-    // final addition
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var start_x = 160;
+    var start_y = 80;
+    graphic.drawCircle(start_x, start_y, 0.01);
+    var start_radian = (360 - central_angle) * Math.PI / 180;
+    var end_radian = 360 * Math.PI / 180;
+    graphic.arc(start_x, start_y, outer_radius_value, start_radian, end_radian);
+    graphic.endFill();
+    graphic.endStroke();
+    //inner sector
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    graphic.drawCircle(start_x, start_y, 0.01);
+    graphic.arc(start_x, start_y, inner_radius_value, start_radian, end_radian);
+    graphic.endStroke();
+    graphic.endFill();
+    //remained line
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.6);
+    graphic.moveTo(start_x, start_y);
+    graphic.lineTo(start_x+outer_radius, start_y);
+    graphic.endStroke();
+    // at last addition
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
   }
 
   function drawInRugby(stage){
@@ -514,6 +540,31 @@ function refresh() {
 
   function addRadiusToQuarterCircle(stage, radius_of_quarter_circle) {
     drawDegreeCharacter(stage, 240, 50, "半径" + radius_of_quarter_circle + "cm\n中心角90°\nのおうぎ形");
+    stage.update();
+  }
+
+  function addBothRadiusAndCentralAngleToBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
+    drawDegreeCharacter(stage, 220, 100, inner_radius + "cm");
+    // outer radius drawing
+    //// calculate circle radius and center by three points: (160, 80), (230, 80), (195, 100)
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    var center_x = 195;
+    var center_y = 59.375;
+    var radius = 40.025;
+    var start_radian1 = 32 * Math.PI / 180;
+    var end_radian1 = 45 * Math.PI / 180;
+    graphic.arc(center_x, center_y, radius, start_radian1, end_radian1);
+    var start_radian2 = 135 * Math.PI / 180;
+    var end_radian2 = 148 * Math.PI / 180;
+    graphic.arc(center_x, center_y, radius, start_radian2, end_radian2);
+    graphic.endStroke();
+    // inner radius drawing
+    // central angle drawing
+    // final addition
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
     stage.update();
   }
 

@@ -545,6 +545,16 @@ function refresh() {
   }
 
   function addBothRadiusAndCentralAngleToBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
+    function calculateCircleCenter(x1, y1, x2, y2, x3, y3) {
+      let alpha = x1 - x2;
+      let beta = y1 - y2;
+      let gamma = x2 - x3;
+      let delta = y2 - y3;
+      
+
+      let center_coordinate_array = [center_x, center_y];
+      return center_coordinate_array;
+    }
     drawDegreeCharacter(stage, 180, 90, inner_radius + "cm");
     // outer radius drawing
     //// calculate circle radius and center by three points: (160, 80), (230, 80), (195, 100)

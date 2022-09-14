@@ -547,12 +547,6 @@ function refresh() {
   function addBothRadiusAndCentralAngleToBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
     // all value is string. assert value like unicode sandwich.
     function calculateCircleCenter(x1, y1, x2, y2, x3, y3) {
-      console.log("x1: " + x1);
-      console.log("y1: " + y1);
-      console.log("x2: " + x2);
-      console.log("y2: " + y2);
-      console.log("x3: " + x3);
-      console.log("y3: " + y3);
       let alpha = x1 - x2;
       let beta = y1 - y2;
       let gamma = x2 - x3;
@@ -583,22 +577,28 @@ function refresh() {
     let outer_reach_x = 160 + 70;
     let outer_reach_y = canvas_center_y;
     let outer_character_x = (canvas_center_x + outer_reach_x) / 2;
-    let outer_character_y = (canvas_center_y + outer_reach_y) / 2 + 50;
+    let outer_character_y = (canvas_center_y + outer_reach_y) / 2 - 50;
     let [center_x1, center_y1, radius1] = calculateCircleCenter(canvas_center_x, canvas_center_y, outer_reach_x, outer_reach_y, outer_character_x, outer_character_y);
     // caclulate start_radian, end_radian
-    let angle_from
-    let start_radian1 = 32 * Math.PI / 180;
-    let end_radian1 = 57 * Math.PI / 180;
+    console.log("center_x1: " + center_x1);
+    console.log("center_y1: " + center_y1);
+    console.log("radius1: " + radius1);
+    let radian_from_center_x1_to_outer_reach = Math.asin(radius1, Math.abs(center_y1 - outer_reach_y));
+    console.log("radian_from_center_x1_to_outer_reach: " + radian_from_center_x1_to_outer_reach);
+    let start_radian1 = radian_from_center_x1_to_outer_reach;
+    console.log("start_radian1: " + start_radian1);
+    let end_radian1 = start_radian1 + (30 * Math.PI / 180);
+    console.log("end_radian1: " + end_radian1);
     graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1);
     graphic.endStroke();
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
-    let start_radian2 = 123 * Math.PI / 180;
-    let end_radian2 = 148 * Math.PI / 180;
+    let radian_from_center_x1_to_canvas_center = Math.asin(radius1, Math.abs(center_y1 - canvas_center_y));
+    let start_radian2 = radian_from_center_x1_to_canvas_center - (30 * Math.PI / 180);
+    console.log
+    let end_radian2 = radian_from_center_x1_to_canvas_center;
     graphic.arc(center_x1, center_y1, radius1, start_radian2, end_radian2);
-    // graphic.drawCircle(center_x1, center_y1, radius1);
     graphic.endStroke();
-    // inner radius drawing
     //// calculate circle radius and center by three points: (160, 80), (221, 45), (210, 97). this is decidec by minimum 30.
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);

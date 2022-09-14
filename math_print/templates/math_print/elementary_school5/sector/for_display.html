@@ -545,6 +545,7 @@ function refresh() {
   }
 
   function addBothRadiusAndCentralAngleToBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
+    // all value is string. assert value like unicode sandwich.
     function calculateCircleCenter(x1, y1, x2, y2, x3, y3) {
       console.log("x1: " + x1);
       console.log("y1: " + y1);
@@ -567,7 +568,8 @@ function refresh() {
       let center_coordinate_and_radius_array = [center_x, center_y, radius];
       return center_coordinate_and_radius_array;
     }
-    drawDegreeCharacter(stage, 180, 90, inner_radius + "cm");
+    let inner_radius_str = String(inner_radius);
+    drawDegreeCharacter(stage, 180, 90, inner_radius_str + "cm");
     // outer radius drawing
     //// calculate circle radius and center by three points: (160, 80), (230, 80), (195, 100)
     let graphic = new createjs.Graphics();
@@ -592,30 +594,23 @@ function refresh() {
     let start_radian2 = 123 * Math.PI / 180;
     let end_radian2 = 148 * Math.PI / 180;
     // graphic.arc(center_x1, center_y1, radius1, start_radian2, end_radian2);
-    console.log("center_x1: " + center_x1);
-    console.log("center_y1: " + center_y1);
-    console.log("radius1: " + radius1);
     graphic.drawCircle(center_x1, center_y1, radius1);
     graphic.endStroke();
     // inner radius drawing
     //// calculate circle radius and center by three points: (160, 80), (221, 45), (210, 97). this is decidec by minimum 30.
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
-    let ratio = inner_radius / (inner_radius + outer_radius);
-    console.log("inner_radius: " + inner_radius);
-    console.log("outer_radius: " + outer_radius);
-    console.log("ratio: " + ratio);
-    let inner_reach_x = canvas_center_x + 70 * (inner_radius / (inner_radius + outer_radius)) * Math.cos(-30 * Math.PI / 180);
+    let inner_radius_number = Number(inner_radius);
+    let outer_radius_number = Number(outer_radius);
+    let inner_reach_x = canvas_center_x + 70 * (inner_radius_number / (inner_radius_number + outer_radius_number)) * Math.cos(-30 * Math.PI / 180);
     console.log("inner_reach_x: " + inner_reach_x);
-    let inner_reach_y = canvas_center_y + 70 * (inner_radius / (inner_radius + outer_radius)) * Math.sin(-30 * Math.PI / 180);
+    let inner_reach_y = canvas_center_y + 70 * (inner_radius_number / (inner_radius_number + outer_radius_number)) * Math.sin(-30 * Math.PI / 180);
     console.log("inner_reach_y: " + inner_reach_y);
-    let inner_character_x = canvas_center_x + 70 * (inner_radius / (inner_radius + outer_radius)) * Math.cos(-15 * Math.PI / 180);
+    let inner_character_x = canvas_center_x + 70 * (inner_radius_number / (inner_radius_number + outer_radius_number)) * Math.cos(-50 * Math.PI / 180);
     console.log("inner_charcter_x: " + inner_character_x);
-    let inner_character_y = canvas_center_y + 70 * (inner_radius / (inner_radius + outer_radius)) * Math.sin(-15 * Math.PI / 180);
+    let inner_character_y = canvas_center_y + 70 * (inner_radius_number / (inner_radius_number + outer_radius_number)) * Math.sin(-50 * Math.PI / 180);
+    console.log("inner_character_y: " + inner_character_y);
     let [center_x2, center_y2, radius2] = calculateCircleCenter(canvas_center_x, canvas_center_y, inner_reach_x, inner_reach_y, inner_character_x, inner_character_y);
-    console.log("center_x2: " + center_x2)
-    console.log("center_y2: " + center_y2);
-    console.log("radius2: " + radius2);
     graphic.drawCircle(center_x2, center_y2, radius2);
     graphic.endStroke();
     //addition line

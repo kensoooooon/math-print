@@ -562,6 +562,19 @@ function refresh() {
       let center_coordinate_and_radius_array = [center_x, center_y, radius];
       return center_coordinate_and_radius_array;
     }
+    function calculateDistanceFromPointToLine(x1, y1, x2, y2, x_point, y_point) {
+      // calculate and return length from a point to line.
+      // x1, y1, x2, y2 are coordinates of points passed by line.
+      // a, b are points are coordinates of points as standard.
+      // ax + by + c = 0
+      let a = y2 - y1;
+      let b = x1 - x2;
+      let c = (x2 - x1) * y1 - (y2 - y1) * x1;
+      let denominator_of_formula = Math.sqrt((a ** 2) + (b ** 2));
+      let numerator_of_formula = Math.abs(a * x_point + b * y_point + c);
+      let distance = numerator_of_formula / denominator_of_formula;
+      return distance;
+    }
     let inner_radius_str = String(inner_radius);
     drawDegreeCharacter(stage, 180, 90, inner_radius_str + "cm");
     // outer radius drawing
@@ -615,16 +628,28 @@ function refresh() {
     console.log("center_x2: " + center_x2);
     console.log("center_y2: " + center_y2);
     console.log("radius2: " + radius2);
-    graphic.drawCircle(center_x2, center_y2, radius2);
-    let start_angle3 = -10;
+    // graphic.drawCircle(center_x2, center_y2, radius2);
+    let distance_from_center2_to_radius_line = calculateDistanceFromPointToLine(inner_reach_x, inner_reach_y, canvas_center_x, canvas_center_y, center_x2, center_y2);
+    console.log("distance_from_center2_to_radius_line: " + distance_from_center2_to_radius_line);
+    let radian_from_center2_to_inner_reach_point = Math.acos(distance_from_center2_to_radius_line / radius2);
+    console.log("radian_from_center2_to_inner_reach_point: " + radian_from_center2_to_inner_reach_point);
+    let angle_from_center2_to_inner_reach_point = radian_from_center2_to_inner_reach_point * 180 / Math.PI;
+    console.log("angle_from_center2_to_inner_reach_point: " + angle_from_center2_to_inner_reach_point);
+    let start_angle3 = 180 + (60 - angle_from_center2_to_inner_reach_point);
+    console.log("start_angle3: " + start_angle3);
     let start_radian3 = start_angle3 * Math.PI / 180;
     let end_radian3 = start_radian3 + (30 * Math.PI / 180);
-    // graphic.arc(center_x2, center_y2, radius2, start_radian3, end_radian3);
+    graphic.arc(center_x2, center_y2, radius2, start_radian3, end_radian3);
     graphic.endStroke();
-    let start_angle4 = 130 * Math.PI / 180;
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    let start_angle4 = start_angle3 + 2 * angle_from_center2_to_inner_reach_point;
+    console.log("start_angle4: " + start_angle4);
     let start_radian4 = start_angle4 * Math.PI / 180;
-    let end_radian4 = start_radian4 + (30 * Math.PI / 180);
-    // graphic.arc(center_x2, center_y2, radius2, start_radian4, end_radian4);
+    let end_angle4 = start_angle4 + (30 * Math.PI / 180);
+    console.log("end_angle4: " + end_angle4);
+    let end_radian4 = end_angle4 * Math.PI / 180;
+    graphic.arc(center_x2, center_y2, radius2, start_radian4, end_radian4);
     graphic.endStroke();
     //addition line
     graphic.beginStroke("#000000");

@@ -75,7 +75,7 @@ class Elementary5SectorWithFigureProblem:
                 central_angle = 45 * randint(1, 7)
             ratio_by_circle = sy.Rational(central_angle, 360)
             radius = ratio_by_circle.denominator
-            area = str(sy.Integer(radius**2) * sy.Rational(central_angle, 360) * 3.14).replace("0", "")
+            area = str(sy.Integer(radius**2) * sy.Rational(central_angle, 360) * 3.14)
             central_angle = str(central_angle)
             radius = str(radius)
             sector = Sector(radius=radius, area=area, central_angle=central_angle)
@@ -115,13 +115,18 @@ class Elementary5SectorWithFigureProblem:
             else:
                 central_angle = 45 * randint(1, 7)
             central_angle_str = str(central_angle)
-            ratio_by_circle = sy.Rational(central_angle, 360)
-            inner_radius = ratio_by_circle.denominator
+            ratio_by_circle = sy.Rational(central_angle, 360) 
+            inner_radius = ratio_by_circle.denominator * randint(1, 4)
             inner_radius_str = str(inner_radius)
-            outer_radius = inner_radius + randint(3, 7)
+            outer_radius = inner_radius * randint(3, 5) * 0.5
             outer_radius_str = str(outer_radius)
-            inner_circle_area = sy.Float(3.14) * sy.Integer(inner_radius**2) * sy.Rational(central_angle, 360)
-            outer_circle_area = sy.Float(3.14) * sy.Integer(outer_radius**2) * sy.Rational(central_angle, 360)
+            while True:
+                if ("." in outer_radius_str and outer_radius_str[-1] == "0") or (outer_radius_str[-1] == "."):
+                    outer_radius_str = outer_radius_str[:-1]
+                    continue
+                break
+            inner_circle_area = sy.Float(3.14) * (inner_radius ** 2) * sy.Rational(central_angle, 360)
+            outer_circle_area = sy.Float(3.14) * (outer_radius ** 2) * sy.Rational(central_angle, 360)
             baumkuchen_area = outer_circle_area - inner_circle_area
             baumkuchen_area_str = self._area_value_to_latex_answer(baumkuchen_area)
             baumkuchen = Baumkuchen(

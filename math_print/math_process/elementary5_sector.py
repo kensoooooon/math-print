@@ -118,7 +118,7 @@ class Elementary5SectorWithFigureProblem:
             ratio_by_circle = sy.Rational(central_angle, 360)
             inner_radius = ratio_by_circle.denominator
             inner_radius_str = str(inner_radius)
-            outer_radius = inner_radius + randint(1, 10)
+            outer_radius = inner_radius + randint(3, 7)
             outer_radius_str = str(outer_radius)
             inner_circle_area = sy.Float(3.14) * sy.Integer(inner_radius**2) * sy.Rational(central_angle, 360)
             outer_circle_area = sy.Float(3.14) * sy.Integer(outer_radius**2) * sy.Rational(central_angle, 360)

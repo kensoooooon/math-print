@@ -653,7 +653,7 @@ function refresh() {
     graphic.arc(center_x2, center_y2, radius2, start_radian4, end_radian4);
     graphic.endStroke();
     // addition character
-    drawDegreeCharacter(stage, inner_character_x, inner_character_y, inner_radius_str + "cm");
+    drawDegreeCharacter(stage, inner_character_x-15, inner_character_y-10, inner_radius_str + "cm");
     //addition line
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
@@ -662,6 +662,15 @@ function refresh() {
     graphic.lineTo(inner_reach_x, inner_reach_y);
     graphic.endStroke();
     // central angle drawing
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([0, 0], 0);
+    let central_angle_number = Number(central_angle);
+    let radius_for_drawing_central_angle = 10;
+    let start_radian_for_drawing_central_angle = -central_angle_number * Math.PI / 180;
+    graphic.arc(canvas_center_x, canvas_center_y, radius_for_drawing_central_angle, start_radian_for_drawing_central_angle, 0);
+    graphic.endStroke();
+    drawDegreeCharacter(stage, canvas_center_x-100, canvas_center_y, "中心角: "+central_angle+"°");
     // final addition
     var shape = new createjs.Shape(graphic);
     stage.addChild(shape);

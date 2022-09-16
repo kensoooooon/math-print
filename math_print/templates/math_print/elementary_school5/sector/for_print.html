@@ -113,6 +113,46 @@ function refresh() {
     stage.update();
   }
 
+  function drawBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
+    // inner and outer radius is used only for ratio. outer radius for drawing is always 70.
+    let inner_radius_number = Number(inner_radius);
+    let outer_radius_number = Number(outer_radius);
+    let inner_radius_value = 70 * (inner_radius_number / outer_radius_number);
+    let outer_radius_value = 70;
+    let central_angle_value = Number(central_angle);
+    let graphic = new createjs.Graphics();
+    // outer sector
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    let start_x = 160;
+    let start_y = 80;
+    graphic.drawCircle(start_x, start_y, 0.01);
+    let start_radian = (360 - central_angle_value) * Math.PI / 180;
+    let end_radian = 360 * Math.PI / 180;
+    graphic.arc(start_x, start_y, outer_radius_value, start_radian, end_radian);
+    graphic.endFill();
+    graphic.endStroke();
+    //inner sector
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    graphic.drawCircle(start_x, start_y, 0.01);
+    graphic.arc(start_x, start_y, inner_radius_value, start_radian, end_radian);
+    graphic.endStroke();
+    graphic.endFill();
+    //remained line
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.6);
+    graphic.moveTo(start_x, start_y);
+    graphic.lineTo(start_x + outer_radius_value, start_y);
+    graphic.endStroke();
+    // at last addition
+    let shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
 
   function drawInRugby(stage){
     var graphic = new createjs.Graphics();
@@ -330,9 +370,177 @@ function refresh() {
     stage.update();
   }
 
-  function addOneSideOfSquare(stage, one_side_of_square){
-    var one_side_of_square = String(one_side_of_square);
-    drawDegreeCharacter(stage, 250, 80, "1辺\n" + one_side_of_square + "cm\nの正方形");
+  function drawInSeedAndFlower(stage) {
+    var graphic = new createjs.Graphics();
+    // out sector
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var center_x = 80;
+    var center_y = 150;
+    graphic.drawCircle(center_x, center_y, 0.01);
+    var radius = 130;
+    var start_radian = 270 * Math.PI / 180;
+    var end_radian = 360 * Math.PI / 180;
+    graphic.arc(center_x, center_y, radius, start_radian, end_radian);
+    graphic.endFill();
+    graphic.endStroke();
+    // remained line
+    graphic.setStrokeStyle(0.5);
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x, center_y);
+    var end_x = center_x + radius;
+    var end_y = center_y;
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    // bottom right half circle
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    var center_x2 = (center_x + end_x) / 2;
+    var center_y2 = (center_y + end_y) / 2;
+    graphic.drawCircle(center_x2, center_y2, 0.01);
+    var radius2 = radius / 2;
+    var start_radian2 = 180 * Math.PI / 180;
+    var end_radian2 = 360 * Math.PI / 180;
+    graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    // remained line of bottom right half circle
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x2, center_y2);
+    var end_x2 = center_x2 + radius2;
+    var end_y2 = center_y2;
+    graphic.lineTo(end_x2, end_y2);
+    graphic.endStroke();
+    // up left half circle
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    var center_x3 = center_x;
+    var center_y3 = (center_y + (center_y - radius)) / 2;
+    graphic.drawCircle(center_x3, center_y3, 0.01);
+    var radius3 = radius / 2;
+    var start_radian3 = 270 * Math.PI / 180;
+    var end_radian3 = 450 * Math.PI / 180;
+    graphic.arc(center_x3, center_y3, radius3, start_radian3, end_radian3);
+    graphic.endFill();
+    graphic.endStroke();
+    //remained line of up left half circle
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x3, center_y3);
+    var end_x3 = center_x3;
+    var end_y3 = center_y3 + radius3;
+    graphic.lineTo(end_x3, end_y3);
+    graphic.endStroke();
+    // remained arc area
+    //// arc from up left in little square
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var center_x4 = center_x3;
+    var center_y4 = center_y3;
+    var radius4 = radius3;
+    var start_radian4 = 0 * Math.PI / 180;
+    var end_radian4 = 90 * Math.PI / 180;
+    graphic.arc(center_x4, center_y4, radius4, start_radian4, end_radian4);
+    //// arc from bottom right in little square
+    var center_x5 = center_x2;
+    var center_y5 = center_y2;
+    var radius5 = radius2;
+    var start_radian5 = 180 * Math.PI / 180;
+    var end_radian5 = 270 * Math.PI / 180;
+    graphic.arc(center_x5, center_y5, radius5, start_radian5, end_radian5);
+    // final addition
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function drawOutSeedAndFlower(stage) {
+    var graphic = new createjs.Graphics();
+    // out sector
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    var center_x = 80;
+    var center_y = 150;
+    graphic.drawCircle(center_x, center_y, 0.01);
+    var radius = 130;
+    var start_radian = 270 * Math.PI / 180;
+    var end_radian = 360 * Math.PI / 180;
+    graphic.arc(center_x, center_y, radius, start_radian, end_radian);
+    graphic.endFill();
+    graphic.endStroke();
+    // remained line
+    graphic.setStrokeStyle(0.5);
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x, center_y);
+    var end_x = center_x + radius;
+    var end_y = center_y;
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    // bottom right half circle
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var center_x2 = (center_x + end_x) / 2;
+    var center_y2 = (center_y + end_y) / 2;
+    graphic.drawCircle(center_x2, center_y2, 0.01);
+    var radius2 = radius / 2;
+    var start_radian2 = 180 * Math.PI / 180;
+    var end_radian2 = 360 * Math.PI / 180;
+    graphic.arc(center_x2, center_y2, radius2, start_radian2, end_radian2);
+    graphic.endFill();
+    graphic.endStroke();
+    // remained line of bottom right half circle
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x2, center_y2);
+    var end_x2 = center_x2 + radius2;
+    var end_y2 = center_y2;
+    graphic.lineTo(end_x2, end_y2);
+    graphic.endStroke();
+    // up left half circle
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#bfe4ff");
+    graphic.setStrokeStyle(0.5);
+    var center_x3 = center_x;
+    var center_y3 = (center_y + (center_y - radius)) / 2;
+    graphic.drawCircle(center_x3, center_y3, 0.01);
+    var radius3 = radius / 2;
+    var start_radian3 = 270 * Math.PI / 180;
+    var end_radian3 = 450 * Math.PI / 180;
+    graphic.arc(center_x3, center_y3, radius3, start_radian3, end_radian3);
+    graphic.endFill();
+    graphic.endStroke();
+    //remained line of up left half circle
+    graphic.beginStroke("#000000");
+    graphic.moveTo(center_x3, center_y3);
+    var end_x3 = center_x3;
+    var end_y3 = center_y3 + radius3;
+    graphic.lineTo(end_x3, end_y3);
+    graphic.endStroke();
+    // remained arc area
+    //// arc from up left in little square
+    graphic.beginStroke("#000000");
+    graphic.beginFill("#ffffff");
+    graphic.setStrokeStyle(0.5);
+    var center_x4 = center_x3;
+    var center_y4 = center_y3;
+    var radius4 = radius3;
+    var start_radian4 = 0 * Math.PI / 180;
+    var end_radian4 = 90 * Math.PI / 180;
+    graphic.arc(center_x4, center_y4, radius4, start_radian4, end_radian4);
+    //// arc from bottom right in little square
+    var center_x5 = center_x2;
+    var center_y5 = center_y2;
+    var radius5 = radius2;
+    var start_radian5 = 180 * Math.PI / 180;
+    var end_radian5 = 270 * Math.PI / 180;
+    graphic.arc(center_x5, center_y5, radius5, start_radian5, end_radian5);
+    // final addition
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
     stage.update();
   }
 
@@ -356,6 +564,130 @@ function refresh() {
     // add central_angle
     drawArc(stage, 160, 80, 10, 0, central_angle);
     drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
+    stage.update();
+  }
+
+  function addOneSideOfSquare(stage, one_side_of_square){
+    drawDegreeCharacter(stage, 250, 80, "1辺\n" + one_side_of_square + "cm\nの正方形");
+    stage.update();
+  }
+
+  function addRadiusToQuarterCircle(stage, radius_of_quarter_circle) {
+    drawDegreeCharacter(stage, 240, 50, "半径" + radius_of_quarter_circle + "cm\n中心角90°\nのおうぎ形");
+    stage.update();
+  }
+
+  function addBothRadiusAndCentralAngleToBaumkuchen(stage, inner_radius, outer_radius, central_angle) {
+    // all value is string. assert value like unicode sandwich.
+    function calculateCircleCenter(x1, y1, x2, y2, x3, y3) {
+      let alpha = x1 - x2;
+      let beta = y1 - y2;
+      let gamma = x2 - x3;
+      let delta = y2 - y3;
+      let length1 = (x1 ** 2) + (y1 ** 2);
+      let length2 = (x2 ** 2) + (y2 ** 2);
+      let length3 = (x3 ** 2) + (y3 ** 2);
+      let length1_and_length2_diff = (length1 - length2);
+      let length2_and_length3_diff = (length2 - length3);
+      let center_x = (1 / (2 * (alpha * delta - beta * gamma))) * ((delta * length1_and_length2_diff) + (-beta * length2_and_length3_diff));
+      let center_y = (1 / (2 * (alpha * delta - beta * gamma))) * ((-gamma * length1_and_length2_diff) + (alpha * length2_and_length3_diff));
+      radius = Math.sqrt(((x1 - center_x) ** 2) + ((y1 - center_y) ** 2));
+      let center_coordinate_and_radius_array = [center_x, center_y, radius];
+      return center_coordinate_and_radius_array;
+    }
+    function calculateDistanceFromPointToLine(x1, y1, x2, y2, x_point, y_point) {
+      // calculate and return length from a point to line.
+      // x1, y1, x2, y2 are coordinates of points passed by line.
+      // a, b are points are coordinates of points as standard.
+      // ax + by + c = 0
+      let a = y2 - y1;
+      let b = x1 - x2;
+      let c = (x2 - x1) * y1 - (y2 - y1) * x1;
+      let denominator_of_formula = Math.sqrt((a ** 2) + (b ** 2));
+      let numerator_of_formula = Math.abs(a * x_point + b * y_point + c);
+      let distance = numerator_of_formula / denominator_of_formula;
+      return distance;
+    }
+    let inner_radius_str = String(inner_radius);
+    let outer_radius_str = String(outer_radius);
+    drawDegreeCharacter(stage, 180, 90, outer_radius_str + "cm");
+    // outer radius drawing
+    let graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    let canvas_center_x = 160;
+    let canvas_center_y = 80;
+    let outer_reach_x = 160 + 70;
+    let outer_reach_y = canvas_center_y;
+    let outer_character_x = (canvas_center_x + outer_reach_x) / 2;
+    let outer_character_y = (canvas_center_y + outer_reach_y) / 2 - 50;
+    let [center_x1, center_y1, radius1] = calculateCircleCenter(canvas_center_x, canvas_center_y, outer_reach_x, outer_reach_y, outer_character_x, outer_character_y);
+    //// caclulate start_radian, end_radian
+    let radian_from_center_x1_to_outer_reach = Math.asin(Math.abs(center_y1 - outer_reach_y) / radius1);
+    let start_radian1 = radian_from_center_x1_to_outer_reach;
+    let start_angle1 = start_radian1 * 180 / Math.PI;
+    let end_radian1 = start_radian1 + (30 * Math.PI / 180);
+    let end_angle1 = end_radian1 * 180 / Math.PI;
+    graphic.arc(center_x1, center_y1, radius1, start_radian1, end_radian1);
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    let radian_from_center_x1_to_canvas_center = radian_from_center_x1_to_outer_reach;
+    let start_radian2 = (180 * Math.PI / 180) - radian_from_center_x1_to_canvas_center - (30 * Math.PI / 180);
+    let start_angle2 = start_radian2 * 180 / Math.PI;
+    let end_radian2 = (180 * Math.PI / 180) - radian_from_center_x1_to_canvas_center;
+    let end_angle2 = end_radian2 * 180 / Math.PI;
+    graphic.arc(center_x1, center_y1, radius1, start_radian2, end_radian2);
+    graphic.endStroke();
+    // inner guide
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    let inner_radius_number = Number(inner_radius);
+    let outer_radius_number = Number(outer_radius);
+    let inner_reach_x = canvas_center_x + 70 * (inner_radius_number / outer_radius_number) * Math.cos(-30 * Math.PI / 180);
+    let inner_reach_y = canvas_center_y + 70 * (inner_radius_number / outer_radius_number) * Math.sin(-30 * Math.PI / 180);
+    let inner_character_x = canvas_center_x + 70 * (inner_radius_number / outer_radius_number) * (1 / 2) * Math.cos(-50 * Math.PI / 180);
+    let inner_character_y = canvas_center_y + 70 * (inner_radius_number / outer_radius_number) * (1 / 2) * Math.sin(-50 * Math.PI / 180);
+    let [center_x2, center_y2, radius2] = calculateCircleCenter(canvas_center_x, canvas_center_y, inner_reach_x, inner_reach_y, inner_character_x, inner_character_y);
+    // graphic.drawCircle(center_x2, center_y2, radius2);
+    let distance_from_center2_to_radius_line = calculateDistanceFromPointToLine(inner_reach_x, inner_reach_y, canvas_center_x, canvas_center_y, center_x2, center_y2);
+    let radian_from_center2_to_inner_reach_point = Math.acos(distance_from_center2_to_radius_line / radius2);
+    let angle_from_center2_to_inner_reach_point = radian_from_center2_to_inner_reach_point * 180 / Math.PI;
+    let start_angle3 = 180 + (60 - angle_from_center2_to_inner_reach_point);
+    let start_radian3 = start_angle3 * Math.PI / 180;
+    let end_radian3 = start_radian3 + (20 * Math.PI / 180);
+    graphic.arc(center_x2, center_y2, radius2, start_radian3, end_radian3);
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    let start_angle4 = start_angle3 + 2 * angle_from_center2_to_inner_reach_point - 20;
+    let start_radian4 = start_angle4 * Math.PI / 180;
+    let end_angle4 = start_angle4 + 20;
+    let end_radian4 = end_angle4 * Math.PI / 180;
+    graphic.arc(center_x2, center_y2, radius2, start_radian4, end_radian4);
+    graphic.endStroke();
+    // add character
+    drawDegreeCharacter(stage, inner_character_x-30, inner_character_y-15, inner_radius_str + "cm");
+    //add line
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([3, 3], 0);
+    graphic.moveTo(160, 80);
+    graphic.lineTo(inner_reach_x, inner_reach_y);
+    graphic.endStroke();
+    // central angle drawing
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([1, 1], 0);
+    let central_angle_number = Number(central_angle);
+    let radius_for_drawing_central_angle = 10;
+    let start_radian_for_drawing_central_angle = -central_angle_number * Math.PI / 180;
+    graphic.arc(canvas_center_x, canvas_center_y, radius_for_drawing_central_angle, start_radian_for_drawing_central_angle, 0);
+    graphic.endStroke();
+    drawDegreeCharacter(stage, canvas_center_x-45, canvas_center_y, central_angle+"°");
+    // final addition
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
     stage.update();
   }
 
@@ -424,13 +756,20 @@ function refresh() {
               drawSector(left_stage, 160, 80, 60, left_central_angle);
               addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
             }
+            else if (selected_problem_type == "baumkuchen") {
+              var inner_radius = "{{ information_tuple.0.baumkuchen.inner_radius }}";
+              var outer_radius = "{{ information_tuple.0.baumkuchen.outer_radius }}";
+              var central_angle = "{{ information_tuple.0.baumkuchen.central_angle }}";
+              drawBaumkuchen(left_stage, inner_radius, outer_radius, central_angle);
+              addBothRadiusAndCentralAngleToBaumkuchen(left_stage, inner_radius, outer_radius, central_angle);
+            }
             else if (selected_problem_type == "in_star") {
-              var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+              var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
               drawInStar(left_stage);
               addOneSideOfSquare(left_stage, one_side_of_square);
             }
             else if (selected_problem_type == "out_star") {
-              var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
+              var one_side_of_square = "{{ information_tuple.0.one_side_of_square_str }}";
               drawOutStar(left_stage);
               addOneSideOfSquare(left_stage, one_side_of_square);
             }
@@ -444,6 +783,16 @@ function refresh() {
               drawOutRugby(left_stage);
               addOneSideOfSquare(left_stage, one_side_of_square);
             }
+            else if (selected_problem_type == "in_seed_and_flower") {
+              var radius_of_quarter_circle = "{{ information_tuple.0.radius_of_quarter_circle_str }}";
+              drawInSeedAndFlower(left_stage);
+              addRadiusToQuarterCircle(left_stage, radius_of_quarter_circle);
+            }
+            else if (selected_problem_type == "out_seed_and_flower") {
+              var radius_of_quarter_circle = "{{ information_tuple.0.radius_of_quarter_circle_str }}";
+              drawOutSeedAndFlower(left_stage);
+              addRadiusToQuarterCircle(left_stage, radius_of_quarter_circle);
+            }
         
             var right_stage = new createjs.Stage(right_canvas_id);
             var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
@@ -453,6 +802,13 @@ function refresh() {
               var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
               drawSector(right_stage, 160, 80, 60, right_central_angle);
               addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
+            }
+            else if (selected_problem_type == "baumkuchen") {
+              var inner_radius = "{{ information_tuple.1.baumkuchen.inner_radius }}";
+              var outer_radius = "{{ information_tuple.1.baumkuchen.outer_radius }}";
+              var central_angle = "{{ information_tuple.1.baumkuchen.central_angle }}";
+              drawBaumkuchen(right_stage, inner_radius, outer_radius, central_angle);
+              addBothRadiusAndCentralAngleToBaumkuchen(right_stage, inner_radius, outer_radius, central_angle);
             }
             else if (selected_problem_type == "in_star") {
               var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
@@ -473,6 +829,16 @@ function refresh() {
               var one_side_of_square = "{{ information_tuple.1.one_side_of_square_str }}";
               drawOutRugby(right_stage);
               addOneSideOfSquare(right_stage, one_side_of_square);
+            }
+            else if (selected_problem_type == "in_seed_and_flower") {
+              var radius_of_quarter_circle = "{{ information_tuple.1.radius_of_quarter_circle_str }}";
+              drawInSeedAndFlower(right_stage);
+              addRadiusToQuarterCircle(right_stage, radius_of_quarter_circle);
+            }
+            else if (selected_problem_type == "out_seed_and_flower") {
+              var radius_of_quarter_circle = "{{ information_tuple.1.radius_of_quarter_circle_str }}";
+              drawOutSeedAndFlower(right_stage);
+              addRadiusToQuarterCircle(right_stage, radius_of_quarter_circle);
             }
         {% endfor %}
         // footer phase

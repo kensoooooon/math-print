@@ -1125,10 +1125,13 @@ def print_elementary5_sector_problem(request):
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("standard_sector")
+        problem_type_list.append("baumkuchen")
         problem_type_list.append("in_star")
         problem_type_list.append("out_star")
         problem_type_list.append("in_rugby")
         problem_type_list.append("out_rugby")
+        problem_type_list.append("in_seed_and_flower")
+        problem_type_list.append("out_seed_and_flower")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -2055,10 +2058,13 @@ def display_elementary5_sector_problem(request):
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("standard_sector")
+        problem_type_list.append("baumkuchen")
         problem_type_list.append("in_star")
         problem_type_list.append("out_star")
         problem_type_list.append("in_rugby")
         problem_type_list.append("out_rugby")
+        problem_type_list.append("in_seed_and_flower")
+        problem_type_list.append("out_seed_and_flower")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

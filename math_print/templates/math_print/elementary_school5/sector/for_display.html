@@ -579,13 +579,9 @@ function refresh() {
     let outer_radius_str = String(outer_radius);
     drawDegreeCharacter(stage, 180, 90, outer_radius_str + "cm");
     // outer radius drawing
-    //// calculate circle radius and center by three points: (160, 80), (230, 80), (195, 100)
     let graphic = new createjs.Graphics();
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
-    // var center_x = 195;
-    // var center_y = 59.375;
-    // var radius = 40.025;
     let canvas_center_x = 160;
     let canvas_center_y = 80;
     let outer_reach_x = 160 + 70;
@@ -593,7 +589,7 @@ function refresh() {
     let outer_character_x = (canvas_center_x + outer_reach_x) / 2;
     let outer_character_y = (canvas_center_y + outer_reach_y) / 2 - 50;
     let [center_x1, center_y1, radius1] = calculateCircleCenter(canvas_center_x, canvas_center_y, outer_reach_x, outer_reach_y, outer_character_x, outer_character_y);
-    // caclulate start_radian, end_radian
+    //// caclulate start_radian, end_radian
     let radian_from_center_x1_to_outer_reach = Math.asin(Math.abs(center_y1 - outer_reach_y) / radius1);
     let start_radian1 = radian_from_center_x1_to_outer_reach;
     let start_angle1 = start_radian1 * 180 / Math.PI;
@@ -610,34 +606,20 @@ function refresh() {
     let end_angle2 = end_radian2 * 180 / Math.PI;
     graphic.arc(center_x1, center_y1, radius1, start_radian2, end_radian2);
     graphic.endStroke();
-    // inner guide
+    // add inner guide
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
     let inner_radius_number = Number(inner_radius);
-    console.log("inner_radius_number: " + inner_radius_number);
     let outer_radius_number = Number(outer_radius);
-    console.log("outer_radius_number: " + outer_radius_number);
     let inner_reach_x = canvas_center_x + 70 * (inner_radius_number / outer_radius_number) * Math.cos(-30 * Math.PI / 180);
-    console.log("inner_reach_x: " + inner_reach_x);
     let inner_reach_y = canvas_center_y + 70 * (inner_radius_number / outer_radius_number) * Math.sin(-30 * Math.PI / 180);
-    console.log("inner_reach_y: " + inner_reach_y);
     let inner_character_x = canvas_center_x + 70 * (inner_radius_number / outer_radius_number) * (1 / 2) * Math.cos(-50 * Math.PI / 180);
-    console.log("inner_charcter_x: " + inner_character_x);
     let inner_character_y = canvas_center_y + 70 * (inner_radius_number / outer_radius_number) * (1 / 2) * Math.sin(-50 * Math.PI / 180);
-    console.log("inner_character_y: " + inner_character_y);
     let [center_x2, center_y2, radius2] = calculateCircleCenter(canvas_center_x, canvas_center_y, inner_reach_x, inner_reach_y, inner_character_x, inner_character_y);
-    console.log("center_x2: " + center_x2);
-    console.log("center_y2: " + center_y2);
-    console.log("radius2: " + radius2);
-    // graphic.drawCircle(center_x2, center_y2, radius2);
     let distance_from_center2_to_radius_line = calculateDistanceFromPointToLine(inner_reach_x, inner_reach_y, canvas_center_x, canvas_center_y, center_x2, center_y2);
-    console.log("distance_from_center2_to_radius_line: " + distance_from_center2_to_radius_line);
     let radian_from_center2_to_inner_reach_point = Math.acos(distance_from_center2_to_radius_line / radius2);
-    console.log("radian_from_center2_to_inner_reach_point: " + radian_from_center2_to_inner_reach_point);
     let angle_from_center2_to_inner_reach_point = radian_from_center2_to_inner_reach_point * 180 / Math.PI;
-    console.log("angle_from_center2_to_inner_reach_point: " + angle_from_center2_to_inner_reach_point);
     let start_angle3 = 180 + (60 - angle_from_center2_to_inner_reach_point);
-    console.log("start_angle3: " + start_angle3);
     let start_radian3 = start_angle3 * Math.PI / 180;
     let end_radian3 = start_radian3 + (20 * Math.PI / 180);
     graphic.arc(center_x2, center_y2, radius2, start_radian3, end_radian3);
@@ -645,16 +627,14 @@ function refresh() {
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
     let start_angle4 = start_angle3 + 2 * angle_from_center2_to_inner_reach_point - 20;
-    console.log("start_angle4: " + start_angle4);
     let start_radian4 = start_angle4 * Math.PI / 180;
     let end_angle4 = start_angle4 + 20;
-    console.log("end_angle4: " + end_angle4);
     let end_radian4 = end_angle4 * Math.PI / 180;
     graphic.arc(center_x2, center_y2, radius2, start_radian4, end_radian4);
     graphic.endStroke();
-    // addition character
+    // add character
     drawDegreeCharacter(stage, inner_character_x-30, inner_character_y-15, inner_radius_str + "cm");
-    //addition line
+    //add line
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
     graphic.setStrokeDash([3, 3], 0);

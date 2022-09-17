@@ -32,6 +32,9 @@ urlpatterns = [
     ### 扇形 ###
     path('elementary5_sector/print/', views.print_elementary5_sector_problem, name='elementary5_sector_print'),
     path('elementary5_sector/display/', views.display_elementary5_sector_problem, name='elementary5_sector_display'),
+    ### 通分 ###
+    path('common_denominator/print/', views.print_common_denominator_problem, name='common_denominator_print'),
+    path('common_denominator/display/', views.display_common_denominator_problem, name='common_denominator_display'),
     ##########################################
     ### 小6 ###
     path('elementary_school6/', views.show_elementary_school6, name='elementary_school6'),

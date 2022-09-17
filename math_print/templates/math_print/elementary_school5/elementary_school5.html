@@ -646,6 +646,73 @@
             </form>
         </div>
         <div class="col border-end border-bottom">
+            <p>通分</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する分数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="proper_fraction" name="fraction_type_for_common_denominator" id="CommonDenominatorProperFractionCheck" checked>
+                        <label class="form-check-label" for="CommonDenominatorProperFractionCheck">
+                            真分数(分子が分母を超えない)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="improper_fraction" name="fraction_type_for_common_denominator" id="CommonDenominatorImproperFractionCheck" checked>
+                        <label class="form-check-label" for="CommonDenominatorImproperFractionCheck">
+                            仮分数(分子が分母を超える)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="mixed_fraction" name="fraction_type_for_common_denominator" id="CommonDenominatorMixedFractionCheck">
+                        <label class="form-check-label" for="CommonDenominatorMixedFractionCheck">
+                            帯分数(横に数がくっついてくる)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_type_for_common_denominator')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_type_for_common_denominator')" value="全部はずし">
+                </div>
+                <small class="text-muted">通分する分数の個数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="fraction_numbers" id="CommonDenominatorFractionNumbersCheck" checked>
+                        <label class="form-check-label" for="CommonDenominatorImproperFractionCheck">
+                            2個
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="fraction_numbers" id="CommonDenominatorFractionNumbersCheck">
+                        <label class="form-check-label" for="CommonDenominatorFractionNumbersCheck">
+                            3個
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="CommonDenominatorFivePaperRadio" checked>
+                        <label class="form-check-label" for="CommonDenominatorFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="CommonDenominatorTenPaperRadio">
+                        <label class="form-check-label" for="CommonDenominatorTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="CommonDenominatorFifteenPaperRadio">
+                        <label class="form-check-label" for="CommonDenominatorFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'common_denominator_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'common_denominator_display' %}">      
+            </form>
+        </div>
+        <div class="col border-end border-bottom">
             <p>小数と分数の相互変換</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

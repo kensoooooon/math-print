@@ -39,6 +39,7 @@ from .math_process.lcm_and_gcd import LCMAndGCD
 from .math_process.vector_cross_point import VectorCrossPoint
 from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
 from .math_process.fill_in_the_square import FillInTheSquareProblem
+from .math_process.common_denominator import CommonDenominatorProblem
 
 
 def index(request):
@@ -1169,7 +1170,27 @@ def print_fill_in_the_square_problem(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/elementary_school6/fill_in_the_square/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
-        
+  
+def print_common_denominator_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    fraction_type_list = request.POST.getlist("fraction_type_for_common_denominator")
+    if not(fraction_type_list):
+        fraction_type_list.append("proper_fraction")
+        fraction_type_list.append("improper_fraction")
+        fraction_type_list.append("mixed_fraction")
+    paper_number = int(request.POST["paper_number"])
+
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
+            problem2 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/elementary_school5/common_denominator/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2094,3 +2115,20 @@ def display_fill_in_the_square_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/elementary_school6/fill_in_the_square/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_common_denominator_problem(request):
+    PROBLEM_NUMBER = 20
+    
+    fraction_type_list = request.POST.getlist("fraction_type_for_common_denominator")
+    if not(fraction_type_list):
+        fraction_type_list.append("proper_fraction")
+        fraction_type_list.append("improper_fraction")
+        fraction_type_list.append("mixed_fraction")
+    
+    math_problem_tuple_list = []
+    for _  in range(int(PROBLEM_NUMBER//2)):
+        problem1 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
+        problem2 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/elementary_school5/common_denominator/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

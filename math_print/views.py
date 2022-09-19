@@ -1179,6 +1179,12 @@ def print_common_denominator_problem(request):
         fraction_type_list.append("proper_fraction")
         fraction_type_list.append("improper_fraction")
         fraction_type_list.append("mixed_fraction")
+    fraction_numbers_list = request.POST.getlist("fraction_numbers")
+    if not(fraction_numbers_list):
+        fraction_numbers_list.append(2)
+        fraction_numbers_list.append(3)
+    else:
+        fraction_numbers_list = [int(number_str) for number_str in fraction_numbers_list]
     paper_number = int(request.POST["paper_number"])
 
     math_problem_list_of_list = []
@@ -2124,11 +2130,17 @@ def display_common_denominator_problem(request):
         fraction_type_list.append("proper_fraction")
         fraction_type_list.append("improper_fraction")
         fraction_type_list.append("mixed_fraction")
+    fraction_numbers_list = request.POST.getlist("fraction_numbers")
+    if not(fraction_numbers_list):
+        fraction_numbers_list.append(2)
+        fraction_numbers_list.append(3)
+    else:
+        fraction_numbers_list = [int(number_str) for number_str in fraction_numbers_list]
     
     math_problem_tuple_list = []
     for _  in range(int(PROBLEM_NUMBER//2)):
-        problem1 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
-        problem2 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
+        problem1 = CommonDenominatorProblem(fraction_type_list=fraction_type_list, fraction_numbers_list=fraction_numbers_list)
+        problem2 = CommonDenominatorProblem(fraction_type_list=fraction_type_list, fraction_numbers_list=fraction_numbers_list)
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/elementary_school5/common_denominator/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

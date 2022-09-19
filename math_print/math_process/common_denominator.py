@@ -92,6 +92,8 @@ class CommonDenominatorProblem:
                 fraction = sy.Rational(numerator, denominator)
                 fractions.append(fraction)          
         # 共通因数を見抜くやつ
+        # よくわからんエラー
+        # 反応してないexisting
         else:
             print("common base type.")
             common_denominator_base = prime_numbers.pop()
@@ -106,7 +108,13 @@ class CommonDenominatorProblem:
                         denominator *= randint(2, 3)
                         print(f"after_denominator: {denominator}")
                 numerator = randint(1, denominator-1)
-                fraction = sy.Rational(numerator, denominator)
+                # ここで結局約分という？
+                """
+                numeratorが悪さしてそう
+                ->約分できない数をかけることで、約分を事前に防ぐ？
+                全体が既約分数でなければならない？
+                """
+                fraction = sy.Rational(numerator, denominator, gcd=1)
                 fractions.append(fraction)
         print(f"fractions: {fractions}")
         shuffle(fractions)

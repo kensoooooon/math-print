@@ -36,9 +36,9 @@ class CommonDenominatorProblem:
         selected_fraction_number = choice(self._fraction_numbers_list)
         if selected_fraction_type == "proper_fraction":
             latex_answer, latex_problem = self._make_proper_fraction_problem(selected_fraction_number)
-        """
         elif selected_fraction_type == "improper_fraction":
-            latex_answer, latex_problem = self._make_improper_fraction_problem()
+            latex_answer, latex_problem = self._make_improper_fraction_problem(selected_fraction_number)
+        """
         elif selected_fraction_type == "mixed_fraction":
             latex_answer, latex_problem = self._make_mixed_fraction_problem()
         else:
@@ -47,7 +47,7 @@ class CommonDenominatorProblem:
         return latex_answer, latex_problem
     
     def _make_proper_fraction_problem(self, selected_fraction_number):
-        """真分数の約分問題を出力
+        """真分数の通分問題を出力
         
         Args:
             selected_fraction_number (int): 問題に登場する分数の個数
@@ -79,14 +79,15 @@ class CommonDenominatorProblem:
         fractions: [1/13, 6/13]
         """
         # まんまかければいいやつ
-        prime_numbers = [2, 3, 5, 7, 11, 13]
+        prime_numbers = [2, 3, 5, 7, 11]
         shuffle(prime_numbers)
         fractions = []
         if random() < 0.4:
             print("prime base type.")
             for _ in range(selected_fraction_number):
                 denominator_base = prime_numbers.pop()
-                denominator_index = randint(1, 2)
+                # denominator_index = randint(1, 2)
+                denominator_index = 1
                 denominator = denominator_base ** denominator_index
                 numerator = denominator - randint(1, denominator-1)
                 fraction = sy.Rational(numerator, denominator)
@@ -117,6 +118,45 @@ class CommonDenominatorProblem:
                 fraction = sy.Rational(numerator, denominator, gcd=1)
                 fractions.append(fraction)
         print(f"fractions: {fractions}")
+        shuffle(fractions)
+        latex_answer = self._fractions_to_latex_answer(fractions)
+        latex_problem = self._fractions_to_latex_problem(fractions)
+        return latex_answer, latex_problem
+    
+    def _make_improper_fraction_problem(self, selected_fraction_number):
+        """仮分数の通分問題を出力
+
+        Args:
+            selected_fraction_number (int): 問題に登場する分数の個数
+            
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        prime_numbers = [2, 3, 5, 7, 11]
+        shuffle(prime_numbers)
+        fractions = []
+        if random() < 0.4:
+            for _ in range(selected_fraction_number):
+                denominator = prime_numbers.pop()
+                numerator = denominator + randint(1, denominator)
+                fraction = sy.Rational(numerator, denominator, gcd=1)
+                fractions.append(fraction)
+        else:
+            common_denominator_base = prime_numbers.pop()
+            for _ in range(selected_fraction_number):
+                number_for_multiplication = randint(1, 3)
+                denominator = common_denominator_base * number_for_multiplication
+                if fractions:
+                    existing_denominator = [fraction.denominator for fraction in fractions]
+                    if denominator in existing_denominator:
+                        print(f"existing denominator: {existing_denominator}")
+                        print(f"denominator: {denominator}")
+                        denominator *= randint(2, 3)
+                        print(f"after_denominator: {denominator}")
+                numerator = denominator + randint(1, denominator)
+                fraction = sy.Rational(numerator, denominator, gcd=1)
+                fractions.append(fraction)
         shuffle(fractions)
         latex_answer = self._fractions_to_latex_answer(fractions)
         latex_problem = self._fractions_to_latex_problem(fractions)

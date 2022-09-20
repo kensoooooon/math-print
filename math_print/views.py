@@ -1191,8 +1191,8 @@ def print_common_denominator_problem(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
-            problem2 = CommonDenominatorProblem(fraction_type_list=fraction_type_list)
+            problem1 = CommonDenominatorProblem(fraction_type_list=fraction_type_list, fraction_numbers_list=fraction_numbers_list)
+            problem2 = CommonDenominatorProblem(fraction_type_list=fraction_type_list, fraction_numbers_list=fraction_numbers_list)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     

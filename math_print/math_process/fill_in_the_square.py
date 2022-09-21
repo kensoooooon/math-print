@@ -21,7 +21,7 @@ class FillInTheSquareProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        """選択された演算の形式に応じて、問題と解答を出力する
+        """候補となる演算からランダムに選択を行い、それに応じた問題と解答を出力する
         
         Returns:
             latex_answer (str): latex形式で記述された解答

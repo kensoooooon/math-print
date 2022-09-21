@@ -45,7 +45,8 @@ class CommonDenominatorProblem:
         # not coprime denominator
         else:
             denominator_base = choice(prime_numbers)
-            multiplied_numbers = sample(list(range(1, 7)), selected_fraction_number)
+            # 7 is too big?
+            multiplied_numbers = sample(list(range(1, 4)), selected_fraction_number)
             denominators = [denominator_base * multiplied_number for multiplied_number in multiplied_numbers]
         lcm = sy.ilcm(*denominators)
         latex_answer = ""

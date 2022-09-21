@@ -1202,7 +1202,7 @@ def print_common_denominator_problem(request):
 def print_recurrence_relation(request):
     PROBLEM_NUMBER = 2
     
-    problem_type_list = request.POST.getlist("problem_types")
+    problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("arithmetic_progression")
         problem_type_list.append("geometric_progression")
@@ -2170,7 +2170,7 @@ def display_common_denominator_problem(request):
 def display_recurrence_relation(request):
     PROBLEM_NUMBER = 20
     
-    problem_type_list = request.POST.getlist("problem_types")
+    problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("arithmetic_progression")
         problem_type_list.append("geometric_progression")

@@ -137,4 +137,7 @@ urlpatterns = [
     # ベクトルの交点
     path('vector_cross_point/print', views.print_vector_cross_point, name='vector_cross_point_print'),
     path('vector_cross_point/display', views.display_vector_cross_point, name='vector_cross_point_display'),
+    # 数列の漸化式
+    path('recurrence_relation/print', views.print_recurrence_relation, name='recurrence_relation_print'),
+    path('recurrence_relation/display', views.display_recurrence_relation, name='recurrence_relation_display'),
 ]

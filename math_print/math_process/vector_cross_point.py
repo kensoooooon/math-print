@@ -16,6 +16,7 @@ class VectorCrossPoint:
         Args:
             settings (dict): 問題の設定
         """
+        sy.init_printing(order='grevlex')
         self._problem_type_list = settings["problem_type_list"]
         self.latex_answer, self.latex_problem = self._make_problem()
     

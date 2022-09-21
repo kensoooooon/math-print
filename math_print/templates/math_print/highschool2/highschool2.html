@@ -218,6 +218,58 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>漸化式から一般項を求める</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">出題される漸化式</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="arithmetic_progression" name="problem_type" id="recurrence_relation_arithmetic_progression" checked>
+                        <label class="form-check-label" for="recurrence_relation_arithmetic_progression">
+                            \( a_{n+1} - a_{n} = d \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="geometric_progression" name="problem_type" id="recurrence_relation_geometric_progression" checked>
+                        <label class="form-check-label" for="recurrence_relation_geometric_progression">
+                            \( a_{n+1} = r a_{n} \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="progression_of_differences" name="problem_type" id="recurrence_relation_progression_of_differences" checked>
+                        <label class="form-check-label" for="recurrence_relation_progression_of_differences">
+                            \( a_{n+1} - a_{n} = f(n) \)
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="RecurrenceRelationFivePaperRadio" checked>
+                        <label class="form-check-label" for="RecurrenceRelationFivePaperRadio">
+                            2問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="RecurrenceRelationTenPaperRadio">
+                        <label class="form-check-label" for="RecurrenceRelationTenPaperRadio">
+                            2問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="RecurrenceRelationFifteenPaperRadio">
+                        <label class="form-check-label" for="RecurrenceRelationFifteenPaperRadio">
+                            2問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'recurrence_relation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'recurrence_relation_display' %}">      
+            </form>
+        </div>
+    </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

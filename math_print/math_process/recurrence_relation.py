@@ -1,3 +1,22 @@
+"""
+import sympy as sy
+
+
+n = sy.Symbol("n", real=True)
+k = sy.Symbol("k", real=True)
+
+sample = sy.sequence(n)
+print(sample)
+print(sample.formula)
+sum_of_value = sy.summation(sample.formula, (n, 1, k))
+print(sum_of_value)
+print(sy.latex(sum_of_value))
+
+
+sum_of_value2 = sy.summation(3 ** k, (k, 1, n))
+print(sum_of_value2)
+print(sy.simplify(sum_of_value2))
+"""
 from random import choice, randint, random
 
 import sympy as sy
@@ -27,18 +46,20 @@ class RecurrenceRelationProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
+        
+        Raises:
+            ValueError: 
         """
         selected_problem_type = choice(self._problem_types)
         print(f"selected_problem_type: {selected_problem_type}")
         if selected_problem_type == "arithmetic_progression":
             latex_answer, latex_problem = self._make_arithmetic_progression_problem()
-        
         elif selected_problem_type == "geometric_progression":
             latex_answer, latex_problem = self._make_geometric_progression_problem()
-        """
         elif selected_problem_type == "progression_of_differences":
             latex_answer, latex_problem = self._make_progression_of_differences_problem()
-        """
+        else:
+            raise ValueError(f"selected_problem_type is {selected_problem_type}.")
         return latex_answer, latex_problem
     
     def _make_arithmetic_progression_problem(self):
@@ -98,6 +119,42 @@ class RecurrenceRelationProblem:
         elif common_ratio < 0:
             latex_answer += f"\\( a_{{n}} = {first_term_latex} \\cdot ({common_ratio_latex})^{{n-1}} \\)"
         latex_answer += f"\\( = {general_term_latex} \\)"
+        return latex_answer, latex_problem
+
+    def _make_progression_of_differences_problem(self):
+        """階差型の漸化式の問題と解答を出力する
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_answer (str): latex形式で記述された問題
+        """
+        # arithmetic progression
+        if random() > 0.5:
+            first_term, first_term_latex = self._make_random_integer()
+            n = sy.Symbol("n", real=True)
+            coefficient_of_n, coefficient_of_n_latex = self._make_random_integer(farther_distance_from_zero=7)
+            constant_number, constant_number_latex = self._make_random_integer()
+            progression_of_differences = coefficient_of_n * n + constant_number
+            progression_of_differences_latex = sy.latex(progression_of_differences)
+            # a_{n+1} - a_{n} = f(n)
+            if random() > 0.5:
+                latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad  a_{{n+1}} - a_{{n}} = {progression_of_differences_latex} \\)"
+            # a_{n+1} - a_{n} - f(n) = 0
+            else:
+                if coefficient_of_n > 0:
+                    latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} - a_{{n}} {sy.latex(-1 * progression_of_differences)} = 0\\)"
+                else:
+                    latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} - a_{{n}}  + {sy.latex(-1 * progression_of_differences)} = 0\\)"
+            latex_answer = f"\\( a_{{n+1}} - a_{{n}} = {progression_of_differences_latex} \\)より、\\( {{ {progression_of_differences_latex} }}\\)は、数列{{a_{n}}}の階差数列である。 \n"
+            latex_answer += f"\\( n \\geqq 2 \\)のとき、\\( a_{{n}} = a_{{1}} + \\sum\\limits_{{k=1}}^{{n-1}} {progression_of_differences_latex} \\)\n"
+            # add function part.
+            
+            latex_answer += f""
+            
+        # geometric progression
+        # else:
+            
+        
         return latex_answer, latex_problem
     
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

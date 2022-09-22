@@ -145,15 +145,40 @@ class RecurrenceRelationProblem:
                     latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} - a_{{n}} {sy.latex(-1 * progression_of_differences)} = 0\\)"
                 else:
                     latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} - a_{{n}}  + {sy.latex(-1 * progression_of_differences)} = 0\\)"
-            latex_answer = f"\\( a_{{n+1}} - a_{{n}} = {progression_of_differences_latex} \\)より、\\( {{ {progression_of_differences_latex} }}\\)は、数列{{a_{n}}}の階差数列である。 \n"
-            latex_answer += f"\\( n \\geqq 2 \\)のとき、\\( a_{{n}} = a_{{1}} + \\sum\\limits_{{k=1}}^{{n-1}} {progression_of_differences_latex} \\)\n"
+            latex_answer = f"\\( a_{{n+1}} - a_{{n}} = {progression_of_differences_latex} \\)より、\\( {{ {progression_of_differences_latex} }}\\)は、数列\\( {{a_{n}}} \\)の階差数列である。 \n"
+            latex_answer += f"\\( n \\geqq 2 \\)のとき、\\( a_{{n}} = a_{{1}} + \\sum\\limits_{{k=1}}^{{n-1}} ({progression_of_differences_latex}) \\)\n"
             # add function part.
-            
-            latex_answer += f""
-            
+            sum_of_value = sy.summation(progression_of_differences, (n, 1, n-1))
+            general_term = first_term + sum_of_value
+            general_term_latex = sy.latex(general_term)
+            latex_answer += f"\\( = {general_term_latex} \\) \n"
+            latex_answer += f"また\\( n = 1 \\)のときを計算すると、\\( a_{{1}} = {sy.latex(general_term.subs(n, 1)) }\\)となるため、この式は\\( n = 1 \\)の時も成り立つ。\n"
+            latex_answer += f"よって、\\( a_{{n}} = {general_term_latex} \\)"
         # geometric progression
-        # else:
-            
+        else:
+            first_term, first_term_latex = self._make_random_integer()
+            n = sy.Symbol("n", real=True)
+            common_ratio, common_ratio_latex = self._make_random_integer()
+            progression_of_differences = first_term * (common_ratio ** (n - 1))
+            progression_of_differences_latex = sy.latex(progression_of_differences)
+            # a_{n+1} - a_{n} = f(n)
+            if random() > 0.5:
+                latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad  a_{{n+1}} - a_{{n}} = {progression_of_differences_latex} \\)"
+            # a_{n+1} - a_{n} - f(n) = 0
+            else:
+                if first_term > 0:
+                    latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} - a_{{n}} {sy.latex(-1 * progression_of_differences)} = 0\\)"
+                else:
+                    latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} - a_{{n}}  + {sy.latex(-1 * progression_of_differences)} = 0\\)"
+            latex_answer = f"\\( a_{{n+1}} - a_{{n}} = {progression_of_differences_latex} \\)より、\\( {{ {progression_of_differences_latex} }}\\)は、数列\\( {{a_{n}}} \\)の階差数列である。 \n"
+            latex_answer += f"\\( n \\geqq 2 \\)のとき、\\( a_{{n}} = a_{{1}} + \\sum\\limits_{{k=1}}^{{n-1}} ({progression_of_differences_latex}) \\)\n"
+            # add function part.
+            sum_of_value = sy.summation(progression_of_differences, (n, 1, n-1))
+            general_term = first_term + sum_of_value
+            general_term_latex = sy.latex(general_term)
+            latex_answer += f"\\( = {general_term_latex} \\) \n"
+            latex_answer += f"また\\( n = 1 \\)のときを計算すると、\\( a_{{1}} = {sy.latex(general_term.subs(n, 1)) }\\)となるため、この式は\\( n = 1 \\)の時も成り立つ。\n"
+            latex_answer += f"よって、\\( a_{{n}} = {general_term_latex} \\)"
         
         return latex_answer, latex_problem
     

@@ -202,7 +202,7 @@ class RecurrenceRelationProblem:
         # rearranged_left = (p / a_n_plus_1) - (p / a_n)
         # rearranged_left_latex = sy.latex(sy.simplify(rearranged_left))
         rearranged_left_latex = f"\\frac{{1}}{{{a_n_plus_1}}} - \\frac{{1}}{{{a_n}}}"
-        rearranged_right = - sy.Rational(-1, p)
+        rearranged_right = - sy.Rational(1, p)
         rearranged_right_latex = sy.latex(rearranged_right)
         latex_answer += f"\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。これにより、数列 \\( {sy.latex(1 / a_n)} \\)は、"
         first_term_of_arithmetic_progression = sy.Rational(1, first_term)
@@ -214,7 +214,7 @@ class RecurrenceRelationProblem:
         general_term_of_arithmetic_progression =  first_term_of_arithmetic_progression + (n - 1) * common_difference_of_arithmetic_progression
         general_term_of_arithmetic_progression_latex = sy.latex(general_term_of_arithmetic_progression)
         latex_answer += f"\\(  {sy.latex(1 / a_n)} = {general_term_of_arithmetic_progression_latex} \\)となる。これを整理すると、"
-        general_term = (first_term * p) / (p - first_term * (n - 1))
+        general_term = (first_term * p) / (p + first_term * (n - 1))
         general_term_latex  = sy.latex(general_term)
         latex_answer += f"\\( a_{{n}} = {general_term_latex} \\)"
         return latex_answer, latex_problem

@@ -1,24 +1,4 @@
-"""
-import sympy as sy
-
-
-n = sy.Symbol("n", real=True)
-k = sy.Symbol("k", real=True)
-
-sample = sy.sequence(n)
-print(sample)
-print(sample.formula)
-sum_of_value = sy.summation(sample.formula, (n, 1, k))
-print(sum_of_value)
-print(sy.latex(sum_of_value))
-
-
-sum_of_value2 = sy.summation(3 ** k, (k, 1, n))
-print(sum_of_value2)
-print(sy.simplify(sum_of_value2))
-"""
 from random import choice, randint, random
-from tkinter.ttk import Progressbar
 
 import sympy as sy
 
@@ -59,6 +39,8 @@ class RecurrenceRelationProblem:
             latex_answer, latex_problem = self._make_geometric_progression_problem()
         elif selected_problem_type == "progression_of_differences":
             latex_answer, latex_problem = self._make_progression_of_differences_problem()
+        elif selected_problem_type == "harmonic_progression":
+            latex_answer, latex_problem = self._make_harmonic_progression_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}.")
         return latex_answer, latex_problem
@@ -185,6 +167,56 @@ class RecurrenceRelationProblem:
             latex_answer += f"\\( = {general_term_latex} \\) \n"
             latex_answer += f"また\\( n = 1 \\)のときを計算すると、\\( a_{{1}} = {sy.latex(general_term.subs(n, 1)) }\\)となるため、この式は\\( n = 1 \\)の時も成り立つ。\n"
             latex_answer += f"よって、\\( a_{{n}} = {general_term_latex} \\)"
+        return latex_answer, latex_problem
+    
+    def _make_harmonic_progression_problem(self):
+        """調和数列型の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Developing:
+            a_n+1 a_n - p a_n+1 - p a_n = 0
+        """
+        first_term, first_term_latex = self._make_random_integer()
+        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
+        a_n = sy.Symbol("a_{{n}}", real=True)
+        p, p_latex = self._make_random_integer()
+        left = a_n_plus_1 * a_n - p * a_n_plus_1 + p * a_n
+        left_latex = sy.latex(left)
+        right = 0
+        right_latex = sy.latex(right)
+        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad {left_latex} = {right_latex} \\)"
+        if p > 0:
+            latex_answer = f"\\( a_{{n+1}} = 0 \\)と仮定すると、\\( 0 - 0 + {p_latex} a_{{n}} = 0\\)より、\\( a_{{n}} = 0 \\)となる。\n"
+        else:
+            latex_answer = f"\\( a_{{n+1}} = 0 \\)と仮定すると、\\( 0 + 0 {p_latex} a_{{n}} = 0\\)より、\\( a_{{n}} = 0\\)となる。 \n"
+        latex_answer += f"すなわち、\\( a_{{n+1}} = a_{{n}} = a_{{n-1}} = \\cdots = a_{{2}} = a_{{1}} = 0\\)となるが、"
+        latex_answer += f"これは\\( a_{{1}} = {first_term_latex} \\)と矛盾する。\n"
+        latex_answer += f"よって、全ての自然数\\( n \\)において、\\( a_{{n}} \\neq 0 \\)であることが示せた。"
+        latex_answer += f"ここで、与えられた漸化式の両辺を\\( a_{{n+1}} a_{{n}} \\)で割ると、\n"
+        divided_left = sy.simplify(left / (a_n_plus_1 * a_n))
+        divided_left_latex = sy.latex(divided_left)
+        latex_answer += f"\\( {divided_left_latex} = {right_latex} \\)となる。これを整理すると、\n"
+        # rearranged_left = (p / a_n_plus_1) - (p / a_n)
+        # rearranged_left_latex = sy.latex(sy.simplify(rearranged_left))
+        rearranged_left_latex = f"\\frac{{1}}{{{a_n_plus_1}}} - \\frac{{1}}{{{a_n}}}"
+        rearranged_right = - sy.Rational(-1, p)
+        rearranged_right_latex = sy.latex(rearranged_right)
+        latex_answer += f"\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。これにより、数列 \\( {sy.latex(1 / a_n)} \\)は、"
+        first_term_of_arithmetic_progression = sy.Rational(1, first_term)
+        first_term_of_arithmetic_progression_latex = sy.latex(first_term_of_arithmetic_progression)
+        common_difference_of_arithmetic_progression = rearranged_right
+        common_difference_of_arithmetic_progression_latex = sy.latex(common_difference_of_arithmetic_progression)
+        latex_answer += f"初項\\( \\frac{{1}}{{a_1}} = {first_term_of_arithmetic_progression_latex} \\)、公差\\( {common_difference_of_arithmetic_progression_latex} \\)の等差数列となるため、\n"
+        n = sy.Symbol("n", real=True)
+        general_term_of_arithmetic_progression =  first_term_of_arithmetic_progression + (n - 1) * common_difference_of_arithmetic_progression
+        general_term_of_arithmetic_progression_latex = sy.latex(general_term_of_arithmetic_progression)
+        latex_answer += f"\\(  {sy.latex(1 / a_n)} = {general_term_of_arithmetic_progression_latex} \\)となる。これを整理すると、"
+        general_term = (first_term * p) / (p - first_term * (n - 1))
+        general_term_latex  = sy.latex(general_term)
+        latex_answer += f"\\( a_{{n}} = {general_term_latex} \\)"
         return latex_answer, latex_problem
     
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

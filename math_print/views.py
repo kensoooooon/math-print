@@ -1208,6 +1208,7 @@ def print_recurrence_relation(request):
         problem_type_list.append("geometric_progression")
         problem_type_list.append("progression_of_differences")
         problem_type_list.append("harmonic_progression")
+        problem_type_list.append("linear_characteristic_equation")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -2177,6 +2178,7 @@ def display_recurrence_relation(request):
         problem_type_list.append("geometric_progression")
         problem_type_list.append("progression_of_differences")
         problem_type_list.append("harmonic_progression")
+        problem_type_list.append("linear_characteristic_equation")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

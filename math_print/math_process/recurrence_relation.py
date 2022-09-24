@@ -40,6 +40,8 @@ class RecurrenceRelationProblem:
             latex_answer, latex_problem = self._make_progression_of_differences_problem()
         elif selected_problem_type == "harmonic_progression":
             latex_answer, latex_problem = self._make_harmonic_progression_problem()
+        elif selected_problem_type == "linear_characteristic_equation":
+            latex_answer, latex_problem = self._make_linear_characteristic_equation_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}.")
         return latex_answer, latex_problem
@@ -104,7 +106,7 @@ class RecurrenceRelationProblem:
         return latex_answer, latex_problem
 
     def _make_progression_of_differences_problem(self):
-        """階差型の漸化式の問題と解答を出力する
+        """階差型(a_n+1 - a_n = f(n))の漸化式の問題と解答を出力する
 
         Returns:
             latex_answer (str): latex形式で記述された解答
@@ -169,14 +171,11 @@ class RecurrenceRelationProblem:
         return latex_answer, latex_problem
     
     def _make_harmonic_progression_problem(self):
-        """調和数列型の問題と解答を出力
+        """調和数列型(a_n+1 a_n - p a_n+1 + p a_n = 0)の漸化式の問題と解答を出力
         
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        
-        Developing:
-            a_n+1 a_n - p a_n+1 + p a_n = 0
         """
         first_term, first_term_latex = self._make_random_integer()
         a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
@@ -217,6 +216,59 @@ class RecurrenceRelationProblem:
         general_term = sy.simplify((first_term * p) / (p - first_term * (n - 1)))
         general_term_latex  = sy.latex(general_term)
         latex_answer += f"これを整理すると、\\( a_{{n}} = {general_term_latex} \\)"
+        return latex_answer, latex_problem
+    
+    def _make_linear_characteristic_equation_problem(self):
+        """一次の特性方程式を用いるタイプ(a_n+1 = p a_n + q)の漸化式の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Developings:
+            ・順次確認
+            ・あまりにも値(a1とか)がガバ？要調整？？？
+        """
+        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
+        a_n = sy.Symbol("a_{{n}}", real=True)
+        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2)
+        q, q_latex = self._make_random_integer()
+        characteristic_answer = sy.Rational(q, 1 - p)
+        characteristic_answer_latex = sy.latex(characteristic_answer)
+        if random() > 0.5:
+            first_term = characteristic_answer + randint(1, 10)
+        else:
+            first_term = characteristic_answer - randint(1, 10)
+        first_term_latex = sy.latex(first_term)
+        latex_problem = f"\\(a_{{1}} = {first_term_latex}, \\quad \\)"
+        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
+        a_n = sy.Symbol("a_{{n}}", real=True)
+        problem_display_checker = random()
+        # a_{{n+1}} = p a_{{n}} + q
+        print(f"p: {p}")
+        print(f"q: {q}")
+        if problem_display_checker < 0.33:
+            left = a_n_plus_1
+            left_latex = sy.latex(a_n_plus_1)
+            right = p * a_n + q
+            right_latex = sy.latex(right)
+        # a_{{n+1}} - p a_{{n}} = q
+        elif 0.33 <= problem_display_checker < 0.66:
+            left = a_n_plus_1 - p * a_n
+            left_latex = sy.latex(left)
+            right = q
+            right_latex = sy.latex(right)
+        # a_{{n+1}} - p a_{{n}} - q = 0
+        else:
+            left = a_n_plus_1 - p * a_n - q
+            left_latex = sy.latex(left)
+            right = 0
+            right_latex = sy.latex(right)
+        latex_problem += f"\\( {left_latex} = {right_latex} \\)"
+        print(f"latex_problem: {latex_problem}")
+        print("-----------------------------------------")
+        latex_answer = "dummmmmyyyuyyyyy"
+        
         return latex_answer, latex_problem
     
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

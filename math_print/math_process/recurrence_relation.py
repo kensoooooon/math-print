@@ -231,22 +231,17 @@ class RecurrenceRelationProblem:
         """
         a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
         a_n = sy.Symbol("a_{{n}}", real=True)
-        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2)
-        q, q_latex = self._make_random_integer()
-        characteristic_answer = sy.Rational(q, 1 - p)
-        characteristic_answer_latex = sy.latex(characteristic_answer)
+        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5)
+        characteristic_answer, characteristic_answer_latex = self._make_random_integer(farther_distance_from_zero=4)
+        q = characteristic_answer * (1 - p)
         if random() > 0.5:
             first_term = characteristic_answer + randint(1, 10)
         else:
             first_term = characteristic_answer - randint(1, 10)
         first_term_latex = sy.latex(first_term)
         latex_problem = f"\\(a_{{1}} = {first_term_latex}, \\quad \\)"
-        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
-        a_n = sy.Symbol("a_{{n}}", real=True)
         problem_display_checker = random()
         # a_{{n+1}} = p a_{{n}} + q
-        print(f"p: {p}")
-        print(f"q: {q}")
         if problem_display_checker < 0.33:
             left = a_n_plus_1
             left_latex = sy.latex(a_n_plus_1)
@@ -265,10 +260,25 @@ class RecurrenceRelationProblem:
             right = 0
             right_latex = sy.latex(right)
         latex_problem += f"\\( {left_latex} = {right_latex} \\)"
-        print(f"latex_problem: {latex_problem}")
-        print("-----------------------------------------")
-        latex_answer = "dummmmmyyyuyyyyy"
-        
+        # a_n - characteristic_answer as b_n
+        rearranged_recurrence_relation = sy.Eq(a_n_plus_1, p * a_n + q)
+        rearranged_recurrence_relation_latex = sy.latex(rearranged_recurrence_relation)
+        latex_answer = f"\\( {rearranged_recurrence_relation_latex} \\)を変形すると、"
+        b_n_equation = sy.Eq(a_n - characteristic_answer, sy.factor(p * (a_n - characteristic_answer)))
+        b_n_equation_latex = sy.latex(b_n_equation)
+        latex_answer += f"\\( {b_n_equation_latex} \\)となる。\n"
+        a_1 = sy.Symbol("a_{{1}}", real=True)
+        first_term_of_b_n =first_term - characteristic_answer
+        first_term_of_b_n_latex= sy.latex(first_term_of_b_n)
+        latex_answer += f"すなわち、数列\\( {{{sy.latex(b_n_equation.lhs)}}}\\)は、初項が\\( {sy.latex(a_1 - characteristic_answer)} = {first_term_of_b_n_latex} \\)、"
+        latex_answer += f"公比が\\( {p_latex} \\)の等比数列である。\n"
+        n = sy.Symbol("n", real=True)
+        general_term_of_b_n = first_term_of_b_n * (p ** (n - 1))
+        general_term_of_b_n_latex = sy.latex(general_term_of_b_n)
+        latex_answer += f"よって、\\( {sy.latex(b_n_equation.lhs)} = {general_term_of_b_n_latex} \\)となり、"
+        general_term = general_term_of_b_n + characteristic_answer
+        general_term_latex = sy.latex(general_term)
+        latex_answer += f"\\( {sy.latex(a_n)} = {general_term_latex} \\)となる。"
         return latex_answer, latex_problem
     
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

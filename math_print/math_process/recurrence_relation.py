@@ -1,3 +1,4 @@
+from operator import le
 from random import choice, randint, random
 
 import sympy as sy
@@ -42,6 +43,8 @@ class RecurrenceRelationProblem:
             latex_answer, latex_problem = self._make_harmonic_progression_problem()
         elif selected_problem_type == "linear_characteristic_equation":
             latex_answer, latex_problem = self._make_linear_characteristic_equation_problem()
+        elif selected_problem_type == "coefficient_comparison_to_geometric_progression":
+            latex_answer, latex_problem = self._make_coefficient_comparison_to_geometric_progression_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}.")
         return latex_answer, latex_problem
@@ -224,15 +227,11 @@ class RecurrenceRelationProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        
-        Developings:
-            ・順次確認
-            ・あまりにも値(a1とか)がガバ？要調整？？？
         """
         a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
         a_n = sy.Symbol("a_{{n}}", real=True)
         p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5)
-        characteristic_answer, characteristic_answer_latex = self._make_random_integer(farther_distance_from_zero=4)
+        characteristic_answer, _ = self._make_random_integer(farther_distance_from_zero=4)
         q = characteristic_answer * (1 - p)
         if random() > 0.5:
             first_term = characteristic_answer + randint(1, 10)
@@ -281,6 +280,123 @@ class RecurrenceRelationProblem:
         latex_answer += f"\\( {sy.latex(a_n)} = {general_term_latex} \\)となる。"
         return latex_answer, latex_problem
     
+    def _make_coefficient_comparison_to_geometric_progression_problem(self):
+        """係数比較を行った後、等比数列に帰着するタイプ(a_{n+1} = p a_{n} + f(n))の漸化式の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Developing:
+            a_{n+1} = p a_{n} + f(n)
+        """
+        first_term, first_term_latex = self._make_random_integer(farther_distance_from_zero=5)
+        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
+        a_n_plus_1_latex = sy.latex(a_n_plus_1)
+        a_n = sy.Symbol("a_{{n}}", real=True)
+        a_n_latex = sy.latex(a_n)
+        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=4)
+        print(f"p: {p}")
+        n = sy.Symbol("n", real=True)
+        selected_expression_of_degree_n = choice(["linear", "quadratic"])
+        # f(n) = sn + t (-> a_{n+1} + α(n+1) + β = p(a_{n} + αn + β))
+        if selected_expression_of_degree_n == "linear":
+            alpha, alpha_latex = self._make_random_integer(farther_distance_from_zero=5)
+            beta, beta_latex = self._make_random_integer(farther_distance_from_zero=5)
+            s = alpha * (p - 1)
+            s_latex = sy.latex(s)
+            t = -alpha + (p - 1) * beta
+            t_latex = sy.latex(t)
+            expression_of_degree_n = s * n + t
+        # f(n) = sn^2 + tn + u
+        elif selected_expression_of_degree_n == "quadratic":
+            s, s_latex = self._make_random_integer(farther_distance_from_zero=5)
+            t, t_latex = self._make_random_integer(farther_distance_from_zero=5)
+            u, u_latex = self._make_random_integer(farther_distance_from_zero=5)
+            expression_of_degree_n = s * (n ** 2) + t * n + u
+        expression_of_degree_n_latex = sy.latex(expression_of_degree_n)
+        print(f"expression_of_degree_n: {expression_of_degree_n}")
+        display_type_checker = random()
+        left = a_n_plus_1
+        left_latex = sy.latex(left)
+        right = p * a_n + expression_of_degree_n
+        right_latex = f"{sy.latex(p * a_n)}"
+        right_poly_coeffs = sy.poly(right, a_n, n).coeffs()
+        most_highest_n_coeff = right_poly_coeffs[1]
+        if most_highest_n_coeff > 0:
+            right_latex += f"+ {expression_of_degree_n_latex}"
+        else:
+            right_latex += expression_of_degree_n_latex
+        rearranged_progression_latex = f"{left_latex} = {right_latex}"
+        # a_{n+1} = p a_{n} + f(n) (same as above)
+        if display_type_checker < 0.33:
+            pass
+        # a_{n+1} - p a_{n} = f(n)
+        elif 0.33 <= display_type_checker < 0.66:
+            left = a_n_plus_1 - p * a_n
+            left_latex = sy.latex(left)
+            right_latex = expression_of_degree_n_latex
+        # a_{n+1} - p a_{n} - f(n) = 0
+        else:
+            left_latex = f"{a_n_plus_1_latex}"
+            if p > 0:
+                left_latex += f"- {p_latex} {a_n_latex}"
+            else:
+                left_latex += f"+ {sy.latex(p * -1)} {a_n_latex}"
+            negative_expression_of_degree_n = -1 * expression_of_degree_n
+            most_highest_n_coeff = sy.poly(negative_expression_of_degree_n).coeffs()[0]
+            if most_highest_n_coeff > 0:
+                left_latex += f"+ {sy.latex(negative_expression_of_degree_n)}"
+            else:
+                left_latex += f"{sy.latex(negative_expression_of_degree_n)}"
+            right_latex = sy.latex(0)
+        progression_latex = f"{left_latex} = {right_latex}"
+        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad {progression_latex} \\)"
+        # a_{n+1} + α(n+1) + β = p(a_{n} + αn + β)
+        if selected_expression_of_degree_n == "linear":
+            latex_answer = f"\\( {a_n_plus_1_latex} + \\alpha (n + 1) + \\beta = {p_latex} ({a_n_latex} + \\alpha n + \\beta ) \\)"
+            latex_answer += f"となるように定数\\( \\alpha \\)と\\( \\beta \\)を定めていく。\n"
+            rearranged_left = a_n_plus_1
+            rearranged_left_latex = sy.latex(rearranged_left)
+            rearranged_right_latex = f"{sy.latex(p * a_n)}"
+            coefficient_of_alpha_n = p - 1
+            coefficient_of_alpha_n_latex = sy.latex(coefficient_of_alpha_n)
+            if coefficient_of_alpha_n > 0:
+                rearranged_right_latex += f"+ {coefficient_of_alpha_n_latex} \\alpha {sy.latex(n)}"
+            else:
+                rearranged_right_latex += f"{coefficient_of_alpha_n_latex} \\alpha {sy.latex(n)}"
+            constant_part_latex = f"- \\alpha"
+            if (p - 1) > 0:
+                constant_part_latex += f"+ {sy.latex(p - 1)} \\beta"
+            else:
+                constant_part_latex += f"{sy.latex(p - 1)} \\beta"
+            rearranged_right_latex += f"+ ({constant_part_latex})"
+            latex_answer += f"この式整理すると、\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。\n"
+            latex_answer += f"これを元の漸化式\\( {rearranged_progression_latex} \\)と比較すると、"
+            latex_answer += f"\\( {coefficient_of_alpha_n} \\alpha = {s_latex}, \\quad {constant_part_latex} = {t_latex} \\)より、"
+            latex_answer += f"\\( \\alpha = {alpha_latex}, \\quad \\beta = {beta_latex} \\)となる。\n"
+            common_ratio_progression_left_latex = f"{a_n_plus_1_latex}"
+            common_ratio_progression_right_latex = f"{p_latex} ( {a_n_latex}"
+            if alpha > 0:
+                common_ratio_progression_left_latex += f"+ {alpha_latex} (n + 1)"
+                common_ratio_progression_right_latex += f"+ {alpha_latex} n"
+            else:
+                common_ratio_progression_left_latex += f"{alpha_latex} (n + 1)"
+                common_ratio_progression_right_latex += f"{alpha_latex} n"
+            if beta > 0:
+                common_ratio_progression_left_latex += f"+ {beta_latex}"
+                common_ratio_progression_right_latex += f"+ {beta_latex})"
+            else:
+                common_ratio_progression_left_latex += f"{beta_latex}"
+                common_ratio_progression_right_latex += f"{beta_latex})"
+            latex_answer += f"よって、\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となるため、\n"
+            general_term_left = a_n + alpha * n + beta
+            general_term_left_latex = sy.latex(general_term_left)
+            latex_answer += f"\\( {general_term_left_latex} \\)は、初項\\( a_{{1}} \\)"
+        elif selected_expression_of_degree_n == "quadratic":
+            latex_answer = "quadratic dummmmmmmyyyy"
+        return latex_answer, latex_problem
+        
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):
         """原点からの距離がnearer_distance_from_zero以上farther_distance_from_zero以下の範囲の整数を出力
 

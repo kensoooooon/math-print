@@ -388,7 +388,13 @@ class RecurrenceRelationProblem:
             latex_answer += f"\\( \\alpha = {alpha_latex}, \\quad \\beta = {beta_latex} \\)となる。\n"
             common_ratio_progression_left_latex = f"{a_n_plus_1_latex}"
             common_ratio_progression_right_latex = f"{p_latex} ( {a_n_latex}"
-            if alpha > 0:
+            if alpha == 1:
+                common_ratio_progression_left_latex += f"+ (n + 1)"
+                common_ratio_progression_right_latex += f"+  n"
+            elif alpha == -1:
+                common_ratio_progression_left_latex += f"- (n + 1)"
+                common_ratio_progression_right_latex += f"- n"
+            elif alpha > 0:
                 common_ratio_progression_left_latex += f"+ {alpha_latex} (n + 1)"
                 common_ratio_progression_right_latex += f"+ {alpha_latex} n"
             else:
@@ -423,6 +429,7 @@ class RecurrenceRelationProblem:
             final_general_term_right = general_term_right - (alpha * n + beta)
             final_general_term_right_latex = sy.latex(final_general_term_right)
             latex_answer += f"\\( {final_general_term_left_latex} = {final_general_term_right_latex} \\)となる。"
+        # a_{n+1} + α(n+1)^2 + β(n+1) + γ = p(a_{n} + αn^2 + βn + γ)
         elif selected_expression_of_degree_n == "quadratic":
             latex_answer = f"与えられた漸化式、\\( {rearranged_progression_latex} \\)の\\( {a_n_latex} \\)の係数である\\( \\underline{{{p_latex}}} \\)に注目し、"
             latex_answer += f"\\( {a_n_plus_1_latex} + \\alpha (n + 1)^2 + \\beta (n + 1) + \\gamma = \\underline{{{p_latex}}} ({a_n_latex} + \\alpha n^2 + \\beta n + \\gamma) \\)"
@@ -432,42 +439,71 @@ class RecurrenceRelationProblem:
             rearranged_right_latex = f"{sy.latex(p * a_n)}"
             coefficient_of_alpha_n_square = p - 1
             coefficient_of_alpha_n_square_latex = sy.latex(coefficient_of_alpha_n_square)
-            n_square_part = f"{coefficient_of_alpha_n_square_latex} \\alpha"
+            n_square_part_latex = f"{coefficient_of_alpha_n_square_latex} \\alpha"
             if coefficient_of_alpha_n_square > 0:
-                rearranged_right_latex += f"+ {n_square_part}  {sy.latex(n ** 2)}"
+                rearranged_right_latex += f"+ {n_square_part_latex}  {sy.latex(n ** 2)}"
             else:
-                rearranged_right_latex += f"{n_square_part}  {sy.latex(n ** 2)}"
+                rearranged_right_latex += f"{n_square_part_latex}  {sy.latex(n ** 2)}"
             beta_coefficient_in_n = p - 1
             beta_coefficient_in_n_latex = sy.latex(beta_coefficient_in_n)
             if beta_coefficient_in_n == 1:
-                n_part = "-2 \\alpha + \\beta"
+                n_part_latex = "-2 \\alpha + \\beta"
             elif beta_coefficient_in_n == -1:
-                n_part = "-2 \\alpha - \\beta"
+                n_part_latex = "-2 \\alpha - \\beta"
             elif beta_coefficient_in_n > 0:
-                n_part = f"-2 \\alpha + {beta_coefficient_in_n_latex} \\beta"
+                n_part_latex = f"-2 \\alpha + {beta_coefficient_in_n_latex} \\beta"
             else:
-                n_part = f"-2 \\alpha {beta_coefficient_in_n_latex} \\beta"
-            rearranged_right_latex += f"+ ({n_part}) n"
+                n_part_latex = f"-2 \\alpha {beta_coefficient_in_n_latex} \\beta"
+            rearranged_right_latex += f"+ ({n_part_latex}) n"
             gamma_coefficient_in_constant_part = p - 1
             gamma_coefficient_in_constant_part_latex = sy.latex(gamma_coefficient_in_constant_part)
             if gamma_coefficient_in_constant_part == 1:
-                constant_part = "- \\alpha - \\beta + \\gamma"
-                rearranged_right_latex += f"+ ({constant_part})"
+                constant_part_latex = "- \\alpha - \\beta + \\gamma"
             elif gamma_coefficient_in_constant_part == -1:
-                constant_part = "- \\alpha - \\beta - \\gamma"
-                rearranged_right_latex += f"+ ({constant_part})"
+                constant_part_latex = "- \\alpha - \\beta - \\gamma"
             elif gamma_coefficient_in_constant_part > 0:
-                constant_part = f"- \\alpha - \\beta + {gamma_coefficient_in_constant_part_latex} \\gamma"
-                rearranged_right_latex += f"+ ({constant_part})"
+                constant_part_latex = f"- \\alpha - \\beta + {gamma_coefficient_in_constant_part_latex} \\gamma"
             else:
-                constant_part = f"- \\alpha - \\beta {gamma_coefficient_in_constant_part_latex} \\gamma"
-                rearranged_right_latex += f"+ ({constant_part})"
+                constant_part_latex = f"- \\alpha - \\beta {gamma_coefficient_in_constant_part_latex} \\gamma"
+            rearranged_right_latex += f"+ ({constant_part_latex})"
             latex_answer += f"この式を整理すると、\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。\n"
             latex_answer += f"これを元の漸化式\\( {rearranged_progression_latex} \\)と比較すると、"
-            latex_answer += f"\\( {coefficient_of_alpha_n} \\alpha = {s_latex}, \\quad"
-            if beta_coefficient_in_n > 0:
-                
-                
+            latex_answer += f"\\( {n_square_part_latex} = {s_latex}, \\quad {n_part_latex} = {t_latex}, \\quad {constant_part_latex} = {u_latex} \\)より、"
+            latex_answer += f"\\( \\alpha = {alpha_latex}, \\quad \\beta = {beta_latex}, \\quad \\gamma = {gamma_latex} \\)となる。\n"
+            common_ratio_progression_left_latex = f"{a_n_plus_1_latex}"
+            common_ratio_progression_right_latex = f"{p_latex} ( {a_n_latex}"
+            if alpha == 1:
+                common_ratio_progression_left_latex += f"+ (n + 1)^2"
+                common_ratio_progression_right_latex += f"+ n^2"
+            elif alpha == -1:
+                common_ratio_progression_left_latex += f"- (n + 1)^2"
+                common_ratio_progression_right_latex += f"- n^2"
+            elif alpha > 0:
+                common_ratio_progression_left_latex += f"+ {alpha_latex} (n + 1)^2"
+                common_ratio_progression_right_latex += f"+ {alpha_latex} n^2"
+            else:
+                common_ratio_progression_left_latex += f"{alpha_latex} (n + 1)^2"
+                common_ratio_progression_right_latex += f"{alpha_latex} n^2"
+            if beta == 1:
+                common_ratio_progression_left_latex += f"+ (n + 1)"
+                common_ratio_progression_right_latex += f"+  n"
+            elif beta == -1:
+                common_ratio_progression_left_latex += f"- (n + 1)"
+                common_ratio_progression_right_latex += f"- n"
+            elif beta > 0:
+                common_ratio_progression_left_latex += f"+ {beta_latex} (n + 1)"
+                common_ratio_progression_right_latex += f"+ {beta_latex} n"
+            else:
+                common_ratio_progression_left_latex += f"{beta_latex} (n + 1)"
+                common_ratio_progression_right_latex += f"{beta_latex} n"
+            if gamma > 0:
+                common_ratio_progression_left_latex += f"+ {gamma_latex}"
+                common_ratio_progression_right_latex += f"+ {gamma_latex})"
+            else:
+                common_ratio_progression_left_latex += f"{gamma_latex}"
+                common_ratio_progression_right_latex += f"{gamma_latex})"
+            latex_answer += f"よって、\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となるため、\n"   
+
                 
         return latex_answer, latex_problem
         

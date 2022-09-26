@@ -308,11 +308,17 @@ class RecurrenceRelationProblem:
             t = -alpha + (p - 1) * beta
             t_latex = sy.latex(t)
             expression_of_degree_n = s * n + t
-        # f(n) = sn^2 + tn + u
+        # f(n) = sn^2 + tn + u (-> a_{n+1} + α(n+1)^2 + β(n+1) + γ = p(a_{n} + αn^2 + βn + γ))
         elif selected_expression_of_degree_n == "quadratic":
-            s, s_latex = self._make_random_integer(farther_distance_from_zero=5)
-            t, t_latex = self._make_random_integer(farther_distance_from_zero=5)
-            u, u_latex = self._make_random_integer(farther_distance_from_zero=5)
+            alpha, alpha_latex = self._make_random_integer(farther_distance_from_zero=5)
+            beta, beta_latex = self._make_random_integer(farther_distance_from_zero=5)
+            gamma, gamma_latex = self._make_random_integer(farther_distance_from_zero=5)
+            s = alpha * (p - 1)
+            s_latex = sy.latex(s)
+            t = beta * p - 2 * alpha - beta
+            t_latex = sy.latex(t)
+            u = p * gamma - alpha - beta - gamma
+            u_latex = sy.latex(u)
             expression_of_degree_n = s * (n ** 2) + t * n + u
         expression_of_degree_n_latex = sy.latex(expression_of_degree_n)
         print(f"expression_of_degree_n: {expression_of_degree_n}")
@@ -354,14 +360,19 @@ class RecurrenceRelationProblem:
         latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad {progression_latex} \\)"
         # a_{n+1} + α(n+1) + β = p(a_{n} + αn + β)
         if selected_expression_of_degree_n == "linear":
-            latex_answer = f"\\( {a_n_plus_1_latex} + \\alpha (n + 1) + \\beta = {p_latex} ({a_n_latex} + \\alpha n + \\beta ) \\)"
+            latex_answer = f"与えられた漸化式、\\( {rearranged_progression_latex} \\)の\\( {a_n_latex} \\)の係数である\\( \\underline{{{p_latex}}} \\)に注目し、"
+            latex_answer += f"\\( {a_n_plus_1_latex} + \\alpha (n + 1) + \\beta = \\underline{{{p_latex}}} ({a_n_latex} + \\alpha n + \\beta ) \\)"
             latex_answer += f"となるように定数\\( \\alpha \\)と\\( \\beta \\)を定めていく。\n"
             rearranged_left = a_n_plus_1
             rearranged_left_latex = sy.latex(rearranged_left)
             rearranged_right_latex = f"{sy.latex(p * a_n)}"
             coefficient_of_alpha_n = p - 1
             coefficient_of_alpha_n_latex = sy.latex(coefficient_of_alpha_n)
-            if coefficient_of_alpha_n > 0:
+            if coefficient_of_alpha_n == 1:
+                rearranged_right_latex += f"+ \\alpha {sy.latex(n)}"
+            elif coefficient_of_alpha_n == -1:
+                rearranged_right_latex += f"- \\alpha {sy.latex(n)}"
+            elif coefficient_of_alpha_n > 0:
                 rearranged_right_latex += f"+ {coefficient_of_alpha_n_latex} \\alpha {sy.latex(n)}"
             else:
                 rearranged_right_latex += f"{coefficient_of_alpha_n_latex} \\alpha {sy.latex(n)}"
@@ -371,7 +382,7 @@ class RecurrenceRelationProblem:
             else:
                 constant_part_latex += f"{sy.latex(p - 1)} \\beta"
             rearranged_right_latex += f"+ ({constant_part_latex})"
-            latex_answer += f"この式整理すると、\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。\n"
+            latex_answer += f"この式を整理すると、\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。\n"
             latex_answer += f"これを元の漸化式\\( {rearranged_progression_latex} \\)と比較すると、"
             latex_answer += f"\\( {coefficient_of_alpha_n} \\alpha = {s_latex}, \\quad {constant_part_latex} = {t_latex} \\)より、"
             latex_answer += f"\\( \\alpha = {alpha_latex}, \\quad \\beta = {beta_latex} \\)となる。\n"
@@ -392,9 +403,72 @@ class RecurrenceRelationProblem:
             latex_answer += f"よって、\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となるため、\n"
             general_term_left = a_n + alpha * n + beta
             general_term_left_latex = sy.latex(general_term_left)
-            latex_answer += f"\\( {general_term_left_latex} \\)は、初項\\( a_{{1}} \\)"
+            latex_answer += f"数列\\({{ {general_term_left_latex} }} \\)は、初項"
+            if alpha > 0:
+                latex_answer += f"\\( a_{{1}} + {alpha_latex} \\cdot 1"
+            else:
+                latex_answer += f"\\( a_{{1}} {alpha_latex} \\cdot 1"
+            if beta > 0:
+                latex_answer += f" + {beta_latex}"
+            else:
+                latex_answer += f" {beta_latex}"
+            common_ratio_first_term = first_term + alpha * 1 + beta
+            common_ratio_first_term_latex = sy.latex(common_ratio_first_term)
+            latex_answer += f"= {common_ratio_first_term_latex} \\)、公比\\( {p_latex} \\)の等比数列である。\n"
+            general_term_right = common_ratio_first_term * (p ** (n - 1))
+            general_term_right_latex = sy.latex(general_term_right)
+            latex_answer += f"ゆえに、\\( {general_term_left_latex} = {general_term_right_latex} \\)であり、これを整理すると、"
+            final_general_term_left = a_n
+            final_general_term_left_latex = sy.latex(final_general_term_left)
+            final_general_term_right = general_term_right - (alpha * n + beta)
+            final_general_term_right_latex = sy.latex(final_general_term_right)
+            latex_answer += f"\\( {final_general_term_left_latex} = {final_general_term_right_latex} \\)となる。"
         elif selected_expression_of_degree_n == "quadratic":
-            latex_answer = "quadratic dummmmmmmyyyy"
+            latex_answer = f"与えられた漸化式、\\( {rearranged_progression_latex} \\)の\\( {a_n_latex} \\)の係数である\\( \\underline{{{p_latex}}} \\)に注目し、"
+            latex_answer += f"\\( {a_n_plus_1_latex} + \\alpha (n + 1)^2 + \\beta (n + 1) + \\gamma = \\underline{{{p_latex}}} ({a_n_latex} + \\alpha n^2 + \\beta n + \\gamma) \\)"
+            latex_answer += f"となるように定数\\( \\alpha \\)と\\( \\beta \\)と\\( \\gamma \\)を定めていく。\n"
+            rearranged_left = a_n_plus_1
+            rearranged_left_latex = sy.latex(rearranged_left)
+            rearranged_right_latex = f"{sy.latex(p * a_n)}"
+            coefficient_of_alpha_n_square = p - 1
+            coefficient_of_alpha_n_square_latex = sy.latex(coefficient_of_alpha_n_square)
+            n_square_part = f"{coefficient_of_alpha_n_square_latex} \\alpha"
+            if coefficient_of_alpha_n_square > 0:
+                rearranged_right_latex += f"+ {n_square_part}  {sy.latex(n ** 2)}"
+            else:
+                rearranged_right_latex += f"{n_square_part}  {sy.latex(n ** 2)}"
+            beta_coefficient_in_n = p - 1
+            beta_coefficient_in_n_latex = sy.latex(beta_coefficient_in_n)
+            if beta_coefficient_in_n == 1:
+                n_part = "-2 \\alpha + \\beta"
+            elif beta_coefficient_in_n == -1:
+                n_part = "-2 \\alpha - \\beta"
+            elif beta_coefficient_in_n > 0:
+                n_part = f"-2 \\alpha + {beta_coefficient_in_n_latex} \\beta"
+            else:
+                n_part = f"-2 \\alpha {beta_coefficient_in_n_latex} \\beta"
+            rearranged_right_latex += f"+ ({n_part}) n"
+            gamma_coefficient_in_constant_part = p - 1
+            gamma_coefficient_in_constant_part_latex = sy.latex(gamma_coefficient_in_constant_part)
+            if gamma_coefficient_in_constant_part == 1:
+                constant_part = "- \\alpha - \\beta + \\gamma"
+                rearranged_right_latex += f"+ ({constant_part})"
+            elif gamma_coefficient_in_constant_part == -1:
+                constant_part = "- \\alpha - \\beta - \\gamma"
+                rearranged_right_latex += f"+ ({constant_part})"
+            elif gamma_coefficient_in_constant_part > 0:
+                constant_part = f"- \\alpha - \\beta + {gamma_coefficient_in_constant_part_latex} \\gamma"
+                rearranged_right_latex += f"+ ({constant_part})"
+            else:
+                constant_part = f"- \\alpha - \\beta {gamma_coefficient_in_constant_part_latex} \\gamma"
+                rearranged_right_latex += f"+ ({constant_part})"
+            latex_answer += f"この式を整理すると、\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。\n"
+            latex_answer += f"これを元の漸化式\\( {rearranged_progression_latex} \\)と比較すると、"
+            latex_answer += f"\\( {coefficient_of_alpha_n} \\alpha = {s_latex}, \\quad"
+            if beta_coefficient_in_n > 0:
+                
+                
+                
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

@@ -244,7 +244,7 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="harmonic_progression" name="problem_type" id="recurrence_relation_harmonic_progression" checked>
+                        <input class="form-check-input" type="checkbox" value="harmonic_progression" name="problem_type" id="recurrence_relation_harmonic_progression">
                         <label class="form-check-label" for="recurrence_relation_harmonic_progression">
                             \( a_{n+1} a_{n} - p a_{n+1} - p a_{n} = 0 \)
                         </label>
@@ -257,11 +257,13 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="coefficient_comparison_to_geometric_progression" name="problem_type" id="recurrence_relation_coefficient_comparison_to_geometric_progression" checked>
+                        <input class="form-check-input" type="checkbox" value="coefficient_comparison_to_geometric_progression" name="problem_type" id="recurrence_relation_coefficient_comparison_to_geometric_progression">
                         <label class="form-check-label" for="recurrence_relation_coefficient_comparison_to_geometric_progression">
                             \( a_{n+1} = p a_{n} + f(n) \)
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`problem_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`problem_type`)" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

@@ -45,6 +45,8 @@ class RecurrenceRelationProblem:
             latex_answer, latex_problem = self._make_linear_characteristic_equation_problem()
         elif selected_problem_type == "coefficient_comparison_to_geometric_progression":
             latex_answer, latex_problem = self._make_coefficient_comparison_to_geometric_progression_problem()
+        elif selected_problem_type == "exponent_to_linear_characteristic_equation":
+            latex_answer, latex_problem = self._make_exponent_to_linear_characteristic_equation_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}.")
         return latex_answer, latex_problem
@@ -551,6 +553,35 @@ class RecurrenceRelationProblem:
             final_general_term_right = general_term_right - (alpha * (n ** 2) + beta * n + gamma)
             final_general_term_right_latex = sy.latex(final_general_term_right)
             latex_answer += f"\\( {final_general_term_left_latex} = {final_general_term_right_latex} \\)となる。"
+        return latex_answer, latex_problem
+    
+    def _make_exponent_to_linear_characteristic_equation_problem(self):
+        """
+        指数で割ると1次の特殊解型に帰着する漸化式(a_{n+1} = p a_{n} + r^n)の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        n = sy.Symbol("n", real=True)
+        r, r_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5, positive_or_negative="positive")
+        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5, positive_or_negative="positive")
+        if r == p:
+            if random() > 0.5:
+                r += randint(1, 3)
+                r_latex = sy.latex(r)
+            else:
+                p += randint(1, 3)
+                p_latex = sy.latex(p)
+        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
+        a_n = sy.Symbol("a_{{n}}", real=True)
+        first_term, first_term_latex = self._make_random_integer()
+        progression_left = a_n_plus_1
+        progression_left_latex = sy.latex(progression_left)
+        progression_right = p * a_n + (r ** n)
+        progression_right_latex = sy.latex(progression_right)
+        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} = {sy.latex(p * a_n)} + {sy.latex(r ** n)} \\)"
+        latex_answer = "dummmmmmmyyyyyy"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

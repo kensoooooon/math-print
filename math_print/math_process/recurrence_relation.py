@@ -296,7 +296,6 @@ class RecurrenceRelationProblem:
         a_n = sy.Symbol("a_{{n}}", real=True)
         a_n_latex = sy.latex(a_n)
         p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=4)
-        print(f"p: {p}")
         n = sy.Symbol("n", real=True)
         selected_expression_of_degree_n = choice(["linear", "quadratic"])
         # f(n) = sn + t (-> a_{n+1} + α(n+1) + β = p(a_{n} + αn + β))
@@ -321,7 +320,6 @@ class RecurrenceRelationProblem:
             u_latex = sy.latex(u)
             expression_of_degree_n = s * (n ** 2) + t * n + u
         expression_of_degree_n_latex = sy.latex(expression_of_degree_n)
-        print(f"expression_of_degree_n: {expression_of_degree_n}")
         display_type_checker = random()
         left = a_n_plus_1
         left_latex = sy.latex(left)
@@ -440,7 +438,11 @@ class RecurrenceRelationProblem:
             coefficient_of_alpha_n_square = p - 1
             coefficient_of_alpha_n_square_latex = sy.latex(coefficient_of_alpha_n_square)
             n_square_part_latex = f"{coefficient_of_alpha_n_square_latex} \\alpha"
-            if coefficient_of_alpha_n_square > 0:
+            if coefficient_of_alpha_n_square == 1:
+                rearranged_right_latex += f"+ {sy.latex(n ** 2)}"
+            elif coefficient_of_alpha_n_square == -1:
+                rearranged_right_latex += f"- {sy.latex(n ** 2)}"
+            elif coefficient_of_alpha_n_square > 0:
                 rearranged_right_latex += f"+ {n_square_part_latex}  {sy.latex(n ** 2)}"
             else:
                 rearranged_right_latex += f"{n_square_part_latex}  {sy.latex(n ** 2)}"
@@ -502,9 +504,53 @@ class RecurrenceRelationProblem:
             else:
                 common_ratio_progression_left_latex += f"{gamma_latex}"
                 common_ratio_progression_right_latex += f"{gamma_latex})"
-            latex_answer += f"よって、\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となるため、\n"   
-
-                
+            latex_answer += f"よって、\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となるため、\n"
+            general_term_left_latex = f"{a_n_latex}"
+            if alpha == 1:
+                general_term_left_latex += f"+ {sy.latex(n ** 2)}"
+            elif alpha == -1:
+                general_term_left_latex += f"- {sy.latex(n ** 2)}"
+            elif alpha > 0:
+                general_term_left_latex += f"+ {alpha_latex} {sy.latex(n ** 2)}"
+            else:
+                general_term_left_latex += f"{alpha_latex} {sy.latex(n ** 2)}"
+            if beta == 1:
+                general_term_left_latex += f"+ {sy.latex(n)}"
+            elif beta == -1:
+                general_term_left_latex += f"- {sy.latex(n)}"
+            elif beta > 0:
+                general_term_left_latex += f"+ {beta_latex} {sy.latex(n)}"
+            else:
+                general_term_left_latex += f"{beta_latex} {sy.latex(n)}"
+            if gamma > 0:
+                general_term_left_latex += f"+ {gamma_latex}"
+            else:
+                general_term_left_latex += f"{gamma_latex}"
+            latex_answer += f"数列\\( {general_term_left_latex} \\)は、初項"
+            latex_answer += f"\\( a_{{1}}"
+            if alpha > 0:
+                latex_answer += f"+ {alpha_latex} \\cdot 1^2"
+            else:
+                latex_answer += f"{alpha_latex} \\cdot 1^2"
+            if beta > 0:
+                latex_answer += f"+ {beta_latex} \\cdot 1"
+            else:
+                latex_answer += f"{beta_latex} \\cdot 1"
+            if gamma > 0:
+                latex_answer += f"+ {gamma_latex}"
+            else:
+                latex_answer += f"{gamma_latex}"
+            common_ratio_first_term = first_term + alpha * (1 ** 2) + beta * 1 + gamma
+            common_ratio_first_term_latex = sy.latex(common_ratio_first_term)
+            latex_answer += f"= {common_ratio_first_term_latex} \\)、公比\\( {p_latex} \\)の等比数列である。"
+            general_term_right = common_ratio_first_term * (p ** (n - 1))
+            general_term_right_latex = sy.latex(general_term_right)
+            latex_answer += f"ゆえに、\\( {general_term_left_latex} = {general_term_right_latex} \\)であり、これを整理すると、\n"
+            final_general_term_left = a_n
+            final_general_term_left_latex = sy.latex(final_general_term_left)
+            final_general_term_right = general_term_right - (alpha * (n ** 2) + beta * n + gamma)
+            final_general_term_right_latex = sy.latex(final_general_term_right)
+            latex_answer += f"\\( {final_general_term_left_latex} = {final_general_term_right_latex} \\)となる。"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

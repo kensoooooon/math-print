@@ -564,8 +564,8 @@ class RecurrenceRelationProblem:
             latex_problem (str): latex形式で記述された問題
         """
         n = sy.Symbol("n", real=True)
-        r, r_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5, positive_or_negative="positive")
-        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5, positive_or_negative="positive")
+        r, r_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=8, positive_or_negative="positive")
+        p, p_latex = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=8, positive_or_negative="positive")
         if r == p:
             if random() > 0.5:
                 r += randint(1, 3)
@@ -576,12 +576,48 @@ class RecurrenceRelationProblem:
         a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
         a_n = sy.Symbol("a_{{n}}", real=True)
         first_term, first_term_latex = self._make_random_integer()
-        progression_left = a_n_plus_1
-        progression_left_latex = sy.latex(progression_left)
-        progression_right = p * a_n + (r ** n)
-        progression_right_latex = sy.latex(progression_right)
-        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{n+1}} = {sy.latex(p * a_n)} + {sy.latex(r ** n)} \\)"
-        latex_answer = "dummmmmmmyyyyyy"
+        a_n_plus_1_part = a_n_plus_1
+        a_n_plus_1_part_latex = sy.latex(a_n_plus_1_part)
+        a_n_part = p * a_n
+        a_n_part_latex = sy.latex(a_n_part)
+        exponent_part = r ** n
+        exponent_part_latex = sy.latex(exponent_part)
+        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad {a_n_plus_1_part_latex} = {a_n_part_latex} + {exponent_part_latex} \\)"
+        number_for_division = sy.Pow(r, n + 1)
+        number_for_division_latex = sy.latex(number_for_division)
+        latex_answer = f"両辺を\\( {number_for_division_latex} \\)で割ると、"
+        # divided_a_n_plus_1_part = sy.simplify(a_n_plus_1 / number_for_division)
+        divided_a_n_plus_1_part_latex = f"\\frac{{{a_n_plus_1}}}{{{number_for_division_latex}}}"
+        # divided_a_n_part = a_n_part / number_for_division
+        divided_a_n_part_latex = f"{sy.latex(sy.Rational(p, r))} \\frac{{{a_n}}}{{{sy.latex(sy.Pow(r, n))}}}"
+        # divided_exponent_part = exponent_part / number_for_division
+        divided_exponent_part_latex = f"{sy.latex(sy.Pow(r, -1))}"
+        latex_answer += f"\\( {divided_a_n_plus_1_part_latex} = {divided_a_n_part_latex} + {divided_exponent_part_latex} \\)となり、"
+        b_n = sy.Symbol("b_{{n}}", real=True)
+        b_n_latex = sy.latex(b_n)
+        latex_answer += f"ここで、\\( \\frac{{{a_n}}}{{{sy.latex(sy.Pow(r, n))}}} = {b_n_latex} \\)とすると、"
+        b_n_right = sy.Rational(p, r) * b_n + sy.Pow(r, -1)
+        b_n_right_latex = sy.latex(b_n_right)
+        latex_answer += f"\\( {b_n_latex} = {b_n_right_latex} \\)となる。\n"
+        latex_answer += f"さらにこの式を変形すると、"
+        beta = sy.Rational(1, r - p)
+        b_n_plus_1 = sy.Symbol("b_{{n+1}}", real=True)
+        beta_latex = sy.latex(beta)
+        common_ratio_progression_left = b_n_plus_1 - beta
+        common_ratio_progression_left_latex = sy.latex(common_ratio_progression_left)
+        common_ratio_progression_right = sy.factor(sy.Rational(p, r) * (b_n - beta))
+        common_ratio_progression_right_latex = sy.latex(common_ratio_progression_right)
+        latex_answer += f"\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となる。これにより、数列\\( {{{sy.latex(b_n - beta)}}} \\)は、"
+        b_n_first_term = sy.Rational(first_term, r)
+        b_n_first_term_latex = sy.latex(b_n_first_term)
+        b_n_common_ratio = sy.Rational(p, r)
+        b_n_common_ratio_latex = sy.latex(b_n_common_ratio)
+        latex_answer += f"初項 \\( b_{{1}} = \\frac{{a_1}}{{{r_latex}^1}} = \\frac{{{first_term_latex}}}{{{r_latex}}} = {b_n_first_term_latex}\\)、公比\\( {b_n_common_ratio_latex} \\)の等比数列である。"
+        b_n_minus_beta_general_term_left = b_n - beta
+        b_n_minus_beta_general_term_left_latex = sy.latex(b_n_minus_beta_general_term_left)
+        b_n_minus_beta_general_term_right = sy.simplify(b_n_first_term * (b_n_common_ratio ** (n - 1)))
+        b_n_minus_beta_general_term_right_latex = sy.latex(b_n_minus_beta_general_term_right)
+        latex_answer += f"ゆえに、\\( {b_n_minus_beta_general_term_left_latex} = {b_n_minus_beta_general_term_right_latex} \\)となり、これを整理すると"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

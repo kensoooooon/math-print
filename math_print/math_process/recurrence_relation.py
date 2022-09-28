@@ -47,6 +47,8 @@ class RecurrenceRelationProblem:
             latex_answer, latex_problem = self._make_coefficient_comparison_to_geometric_progression_problem()
         elif selected_problem_type == "exponent_to_linear_characteristic_equation":
             latex_answer, latex_problem = self._make_exponent_to_linear_characteristic_equation_problem()
+        elif selected_problem_type == "three_adjacent_terms":
+            latex_answer, latex_problem = self._make_three_adjacent_terms_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}.")
         return latex_answer, latex_problem
@@ -264,7 +266,8 @@ class RecurrenceRelationProblem:
         # a_n - characteristic_answer as b_n
         rearranged_recurrence_relation = sy.Eq(a_n_plus_1, p * a_n + q)
         rearranged_recurrence_relation_latex = sy.latex(rearranged_recurrence_relation)
-        latex_answer = f"\\( {rearranged_recurrence_relation_latex} \\)を変形すると、"
+        latex_answer = f"\\( a_{{n+1}} = a_{{n}} = \\alpha \\)とした式である、"
+        latex_answer += f"\\( {rearranged_recurrence_relation_latex} \\)を変形すると、"
         b_n_equation = sy.Eq(a_n - characteristic_answer, sy.factor(p * (a_n - characteristic_answer)))
         b_n_equation_latex = sy.latex(b_n_equation)
         latex_answer += f"\\( {b_n_equation_latex} \\)となる。\n"
@@ -651,6 +654,67 @@ class RecurrenceRelationProblem:
         final_general_term = (b_n_first_term * sy.Pow(sy.Rational(p, r), n - 1) + beta) * sy.Pow(r, n)
         final_general_term_latex = sy.latex(sy.simplify(final_general_term))
         latex_answer += f"\\( a_{{n}} = {final_general_term_latex} \\)となる。"
+        return latex_answer, latex_problem
+    
+    def _make_three_adjacent_terms_problem(self):
+        """隣接3項間型の漸化式(a_{n+2} + p a_{n+1} + q a_{n} = 0)の問題と解答を出力する
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        Developings:
+            alpha = -beta(beta = -alpha)になると、a_n+1が消滅する？
+        """
+        def latex_poly_maker(symbol_and_coeff):
+            """係数の正負を順番に見ながら、latex形式の多項式を出力する
+
+            Args:
+                symbol_and_coeff (dict): シンボルと係数の対応関係を格納 
+
+            Returns:
+                latex_poly (str): latex形式で記述された多項式
+            """
+            latex_poly = ""
+            for symbol, coeff in symbol_and_coeff.items():
+                term = coeff * symbol
+                term_latex = sy.latex(term)
+                if not(latex_poly):
+                    if coeff == 0:
+                        continue
+                    else:
+                        latex_poly += f"{term_latex} "
+                else:
+                    if coeff == 0:
+                        continue
+                    elif coeff > 0:
+                        latex_poly += f"+ {term_latex} "
+                    else:
+                        latex_poly += f"{term_latex} "
+            return latex_poly                        
+        
+        first_term, first_term_latex = self._make_random_integer()
+        second_term, second_term_latex = self._make_random_integer()
+        a_n_plus_2 = sy.Symbol("a_{{n+2}}", real=True)
+        a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
+        a_n = sy.Symbol("a_{{n}}", real=True)
+        alpha, alpha_latex = self._make_random_integer(farther_distance_from_zero=4)
+        if random() > 0.5:
+            beta = -alpha + randint(1, alpha)
+        else:
+            beta = -alpha - randint(1, alpha)
+        else:
+        p = -alpha + beta
+        p_latex = sy.latex(p)
+        q = alpha * beta
+        q_latex = sy.latex(q)
+        a_n_plus_1_coeff = -(alpha + beta)
+        a_n_coeff = alpha * beta
+        # a_n_plus_2 + a_n_plus_1_coeff * a_n_plus_1 + a_n_coeff * a_n
+        progression_left_latex = latex_poly_maker({a_n_plus_2: 1, a_n_plus_1: a_n_plus_1_coeff, a_n: a_n_coeff})
+        progression_right = 0
+        progression_right_latex = sy.latex(progression_right)
+        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{2}} = {second_term_latex}, \\quad {progression_left_latex} = {progression_right_latex}\\)"
+        latex_answer = "dummmmyyyymmyyyanswer"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

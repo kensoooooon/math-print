@@ -593,20 +593,27 @@ class RecurrenceRelationProblem:
         # divided_exponent_part = exponent_part / number_for_division
         divided_exponent_part_latex = f"{sy.latex(sy.Pow(r, -1))}"
         latex_answer += f"\\( {divided_a_n_plus_1_part_latex} = {divided_a_n_part_latex} + {divided_exponent_part_latex} \\)となり、"
+        b_n_plus_1 = sy.Symbol("b_{{n+1}}", real=True)
+        b_n_plus_1_latex = sy.latex(b_n_plus_1)
         b_n = sy.Symbol("b_{{n}}", real=True)
         b_n_latex = sy.latex(b_n)
         latex_answer += f"ここで、\\( \\frac{{{a_n}}}{{{sy.latex(sy.Pow(r, n))}}} = {b_n_latex} \\)とすると、"
         b_n_right = sy.Rational(p, r) * b_n + sy.Pow(r, -1)
         b_n_right_latex = sy.latex(b_n_right)
-        latex_answer += f"\\( {b_n_latex} = {b_n_right_latex} \\)となる。\n"
+        latex_answer += f"\\( {b_n_plus_1_latex} = {b_n_right_latex} \\)となる。\n"
         latex_answer += f"さらにこの式を変形すると、"
         beta = sy.Rational(1, r - p)
         b_n_plus_1 = sy.Symbol("b_{{n+1}}", real=True)
         beta_latex = sy.latex(beta)
         common_ratio_progression_left = b_n_plus_1 - beta
         common_ratio_progression_left_latex = sy.latex(common_ratio_progression_left)
-        common_ratio_progression_right = sy.factor(sy.Rational(p, r) * (b_n - beta))
-        common_ratio_progression_right_latex = sy.latex(common_ratio_progression_right)
+        common_ratio = sy.Rational(p, r)
+        common_ratio_latex = sy.latex(common_ratio)
+        common_ratio_progression_right_latex = f" {common_ratio_latex} ( {b_n_latex}"
+        if beta > 0:
+            common_ratio_progression_right_latex += f" - {beta_latex})"
+        else:
+            common_ratio_progression_right_latex += f" + {sy.latex(-1 * beta)})"
         latex_answer += f"\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となる。これにより、数列\\( {{{sy.latex(b_n - beta)}}} \\)は、"
         b_n_first_term = sy.Rational(first_term, r)
         b_n_first_term_latex = sy.latex(b_n_first_term)
@@ -615,9 +622,35 @@ class RecurrenceRelationProblem:
         latex_answer += f"初項 \\( b_{{1}} = \\frac{{a_1}}{{{r_latex}^1}} = \\frac{{{first_term_latex}}}{{{r_latex}}} = {b_n_first_term_latex}\\)、公比\\( {b_n_common_ratio_latex} \\)の等比数列である。"
         b_n_minus_beta_general_term_left = b_n - beta
         b_n_minus_beta_general_term_left_latex = sy.latex(b_n_minus_beta_general_term_left)
-        b_n_minus_beta_general_term_right = sy.simplify(b_n_first_term * (b_n_common_ratio ** (n - 1)))
-        b_n_minus_beta_general_term_right_latex = sy.latex(b_n_minus_beta_general_term_right)
+        # b_n_minus_beta_general_term_right = sy.simplify(b_n_first_term * (b_n_common_ratio ** (n - 1)))
+        b_n_minus_beta_general_term_right_latex = f"{b_n_first_term_latex} \\cdot ({b_n_common_ratio_latex})^{{n-1}}"
         latex_answer += f"ゆえに、\\( {b_n_minus_beta_general_term_left_latex} = {b_n_minus_beta_general_term_right_latex} \\)となり、これを整理すると"
+        # b_n_final_general_term = b_n_first_term * (b_n_common_ratio ** (n - 1))
+        if b_n_first_term == b_n_common_ratio: 
+            if b_n_common_ratio.denominator == 1:
+                b_n_final_general_term_latex = f"{b_n_common_ratio_latex}^{{n}}"
+            else:
+                b_n_final_general_term_latex = f"({b_n_common_ratio_latex})^{{n}}"
+        else:
+            if b_n_common_ratio.denominator == 1:
+                if b_n_first_term == 1:
+                    b_n_final_general_term_latex = f"{sy.latex(b_n_common_ratio)}^{{n-1}}"
+                elif b_n_first_term == -1:
+                    b_n_final_general_term_latex = f"- {sy.latex(b_n_common_ratio)}^{{n-1}}"
+                else:
+                    b_n_final_general_term_latex = f"{b_n_first_term_latex} \\cdot {sy.latex(b_n_common_ratio)}^{{n-1}}"
+            else:
+                if b_n_first_term == 1:
+                    b_n_final_general_term_latex = f"({sy.latex(b_n_common_ratio)})^{{n-1}}"
+                elif b_n_first_term == -1:
+                    b_n_final_general_term_latex = f"- ({sy.latex(b_n_common_ratio)})^{{n-1}}"
+                else:
+                    b_n_final_general_term_latex = f"{b_n_first_term_latex} \\cdot ({sy.latex(b_n_common_ratio)})^{{n-1}}"
+        if beta > 0:
+            b_n_final_general_term_latex += f"+ {sy.latex(beta)}"
+        else:
+            b_n_final_general_term_latex += f"{sy.latex(beta)}"
+        latex_answer += f"\\( {b_n_latex} = {b_n_final_general_term_latex} \\)となる。\n"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

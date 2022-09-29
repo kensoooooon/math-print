@@ -697,12 +697,18 @@ class RecurrenceRelationProblem:
         a_n_plus_2 = sy.Symbol("a_{{n+2}}", real=True)
         a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
         a_n = sy.Symbol("a_{{n}}", real=True)
-        alpha, alpha_latex = self._make_random_integer(farther_distance_from_zero=4)
+        nearer_distance_from_zero = randint(2, 5)
+        farther_distance_from_zero = nearer_distance_from_zero + randint(2, 5)
+        alpha = nearer_distance_from_zero
+        beta = farther_distance_from_zero
         if random() > 0.5:
-            beta = -alpha + randint(1, alpha)
-        else:
-            beta = -alpha - randint(1, alpha)
-        else:
+            alpha, beta = beta, alpha
+        if random() > 0.5:
+            alpha *= -1
+        if random() > 0.5:
+            beta *= -1
+        alpha_latex = sy.latex(alpha)
+        beta_latex = sy.latex(beta)
         p = -alpha + beta
         p_latex = sy.latex(p)
         q = alpha * beta
@@ -714,7 +720,40 @@ class RecurrenceRelationProblem:
         progression_right = 0
         progression_right_latex = sy.latex(progression_right)
         latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad a_{{2}} = {second_term_latex}, \\quad {progression_left_latex} = {progression_right_latex}\\)"
-        latex_answer = "dummmmyyyymmyyyanswer"
+        if alpha != beta:
+            latex_answer = f"\\( a_{{n+2}} = x^2, \\quad a_{{n+1}} = x, \\quad a_{{n}} = 1\\)とした式を立てると、"
+            x = sy.Symbol("x", real=True)
+            characteristic_equation = sy.Eq(x ** 2 - (alpha + beta) * x + alpha * beta, 0)
+            characteristic_equation_latex = sy.latex(characteristic_equation)
+            latex_answer += f"\\( {characteristic_equation_latex} \\)となり、この2次方程式の解を求めると、\\( x = {alpha_latex}, {beta_latex} \\)となる。\n"
+            latex_answer += f"この解を、\\( \\alpha = {alpha_latex}, \\beta = {beta_latex} \\)とし、"
+            latex_answer += f"\\( \\left \\{{ \\begin{{array}}{{l}}"
+            latex_answer += f"a_{{n+2}} - \\alpha a_{{n+1}} = \\beta (a_{{n+1}} - \\alpha a_{{n}}) \\\\"
+            latex_answer += f"a_{{n+2}} - \\beta a_{{n+1}} = \\alpha (a_{{n+1}} - \\beta a_{{n}})"
+            latex_answer += f"\\end{{array}} \\right. \\)"
+            latex_answer += f"に代入すると、\n"
+            left1_latex = latex_poly_maker({a_n_plus_2: 1, a_n_plus_1: -alpha})
+            right1_latex = latex_poly_maker({a_n_plus_1: 1, a_n: -alpha})
+            left2_latex = latex_poly_maker({a_n_plus_2: 1, a_n_plus_1: -beta})
+            right2_latex = latex_poly_maker({a_n_plus_1: 1, a_n: -beta})
+            latex_answer += f"\\( \\left \\{{ \\begin{{array}}{{l}}"
+            latex_answer += f"{left1_latex} = {beta_latex} ({right1_latex}) \\\\"
+            latex_answer += f"{left2_latex} = {alpha_latex} ({right2_latex})"
+            latex_answer += f"\\end{{array}} \\right. \\)となる。\n"
+            right1_first_term_latex = latex_poly_maker({sy.Symbol("a_{{2}}", real=True): 1, sy.Symbol("a_{{1}}", real=True): -alpha})
+            right1_first_term_value = second_term - alpha * first_term
+            right1_first_term_value_latex = sy.latex(right1_first_term_value)
+            right2_first_term_latex = latex_poly_maker({sy.Symbol("a_{{2}}", real=True): 1, sy.Symbol("a_{{1}}", real=True): -beta})
+            right2_first_term_value = second_term - beta * first_term
+            right2_first_term_value_latex = sy.latex(right2_first_term_value)
+            latex_answer += f"これにより、\\( {right1_latex} \\)は、"
+            latex_answer += f"初項\\( {right1_first_term_latex} = {right1_first_term_value_latex}\\)、"
+            latex_answer += f"公比\\( {beta_latex}\\)の等比数列であり、"
+            latex_answer += f"\\( {right2_latex} \\)は、"
+            latex_answer += f"初項\\( {right2_first_term_latex} = {right2_first_term_value_latex}\\)、"
+            latex_answer += f"公比\\( {alpha_latex}\\)の等比数列であることがわかる。"
+        else:
+            latex_answer = f"alpha == beta dummmyy_answerereoiu"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

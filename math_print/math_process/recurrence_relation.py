@@ -751,7 +751,22 @@ class RecurrenceRelationProblem:
             latex_answer += f"公比\\( {beta_latex}\\)の等比数列であり、"
             latex_answer += f"\\( {right2_latex} \\)は、"
             latex_answer += f"初項\\( {right2_first_term_latex} = {right2_first_term_value_latex}\\)、"
-            latex_answer += f"公比\\( {alpha_latex}\\)の等比数列であることがわかる。"
+            latex_answer += f"公比\\( {alpha_latex}\\)の等比数列であることがわかる。\n"
+            latex_answer += f"よって、\\( \\left \\{{ \\begin{{array}}{{l}}"
+            n = sy.Symbol("n", real=True)
+            general_term1 = right1_first_term_value * sy.Pow(beta, n - 1)
+            general_term1_latex = sy.latex(sy.factor(general_term1))
+            latex_answer += f"{right1_latex} = {general_term1_latex} \\\\"
+            general_term2 = right2_first_term_value * sy.Pow(alpha, n - 1)
+            general_term2_latex = sy.latex(sy.factor(general_term2))
+            latex_answer += f"{right2_latex} = {general_term2_latex}"
+            latex_answer += f"\\end{{array}} \\right. \\)となり、\n"
+            latex_answer += f"この2つの差をとって整理すると、"
+            beta_coefficient = sy.Rational(second_term - alpha * first_term, -alpha + beta)
+            alpha_coefficient = sy.Rational(second_term - beta * first_term, -alpha + beta)
+            final_general_term = beta_coefficient * sy.Pow(beta, n - 1) - alpha_coefficient * sy.Pow(alpha, n - 1)
+            final_general_term_latex = sy.latex(final_general_term)
+            latex_answer += f"\\( {sy.latex(a_n)} = {final_general_term_latex} \\)となる。"
         else:
             latex_answer = f"alpha == beta dummmyy_answerereoiu"
         return latex_answer, latex_problem

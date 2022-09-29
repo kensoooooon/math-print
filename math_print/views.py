@@ -1200,7 +1200,7 @@ def print_common_denominator_problem(request):
     return render(request, 'math_print/elementary_school5/common_denominator/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_recurrence_relation(request):
-    PROBLEM_NUMBER = 2
+    PROBLEM_NUMBER = 4
     
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):

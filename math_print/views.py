@@ -40,6 +40,7 @@ from .math_process.vector_cross_point import VectorCrossPoint
 from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
 from .math_process.fill_in_the_square import FillInTheSquareProblem
 from .math_process.common_denominator import CommonDenominatorProblem
+from .math_process.recurrence_relation import RecurrenceRelationProblem
 
 
 def index(request):
@@ -1198,6 +1199,32 @@ def print_common_denominator_problem(request):
     
     return render(request, 'math_print/elementary_school5/common_denominator/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_recurrence_relation(request):
+    PROBLEM_NUMBER = 4
+    
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("arithmetic_progression")
+        problem_type_list.append("geometric_progression")
+        problem_type_list.append("progression_of_differences")
+        problem_type_list.append("harmonic_progression")
+        problem_type_list.append("linear_characteristic_equation")
+        problem_type_list.append("coefficient_comparison_to_geometric_progression")
+        problem_type_list.append("exponent_to_linear_characteristic_equation")
+        problem_type_list.append("three_adjacent_terms")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = RecurrenceRelationProblem(problem_type_list=problem_type_list)
+            problem2 = RecurrenceRelationProblem(problem_type_list=problem_type_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/highschool2/recurrence_relation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -2113,6 +2140,7 @@ def display_fill_in_the_square_problem(request):
         calculation_type_list.append("addition_and_subtraction")
         calculation_type_list.append("multiplication_and_division")
         calculation_type_list.append("all_calculations")
+        calculation_type_list.append("exponent_to_linear_characteristic_equation")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
@@ -2144,3 +2172,24 @@ def display_common_denominator_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/elementary_school5/common_denominator/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_recurrence_relation(request):
+    PROBLEM_NUMBER = 20
+    
+    problem_type_list = request.POST.getlist("problem_type")
+    if not(problem_type_list):
+        problem_type_list.append("arithmetic_progression")
+        problem_type_list.append("geometric_progression")
+        problem_type_list.append("progression_of_differences")
+        problem_type_list.append("harmonic_progression")
+        problem_type_list.append("linear_characteristic_equation")
+        problem_type_list.append("coefficient_comparison_to_geometric_progression")
+        problem_type_list.append("three_adjacent_terms")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = RecurrenceRelationProblem(problem_type_list=problem_type_list)
+        problem2 = RecurrenceRelationProblem(problem_type_list=problem_type_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/highschool2/recurrence_relation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

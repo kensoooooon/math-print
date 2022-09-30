@@ -106,7 +106,7 @@ class SquareRootProblem:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
-        prime_numbers = [2, 3, 5, 7, 11, 13, 17]
+        prime_numbers = [2, 3, 5, 7, 11, 13]
         base1, base2 = choices(prime_numbers, k=2)
         value_in_radical_sign = sy.Pow(base1, 1) * sy.Pow(base2, 2)
         latex_problem = f"\\( \\sqrt{{{sy.latex(value_in_radical_sign)}}} \\)を\\( a \\sqrt{{b}} \\)の形で表しなさい。"

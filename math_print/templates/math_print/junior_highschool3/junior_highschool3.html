@@ -15,22 +15,22 @@
 
 {% block script %}
 <script>
-    function changeStatusOfProblemType(){
-        let problem_types = document.getElementsByName(`problem_type`);
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < problem_types.length; i++) {
-            if (!(problem_types[i].checked)){
-                problem_types[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
             }
         }
     }
 
-    function changeStatusOfExpandEquationType(){
-        let expand_equation_types = document.getElementsByName(`expand_equation_type`);
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < expand_equation_types.length; i++) {
-            if (!(expand_equation_types[i].checked)){
-                expand_equation_types[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
             }
         }
     }
@@ -103,7 +103,8 @@
                             (x+a)(x-a)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfExpandEquationType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('expand_equation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('expand_equation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -166,6 +167,8 @@
                             x^2-a^2=(x+a)(x-a)
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('factorization_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('factorization_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する係数</small>
                 <div class="form-group">
@@ -254,6 +257,8 @@
                             係数を根号の中から取り出す
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -318,6 +323,8 @@
                             解の公式
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('quadratic_equation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('quadratic_equation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">全体を割ったりかけたりする工程がある問題を含むか</small>
                 <div class="form-group">
@@ -436,7 +443,8 @@
                             xの定義域と2次関数→最大値・最小値
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfProblemType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

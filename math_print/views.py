@@ -1230,8 +1230,10 @@ def print_square_root_problem(request):
     PROBLEM_NUMBER = 20
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
-        problem_types.append("write_square_root")
-        problem_types.append("write_square_root_using_symbol")
+        problem_types.append("write_square_root_not_using_radical_sign")
+        problem_types.append("write_square_root_using_radical_sign")
+        problem_types.append("put_coefficient_into_radical_sign")
+        problem_types.append("take_out_coefficient_from_radical_sign_inside")
     paper_number = int(request.POST["paper_number"])
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -2217,8 +2219,10 @@ def display_square_root_problem(request):
     PROBLEM_NUMBER = 20
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
-        problem_types.append("write_square_root")
-        problem_types.append("write_square_root_using_symbol")
+        problem_types.append("write_square_root_not_using_radical_sign")
+        problem_types.append("write_square_root_using_radical_sign")
+        problem_types.append("put_coefficient_into_radical_sign")
+        problem_types.append("take_out_coefficient_from_radical_sign_inside")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SquareRootProblem(problem_types=problem_types)

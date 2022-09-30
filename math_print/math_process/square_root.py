@@ -1,25 +1,52 @@
-from random import choice, randint, random, shuffle
+from random import choice, choices, randint, random, shuffle
 
 
 import sympy as sy
 
 
 class SquareRootProblem:
+    """平方根に関係がある問題と解答を出力
     
+    Attributes:
+        _problem_types (list): 出題のタイプを格納
+        latex_answer (str): latex形式で記述された解答
+        latex_problem (str): latex形式で記述された問題
+    """
     def __init__(self, **settings):
+        """初期処理
+        
+        Args:
+            settings (dict): 問題の設定を格納
+        """
         self._problem_types = settings["problem_types"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
+        """選択された出題のタイプをもとに問題と解答を出力する
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
         selected_problem_type = choice(self._problem_types)
-        if selected_problem_type == "write_square_root":
-            latex_answer, latex_problem = self._make_write_square_root_problem()
-        elif selected_problem_type == "write_square_root_using_symbol":
-            latex_answer, latex_problem = self._make_write_square_root_using_symbol_problem()
+        if selected_problem_type == "write_square_root_not_using_radical_sign":
+            latex_answer, latex_problem = self._make_write_square_root_not_using_radical_sign_problem()
+        elif selected_problem_type == "write_square_root_using_radical_sign":
+            latex_answer, latex_problem = self._make_write_square_root_using_radical_sign_problem()
+        elif selected_problem_type == "put_coefficient_into_radical_sign":
+            latex_answer, latex_problem = self._make_put_coefficient_into_radical_sign_problem()
+        elif selected_problem_type == "take_out_coefficient_from_radical_sign_inside":
+            latex_answer, latex_problem = self._make_take_out_coefficient_from_radical_sign_inside_problem()
         
         return latex_answer, latex_problem
 
-    def _make_write_square_root_problem(self):
+    def _make_write_square_root_not_using_radical_sign_problem(self):
+        """根号を使わなずに平方根をもとめる問題と解答を出力
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
         number_type = choice(["integer", "frac", "decimal"])
         if number_type == "integer":
             if random() > 0.5:
@@ -36,22 +63,55 @@ class SquareRootProblem:
             base = 0.1 * multiplied_number
         latex_answer = f"\\( \\pm {sy.latex(base)} \\)"
         problem_number = sy.Pow(base, 2)
-        latex_problem = f"\\( {sy.latex(problem_number)} \\)の平方根を求めなさい。"        
+        latex_problem = f"根号を使わずに、\\( {sy.latex(problem_number)} \\)の平方根を書きなさい。"        
         return latex_answer, latex_problem
     
-    def _make_write_square_root_using_symbol_problem(self):
-        prime_numbers = [2, 3, 5, 7, 11, 13]
+    def _make_write_square_root_using_radical_sign_problem(self):
+        """根号を使って平方根をもとめる問題と解答を出力
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19]
         shuffle(prime_numbers)
-        number_type = choice(["integer", "frac"])
+        number_type = choice(["integer", "decimal"])
         if number_type == "integer":
             base = prime_numbers.pop()
-        elif number_type == "frac":
-            numerator = prime_numbers.pop()
-            denominator = prime_numbers.pop()
-            base = sy.Rational(numerator, denominator)
-        square_root_number = sy.sqrt(base)
-        latex_answer = f"\\( \\pm {sy.latex(square_root_number)}\\)"
-        latex_problem = f"\\( {sy.latex(base)} \\)の平方根を求めなさい。"
+        elif number_type == "decimal":
+            base = prime_numbers.pop() * 0.1
+        latex_answer = f"\\( \\pm \\sqrt{{{sy.latex(base)}}} \\)"
+        latex_problem = f"根号を使って、\\( {sy.latex(base)} \\)の平方根を書きなさい。"
+        return latex_answer, latex_problem
+
+    def _make_put_coefficient_into_radical_sign_problem(self):
+        """係数を根号の中に入れる問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        prime_numbers = [2, 3, 5, 7, 11, 13]
+        coefficient, number_in_radical_sign = choices(prime_numbers, k=2)
+        latex_problem = f"\\( {sy.latex(coefficient)} \\sqrt{{{sy.latex(number_in_radical_sign)}}} \\)を、"
+        latex_problem += f"\\( \\sqrt{{a}} \\)の形で表しなさい。"
+        number_in_radical_sign_after_putting_into = number_in_radical_sign * (coefficient ** 2)
+        latex_answer = f"\\( \\sqrt{{{number_in_radical_sign_after_putting_into}}} \\)" 
+        return latex_answer, latex_problem
+    
+    def _make_take_out_coefficient_from_radical_sign_inside_problem(self):
+        """根号の中から係数を取り出す問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        prime_numbers = [2, 3, 5, 7, 11, 13, 17]
+        base1, base2 = choices(prime_numbers, k=2)
+        value_in_radical_sign = sy.Pow(base1, 1) * sy.Pow(base2, 2)
+        latex_problem = f"\\( \\sqrt{{{sy.latex(value_in_radical_sign)}}} \\)を\\( a \\sqrt{{b}} \\)の形で表しなさい。"
+        root_with_coefficient = sy.sqrt(value_in_radical_sign)
+        latex_answer = f"\\( {sy.latex(root_with_coefficient)} \\)"
         return latex_answer, latex_problem
 
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative="positive"):

@@ -30,7 +30,7 @@ class RecurrenceRelationProblem:
             latex_problem (str): latex形式で記述された問題
         
         Raises:
-            ValueError: 
+            ValueError: 選択された問題のタイプに該当するものがないときに挙上する
         """
         selected_problem_type = choice(self._problem_types)
         if selected_problem_type == "arithmetic_progression":

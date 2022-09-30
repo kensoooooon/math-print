@@ -1231,6 +1231,7 @@ def print_square_root_problem(request):
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("write_square_root")
+        problem_types.append("write_square_root_using_symbol")
     paper_number = int(request.POST["paper_number"])
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -2217,9 +2218,10 @@ def display_square_root_problem(request):
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("write_square_root")
+        problem_types.append("write_square_root_using_symbol")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SquareRootProblem(problem_types=problem_types)
         problem2 = SquareRootProblem(problem_types=problem_types)
         math_problem_tuple_list.append((problem1, problem2))
-    return (request, 'math_print/junior_highschool3/square_root/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool3/square_root/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

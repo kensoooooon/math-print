@@ -41,7 +41,7 @@ class SquareRootProblem:
         return latex_answer, latex_problem
 
     def _make_write_square_root_not_using_radical_sign_problem(self):
-        """根号を使わなずに平方根をもとめる問題と解答を出力
+        """根号を使わずに平方根をもとめる問題と解答を出力
 
         Returns:
             latex_answer (str): latex形式で記述された解答

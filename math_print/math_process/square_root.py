@@ -29,34 +29,43 @@ class SquareRootProblem:
             latex_problem (str): latex形式で記述された問題
         """
         selected_problem_type = choice(self._problem_types)
-        if selected_problem_type == "write_square_root_not_using_radical_sign":
+        if selected_problem_type == "write_square_root_not_using_radical_sign_only_with_integer":
+            latex_answer, latex_problem = self._make_write_square_root_not_using_radical_sign_problem(number_mode="integer")
+        elif selected_problem_type == "write_square_root_not_using_radical_sign":
             latex_answer, latex_problem = self._make_write_square_root_not_using_radical_sign_problem()
+        elif selected_problem_type == "write_square_root_using_radical_sign_only_with_integer":
+            latex_answer, latex_problem = self._make_write_square_root_using_radical_sign_problem(number_mode="integer")
         elif selected_problem_type == "write_square_root_using_radical_sign":
             latex_answer, latex_problem = self._make_write_square_root_using_radical_sign_problem()
         elif selected_problem_type == "put_coefficient_into_radical_sign":
             latex_answer, latex_problem = self._make_put_coefficient_into_radical_sign_problem()
         elif selected_problem_type == "take_out_coefficient_from_radical_sign_inside":
             latex_answer, latex_problem = self._make_take_out_coefficient_from_radical_sign_inside_problem()
+        else:
+            raise ValueError(f"selected_problem_type is '{selected_problem_type}'. This may be wrong.")
         
         return latex_answer, latex_problem
 
-    def _make_write_square_root_not_using_radical_sign_problem(self):
+    def _make_write_square_root_not_using_radical_sign_problem(self, number_mode=None):
         """根号を使わずに平方根をもとめる問題と解答を出力
 
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
-        number_type = choice(["integer", "frac", "decimal"])
+        if number_mode == "integer":
+            number_type = "integer"
+        else:
+            number_type = choice(["integer", "frac", "decimal"])
         if number_type == "integer":
             if random() > 0.5:
-                base = self._make_random_integer(farther_distance_from_zero=10)
+                base = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=15)
             else:
-                multiplied_number = self._make_random_integer(farther_distance_from_zero=5)
+                multiplied_number = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=5)
                 base = 10 * multiplied_number
         elif number_type == "frac":
             numerator = self._make_random_integer(farther_distance_from_zero=10)
-            denominator = self._make_random_integer(farther_distance_from_zero=10)
+            denominator = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=10)
             base = sy.Rational(numerator, denominator)
         elif number_type == "decimal":
             multiplied_number = self._make_random_integer(farther_distance_from_zero=9)
@@ -66,7 +75,7 @@ class SquareRootProblem:
         latex_problem = f"根号を使わずに、\\( {sy.latex(problem_number)} \\)の平方根を書きなさい。"        
         return latex_answer, latex_problem
     
-    def _make_write_square_root_using_radical_sign_problem(self):
+    def _make_write_square_root_using_radical_sign_problem(self, number_mode=None):
         """根号を使って平方根をもとめる問題と解答を出力
 
         Returns:
@@ -75,7 +84,10 @@ class SquareRootProblem:
         """
         prime_numbers = [2, 3, 5, 7, 11, 13, 17, 19]
         shuffle(prime_numbers)
-        number_type = choice(["integer", "decimal"])
+        if number_mode == "integer":
+            number_type = "integer"
+        else:
+            number_type = choice(["integer", "decimal"])
         if number_type == "integer":
             base = prime_numbers.pop()
         elif number_type == "decimal":

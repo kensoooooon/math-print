@@ -1230,7 +1230,9 @@ def print_square_root_problem(request):
     PROBLEM_NUMBER = 20
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
+        problem_types.append("write_square_root_not_using_radical_sign_only_with_integer")
         problem_types.append("write_square_root_not_using_radical_sign")
+        problem_types.append("write_square_root_using_radical_sign_only_with_integer")
         problem_types.append("write_square_root_using_radical_sign")
         problem_types.append("put_coefficient_into_radical_sign")
         problem_types.append("take_out_coefficient_from_radical_sign_inside")
@@ -2219,7 +2221,9 @@ def display_square_root_problem(request):
     PROBLEM_NUMBER = 20
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
+        problem_types.append("write_square_root_not_using_radical_sign_only_with_integer")
         problem_types.append("write_square_root_not_using_radical_sign")
+        problem_types.append("write_square_root_using_radical_sign_only_with_integer")
         problem_types.append("write_square_root_using_radical_sign")
         problem_types.append("put_coefficient_into_radical_sign")
         problem_types.append("take_out_coefficient_from_radical_sign_inside")

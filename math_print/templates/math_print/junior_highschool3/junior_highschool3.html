@@ -34,6 +34,11 @@
             }
         }
     }
+
+    function uncheckbyID(target_id){
+        let checkbox = document.getElementById(target_id);
+        checkbox.checked = false;
+    }
 </script>
 {% endblock %}
 
@@ -234,17 +239,31 @@
                 <small class="text-muted">出題される問題</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign" name="problem_type" id="square_root_write_square_root_not_using_radical_sign" checked>
-                        <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign">
-                            根号を使わずに平方根を求める
+                        <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign_only_with_integer" name="problem_type" id="square_root_write_square_root_not_using_radical_sign_only_with_integer" onclick="uncheckbyID('square_root_write_square_root_not_using_radical_sign')" checked>
+                        <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign_only_with_integer">
+                            根号を使わずに平方根を求める(整数のみ)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="write_square_root_using_radical_sign" name="problem_type" id="square_root_write_square_root_using_radical_sign" checked>
-                        <label class="form-check-label" for="square_root_write_square_root_using_radical_sign">
-                            根号を使って平方根を求める
+                        <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign" name="problem_type" id="square_root_write_square_root_not_using_radical_sign" onclick="uncheckbyID('square_root_write_square_root_not_using_radical_sign_only_with_integer')">
+                        <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign">
+                            根号を使わずに平方根を求める(小数・分数ふくむ)
                         </label>
                     </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="write_square_root_using_radical_sign_only_with_integer" name="problem_type" id="square_root_write_square_root_using_radical_sign_only_with_integer" onclick="uncheckbyID('square_root_write_square_root_using_radical_sign')" checked>
+                        <label class="form-check-label" for="square_root_write_square_root_using_radical_sign_only_with_integer">
+                            根号を使って平方根を求める(整数のみ)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="write_square_root_using_radical_sign" name="problem_type" id="square_root_write_square_root_using_radical_sign" onclick="uncheckbyID('square_root_write_square_root_using_radical_sign_only_with_integer')">
+                        <label class="form-check-label" for="square_root_write_square_root_using_radical_sign">
+                            根号を使って平方根を求める(小数ふくむ)
+                        </label>
+                    </div>
+                    <br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="put_coefficient_into_radical_sign" name="problem_type" id="square_root_put_coefficient_into_radical_sign" checked>
                         <label class="form-check-label" for="square_root_put_coefficient_into_radical_sign">

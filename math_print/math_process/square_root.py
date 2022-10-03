@@ -41,6 +41,8 @@ class SquareRootProblem:
             latex_answer, latex_problem = self._make_put_coefficient_into_radical_sign_problem()
         elif selected_problem_type == "take_out_coefficient_from_radical_sign_inside":
             latex_answer, latex_problem = self._make_take_out_coefficient_from_radical_sign_inside_problem()
+        elif selected_problem_type == "rationalize":
+            latex_answer, latex_problem = self._make_rationalize_problem()
         else:
             raise ValueError(f"selected_problem_type is '{selected_problem_type}'. This may be wrong.")
         
@@ -48,6 +50,9 @@ class SquareRootProblem:
 
     def _make_write_square_root_not_using_radical_sign_problem(self, number_mode=None):
         """根号を使わずに平方根をもとめる問題と解答を出力
+
+        Args:
+            number_mode (Union[str, NoneType], optional): 根号の中に出てくる数の種類の指定。デフォルトはNone。
 
         Returns:
             latex_answer (str): latex形式で記述された解答
@@ -77,6 +82,9 @@ class SquareRootProblem:
     
     def _make_write_square_root_using_radical_sign_problem(self, number_mode=None):
         """根号を使って平方根をもとめる問題と解答を出力
+        
+        Args:
+            number_mode (Union[str, NoneType], optional): 根号の中に出てくる数の種類の指定。デフォルトはNone。
 
         Returns:
             latex_answer (str): latex形式で記述された解答
@@ -125,6 +133,21 @@ class SquareRootProblem:
         root_with_coefficient = sy.sqrt(value_in_radical_sign)
         latex_answer = f"\\( {sy.latex(root_with_coefficient)} \\)"
         return latex_answer, latex_problem
+    
+    def _make_rationalize_problem(self):
+        """有理化を行う問題を出力
+        
+        Returns:
+            latex_answer (str): latex形式の解答
+            latex_problem (str): latex形式の問題
+        """
+        prime_numbers = [2, 3, 5, 7, 11, 13, 17]
+        shuffle(prime_numbers)
+        denominator = sy.sqrt(prime_numbers.pop())
+        if random() > 0.5:
+            numerator = self._make_random_integer()
+        else:
+            denominator = 
 
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative="positive"):
         """原点からの距離がnearer_distance_from_zero以上farther_distance_from_zero以下の範囲の整数を出力

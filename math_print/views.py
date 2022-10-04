@@ -1219,12 +1219,12 @@ def print_recurrence_relation(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = SquareRootProblem(problem_type_list=problem_type_list)
-            problem2 = SquareRootProblem(problem_type_list=problem_type_list)
+            problem1 = RecurrenceRelationProblem(problem_type_list=problem_type_list)
+            problem2 = RecurrenceRelationProblem(problem_type_list=problem_type_list)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/junior_highschool3/square_root/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/highschool2/recurrence_relation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_square_root_problem(request):
     PROBLEM_NUMBER = 20

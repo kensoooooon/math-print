@@ -143,11 +143,15 @@ class SquareRootProblem:
         """
         prime_numbers = [2, 3, 5, 7, 11, 13, 17]
         shuffle(prime_numbers)
-        denominator = sy.sqrt(prime_numbers.pop())
+        denominator = sy.sqrt(choice(prime_numbers))
         if random() > 0.5:
-            numerator = self._make_random_integer()
+            numerator = self._make_random_integer(nearer_distance_from_zero=2, farther_distance_from_zero=20)
         else:
-            denominator = 
+            numerator = sy.sqrt(choice(prime_numbers))
+        square_root_value = numerator / denominator
+        latex_answer = f"\\( {sy.latex(square_root_value)} \\)"
+        latex_problem = f"\\( \\frac{{{sy.latex(numerator)}}}{{{sy.latex(denominator)}}} \\)を有理化しなさい。"
+        return latex_answer, latex_problem
 
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative="positive"):
         """原点からの距離がnearer_distance_from_zero以上farther_distance_from_zero以下の範囲の整数を出力

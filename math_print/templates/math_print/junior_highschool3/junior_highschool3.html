@@ -311,47 +311,6 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'square_root_display' %}">
             </form>
         </div>
-        <div class="col border-end border-bottom">
-            <p>平方根の計算</p>
-            <form action="?" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <small class="text-muted">出題される問題</small>
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign_only_with_integer" name="problem_type" id="square_root_write_square_root_not_using_radical_sign_only_with_integer" onclick="uncheckbyID('square_root_write_square_root_not_using_radical_sign')" checked>
-                        <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign_only_with_integer">
-                            根号を使わずに平方根を求める(整数のみ)
-                        </label>
-                    </div>
-                    </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
-                </div>
-                <small class="text-muted">枚数</small>
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SquareRootFivePaperRadio" checked>
-                        <label class="form-check-label" for="SquareRootFivePaperRadio">
-                            20問×5枚
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SquareRootTenPaperRadio">
-                        <label class="form-check-label" for="SquareRootTenPaperRadio">
-                            20問×10枚
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SquareRootFifteenPaperRadio">
-                        <label class="form-check-label" for="SquareRootFifteenPaperRadio">
-                            20問×15枚
-                        </label>
-                    </div>
-                </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'square_root_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'square_root_display' %}">
-            </form>
-        </div>
     </div>
     <div class="row">
         <div class="col border-end border-bottom">

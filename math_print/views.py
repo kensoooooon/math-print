@@ -41,6 +41,7 @@ from .math_process.elementary5_sector import Elementary5SectorWithFigureProblem
 from .math_process.fill_in_the_square import FillInTheSquareProblem
 from .math_process.common_denominator import CommonDenominatorProblem
 from .math_process.recurrence_relation import RecurrenceRelationProblem
+from .math_process.square_root import SquareRootProblem
 
 
 def index(request):
@@ -1225,6 +1226,29 @@ def print_recurrence_relation(request):
     
     return render(request, 'math_print/highschool2/recurrence_relation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_square_root_problem(request):
+    PROBLEM_NUMBER = 20
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("write_square_root_not_using_radical_sign_only_with_integer")
+        problem_types.append("write_square_root_not_using_radical_sign")
+        problem_types.append("write_square_root_using_radical_sign_only_with_integer")
+        problem_types.append("write_square_root_using_radical_sign")
+        problem_types.append("put_coefficient_into_radical_sign")
+        problem_types.append("take_out_coefficient_from_radical_sign_inside")
+        problem_types.append("rationalize")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = SquareRootProblem(problem_types=problem_types)
+            problem2 = SquareRootProblem(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/junior_highschool3/square_root/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -2193,3 +2217,21 @@ def display_recurrence_relation(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/highschool2/recurrence_relation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_square_root_problem(request):
+    PROBLEM_NUMBER = 20
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("write_square_root_not_using_radical_sign_only_with_integer")
+        problem_types.append("write_square_root_not_using_radical_sign")
+        problem_types.append("write_square_root_using_radical_sign_only_with_integer")
+        problem_types.append("write_square_root_using_radical_sign")
+        problem_types.append("put_coefficient_into_radical_sign")
+        problem_types.append("take_out_coefficient_from_radical_sign_inside")
+        problem_types.append("rationalize")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = SquareRootProblem(problem_types=problem_types)
+        problem2 = SquareRootProblem(problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/junior_highschool3/square_root/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

@@ -30,7 +30,7 @@ class RecurrenceRelationProblem:
             latex_problem (str): latex形式で記述された問題
         
         Raises:
-            ValueError: 
+            ValueError: 選択された問題のタイプに該当するものがないときに挙上する
         """
         selected_problem_type = choice(self._problem_types)
         if selected_problem_type == "arithmetic_progression":
@@ -360,7 +360,8 @@ class RecurrenceRelationProblem:
                 left_latex += f"{sy.latex(negative_expression_of_degree_n)}"
             right_latex = sy.latex(0)
         progression_latex = f"{left_latex} = {right_latex}"
-        latex_problem = f"\\( a_{{1}} = {first_term_latex}, \\quad {progression_latex} \\)"
+        latex_problem = f"\\( a_{{1}} = {first_term_latex},\\) \n" 
+        latex_problem += f"\\( {progression_latex} \\)"
         # a_{n+1} + α(n+1) + β = p(a_{n} + αn + β)
         if selected_expression_of_degree_n == "linear":
             latex_answer = f"与えられた漸化式、\\( {rearranged_progression_latex} \\)の\\( {a_n_latex} \\)の係数である\\( \\underline{{{p_latex}}} \\)に注目し、"
@@ -435,7 +436,8 @@ class RecurrenceRelationProblem:
         # a_{n+1} + α(n+1)^2 + β(n+1) + γ = p(a_{n} + αn^2 + βn + γ)
         elif selected_expression_of_degree_n == "quadratic":
             latex_answer = f"与えられた漸化式、\\( {rearranged_progression_latex} \\)の\\( {a_n_latex} \\)の係数である\\( \\underline{{{p_latex}}} \\)に注目し、"
-            latex_answer += f"\\( {a_n_plus_1_latex} + \\alpha (n + 1)^2 + \\beta (n + 1) + \\gamma = \\underline{{{p_latex}}} ({a_n_latex} + \\alpha n^2 + \\beta n + \\gamma) \\)"
+            latex_answer += f"\\( {a_n_plus_1_latex} + \\alpha (n + 1)^2 + \\beta (n + 1) + \\gamma \\) \n" 
+            latex_answer += f"\\( = \\underline{{{p_latex}}} ({a_n_latex} + \\alpha n^2 + \\beta n + \\gamma) \\)"
             latex_answer += f"となるように定数\\( \\alpha \\)と\\( \\beta \\)と\\( \\gamma \\)を定めていく。\n"
             rearranged_left = a_n_plus_1
             rearranged_left_latex = sy.latex(rearranged_left)
@@ -473,7 +475,8 @@ class RecurrenceRelationProblem:
             else:
                 constant_part_latex = f"- \\alpha - \\beta {gamma_coefficient_in_constant_part_latex} \\gamma"
             rearranged_right_latex += f"+ ({constant_part_latex})"
-            latex_answer += f"この式を整理すると、\\( {rearranged_left_latex} = {rearranged_right_latex} \\)となる。\n"
+            latex_answer += f"この式を整理すると、\\( {rearranged_left_latex} \\) \n" 
+            latex_answer += f"\\( = {rearranged_right_latex} \\)となる。\n"
             latex_answer += f"これを元の漸化式\\( {rearranged_progression_latex} \\)と比較すると、"
             latex_answer += f"\\( {n_square_part_latex} = {s_latex}, \\quad {n_part_latex} = {t_latex}, \\quad {constant_part_latex} = {u_latex} \\)より、"
             latex_answer += f"\\( \\alpha = {alpha_latex}, \\quad \\beta = {beta_latex}, \\quad \\gamma = {gamma_latex} \\)となる。\n"
@@ -509,7 +512,8 @@ class RecurrenceRelationProblem:
             else:
                 common_ratio_progression_left_latex += f"{gamma_latex}"
                 common_ratio_progression_right_latex += f"{gamma_latex})"
-            latex_answer += f"よって、\\( {common_ratio_progression_left_latex} = {common_ratio_progression_right_latex} \\)となるため、\n"
+            latex_answer += f"よって、\\( {common_ratio_progression_left_latex} \\)\n"
+            latex_answer += f"\\(= {common_ratio_progression_right_latex} \\)となるため、\n"
             general_term_left_latex = f"{a_n_latex}"
             if alpha == 1:
                 general_term_left_latex += f"+ {sy.latex(n ** 2)}"

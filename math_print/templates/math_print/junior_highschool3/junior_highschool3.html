@@ -15,24 +15,29 @@
 
 {% block script %}
 <script>
-    function changeStatusOfProblemType(){
-        let problem_types = document.getElementsByName(`problem_type`);
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < problem_types.length; i++) {
-            if (!(problem_types[i].checked)){
-                problem_types[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
             }
         }
     }
 
-    function changeStatusOfExpandEquationType(){
-        let expand_equation_types = document.getElementsByName(`expand_equation_type`);
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < expand_equation_types.length; i++) {
-            if (!(expand_equation_types[i].checked)){
-                expand_equation_types[i].checked = true;
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
             }
         }
+    }
+
+    function uncheckbyID(target_id){
+        let checkbox = document.getElementById(target_id);
+        checkbox.checked = false;
     }
 </script>
 {% endblock %}
@@ -103,7 +108,8 @@
                             (x+a)(x-a)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfExpandEquationType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('expand_equation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('expand_equation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -166,6 +172,8 @@
                             x^2-a^2=(x+a)(x-a)
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('factorization_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('factorization_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する係数</small>
                 <div class="form-group">
@@ -225,6 +233,87 @@
     </div>
     <div class="row">
         <div class="col border-end border-bottom">
+            <p>平方根を求める・変形する</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">出題される問題</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign_only_with_integer" name="problem_type" id="square_root_write_square_root_not_using_radical_sign_only_with_integer" onclick="uncheckbyID('square_root_write_square_root_not_using_radical_sign')" checked>
+                        <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign_only_with_integer">
+                            根号を使わずに平方根を求める(整数のみ)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign" name="problem_type" id="square_root_write_square_root_not_using_radical_sign" onclick="uncheckbyID('square_root_write_square_root_not_using_radical_sign_only_with_integer')">
+                        <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign">
+                            根号を使わずに平方根を求める(小数・分数ふくむ)
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="write_square_root_using_radical_sign_only_with_integer" name="problem_type" id="square_root_write_square_root_using_radical_sign_only_with_integer" onclick="uncheckbyID('square_root_write_square_root_using_radical_sign')" checked>
+                        <label class="form-check-label" for="square_root_write_square_root_using_radical_sign_only_with_integer">
+                            根号を使って平方根を求める(整数のみ)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="write_square_root_using_radical_sign" name="problem_type" id="square_root_write_square_root_using_radical_sign" onclick="uncheckbyID('square_root_write_square_root_using_radical_sign_only_with_integer')">
+                        <label class="form-check-label" for="square_root_write_square_root_using_radical_sign">
+                            根号を使って平方根を求める(小数ふくむ)
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="put_coefficient_into_radical_sign" name="problem_type" id="square_root_put_coefficient_into_radical_sign" checked>
+                        <label class="form-check-label" for="square_root_put_coefficient_into_radical_sign">
+                            係数を根号の中に入れる
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="take_out_coefficient_from_radical_sign_inside" name="problem_type" id="square_root_take_out_coefficient_from_radical_sign_inside" checked>
+                        <label class="form-check-label" for="square_root_take_out_coefficient_from_radical_sign_inside">
+                            係数を根号の中から取り出す
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="rationalize" name="problem_type" id="square_root_rationalize" checked>
+                        <label class="form-check-label" for="square_root_rationalize">
+                            有理化
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SquareRootFivePaperRadio" checked>
+                        <label class="form-check-label" for="SquareRootFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SquareRootTenPaperRadio">
+                        <label class="form-check-label" for="SquareRootTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SquareRootFifteenPaperRadio">
+                        <label class="form-check-label" for="SquareRootFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'square_root_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'square_root_display' %}">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p>2次方程式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -260,6 +349,8 @@
                             解の公式
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('quadratic_equation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('quadratic_equation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">全体を割ったりかけたりする工程がある問題を含むか</small>
                 <div class="form-group">
@@ -378,7 +469,8 @@
                             xの定義域と2次関数→最大値・最小値
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="changeStatusOfProblemType()" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

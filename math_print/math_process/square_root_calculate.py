@@ -36,8 +36,8 @@ class SquareRootCalculateProblem:
             latex_answer, latex_problem = self._make_addition_and_subtraction_only_problem()
         elif selected_calculation_type == "multiplication_and_division_only":
             latex_answer, latex_problem = self._make_multiplication_and_division_only_problem()
-        elif selected_calculation_type == "all_types_calculation":
-            latex_answer, latex_problem = self._make_all_types_calculation_problem()
+        elif selected_calculation_type == "using_expand_formula":
+            latex_answer, latex_problem = self._make_using_expand_formula_problem()
         else:
             raise ValueError(f"'selected_calculation_type is {selected_calculation_type}. This calculation type doesn't exist.")
         return latex_answer, latex_problem
@@ -284,7 +284,30 @@ class SquareRootCalculateProblem:
         latex_answer = f"= {sy.latex(answer)}"
         return latex_answer, latex_problem
     
-    def _make_all_types_calculation_problem(self):
+    def _make_using_expand_formula_problem(self):
+        """展開公式を用いる平方根の計算問題と解答を出力
+
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Developing:
+            a(b+c)=ab+ac, (a+b)c=ac+bc
+            (a+b)(c+d)=ac+ad+bc+bd
+            (a+b)^2=a^2+2ab+b^2
+            (a-b)^2=a^2-2ab+b^2
+            (a+b)(a-b)=a^2-b^2
+        """
+        selected_formula = choice(
+            ["a(b+c)=ab+ac", "(a+b)c=ac+bc",
+             "(a+b)(c+d)=ac+ad+bc+bd", "(a+b)^2=a^2+2ab+b^2",
+             "(a-b)^2=a^2-2ab+b^2", "(a+b)(a-b)=a^2-b^2"
+             ]
+        )
+        if selected_formula == "a(b+c)=ab+ac":
+            pass
+        else:
+            pass
         latex_answer = "dummmymmyanswererwewr"
         latex_problem = "dummdududmmmyyyprorororproblem"
         return latex_answer, latex_problem

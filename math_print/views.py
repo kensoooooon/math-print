@@ -1256,7 +1256,7 @@ def print_square_root_calculate_problem(request):
     if not(calculation_types):
         calculation_types.append("addition_and_subtraction_only")
         calculation_types.append("multiplication_and_division_only")
-        calculation_types.append("all_types_calculation")
+        calculation_types.append("using_expand_formula")
     paper_number = int(request.POST["paper_number"])
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -2262,7 +2262,7 @@ def display_square_root_calculate_problem(request):
     if not(calculation_types):
         calculation_types.append("addition_and_subtraction_only")
         calculation_types.append("multiplication_and_division_only")
-        calculation_types.append("all_types_calculation")
+        calculation_types.append("using_expand_formula")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
         problem1 = SquareRootCalculateProblem(calculation_types=calculation_types)

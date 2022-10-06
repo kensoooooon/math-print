@@ -297,19 +297,58 @@ class SquareRootCalculateProblem:
             (a+b)^2=a^2+2ab+b^2
             (a-b)^2=a^2-2ab+b^2
             (a+b)(a-b)=a^2-b^2
-        """
-        selected_formula = choice(
+            
             ["a(b+c)=ab+ac", "(a+b)c=ac+bc",
              "(a+b)(c+d)=ac+ad+bc+bd", "(a+b)^2=a^2+2ab+b^2",
-             "(a-b)^2=a^2-2ab+b^2", "(a+b)(a-b)=a^2-b^2"
+             "(a-b)^2=a^2-2ab+b^2", "(a+b)(a-b)=a^2-b^2",
+             ]
+        """
+        prime_numbers = [2, 3, 5, 7, 11]
+        shuffle(prime_numbers)
+        selected_formula = choice(
+            ["a(b+c)=ab+ac", "(a+b)c=ac+bc",
              ]
         )
+        latex_problem = ""
         if selected_formula == "a(b+c)=ab+ac":
-            pass
-        else:
-            pass
-        latex_answer = "dummmymmyanswererwewr"
-        latex_problem = "dummdududmmmyyyprorororproblem"
+            a_coeff = self._make_random_integer(farther_distance_from_zero=6)
+            a_inner_value = self._make_random_integer(farther_distance_from_zero=16, positive_or_negative="positive")
+            a = a_coeff * sy.sqrt(a_inner_value)
+            latex_problem += f"{sy.latex(a)} \\times \\left( "
+            b_coeff = self._make_random_integer(farther_distance_from_zero=6)
+            b_inner_value = self._make_random_integer(farther_distance_from_zero=16, positive_or_negative="positive")
+            b = b_coeff * sy.sqrt(b_inner_value)
+            latex_problem += f"{sy.latex(b)}"
+            c_coeff = self._make_random_integer(farther_distance_from_zero=6)
+            c_inner_value = self._make_random_integer(farther_distance_from_zero=16, positive_or_negative="positive")
+            c = c_coeff * sy.sqrt(c_inner_value)
+            if c > 0:
+                latex_problem += f"+ {sy.latex(c)} \\right)"
+            else:
+                latex_problem += f"{sy.latex(c)} \\right)"
+            answer = sy.expand(a * (b + c))
+            latex_answer = f"= {sy.latex(answer)}"
+        elif selected_formula == "(a+b)c=ac+bc":
+            a_coeff = self._make_random_integer(farther_distance_from_zero=6)
+            a_inner_value = self._make_random_integer(farther_distance_from_zero=16, positive_or_negative="positive")
+            a = a_coeff * sy.sqrt(a_inner_value)
+            latex_problem += f"\\left( {sy.latex(a)} "
+            b_coeff = self._make_random_integer(farther_distance_from_zero=6)
+            b_inner_value = self._make_random_integer(farther_distance_from_zero=16, positive_or_negative="positive")
+            b = b_coeff * sy.sqrt(b_inner_value)
+            if b > 0:
+                latex_problem += f" + {sy.latex(b)} \\right) \\times "
+            else:
+                latex_problem += f"{sy.latex(b)} \\right) \\times "
+            c_coeff = self._make_random_integer(farther_distance_from_zero=6)
+            c_inner_value = self._make_random_integer(farther_distance_from_zero=16, positive_or_negative="positive")
+            c = c_coeff * sy.sqrt(c_inner_value)
+            if c > 0:
+                latex_problem += f"{sy.latex(c)}"
+            else:
+                latex_problem += f"\\left( {sy.latex(c)} \\right)"
+            answer = sy.expand((a + b) * c)
+            latex_answer = f"= {sy.latex(answer)}"
         return latex_answer, latex_problem
 
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

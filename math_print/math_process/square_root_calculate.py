@@ -164,11 +164,11 @@ class SquareRootCalculateProblem:
             5項: 同じ底×2+同じ底'×2+異なる底で掛け割り
         """
         
-        def _latex_formula_maker(coeff_and_base):
+        def _latex_formula_maker(coeff_and_base_and_calculation_types):
             """与えられた係数の底から、平方根の表示がランダムで切り替わる積と商の計算式と結果を出力
 
             Args:
-                coeff_and_base (list): 係数と平方根の底と計算方法のタプルを収納
+                coeff_and_base_and_calculation_types (list): 係数と平方根の底と計算方法のタプルを収納
                 
             Returns:
                 answer_value (sy.Mul): 計算結果
@@ -177,9 +177,111 @@ class SquareRootCalculateProblem:
             Developing:
                 計算方法: multiplication or division
             """
+            answer_value = 1
+            latex_formula = ""
+            for base, coeff, calculation_type in coeff_and_base_and_calculation_types:
+                if calculation_type == "multiplication":
+                    answer_value *= coeff * sy.sqrt(base)
+                elif calculation_type == "division":
+                    answer_value /= coeff * sy.sqrt(base)
+                if random() > 0.5:
+                    sqrt_latex = sy.latex(sy.sqrt((coeff ** 2) * base))
+                else:
+                    sqrt_latex = f"\\sqrt{{{(coeff ** 2) * base}}}"
+                print(f"sqrt_latex: {sqrt_latex}")
+                if not(latex_formula):
+                    if coeff == 0:
+                        continue
+                    elif coeff > 0:
+                        if calculation_type == "multiplication":
+                            latex_formula += f"{sqrt_latex}"
+                        elif calculation_type == "division":
+                            latex_formula += f"\\frac{{{1}}}{{{sqrt_latex}}}"
+                    else:
+                        if calculation_type == "multiplication":
+                            latex_formula += f"- {sqrt_latex}"
+                        elif calculation_type == "division":
+                            latex_formula += f"- \\frac{{{1}}}{{{sqrt_latex}}}"
+                else:
+                    if coeff == 0:
+                        continue
+                    elif coeff > 0:
+                        if calculation_type == "multiplication":
+                            latex_formula += f"\\times {sqrt_latex}"
+                        elif calculation_type == "division":
+                            latex_formula += f"\\div {sqrt_latex}"
+                    else:
+                        if calculation_type == "multiplication":
+                            latex_formula += f"\\times \\left( - {sqrt_latex} \\right)"
+                        elif calculation_type == "division":
+                            latex_formula += f"\\div \\left( - {sqrt_latex} \\right)"
+            return answer_value, latex_formula
         
-        latex_answer = "dummmymmyanswererwewr"
-        latex_problem = "dummdududmmmyyyprorororproblem"
+        prime_numbers = [2, 3, 5, 7, 11]
+        shuffle(prime_numbers)
+        number_of_term = randint(2, 5)
+        # multiplication to division of common base
+        coeff_and_base_and_calculation_types = []
+        if number_of_term == 2:
+            common_base = prime_numbers.pop()
+            coeff1 = self._make_random_integer(farther_distance_from_zero=5)
+            calculation_type1 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base, coeff1, calculation_type1))
+            coeff2 = self._make_random_integer(farther_distance_from_zero=5)
+            calculation_type2 = "division"
+            coeff_and_base_and_calculation_types.append((common_base, coeff2, calculation_type2))
+        # multiplication to division of common base and multiplication or division of uncommon base
+        elif number_of_term == 3:
+            common_base = prime_numbers.pop()
+            coeff1 = self._make_random_integer(farther_distance_from_zero=5)
+            calculation_type1 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base, coeff1, calculation_type1))
+            coeff2 = self._make_random_integer(farther_distance_from_zero=5)
+            calculation_type2 = "division"
+            coeff_and_base_and_calculation_types.append((common_base, coeff2, calculation_type2))
+            uncommon_base = prime_numbers.pop()
+            coeff3 = self._make_random_integer(farther_distance_from_zero=5)
+            calculation_type3 = choice(["multiplication", "division"])
+            coeff_and_base_and_calculation_types.append((uncommon_base, coeff3, calculation_type3))
+        # two by two common bases for multiplication to division
+        elif number_of_term == 4:
+            common_base1 = prime_numbers.pop()
+            coeff1 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type1 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base1, coeff1, calculation_type1))
+            coeff2 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type2 = "division"
+            coeff_and_base_and_calculation_types.append((common_base1, coeff2, calculation_type2))
+            common_base2 = prime_numbers.pop()
+            coeff3 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type3 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base2, coeff3, calculation_type3))
+            coeff4 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type4 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base2, coeff4, calculation_type4))
+        # two by two common bases for multiplication to division
+        elif number_of_term == 5:
+            common_base1 = prime_numbers.pop()
+            coeff1 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type1 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base1, coeff1, calculation_type1))
+            coeff2 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type2 = "division"
+            coeff_and_base_and_calculation_types.append((common_base1, coeff2, calculation_type2))
+            common_base2 = prime_numbers.pop()
+            coeff3 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type3 = "multiplication"
+            coeff_and_base_and_calculation_types.append((common_base2, coeff3, calculation_type3))
+            coeff4 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type4 = "division"
+            coeff_and_base_and_calculation_types.append((common_base2, coeff4, calculation_type4))
+            uncommon_base = prime_numbers.pop()
+            coeff5 = self._make_random_integer(farther_distance_from_zero=3)
+            calculation_type5 = choice(["multiplication", "division"])
+            coeff_and_base_and_calculation_types.append((uncommon_base, coeff5, calculation_type5))
+        shuffle(coeff_and_base_and_calculation_types)
+        answer, latex_problem = _latex_formula_maker(coeff_and_base_and_calculation_types)
+        latex_answer = f"= {sy.latex(answer)}"
         return latex_answer, latex_problem
     
     def _make_all_types_calculation_problem(self):

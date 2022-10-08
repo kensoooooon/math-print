@@ -48,13 +48,6 @@ class SquareRootCalculateProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        
-        Developing:
-            2~5項で計算のタイプが変わる
-            2項: 同じ底で足し引き
-            3項: 同じ底×2+異なる底×1で計算できるものとできないものの区別
-            4項: 同じ底×2+同じ底'×2
-            5項: 同じ底×2+同じ底'×2+異なる底
         """
         
         def _latex_formula_maker(coeff_and_base):
@@ -66,11 +59,6 @@ class SquareRootCalculateProblem:
             Returns:
                 answer_value (sy.Add): 計算結果
                 latex_formula (str): latex形式の計算式
-            
-            Developing:
-                2√3, 2√3みたいなケースが不味そう。(上書き？だったはず？)
-                ->list of tupleのがよき？
-                一部を中に、一部を外にみたいなのは？
             """
             answer_value = 0
             latex_formula = ""
@@ -129,23 +117,6 @@ class SquareRootCalculateProblem:
             coeff_and_base.append((coefficient3, common_base2))
             coefficient4 = self._make_random_integer(farther_distance_from_zero=5)
             coeff_and_base.append((coefficient4, common_base2))
-        """
-        # two common bases and two other common bases and one uncommon base
-        elif number_of_term == 5:
-            common_base1 = prime_numbers.pop()
-            coefficient1 = self._make_random_integer(farther_distance_from_zero=5)
-            coeff_and_base.append((coefficient1, common_base1))
-            coefficient2 = self._make_random_integer(farther_distance_from_zero=5)
-            coeff_and_base.append((coefficient2, common_base1))
-            common_base2 = prime_numbers.pop()
-            coefficient3 = self._make_random_integer(farther_distance_from_zero=5)
-            coeff_and_base.append((coefficient3, common_base2))
-            coefficient4 = self._make_random_integer(farther_distance_from_zero=5)
-            coeff_and_base.append((coefficient4, common_base2))
-            uncommon_base = prime_numbers.pop()
-            coefficient5 = self._make_random_integer(farther_distance_from_zero=5)
-            coeff_and_base.append((coefficient5, uncommon_base))
-        """
         shuffle(coeff_and_base)
         answer, latex_problem = _latex_formula_maker(coeff_and_base)
         latex_answer = f"= {sy.latex(answer)}"
@@ -157,13 +128,6 @@ class SquareRootCalculateProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        
-        Developing:
-            2~5項で計算のタイプが変わる
-            2項: 異なる底で掛け割り
-            3項: 同じ底×2+異なる底×1で掛け割り
-            4項: 同じ底×2+同じ底'×2で掛け割り
-            5項: 同じ底×2+同じ底'×2+異なる底で掛け割り
         """
         
         def _latex_formula_maker(coeff_and_base_and_calculation_types):
@@ -175,9 +139,6 @@ class SquareRootCalculateProblem:
             Returns:
                 answer_value (sy.Mul): 計算結果
                 latex_formula (str): latex形式の計算式
-            
-            Developing:
-                計算方法: multiplication or division
             """
             answer_value = 1
             latex_formula = ""
@@ -260,28 +221,6 @@ class SquareRootCalculateProblem:
             coeff4 = self._make_random_integer(farther_distance_from_zero=3)
             calculation_type4 = "multiplication"
             coeff_and_base_and_calculation_types.append((common_base2, coeff4, calculation_type4))
-        # two by two common bases for multiplication to division
-        """
-        elif number_of_term == 5:
-            common_base1 = prime_numbers.pop()
-            coeff1 = self._make_random_integer(farther_distance_from_zero=3)
-            calculation_type1 = "multiplication"
-            coeff_and_base_and_calculation_types.append((common_base1, coeff1, calculation_type1))
-            coeff2 = self._make_random_integer(farther_distance_from_zero=3)
-            calculation_type2 = "division"
-            coeff_and_base_and_calculation_types.append((common_base1, coeff2, calculation_type2))
-            common_base2 = prime_numbers.pop()
-            coeff3 = self._make_random_integer(farther_distance_from_zero=3)
-            calculation_type3 = "multiplication"
-            coeff_and_base_and_calculation_types.append((common_base2, coeff3, calculation_type3))
-            coeff4 = self._make_random_integer(farther_distance_from_zero=3)
-            calculation_type4 = "division"
-            coeff_and_base_and_calculation_types.append((common_base2, coeff4, calculation_type4))
-            uncommon_base = prime_numbers.pop()
-            coeff5 = self._make_random_integer(farther_distance_from_zero=3)
-            calculation_type5 = choice(["multiplication", "division"])
-            coeff_and_base_and_calculation_types.append((uncommon_base, coeff5, calculation_type5))
-        """
         shuffle(coeff_and_base_and_calculation_types)
         answer, latex_problem = _latex_formula_maker(coeff_and_base_and_calculation_types)
         latex_answer = f"= {sy.latex(answer)}"
@@ -293,18 +232,6 @@ class SquareRootCalculateProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        
-        Developing:
-            a(b+c)=ab+ac, (a+b)c=ac+bc
-            (a+b)(c+d)=ac+ad+bc+bd
-            (a+b)^2=a^2+2ab+b^2
-            (a-b)^2=a^2-2ab+b^2
-            (a+b)(a-b)=a^2-b^2
-            
-            ["a(b+c)=ab+ac", "(a+b)c=ac+bc",
-             "(a+b)(c+d)=ac+ad+bc+bd", "(a+b)^2=a^2+2ab+b^2",
-             "(a-b)^2=a^2-2ab+b^2", "(a+b)(a-b)=a^2-b^2",
-             ]
         """
         prime_numbers = [2, 3, 5, 7, 11]
         shuffle(prime_numbers)

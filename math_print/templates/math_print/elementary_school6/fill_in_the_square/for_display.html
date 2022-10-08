@@ -49,7 +49,11 @@ function refresh() {
 {% block body %}
 
 <ol>
-    <p>次の□に当てはまる値を求めよ。</p>
+    {% if used_symbol == "square" %}
+        <p>次の□に当てはまる値を求めよ。</p>
+    {% else %}
+        <p>次の\( x \)に当てはまる値を求めよ。</p>
+    {% endif %}
     {% for math_problem_tuple in math_problem_tuple_list %}
         <div class="container-fluid">
             <div class="row">

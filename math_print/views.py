@@ -42,6 +42,7 @@ from .math_process.fill_in_the_square import FillInTheSquareProblem
 from .math_process.common_denominator import CommonDenominatorProblem
 from .math_process.recurrence_relation import RecurrenceRelationProblem
 from .math_process.square_root import SquareRootProblem
+from .math_process.square_root_calculate import SquareRootCalculateProblem
 
 
 def index(request):
@@ -1161,17 +1162,17 @@ def print_fill_in_the_square_problem(request):
         calculation_type_list.append("multiplication_and_division")
         calculation_type_list.append("all_calculations")
     paper_number = int(request.POST["paper_number"])
-    
+    used_symbol = request.POST["used_symbol"]
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
-            problem2 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
+            problem1 = FillInTheSquareProblem(calculation_type_list=calculation_type_list, used_symbol=used_symbol)
+            problem2 = FillInTheSquareProblem(calculation_type_list=calculation_type_list, used_symbol=used_symbol)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list, 'used_symbol': used_symbol})
   
 def print_common_denominator_problem(request):
     PROBLEM_NUMBER = 20
@@ -1242,12 +1243,31 @@ def print_square_root_problem(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = SquareRootProblem(problem_types=problem_types)
-            problem2 = SquareRootProblem(problem_types=problem_types)
+            problem1 = SquareRootCalculateProblem(problem_types=problem_types)
+            problem2 = SquareRootCalculateProblem(problem_types=problem_types)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/junior_highschool3/square_root/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_square_root_calculate_problem(request):
+    PROBLEM_NUMBER = 20
+    calculation_types = request.POST.getlist("calculation_type")
+    if not(calculation_types):
+        calculation_types.append("addition_and_subtraction_only")
+        calculation_types.append("multiplication_and_division_only")
+        calculation_types.append("using_expand_formula")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = SquareRootCalculateProblem(calculation_types=calculation_types)
+            problem2 = SquareRootCalculateProblem(calculation_types=calculation_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/junior_highschool3/square_root_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2165,14 +2185,14 @@ def display_fill_in_the_square_problem(request):
         calculation_type_list.append("multiplication_and_division")
         calculation_type_list.append("all_calculations")
         calculation_type_list.append("exponent_to_linear_characteristic_equation")
-    
+    used_symbol = request.POST["used_symbol"]
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
-        problem2 = FillInTheSquareProblem(calculation_type_list=calculation_type_list)
+        problem1 = FillInTheSquareProblem(calculation_type_list=calculation_type_list, used_symbol=used_symbol)
+        problem2 = FillInTheSquareProblem(calculation_type_list=calculation_type_list, used_symbol=used_symbol)
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/elementary_school6/fill_in_the_square/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list, 'used_symbol': used_symbol})
 
 def display_common_denominator_problem(request):
     PROBLEM_NUMBER = 20
@@ -2235,3 +2255,17 @@ def display_square_root_problem(request):
         problem2 = SquareRootProblem(problem_types=problem_types)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool3/square_root/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_square_root_calculate_problem(request):
+    PROBLEM_NUMBER = 20
+    calculation_types = request.POST.getlist("calculation_type")
+    if not(calculation_types):
+        calculation_types.append("addition_and_subtraction_only")
+        calculation_types.append("multiplication_and_division_only")
+        calculation_types.append("using_expand_formula")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = SquareRootCalculateProblem(calculation_types=calculation_types)
+        problem2 = SquareRootCalculateProblem(calculation_types=calculation_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/junior_highschool3/square_root_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

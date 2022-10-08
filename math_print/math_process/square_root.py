@@ -5,7 +5,7 @@ import sympy as sy
 
 
 class SquareRootProblem:
-    """平方根に関係がある問題と解答を出力
+    """平方根に関連する計算以外の問題と解答を出力
     
     Attributes:
         _problem_types (list): 出題のタイプを格納

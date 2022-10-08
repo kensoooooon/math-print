@@ -34,14 +34,14 @@ function refresh() {
 {% endblock %}
 
 {% block title %}
-穴埋め算
+平方根の計算
 {% endblock %}
 
 {% block hero_unit %}
 <div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
     <div class="container">
         <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">穴埋め算</p>
+        <p class="text-dark">平方根の計算</p>
     </div>
 </div>
 {% endblock %}
@@ -49,11 +49,7 @@ function refresh() {
 {% block body %}
 
 <ol>
-    {% if used_symbol == "square" %}
-        <p>次の□に当てはまる値を求めよ。</p>
-    {% else %}
-        <p>次の\( x \)に当てはまる値を求めよ。</p>
-    {% endif %}
+    <p>以下の式を計算せよ。</p>
     {% for math_problem_tuple in math_problem_tuple_list %}
         <div class="container-fluid">
             <div class="row">
@@ -61,10 +57,10 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
-                            \({{ math_problem_tuple.0.latex_problem }}\)
+                            \( {{ math_problem_tuple.0.latex_problem }} \)
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            \({{ math_problem_tuple.0.latex_answer }}\)
+                            \( {{ math_problem_tuple.0.latex_answer }} \)
                         </p>
                     </li>
                 </div>
@@ -72,10 +68,10 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
-                            \({{ math_problem_tuple.1.latex_problem }}\)
+                            \( {{ math_problem_tuple.1.latex_problem }} \)
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            \({{ math_problem_tuple.1.latex_answer }}\)
+                            \( {{ math_problem_tuple.1.latex_answer }} \)
                         </p>
                     </li>
                 </div>
@@ -87,10 +83,9 @@ function refresh() {
 <div class="d-grid gap-3 col-6 mx-auto">
     <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
     <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
-    <a href="{% url 'elementary_school6' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'junior_highschool3' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
-
 <footer class="container-fluid print_footer">
     <small><a href="#">© 2022 有明学習振興</a></small>
 </footer>

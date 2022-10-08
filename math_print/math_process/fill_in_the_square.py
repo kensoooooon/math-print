@@ -18,6 +18,7 @@ class FillInTheSquareProblem:
         """
         sy.init_printing(order='grevlex')
         self._calculation_type_list = settings["calculation_type_list"]
+        self._used_symbol = settings["used_symbol"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -46,6 +47,9 @@ class FillInTheSquareProblem:
             latex_answer, latex_problem = self._make_all_calculations_problem()
         else:
             raise ValueError(f"selected_calculation_type is {selected_calculation_type}. This may be wrong type.")
+        if self._used_symbol == "x":
+            latex_answer = latex_answer.replace("\\square", "x")
+            latex_problem = latex_problem.replace("\\square", "x")
         return latex_answer, latex_problem
     
     def _make_addition_only_problem(self):

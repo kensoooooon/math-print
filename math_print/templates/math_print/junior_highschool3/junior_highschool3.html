@@ -244,6 +244,7 @@
                             根号を使わずに平方根を求める(整数のみ)
                         </label>
                     </div>
+                    <br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="write_square_root_not_using_radical_sign" name="problem_type" id="square_root_write_square_root_not_using_radical_sign" onclick="uncheckbyID('square_root_write_square_root_not_using_radical_sign_only_with_integer')">
                         <label class="form-check-label" for="square_root_write_square_root_not_using_radical_sign">
@@ -257,6 +258,7 @@
                             根号を使って平方根を求める(整数のみ)
                         </label>
                     </div>
+                    <br>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="write_square_root_using_radical_sign" name="problem_type" id="square_root_write_square_root_using_radical_sign" onclick="uncheckbyID('square_root_write_square_root_using_radical_sign_only_with_integer')">
                         <label class="form-check-label" for="square_root_write_square_root_using_radical_sign">
@@ -309,6 +311,58 @@
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'square_root_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'square_root_display' %}">
+            </form>
+        </div>
+        <div class="col border-end border-bottom">
+            <p>平方根を計算する</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">出題される計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition_and_subtraction_only" name="calculation_type" id="square_root_calculate_addition_and_subtraction_only" checked>
+                        <label class="form-check-label" for="square_root_calculate_addition_and_subtraction_only">
+                            和・差のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="multiplication_and_division_only" name="calculation_type" id="square_root_calculate_multiplication_and_division_only" checked>
+                        <label class="form-check-label" for="square_root_calculate_multiplication_and_division_only">
+                            積・商のみ
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="using_expand_formula" name="calculation_type" id="square_root_calculate_using_expand_formula" checked>
+                        <label class="form-check-label" for="square_root_calculate_using_expand_formula">
+                            式の展開を使うもの
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SquareRootCalculateFivePaperRadio" checked>
+                        <label class="form-check-label" for="SquareRootCalculateFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SquareRootCalculateTenPaperRadio">
+                        <label class="form-check-label" for="SquareRootCalculateTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SquareRootCalculateFifteenPaperRadio">
+                        <label class="form-check-label" for="SquareRootCalculateFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'square_root_calculate_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'square_root_calculate_display' %}">
             </form>
         </div>
     </div>

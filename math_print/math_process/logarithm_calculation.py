@@ -270,7 +270,6 @@ class LogarithmCalculationProblem:
             first_num = num_list.pop()
             if " + " in first_num:
                 first_num = first_num.replace("+", "")
-                print(f"first_num: {first_num}")
             latex_problem += first_num
             for num in num_list:
                 latex_problem += num

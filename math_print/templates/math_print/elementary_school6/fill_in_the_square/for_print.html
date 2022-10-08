@@ -84,7 +84,11 @@ function showAnswer(){
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
         <ol>
-            <p>次の□に当てはまる値を求めよ。</p>
+            {% if used_symbol == "square" %}
+                <p>次の□に当てはまる値を求めよ。</p>
+            {% else %}
+                <p>次の\( x \)に当てはまる値を求めよ。</p>
+            {% endif %}
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
                     <div>

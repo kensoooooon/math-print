@@ -110,6 +110,9 @@ urlpatterns = [
     # 平方根を求める
     path('square_root/print/', views.print_square_root_problem, name='square_root_print'),
     path('square_root/display/', views.display_square_root_problem, name='square_root_display'),
+    # 平方根を計算する
+    path('square_root_calculate/print', views.print_square_root_calculate_problem, name='square_root_calculate_print'),
+    path('square_root_calculate/display', views.display_square_root_calculate_problem, name='square_root_calculate_display'),
     #########################################
     ### 高1 ###
     path('highschool1/', views.show_highschool1, name='highschool1'),

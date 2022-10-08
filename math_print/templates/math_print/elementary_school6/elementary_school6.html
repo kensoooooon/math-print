@@ -93,6 +93,21 @@ function uncheckAllStatus(target){
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
                 </div>
+                <small class="text-muted">使用する記号</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="square" name="used_symbol" id="FillInTheSquareSquareRadio" checked>
+                        <label class="form-check-label" for="FillInTheSquareSquareRadio">
+                            □
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="x" name="used_symbol" id="FillInTheSquareXRadio">
+                        <label class="form-check-label" for="FillInTheSquareXRadio">
+                            x
+                        </label>
+                    </div>
+                </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">

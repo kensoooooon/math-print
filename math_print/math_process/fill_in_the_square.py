@@ -20,7 +20,6 @@ class FillInTheSquareProblem:
         self._calculation_type_list = settings["calculation_type_list"]
         self._used_symbol = settings["used_symbol"]
         self._used_number_list = settings["used_number_list"]
-        print(f"self._used_number_list: {self._used_number_list}")
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -62,20 +61,14 @@ class FillInTheSquareProblem:
             latex_problem (str): latex形式で記述された問題
         
         Note:
-            解も係数も整数で統一。要望があれば分数の設定等も追加予定
-        Developing:
-            要するにx+a=c, a+x=c型の方程式と考え方は同じ
+            □+a=c, a+□=cの2タイプ
             a,c,xともに正である。
         """
         square_value, square_value_latex = self._make_random_number()
-        square_value, square_value_latex = self._make_random_number()
-        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
-            latex_answer = f"\\square = {square_value_latex}"
-        else:
-            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"
+        latex_answer = f"\\square = {square_value_latex}"
         a, a_latex = self._make_random_number()
         c = square_value + a
-        c_latex = sy.latex(c)
+        c_latex = self._float_display_checker(c)
         if random() > 0.5:  # □+a=c
             latex_problem = f"\\square + {a_latex} = {c_latex}"
         else:  # a+□=c
@@ -91,43 +84,38 @@ class FillInTheSquareProblem:
         
         Notes:
             □-a=c, a-□=cの2タイプ
-            小さいほうから値を決定している
+            小さいほうから値を決定して、負の値が出ないようにしている
             どちらでも正しく答えが出る場合は、random経由で決定
         """
         if random() > 0.5:  # □-a=c
             if random() > 0.5:  # a>c(□>a>c>0)
                 c, c_latex = self._make_random_number()
-                a = c + sy.Integer(randint(1, 5))
-                a_latex = sy.latex(a)
-                square_value = a + c
-                square_value_latex = sy.latex(square_value)
+                delta_for_a, _ = self._make_random_number(max_num=5)
+                a = c + delta_for_a
+                a_latex = self._float_display_checker(a)
             else:  # c>a(□>c>a>0)
                 a, a_latex = self._make_random_number()
-                c = a + sy.Integer(randint(1, 5))
-                c_latex = sy.latex(c)
-                square_value = a + c
-                square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+                delta_for_c, _ = self._make_random_number(max_num=5)
+                c = a + delta_for_c
+                c_latex = self._float_display_checker(c)
+            square_value = a + c
+            square_value_latex = self._float_display_checker(square_value)
             latex_problem = f"\\square - {a_latex} = {c_latex}"
         else:  # a-□=c
             if random() > 0.5:  # □>c(a>□>c>0)
-                c, c_latex = self._make_random_number()
-                square_value = c + sy.Integer(randint(1, 5))
-                square_value_latex = sy.latex(square_value)
-                a = square_value + c
-                a_latex = sy.latex(a)
+                c, c_latex = self._make_random_number(max_num=5)
+                delta_for_square_value, _ = self._make_random_number(max_num=5)
+                square_value = c + delta_for_square_value
+                square_value_latex = self._float_display_checker(square_value)
             else:  # c>□(a>c>□>0)
-                square_value, square_value_latex = self._make_random_number()
-                c = square_value + sy.Integer(randint(1, 5))
-                c_latex = sy.latex(c)
-                a = square_value + c
-                a_latex = sy.latex(a)
-            latex_answer = f"\\square = {square_value_latex}"
+                square_value, square_value_latex = self._make_random_number(max_num=5)
+                delta_for_c, _ = self._make_random_number(max_num=5)
+                c = square_value + delta_for_c
+                c_latex = self._float_display_checker(c)
+            a = square_value + c
+            a_latex = self._float_display_checker(a)
             latex_problem = f"{a_latex} - \\square = {c_latex}"
-        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
-            latex_answer = f"\\square = {square_value_latex}"
-        else:
-            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"
+        latex_answer = f"\\square = {square_value_latex}"
         return latex_answer, latex_problem
 
     def _make_multiplication_only_problem(self):
@@ -141,23 +129,18 @@ class FillInTheSquareProblem:
             □×a=c, a×□=cの2タイプ
         """
         if random() > 0.5:  # □×a=c
-            square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
-            a, a_latex = self._make_random_number()
+            square_value, square_value_latex = self._make_random_number(min_num=2)
+            a, a_latex = self._make_random_number(min_num=2)
             c = square_value * a
-            c_latex = sy.latex(c)
+            c_latex = self._float_display_checker(c)
             latex_problem = f"\\square \\times {a_latex} = {c_latex}"
         else:  # a×□=c
-            a, a_latex = self._make_random_number()
-            square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            a, a_latex = self._make_random_number(min_num=2)
+            square_value, square_value_latex = self._make_random_number(min_num=2)
             c = a * square_value
-            c_latex = sy.latex(c)
+            c_latex = self._float_display_checker(c)
             latex_problem = f"{a_latex} \\times \\square = {c_latex}"
-        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
-            latex_answer = f"\\square = {square_value_latex}"
-        else:
-            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"
+        latex_answer = f"\\square = {square_value_latex}"
         return latex_answer, latex_problem
 
     def _make_division_only_problem(self):
@@ -171,24 +154,18 @@ class FillInTheSquareProblem:
             □÷a=c, a÷□=cの2タイプ
         """
         if random() > 0.5:  # □÷a=c
-            a, a_latex = self._make_random_number()
-            c, c_latex = self._make_random_number()
+            a, a_latex = self._make_random_number(min_num=2)
+            c, c_latex = self._make_random_number(min_num=2)
             square_value = c * a
-            square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            square_value_latex = self._float_display_checker(square_value)
             latex_problem = f"\\square \\div {a_latex} = {c_latex}"
         else:  # a÷□=c
-            square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
-            c, c_latex = self._make_random_number()
+            square_value, square_value_latex = self._make_random_number(min_num=2)
+            c, c_latex = self._make_random_number(min_num=2)
             a = c * square_value
-            a_latex = sy.latex(a)
+            a_latex = self._float_display_checker(a)
             latex_problem = f"{a_latex} \\div \\square = {c_latex}"
-        square_value, square_value_latex = self._make_random_number()
-        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
-            latex_answer = f"\\square = {square_value_latex}"
-        else:
-            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"
+        latex_answer = f"\\square = {square_value_latex}"
         return latex_answer, latex_problem
 
     def _make_addition_and_subtraction_problem(self):
@@ -201,6 +178,9 @@ class FillInTheSquareProblem:
         Notes:
             □+a-b=c, a+□-b=c 
             □-a+b=c, b-a+□=c
+        
+        Developing:
+            change order?(b->square->a or b->a->square)
         """
         square_value, square_value_latex = self._make_random_number()
         if random() < 0.5:  # □+a-b=c or a+□-b=c, □+a>b
@@ -208,10 +188,9 @@ class FillInTheSquareProblem:
             max_value = int(square_value + a - 1)
             if max_value < 1:
                 max_value += 1
-            b = sy.Integer(randint(1, max_value))
-            b_latex = sy.latex(b)
+            b, b_latex = self._make_random_number(max_num=max_value)
             c = square_value + a - b
-            c_latex = sy.latex(c)
+            c_latex = self._float_display_checker(c)
             if random() > 0.5:  # □+a-b=c
                 latex_problem = f"\\square + {a_latex} - {b_latex} = {c_latex}"
             else:  # a+□-b=c
@@ -221,18 +200,14 @@ class FillInTheSquareProblem:
             max_value = int(square_value + b - 1)
             if max_value < 1:
                 max_value += 1
-            a = sy.Integer(randint(1, max_value))
-            a_latex = sy.latex(a)
+            a, a_latex = self._make_random_number(max_num=max_value)
             c = square_value - a + b
-            c_latex = sy.latex(c)
+            c_latex = self._float_display_checker(c)
             if random() > 0.5:  # □-a+b=c
                 latex_problem = f"\\square - {a_latex} + {b_latex} = {c_latex}"
             else:  # b-a+□=c
                 latex_problem = f"{b_latex} - {a_latex} + \\square = {c_latex}"
-        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
-            latex_answer = f"\\square = {square_value_latex}"
-        else:
-            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"
+        latex_answer = f"\\square = {square_value_latex}"
         return latex_answer, latex_problem
 
     def _make_multiplication_and_division_problem(self):
@@ -248,7 +223,7 @@ class FillInTheSquareProblem:
         problem_type_checker = random()
         if problem_type_checker < 0.25:  # □×a×b=c, a×□×b=c, a×b×□=c
             square_value, square_value_latex = self._make_random_number(max_num=10, min_num=2)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a, a_latex = self._make_random_number(max_num=10, min_num=2)
             b, b_latex = self._make_random_number(max_num=10, min_num=2)
             c = a * b * square_value
@@ -270,7 +245,7 @@ class FillInTheSquareProblem:
             a_latex = sy.latex(a)
             square_value = sy.Rational(b * c, a)
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             display_type_checker = random()
             if display_type_checker < 0.33:  # □×a÷b=c
                 latex_problem = f"\\square \\times {a_latex} \\div {b_latex} = {c_latex}"
@@ -288,7 +263,7 @@ class FillInTheSquareProblem:
             b_latex = sy.latex(b)
             square_value = sy.Rational(a * c, b)
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             display_type_checker = random()
             if display_type_checker < 0.33:  # □÷a×b=c
                 latex_problem = f"\\square \\div {a_latex} \\times {b_latex} = {c_latex}"
@@ -302,8 +277,12 @@ class FillInTheSquareProblem:
             c, c_latex = self._make_random_number(max_num=10, min_num=2)
             square_value = a * b * c
             square_value_latex = sy.latex(square_value)
+            # latex_answer = f"\\square = {square_value_latex}"
+            latex_problem = f"\\square \\div {a_latex} \\div {b_latex} = {c_latex}"     
+        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
             latex_answer = f"\\square = {square_value_latex}"
-            latex_problem = f"\\square \\div {a_latex} \\div {b_latex} = {c_latex}"            
+        else:
+            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"       
         return latex_answer, latex_problem
     
     def _make_all_calculations_problem(self):
@@ -331,7 +310,7 @@ class FillInTheSquareProblem:
         problem_type_checker = random()
         if problem_type_checker < sy.Rational(1, 13):  # □×a+b=c, a×□+b=c, b+□×a=c, b+a×□=c
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a, a_latex = self._make_random_number()
             b, b_latex = self._make_random_number()
             c = square_value * a + b
@@ -352,7 +331,7 @@ class FillInTheSquareProblem:
             a, a_latex = self._make_random_number()
             square_value = a * (c - b)
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             if random() > 0.5:  # □÷a+b=c
                 latex_problem = f"\\square \\div {a_latex} + {b_latex} = {c_latex}"
             else:  # b+□÷a=c  
@@ -362,7 +341,7 @@ class FillInTheSquareProblem:
             c = b + randint(1, 10)
             c_latex = sy.latex(c)
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a = square_value * (c - b)
             a_latex = sy.latex(a)
             if random() > 0.5:  # a÷□+b=c
@@ -375,19 +354,19 @@ class FillInTheSquareProblem:
             a, a_latex = self._make_random_number()
             square_value = a * (b + c)
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             latex_problem = f"\\square \\div {a_latex} - {b_latex} = {c_latex}"
         elif sy.Rational(4, 13) <= problem_type_checker < sy.Rational(5, 13):  # a÷□-b=c
             b, b_latex = self._make_random_number()
             c, c_latex = self._make_random_number()
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a = square_value * (b + c)
             a_latex = sy.latex(a)
             latex_problem = f"{a_latex} \\div \\square - {b_latex} = {c_latex}"
         elif sy.Rational(5, 13) <= problem_type_checker < sy.Rational(6, 13):  # (□+a)×b=c, (a+□)×b=c
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a, a_latex = self._make_random_number()
             b, b_latex = self._make_random_number()
             c = (square_value + a) * b
@@ -400,7 +379,7 @@ class FillInTheSquareProblem:
             a, a_latex = self._make_random_number()
             square_value = a + randint(1, 10)
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             b, b_latex = self._make_random_number()
             c = (square_value - a) * b
             c_latex = sy.latex(c)
@@ -409,7 +388,7 @@ class FillInTheSquareProblem:
             a, a_latex = self._make_random_number()
             square_value = a + randint(1, 10)
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             b = 1
             for base, index in sy.factorint(square_value - a).items():
                 if random() > 0.3:
@@ -420,7 +399,7 @@ class FillInTheSquareProblem:
             latex_problem = f"(\\square - {a_latex}) \\div {b_latex} = {c_latex}"
         elif sy.Rational(8, 13) <= problem_type_checker < sy.Rational(9, 13):  # (a-□)×b=c
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a = square_value + randint(1, 10)
             a_latex = sy.latex(a)
             b, b_latex = self._make_random_number()
@@ -429,7 +408,7 @@ class FillInTheSquareProblem:
             latex_problem = f"({a_latex} - \\square) \\times {b_latex} = {c_latex}"
         elif sy.Rational(9, 13) <= problem_type_checker < sy.Rational(10, 13):  # (a-□)÷b=c
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             a = square_value + randint(1, 10)
             a_latex = sy.latex(a)
             b = 1
@@ -444,7 +423,7 @@ class FillInTheSquareProblem:
             a, a_latex = self._make_random_number()
             b, b_latex = self._make_random_number()
             square_value, square_value_latex = self._make_random_number()
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             c = (a + b) * square_value
             c_latex = sy.latex(c)
             if random() > 0.5:  # (a+b)×□=c
@@ -459,7 +438,7 @@ class FillInTheSquareProblem:
                 if random() > 0.3:
                     square_value *= (base ** randint(1, index))
             square_value_latex =sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             c = sy.Rational(a + b, square_value)
             c_latex = sy.latex(c)
             latex_problem = f"({a_latex} + {b_latex}) \\div \\square = {c_latex}"
@@ -469,8 +448,12 @@ class FillInTheSquareProblem:
             c, c_latex = self._make_random_number()
             square_value = (a + b) * c
             square_value_latex = sy.latex(square_value)
-            latex_answer = f"\\square = {square_value_latex}"
+            # latex_answer = f"\\square = {square_value_latex}"
             latex_problem = f"\\square \\div ({a_latex} + {b_latex}) = {c_latex}"
+        if ("decimal" in self._used_number_list) and ("frac" not in self._used_number_list):
+            latex_answer = f"\\square = {square_value_latex}"
+        else:
+            latex_answer = f"\\square = {sy.latex(sy.Rational(square_value))}"
         return latex_answer, latex_problem
     
     def _make_random_number(self, max_num=10, min_num=1, number_type=None):
@@ -511,18 +494,16 @@ class FillInTheSquareProblem:
             Returns:
                 frac (sy.Rational): 計算に用いられる分数
                 frac_latex (str): 表示に用いられるlatex形式の分数
-            
-            Developing:
-                とりあえず整数も許容
             """
-            numerator = randint(min_num, max_num)
-            print(f"numerator: {numerator}")
-            denominator = randint(min_num, max_num)
-            print(f"denominator: {denominator}")
-            frac = sy.Rational(numerator, denominator)
+            while True:
+                denominator = randint(min_num, max_num)
+                numerator = randint(min_num * denominator, max_num * denominator)
+                if random() > 0.5:
+                    denominator, numerator = numerator, denominator
+                frac = sy.Rational(numerator, denominator)
+                if frac.denominator != 1:
+                    break
             frac_latex = sy.latex(frac)
-            print(f"frac: {frac}")
-            print(f"frac_latex: {frac_latex}")
             return frac, frac_latex
         
         def _make_random_decimal(max_num, min_num):
@@ -541,6 +522,8 @@ class FillInTheSquareProblem:
             """
             numerator = randint(min_num, max_num)
             denominator = 10
+            if numerator % 10 == 0:
+                numerator += randint(1, 9)
             frac = sy.Rational(numerator, denominator)
             decimal_latex = sy.latex(sy.Float(frac))
             return frac, decimal_latex
@@ -558,4 +541,18 @@ class FillInTheSquareProblem:
         else:
             raise ValueError(f"selected_number_type is {selected_number_type}. This may be wrong.")
         return number, number_latex
+    
+    def _float_display_checker(self, frac):
+        """使用される数に分数が入っておらず、かつ整数でもないときに小数表示に切り替える
         
+        Args:
+            frac (sy.Rational): 変換対象の数
+        
+        Return:
+            number_latex (str): チェックを経たlatex形式で表示された数
+        """
+        if ("frac" not in self._used_number_list) and (frac.denominator != 1):
+            number_latex = sy.latex(sy.Float(frac))
+        else:
+            number_latex = sy.latex(frac)
+        return number_latex

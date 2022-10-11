@@ -666,7 +666,7 @@ class RecurrenceRelationProblem:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        Developings:
+        Developing:
             alpha = -beta(beta = -alpha)になると、a_n+1が消滅する？
         """
         def latex_poly_maker(symbol_and_coeff):
@@ -701,6 +701,7 @@ class RecurrenceRelationProblem:
         a_n_plus_2 = sy.Symbol("a_{{n+2}}", real=True)
         a_n_plus_1 = sy.Symbol("a_{{n+1}}", real=True)
         a_n = sy.Symbol("a_{{n}}", real=True)
+        """
         nearer_distance_from_zero = randint(2, 5)
         farther_distance_from_zero = nearer_distance_from_zero + randint(2, 5)
         alpha = nearer_distance_from_zero
@@ -713,6 +714,12 @@ class RecurrenceRelationProblem:
             beta *= -1
         alpha_latex = sy.latex(alpha)
         beta_latex = sy.latex(beta)
+        """
+        alpha, alpha_latex = self._make_random_integer()
+        beta, beta_latex = self._make_random_integer()
+        if random() < 0.1:
+            alpha = beta
+            alpha_latex = beta_latex
         p = -alpha + beta
         p_latex = sy.latex(p)
         q = alpha * beta
@@ -772,7 +779,45 @@ class RecurrenceRelationProblem:
             final_general_term_latex = sy.latex(final_general_term)
             latex_answer += f"\\( {sy.latex(a_n)} = {final_general_term_latex} \\)となる。"
         else:
-            latex_answer = f"alpha == beta dummmyy_answerereoiu"
+            latex_answer = f"\\( a_{{n+2}} = x^2, \\quad a_{{n+1}} = x, \\quad a_{{n}} = 1\\)とした式を立てると、"
+            x = sy.Symbol("x", real=True)
+            characteristic_equation = sy.Eq(x ** 2 - (alpha + beta) * x + alpha * beta, 0)
+            characteristic_equation_latex = sy.latex(characteristic_equation)
+            latex_answer += f"\\( {characteristic_equation_latex} \\)となり、この2次方程式の解を求めると、\\( x = {alpha_latex} \\)となる。\n"
+            latex_answer += f"この解を、\\( \\alpha = {alpha_latex} \\)とし、"
+            latex_answer += f"\\( a_{{n+2}} - \\alpha a_{{n+1}} = \\alpha (a_{{n+1}} - \\alpha a_{{n}}) \\)に代入すると、\n"
+            left_latex = latex_poly_maker({a_n_plus_2: 1, a_n_plus_1: -alpha})
+            right_latex = latex_poly_maker({a_n_plus_1: 1, a_n: -alpha})
+            latex_answer += f"\\( {left_latex} = {alpha_latex} \\left( {right_latex} \\right) \\)となる。\n"
+            latex_answer += f"これにより、\\( {right_latex} \\)は、"
+            right_first_term_latex = latex_poly_maker({sy.Symbol("a_{{2}}", real=True): 1, sy.Symbol("a_{{1}}", real=True): -alpha})
+            right_first_term_value = second_term - alpha * first_term
+            right_first_term_value_latex = sy.latex(right_first_term_value)
+            latex_answer += f"初項\\( {right_first_term_latex}  = {right_first_term_value_latex} \\)、公比\\( {alpha_latex} \\)の等比数列である。\n"
+            n = sy.Symbol("n", real=True)
+            general_term = right_first_term_value * sy.Pow(alpha, n-1)
+            general_term_latex = sy.latex(sy.factor(general_term))
+            latex_answer += f"よって、\\( {right_latex} = {general_term_latex} \\)となり、\n"
+            number_for_division = sy.Pow(alpha, n + 1)
+            number_for_division_latex = sy.latex(number_for_division)
+            latex_answer += f"この式の両辺を、\\( {number_for_division_latex} \\)で割り整理すると、"
+            divided_a_n_plus_1_part_latex = f"\\frac{{{a_n_plus_1}}}{{{number_for_division_latex}}}"
+            divided_a_n_part_latex = f"\\frac{{{a_n}}}{{{sy.latex(sy.Pow(alpha, n))}}}"
+            divided_exponent_part = sy.Rational(right_first_term_value, sy.Pow(alpha, 2))
+            if right_first_term_value > 0:
+                divided_exponent_part_latex = f"+ {sy.latex(divided_exponent_part)}"
+            else:
+                divided_exponent_part_latex = f"{sy.latex(divided_exponent_part)}"
+            latex_answer += f"\\( {divided_a_n_plus_1_part_latex} = {divided_a_n_part_latex} {divided_exponent_part_latex} \\)となる。\n"
+            b_n = sy.Symbol("b_n", real=True)
+            b_n_plus_1 = sy.Symbol("b_{{n+1}}", real=True)
+            latex_answer += f"\\( {divided_a_n_part_latex} = {b_n} \\)とおくと、\\( {b_n_plus_1} = {b_n} {divided_exponent_part_latex} \\)となるため、\n"
+            b_n_first_term = sy.Rational(first_term, alpha)
+            latex_answer += f"数列\\( {b_n} \\)は、初項\\( \\frac{{a_1}}{{({alpha_latex})^1}} = {sy.latex(b_n_first_term)} \\), 公差\\( {divided_exponent_part_latex} \\)の等差数列である。\n"
+            b_n_general_term = b_n_first_term + (n - 1) * sy.Rational(first_term, alpha ** 2)
+            latex_answer += f"よって\\( {b_n} = {sy.latex(b_n_general_term)}\\)となり、\\( {b_n} = {divided_a_n_part_latex} \\)であるため、\n"
+            final_general_term = sy.expand(b_n_general_term * sy.Pow(alpha, n))
+            latex_answer += f"\\( a_n = {sy.latex(final_general_term)} \\)である。"
         return latex_answer, latex_problem
         
     def _make_random_integer(self, nearer_distance_from_zero=1, farther_distance_from_zero=10, positive_or_negative=None):

@@ -1,6 +1,8 @@
 from random import choice, randint, random
 
+
 import sympy as sy
+
 
 class FillInTheSquareProblem:
     """穴埋め算の問題を出力する

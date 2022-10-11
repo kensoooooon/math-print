@@ -2194,7 +2194,6 @@ def display_fill_in_the_square_problem(request):
         calculation_type_list.append("addition_and_subtraction")
         calculation_type_list.append("multiplication_and_division")
         calculation_type_list.append("all_calculations")
-        calculation_type_list.append("exponent_to_linear_characteristic_equation")
     used_symbol = request.POST["used_symbol"]
     used_number_list = request.POST.getlist("used_number")
     if not(used_number_list):

@@ -108,6 +108,29 @@ function uncheckAllStatus(target){
                         </label>
                     </div>
                 </div>
+                <small class="text-muted">優先的に使用される数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="used_number" id="fill_in_the_square_integer" checked>
+                        <label class="form-check-label" for="fill_in_the_square_integer">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac" name="used_number" id="fill_in_the_square_frac">
+                        <label class="form-check-label" for="fill_in_the_square_frac">
+                            分数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="used_number" id="fill_in_the_square_decimal">
+                        <label class="form-check-label" for="fill_in_the_square_decimal">
+                            小数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_number')" value="全部はずし">
+                </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">

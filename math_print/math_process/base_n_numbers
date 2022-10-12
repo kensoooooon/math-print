@@ -1,0 +1,22 @@
+from random import choice, randint, random
+
+
+import sympy as sy
+
+
+class BaseNNumbersProblem:
+    def __init__(self, **settings):
+        self._convert_from_to_types = settings["convert_from_to_types"]
+        self._numbers_to_convert = settings["numbers_to_convert"]
+        self.latex_answer, self.latex_problem = self._make_problem()
+    
+    def _make_problem(self):
+        selected_convert_from_to = choice(self._convert_from_to_types)
+        if selected_convert_from_to == "from_n_base_to_ten_base":
+            latex_answer, latex_problem = self._make_from_n_base_to_ten_base_problem()
+        elif selected_convert_from_to == "from_ten_base_to_n_base":
+            latex_answer, latex_problem = self._make_from_ten_base_to_n_base_problem()
+        elif selected_convert_from_to == "from_n_base_to_n_dash_base":
+            latex_answer, latex_problem = self._make_from_n_base_to_n_dash_base_problem()
+        return latex_answer, latex_problem
+    

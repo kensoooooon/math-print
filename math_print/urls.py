@@ -131,6 +131,9 @@ urlpatterns = [
     # 2次関数の最大最小
     path('hs1_quadratic_function_max_min/print', views.hs1_print_quadratic_function_max_min, name='hs1_quadratic_function_max_min_print'),
     path('hs1_quadratic_function_max_min/display', views.hs1_display_quadratic_function_max_min, name='hs1_quadratic_function_max_min_display'),
+    # n進数
+    path('base_n_numbers/print', views.print_base_n_numbers, name='base_n_numbers_print'),
+    path('base_n_numbers/display', views.display_base_n_numbers, name='base_n_numbers_display'),
     #########################################
     ### 高2 ###
     path('highschool2/', views.show_highschool2, name='highschool2'),

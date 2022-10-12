@@ -488,6 +488,73 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>n進数の変換</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">変換元と変換先</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_n_base_to_ten_base" name="convert_from_to_type" id="n_base_to_ten_base" checked>
+                        <label class="form-check-label" for="n_base_to_ten_base">
+                            n進数→10進数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_ten_base_to_n_base" name="convert_from_to_type" id="ten_base_to_n_base" checked>
+                        <label class="form-check-label" for="ten_base_to_n_base">
+                            10進数→n進数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_n_base_to_n_dash_base" name="convert_from_to_type" id="n_base_to_n_dash_base">
+                        <label class="form-check-label" for="n_base_to_n_dash_base">
+                            n進数→n'進数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">変換元に使用される数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="number_to_convert" id="base_n_numbers_integer" checked>
+                        <label class="form-check-label" for="base_n_numbers_integer">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="number_to_convert" id="base_n_numbers_decimal" checked>
+                        <label class="form-check-label" for="base_n_numbers_decimal">
+                            小数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="BaseNNumbersFivePaperRadio" checked>
+                        <label class="form-check-label" for="BaseNNumbersFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="BaseNNumbersTenPaperRadio">
+                        <label class="form-check-label" for="BaseNNumbersTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="BaseNNumbersFifteenPaperRadio">
+                        <label class="form-check-label" for="BaseNNumbersFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'base_n_numbers_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'base_n_numbers_display' %}">      
+            </form>
+        </div>
+    </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

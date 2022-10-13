@@ -2313,7 +2313,7 @@ def display_square_root_calculate_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool3/square_root_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
-def display_n_numbers_problem(request):
+def display_base_n_numbers(request):
     PROBLEM_NUMBER = 20
     convert_from_to_types = request.POST.getlist("convert_from_to_type")
     if not(convert_from_to_types):

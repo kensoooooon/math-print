@@ -1,33 +1,62 @@
 """
-from random import randint
 import sympy as sy
+from random import randint, choice
 
-base = 5
-digit1 = randint(0, base - 1)
-print(f"digit1: {digit1}")
-digit2 = randint(0, base - 1)
-print(f"digit2: {digit2}")
-integer_part_digits = [digit1, digit2]
-digit3 = randint(0, base - 1)
-print(f"digit3: {digit3}")
-digit4 = randint(0, base - 1)
-print(f"digit4: {digit4}")
-decimal_part_digits = [digit3, digit4]
+def _make_base_and_numbers():
+    # base_candidates = [2, 3, 4, 5, 6, 7, 8, 16]
+    # base = choice(base_candidates)
+    base = 16
+    print(f"selected base: {base}")
+    if base == 16:
+        integer_part_num = 0
+        for i in range(0, 3):
+            integer_part_num += (sy.Pow(16, i) * randint(0, 16))
+        print(f"integer_part_num: {integer_part_num}")
+        hexed_num = hex(integer_part_num)
+        print(f"hexed_num: {hexed_num}")
+        replaced_hexed_num = hexed_num.replace("0x", "").upper()
+        print(f"replaced_hexed_num: {replaced_hexed_num}")
+        decimal_part_num = 0
+        for i in range(-1, 3, -1):
+            decimal_part_num += (sy.Pow(16, i) * randint(0, 16))
+        print(f"decimal_part_num: {decimal_part_num}")
+        replaced_hexed_decimal_num = hex(decimal_part_num).replace("0x", "").upper()
+        print(f"replace_hexed_decimal_num: {replaced_hexed_decimal_num}")
+    else:
+        # integer number
+        integer_num = 0
+        integer_part_digits = []
+        for i in range(2):
+            digit = randint(0, base - 1)
+            if digit != 0:
+                integer_part_digits.append(digit)
+            # minimum catch
+            if (i == 1) and (not(integer_part_digits)):
+                integer_part_digits.append(randint(1, base - 1))
+        print(f"integer_part_digits: {integer_part_digits}")
+        ten_base_integer_num = 0
+        for index, digit in enumerate(integer_part_digits):
+            ten_base_integer_num += (digit * sy.Pow(base, index))
+        print(f"ten_base_integer_num: {ten_base_integer_num}")
+        # decimal number
+        decimal_num = 0
+        decimal_part_digits = []
+        for i in range(2):
+            digit = randint(0, base - 1)
+            if digit != 0:
+                decimal_part_digits.append(digit)
+            if (i == 1) and (not(decimal_part_digits)):
+                decimal_part_digits.append(randint(1, base - 1))
+        print(f"decimal_part_digits: {decimal_part_digits}")
+        ten_base_decimal_num = 0
+        for index, digit in enumerate(decimal_part_digits):
+            ten_base_decimal_num += (digit * sy.Pow(base, -(index + 1)))
+        print(f"ten_base_decimal_num: {ten_base_decimal_num}")
+        print(f"floated ten_base_decimal_num: {sy.Float(ten_base_decimal_num)}")
 
-number_of_digits = len(integer_part_digits)
-index = number_of_digits - 1
-integer_num = 0
-for i, digit in enumerate(integer_part_digits):
-    integer_num += (digit * sy.Pow(base, index - i))
-decimal_num = 0
-index = -1
-for i, digit in enumerate(decimal_part_digits):
-    print(f"index - i: {index - i}")
-    decimal_num += (digit * sy.Pow(base, index - i))
-                            
-print(f"integer_num: {integer_num}")
-print(f"decimal_num: {decimal_num}")
-print(f"sy.Float(decimal_num): {sy.Float(decimal_num)}")
+for _ in range(10):
+    _make_base_and_numbers()
+    print("--------------------------")
 """
 from random import choice, randint, random
 

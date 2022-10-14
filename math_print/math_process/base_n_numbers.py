@@ -194,13 +194,14 @@ class BaseNNumbersProblem:
                 number_10_decimal_part = 0
                 number_n_decimal_str = ""
                 for index in range(-1, -3, -1):
-                    digit = randint(0, 16)
+                    digit = randint(0, 15)
                     number_n_decimal_str += hex(digit).replace("0x", "").upper()
                     number_10_decimal_part += (sy.Pow(16, index) * digit)
-                number_10_str = number_10_integer_part_latex  + sy.latex(sy.Float(number_10_decimal_part)).lstrip("0")
+                # number_10_str = number_10_integer_part_latex  + sy.latex(sy.Float(number_10_decimal_part)).lstrip("0")
+                number_10_str = number_10_integer_part_latex + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
                 number_10_latex = f"{number_10_str}_{{(10)}}"
                 number_n_str = number_n_integer_str + "." + number_n_decimal_str
-                number_n_latex = f"{number_n_str}_{{(16)}}"
+                number_n_latex = f"{sy.latex(number_n_str)}_{{(16)}}"
             else:
                 base = 114544343
                 number_10_latex = "dummmy"

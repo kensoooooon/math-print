@@ -57,6 +57,32 @@ def _make_base_and_numbers():
 for _ in range(10):
     _make_base_and_numbers()
     print("--------------------------")
+
+from random import randint, choice
+import sympy as sy
+
+def _make_base_and_number():
+    n_base_integer_part = ""
+    n_base_decimal_part = ""
+    ten_base_integer_part = ""
+    ten_base_decimal_part = ""
+    # base_candidates = [2, 3, 4, 5, 6, 7, 8, 16]
+    # base = choice(base_candidates)
+    base = 16
+    if base == 16:
+        ten_base_integer = 0
+        for i in range(0, 3):
+            coeff = randint(0, 16)
+            print(f"coeff: {coeff}")
+            ten_base_integer += (sy.Pow(base, i) * coeff)
+            n_base_integer_part = str(hex(coeff)).replace("0x", "").upper() + n_base_integer_part
+    print(f"ten_base_integer: {ten_base_integer}")
+    print(f"n_base_integer_part: {n_base_integer_part}")
+    print(f"lstriped: {n_base_integer_part.lstrip('0')}")
+
+for _ in range(10):
+          _make_base_and_number()
+          print("------------")
 """
 from random import choice, randint, random
 

@@ -180,8 +180,8 @@ class BaseNNumbersProblem:
                 number_10_latex = f"{sy.latex(number_10)}_{{(10)}}"
                 number_n_latex = f"{number_n_str}_{{({selected_base})}}"
         elif selected_number_type == "decimal":
-            # base_candidates = [2, 4, 5, 8, 16]
-            # selected_base = choice(base_candidates)
+            base_candidates = [2, 4, 5, 8, 16]
+            selected_base = choice(base_candidates)
             selected_base = 16
             if selected_base == 16:
                 number_10 = 0
@@ -203,7 +203,17 @@ class BaseNNumbersProblem:
                 number_n_str = number_n_integer_str + "." + number_n_decimal_str
                 number_n_latex = f"{sy.latex(number_n_str)}_{{(16)}}"
             else:
-                base = 114544343
+                number_10 = 0
+                number_n_str = ""
+                # integer_part
+                number_10_integer_part = 0
+                number_n_str_integer_part = ""
+                for index in range(0, 3):
+                    digit = randint(0, selected_base - 1)
+                    number_n_str_integer_part = str(digit) + number_n_str_integer_part
+                    number_10_integer_part += sy.Pow(selected_base, index)
+                # decimal_part
+                
                 number_10_latex = "dummmy"
                 number_n_latex = "dummmmyy"
         else:

@@ -157,7 +157,8 @@ class BaseNNumbersProblem:
             x_{(10)}, y_{(n)}
         """
         class NumberAndBase(NamedTuple):
-            number_10_latex : str
+            number_10_latex_with_frac : str
+            number_10_latex_with_decimal : str
             number_n_latex : str
             base : int
         
@@ -182,7 +183,7 @@ class BaseNNumbersProblem:
         elif selected_number_type == "decimal":
             base_candidates = [2, 4, 5, 8, 16]
             selected_base = choice(base_candidates)
-            selected_base = 16
+            # selected_base = 16
             if selected_base == 16:
                 number_10 = 0
                 number_n_str = ""
@@ -198,8 +199,10 @@ class BaseNNumbersProblem:
                     number_n_decimal_str += hex(digit).replace("0x", "").upper()
                     number_10_decimal_part += (sy.Pow(16, index) * digit)
                 # number_10_str = number_10_integer_part_latex  + sy.latex(sy.Float(number_10_decimal_part)).lstrip("0")
-                number_10_str = number_10_integer_part_latex + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
-                number_10_latex = f"{number_10_str}_{{(10)}}"
+                number_10_str_with_decimal = number_10_integer_part_latex + f". {sy.latex(sy.Float(round(number_10_decimal_part, 5)))}"
+                number_10_str_with_frac = number_10_integer_part_latex + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
+                number_10_with_frac_latex = f"{number_10_str_with_frac}_{{(10)}}"
+                number_10_with_decimal_latex = f"{number_10_str_with_decimal}_{{(10)}}"
                 number_n_str = number_n_integer_str + "." + number_n_decimal_str
                 number_n_latex = f"{sy.latex(number_n_str)}_{{(16)}}"
             else:

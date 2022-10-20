@@ -1286,7 +1286,6 @@ def print_base_n_numbers(request):
     if not(convert_from_to_types):
         convert_from_to_types.append("from_n_base_to_ten_base")
         convert_from_to_types.append("from_ten_base_to_n_base")
-        convert_from_to_types.append("from_n_base_to_n_dash_base")
     numbers_to_convert = request.POST.getlist("number_to_convert")
     if not(numbers_to_convert):
         numbers_to_convert.append("integer")
@@ -2319,7 +2318,6 @@ def display_base_n_numbers(request):
     if not(convert_from_to_types):
         convert_from_to_types.append("from_n_base_to_ten_base")
         convert_from_to_types.append("from_ten_base_to_n_base")
-        convert_from_to_types.append("from_n_base_to_n_dash_base")
     numbers_to_convert = request.POST.getlist("number_to_convert")
     if not(numbers_to_convert):
         numbers_to_convert.append("integer")

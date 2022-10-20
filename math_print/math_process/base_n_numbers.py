@@ -128,14 +128,12 @@ class BaseNNumbersProblem:
     
     def _make_from_n_base_to_ten_base_problem(self):
         number_and_base = self._make_random_10_and_n_base_number()
-        print(number_and_base)
         latex_answer = f"= {number_and_base.number_10_latex}"
         latex_problem = f"{number_and_base.number_n_latex} \\rightarrow \\underline{{\\quad \\quad \\quad}}_{{(10)}}"
         return latex_answer, latex_problem
 
     def _make_from_ten_base_to_n_base_problem(self):
         number_and_base = self._make_random_10_and_n_base_number()
-        print(number_and_base)
         latex_answer = f" = {number_and_base.number_n_latex}"
         latex_problem = f"{number_and_base.number_10_latex} \\rightarrow \\underline{{\\quad \\quad \\quad}}_{{({number_and_base.base})}}"
         return latex_answer, latex_problem
@@ -157,8 +155,7 @@ class BaseNNumbersProblem:
             x_{(10)}, y_{(n)}
         """
         class NumberAndBase(NamedTuple):
-            number_10_latex_with_frac : str
-            number_10_latex_with_decimal : str
+            number_10_latex : str
             number_n_latex : str
             base : int
         
@@ -178,6 +175,10 @@ class BaseNNumbersProblem:
                     n_digit = randint(0, selected_base - 1)
                     number_n_str += str(n_digit)
                     number_10 += (n_digit * sy.Pow(selected_base, index))
+                if number_n_str == "000":
+                    n_digit = randint(1, selected_base - 1)
+                    number_n_str = str(n_digit)
+                    number_10 = n_digit * sy.Pow(selected_base, 0)
                 number_10_latex = f"{sy.latex(number_10)}_{{(10)}}"
                 number_n_latex = f"{number_n_str}_{{({selected_base})}}"
         elif selected_number_type == "decimal":
@@ -186,7 +187,7 @@ class BaseNNumbersProblem:
             # selected_base = 16
             if selected_base == 16:
                 number_10 = 0
-                number_n_str = ""
+                # number_n_str = ""
                 # integer_part
                 number_10_integer_part = randint(1, 100)
                 number_10_integer_part_latex = sy.latex(number_10_integer_part)
@@ -199,27 +200,42 @@ class BaseNNumbersProblem:
                     number_n_decimal_str += hex(digit).replace("0x", "").upper()
                     number_10_decimal_part += (sy.Pow(16, index) * digit)
                 # number_10_str = number_10_integer_part_latex  + sy.latex(sy.Float(number_10_decimal_part)).lstrip("0")
-                number_10_str_with_decimal = number_10_integer_part_latex + f". {sy.latex(sy.Float(round(number_10_decimal_part, 5)))}"
+                number_10_str_with_decimal = sy.latex(sy.Float(number_10_integer_part + number_10_decimal_part))
+                # number_10_str_with_decimal = number_10_integer_part_latex + f". {sy.latex(sy.Float(round(number_10_decimal_part, 5)))}"
                 number_10_str_with_frac = number_10_integer_part_latex + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
-                number_10_with_frac_latex = f"{number_10_str_with_frac}_{{(10)}}"
-                number_10_with_decimal_latex = f"{number_10_str_with_decimal}_{{(10)}}"
+                number_10_latex_with_frac = f"{number_10_str_with_frac}_{{(10)}}"
+                number_10_latex_with_decimal = f"{number_10_str_with_decimal}_{{(10)}}"
+                number_10_latex = f"{number_10_latex_with_frac} \\quad ({number_10_latex_with_decimal})"
                 number_n_str = number_n_integer_str + "." + number_n_decimal_str
-                number_n_latex = f"{sy.latex(number_n_str)}_{{(16)}}"
+                number_n_latex = f"{number_n_str}_{{(16)}}"
             else:
                 number_10 = 0
-                number_n_str = ""
+                # number_n_str = ""
                 # integer_part
                 number_10_integer_part = 0
                 number_n_str_integer_part = ""
                 for index in range(0, 3):
                     digit = randint(0, selected_base - 1)
                     number_n_str_integer_part = str(digit) + number_n_str_integer_part
-                    number_10_integer_part += sy.Pow(selected_base, index)
+                    number_10_integer_part += (sy.Pow(selected_base, index) * digit)
                 # decimal_part
-                
-                number_10_latex = "dummmy"
-                number_n_latex = "dummmmyy"
+                number_10_decimal_part = 0
+                number_n_decimal_str = ""
+                for index in range(-1, -3, -1):
+                    digit = randint(0, selected_base - 1)
+                    number_n_decimal_str += str(digit)
+                    number_10_decimal_part += (sy.Pow(selected_base, index) * digit)
+                number_10_str_with_decimal = sy.latex(sy.Float(number_10_integer_part + number_10_decimal_part))
+                # number_10_str_with_decimal = sy.latex(number_10_integer_part) + f". {sy.latex(sy.Float(round(number_10_decimal_part, 5)))}"
+                number_10_str_with_frac = sy.latex(number_10_integer_part) + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
+                number_10_latex_with_frac = f"{number_10_str_with_frac}_{{(10)}}"
+                number_10_latex_with_decimal = f"{number_10_str_with_decimal}_{{(10)}}"
+                number_10_latex = f"{number_10_latex_with_frac} \\quad ({number_10_latex_with_decimal})"
+                number_n_str = number_n_str_integer_part + "." + number_n_decimal_str
+                number_n_latex = f"{number_n_str}_{{({selected_base})}}"
         else:
             raise ValueError(f"selected_number_type is {repr(selected_number_type)}. This may be wrong.")
-        number_and_base = NumberAndBase(number_10_latex=number_10_latex, number_n_latex=number_n_latex, base=selected_base)
+        number_and_base = NumberAndBase(
+            number_10_latex=number_10_latex, number_n_latex=number_n_latex, base=selected_base
+        )            
         return number_and_base

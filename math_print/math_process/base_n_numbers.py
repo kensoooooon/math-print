@@ -143,7 +143,7 @@ class BaseNNumbersProblem:
                 if number_n_str_integer_part == "000":
                     digit = randint(1, selected_base - 1)
                     number_n_decimal_str = str(digit)
-                    number_10_decimal_part = n_digit * sy.Pow(selected_base, 1)
+                    number_10_decimal_part = digit * sy.Pow(selected_base, 1)
                 # decimal_part
                 number_10_decimal_part = 0
                 number_n_decimal_str = ""

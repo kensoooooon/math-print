@@ -80,6 +80,38 @@ class BaseNNumbersProblem:
             number_10_latex : str
             number_n_latex : str
             base : int
+
+        def zero_remover_from_start(number_string):
+            """数の並びの中で、先頭から連続している0を取り除く
+
+            Args:
+                number_string (str): 0を除去したい数の並び
+
+            Returns:
+                removed_string (str): 0が除去された数の並び
+            """
+            removed_string = number_string
+            while True:
+                if removed_string[0] != "0":
+                    break
+                removed_string = removed_string[1:]
+            return removed_string
+
+        def zero_remover_from_end(number_string):
+            """数の並びの中で、末尾から連続している0を取り除く
+
+            Args:
+                number_string (str): 0を除去したい数の並び
+
+            Returns:
+                removed_string (str): 0が除去された数の並び
+            """
+            removed_string = number_string
+            while True:
+                if removed_string[-1] != "0":
+                    break
+                removed_string = removed_string[:-1]
+            return removed_string
         
         selected_number_type = choice(self._numbers_to_convert)  # integer or decimal
         if selected_number_type == "integer":
@@ -101,7 +133,9 @@ class BaseNNumbersProblem:
                     n_digit = randint(1, selected_base - 1)
                     number_n_str = str(n_digit)
                     number_10 = n_digit * sy.Pow(selected_base, 0)
-                number_10_latex = f"{sy.latex(number_10)}_{{(10)}}"
+                number_n_str = zero_remover_from_start(number_n_str)
+                number_10_str = zero_remover_from_start(str(number_10))
+                number_10_latex = f"{number_10_str}_{{(10)}}"
                 number_n_latex = f"{number_n_str}_{{({selected_base})}}"
         elif selected_number_type == "decimal":
             base_candidates = [2, 4, 5, 8, 16]
@@ -124,9 +158,11 @@ class BaseNNumbersProblem:
                     digit = randint(1, selected_base - 1)
                     number_n_decimal_str = str(hex(digit))
                     number_10_decimal_part = digit * sy.Pow(selected_base, -1)
+                number_n_decimal_str = zero_remover_from_end(number_n_decimal_str)
                 number_10_str_with_decimal = sy.latex(sy.Float(number_10_integer_part + number_10_decimal_part))
                 number_10_str_with_frac = number_10_integer_part_latex + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
                 number_10_latex_with_frac = f"{number_10_str_with_frac}_{{(10)}}"
+                number_10_str_with_decimal = zero_remover_from_end(number_10_str_with_decimal)
                 number_10_latex_with_decimal = f"{number_10_str_with_decimal}_{{(10)}}"
                 number_10_latex = f"{number_10_latex_with_frac} \\quad ({number_10_latex_with_decimal})"
                 number_n_str = number_n_integer_str + "." + number_n_decimal_str
@@ -142,8 +178,9 @@ class BaseNNumbersProblem:
                     number_10_integer_part += (sy.Pow(selected_base, index) * digit)
                 if number_n_str_integer_part == "000":
                     digit = randint(1, selected_base - 1)
-                    number_n_decimal_str = str(digit)
-                    number_10_decimal_part = digit * sy.Pow(selected_base, 1)
+                    number_n_str_integer_part = str(digit)
+                    number_10_integer_part = digit * sy.Pow(selected_base, 1)
+                number_n_str_integer_part = zero_remover_from_start(number_n_str_integer_part)
                 # decimal_part
                 number_10_decimal_part = 0
                 number_n_decimal_str = ""
@@ -155,9 +192,11 @@ class BaseNNumbersProblem:
                     digit = randint(1, selected_base - 1)
                     number_n_decimal_str = str(digit)
                     number_10_decimal_part = digit * sy.Pow(selected_base, -1)
+                number_n_decimal_str = zero_remover_from_end(number_n_decimal_str)
                 number_10_str_with_decimal = sy.latex(sy.Float(number_10_integer_part + number_10_decimal_part))
                 number_10_str_with_frac = sy.latex(number_10_integer_part) + f"+ {sy.latex(sy.Rational(number_10_decimal_part))}"
                 number_10_latex_with_frac = f"{number_10_str_with_frac}_{{(10)}}"
+                number_10_str_with_decimal = zero_remover_from_end(number_10_str_with_decimal)
                 number_10_latex_with_decimal = f"{number_10_str_with_decimal}_{{(10)}}"
                 number_10_latex = f"{number_10_latex_with_frac} \\quad ({number_10_latex_with_decimal})"
                 number_n_str = number_n_str_integer_part + "." + number_n_decimal_str

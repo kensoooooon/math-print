@@ -43,6 +43,7 @@ from .math_process.common_denominator import CommonDenominatorProblem
 from .math_process.recurrence_relation import RecurrenceRelationProblem
 from .math_process.square_root import SquareRootProblem
 from .math_process.square_root_calculate import SquareRootCalculateProblem
+from .math_process.base_n_numbers import BaseNNumbersProblem
 
 
 def index(request):
@@ -1278,7 +1279,29 @@ def print_square_root_calculate_problem(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/junior_highschool3/square_root_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_base_n_numbers(request):
+    PROBLEM_NUMBER = 20
+    convert_from_to_types = request.POST.getlist("convert_from_to_type")
+    if not(convert_from_to_types):
+        convert_from_to_types.append("from_n_base_to_ten_base")
+        convert_from_to_types.append("from_ten_base_to_n_base")
+    numbers_to_convert = request.POST.getlist("number_to_convert")
+    if not(numbers_to_convert):
+        numbers_to_convert.append("integer")
+        numbers_to_convert.append("decimal")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = BaseNNumbersProblem(convert_from_to_types=convert_from_to_types, numbers_to_convert=numbers_to_convert)
+            problem2 = BaseNNumbersProblem(convert_from_to_types=convert_from_to_types, numbers_to_convert=numbers_to_convert)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
+    return render(request, 'math_print/highschool1/base_n_numbers/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list}) 
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -2288,3 +2311,21 @@ def display_square_root_calculate_problem(request):
         problem2 = SquareRootCalculateProblem(calculation_types=calculation_types)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool3/square_root_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_base_n_numbers(request):
+    PROBLEM_NUMBER = 20
+    convert_from_to_types = request.POST.getlist("convert_from_to_type")
+    if not(convert_from_to_types):
+        convert_from_to_types.append("from_n_base_to_ten_base")
+        convert_from_to_types.append("from_ten_base_to_n_base")
+    numbers_to_convert = request.POST.getlist("number_to_convert")
+    if not(numbers_to_convert):
+        numbers_to_convert.append("integer")
+        numbers_to_convert.append("decimal")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = BaseNNumbersProblem(convert_from_to_types=convert_from_to_types, numbers_to_convert=numbers_to_convert)
+        problem2 = BaseNNumbersProblem(convert_from_to_types=convert_from_to_types, numbers_to_convert=numbers_to_convert)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool1/base_n_numbers/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    

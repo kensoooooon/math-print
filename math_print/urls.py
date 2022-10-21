@@ -92,6 +92,9 @@ urlpatterns = [
     # 平行線と図形の角
     path('parallel_lines_and_angle/print/', views.print_parallel_lines_and_angle, name='parallel_lines_and_angle_print'),
     path('parallel_lines_and_angle/display/', views.display_parallel_lines_and_angle, name='parallel_lines_and_angle_display'),
+    # 1次関数とグラフ
+    path('linear_function_with_graph/print/', views.print_linear_function_with_graph, name='linear_function_with_graph_print'),
+    path('linear_function_with_graph/display/', views.display_linear_function_with_graph, name='linear_function_with_graph_display'),
     ##########################################
     ### 中3 ###
     path('junior_highschool3/', views.show_junior_highschool3, name='junior_highschool3'),

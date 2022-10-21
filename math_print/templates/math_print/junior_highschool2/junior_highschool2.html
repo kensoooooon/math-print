@@ -414,6 +414,50 @@
                     <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'linear_function_display' %}">
                 </form>
             </div>
+            <div class="col border-end border-bottom">
+                <p>グラフから1次関数を求める</p>
+                <form action="?" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <small class="text-muted">使用されるグラフの種類</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="with_grid" name="graph_to_use" id="linear_function_with_graph_with_grid" checked>
+                            <label class="form-check-label" for="linear_function_with_graph_with_grid">
+                                マス目あり
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="without_grid" name="graph_to_use" id="linear_function_with_graph_without_grid">
+                            <label class="form-check-label" for="linear_function_with_graph_without_grid">
+                                マス目なし
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">枚数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="linearFunctionWithGraphFivePaperRadio" checked>
+                            <label class="form-check-label" for="linearFunctionWithGraphFivePaperRadio">
+                                10問×5枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="linearFunctionWithGraphTenPaperRadio">
+                            <label class="form-check-label" for="linearFunctionWithGraphTenPaperRadio">
+                                10問×10枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="linearFunctionWithGraphFifteenPaperRadio">
+                            <label class="form-check-label" for="linearFunctionWithGraphFifteenPaperRadio">
+                                10問×15枚
+                            </label>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'linear_function_with_graph_print' %}">
+                    <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'linear_function_with_graph_display' %}">
+                </form>
+            </div>
         </div>
         <div class="row">
             <div class="col border-end border-bottom">

@@ -44,6 +44,7 @@ from .math_process.recurrence_relation import RecurrenceRelationProblem
 from .math_process.square_root import SquareRootProblem
 from .math_process.square_root_calculate import SquareRootCalculateProblem
 from .math_process.base_n_numbers import BaseNNumbersProblem
+from .math_process.linear_function_with_graph import LinearFunctionWithGraphProblem
 
 
 def index(request):
@@ -1302,6 +1303,23 @@ def print_base_n_numbers(request):
     
     return render(request, 'math_print/highschool1/base_n_numbers/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list}) 
 
+def print_linear_function_with_graph(request):
+    PROBLEM_NUMBER = 10
+    
+    graph_to_use_list = request.POST.getlist("graph_to_use")
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = LinearFunctionWithGraphProblem(graph_to_use_list=graph_to_use_list)
+            problem2 = LinearFunctionWithGraphProblem(graph_to_use_list=graph_to_use_list)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/junior_highschool2/linear_function_with_graph/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -2328,4 +2346,16 @@ def display_base_n_numbers(request):
         problem2 = BaseNNumbersProblem(convert_from_to_types=convert_from_to_types, numbers_to_convert=numbers_to_convert)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool1/base_n_numbers/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_linear_function_with_graph(request):      
+    PROBLEM_NUMBER = 20
     
+    graph_to_use_list = request.POST.getlist("graph_to_use")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = LinearFunctionWithGraphProblem(graph_to_use_list=graph_to_use_list)
+        problem2 = LinearFunctionWithGraphProblem(graph_to_use_list=graph_to_use_list)
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool2/linear_function_with_graph/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

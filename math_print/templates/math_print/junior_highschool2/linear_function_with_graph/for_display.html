@@ -29,13 +29,10 @@ function refresh() {
       graphic.endStroke();
       var shape = new createjs.Shape(graphic);
       stage.addChild(shape);
-
   }
 
   function drawDegreeCharacter(stage, x, y, character) {
-    //文字オブジェクトを作成する
     var text = new createjs.Text(character, "15px Arial", "#000000");
-    //描画位置の指定
     text.x = x;
     text.y = y;
     stage.addChild(text);
@@ -77,6 +74,8 @@ function refresh() {
     stage.update();
   }
 
+  function 
+
   function draw() {
     {% for information_tuple in math_problem_tuple_list %}
     var container_div = document.createElement("div");
@@ -91,9 +90,7 @@ function refresh() {
     var left_canvas = document.createElement('canvas');
     var left_canvas_id = "left_canvas" + {{ forloop.counter }};
     left_canvas.id = left_canvas_id;
-    // left_canvas.width = 640;
     left_canvas.width = 320;
-    // left_canvas.height = 320;
     left_canvas.height = 160;
     left_canvas.style = "background-color:#CCFFFF";
 
@@ -103,18 +100,16 @@ function refresh() {
     var right_canvas = document.createElement('canvas');
     var right_canvas_id = "right_canvas" + {{ forloop.counter }};
     right_canvas.id = right_canvas_id;
-    // right_canvas.width = 640;
     right_canvas.width = 320;
-    // right_canvas.height = 320;
     right_canvas.height = 160;
     right_canvas.style = "background-color:#CCFFFF";
 
     // insert part
     left_div.appendChild(left_canvas);
     // add left problem and answer to left_div
-    var left_problem_p = document.createElement('p');
-    left_problem_p.style = "visibility:visible";
-    left_problem_p.className = "problem";
+    // var left_problem_p = document.createElement('p');
+    // left_problem_p.style = "visibility:visible";
+    // left_problem_p.className = "problem";
     // var left_problem_string = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
     // var left_problem = document.createTextNode(left_problem_string);
     // left_problem_p.appendChild(left_problem);
@@ -127,12 +122,11 @@ function refresh() {
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
-
     right_div.appendChild(right_canvas);
     // add right problem and answer to right_div
-    var right_problem_p = document.createElement('p');
-    right_problem_p.style = "visibility:visible";
-    right_problem_p.className = "problem";
+    // var right_problem_p = document.createElement('p');
+    // right_problem_p.style = "visibility:visible";
+    // right_problem_p.className = "problem";
     // var right_problem_string = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
     // var right_problem = document.createTextNode(right_problem_string);
     // right_problem_p.appendChild(right_problem);
@@ -149,6 +143,28 @@ function refresh() {
     row_container.appendChild(right_div);
     container_div.appendChild(row_container);
     document.body.appendChild(container_div);
+
+    var left_stage = new createjs.Stage(left_canvas_id);
+    var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+    var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+    var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+    var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+    drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
+    addCoordinateToGraph(left_stage, right_x1, right_y1, right_x2, right_y2);
+    if ("{{ information_tuple.0.graph_to_use }}" == "with_grid") {
+      makeAxisAndGridLine(left_stage);
+    }
+
+    var right_stage = new createjs.Stage(right_canas_id);
+    var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+    var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+    var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+    var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+    drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
+    addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
+    if ("{{ information_tuple.1.graph_to_use }}" == "with_grid") {
+      makeAxisAndGridLine(right_stage);
+    }
 
     {% endfor %}
     MathJax.typeset();

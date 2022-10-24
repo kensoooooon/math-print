@@ -74,7 +74,15 @@ function refresh() {
     stage.update();
   }
 
-  function 
+  function drawLinearFunction(stage, x1, y1, x2, y2) {
+    // convert x1~y2 to pixel(320, 160)
+    let x1_p = 160 + 10 * x1;
+    let y1_p = 80 + 10 * y1;
+    let x2_p = 160 + 10 * x2;
+    let y2_p = 80 + 10 * y2;
+    let graphic = new createjs.Graphics();
+    drawLine(stage, x1_p, y1_p, x2_p, y2_p);
+  }
 
   function draw() {
     {% for information_tuple in math_problem_tuple_list %}

@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, random
 from typing import NamedTuple
 
 
@@ -30,6 +30,11 @@ class LinearFunctionWithGraphProblem:
             linear_function (LinearFunction): 1次関数の通る点と式を格納
         """
         linear_function = self._decide_linear_function_status()
+        print(f"x1: {linear_function.x1}")
+        print(f"y1: {linear_function.y1}")
+        print(f"x2: {linear_function.x2}")
+        print(f"y2: {linear_function.y2}")
+        print(f"linear_equation_latex: {linear_function.linear_equation_latex}")
         latex_answer = f"{linear_function.linear_equation_latex}"
         return latex_answer, linear_function
     
@@ -58,6 +63,8 @@ class LinearFunctionWithGraphProblem:
         x2 = x1 + randint(1, 7 - x1)
         y1 = randint(-7, 6)
         y2 = y1 + randint(1, 7 - y1)
+        if random() > 0.5:
+            y1, y2 = y2, y1
         linear_coefficient = sy.Rational(y2 - y1, x2 - x1)
         right_of_equation = sy.expand(linear_coefficient * x - linear_coefficient * x1 + y1)
         equation = sy.Eq(y, right_of_equation)

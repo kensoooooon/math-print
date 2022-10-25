@@ -38,6 +38,55 @@ function refresh() {
     stage.addChild(text);
   }
 
+  function addAxis(stage) {
+    drawLine(stage, 90, 80, 230, 80);
+    drawLine(stage, 160, 10, 160, 150);
+    drawDegreeCharacter(stage, 235, 80, "x");
+    drawDegreeCharacter(stage, 155, -5, "y");
+  }
+
+  function addGridLineToGraph(stage) {
+    let graphic = new createjs.Graphics();
+    // dash line
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([1, 1], 0);
+    for (let i = 0; i <= 14; i++) {
+        let x = 10 * i + 90;
+        graphic.moveTo(x, 10);
+        graphic.lineTo(x, 150);
+      }
+    for (let i = 0; i <= 14; i++) {
+        let y = 10 * i + 10;
+        graphic.moveTo(90, y);
+        graphic.lineTo(230, y);
+    }
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    // five
+    drawDegreeCharacter(stage, 10 * 1 + 90, 80, "-5");
+    drawDegreeCharacter(stage, 10 * 11 + 90, 80, "5");
+    drawDegreeCharacter(stage, 160, 10 * 1 + 10, "5");
+    drawDegreeCharacter(stage, 160, 10 * 11 + 10, "-5");
+    drawDegreeCharacter(stage, 160, 80, "O");
+    graphic.endStroke();
+    let shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
+  }
+
+  function addCoordinateToGraph(stage, x1, y1, x2, y2) {
+    let x1_p = 10 * x1 + 90;
+    let y1_p = 10 * y1 + 10;
+    let x2_p = 10 * x2 + 90;
+    let y2_p = 10 * y2 + 10;
+    let point1 = "(" + String(x1) + " ," + String(y1) + ")";
+    let point2 = "(" + String(x2) + " ," + String(y2) + ")";
+    drawDegreeCharacter(stage, x1_p, y1_p, point1);
+    drawDegreeCharacter(stage, x2_p, y2_p, point2);
+  }
+
   function makeAxisAndGridLine(stage) {
     let graphic = new createjs.Graphics();
     // dash line
@@ -77,11 +126,16 @@ function refresh() {
   function drawLinearFunction(stage, x1, y1, x2, y2) {
     // convert x1~y2 to pixel(320, 160)
     let x1_p = 160 + 10 * x1;
-    let y1_p = 80 + 10 * y1;
+    let y1_p = 80 + 10 * -y1;
     let x2_p = 160 + 10 * x2;
-    let y2_p = 80 + 10 * y2;
-    let graphic = new createjs.Graphics();
-    drawLine(stage, x1_p, y1_p, x2_p, y2_p);
+    let y2_p = 80 + 10 * -y2;
+    let linear_coefficient_p = (y2_p - y1_p) / (x2_p - x1_p);
+    let intercept_p = -linear_coefficient_p * x1_p + y1_p;
+    let left_end_x = 160 + 10 * -7;
+    let left_end_y = linear_coefficient_p * left_end_x + intercept_p;
+    let right_end_x = 160 + 10 * 7;
+    let right_end_y = linear_coefficient_p * right_end_x + intercept_p;
+    drawLine(stage, left_end_x, left_end_y, right_end_x, right_end_y);
   }
 
   function draw() {
@@ -158,20 +212,26 @@ function refresh() {
     var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
     var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
     drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
-    addCoordinateToGraph(left_stage, right_x1, right_y1, right_x2, right_y2);
+    addAxis(left_stage);
     if ("{{ information_tuple.0.graph_to_use }}" == "with_grid") {
-      makeAxisAndGridLine(left_stage);
+      addGridLineToGraph(left_stage);
+    }
+    else {
+      addCoordinateToGraph(left_stage, right_x1, right_y1, right_x2, right_y2);
     }
 
-    var right_stage = new createjs.Stage(right_canas_id);
+    var right_stage = new createjs.Stage(right_canvas_id);
     var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
     var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
     var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
     var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
     drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
-    addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
+    addAxis(right_stage);
     if ("{{ information_tuple.1.graph_to_use }}" == "with_grid") {
-      makeAxisAndGridLine(right_stage);
+      addGridLineToGraph(right_stage);
+    }
+    else {
+      addCoordinateToGraph(left_stage, right_x1, right_y1, right_x2, right_y2);
     }
 
     {% endfor %}

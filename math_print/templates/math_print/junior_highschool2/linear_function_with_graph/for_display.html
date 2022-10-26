@@ -124,13 +124,43 @@ function refresh() {
   }
 
   function drawLinearFunction(stage, x1, y1, x2, y2) {
+    // x = -7, 7 |  y= -7, 7 check
+    let linear_coefficient = (y2 - y1) / (x2 - x1)
+    let intercept = -linear_coefficient * x1 + y1;
+    let end_points = [];
+    // x = -7 check
+    let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
+    if (Math.abs(y_with_x_minus_7) <= 7) {
+      end_points.push([-7, y_with_x_minus_7]);
+    }
+    // y = -7 check
+    let x_with_y_minus_7 = (-7 - intercept) / linear_coefficient;
+    if (Math.abs(x_with_y_minus_7) <= 7) {
+      end_points.push([x_with_y_minus_7, -7]);
+    }
+    // x = 7 check
+    let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
+    if (Math.abs(y_with_x_plus_7) <= 7) {
+      end_points.push([7, y_with_x_plus_7]);
+    }
+    // y = 7 check
+    let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;
+    if (Math.abs(x_with_y_plus_7) <= 7) {
+      end_points.push([x_with_y_plus_7, 7]);
+    }
+    console.log(end_points);
+    let end_x1, end_y1, end_x2, end_y2;
+    [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
     // convert x1~y2 to pixel(320, 160)
-    let x1_p = 160 + 10 * x1;
-    let y1_p = 80 + 10 * -y1;
-    let x2_p = 160 + 10 * x2;
-    let y2_p = 80 + 10 * -y2;
+    let end_x1_p = 160 + 10 * end_x1;
+    let end_y1_p = 80 + 10 * -end_y1;
+    let end_x2_p = 160 + 10 * end_x2;
+    let end_y2_p = 80 + 10 * -end_y2;
     let linear_coefficient_p = (y2_p - y1_p) / (x2_p - x1_p);
     let intercept_p = -linear_coefficient_p * x1_p + y1_p;
+    // x = -7, 7 |  y= -7, 7 check
+    let end_points = [];
+    // x = -7 check
     let left_end_x = 160 + 10 * -7;
     let left_end_y = linear_coefficient_p * left_end_x + intercept_p;
     let right_end_x = 160 + 10 * 7;

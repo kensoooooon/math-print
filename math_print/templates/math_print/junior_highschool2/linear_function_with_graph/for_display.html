@@ -17,6 +17,18 @@ function refresh() {
 }
 </script>
 
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 <script>
   window.addEventListener("load", make);
@@ -78,9 +90,9 @@ function refresh() {
 
   function addCoordinateToGraph(stage, x1, y1, x2, y2) {
     let x1_p = 10 * x1 + 90;
-    let y1_p = 10 * y1 + 10;
+    let y1_p = 10 * (-y1) + 10;
     let x2_p = 10 * x2 + 90;
-    let y2_p = 10 * y2 + 10;
+    let y2_p = 10 * (-y2) + 10;
     let point1 = "(" + String(x1) + " ," + String(y1) + ")";
     let point2 = "(" + String(x2) + " ," + String(y2) + ")";
     drawDegreeCharacter(stage, x1_p, y1_p, point1);
@@ -148,7 +160,6 @@ function refresh() {
     if (Math.abs(x_with_y_plus_7) <= 7) {
       end_points.push([x_with_y_plus_7, 7]);
     }
-    console.log(end_points);
     let end_x1, end_y1, end_x2, end_y2;
     [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
     // convert x1~y2 to pixel(320, 160)
@@ -156,16 +167,7 @@ function refresh() {
     let end_y1_p = 80 + 10 * -end_y1;
     let end_x2_p = 160 + 10 * end_x2;
     let end_y2_p = 80 + 10 * -end_y2;
-    let linear_coefficient_p = (y2_p - y1_p) / (x2_p - x1_p);
-    let intercept_p = -linear_coefficient_p * x1_p + y1_p;
-    // x = -7, 7 |  y= -7, 7 check
-    let end_points = [];
-    // x = -7 check
-    let left_end_x = 160 + 10 * -7;
-    let left_end_y = linear_coefficient_p * left_end_x + intercept_p;
-    let right_end_x = 160 + 10 * 7;
-    let right_end_y = linear_coefficient_p * right_end_x + intercept_p;
-    drawLine(stage, left_end_x, left_end_y, right_end_x, right_end_y);
+    drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
   }
 
   function draw() {
@@ -210,7 +212,7 @@ function refresh() {
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
-    var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
+    var left_answer = document.createTextNode("\\( {{ information_tuple.0.latex_answer }} \\)");
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
@@ -227,7 +229,7 @@ function refresh() {
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
-    var right_answer = document.createTextNode("{{ information_tuple.1.latex_answer }}");
+    var right_answer = document.createTextNode("\\( {{ information_tuple.1.latex_answer }} \\)");
     right_answer_p.appendChild(right_answer);
     right_div.appendChild(right_answer_p);
 

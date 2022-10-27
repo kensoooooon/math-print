@@ -17,18 +17,6 @@ function refresh() {
 }
 </script>
 
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        extensions: ["tex2jax.js"],
-        jax: ["input/TeX","output/HTML-CSS"],
-        tex2jax: {
-            inlineMath: [["$","$"],["\\(","\\)"]],
-            displayMath: [["$$","$$"],["\\[","\\]"]]
-        }
-        });
-</script>
-
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 <script>
   window.addEventListener("load", make);
@@ -89,6 +77,7 @@ function refresh() {
   }
 
   function addCoordinateToGraph(stage, x1, y1, x2, y2) {
+    let graphic = new createjs.Graphics();
     let x1_p = 10 * x1 + 90;
     let y1_p = 10 * (-y1) + 10;
     let x2_p = 10 * x2 + 90;
@@ -97,6 +86,10 @@ function refresh() {
     let point2 = "(" + String(x2) + " ," + String(y2) + ")";
     drawDegreeCharacter(stage, x1_p, y1_p, point1);
     drawDegreeCharacter(stage, x2_p, y2_p, point2);
+    graphic.endStroke();
+    let shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+    stage.update();
   }
 
   function makeAxisAndGridLine(stage) {
@@ -200,36 +193,20 @@ function refresh() {
 
     // insert part
     left_div.appendChild(left_canvas);
-    // add left problem and answer to left_div
-    // var left_problem_p = document.createElement('p');
-    // left_problem_p.style = "visibility:visible";
-    // left_problem_p.className = "problem";
-    // var left_problem_string = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
-    // var left_problem = document.createTextNode(left_problem_string);
-    // left_problem_p.appendChild(left_problem);
-    // left_div.appendChild(left_problem_p);
     
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
-    var left_answer = document.createTextNode("\\( {{ information_tuple.0.latex_answer }} \\)");
+    var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
     right_div.appendChild(right_canvas);
-    // add right problem and answer to right_div
-    // var right_problem_p = document.createElement('p');
-    // right_problem_p.style = "visibility:visible";
-    // right_problem_p.className = "problem";
-    // var right_problem_string = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
-    // var right_problem = document.createTextNode(right_problem_string);
-    // right_problem_p.appendChild(right_problem);
-    // right_div.appendChild(right_problem_p);
 
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
-    var right_answer = document.createTextNode("\\( {{ information_tuple.1.latex_answer }} \\)");
+    var right_answer = document.createTextNode("{{ information_tuple.1.latex_answer }}");
     right_answer_p.appendChild(right_answer);
     right_div.appendChild(right_answer_p);
 
@@ -247,9 +224,8 @@ function refresh() {
     addAxis(left_stage);
     if ("{{ information_tuple.0.graph_to_use }}" == "with_grid") {
       addGridLineToGraph(left_stage);
-    }
-    else {
-      addCoordinateToGraph(left_stage, right_x1, right_y1, right_x2, right_y2);
+    } else {
+      addCoordinateToGraph(left_stage, left_x1, left_y1, left_x2, left_y2);
     }
 
     var right_stage = new createjs.Stage(right_canvas_id);
@@ -259,13 +235,12 @@ function refresh() {
     var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
     drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
     addAxis(right_stage);
+    console.log("{{ information_tuple.1.graph_to_use }}");
     if ("{{ information_tuple.1.graph_to_use }}" == "with_grid") {
       addGridLineToGraph(right_stage);
+    } else {
+      addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
     }
-    else {
-      addCoordinateToGraph(left_stage, right_x1, right_y1, right_x2, right_y2);
-    }
-
     {% endfor %}
     MathJax.typeset();
   }

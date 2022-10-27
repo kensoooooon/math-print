@@ -64,8 +64,9 @@ class LinearFunctionWithGraphProblem:
             y1, y2 = y2, y1
         linear_coefficient = sy.Rational(y2 - y1, x2 - x1)
         right_of_equation = sy.expand(linear_coefficient * x - linear_coefficient * x1 + y1)
-        equation = sy.Eq(y, right_of_equation)
-        linear_equation_latex = sy.latex(equation)
+        # equation = sy.Eq(y, right_of_equation)
+        right_of_equation_latex = sy.latex(right_of_equation)
+        linear_equation_latex = f"\( y = {right_of_equation_latex} \)".replace("\\", "\\\\")
         linear_function = LinearFunction(
             x1=str(x1), y1=str(y1),
             x2=str(x2), y2=str(y2),

@@ -130,8 +130,14 @@ function refresh() {
 
   function drawLinearFunction(stage, x1, y1, x2, y2) {
     // x = -7, 7 |  y= -7, 7 check
+    console.log("x1: " + x1);
+    console.log("y1: " + y1);
+    console.log("x2: " + x2);
+    console.log("y2: " + y2);
     let linear_coefficient = (y2 - y1) / (x2 - x1)
+    console.log("linear_coefficient: " + linear_coefficient);
     let intercept = -linear_coefficient * x1 + y1;
+    console.log("intercept: " + intercept);
     let end_points = [];
     // x = -7 check
     let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
@@ -154,13 +160,22 @@ function refresh() {
       end_points.push([x_with_y_plus_7, 7]);
     }
     let end_x1, end_y1, end_x2, end_y2;
+    console.log(end_points);
     [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+    console.log("end_x1: " + end_x1);
+    console.log("end_y1: " + end_y1);
+    console.log("end_x2: " + end_x2);
+    console.log("end_y2: " + end_y2);
     // convert x1~y2 to pixel(320, 160)
     let end_x1_p = 160 + 10 * end_x1;
     let end_y1_p = 80 + 10 * -end_y1;
     let end_x2_p = 160 + 10 * end_x2;
     let end_y2_p = 80 + 10 * -end_y2;
     drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+    console.log("---------------------");
+    // y = -2 x + 7, y = -3 x + 14
+    // (7, -7), (7, -7)
+    // three points.
   }
 
   function draw() {

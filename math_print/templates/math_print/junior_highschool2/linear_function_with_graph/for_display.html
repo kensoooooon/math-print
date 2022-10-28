@@ -152,7 +152,9 @@ function refresh() {
     // x = 7 check
     let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
     if (Math.abs(y_with_x_plus_7) <= 7) {
-      end_points.push([7, y_with_x_plus_7]);
+      if (y_with_x_plus_7 != -7) {
+        end_points.push([7, y_with_x_plus_7]);
+      }
     }
     // y = 7 check
     let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;

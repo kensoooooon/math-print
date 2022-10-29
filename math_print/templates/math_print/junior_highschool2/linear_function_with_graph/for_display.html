@@ -23,6 +23,7 @@ function refresh() {
 
   function drawLine(stage, start_x, start_y, end_x, end_y) {
       var graphic = new createjs.Graphics();
+      graphic.setStrokeStyle(1);
       graphic.beginStroke("#000000");
       graphic.moveTo(start_x, start_y);
       graphic.lineTo(end_x, end_y);
@@ -49,8 +50,8 @@ function refresh() {
     let graphic = new createjs.Graphics();
     // dash line
     graphic.beginStroke("#000000");
-    graphic.setStrokeStyle(0.5);
-    graphic.setStrokeDash([1, 1], 0);
+    graphic.setStrokeStyle(0.3);
+    // graphic.setStrokeDash([1, 1], 0);
     for (let i = 0; i <= 14; i++) {
         let x = 10 * i + 90;
         graphic.moveTo(x, 10);
@@ -96,7 +97,7 @@ function refresh() {
     let graphic = new createjs.Graphics();
     // dash line
     graphic.beginStroke("#000000");
-    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeStyle(0.6);
     graphic.setStrokeDash([1, 1], 0);
     for (let i = 0; i <= 14; i++) {
         let x = 10 * i + 90;
@@ -139,6 +140,14 @@ function refresh() {
     let intercept = -linear_coefficient * x1 + y1;
     console.log("intercept: " + intercept);
     let end_points = [];
+    /*
+    let points = [[2, 3], [4, 5], [2, 3]];
+    for (const point of points) {
+      if (point.toString() != [2, 3].toString()) {
+      console.log(point);
+      }
+    }
+    */
     // x = -7 check
     let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
     if (Math.abs(y_with_x_minus_7) <= 7) {
@@ -152,14 +161,30 @@ function refresh() {
     // x = 7 check
     let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
     if (Math.abs(y_with_x_plus_7) <= 7) {
-      if (y_with_x_plus_7 != -7) {
-        end_points.push([7, y_with_x_plus_7]);
+      let skip = false;
+      for (let point of end_points) {
+        if(point.toString() == [7, y_with_x_plus_7].toString()) {
+          skip = true;
+          break;
+        }
+      }
+      if (skip == false) {
+        end_points.push([7, y_with_x_plus_7]);  
       }
     }
     // y = 7 check
     let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;
     if (Math.abs(x_with_y_plus_7) <= 7) {
-      end_points.push([x_with_y_plus_7, 7]);
+      let skip = false;
+      for (let point of end_points) {
+        if(point.toString() == [x_with_y_plus_7, 7].toString()) {
+          skip = true;
+          break;
+        }
+      }
+      if (skip == false) {
+        end_points.push([x_with_y_plus_7, 7]);  
+      }
     }
     let end_x1, end_y1, end_x2, end_y2;
     console.log(end_points);

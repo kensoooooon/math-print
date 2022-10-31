@@ -1,4 +1,4 @@
-from random import randint, random
+from random import choice, randint, random
 from typing import NamedTuple
 
 
@@ -19,8 +19,8 @@ class LinearFunctionWithGraphProblem:
         settings (dict): 問題の設定を格納した辞書
         """
         sy.init_printing(order="grevlex")
-        self.graph_to_use = settings["graph_to_use"]
-        self.latex_answer, self.linear_function = self._make_problem()
+        self._problem_types = settings["problem_types"]
+        self.graph_to_use, self.latex_answer, self.linear_function = self._make_problem()
     
     def _make_problem(self):
         """問題作成と描画のための情報作成のコントローラー
@@ -29,9 +29,14 @@ class LinearFunctionWithGraphProblem:
             latex_answer (str): latex形式の解答
             linear_function (LinearFunction): 1次関数の通る点と式を格納
         """
+        selected_problem_type = choice(self._problem_types)
+        if selected_problem_type == "without_grid_to_linear_function":
+            graph_to_use = "without_grid"
+        else:
+            graph_to_use = "with_grid"
         linear_function = self._decide_linear_function_status()
         latex_answer = f"{linear_function.linear_equation_latex}"
-        return latex_answer, linear_function
+        return graph_to_use, latex_answer, linear_function
     
     def _decide_linear_function_status(self):
         """1次関数のステータスを決定

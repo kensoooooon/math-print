@@ -415,21 +415,27 @@
                 </form>
             </div>
             <div class="col border-end border-bottom">
-                <p>グラフから1次関数を求める</p>
+                <p>グラフから1次関数,1次関数からグラフを求める</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <small class="text-muted">使用されるグラフの種類</small>
+                    <small class="text-muted">出題される問題の種類</small>
                     <div class="form-group">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" value="with_grid" name="graph_to_use" id="linear_function_with_graph_with_grid" checked>
-                            <label class="form-check-label" for="linear_function_with_graph_with_grid">
-                                マス目あり
+                            <input class="form-check-input" type="checkbox" value="with_grid_to_linear_function" name="problem_type" id="linear_function_with_graph_with_grid_to_linear_function" checked>
+                            <label class="form-check-label" for="linear_function_with_graph_with_grid_to_linear_function">
+                                グラフ(マス目あり)から1次関数を求める
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" value="without_grid" name="graph_to_use" id="linear_function_with_graph_without_grid">
-                            <label class="form-check-label" for="linear_function_with_graph_without_grid">
-                                マス目なし
+                            <input class="form-check-input" type="checkbox" value="without_grid_to_linear_function" name="problem_type" id="linear_function_with_graph_without_grid_to_linear_function">
+                            <label class="form-check-label" for="linear_function_with_graph_without_grid_to_linear_function">
+                                グラフ(マス目なし)から1次関数を求める
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="linear_function_to_with_grid" name="problem_type" id="linear_function_with_graph_linear_function_to_with_grid">
+                            <label class="form-check-label" for="linear_function_with_graph_linear_function_to_with_grid">
+                                1次関数からグラフ(マス目あり)を求める
                             </label>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ class LinearFunctionWithGraphProblem:
         """
         sy.init_printing(order="grevlex")
         self._problem_types = settings["problem_types"]
-        self.graph_to_use, self.latex_answer, self.linear_function = self._make_problem()
+        self.selected_problem_type, self.graph_to_use, self.linear_function = self._make_problem()
     
     def _make_problem(self):
         """問題作成と描画のための情報作成のコントローラー
@@ -35,8 +35,8 @@ class LinearFunctionWithGraphProblem:
         else:
             graph_to_use = "with_grid"
         linear_function = self._decide_linear_function_status()
-        latex_answer = f"{linear_function.linear_equation_latex}"
-        return graph_to_use, latex_answer, linear_function
+        # linear_function_latex = f"{linear_function.linear_equation_latex}"
+        return selected_problem_type, graph_to_use, linear_function
     
     def _decide_linear_function_status(self):
         """1次関数のステータスを決定

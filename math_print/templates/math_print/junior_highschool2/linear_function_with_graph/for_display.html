@@ -3,10 +3,12 @@
 {% block script %}
 <script>
 function showAnswer(){
-    var nodes = document.getElementsByClassName('answer');
-    for(var i = 0; i < nodes.length; i++){
-        nodes[i].style.visibility = 'visible';
-    }
+  console.log("answer");
+  var nodes = document.getElementsByClassName('answer');
+  console.log(nodes);
+  for(var i = 0; i < nodes.length; i++){
+    nodes[i].style.visibility = 'visible';
+  }
 }
 function refresh() {
   var url = location.origin;
@@ -202,6 +204,11 @@ function refresh() {
     right_canvas.height = 160;
     right_canvas.style = "background-color:#CCFFFF";
 
+    row_container.appendChild(left_div);
+    row_container.appendChild(right_div);
+    container_div.appendChild(row_container);
+    document.body.appendChild(container_div);
+
     // insert part
     // left_div.appendChild(left_canvas);
     // problem
@@ -209,7 +216,6 @@ function refresh() {
     // without_grid_to_linear_function
     // linear_function_to_with_grid
     // left
-    console.log("{{ information_tuple.0.selected_problem_type }}");
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
       console.log("with_grid_to_linear_function");
       // left problem sentence
@@ -233,7 +239,7 @@ function refresh() {
       drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
       // left answer sentence
       var left_answer_p = document.createElement('p');
-      left_answer_p.setAttribute("style", "visibility:hidden");
+      left_answer_p.setAttribute("style", "visibility:visible");
       left_answer_p.setAttribute("className", "answer");
       var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
       var left_answer = document.createTextNode(left_answer_string);
@@ -301,7 +307,7 @@ function refresh() {
       right_problem_p.appendChild(right_problem);
       right_div.appendChild(right_problem_p);
       // right drawing graph
-      left_canvas.setAttribute("style", "visibility:visible");
+      right_canvas.setAttribute("style", "visibility:visible");
       right_div.appendChild(right_canvas);
       var right_stage = new createjs.Stage(right_canvas_id);
       addAxis(right_stage);
@@ -366,10 +372,6 @@ function refresh() {
       addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
       drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
     }
-    row_container.appendChild(left_div);
-    row_container.appendChild(right_div);
-    container_div.appendChild(row_container);
-    document.body.appendChild(container_div);
     {% endfor %}
     MathJax.typeset();
   }
@@ -441,6 +443,15 @@ function refresh() {
   function make() {
     draw();
     add_other_parts_to_page();
+  }
+
+  function showAnswer(){
+    console.log("answer");
+    var nodes = document.getElementsByClassName('answer');
+    console.log(nodes);
+    for(var i = 0; i < nodes.length; i++){
+      nodes[i].style.visibility = 'visible';
+    }
   }
 
 </script>

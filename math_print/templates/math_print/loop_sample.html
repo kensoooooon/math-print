@@ -1,0 +1,327 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script>
+function showAnswer(){
+  console.log("answer");
+  var nodes = document.getElementsByClassName('answer');
+  console.log(nodes);
+  for(var i = 0; i < nodes.length; i++){
+    nodes[i].style.visibility = 'visible';
+  }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+  window.addEventListener("load", make);
+
+  function draw() {
+    {% for information_tuple in math_problem_tuple_list %}
+    var container_div = document.createElement("div");
+    container_div.className = "container-fluid";
+
+    var row_container = document.createElement("div");
+    row_container.className = "row";
+
+    var left_div = document.createElement("div");
+    left_div.className = "col-md-6";
+
+    var left_canvas = document.createElement('canvas');
+    var left_canvas_id = "left_canvas" + {{ forloop.counter }};
+    left_canvas.id = left_canvas_id;
+    left_canvas.width = 320;
+    left_canvas.height = 160;
+    left_canvas.style = "background-color:#CCFFFF";
+
+    var right_div = document.createElement("div");
+    right_div.className = "col-md-6";
+
+    var right_canvas = document.createElement('canvas');
+    var right_canvas_id = "right_canvas" + {{ forloop.counter }};
+    right_canvas.id = right_canvas_id;
+    right_canvas.width = 320;
+    right_canvas.height = 160;
+    right_canvas.style = "background-color:#CCFFFF";
+
+    row_container.appendChild(left_div);
+    row_container.appendChild(right_div);
+    container_div.appendChild(row_container);
+    document.body.appendChild(container_div);
+
+    // insert part
+    // left_div.appendChild(left_canvas);
+    // problem
+    // with_grid_to_linear_function
+    // without_grid_to_linear_function
+    // linear_function_to_with_grid
+    // left
+    if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
+      console.log("with_grid_to_linear_function");
+      // left problem sentence
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("className", "problem");
+      var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+      left_div.appendChild(left_problem_p);
+      // left drawing graph
+      left_canvas.setAttribute("style", "visibility:visible");
+      left_div.appendChild(left_canvas);
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      addGridLineToGraph(left_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
+      // left answer sentence
+      var left_answer_p = document.createElement('p');
+      left_answer_p.setAttribute("style", "visibility:visible");
+      left_answer_p.setAttribute("className", "answer");
+      var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
+      var left_answer = document.createTextNode(left_answer_string);
+      left_answer_p.appendChild(left_answer);
+      left_div.appendChild(left_answer_p);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "without_grid_to_linear_function") {
+      console.log("without_grid_to_linear_function");
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("className", "problem");
+      var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+      left_div.appendChild(left_problem_p);
+      // left drawing graph
+      left_canvas.setAttribute("style", "visibility:visible");
+      left_div.appendChild(left_canvas);
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      addCoordinateToGraph(left_stage, left_x1, left_y1, left_x2, left_y2);
+      drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
+      // left answer sentence
+      var left_answer_p = document.createElement('p');
+      left_answer_p.setAttribute("style", "visibility:hidden");
+      left_answer_p.setAttribute("className", "answer");
+      var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
+      console.log("left_answer_string: " + left_answer_string);
+      var left_answer = document.createTextNode(left_answer_string);
+      left_answer_p.appendChild(left_answer);
+      left_div.appendChild(left_answer_p);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "linear_function_to_with_grid") {
+      console.log("linear_function_to_with_grid");
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("className", "problem");
+      var left_problem_string = "以下の1次関数からグラフを求めよ。 {{ information_tuple.0.linear_function.linear_equation_latex }}";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+      left_div.appendChild(left_problem_p);
+      // left drawing graph
+      left_canvas.setAttribute("style", "visibility:hidden")
+      left_div.appendChild(left_canvas)
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      addCoordinateToGraph(left_stage, left_x1, left_y1, left_x2, left_y2);
+      drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
+    }
+    // right
+    console.log("{{ information_tuple.1.selected_problem_type }}");
+    if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
+      // right problem sentence
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("className", "problem");
+      var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+      right_div.appendChild(right_problem_p);
+      // right drawing graph
+      right_canvas.setAttribute("style", "visibility:visible");
+      right_div.appendChild(right_canvas);
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      addGridLineToGraph(right_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
+      // right answer sentence
+      var right_answer_p = document.createElement('p');
+      right_answer_p.setAttribute("style", "visibility:hidden");
+      right_answer_p.setAttribute("className", "answer");
+      var right_answer_string = "{{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_answer = document.createTextNode(right_answer_string);
+      right_answer_p.appendChild(right_answer);
+      right_div.appendChild(right_answer_p);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("className", "problem");
+      var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+      right_div.appendChild(right_problem_p);
+      // right drawing graph
+      right_canvas.setAttribute("style", "visibility:visible");
+      right_div.appendChild(right_canvas);
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
+      drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
+      // right answer sentence
+      var right_answer_p = document.createElement('p');
+      right_answer_p.setAttribute("style", "visibility:hidden");
+      right_answer_p.setAttribute("className", "answer");
+      var right_answer_string = "{{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_answer = document.createTextNode(right_answer_string);
+      right_answer_p.appendChild(right_answer);
+      right_div.appendChild(right_answer_p);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("className", "problem");
+      var right_problem_string = "以下の1次関数からグラフを求めよ。 {{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+      right_div.appendChild(right_problem_p);
+      // right drawing graph
+      right_canvas.setAttribute("style", "visibility:hidden")
+      right_div.appendChild(right_canvas)
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
+      drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
+    }
+    {% endfor %}
+    MathJax.typeset();
+  }
+
+  function add_other_parts_to_page() {
+    // hero unit phase
+    var hero_outer_div = document.createElement('div');
+    hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
+    var hero_inner_div = document.createElement('div');
+    hero_inner_div.setAttribute("class", "container");
+    var h1_in_hero = document.createElement('h1');
+    h1_in_hero.setAttribute("class", "display-4");
+    h1_in_hero.innerHTML = "ようこそ!";
+    var p_in_hero = document.createElement('p');
+    p_in_hero.setAttribute("class", "text-dark");
+    p_in_hero.innerHTML = "おうぎ形の弧の長さや中心角、面積を求める";
+    //// hero unit add phase
+    hero_inner_div.appendChild(h1_in_hero);
+    hero_inner_div.appendChild(p_in_hero);
+    hero_outer_div.appendChild(hero_inner_div);
+    document.body.prepend(hero_outer_div);
+    // button unit phase
+    var button_div = document.createElement('div');
+    button_div.setAttribute("class", "d-grid gap-3 col-6 mx-auto");
+    var show_answer_button = document.createElement('button');
+    show_answer_button.setAttribute("class", "btn btn-outline-success");
+    show_answer_button.setAttribute("type", "button");
+    show_answer_button.setAttribute("onclick", "showAnswer()");
+    show_answer_button.innerHTML = "答えを表示する";
+    var reload_button = document.createElement('button');
+    reload_button.setAttribute("class", "btn btn-outline-success");
+    reload_button.setAttribute("type", "button");
+    reload_button.setAttribute("onclick", "location.reload(false)");
+    reload_button.innerHTML = "もう一度解く";
+    var problem_choice_a = document.createElement("a");
+    problem_choice_a.setAttribute("href", "{% url 'junior_highschool2' %}");
+    problem_choice_a.setAttribute("class", "btn btn-primary");
+    problem_choice_a.setAttribute("type", "button");
+    problem_choice_a.innerHTML = "問題選択へ戻る";
+    var top_a = document.createElement("a");
+    top_a.setAttribute("href", "{% url 'index' %}");
+    top_a.setAttribute("class", "btn btn-primary");
+    top_a.setAttribute("type", "button");
+    top_a.innerHTML = "トップへ戻る";
+    //// buttonunit add phase
+    button_div.appendChild(show_answer_button);
+    button_div.appendChild(reload_button);
+    button_div.appendChild(problem_choice_a);
+    button_div.appendChild(top_a);
+    document.body.appendChild(button_div);
+    // footer phase
+    var footer = document.createElement("footer");
+    footer.setAttribute("class", "container-fluid print_footer");
+    var small = document.createElement("small");
+    var footer_a = document.createElement("a");
+    footer_a.setAttribute("href", "#");
+    footer_a.innerHTML = "© 2022 有明学習振興";
+    //// footer add phase
+    small.appendChild(footer_a);
+    footer.appendChild(small);
+    document.body.appendChild(footer);
+    // top page remove and add phase
+    var navdiv = document.getElementById("top_page_nav");
+    var new_navdiv = navdiv.cloneNode(true);
+    navdiv.remove();
+    document.body.prepend(new_navdiv);
+  }
+
+  function make() {
+    draw();
+    add_other_parts_to_page();
+  }
+
+  function showAnswer(){
+    console.log("answer");
+    var nodes = document.getElementsByClassName('answer');
+    console.log(nodes);
+    for(var i = 0; i < nodes.length; i++){
+      nodes[i].style.visibility = 'visible';
+    }
+  }
+
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+グラフから1次関数を求める
+{% endblock %}
+
+{% block body %}
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+{% endblock %}

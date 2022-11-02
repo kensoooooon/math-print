@@ -51,9 +51,19 @@ def index(request):
     return render(request, 'math_print/index.html', {})
 
 # for graphic sample
-def graphic_sample(request):
-    return render(request, 'math_print/result.html', {})
 
+def graphic_sample(request):
+    return render(request, 'math_print/graphic_sample.html', {})
+
+
+def loop_sample(request):
+    math_problem_tuple_list = []
+    for i in range(10):
+        math_problem_tuple_list.append((f"problem{i}_1", f"problem{i}_2"))
+    return render(request, 'math_print/loop_sample.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+# index
 def show_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
 

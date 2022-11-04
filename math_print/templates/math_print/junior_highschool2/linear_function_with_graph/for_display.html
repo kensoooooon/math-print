@@ -221,7 +221,7 @@ function refresh() {
       // left problem sentence
       var left_problem_p = document.createElement('p');
       left_problem_p.setAttribute("style", "visibility:visible");
-      left_problem_p.setAttribute("className", "problem");
+      left_problem_p.setAttribute("class", "problem");
       var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
@@ -240,7 +240,7 @@ function refresh() {
       // left answer sentence
       var left_answer_p = document.createElement('p');
       left_answer_p.setAttribute("style", "visibility:visible");
-      left_answer_p.setAttribute("className", "answer");
+      left_answer_p.setAttribute("class", "answer");
       var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
       var left_answer = document.createTextNode(left_answer_string);
       left_answer_p.appendChild(left_answer);
@@ -249,7 +249,7 @@ function refresh() {
       console.log("without_grid_to_linear_function");
       var left_problem_p = document.createElement('p');
       left_problem_p.setAttribute("style", "visibility:visible");
-      left_problem_p.setAttribute("className", "problem");
+      left_problem_p.setAttribute("class", "problem");
       var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
@@ -268,7 +268,7 @@ function refresh() {
       // left answer sentence
       var left_answer_p = document.createElement('p');
       left_answer_p.setAttribute("style", "visibility:hidden");
-      left_answer_p.setAttribute("className", "answer");
+      left_answer_p.setAttribute("class", "answer");
       var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
       console.log("left_answer_string: " + left_answer_string);
       var left_answer = document.createTextNode(left_answer_string);
@@ -278,7 +278,7 @@ function refresh() {
       console.log("linear_function_to_with_grid");
       var left_problem_p = document.createElement('p');
       left_problem_p.setAttribute("style", "visibility:visible");
-      left_problem_p.setAttribute("className", "problem");
+      left_problem_p.setAttribute("class", "problem");
       var left_problem_string = "以下の1次関数からグラフを求めよ。 {{ information_tuple.0.linear_function.linear_equation_latex }}";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
@@ -301,7 +301,7 @@ function refresh() {
       // right problem sentence
       var right_problem_p = document.createElement('p');
       right_problem_p.setAttribute("style", "visibility:visible");
-      right_problem_p.setAttribute("className", "problem");
+      right_problem_p.setAttribute("class", "problem");
       var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);
@@ -320,7 +320,7 @@ function refresh() {
       // right answer sentence
       var right_answer_p = document.createElement('p');
       right_answer_p.setAttribute("style", "visibility:hidden");
-      right_answer_p.setAttribute("className", "answer");
+      right_answer_p.setAttribute("class", "answer");
       var right_answer_string = "{{ information_tuple.1.linear_function.linear_equation_latex }}";
       var right_answer = document.createTextNode(right_answer_string);
       right_answer_p.appendChild(right_answer);
@@ -328,7 +328,7 @@ function refresh() {
     } else if ("{{ information_tuple.1.selected_problem_type }}" == "without_grid_to_linear_function") {
       var right_problem_p = document.createElement('p');
       right_problem_p.setAttribute("style", "visibility:visible");
-      right_problem_p.setAttribute("className", "problem");
+      right_problem_p.setAttribute("class", "problem");
       var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);
@@ -347,7 +347,7 @@ function refresh() {
       // right answer sentence
       var right_answer_p = document.createElement('p');
       right_answer_p.setAttribute("style", "visibility:hidden");
-      right_answer_p.setAttribute("className", "answer");
+      right_answer_p.setAttribute("class", "answer");
       var right_answer_string = "{{ information_tuple.1.linear_function.linear_equation_latex }}";
       var right_answer = document.createTextNode(right_answer_string);
       right_answer_p.appendChild(right_answer);
@@ -355,7 +355,7 @@ function refresh() {
     } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
       var right_problem_p = document.createElement('p');
       right_problem_p.setAttribute("style", "visibility:visible");
-      right_problem_p.setAttribute("className", "problem");
+      right_problem_p.setAttribute("class", "problem");
       var right_problem_string = "以下の1次関数からグラフを求めよ。 {{ information_tuple.1.linear_function.linear_equation_latex }}";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);

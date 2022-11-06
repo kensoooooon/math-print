@@ -54,312 +54,438 @@ function refresh() {
   window.addEventListener("load", make);
 
   function drawLine(stage, start_x, start_y, end_x, end_y) {
-      var graphic = new createjs.Graphics();
-      graphic.beginStroke("#000000");
-      graphic.moveTo(start_x, start_y);
-      graphic.lineTo(end_x, end_y);
-      graphic.endStroke();
-      var shape = new createjs.Shape(graphic);
-      stage.addChild(shape);
-
-  }
-
-  function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
-      // draw line detemined by angle
-      var graphic = new createjs.Graphics();
-      graphic.beginStroke("#000000");
-      graphic.moveTo(start_x, start_y);
-      var radian = angle * Math.PI / 180;
-      var end_x = start_x + radius * Math.cos(radian);
-      var end_y = start_y + radius * Math.sin(radian);
-      graphic.lineTo(end_x, end_y);
-      graphic.endStroke();
-      var shape = new createjs.Shape(graphic);
-      stage.addChild(shape);
-  }
-
-  function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
-      var graphic = new createjs.Graphics();
-      graphic.beginStroke("#000000");
-      var start_radian = start_angle * Math.PI / 180;
-      var end_radian = end_angle * Math.PI / 180;
-      graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
-      var shape = new createjs.Shape(graphic);
-      stage.addChild(shape);
-  }
-  
-  function drawDegreeCharacter(stage, x, y, character) {
-    //文字オブジェクトを作成する
-    var text = new createjs.Text(character, "15px Arial", "#000000");
-    //描画位置の指定
-    text.x = x;
-    text.y = y;
-    stage.addChild(text);
-  }
-
-  function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
-    drawArc(stage, center_x, center_y, sector_radius, 0, sector_angle);
-    sector_radian = sector_angle * Math.PI / 180;
-    start_x = center_x + sector_radius * Math.cos(0);
-    start_y = center_y + sector_radius * Math.sin(0);
-    drawLine(stage, center_x, center_y, start_x, start_y);
-    end_x = center_x + sector_radius * Math.cos(sector_radian);
-    end_y = center_y + sector_radius * Math.sin(sector_radian);
-    drawLine(stage, center_x, center_y, end_x, end_y);
+    var graphic = new createjs.Graphics();
+    graphic.setStrokeStyle(1);
+    graphic.beginStroke("#000000");
+    graphic.moveTo(start_x, start_y);
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
     stage.update();
-  }
+}
 
-  function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add central_angle
-    drawArc(stage, 160, 80, 10, 0, central_angle);
-    drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
-    stage.update();
-  }
+function drawDegreeCharacter(stage, x, y, character) {
+  var text = new createjs.Text(character, "15px Arial", "#000000");
+  text.x = x;
+  text.y = y;
+  stage.addChild(text);
+  stage.update();
+}
 
-  function addRadiusAndArcLengthToSector(stage, radius, coefficient_of_arc_length) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add arc length
-    drawDegreeCharacter(stage, 180, 140, "弧の長さ: " + coefficient_of_arc_length + "π cm");
-    stage.update();
-  }
+function addAxis(stage) {
+  drawLine(stage, 90, 80, 230, 80);
+  drawLine(stage, 160, 10, 160, 150);
+  drawDegreeCharacter(stage, 235, 80, "x");
+  drawDegreeCharacter(stage, 155, -5, "y");
+}
 
-  function addRadiusAndAreaToSector(stage, radius, coefficient_of_area) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add area
-    drawDegreeCharacter(stage, 200, 20, "面積: " + coefficient_of_area + "π ㎠");
-    stage.update();
+function addGridLineToGraph(stage) {
+  let graphic = new createjs.Graphics();
+  // dash line
+  graphic.beginStroke("#000000");
+  graphic.setStrokeStyle(0.7);
+  for (let i = 0; i <= 14; i++) {
+      let x = 10 * i + 90;
+      graphic.moveTo(x, 10);
+      graphic.lineTo(x, 150);
+    }
+  for (let i = 0; i <= 14; i++) {
+      let y = 10 * i + 10;
+      graphic.moveTo(90, y);
+      graphic.lineTo(230, y);
   }
+  graphic.endStroke();
+  graphic.beginStroke("#000000");
+  graphic.setStrokeStyle(0.5);
+  drawDegreeCharacter(stage, 10 * 1 + 90, 80, "-5");
+  drawDegreeCharacter(stage, 10 * 11 + 9, 80, "5");
+  drawDegreeCharacter(stage, 160, 10 * 1 + 10, "5");
+  drawDegreeCharacter(stage, 160, 10 * 11 + 10, "-5");
+  drawDegreeCharacter(stage, 160, 80, "O");
+  graphic.endStroke();
+  let shape = new createjs.Shape(graphic);
+  stage.addChild(shape);
+  stage.update();
+}
 
-  function call_problem_string(selected_problem_type) {
-    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-      var problem_string = "弧の長さと面積を求めよ。"
-    }
-    else if (selected_problem_type == "radius_and_arc_length_to_area") {
-      var problem_string = "面積を求めよ。";
-    }
-    else if (selected_problem_type == "radius_and_area_to_arc_length") {
-      var problem_string = "弧の長さを求めよ。";
-    }
-    else if (selected_problem_type == "radius_and_area_to_central_angle") {
-      var problem_string = "中心角を求めよ。";
-    }
-    return problem_string;
+function addCoordinateToGraph(stage, x1, y1, x2, y2) {
+  let graphic = new createjs.Graphics();
+  let x1_p = 10 * x1 + 160;
+  let y1_p = 10 * (-y1) + 80;
+  let x2_p = 10 * x2 + 160;
+  let y2_p = 10 * (-y2) + 80;
+  graphic.beginFill("Black");
+  graphic.drawCircle(x1_p, y1_p, 2);
+  graphic.drawCircle(x2_p, y2_p, 2);
+  graphic.endFill();
+  if (y1_p > y2_p) {
+    x1_p = x1_p + 5;
+    x2_p = x2_p + 5;
+    y1_p = y1_p + 5;
+    y2_p = y2_p - 5;
+  } else {
+    x1_p = x1_p - 45;
+    x2_p = x2_p - 45;
+    y1_p = y1_p - 5;
+    y2_p = y2_p + 5;
+  } 
+  let point1 = "(" + String(x1) + ", " + String(y1) + ")";
+  let point2 = "(" + String(x2) + ", " + String(y2) + ")";
+  drawDegreeCharacter(stage, x1_p, y1_p, point1);
+  drawDegreeCharacter(stage, x2_p, y2_p, point2);
+  graphic.endStroke();
+  let shape = new createjs.Shape(graphic);
+  stage.addChild(shape);
+  stage.update();
+}
+
+function drawLinearFunction(stage, x1, y1, x2, y2) {
+  // x = -7, 7 |  y= -7, 7 check
+  let linear_coefficient = (y2 - y1) / (x2 - x1)
+  let intercept = -linear_coefficient * x1 + y1;
+  let end_points = [];
+  // x = -7 check
+  let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
+  if (Math.abs(y_with_x_minus_7) <= 7) {
+    end_points.push([-7, y_with_x_minus_7]);
   }
+  // y = -7 check
+  let x_with_y_minus_7 = (-7 - intercept) / linear_coefficient;
+  if (Math.abs(x_with_y_minus_7) <= 7) {
+    let skip = false;
+    for (let point of end_points) {
+      if(point.toString() == [x_with_y_minus_7, -7].toString()) {
+        skip = true;
+        break;
+      }
+    }
+    if (skip == false) {
+      end_points.push([x_with_y_minus_7, -7]);  
+    }
+  }
+  // x = 7 check
+  let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
+  if (Math.abs(y_with_x_plus_7) <= 7) {
+    let skip = false;
+    for (let point of end_points) {
+      if(point.toString() == [7, y_with_x_plus_7].toString()) {
+        skip = true;
+        break;
+      }
+    }
+    if (skip == false) {
+      end_points.push([7, y_with_x_plus_7]);  
+    }
+  }
+  // y = 7 check
+  let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;
+  if (Math.abs(x_with_y_plus_7) <= 7) {
+    let skip = false;
+    for (let point of end_points) {
+      if(point.toString() == [x_with_y_plus_7, 7].toString()) {
+        skip = true;
+        break;
+      }
+    }
+    if (skip == false) {
+      end_points.push([x_with_y_plus_7, 7]);  
+    }
+  }
+  let end_x1, end_y1, end_x2, end_y2;
+  [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+  // convert x1~y2 to pixel(320, 160)
+  let end_x1_p = 160 + 10 * end_x1;
+  let end_y1_p = 80 + 10 * -end_y1;
+  let end_x2_p = 160 + 10 * end_x2;
+  let end_y2_p = 80 + 10 * -end_y2;
+  drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+  // y = -2 x + 7, y = -3 x + 14
+  // (7, -7), (7, -7)
+  // three points.
+  stage.update();
+}
 
   function draw() {
     {% for inner_list in math_problem_list_of_list %}
-        // problem section //
-        var problem_print_section = document.createElement("section");
-        problem_print_section.setAttribute("class", "print_pages");
-        // add body to read canvas
-        document.body.appendChild(problem_print_section);
+    // problem section //
+    var problem_print_section = document.createElement("section");
+    problem_print_section.setAttribute("class", "print_pages");
+    // add body to read canvas
+    document.body.appendChild(problem_print_section);
 
-        var problem_number_p = document.createElement("p");
-        problem_number_p.setAttribute("class", "number_of_problem");
-        problem_number_p.innerHTML = "問題: No. {{ forloop.counter }}";
-        problem_print_section.appendChild(problem_number_p);
-        
-        var problem_ol = document.createElement("ol");
-        {% for information_tuple in inner_list %}
-            var problem_div = document.createElement("div");
-            problem_div.setAttribute("class", "problem");
-            // left_div
-            var left_div = document.createElement("div");
-            var left_li = document.createElement("li");
-            var left_canvas = document.createElement("canvas");
-            var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
-            left_canvas.setAttribute("id", left_canvas_id);
-            left_canvas.setAttribute("width", 320);
-            left_canvas.setAttribute("height", 160);
-            left_canvas.setAttribute("style", "background-color:#CCFFFF");
-            var left_problem_p = document.createElement("p");
-            left_problem_p.setAttribute("class", "problem");
-            left_problem_p.setAttribute("style", "visibility:visible");
-            left_problem_p.innerHTML = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
-            // var left_answer_p = document.createElement("p");
-            // left_answer_p.setAttribute("class", "answer");
-            // left_answer_p.setAttribute("style", "visibility:hidden");
-            //left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
-            // left_div add part
-            left_li.appendChild(left_canvas);
-            left_li.appendChild(left_problem_p);
-            // left_li.appendChild(left_answer_p);
-            left_div.appendChild(left_li);
+    var problem_number_p = document.createElement("p");
+    problem_number_p.setAttribute("class", "number_of_problem");
+    problem_number_p.innerHTML = "問題: No. {{ forloop.counter }}";
+    problem_print_section.appendChild(problem_number_p);
+    
+    var problem_ol = document.createElement("ol");
+    {% for information_tuple in inner_list %}
+    var problem_div = document.createElement("div");
+    problem_div.setAttribute("class", "problem");
+    // left_div and li and canvas make part
+    var left_div = document.createElement("div");
+    var left_li = document.createElement("li");
+    
+    var left_canvas = document.createElement("canvas");
+    var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+    left_canvas.setAttribute("id", left_canvas_id);
+    left_canvas.setAttribute("width", 320);
+    left_canvas.setAttribute("height", 160);
+    left_canvas.setAttribute("style", "background-color:#CCFFFF");
 
-            var right_div = document.createElement("div");
-            var right_li = document.createElement("li");
-            var right_canvas = document.createElement("canvas");
-            var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
-            right_canvas.setAttribute("id", right_canvas_id);
-            right_canvas.setAttribute("width", 320);
-            right_canvas.setAttribute("height", 160);
-            right_canvas.setAttribute("style", "background-color:#CCFFFF");
-            var right_problem_p = document.createElement("p");
-            right_problem_p.setAttribute("class", "problem");
-            right_problem_p.setAttribute("style", "visibility:visible");
-            right_problem_p.innerHTML = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
-            // var right_answer_p = document.createElement("p");
-            // right_answer_p.setAttribute("class", "answer");
-            // right_answer_p.setAttribute("style", "visibility:hidden");
-            // right_answer_p.innerHTML =  "{{ information_tuple.1.latex_answer }}";
-            // right_div add part
-            right_li.appendChild(right_canvas);
-            right_li.appendChild(right_problem_p);
-            // right_li.appendChild(right_answer_p);
-            right_div.appendChild(right_li);
+    // right div and li and canvas canvas make part
+    var right_div = document.createElement("div");
+    var right_li = document.createElement("li");
+    
+    var right_canvas = document.createElement("canvas");
+    var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+    right_canvas.setAttribute("id", right_canvas_id);
+    right_canvas.setAttribute("width", 320);
+    right_canvas.setAttribute("height", 160);
+    right_canvas.setAttribute("style", "background-color:#CCFFFF");
 
-            problem_div.appendChild(left_div);
-            problem_div.appendChild(right_div);
-            problem_ol.appendChild(problem_div);
-            problem_print_section.appendChild(problem_ol);
+    // left problem sentence part
+    if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("className", "problem");
+      var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("className", "problem");
+      var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "linear_function_to_with_grid") {
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("class", "problem");
+      var left_problem_string = "以下の1次関数のグラフを描け。 {{ information_tuple.0.linear_function.linear_equation_latex }}";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+    }
+    
+    // right problem sentence part
+    if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("class", "problem");
+      var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("class", "problem");
+      var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("class", "problem");
+      var right_problem_string = "以下の1次関数のグラフを描け。 {{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+    }
+    
+    // add part
+    left_li.appendChild(left_problem_p);
+    left_li.appendChild(left_canvas);
+    left_div.appendChild(left_li);
+    
+    right_li.appendChild(right_problem_p);
+    right_li.appendChild(right_canvas);
+    right_div.appendChild(right_li);
 
-            var left_stage = new createjs.Stage(left_canvas_id);
-            var left_radius = Number({{ information_tuple.0.sector.radius }});
-            var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
-            drawSector(left_stage, 160, 80, 60, left_central_angle);
-            var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
-            if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-              addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
-            }
-            else if (selected_problem_type == "radius_and_arc_length_to_area") {
-              addRadiusAndArcLengthToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_arc_length }}");
-            }
-            else if (selected_problem_type == "radius_and_area_to_arc_length") {
-              addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
-            }
-            else if (selected_problem_type == "radius_and_area_to_central_angle") {
-              addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
-            }
+    problem_div.appendChild(left_div);
+    problem_div.appendChild(right_div);
+    problem_ol.appendChild(problem_div);
+    problem_print_section.appendChild(problem_ol);
+    
+    // problem drawing part
+    //// left problem drawing part
+    if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      addGridLineToGraph(left_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      addCoordinateToGraph(left_stage, left_x1, left_y1, left_x2, left_y2);
+      drawLinearFunction(left_stage, left_x1, left_y1, left_x2, left_y2);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "linear_function_to_with_grid") {
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      addGridLineToGraph(left_stage);
+    }
 
-            var right_stage = new createjs.Stage(right_canvas_id);
-            var right_radius = Number({{ information_tuple.1.sector.radius }});
-            var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
-            drawSector(right_stage, 160, 80, 60, right_central_angle);
-        
-            var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
-            
-            if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-              addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
-            }
-            else if (selected_problem_type == "radius_and_arc_length_to_area") {
-              addRadiusAndArcLengthToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_arc_length }}");
-            }
-            else if (selected_problem_type == "radius_and_area_to_arc_length") {
-              addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
-            }
-            else if (selected_problem_type == "radius_and_area_to_central_angle") {
-              addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
-            }
-        {% endfor %}
-        // footer phase
-        var footer = document.createElement("footer");
-        footer.setAttribute("class", "container-fluid print_footer");
-        var small = document.createElement("small");
-        var footer_a = document.createElement("a");
-        footer_a.setAttribute("href", "#");
-        footer_a.innerHTML = "© 2022 有明学習振興";
-        //// footer add phase
-        small.appendChild(footer_a);
-        footer.appendChild(small);
-        problem_print_section.appendChild(footer);
+    //// right problem drawing part
+    if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      addGridLineToGraph(right_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
+      drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      addGridLineToGraph(right_stage);
+    }
 
-        // answer section //
-        var answer_print_section = document.createElement("section");
-        answer_print_section.setAttribute("class", "print_pages");
-        // add body to read canvas
-        document.body.appendChild(answer_print_section);
+    {% endfor %}
+    // problem footer phase
+    var footer = document.createElement("footer");
+    footer.setAttribute("class", "container-fluid print_footer");
+    var small = document.createElement("small");
+    var footer_a = document.createElement("a");
+    footer_a.setAttribute("href", "#");
+    footer_a.innerHTML = "© 2022 有明学習振興";
+    //// footer add phase
+    small.appendChild(footer_a);
+    footer.appendChild(small);
+    problem_print_section.appendChild(footer);
 
-        var answer_number_p = document.createElement("p");
-        answer_number_p.setAttribute("class", "number_of_problem");
-        answer_number_p.innerHTML = "解答: No. {{ forloop.counter }}";
-        answer_print_section.appendChild(answer_number_p);
-        
-        var answer_ol = document.createElement("ol");
-        {% for information_tuple in inner_list %}
-            var answer_div = document.createElement("div");
-            answer_div.setAttribute("class", "problem");
-            // left_div
-            var left_div = document.createElement("div");
-            var left_li = document.createElement("li");
-            var left_answer_p = document.createElement("p");
-            left_answer_p.setAttribute("class", "answer");
-            left_answer_p.setAttribute("style", "visibility:visible");
-            left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
-            left_li.appendChild(left_answer_p);
-            left_div.appendChild(left_li);
+    // answer section //
+    var answer_print_section = document.createElement("section");
+    answer_print_section.setAttribute("class", "print_pages");
+    // add body to read canvas
+    document.body.appendChild(answer_print_section);
 
-            var right_div = document.createElement("div");
-            var right_li = document.createElement("li");
-            var right_answer_p = document.createElement("p");
-            right_answer_p.setAttribute("class", "answer");
-            right_answer_p.setAttribute("style", "visibility:visible");
-            right_answer_p.innerHTML = "{{ information_tuple.1.latex_answer }}";
-            // right_div add part
-            right_li.appendChild(right_answer_p);
-            right_div.appendChild(right_li);
+    var answer_number_p = document.createElement("p");
+    answer_number_p.setAttribute("class", "number_of_problem");
+    answer_number_p.innerHTML = "解答: No. {{ forloop.counter }}";
+    answer_print_section.appendChild(answer_number_p);
+    
+    var answer_ol = document.createElement("ol");
+    {% for information_tuple in inner_list %}
+    var answer_div = document.createElement("div");
+    answer_div.setAttribute("class", "problem");
 
-            answer_div.appendChild(left_div);
-            answer_div.appendChild(right_div);
-            answer_ol.appendChild(answer_div);
-            answer_print_section.appendChild(answer_ol);
-        {% endfor %}
-        // footer phase
-        var footer = document.createElement("footer");
-        footer.setAttribute("class", "container-fluid print_footer");
-        var small = document.createElement("small");
-        var footer_a = document.createElement("a");
-        footer_a.setAttribute("href", "#");
-        footer_a.innerHTML = "© 2022 有明学習振興";
-        //// footer add phase
-        small.appendChild(footer_a);
-        footer.appendChild(small);
-        answer_print_section.appendChild(footer);
+    var left_div = document.createElement("div");
+    var left_li = document.createElement("li");
+    left_div.appendChild(left_li);
+    
+    var right_div = document.createElement("div");
+    var right_li = document.createElement("li");
+    right_div.appendChild(right_li);
+    
+    answer_div.appendChild(left_div);
+    answer_div.appendChild(right_div);
+    answer_ol.appendChild(answer_div);
+    answer_print_section.appendChild(answer_ol);
+    // answer part
+    //// left answer part
+    if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
+      var left_answer_p = document.createElement('p');
+      left_answer_p.setAttribute("style", "visibility:visible");
+      left_answer_p.setAttribute("class", "answer");
+      var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
+      var left_answer = document.createTextNode(left_answer_string);
+      left_answer_p.appendChild(left_answer);
+      left_div.appendChild(left_answer_p);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var left_answer_p = document.createElement('p');
+      left_answer_p.setAttribute("style", "visibility:visible");
+      left_answer_p.setAttribute("class", "answer");
+      var left_answer_string = "{{ information_tuple.0.linear_function.linear_equation_latex }}";
+      var left_answer = document.createTextNode(left_answer_string);
+      left_answer_p.appendChild(left_answer);
+      left_div.appendChild(left_answer_p);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "linear_function_to_with_grid") {
+      // add extra canvas for answer.
+      var left_answer_canvas = document.createElement('canvas');
+      var left_answer_canvas_id = "left_answer_canvas" + {{ forloop.counter }};
+      left_answer_canvas.id = left_answer_canvas_id;
+      left_answer_canvas.width = 320;
+      left_answer_canvas.height = 160;
+      left_answer_canvas.style = "background-color:#CCFFFF; visibility:visible";
+      left_answer_canvas.setAttribute("class", "answer");
+      left_div.appendChild(left_answer_canvas);
+      var left_answer_stage = new createjs.Stage(left_answer_canvas_id);
+      addAxis(left_answer_stage);
+      addGridLineToGraph(left_answer_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      drawLinearFunction(left_answer_stage, left_x1, left_y1, left_x2, left_y2);
+    }
+
+    //// right answer part
+    if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
+      var right_answer_p = document.createElement('p');
+      right_answer_p.setAttribute("style", "visibility:visible");
+      right_answer_p.setAttribute("class", "answer");
+      var right_answer_string = "{{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_answer = document.createTextNode(right_answer_string);
+      right_answer_p.appendChild(right_answer);
+      right_div.appendChild(right_answer_p);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "without_grid_to_linear_function") {
+      var right_answer_p = document.createElement('p');
+      right_answer_p.setAttribute("style", "visibility:visible");
+      right_answer_p.setAttribute("class", "answer");
+      var right_answer_string = "{{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_answer = document.createTextNode(right_answer_string);
+      right_answer_p.appendChild(right_answer);
+      right_div.appendChild(right_answer_p);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
+      // add extra canvas for answer.
+      var right_answer_canvas = document.createElement('canvas');
+      var right_answer_canvas_id = "right_answer_canvas" + {{ forloop.counter }};
+      right_answer_canvas.id = right_answer_canvas_id;
+      right_answer_canvas.width = 320;
+      right_answer_canvas.height = 160;
+      right_answer_canvas.style = "background-color:#CCFFFF; visibility:visible";
+      right_answer_canvas.setAttribute("class", "answer");
+      right_div.appendChild(right_answer_canvas);
+      var right_answer_stage = new createjs.Stage(right_answer_canvas_id);
+      addAxis(right_answer_stage);
+      addGridLineToGraph(right_answer_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      drawLinearFunction(right_answer_stage, right_x1, right_y1, right_x2, right_y2);
+    }
+
+    {% endfor %}
+    // footer phase
+    var footer = document.createElement("footer");
+    footer.setAttribute("class", "container-fluid print_footer");
+    var small = document.createElement("small");
+    var footer_a = document.createElement("a");
+    footer_a.setAttribute("href", "#");
+    footer_a.innerHTML = "© 2022 有明学習振興";
+    //// footer add phase
+    small.appendChild(footer_a);
+    footer.appendChild(small);
+    answer_print_section.appendChild(footer);
     {% endfor %}
     MathJax.typeset();
   }

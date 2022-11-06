@@ -210,7 +210,7 @@ function refresh() {
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
       var left_problem_p = document.createElement('p');
       left_problem_p.setAttribute("style", "visibility:visible");
-      left_problem_p.setAttribute("className", "problem");
+      left_problem_p.setAttribute("class", "problem");
       var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
@@ -218,7 +218,7 @@ function refresh() {
     } else if ("{{ information_tuple.0.selected_problem_type }}" == "without_grid_to_linear_function") {
       var left_problem_p = document.createElement('p');
       left_problem_p.setAttribute("style", "visibility:visible");
-      left_problem_p.setAttribute("className", "problem");
+      left_problem_p.setAttribute("class", "problem");
       var left_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
@@ -237,7 +237,7 @@ function refresh() {
     if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
       var right_problem_p = document.createElement('p');
       right_problem_p.setAttribute("style", "visibility:visible");
-      right_problem_p.setAttribute("className", "problem");
+      right_problem_p.setAttribute("class", "problem");
       var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);
@@ -245,7 +245,7 @@ function refresh() {
     } else if ("{{ information_tuple.1.selected_problem_type }}" == "without_grid_to_linear_function") {
       var right_problem_p = document.createElement('p');
       right_problem_p.setAttribute("style", "visibility:visible");
-      right_problem_p.setAttribute("className", "problem");
+      right_problem_p.setAttribute("class", "problem");
       var right_problem_string = "以下のグラフから1次関数の式を求めよ。";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);

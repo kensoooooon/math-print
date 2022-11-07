@@ -1321,6 +1321,7 @@ def print_linear_function_with_graph(request):
         problem_types.append("with_grid_to_linear_function")
         problem_types.append("without_grid_to_linear_function")
         problem_types.append("linear_function_to_with_grid")
+        problem_types.append("coefficient_and_intercept_to_with_grid")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -2369,6 +2370,7 @@ def display_linear_function_with_graph(request):
         problem_types.append("with_grid_to_linear_function")
         problem_types.append("without_grid_to_linear_function")
         problem_types.append("linear_function_to_with_grid")
+        problem_types.append("coefficient_and_intercept_to_with_grid")
     
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):

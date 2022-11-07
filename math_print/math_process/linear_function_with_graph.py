@@ -35,7 +35,6 @@ class LinearFunctionWithGraphProblem:
         else:
             graph_to_use = "with_grid"
         linear_function = self._decide_linear_function_status()
-        # linear_function_latex = f"{linear_function.linear_equation_latex}"
         return selected_problem_type, graph_to_use, linear_function
     
     def _decide_linear_function_status(self):
@@ -50,17 +49,19 @@ class LinearFunctionWithGraphProblem:
             Args:
                 x1, y1, x2, y2 (str): 1次関数が通る2点
                 linear_function_latex (str): latex形式で記述された1次関数の式
+                linear_coefficient_latex (str): latex形式で記述された1次関数の傾き
+                intercept_latex (str): latex形式で記述された切片
             """
             x1: str
             y1: str
             x2: str
             y2: str
             linear_equation_latex: str
+            linear_coefficient_latex: str
+            intercept_latex: str
 
         x = sy.Symbol("x", real=True)
         y = sy.Symbol("y", real=True)
-        # x1 = randint(min, max-1)
-        # x2 = x1 + randint(1, max - x1)
         x1 = randint(-5, 5 - 1)
         x2 = x1 + randint(1, 5 - x1)
         y1 = randint(-5, 5 - 1)
@@ -69,13 +70,16 @@ class LinearFunctionWithGraphProblem:
             y1, y2 = y2, y1
         linear_coefficient = sy.Rational(y2 - y1, x2 - x1)
         right_of_equation = sy.expand(linear_coefficient * x - linear_coefficient * x1 + y1)
-        # equation = sy.Eq(y, right_of_equation)
         right_of_equation_latex = sy.latex(right_of_equation)
         linear_equation_latex = f"\( y = {right_of_equation_latex} \)".replace("\\", "\\\\")
+        linear_coefficient_latex = sy.latex(linear_coefficient).replace("\\", "\\\\")
+        intercept = -linear_coefficient * x1 + y1
+        intercept_latex = sy.latex(intercept).replace("\\", "\\\\")
         linear_function = LinearFunction(
             x1=str(x1), y1=str(y1),
             x2=str(x2), y2=str(y2),
-            linear_equation_latex=linear_equation_latex
+            linear_equation_latex=linear_equation_latex,
+            linear_coefficient_latex=linear_coefficient_latex, intercept_latex=intercept_latex
         )
         return linear_function
         

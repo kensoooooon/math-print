@@ -225,7 +225,15 @@ function refresh() {
       var left_problem_p = document.createElement('p');
       left_problem_p.setAttribute("style", "visibility:visible");
       left_problem_p.setAttribute("class", "problem");
-      var left_problem_string = "以下の1次関数のグラフを描け。 {{ information_tuple.0.linear_function.linear_equation_latex }}";
+      var left_problem_string = "1次関数 {{ information_tuple.0.linear_function.linear_equation_latex }} のグラフを描け。";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
+      left_div.appendChild(left_problem_p);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("class", "problem");
+      var left_problem_string = "傾きが{{ information_tuple.0.linear_function.linear_coefficient_latex }}, 切片が{{ information_tuple.0.linear_function.intercept_latex }}の1次関数のグラフを描け。";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
       left_div.appendChild(left_problem_p);
@@ -252,7 +260,15 @@ function refresh() {
       var right_problem_p = document.createElement('p');
       right_problem_p.setAttribute("style", "visibility:visible");
       right_problem_p.setAttribute("class", "problem");
-      var right_problem_string = "以下の1次関数のグラフを描け。 {{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_problem_string = "1次関数 {{ information_tuple.1.linear_function.linear_equation_latex }} のグラフを描け。";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+      right_div.appendChild(right_problem_p);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("class", "problem");
+      var right_problem_string = "傾きが{{ information_tuple.1.linear_function.linear_coefficient_latex }}, 切片が{{ information_tuple.1.linear_function.intercept_latex }}の1次関数のグラフを描け。";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);
       right_div.appendChild(right_problem_p);
@@ -289,6 +305,8 @@ function refresh() {
       var left_stage = new createjs.Stage(left_canvas_id);
       addAxis(left_stage);
       addGridLineToGraph(left_stage);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      
     }
 
     //// right problem drawing part

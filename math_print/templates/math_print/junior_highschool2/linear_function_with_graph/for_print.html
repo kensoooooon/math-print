@@ -55,7 +55,7 @@ function refresh() {
 
   function drawLine(stage, start_x, start_y, end_x, end_y) {
     var graphic = new createjs.Graphics();
-    graphic.setStrokeStyle(1);
+    graphic.setStrokeStyle(0.8);
     graphic.beginStroke("#000000");
     graphic.moveTo(start_x, start_y);
     graphic.lineTo(end_x, end_y);
@@ -99,7 +99,7 @@ function addGridLineToGraph(stage) {
   graphic.beginStroke("#000000");
   graphic.setStrokeStyle(0.5);
   drawDegreeCharacter(stage, 10 * 1 + 90, 80, "-5");
-  drawDegreeCharacter(stage, 10 * 11 + 9, 80, "5");
+  drawDegreeCharacter(stage, 10 * 11 + 90 + 5, 80, "5");
   drawDegreeCharacter(stage, 160, 10 * 1 + 10, "5");
   drawDegreeCharacter(stage, 160, 10 * 11 + 10, "-5");
   drawDegreeCharacter(stage, 160, 80, "O");
@@ -420,7 +420,7 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
     } else if ("{{ information_tuple.0.selected_problem_type }}" == "linear_function_to_with_grid") {
       // add extra canvas for answer.
       var left_answer_canvas = document.createElement('canvas');
-      var left_answer_canvas_id = "left_answer_canvas" + {{ forloop.counter }};
+      var left_answer_canvas_id = "left_answer_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
       left_answer_canvas.id = left_answer_canvas_id;
       left_answer_canvas.width = 320;
       left_answer_canvas.height = 160;
@@ -457,7 +457,7 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
     } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
       // add extra canvas for answer.
       var right_answer_canvas = document.createElement('canvas');
-      var right_answer_canvas_id = "right_answer_canvas" + {{ forloop.counter }};
+      var right_answer_canvas_id = "right_answer_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
       right_answer_canvas.id = right_answer_canvas_id;
       right_answer_canvas.width = 320;
       right_answer_canvas.height = 160;

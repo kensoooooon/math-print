@@ -3,9 +3,7 @@
 {% block script %}
 <script>
 function showAnswer(){
-  console.log("answer");
   var nodes = document.getElementsByClassName('answer');
-  console.log(nodes);
   for(var i = 0; i < nodes.length; i++){
     nodes[i].style.visibility = 'visible';
   }
@@ -69,7 +67,7 @@ function refresh() {
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
     drawDegreeCharacter(stage, 10 * 1 + 90, 80, "-5");
-    drawDegreeCharacter(stage, 10 * 11 + 9, 80, "5");
+    drawDegreeCharacter(stage, 10 * 11 + 90 + 5, 80, "5");
     drawDegreeCharacter(stage, 160, 10 * 1 + 10, "5");
     drawDegreeCharacter(stage, 160, 10 * 11 + 10, "-5");
     drawDegreeCharacter(stage, 160, 80, "O");
@@ -463,15 +461,6 @@ function refresh() {
   function make() {
     draw();
     add_other_parts_to_page();
-  }
-
-  function showAnswer(){
-    console.log("answer");
-    var nodes = document.getElementsByClassName('answer');
-    console.log(nodes);
-    for(var i = 0; i < nodes.length; i++){
-      nodes[i].style.visibility = 'visible';
-    }
   }
 
 </script>

@@ -1265,8 +1265,8 @@ def print_square_root_problem(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = SquareRootCalculateProblem(problem_types=problem_types)
-            problem2 = SquareRootCalculateProblem(problem_types=problem_types)
+            problem1 = SquareRootProblem(problem_types=problem_types)
+            problem2 = SquareRootProblem(problem_types=problem_types)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     

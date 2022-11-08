@@ -267,6 +267,13 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
       var left_problem_string = "以下の1次関数のグラフを描け。 {{ information_tuple.0.linear_function.linear_equation_latex }}";
       var left_problem = document.createTextNode(left_problem_string);
       left_problem_p.appendChild(left_problem);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      var left_problem_p = document.createElement('p');
+      left_problem_p.setAttribute("style", "visibility:visible");
+      left_problem_p.setAttribute("class", "problem");
+      var left_problem_string = "傾きが{{ information_tuple.0.linear_function.linear_coefficient_latex }}, 切片が{{ information_tuple.0.linear_function.intercept_latex }}の1次関数のグラフを描け。";
+      var left_problem = document.createTextNode(left_problem_string);
+      left_problem_p.appendChild(left_problem);
     }
     
     // right problem sentence part
@@ -289,6 +296,13 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
       right_problem_p.setAttribute("style", "visibility:visible");
       right_problem_p.setAttribute("class", "problem");
       var right_problem_string = "以下の1次関数のグラフを描け。 {{ information_tuple.1.linear_function.linear_equation_latex }}";
+      var right_problem = document.createTextNode(right_problem_string);
+      right_problem_p.appendChild(right_problem);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      var right_problem_p = document.createElement('p');
+      right_problem_p.setAttribute("style", "visibility:visible");
+      right_problem_p.setAttribute("class", "problem");
+      var right_problem_string = "傾きが{{ information_tuple.1.linear_function.linear_coefficient_latex }}, 切片が{{ information_tuple.1.linear_function.intercept_latex }}の1次関数のグラフを描け。";
       var right_problem = document.createTextNode(right_problem_string);
       right_problem_p.appendChild(right_problem);
     }
@@ -331,6 +345,10 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
       var left_stage = new createjs.Stage(left_canvas_id);
       addAxis(left_stage);
       addGridLineToGraph(left_stage);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      var left_stage = new createjs.Stage(left_canvas_id);
+      addAxis(left_stage);
+      addGridLineToGraph(left_stage);
     }
 
     //// right problem drawing part
@@ -353,6 +371,10 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
       addCoordinateToGraph(right_stage, right_x1, right_y1, right_x2, right_y2);
       drawLinearFunction(right_stage, right_x1, right_y1, right_x2, right_y2);
     } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
+      var right_stage = new createjs.Stage(right_canvas_id);
+      addAxis(right_stage);
+      addGridLineToGraph(right_stage);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
       var right_stage = new createjs.Stage(right_canvas_id);
       addAxis(right_stage);
       addGridLineToGraph(right_stage);
@@ -435,6 +457,24 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
       var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
       var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
       drawLinearFunction(left_answer_stage, left_x1, left_y1, left_x2, left_y2);
+    } else if ("{{ information_tuple.0.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
+      // add extra canvas for answer.
+      var left_answer_canvas = document.createElement('canvas');
+      var left_answer_canvas_id = "left_answer_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+      left_answer_canvas.id = left_answer_canvas_id;
+      left_answer_canvas.width = 320;
+      left_answer_canvas.height = 160;
+      left_answer_canvas.style = "background-color:#CCFFFF; visibility:visible";
+      left_answer_canvas.setAttribute("class", "answer");
+      left_div.appendChild(left_answer_canvas);
+      var left_answer_stage = new createjs.Stage(left_answer_canvas_id);
+      addAxis(left_answer_stage);
+      addGridLineToGraph(left_answer_stage);
+      var left_x1 = Number({{ information_tuple.0.linear_function.x1 }});
+      var left_y1 = Number({{ information_tuple.0.linear_function.y1 }});
+      var left_x2 = Number({{ information_tuple.0.linear_function.x2 }});
+      var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
+      drawLinearFunction(left_answer_stage, left_x1, left_y1, left_x2, left_y2);
     }
 
     //// right answer part
@@ -456,6 +496,23 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
       right_div.appendChild(right_answer_p);
     } else if ("{{ information_tuple.1.selected_problem_type }}" == "linear_function_to_with_grid") {
       // add extra canvas for answer.
+      var right_answer_canvas = document.createElement('canvas');
+      var right_answer_canvas_id = "right_answer_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+      right_answer_canvas.id = right_answer_canvas_id;
+      right_answer_canvas.width = 320;
+      right_answer_canvas.height = 160;
+      right_answer_canvas.style = "background-color:#CCFFFF; visibility:visible";
+      right_answer_canvas.setAttribute("class", "answer");
+      right_div.appendChild(right_answer_canvas);
+      var right_answer_stage = new createjs.Stage(right_answer_canvas_id);
+      addAxis(right_answer_stage);
+      addGridLineToGraph(right_answer_stage);
+      var right_x1 = Number({{ information_tuple.1.linear_function.x1 }});
+      var right_y1 = Number({{ information_tuple.1.linear_function.y1 }});
+      var right_x2 = Number({{ information_tuple.1.linear_function.x2 }});
+      var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
+      drawLinearFunction(right_answer_stage, right_x1, right_y1, right_x2, right_y2);
+    } else if ("{{ information_tuple.1.selected_problem_type }}" == "coefficient_and_intercept_to_with_grid") {
       var right_answer_canvas = document.createElement('canvas');
       var right_answer_canvas_id = "right_answer_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
       right_answer_canvas.id = right_answer_canvas_id;

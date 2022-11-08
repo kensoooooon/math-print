@@ -72,9 +72,9 @@ class LinearFunctionWithGraphProblem:
         right_of_equation = sy.expand(linear_coefficient * x - linear_coefficient * x1 + y1)
         right_of_equation_latex = sy.latex(right_of_equation)
         linear_equation_latex = f"\( y = {right_of_equation_latex} \)".replace("\\", "\\\\")
-        linear_coefficient_latex = sy.latex(linear_coefficient).replace("\\", "\\\\")
+        linear_coefficient_latex = f"\( {sy.latex(linear_coefficient)} \)".replace("\\", "\\\\")
         intercept = -linear_coefficient * x1 + y1
-        intercept_latex = sy.latex(intercept).replace("\\", "\\\\")
+        intercept_latex = f"\( {sy.latex(intercept)} \)".replace("\\", "\\\\")
         linear_function = LinearFunction(
             x1=str(x1), y1=str(y1),
             x2=str(x2), y2=str(y2),

@@ -7,7 +7,8 @@ urlpatterns = [
     ### 全体共通 ###
     path('', views.index, name='index'),
     # sample
-    path('graphic_sample/', views.graphic_sample, name='graphic_sample'),
+    path('graphic_sample', views.graphic_sample, name='graphic_sample'),
+    path('loop_sample/', views.loop_sample, name='loop_sample'),
     ##########################################
     ### 小3 ###
     path('elementary_school3/', views.show_elementary_school3, name='elementary_school3'),
@@ -92,6 +93,9 @@ urlpatterns = [
     # 平行線と図形の角
     path('parallel_lines_and_angle/print/', views.print_parallel_lines_and_angle, name='parallel_lines_and_angle_print'),
     path('parallel_lines_and_angle/display/', views.display_parallel_lines_and_angle, name='parallel_lines_and_angle_display'),
+    # 1次関数とグラフ
+    path('linear_function_with_graph/print/', views.print_linear_function_with_graph, name='linear_function_with_graph_print'),
+    path('linear_function_with_graph/display/', views.display_linear_function_with_graph, name='linear_function_with_graph_display'),
     ##########################################
     ### 中3 ###
     path('junior_highschool3/', views.show_junior_highschool3, name='junior_highschool3'),

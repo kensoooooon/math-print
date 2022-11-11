@@ -138,6 +138,9 @@ urlpatterns = [
     # n進数
     path('base_n_numbers/print', views.print_base_n_numbers, name='base_n_numbers_print'),
     path('base_n_numbers/display', views.display_base_n_numbers, name='base_n_numbers_display'),
+    # 三角比
+    path('trigonometric_ratio/print', views.print_trigonometric_ratio, name='trigonometric_ratio_print'),
+    path('trigonometric_ratio/display', views.display_trigonometric_ratio, name='trigonometric_ratio_display'),
     #########################################
     ### 高2 ###
     path('highschool2/', views.show_highschool2, name='highschool2'),

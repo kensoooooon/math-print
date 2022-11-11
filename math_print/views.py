@@ -2379,3 +2379,7 @@ def display_linear_function_with_graph(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool2/linear_function_with_graph/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_trigonometric_ratio(request):
+    PROBLEM_NUMBER = 20
+    return render(request, 'math_print/high_school1/trigonometric_ratio/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

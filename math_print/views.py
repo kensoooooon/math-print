@@ -45,6 +45,7 @@ from .math_process.square_root import SquareRootProblem
 from .math_process.square_root_calculate import SquareRootCalculateProblem
 from .math_process.base_n_numbers import BaseNNumbersProblem
 from .math_process.linear_function_with_graph import LinearFunctionWithGraphProblem
+from .math_process.trigonometric_ratio import TrigonometricRatioProblem
 
 
 def index(request):
@@ -1335,6 +1336,34 @@ def print_linear_function_with_graph(request):
     
     return render(request, 'math_print/junior_highschool2/linear_function_with_graph/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+
+def print_trigonometric_ratio(request):
+    PROBLEM_NUMBER = 20
+    
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("value_to_degree")
+        problem_types.append("degree_to_value")
+    
+    used_trigonometric_ratios = request.POST.getlist("used_trigonometric_ratio")
+    if not(used_trigonometric_ratios):
+        used_trigonometric_ratios.append("sin")
+        used_trigonometric_ratios.append("cos")
+        used_trigonometric_ratios.append("tan")    
+    
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = TrigonometricRatioProblem(problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios)
+            problem2 = TrigonometricRatioProblem(problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/highschool1/trigonometric_ratio/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -2382,4 +2411,21 @@ def display_linear_function_with_graph(request):
 
 def display_trigonometric_ratio(request):
     PROBLEM_NUMBER = 20
-    return render(request, 'math_print/high_school1/trigonometric_ratio/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("value_to_degree")
+        problem_types.append("degree_to_value")
+        
+    used_trigonometric_ratios = request.POST.getlist("used_trigonometric_ratio")
+    if not(used_trigonometric_ratios):
+        used_trigonometric_ratios.append("sin")
+        used_trigonometric_ratios.append("cos")
+        used_trigonometric_ratios.append("tan")
+        
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = TrigonometricRatioProblem(problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios)
+        problem2 = TrigonometricRatioProblem(problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool1/trigonometric_ratio/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

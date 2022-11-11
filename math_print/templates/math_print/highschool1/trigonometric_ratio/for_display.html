@@ -1,0 +1,109 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showFormula(){
+    var formulas = document.getElementsByClassName('formula');
+    for(var i = 0; i < formulas.length; i++){
+        formulas[i].style.visibility = 'visible';
+    }
+}
+
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+三角比の値と角度
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">三角比の値と角度</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<ol>
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            \({{ math_problem_tuple.0.latex_problem }}\)
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            \({{ math_problem_tuple.0.latex_answer }}\)
+                        </p>
+                    </li>
+                </div>
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            \({{ math_problem_tuple.1.latex_problem }}\)
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            \({{ math_problem_tuple.1.latex_answer }}\)
+                        </p>
+                    </li>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</ol>
+
+{% if used_formula_list %}
+    {% for formula in used_formula_list %}
+        <p class="formula text-center" style="visibility:hidden;">{{formula}}</p>
+    {% endfor %}
+{% else %}
+    <br>
+    <br>
+    <br>
+{% endif %}
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <button class="btn btn-outline-success" type="button" onclick="showFormula()">公式を表示する</button>
+    <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
+    <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
+    <a href="{% url 'highschool1' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2022 有明学習振興</a></small>
+</footer>
+{% endblock %}

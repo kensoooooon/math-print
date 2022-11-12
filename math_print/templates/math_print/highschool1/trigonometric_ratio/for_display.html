@@ -63,10 +63,10 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
-                            \({{ math_problem_tuple.0.latex_problem }}\)
+                            {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            \({{ math_problem_tuple.0.latex_answer }}\)
+                            {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
                         </p>
                     </li>
                 </div>
@@ -74,10 +74,10 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
-                            \({{ math_problem_tuple.1.latex_problem }}\)
+                            {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            \({{ math_problem_tuple.1.latex_answer }}\)
+                            {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
                         </p>
                     </li>
                 </div>
@@ -86,18 +86,7 @@ function refresh() {
     {% endfor %}
 </ol>
 
-{% if used_formula_list %}
-    {% for formula in used_formula_list %}
-        <p class="formula text-center" style="visibility:hidden;">{{formula}}</p>
-    {% endfor %}
-{% else %}
-    <br>
-    <br>
-    <br>
-{% endif %}
-
 <div class="d-grid gap-3 col-6 mx-auto">
-    <button class="btn btn-outline-success" type="button" onclick="showFormula()">公式を表示する</button>
     <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
     <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
     <a href="{% url 'highschool1' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>

@@ -1,4 +1,4 @@
-from random import choice
+from random import choice, randint, random
 
 import sympy as sy
 
@@ -65,17 +65,21 @@ class TrigonometricRatioProblem:
         if trigonometric_ratio == "tan":
             degree_candidates.remove(90)
         selected_degree = choice(degree_candidates)
-        latex_answer = f"\\theta = {selected_degree}^{{\\circ}}"
+        if trigonometric_ratio == "sin":
+            selected_degree1 = selected_degree
+            selected_degree2 = 180 - selected_degree1
+            latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, \\quad  {selected_degree2}^{{\\circ}} \\)"
+        latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
         selected_radian = selected_degree * sy.pi / 180
         if trigonometric_ratio == "sin":
             sin_value = sy.sin(selected_radian)
-            latex_problem = f"\\sin \\theta = {sy.latex(sin_value)}"
+            latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)"
         elif trigonometric_ratio == "cos":
             cos_value = sy.cos(selected_radian)
-            latex_problem = f"\\cos \\theta = {sy.latex(cos_value)}"
+            latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)"
         elif trigonometric_ratio == "tan":
             tan_value = sy.tan(selected_radian)
-            latex_problem = f"\\tan \\theta = {sy.latex(tan_value)}"        
+            latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)"  
         return latex_answer, latex_problem
     
     def _make_degree_to_value_problem(self, trigonometric_ratio):
@@ -98,15 +102,66 @@ class TrigonometricRatioProblem:
         if trigonometric_ratio == "tan":
             degree_candidates.remove(90)
         selected_degree = choice(degree_candidates)
-        latex_problem = f"\\{trigonometric_ratio} {selected_degree}^{{\\circ}}"
+        latex_problem = f"\\( \\{trigonometric_ratio} {selected_degree}^{{\\circ}} \\)"
         selected_radian = selected_degree * sy.pi / 180
         if trigonometric_ratio == "sin":
             sin_value = sy.sin(selected_radian)
-            latex_answer = f" = {sy.latex(sin_value)}"
+            latex_answer = f"\\( = {sy.latex(sin_value)} \\)"
         elif trigonometric_ratio == "cos":
             cos_value = sy.cos(selected_radian)
-            latex_answer = f" = {sy.latex(cos_value)}"
+            latex_answer = f"\\( = {sy.latex(cos_value)} \\)"
         elif trigonometric_ratio == "tan":
             tan_value = sy.tan(selected_radian)
-            latex_answer = f" = {sy.latex(tan_value)}"        
+            latex_answer = f"\\( = {sy.latex(tan_value)} \\)"  
         return latex_answer, latex_problem
+
+    def _make_mutual_relationships_problem(self):
+        """相互変換で三角比を求める問題を出力
+
+        """
+        # start_trigonometric_ratio = choice(["sin", "cos", "tan"])
+        # temporarily
+        start_trigonometric_ratio = "cos"
+        if start_trigonometric_ratio == "sin":
+            sin_value_denominator = randint(2, 10)
+            sin_value_numerator = randint(1, sin_value_denominator - 1)
+            sin_value = sy.Rational(sin_value_numerator, sin_value_denominator)
+            latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)のとき、"\
+                f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)"
+            cos_square_value = 1 - sin_value ** 2
+            cos_value1 = sy.sqrt(1 - sin_value ** 2)
+            cos_value2 = -sy.sqrt(1 - sin_value ** 2)
+            tan_value1 = sin_value / cos_value1
+            tan_value2 = sin_value / cos_value2
+            latex_answer = f"\\( \\sin^2 \\theta + \\cos^2 \\theta = 1\\)より、\n"\
+                "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
+                f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
+                f"今、定義域は\\( (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)であるため、"\
+                "\\( \\cos \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
+                f"よって、\\( \\cos \\theta = \\pm {sy.latex(cos_value1)} \\)\n"\
+                "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
+                f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value1)}}} = {sy.latex(tan_value1)} \\)\n"\
+                f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value2)}}} = {sy.latex(tan_value2)} \\)\n"\
+                f"すなわち、\\( \\tan \\theta = \\pm {sy.latex(tan_value1)} \\)"
+        elif start_trigonometric_ratio == "cos":
+            cos_value_denominator = randint(2, 10)
+            cos_value_numerator = randint(1, cos_value_denominator - 1)
+            if random() > 0.5:
+                cos_value_denominator *= -1
+            cos_value = sy.Rational(cos_value_numerator, cos_value_denominator)
+            latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
+                f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)"
+            sin_square_value = 1 - cos_value ** 2
+            sin_value = sy.sqrt(1 - cos_value ** 2)
+            tan_value = sin_value / cos_value
+            latex_answer = f"\\( \\sin^2 \\theta + \\cos^2 \\theta = 1\\)より、\n"\
+                "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
+                f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) "\
+                f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
+                "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
+                f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)\n"
+        elif start_trigonometric_ratio == "tan":
+            latex_answer = "hogehoge"
+            latex_problem = "fugafuga"
+        return latex_answer, latex_problem
+        

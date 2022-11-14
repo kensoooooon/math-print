@@ -2413,7 +2413,6 @@ def display_trigonometric_ratio(request):
     PROBLEM_NUMBER = 10
     
     problem_types = request.POST.getlist("problem_type")
-    print(f"problem_types: {problem_types}")
     if not(problem_types):
         problem_types.append("value_to_degree")
         problem_types.append("degree_to_value")

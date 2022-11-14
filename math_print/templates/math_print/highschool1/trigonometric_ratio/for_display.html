@@ -1,3 +1,4 @@
+
 {% extends 'math_print/base.html' %}
 
 {% block script %}
@@ -14,13 +15,6 @@
 </script>
 
 <script>
-function showFormula(){
-    var formulas = document.getElementsByClassName('formula');
-    for(var i = 0; i < formulas.length; i++){
-        formulas[i].style.visibility = 'visible';
-    }
-}
-
 function showAnswer(){
     var nodes = document.getElementsByClassName('answer');
     for(var i = 0; i < nodes.length; i++){
@@ -41,20 +35,19 @@ function refresh() {
 {% endblock %}
 
 {% block title %}
-三角比の値と角度
+三角比
 {% endblock %}
 
 {% block hero_unit %}
 <div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
     <div class="container">
         <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">三角比の値と角度</p>
+        <p class="text-dark">三角比</p>
     </div>
 </div>
 {% endblock %}
 
 {% block body %}
-
 <ol>
     {% for math_problem_tuple in math_problem_tuple_list %}
         <div class="container-fluid">
@@ -92,6 +85,7 @@ function refresh() {
     <a href="{% url 'highschool1' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
+
 <footer class="container-fluid print_footer">
     <small><a href="#">© 2022 有明学習振興</a></small>
 </footer>

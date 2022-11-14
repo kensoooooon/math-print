@@ -121,7 +121,7 @@ class TrigonometricRatioProblem:
         """
         # start_trigonometric_ratio = choice(["sin", "cos", "tan"])
         # temporarily
-        start_trigonometric_ratio = "cos"
+        start_trigonometric_ratio = "tan"
         if start_trigonometric_ratio == "sin":
             sin_value_denominator = randint(2, 10)
             sin_value_numerator = randint(1, sin_value_denominator - 1)
@@ -152,7 +152,7 @@ class TrigonometricRatioProblem:
             latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
                 f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)"
             sin_square_value = 1 - cos_value ** 2
-            sin_value = sy.sqrt(1 - cos_value ** 2)
+            sin_value = sy.sqrt(sin_square_value)
             tan_value = sin_value / cos_value
             latex_answer = f"\\( \\sin^2 \\theta + \\cos^2 \\theta = 1\\)より、\n"\
                 "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
@@ -161,7 +161,31 @@ class TrigonometricRatioProblem:
                 "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                 f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)\n"
         elif start_trigonometric_ratio == "tan":
-            latex_answer = "hogehoge"
-            latex_problem = "fugafuga"
+            tan_value_denominator = randint(1, 10)
+            tan_value_numerator = randint(1, 10)
+            if random() > 0.5:
+                tan_value_denominator *= -1
+            tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
+            latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
+                f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)"
+            cos_square_value = sy.Rational(1, 1 + tan_value ** 2)
+            if tan_value > 0:
+                cos_value = sy.sqrt(cos_square_value)
+            else:
+                cos_value = -sy.sqrt(cos_square_value)
+            sin_value = tan_value * cos_value
+            latex_answer = "\\( 1 + \\tan^2 \\theta = \\frac{1}{\\cos^2 \\theta}\\)より、\n"\
+                "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
+                f"\\( = \\frac{{1}}{{1 + {sy.latex(tan_value ** 2)}}} = {sy.latex(cos_square_value)}\\)\n"
+            if cos_value > 0:
+                latex_answer += "ここで、\\( \\tan \\theta  > 0 \\)より、\\( 0^{\\circ} < \\theta < 90^{\\circ} \\)であるため、"\
+                    "\\( \\cos \\theta > 0 \\)である。\n"
+            else:
+                latex_answer += "ここで、\\( \\tan \\theta < 0 \\)より、\\( 90^{\\circ} < \\theta < 180^{\\circ} \\)であるため、"\
+                    "\\( \\cos \\theta < 0 \\)である。\n"
+            latex_answer += f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
+                "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta} \\)より、\n"\
+                "\\( \\sin \\theta = \\tan \\theta \\cos \\theta \\)"\
+                f"\\( = ({sy.latex(tan_value)}) \\times ({sy.latex(cos_value)}) \\)"\
+                f"\\( = {sy.latex(sin_value)} \\)"
         return latex_answer, latex_problem
-        

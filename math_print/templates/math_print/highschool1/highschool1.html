@@ -549,6 +549,94 @@
             </form>
         </div>
     </div>
+        <div class="row">
+        <div class="col border-end border-bottom">
+            <p>三角比の値と角度</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">問題のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="degree_to_value" name="problem_type" id="trigonometric_ratio_degree_to_value" checked>
+                        <label class="form-check-label" for="trigonometric_ratio_degree_to_value">
+                            角度\( \Longleftarrow \)三角比
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="value_to_degree" name="problem_type" id="trigonometric_ratio_value_to_degree" checked>
+                        <label class="form-check-label" for="trigonometric_ratio_value_to_degree">
+                            角度\( \Longrightarrow \)三角比
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="mutual_relationships" name="problem_type" id="trigonometric_ratio_mutual_relationships">
+                        <label class="form-check-label" for="trigonometric_ratio_mutual_relationships">
+                            三角比の相互関係
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">角度\( \Longleftrightarrow \)三角比の値で使用される角度の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_90" name="degree_range" id="trigonometric_ratio_up_to_90" checked>
+                        <label class="form-check-label" for="trigonometric_ratio_up_to_90">
+                            90°まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_180" name="degree_range" id="trigonometric_ratio_up_to_180">
+                        <label class="form-check-label" for="trigonometric_ratio_up_to_180">
+                            180°まで
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">角度\( \Longleftrightarrow \)三角比の値で登場する三角比</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="sin" name="used_trigonometric_ratio" id="trigonometric_ratio_sin" checked>
+                        <label class="form-check-label" for="trigonometric_ratio_sin">
+                            sin
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="cos" name="used_trigonometric_ratio" id="trigonometric_ratio_cos" checked>
+                        <label class="form-check-label" for="trigonometric_ratio_cos">
+                            cos
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="tan" name="used_trigonometric_ratio" id="trigonometric_ratio_tan" checked>
+                        <label class="form-check-label" for="trigonometric_ratio_tan">
+                            tan
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="TrigonometricRatioFivePaperRadio" checked>
+                        <label class="form-check-label" for="TrigonometricRatioFivePaperRadio">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="TrigonometricRatioTenPaperRadio">
+                        <label class="form-check-label" for="TrigonometricRatioTenPaperRadio">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="TrigonometricRatioFifteenPaperRadio">
+                        <label class="form-check-label" for="TrigonometricRatioFifteenPaperRadio">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'trigonometric_ratio_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'trigonometric_ratio_display' %}">      
+            </form>
+        </div>
+    </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

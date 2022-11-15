@@ -1338,18 +1338,21 @@ def print_linear_function_with_graph(request):
 
 
 def print_trigonometric_ratio(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 10
     
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("value_to_degree")
         problem_types.append("degree_to_value")
+        problem_types.append("mutual_relationships")
     
     used_trigonometric_ratios = request.POST.getlist("used_trigonometric_ratio")
     if not(used_trigonometric_ratios):
         used_trigonometric_ratios.append("sin")
         used_trigonometric_ratios.append("cos")
-        used_trigonometric_ratios.append("tan")    
+        used_trigonometric_ratios.append("tan")
+    
+    degree_range = request.POST["degree_range"]  
     
     paper_number = int(request.POST["paper_number"])
     
@@ -1357,8 +1360,12 @@ def print_trigonometric_ratio(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = TrigonometricRatioProblem(problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios)
-            problem2 = TrigonometricRatioProblem(problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios)
+            problem1 = TrigonometricRatioProblem(
+                problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios,
+                degree_range=degree_range)
+            problem2 = TrigonometricRatioProblem(
+                problem_types=problem_types, used_trigonometric_ratios=used_trigonometric_ratios,
+                degree_range=degree_range)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     

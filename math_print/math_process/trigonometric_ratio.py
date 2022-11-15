@@ -117,11 +117,12 @@ class TrigonometricRatioProblem:
 
     def _make_mutual_relationships_problem(self):
         """相互変換で三角比を求める問題を出力
-
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
         """
-        # start_trigonometric_ratio = choice(["sin", "cos", "tan"])
-        # temporarily
-        start_trigonometric_ratio = "tan"
+        start_trigonometric_ratio = choice(["sin", "cos", "tan"])
         if start_trigonometric_ratio == "sin":
             sin_value_denominator = randint(2, 10)
             sin_value_numerator = randint(1, sin_value_denominator - 1)

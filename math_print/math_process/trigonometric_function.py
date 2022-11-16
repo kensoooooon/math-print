@@ -79,8 +79,8 @@ class TrigonometricFunctionProblem:
                 value = sy.cos(selected_radian)
             elif trigonometric_function == "tan":
                 value = sy.tan(selected_radian)
-            latex_answer = f"\\( = {sy.latex(value)} \\)"
-        
+            latex_problem = f"\\( = {sy.latex(value)} \\)"
+
         elif self._radian_range == "up_to_pi":
         elif self._radian_range == "up_to_2pi":
         latex_answer = "fuga"

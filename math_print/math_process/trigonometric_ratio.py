@@ -62,26 +62,42 @@ class TrigonometricRatioProblem:
             list_30 = [i * 30 for i in range(7)]
             list_45 = [i * 45 for i in range(5)]
         degree_candidates = list(set(list_30 + list_45))
-        if trigonometric_ratio == "tan":
-            degree_candidates.remove(90)
-        selected_degree = choice(degree_candidates)
         if trigonometric_ratio == "sin":
-            if self._degree_range == "up_to_180": 
-                selected_degree1 = selected_degree
-                selected_degree2 = 180 - selected_degree1
-                latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, \\quad  {selected_degree2}^{{\\circ}} \\)"
-        else:
-            latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
-        selected_radian = selected_degree * sy.pi / 180
-        if trigonometric_ratio == "sin":
+            selected_degree = choice(degree_candidates)
+            selected_radian = selected_degree * sy.pi / 180
             sin_value = sy.sin(selected_radian)
-            latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)"
+            if self._degree_range == "up_to_90":
+                latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
+                latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 90^{{\\circ}}) \\)を求めよ。"
+            elif self._degree_range == "up_to_180":
+                if selected_degree == 90:
+                    latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
+                else:
+                    selected_degree1 = selected_degree
+                    selected_degree2 = 180 - selected_degree1
+                    if selected_degree1 > selected_degree2:
+                        selected_degree1, selected_degree2 = selected_degree2, selected_degree1
+                    latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, \\quad  {selected_degree2}^{{\\circ}} \\)"
+                latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
         elif trigonometric_ratio == "cos":
+            selected_degree = choice(degree_candidates)
+            selected_radian = selected_degree * sy.pi / 180
             cos_value = sy.cos(selected_radian)
-            latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)"
+            latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
+            if self._degree_range == "up_to_90":
+                latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 90^{{\\circ}}) \\)を求めよ。"
+            elif self._degree_range == "up_to_180":
+                latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
         elif trigonometric_ratio == "tan":
+            degree_candidates.remove(90)
+            selected_degree = choice(degree_candidates)
+            selected_radian = selected_degree * sy.pi / 180
             tan_value = sy.tan(selected_radian)
-            latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)"  
+            latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
+            if self._degree_range == "up_to_90":
+                latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta < 90^{{\\circ}}) \\)を求めよ。"
+            elif self._degree_range == "up_to_180":
+                latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta < 90^{{\\circ}}, \\quad 90^{{\\circ}} < \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
         return latex_answer, latex_problem
     
     def _make_degree_to_value_problem(self, trigonometric_ratio):
@@ -104,17 +120,17 @@ class TrigonometricRatioProblem:
         if trigonometric_ratio == "tan":
             degree_candidates.remove(90)
         selected_degree = choice(degree_candidates)
-        latex_problem = f"\\( \\{trigonometric_ratio} {selected_degree}^{{\\circ}} \\)"
+        latex_problem = f"\\( \\{trigonometric_ratio} {selected_degree}^{{\\circ}} \\)の値を求めよ。"
         selected_radian = selected_degree * sy.pi / 180
         if trigonometric_ratio == "sin":
             sin_value = sy.sin(selected_radian)
-            latex_answer = f"\\( = {sy.latex(sin_value)} \\)"
+            latex_answer = f"\\( {sy.latex(sin_value)} \\)"
         elif trigonometric_ratio == "cos":
             cos_value = sy.cos(selected_radian)
-            latex_answer = f"\\( = {sy.latex(cos_value)} \\)"
+            latex_answer = f"\\( {sy.latex(cos_value)} \\)"
         elif trigonometric_ratio == "tan":
             tan_value = sy.tan(selected_radian)
-            latex_answer = f"\\( = {sy.latex(tan_value)} \\)"  
+            latex_answer = f"\\( {sy.latex(tan_value)} \\)"  
         return latex_answer, latex_problem
 
     def _make_mutual_relationships_problem(self):

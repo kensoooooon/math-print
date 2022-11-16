@@ -156,4 +156,7 @@ urlpatterns = [
     # 数列の漸化式
     path('recurrence_relation/print', views.print_recurrence_relation, name='recurrence_relation_print'),
     path('recurrence_relation/display', views.display_recurrence_relation, name='recurrence_relation_display'),
+    # 三角関数
+    path('trigonometric_function/print', views.print_trigonometric_function, name='trigonometric_function_print'),
+    path('trigonometric_function/display', views.display_trigonometric_function, name='trigonometric_function_display'),
 ]

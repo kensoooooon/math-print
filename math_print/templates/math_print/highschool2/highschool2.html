@@ -174,6 +174,104 @@
     </div>
     <div class="row">
         <div class="col border-end border-bottom">
+            <p>三角関数</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">問題のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="value_to_radian" name="trigonometric_function_problem_type" id="trigonometric_function_value_to_radian" checked>
+                        <label class="form-check-label" for="trigonometric_function_value_to_radian">
+                            角度\( \Longleftarrow \)三角関数の値
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="radian_to_value" name="trigonometric_function_problem_type" id="trigonometric_function_radian_to_value" checked>
+                        <label class="form-check-label" for="trigonometric_function_radian_to_value">
+                            角度\( \Longrightarrow \)三角関数の値
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="mutual_relationships" name="trigonometric_function_problem_type" id="trigonometric_function_mutual_relationships" checked>
+                        <label class="form-check-label" for="trigonometric_function_mutual_relationships">
+                            三角比の相互関係
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`trigonometric_function_problem_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`trigonometric_function_problem_type`)" value="全部はずし">
+                </div>
+                <small class="text-muted">角度\( \Longleftrightarrow \)三角比の値で使用される角度の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_pi_over_2" name="radian_range" id="trigonometric_function_up_to_pi_over_2">
+                        <label class="form-check-label" for="trigonometric_function_up_to_pi_over_2">
+                            \( \frac{\pi}{2} \)まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_pi" name="radian_range" id="trigonometric_function_up_to_pi" checked>
+                        <label class="form-check-label" for="trigonometric_function_up_to_pi">
+                            \( \pi \)まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_2pi" name="radian_range" id="trigonometric_function_up_to_2pi">
+                        <label class="form-check-label" for="trigonometric_function_up_to_2pi">
+                            \( 2\pi \)まで
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">角度\( \Longleftrightarrow \)三角関数の値で登場する三角関数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="sin" name="used_trigonometric_function" id="trigonometric_function_sin" checked>
+                        <label class="form-check-label" for="trigonometric_function_sin">
+                            sin
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="cos" name="used_trigonometric_function" id="trigonometric_function_cos" checked>
+                        <label class="form-check-label" for="trigonometric_function_cos">
+                            cos
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="tan" name="used_trigonometric_function" id="trigonometric_function_tan" checked>
+                        <label class="form-check-label" for="trigonometric_function_tan">
+                            tan
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`used_trigonometric_function`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`used_trigonometric_function`)" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="TrigonometricFunctionFivePaper" checked>
+                        <label class="form-check-label" for="TrigonometricFunctionFivePaper">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="TrigonometricFunctionTenPaper">
+                        <label class="form-check-label" for="TrigonometricTenPaper">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="TrigonometricFunctionFifteenPaper">
+                        <label class="form-check-label" for="TrigonometricFunctionFifteenPaper">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'trigonomeric_function_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'trigonometric_function_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p>交点の位置ベクトルを求める</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -226,56 +324,56 @@
                 <small class="text-muted">出題される漸化式</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="arithmetic_progression" name="problem_type" id="recurrence_relation_arithmetic_progression" checked>
+                        <input class="form-check-input" type="checkbox" value="arithmetic_progression" name="recurrence_relation_type" id="recurrence_relation_arithmetic_progression" checked>
                         <label class="form-check-label" for="recurrence_relation_arithmetic_progression">
                             \( a_{n+1} - a_{n} = d \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="geometric_progression" name="problem_type" id="recurrence_relation_geometric_progression" checked>
+                        <input class="form-check-input" type="checkbox" value="geometric_progression" name="recurrence_relation_type" id="recurrence_relation_geometric_progression" checked>
                         <label class="form-check-label" for="recurrence_relation_geometric_progression">
                             \( a_{n+1} = r a_{n} \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="progression_of_differences" name="problem_type" id="recurrence_relation_progression_of_differences" checked>
+                        <input class="form-check-input" type="checkbox" value="progression_of_differences" name="recurrence_relation_type" id="recurrence_relation_progression_of_differences" checked>
                         <label class="form-check-label" for="recurrence_relation_progression_of_differences">
                             \( a_{n+1} - a_{n} = f(n) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="harmonic_progression" name="problem_type" id="recurrence_relation_harmonic_progression">
+                        <input class="form-check-input" type="checkbox" value="harmonic_progression" name="recurrence_relation_type" id="recurrence_relation_harmonic_progression">
                         <label class="form-check-label" for="recurrence_relation_harmonic_progression">
                             \( a_{n+1} a_{n} - p a_{n+1} - p a_{n} = 0 \)
                         </label>
                     </div>
                     <br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="linear_characteristic_equation" name="problem_type" id="recurrence_relation_linear_characteristic_equation" checked>
+                        <input class="form-check-input" type="checkbox" value="linear_characteristic_equation" name="recurrence_relation_type" id="recurrence_relation_linear_characteristic_equation" checked>
                         <label class="form-check-label" for="recurrence_relation_linear_characteristic_equation">
                             \( a_{n+1} = p a_{n} + q \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="coefficient_comparison_to_geometric_progression" name="problem_type" id="recurrence_relation_coefficient_comparison_to_geometric_progression">
+                        <input class="form-check-input" type="checkbox" value="coefficient_comparison_to_geometric_progression" name="recurrence_relation_type" id="recurrence_relation_coefficient_comparison_to_geometric_progression">
                         <label class="form-check-label" for="recurrence_relation_coefficient_comparison_to_geometric_progression">
                             \( a_{n+1} = p a_{n} + f(n) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="exponent_to_linear_characteristic_equation" name="problem_type" id="recurrence_relation_exponent_to_linear_characteristic_equation">
+                        <input class="form-check-input" type="checkbox" value="exponent_to_linear_characteristic_equation" name="recurrence_relation_type" id="recurrence_relation_exponent_to_linear_characteristic_equation">
                         <label class="form-check-label" for="recurrence_relation_exponent_to_linear_characteristic_equation">
                             \( a_{n+1} = p a_{n} + r^n \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="three_adjacent_terms" name="problem_type" id="recurrence_relation_three_adjacent_terms" checked>
+                        <input class="form-check-input" type="checkbox" value="three_adjacent_terms" name="recurrence_relation_type" id="recurrence_relation_three_adjacent_terms" checked>
                         <label class="form-check-label" for="recurrence_relation_three_adjacent_terms">
                             \( a_{n+2} + p a_{n+1} + q a_{n} = 0 \)
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`problem_type`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`problem_type`)" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`recurrence_relation_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`recurrence_relation_type`)" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

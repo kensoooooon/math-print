@@ -46,6 +46,7 @@ from .math_process.square_root_calculate import SquareRootCalculateProblem
 from .math_process.base_n_numbers import BaseNNumbersProblem
 from .math_process.linear_function_with_graph import LinearFunctionWithGraphProblem
 from .math_process.trigonometric_ratio import TrigonometricRatioProblem
+from .math_process.trigonometric_function import TrigonometricFunctionProblem
 
 
 def index(request):
@@ -1227,7 +1228,7 @@ def print_common_denominator_problem(request):
 def print_recurrence_relation(request):
     PROBLEM_NUMBER = 4
     
-    problem_type_list = request.POST.getlist("problem_type")
+    problem_type_list = request.POST.getlist("recurrence_relation_type")
     if not(problem_type_list):
         problem_type_list.append("arithmetic_progression")
         problem_type_list.append("geometric_progression")
@@ -1370,6 +1371,42 @@ def print_trigonometric_ratio(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
     return render(request, 'math_print/highschool1/trigonometric_ratio/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
+def print_trigonometric_function(request):
+    PROBLEM_NUMBER = 10
+    
+    problem_types = request.POST.getlist("trigonometric_function_problem_type")
+    if not(problem_types):
+        problem_types.append("value_to_radian")
+        problem_types.append("radian_to_value")
+        problem_types.append("mutual_relationships")
+    
+    radian_range = request.POST["radian_range"]
+    
+    used_trigonometric_functions = request.POST.getlist("used_trigonometric_function")
+    if not(used_trigonometric_functions):
+        used_trigonometric_functions.append("sin")
+        used_trigonometric_functions.append("cos")
+        used_trigonometric_functions.append("tan")
+    
+    paper_number = int(request.POST["paper_number"])
+    
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = TrigonometricFunctionProblem(
+                problem_types=problem_types, used_trigonometric_functions=used_trigonometric_functions,
+                radian_range=radian_range)
+            problem2 = TrigonometricFunctionProblem(
+                problem_types=problem_types, used_trigonometric_functions=used_trigonometric_functions,
+                radian_range=radian_range)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    
+    return render(request, 'math_print/highschool2/trigonometric_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2331,7 +2368,7 @@ def display_common_denominator_problem(request):
 def display_recurrence_relation(request):
     PROBLEM_NUMBER = 20
     
-    problem_type_list = request.POST.getlist("problem_type")
+    problem_type_list = request.POST.getlist("recurrence_relation_type")
     if not(problem_type_list):
         problem_type_list.append("arithmetic_progression")
         problem_type_list.append("geometric_progression")
@@ -2444,3 +2481,33 @@ def display_trigonometric_ratio(request):
             degree_range=degree_range)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool1/trigonometric_ratio/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+def display_trigonometric_function(request):
+    PROBLEM_NUMBER = 20
+    
+    problem_types = request.POST.getlist("trigonometric_function_problem_type")
+    if not(problem_types):
+        problem_types.append("value_to_radian")
+        problem_types.append("radian_to_value")
+        problem_types.append("mutual_relationships")
+    
+    radian_range = request.POST["radian_range"]
+    
+    used_trigonometric_functions = request.POST.getlist("used_trigonometric_function")
+    if not(used_trigonometric_functions):
+        used_trigonometric_functions.append("sin")
+        used_trigonometric_functions.append("cos")
+        used_trigonometric_functions.append("tan")
+    
+    math_problem_tuple_list = []
+    for _ in range((int(PROBLEM_NUMBER // 2))):
+        problem1 = TrigonometricFunctionProblem(
+            problem_types=problem_types, used_trigonometric_functions=used_trigonometric_functions,
+            radian_range=radian_range
+        )
+        problem2 = TrigonometricFunctionProblem(
+            problem_types=problem_types, used_trigonometric_functions=used_trigonometric_functions,
+            radian_range=radian_range
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool2/trigonometric_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

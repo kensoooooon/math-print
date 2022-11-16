@@ -8,8 +8,8 @@ class TrigonometricRatioProblem:
     
     Attributes:
         _problem_types (list): 問題の候補を格納
-        _used_trigonometric_ratios (list): 使用される三角比の候補を格納
-        _degree_range (str): 使用される角度の範囲
+        _used_trigonometric_ratios (list): 値と角度の相互変換に使用される三角比の候補を格納
+        _degree_range (str): 値と角度の相互変換に使用される角度の範囲
         latex_answer (str): latex形式で記述された解答
         latex_answer (str): latex形式で記述された問題
     """

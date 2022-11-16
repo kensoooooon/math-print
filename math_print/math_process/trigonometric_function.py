@@ -45,7 +45,44 @@ class TrigonometricFunctionProblem:
             raise ValueError(f"'selected_problem_type' is {selected_problem_type}. This may be wrong.")
         return latex_answer, latex_problem
     
-    def _make_value_to_radian_problem(self, trigonometric_ratio):
+    def _make_value_to_radian_problem(self, trigonometric_function):
+        """値から角度を求める問題と解答の出力
+        
+        Args:
+            trigonometric_function (str): 問題に使用される三角関数の出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        if self._radian_range == "up_to_pi_over_2":
+            list_6 = [sy.Rational(i, 6) * sy.pi for i in range(4)]
+            list_4 = [sy.Rational(i, 4) * sy.pi for i in range(3)]
+        elif self._radian_range == "up_to_pi":
+            list_6 = [sy.Rational(i, 6) * sy.pi for i in range(7)]
+            list_4 = [sy.Rational(i, 4) * sy.pi for i in range(5)]
+        elif self._radian_range == "up_to_2pi":
+            list_6 = [sy.Rational(i, 6) * sy.pi for i in range(13)]
+            list_4 = [sy.Rational(i, 4) * sy.pi for i in range(9)]
+        else:
+            raise ValueError(f"'_radian_range' is {self._radian_range}. This may be wrong.")
+        radian_candidates = list(set(list_6 + list_4))
+        if trigonometric_function == "tan":
+            radian_candidates.remove(sy.Rational(1, 2) * sy.pi)
+            radian_candidates.remove(sy.Rational(3, 2) * sy.pi)
+        selected_radian = choice(radian_candidates)
+        if self._radian_range == "up_to_pi_over_2":
+            latex_answer = f"\\( \\theta = {selected_radian} \\)"
+            if trigonometric_function == "sin":
+                value = sy.sin(selected_radian)
+            elif trigonometric_function == "cos":
+                value = sy.cos(selected_radian)
+            elif trigonometric_function == "tan":
+                value = sy.tan(selected_radian)
+            latex_answer = f"\\( = {sy.latex(value)} \\)"
+        
+        elif self._radian_range == "up_to_pi":
+        elif self._radian_range == "up_to_2pi":
         latex_answer = "fuga"
         latex_problem = "hoge"
         return latex_answer, latex_problem

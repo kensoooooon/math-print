@@ -66,10 +66,12 @@ class TrigonometricRatioProblem:
             degree_candidates.remove(90)
         selected_degree = choice(degree_candidates)
         if trigonometric_ratio == "sin":
-            selected_degree1 = selected_degree
-            selected_degree2 = 180 - selected_degree1
-            latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, \\quad  {selected_degree2}^{{\\circ}} \\)"
-        latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
+            if self._degree_range == "up_to_180": 
+                selected_degree1 = selected_degree
+                selected_degree2 = 180 - selected_degree1
+                latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, \\quad  {selected_degree2}^{{\\circ}} \\)"
+        else:
+            latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
         selected_radian = selected_degree * sy.pi / 180
         if trigonometric_ratio == "sin":
             sin_value = sy.sin(selected_radian)

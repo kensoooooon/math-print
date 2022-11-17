@@ -21,6 +21,7 @@ class TrigonometricFunctionProblem:
         self._problem_types = settings["problem_types"]
         self._radian_range = settings["radian_range"]
         self._used_trigonometric_functions = settings["used_trigonometric_functions"]
+        self._sin_values, self._cos_values, self._tan_values = self._trigonometric_functions_latex_maker()
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -67,6 +68,22 @@ class TrigonometricFunctionProblem:
         else:
             raise ValueError(f"'_radian_range' is {self._radian_range}. This may be wrong.")
         radian_candidates = list(set(list_6 + list_4))
+        if trigonometric_function == "sin":
+            selected_radian = choice(radian_candidates)
+            if self._radian_range == "up_to_pi_over_2":
+                latex_answer = f"\\( theta = {sy.latex(selected_radian)} \\)"
+                latex_problem = f"\\( \\sin \\theta = {self._sin_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi / 2)}) \\)を求めよ。"
+            elif self._radian_range == "up_to_pi":
+                if selected_radian == sy.pi / 2:
+                    latex_answer = f"\\( \\theta = {sy.latex(selected_radian)}\\)"
+                else:
+                    selected_radian1 = selected_radian
+                    selected_radian2 = sy.pi - selected_radian1
+                    if selected_radian1 > selected_radian2:
+                        selected_radian1, selected_radian2 = selected_radian2, selected_radian1
+                    latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {selected_radian2} \\)"
+                latex_problem = f"\\( \\sin \\theta = {self._sin_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)を求めよ。"
+            elif self._radian_range == "up_to_2pi":
         if trigonometric_function == "tan":
             radian_candidates.remove(sy.Rational(1, 2) * sy.pi)
             radian_candidates.remove(sy.Rational(3, 2) * sy.pi)
@@ -82,9 +99,11 @@ class TrigonometricFunctionProblem:
             latex_problem = f"\\( = {sy.latex(value)} \\)"
 
         elif self._radian_range == "up_to_pi":
+            latex_answer = "fuga"
+            latex_problem = "hoge"
         elif self._radian_range == "up_to_2pi":
-        latex_answer = "fuga"
-        latex_problem = "hoge"
+            latex_answer = "fuga"
+            latex_problem = "hoge"
         return latex_answer, latex_problem
     
     def _make_radian_to_value_problem(self, trigonometric_ratio):
@@ -96,4 +115,68 @@ class TrigonometricFunctionProblem:
         latex_answer = "fuga"
         latex_problem = "hoge"
         return latex_answer, latex_problem
+    
+    def _trigonometric_functions_latex_maker(self):
+        """有理化を施さない三角関数の値を、latex形式で格納した辞書を出力
         
+        Returns:
+            sin_values (dict): sinの値を格納
+            cos_values (dict): cosの値を格納
+            tan_values (dict): tanの値を格納
+        """
+        sin_values = {
+            0: "0",
+            sy.pi / 6: "\\frac{1}{2}",
+            sy.pi / 4: "\\frac{1}{\\sqrt{2}}",
+            sy.pi / 3: "\\frac{\\sqrt{3}}{2}",
+            sy.pi / 2: "1",
+            2 * sy.pi / 3: "\\frac{\\sqrt{3}}{2}",
+            3 * sy.pi / 4: "\\frac{1}{\\sqrt{2}}",
+            5 * sy.pi / 6: "\\frac{1}{2}",
+            sy.pi: "0",
+            7 * sy.pi / 6: "-\\frac{1}{2}",
+            5 * sy.pi / 4: "-\\frac{1}{\\sqrt{2}}",
+            4 * sy.pi / 3: "-\\frac{\\sqrt{3}}{2}",
+            3 * sy.pi / 2: "-1",
+            5 * sy.pi / 3: "-\\frac{\\sqrt{3}}{2}",
+            7 * sy.pi / 4: "-\\frac{1}{\\sqrt{2}}",
+            11 * sy.pi / 6: "-\\frac{1}{2}",
+            2 * sy.pi: "0",
+        }
+        cos_values = {
+            0: "1",
+            sy.pi / 6: "\\frac{\\sqrt{3}}{2}",
+            sy.pi / 4: "\\frac{1}{\\sqrt{2}}",
+            sy.pi / 3: "\\frac{1}{2}",
+            sy.pi / 2: "0",
+            2 * sy.pi / 3: "-\\frac{1}{2}",
+            3 * sy.pi / 4: "-\\frac{1}{\\sqrt{2}}",
+            5 * sy.pi / 6: "-\\frac{\\sqrt{3}}{2}",
+            sy.pi: "-1",
+            7 * sy.pi / 6: "-\\frac{\\sqrt{3}}{2}",
+            5 * sy.pi / 4: "-\\frac{1}{\\sqrt{2}}",
+            4 * sy.pi / 3: "-\\frac{1}{2}",
+            3 * sy.pi / 2: "0",
+            5 * sy.pi / 3: "\\frac{1}{2}",
+            7 * sy.pi / 4: "\\frac{1}{\\sqrt{2}}",
+            11 * sy.pi / 6: "\\frac{\\sqrt{3}}{2}",
+            2 * sy.pi: "1",
+        }
+        tan_values = {
+            0: "0",
+            sy.pi / 6: "\\frac{1}{\\sqrt{3}}",
+            sy.pi / 4: "1",
+            sy.pi / 3: "\\sqrt{3}",
+            2 * sy.pi / 3: "-\\sqrt{3}",
+            3 * sy.pi / 4: "-1",
+            5 * sy.pi / 6: "-\\frac{1}{\\sqrt{3}}",
+            sy.pi: "0",
+            7 * sy.pi / 6: "\\frac{1}{\\sqrt{3}}",
+            5 * sy.pi / 4: "1",
+            4 * sy.pi / 3: "\\sqrt{3}",
+            5 * sy.pi / 3: "-\\sqrt{3}",
+            7 * sy.pi / 4: "-1",
+            11 * sy.pi / 6: "-\\frac{1}{\\sqrt{3}}",
+            2 * sy.pi: "0",
+        }
+        return sin_values, cos_values, tan_values

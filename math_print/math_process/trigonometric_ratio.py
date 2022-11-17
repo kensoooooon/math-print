@@ -10,6 +10,9 @@ class TrigonometricRatioProblem:
         _problem_types (list): 問題の候補を格納
         _used_trigonometric_ratios (list): 値と角度の相互変換に使用される三角比の候補を格納
         _degree_range (str): 値と角度の相互変換に使用される角度の範囲
+        _sin_values (dict): 有理化を施さないsinの値を格納
+        _cos_values (dict): 有理化を施さないcosの値を格納
+        _tan_values (dict): 有理化を施さないtanの値を格納
         latex_answer (str): latex形式で記述された解答
         latex_answer (str): latex形式で記述された問題
     """
@@ -18,9 +21,11 @@ class TrigonometricRatioProblem:
         
         settings (dict): 問題設定を格納
         """
+        sy.init_printing(order='grevlex')
         self._problem_types = settings["problem_types"]
         self._used_trigonometric_ratios = settings["used_trigonometric_ratios"]
         self._degree_range = settings["degree_range"]
+        self._sin_values, self._cos_values, self._tan_values = self._trigonometric_ratios_latex_maker()
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -64,11 +69,11 @@ class TrigonometricRatioProblem:
         degree_candidates = list(set(list_30 + list_45))
         if trigonometric_ratio == "sin":
             selected_degree = choice(degree_candidates)
-            selected_radian = selected_degree * sy.pi / 180
-            sin_value = sy.sin(selected_radian)
+            # selected_radian = selected_degree * sy.pi / 180
+            # sin_value = sy.sin(selected_radian)
             if self._degree_range == "up_to_90":
                 latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
-                latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 90^{{\\circ}}) \\)を求めよ。"
+                latex_problem = f"\\( \\sin \\theta = {self._sin_values[selected_degree]} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 90^{{\\circ}}) \\)を求めよ。"
             elif self._degree_range == "up_to_180":
                 if selected_degree == 90:
                     latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
@@ -77,27 +82,27 @@ class TrigonometricRatioProblem:
                     selected_degree2 = 180 - selected_degree1
                     if selected_degree1 > selected_degree2:
                         selected_degree1, selected_degree2 = selected_degree2, selected_degree1
-                    latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, \\quad  {selected_degree2}^{{\\circ}} \\)"
-                latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
+                    latex_answer = f"\\( \\theta = {selected_degree1}^{{\\circ}}, {selected_degree2}^{{\\circ}} \\)"
+                latex_problem = f"\\( \\sin \\theta = {self._sin_values[selected_degree]} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
         elif trigonometric_ratio == "cos":
             selected_degree = choice(degree_candidates)
-            selected_radian = selected_degree * sy.pi / 180
-            cos_value = sy.cos(selected_radian)
+            # selected_radian = selected_degree * sy.pi / 180
+            # cos_value = sy.cos(selected_radian)
             latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
             if self._degree_range == "up_to_90":
-                latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 90^{{\\circ}}) \\)を求めよ。"
+                latex_problem = f"\\( \\cos \\theta = {self._cos_values[selected_degree]} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 90^{{\\circ}}) \\)を求めよ。"
             elif self._degree_range == "up_to_180":
-                latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
+                latex_problem = f"\\( \\cos \\theta = {self._cos_values[selected_degree]} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
         elif trigonometric_ratio == "tan":
             degree_candidates.remove(90)
             selected_degree = choice(degree_candidates)
-            selected_radian = selected_degree * sy.pi / 180
-            tan_value = sy.tan(selected_radian)
+            # selected_radian = selected_degree * sy.pi / 180
+            # tan_value = sy.tan(selected_radian)
             latex_answer = f"\\( \\theta = {selected_degree}^{{\\circ}} \\)"
             if self._degree_range == "up_to_90":
-                latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta < 90^{{\\circ}}) \\)を求めよ。"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_degree]} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta < 90^{{\\circ}}) \\)を求めよ。"
             elif self._degree_range == "up_to_180":
-                latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta < 90^{{\\circ}}, \\quad 90^{{\\circ}} < \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_degree]} \\)を満たす\\( \\theta (0^{{\\circ}} \\leqq \\theta < 90^{{\\circ}}, \\quad 90^{{\\circ}} < \\theta \\leqq 180^{{\\circ}}) \\)を求めよ。"
         return latex_answer, latex_problem
     
     def _make_degree_to_value_problem(self, trigonometric_ratio):
@@ -121,16 +126,16 @@ class TrigonometricRatioProblem:
             degree_candidates.remove(90)
         selected_degree = choice(degree_candidates)
         latex_problem = f"\\( \\{trigonometric_ratio} {selected_degree}^{{\\circ}} \\)の値を求めよ。"
-        selected_radian = selected_degree * sy.pi / 180
+        # selected_radian = selected_degree * sy.pi / 180
         if trigonometric_ratio == "sin":
-            sin_value = sy.sin(selected_radian)
-            latex_answer = f"\\( {sy.latex(sin_value)} \\)"
+            # sin_value = sy.sin(selected_radian)
+            latex_answer = f"\\( = {self._sin_values[selected_degree]} \\)"
         elif trigonometric_ratio == "cos":
-            cos_value = sy.cos(selected_radian)
-            latex_answer = f"\\( {sy.latex(cos_value)} \\)"
+            # cos_value = sy.cos(selected_radian)
+            latex_answer = f"\\( = {self._cos_values[selected_degree]} \\)"
         elif trigonometric_ratio == "tan":
-            tan_value = sy.tan(selected_radian)
-            latex_answer = f"\\( {sy.latex(tan_value)} \\)"  
+            # tan_value = sy.tan(selected_radian)
+            latex_answer = f"\\( = {self._tan_values[selected_degree]} \\)"  
         return latex_answer, latex_problem
 
     def _make_mutual_relationships_problem(self):
@@ -208,3 +213,45 @@ class TrigonometricRatioProblem:
                 f"\\( = ({sy.latex(tan_value)}) \\times ({sy.latex(cos_value)}) \\)"\
                 f"\\( = {sy.latex(sin_value)} \\)"
         return latex_answer, latex_problem
+
+    def _trigonometric_ratios_latex_maker(self):
+        """有理化を施さない三角比の値を、latex形式で格納した辞書を出力
+        
+        Returns:
+            sin_values (dict): sinの値を格納
+            cos_values (dict): cosの値を格納
+            tan_values (dict): tanの値を格納
+        """
+        sin_values = {
+            0: "0",
+            30: "\\frac{1}{2}",
+            45: "\\frac{1}{\\sqrt{2}}",
+            60: "\\frac{\\sqrt{3}}{2}",
+            90: "1",
+            120: "\\frac{\\sqrt{3}}{2}",
+            135: "\\frac{1}{\\sqrt{2}}",
+            150: "\\frac{1}{2}",
+            180: "0"
+        }
+        cos_values = {
+            0: "1",
+            30: "\\frac{\\sqrt{3}}{2}",
+            45: "\\frac{1}{\\sqrt{2}}",
+            60: "\\frac{1}{2}",
+            90: "0",
+            120: "-\\frac{1}{2}",
+            135: "-\\frac{1}{\\sqrt{2}}",
+            150: "-\\frac{\\sqrt{3}}{2}",
+            180: "-1"
+        }
+        tan_values = {
+            0: "0",
+            30: "\\frac{1}{\\sqrt{3}}",
+            45: "1",
+            60: "\\sqrt{3}",
+            120: "-\\sqrt{3}",
+            135: "-1",
+            150: "-\\frac{1}{\\sqrt{3}}",
+            180: "0"
+        }
+        return sin_values, cos_values, tan_values

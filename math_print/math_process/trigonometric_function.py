@@ -119,8 +119,32 @@ class TrigonometricFunctionProblem:
                     latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {sy.latex(selected_radian2)} \\)"
                 latex_problem = f"\\( \\cos \\theta = {self._cos_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)を求めよ。"       
         elif trigonometric_function == "tan":
-            latex_answer = "hogehogetan"
-            latex_problem = "fugafugatan"
+            radian_candidates.remove(sy.pi / 2)
+            if self._radian_range == "up_to_2pi":
+                radian_candidates.remove(3 * sy.pi / 2)
+            selected_radian = choice(radian_candidates)
+            if self._radian_range == "up_to_pi_over_2":
+                latex_answer = f"\\( \\theta = {sy.latex(selected_radian)} \\)"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta < {sy.latex(sy.pi / 2)}) \\)を求めよ。"
+            elif self._radian_range == "up_to_pi":
+                if (selected_radian == 0) or (selected_radian == sy.pi):
+                    selected_radian1 = selected_radian
+                    selected_radian2 = sy.pi - selected_radian1
+                    if selected_radian1 > selected_radian2:
+                        selected_radian1, selected_radian2 = selected_radian2, selected_radian1
+                    latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {sy.latex(selected_radian2)} \\)"
+                else:
+                    latex_answer = f"\\( \\theta = {sy.latex(selected_radian)} \\)"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi)}, \\theta \\neq {sy.latex(sy.pi / 2)}) \\)を求めよ。"
+            elif self._radian_range == "up_to_2pi":
+                if selected_radian < sy.pi:
+                    selected_radian1 = selected_radian
+                    selected_radian2 = selected_radian1 + sy.pi
+                else:
+                    selected_radian2 = selected_radian
+                    selected_radian1 = selected_radian2 - sy.pi
+                latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {sy.latex(selected_radian2)} \\)"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta < {sy.latex(2 * sy.pi)}, \\theta \\neq {sy.latex(sy.pi / 2)}, {sy.latex(3 * sy.pi / 2)})\\)を求めよ。"
         return latex_answer, latex_problem
     
     def _make_radian_to_value_problem(self, trigonometric_ratio):

@@ -803,9 +803,9 @@ class TrigonometricFunctionProblem:
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"
                 # 0 <= sin <= 1, -1 <= cos <= 0, -oo <= tan <= 0
                 elif radian_range == "from_pi_over_2_up_to_pi":
-                    cos_value_denominator = randint(2, 10)
-                    cos_value_numerator = randint(1, cos_value_denominator - 1)
-                    cos_value = -sy.Rational(cos_value_numerator, cos_value_denominator)
+                    tan_value_denominator = randint(1, 6)
+                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value = -sy.Rational(tan_value_numerator, cos_value_denominator)
                     latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
                         f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(sy.pi)}) \\)"
                     sin_square_value = 1 - cos_value ** 2

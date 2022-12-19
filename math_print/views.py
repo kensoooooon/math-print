@@ -2483,7 +2483,7 @@ def display_trigonometric_ratio(request):
     return render(request, 'math_print/highschool1/trigonometric_ratio/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_trigonometric_function(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 10
     
     problem_types = request.POST.getlist("trigonometric_function_problem_type")
     if not(problem_types):

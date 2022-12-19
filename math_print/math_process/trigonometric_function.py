@@ -135,7 +135,7 @@ class TrigonometricFunctionProblem:
                     latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {sy.latex(selected_radian2)} \\)"
                 else:
                     latex_answer = f"\\( \\theta = {sy.latex(selected_radian)} \\)"
-                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi)}, \\theta \\neq {sy.latex(sy.pi / 2)}) \\)を求めよ。"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)を求めよ。"
             elif self._radian_range == "up_to_2pi":
                 if selected_radian < sy.pi:
                     selected_radian1 = selected_radian
@@ -144,7 +144,7 @@ class TrigonometricFunctionProblem:
                     selected_radian2 = selected_radian
                     selected_radian1 = selected_radian2 - sy.pi
                 latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {sy.latex(selected_radian2)} \\)"
-                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta < {sy.latex(2 * sy.pi)}, \\theta \\neq {sy.latex(sy.pi / 2)}, {sy.latex(3 * sy.pi / 2)})\\)を求めよ。"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta < {sy.latex(2 * sy.pi)})\\)を求めよ。"
         return latex_answer, latex_problem
     
     def _make_radian_to_value_problem(self, trigonometric_function):
@@ -176,12 +176,12 @@ class TrigonometricFunctionProblem:
             selected_radian = choice(radian_candidates)
             latex_problem = f"\\( \\sin {sy.latex(selected_radian)} \\)の値を求めよ。"
             sin_value = self._sin_values[selected_radian]
-            latex_answer = f"\\( = {sin_value} \\)"
+            latex_answer = f"\\( \\sin {sy.latex(selected_radian)} = {sin_value} \\)"
         elif trigonometric_function == "cos":
             selected_radian = choice(radian_candidates)
             latex_problem = f"\\( \\cos {sy.latex(selected_radian)} \\)の値を求めよ。"
             cos_value = self._cos_values[selected_radian]
-            latex_answer = f"\\( = {cos_value} \\)"
+            latex_answer = f"\\( \\cos {sy.latex(selected_radian)} = {cos_value} \\)"
         elif trigonometric_function == "tan":
             radian_candidates.remove(sy.pi / 2)
             if self._radian_range == "up_to_2pi":
@@ -189,7 +189,7 @@ class TrigonometricFunctionProblem:
             selected_radian = choice(radian_candidates)
             latex_problem = f"\\( \\tan {sy.latex(selected_radian)} \\)の値を求めよ。"
             tan_value = self._tan_values[selected_radian]
-            latex_answer = f"\\( = {tan_value} \\)"
+            latex_answer = f"\\( \\tan {sy.latex(selected_radian)} = {tan_value} \\)"
         return latex_answer, latex_problem
     
     def _make_mutual_relationships_problem(self):
@@ -295,7 +295,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(sy.pi)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)であるため、"\
-                        "\\( -1 \\leqq \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -313,11 +313,11 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(3 * sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)であるため、"\
-                        "\\( 0 \\leqq \\cos \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"  
-                # step by over pi
+                # step by pi
                 # 0 <= sin <= 1, -1 <= cos <= 1, -oo < tan < oo
                 elif radian_range == "from_zero_up_to_pi":
                     sin_value_denominator = randint(2, 10)
@@ -354,7 +354,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)であるため、"\
-                        "\\( -1 \\leqq \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -364,7 +364,7 @@ class TrigonometricFunctionProblem:
                     sin_value_numerator = randint(1, sin_value_denominator - 1)
                     sin_value = -sy.Rational(sin_value_numerator, sin_value_denominator)
                     latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)のとき、"\
-                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( {sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
+                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
                     cos_square_value = 1 - sin_value ** 2
                     cos_value1 = sy.sqrt(cos_square_value)
                     cos_value2 = -sy.sqrt(cos_square_value)
@@ -387,7 +387,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         sin_value *= -1
                     latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)のとき、"\
-                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
+                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
                     # 0 <= sin <= 1, -1 <= cos <= 1, -oo < tan < oo(same as 0 <= theta <= pi)
                     if sin_value > 0:
                         cos_square_value = 1 - sin_value ** 2
@@ -414,7 +414,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
                             f"この範囲で\\( \\sin \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi)} < \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。\n"\
-                            "そのため、\\( -1 < \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -426,23 +426,21 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         sin_value *= -1
                     latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)のとき、"\
-                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
+                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
                     # 0 <= sin <= 1, -1 <= cos <= 0, tan < 0 (same as pi / 2 <= theta <= pi)
                     if sin_value > 0:
                         cos_square_value = 1 - sin_value ** 2
-                        cos_value1 = sy.sqrt(cos_square_value)
-                        cos_value2 = -sy.sqrt(cos_square_value)
-                        tan_value1 = sin_value / cos_value1
-                        tan_value2 = sin_value / cos_value2
+                        cos_value = -sy.sqrt(cos_square_value)
+                        tan_value = sin_value / cos_value
                         latex_answer = f"\\( \\sin^2 \\theta + \\cos^2 \\theta = 1\\)より、\n"\
                             "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                             f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
-                            f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
-                            f"この範囲で\\( \\sin \\theta > 0 \\)となるのは、\\( 0 < \\theta < {sy.latex(sy.pi)} \\)である。\n"\
-                            "そのため、\\( \\cos \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
-                            f"よって、\\( \\cos \\theta = \\pm {sy.latex(cos_value1)} \\)\n"\
+                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。"\
+                            f"この範囲で\\( \\sin \\theta > 0 \\)となるのは、\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(sy.pi)} \\)である。\n"\
+                            "そのため、\\( -1 < \\cos \\theta < 0 \\)が常に成り立つ。\n"\
+                            f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
-                            f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{\\pm {sy.latex(cos_value1)}}} = \\pm {sy.latex(tan_value1)} \\)"
+                            f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
                     # -1 <= sin <= 0, -1 <= cos <1 , tan >= 0 (same as pi <= theta < 2 * pi)
                     else:
                         cos_square_value = 1 - sin_value ** 2
@@ -453,7 +451,7 @@ class TrigonometricFunctionProblem:
                         latex_answer = f"\\( \\sin^2 \\theta + \\cos^2 \\theta = 1\\)より、\n"\
                             "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                             f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
-                            f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
+                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(2 * sy.pi)} \\)である。"\
                             f"この範囲で\\( \\sin \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi)} < \\theta < {sy.latex(2 * sy.pi)} \\)である。\n"\
                             "そのため、\\( \\cos \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
                             f"よって、\\( \\cos \\theta = \\pm {sy.latex(cos_value1)} \\)\n"\
@@ -468,7 +466,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         sin_value *= -1
                     latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)のとき、"\
-                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( 0 \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
+                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0 \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
                     # 0 <= sin <= 1, -1 <= cos <= 1, -oo < tan < oo
                     if sin_value > 0:
                         cos_square_value = 1 - sin_value ** 2
@@ -602,7 +600,7 @@ class TrigonometricFunctionProblem:
                     cos_value_numerator = randint(1, cos_value_denominator - 1)
                     cos_value = -sy.Rational(cos_value_numerator, cos_value_denominator)
                     latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
                     sin_square_value = 1 - cos_value ** 2
                     sin_value1 = sy.sqrt(sin_square_value)
                     sin_value2 = -sy.sqrt(sin_square_value)
@@ -645,7 +643,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         cos_value *= -1
                     latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
                     # 0 <= sin <= 1, 0 <= cos <= 1, 0 < tan (same as 0 <= theta <= pi / 2)
                     if cos_value > 0:
                         sin_square_value = 1 - cos_value ** 2
@@ -684,7 +682,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         cos_value *= -1
                     latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
                     # -1 <= sin < 0, 0 <= cos < 1, tan < 0 (same as 3pi / 2 <= theta < 2pi)
                     if cos_value > 0:
                         sin_square_value = 1 - cos_value ** 2
@@ -724,7 +722,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         cos_value *= -1
                     latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( 0 \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( (0 \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
                     # -1 <= sin <= 1, 0 < cos <= 1, -oo < tan < oo (same as 0 < theta < pi / 2, 3pi / 2 < theta < 2pi)
                     if cos_value > 0:
                         sin_square_value = 1 - cos_value ** 2
@@ -840,7 +838,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         tan_value *= -1
                     latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(0)} \\leqq \\theta < {sy.latex(sy.pi)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(0)} \\leqq \\theta \\leqq {sy.latex(sy.pi)}) \\)"
                     cos_square_value = 1 / (1 + tan_value ** 2)
                     # 0 <= sin <= 1, 0 <= cos <= 1, tan > 0 (same as 0 <= theta <= pi / 2)
                     if tan_value > 0:
@@ -876,9 +874,9 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         tan_value *= -1
                     latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(3 * sy.pi / 2)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
                     cos_square_value = 1 / (1 + tan_value ** 2)
-                    cos_value = sy.sqrt(cos_square_value)
+                    cos_value = -sy.sqrt(cos_square_value)
                     sin_value = tan_value * cos_value
                     latex_answer = "\\( 1 + \\tan^2 \\theta = \\frac{1}{\\cos^2 \\theta}\\)より、\n"\
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\

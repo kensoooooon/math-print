@@ -259,7 +259,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(sy.pi / 2)} \\)であるため、"\
-                        "\\( 0 \\leqq \\cos \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -277,7 +277,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = 1 - \\sin^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)であるため、"\
-                        "\\( -1 \\leqq \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -346,7 +346,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         sin_value *= -1
                     latex_problem = f"\\( \\sin \\theta = {sy.latex(sin_value)} \\)のとき、"\
-                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
+                        f"\\( \\cos \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
                     cos_square_value = 1 - sin_value ** 2
                     cos_value = -sy.sqrt(cos_square_value)
                     tan_value = sin_value / cos_value
@@ -414,7 +414,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
                             f"この範囲で\\( \\sin \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi)} < \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。\n"\
-                            "そのため、\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta < 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -437,7 +437,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = 1 - ({sy.latex(sin_value)})^2 = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。"\
                             f"この範囲で\\( \\sin \\theta > 0 \\)となるのは、\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(sy.pi)} \\)である。\n"\
-                            "そのため、\\( -1 < \\cos \\theta < 0 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -515,7 +515,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(sy.pi / 2)} \\)であるため、"\
-                        "\\( 0 \\leqq \\sin \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -533,7 +533,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)であるため、"\
-                        "\\( 0 \\leqq \\sin \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -551,7 +551,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(sy.pi)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)であるため、"\
-                        "\\( -1 \\leqq \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -569,7 +569,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(3 * sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)であるため、"\
-                        "\\( -1 \\leqq \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"  
@@ -590,7 +590,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)であるため、"\
-                        "\\( 0 \\leqq \\sin \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -622,7 +622,7 @@ class TrigonometricFunctionProblem:
                     if random() > 0.5:
                         cos_value *= -1
                     latex_problem = f"\\( \\cos \\theta = {sy.latex(cos_value)} \\)のとき、"\
-                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( {sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
+                        f"\\( \\sin \\theta \\)と\\( \\tan \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
                     sin_square_value = 1 - cos_value ** 2
                     sin_value = -sy.sqrt(sin_square_value)
                     tan_value = sin_value / cos_value
@@ -630,7 +630,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)であるため、"\
-                        "\\( -1 \\leqq \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -653,8 +653,8 @@ class TrigonometricFunctionProblem:
                             "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                             f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
-                            f"この範囲で\\( \\cos \\theta > 0 \\)となるのは、\\( 0 < \\theta < {sy.latex(sy.pi / 2)} \\)である。\n"\
-                            "そのため、\\( 0 \\leqq \\sin \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                            f"この範囲で\\( \\cos \\theta > 0 \\)となるのは、\\( 0 \\leqq \\theta < {sy.latex(sy.pi / 2)} \\)である。\n"\
+                            "そのため、\\( \\sin \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"
@@ -754,7 +754,7 @@ class TrigonometricFunctionProblem:
                             "そのため、\\( \\sin \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
                             f"よって、\\( \\sin \\theta = \\pm {sy.latex(sin_value1)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
-                            f"\\( \\tan \\theta = \\frac{{\\pm {sy.latex(sin_value1)}}}{{{sy.latex(cos_value)}}} = \\pm {sy.latex(tan_value2)} \\)\n"
+                            f"\\( \\tan \\theta = \\frac{{\\pm {sy.latex(sin_value1)}}}{{{sy.latex(cos_value)}}} = \\pm {sy.latex(tan_value2)} \\)"
             elif start_trigonometric_function == "tan":
                 # step by pi over 2
                 # 0 <= sin <= 1, 0 <= cos <= 1, 0 <= tan 
@@ -771,7 +771,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                         f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(sy.pi / 2)} \\)であるため、"\
-                        "\\( 0 \\leqq \\cos \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta} \\)より、\n"\
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"
@@ -789,7 +789,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                         f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)であるため、"\
-                        "\\( -1 \\leqq \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot ({sy.latex(cos_value)}) = {sy.latex(sin_value)} \\)"
@@ -807,7 +807,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                         f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(sy.pi)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)であるため、"\
-                        "\\( -1 \\leqq \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot ({sy.latex(cos_value)})  = {sy.latex(sin_value)} \\)"
@@ -825,7 +825,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                         f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(3 * sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)であるため、"\
-                        "\\( 0 \\leqq \\cos \\theta < 1 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\geqq < 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"
@@ -849,7 +849,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( {sy.latex(0)} \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)である。"\
                             f"この範囲で\\( \\tan \\theta > 0 \\)となるのは、\\( 0 < \\theta < {sy.latex(sy.pi / 2)} \\)である。\n"\
-                            "そのため、\\( 0 < \\cos \\theta \\leqq 1 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta > 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"
@@ -862,7 +862,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( {sy.latex(0)} \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)である。"\
                             f"この範囲で\\( \\tan \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi / 2)} < \\theta < {sy.latex(sy.pi)} \\)である。\n"\
-                            "そのため、\\( -1 \\leqq \\cos \\theta < 0 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta < 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot ({sy.latex(cos_value)})  = {sy.latex(sin_value)} \\)"
@@ -882,7 +882,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                         f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)であるため、"\
-                        "\\( -1 \\leqq \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\leqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"
                     if tan_value > 0:    
@@ -908,7 +908,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。"\
                             f"この範囲で\\( \\tan \\theta > 0 \\)となるのは、\\( {sy.latex(sy.pi)} < \\theta < {sy.latex(3 * sy.pi / 2)} \\)である。\n"\
-                            "そのため、\\( -1 < \\cos < 0 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta < 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot ({sy.latex(cos_value)}) = {sy.latex(sin_value)} \\)"
@@ -921,7 +921,7 @@ class TrigonometricFunctionProblem:
                             f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。"\
                             f"この範囲で\\( \\tan \\theta < 0 \\)となるのは、\\( {sy.latex(3 * sy.pi / 2)} < \\theta < {sy.latex(2 * sy.pi)} \\)である。\n"\
-                            "そのため、\\( 0 < \\cos \\theta < 1 \\)が常に成り立つ。\n"\
+                            "そのため、\\( \\cos \\theta > 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"

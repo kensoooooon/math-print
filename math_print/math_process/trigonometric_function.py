@@ -569,7 +569,7 @@ class TrigonometricFunctionProblem:
                         "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                         f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(3 * sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)であるため、"\
-                        "\\( \\sin \\theta \\leqq 0 \\)が常に成り立つ。\n"\
+                        "\\( \\sin \\theta < 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\tan \\theta = \\frac{{{sy.latex(sin_value)}}}{{{sy.latex(cos_value)}}} = {sy.latex(tan_value)} \\)"  
@@ -669,8 +669,8 @@ class TrigonometricFunctionProblem:
                             "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                             f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
-                            f"この範囲で\\( \\cos \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi / 2)} < \\theta < {sy.latex(3 * sy.pi / 2)} \\)であるため、"\
-                            "\\( \\sin \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
+                            f"この範囲で\\( \\cos \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi / 2)} < \\theta < {sy.latex(3 * sy.pi / 2)} \\)である。\n"\
+                            "そのため、\\( \\sin \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
                             f"よって、\\( \\sin \\theta = \\pm {sy.latex(sin_value1)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                             f"\\( \\tan \\theta = \\frac{{\\pm {sy.latex(sin_value1)}}}{{{sy.latex(cos_value)}}} = \\pm {sy.latex(tan_value2)} \\)"
@@ -691,7 +691,7 @@ class TrigonometricFunctionProblem:
                         latex_answer = f"\\( \\sin^2 \\theta + \\cos^2 \\theta = 1\\)より、\n"\
                             "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                             f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
-                            f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
+                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。"\
                             f"この範囲で\\( \\cos \\theta > 0 \\)となるのは、\\( {sy.latex(3 * sy.pi / 2)} \leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。\n"\
                             "そのため、\\( \\sin \\theta < 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\sin \\theta = {sy.latex(sin_value)} \\)\n"\
@@ -734,7 +734,7 @@ class TrigonometricFunctionProblem:
                             "\\( \\sin^2 \\theta = 1 - \\cos^2 \\theta \\)"\
                             f"\\( = 1 - ({sy.latex(cos_value)})^2 = {sy.latex(sin_square_value)}\\) \n"\
                             f"今、\\( \\theta \\) の定義域は\\( 0 \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)である。"\
-                            f"この範囲で\\( \\cos \\theta > 0 \\)となるのは、\\( 0 < \\theta < {sy.latex(sy.pi / 2)}, {sy.latex(3 * sy.pi / 2)} < \\theta < {sy.latex(2 * sy.pi)} \\)である。\n"\
+                            f"この範囲で\\( \\cos \\theta > 0 \\)となるのは、\\( 0 \\leqq \\theta < {sy.latex(sy.pi / 2)}, {sy.latex(3 * sy.pi / 2)} < \\theta < {sy.latex(2 * sy.pi)} \\)である。\n"\
                             "そのため、\\( \\sin \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
                             f"よって、\\( \\sin \\theta = \\pm {sy.latex(sin_value1)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
@@ -759,8 +759,8 @@ class TrigonometricFunctionProblem:
                 # step by pi over 2
                 # 0 <= sin <= 1, 0 <= cos <= 1, 0 <= tan 
                 if radian_range == "from_zero_up_to_pi_over_2":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
                         f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( (0 \\leqq \\theta \\leqq {sy.latex(sy.pi / 2)}) \\)"
@@ -777,8 +777,8 @@ class TrigonometricFunctionProblem:
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"
                 # 0 <= sin <= 1, -1 <= cos <= 0, -oo <= tan <= 0
                 elif radian_range == "from_pi_over_2_up_to_pi":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = -sy.Rational(tan_value_numerator, tan_value_denominator)
                     latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
                         f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi / 2)} \\leqq \\theta \\leqq {sy.latex(sy.pi)}) \\)"
@@ -795,8 +795,8 @@ class TrigonometricFunctionProblem:
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot ({sy.latex(cos_value)}) = {sy.latex(sin_value)} \\)"
                 # -1 <= sin <= 0, -1 <= cos <= 0, 0 <= tan < oo
                 elif radian_range == "from_pi_up_to_3pi_over_2":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
                         f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(sy.pi)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)}) \\)"
@@ -813,8 +813,8 @@ class TrigonometricFunctionProblem:
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = {sy.latex(tan_value)} \\cdot ({sy.latex(cos_value)})  = {sy.latex(sin_value)} \\)"
                 # -1 <= sin <= 0, 0 <= cos <= 1, tan < 0
                 elif radian_range == "from_3pi_over_2_up_to_2pi":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = -sy.Rational(tan_value_numerator, tan_value_denominator)
                     latex_problem = f"\\( \\tan \\theta = {sy.latex(tan_value)} \\)のとき、"\
                         f"\\( \\sin \\theta \\)と\\( \\cos \\theta \\)の値を求めよ。\\( ({sy.latex(3 * sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)}) \\)"
@@ -825,15 +825,15 @@ class TrigonometricFunctionProblem:
                         "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                         f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
                         f"今、\\( \\theta \\)の定義域は\\( {sy.latex(3 * sy.pi / 2)} \\leqq \\theta < {sy.latex(2 * sy.pi)} \\)であるため、"\
-                        "\\( \\cos \\geqq < 0 \\)が常に成り立つ。\n"\
+                        "\\( \\cos \\theta \\geqq 0 \\)が常に成り立つ。\n"\
                         f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
                         "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
                         f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot {sy.latex(cos_value)}  = {sy.latex(sin_value)} \\)"
                 # step by over pi
                 # 0 <= sin <= 1, -1 <= cos <= 1, -oo < tan < oo
                 elif radian_range == "from_zero_up_to_pi":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     if random() > 0.5:
                         tan_value *= -1
@@ -868,8 +868,8 @@ class TrigonometricFunctionProblem:
                             f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot ({sy.latex(cos_value)})  = {sy.latex(sin_value)} \\)"
                 # -1 <= sin <= 1, -1 <= cos <= 0, -oo < tan < oo
                 elif radian_range == "from_pi_over_2_up_to_3pi_over_2":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     if random() > 0.5:
                         tan_value *= -1
@@ -891,8 +891,8 @@ class TrigonometricFunctionProblem:
                         latex_answer += f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot ({sy.latex(cos_value)})  = {sy.latex(sin_value)} \\)"
                 # -1 <= sin <= 0, -1 <= cos < 1, -oo < tan < oo
                 elif radian_range == "from_pi_up_to_2pi":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     if random() > 0.5:
                         tan_value *= -1
@@ -928,8 +928,8 @@ class TrigonometricFunctionProblem:
                 # step by 3 * pi /2
                 # -1 <= sin <= 1, -1 <= cos <= 1, -oo < tan < oo
                 elif radian_range == "from_zero_up_to_3pi_over_2":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     if random() > 0.5:
                         tan_value *= -1
@@ -945,8 +945,8 @@ class TrigonometricFunctionProblem:
                         latex_answer = "\\( 1 + \\tan^2 \\theta = \\frac{1}{\\cos^2 \\theta}\\)より、\n"\
                             "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                             f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
-                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(0)} \\leqq \\theta < {sy.latex(3 * sy.pi / 2)} \\)である。"\
-                            f"この範囲で\\( \\tan \\theta < 0 \\)となるのは、\\( {sy.latex(0)} < \\theta < {sy.latex(sy.pi / 2)}, {sy.latex(sy.pi)} < \\theta < {sy.latex(3 * sy.pi / 2)} \\)である。\n"\
+                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(0)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
+                            f"この範囲で\\( \\tan \\theta > 0 \\)となるのは、\\( {sy.latex(0)} < \\theta < {sy.latex(sy.pi / 2)}, {sy.latex(sy.pi)} < \\theta < {sy.latex(3 * sy.pi / 2)} \\)である。\n"\
                             "そのため、\\( \\cos \\theta \\)には正の場合と負の場合の両方が存在する。\n"\
                             f"よって、\\( \\cos \\theta = \\pm {sy.latex(cos_value1)} \\)\n"\
                             "また、\\( \\tan \\theta = \\frac{\\sin \\theta}{\\cos \\theta}\\)より、\n"\
@@ -958,7 +958,7 @@ class TrigonometricFunctionProblem:
                         latex_answer = "\\( 1 + \\tan^2 \\theta = \\frac{1}{\\cos^2 \\theta}\\)より、\n"\
                             "\\( \\cos^2 \\theta = \\frac{1}{1 + \\tan^2 \\theta} \\)"\
                             f"\\( = \\frac{{1}}{{1 + ({sy.latex(tan_value)})^2}} = {sy.latex(cos_square_value)}\\) \n"\
-                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(0)} \\leqq \\theta < {sy.latex(3 * sy.pi / 2)} \\)である。"\
+                            f"今、\\( \\theta \\) の定義域は\\( {sy.latex(0)} \\leqq \\theta \\leqq {sy.latex(3 * sy.pi / 2)} \\)である。"\
                             f"この範囲で\\( \\tan \\theta < 0 \\)となるのは、\\( {sy.latex(sy.pi / 2)} < \\theta < {sy.latex(sy.pi)} \\)である。\n"\
                             "そのため、\\( \\cos \\theta < 0 \\)が常に成り立つ。\n"\
                             f"よって、\\( \\cos \\theta = {sy.latex(cos_value)} \\)\n"\
@@ -966,8 +966,8 @@ class TrigonometricFunctionProblem:
                             f"\\( \\sin \\theta = \\tan \\theta \\cos \\theta = ({sy.latex(tan_value)}) \\cdot ({sy.latex(cos_value)})  = {sy.latex(sin_value)} \\)"
                 # -1 <= sin <= 1, -1 <= cos < 1, -oo < tan < oo
                 elif radian_range == "from_pi_over_2_up_to_2pi":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     if random() > 0.5:
                         tan_value *= -1
@@ -1005,8 +1005,8 @@ class TrigonometricFunctionProblem:
                 # step by 2 pi
                 # -1 <= sin <= 1, -1 <= cos <= 1, -oo < tan < oo
                 elif radian_range == "from_zero_up_to_2pi":
-                    tan_value_denominator = randint(1, 6)
-                    tan_value_numerator = randint(1, 3 * tan_value_denominator)
+                    tan_value_denominator = randint(1, 4)
+                    tan_value_numerator = randint(1, 2 * tan_value_denominator)
                     tan_value = sy.Rational(tan_value_numerator, tan_value_denominator)
                     if random() > 0.5:
                         tan_value *= -1

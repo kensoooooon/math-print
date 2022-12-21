@@ -51,6 +51,9 @@ urlpatterns = [
     # カッコなしの数の計算
     path('number_without_bracket/print/', views.print_number_without_bracket_problem, name='number_without_bracket_print'),
     path('number_without_bracket/display/', views.display_number_without_bracket_problem, name='number_without_bracket_display'),
+    #### 説明 ####
+    path('number_without_bracket/explanation/print', views.print_number_without_bracket_explanation, name='number_without_bracket_explanation_print'),
+    path('number_without_bracket/explanation/display', views.display_number_without_bracket_explanation, name='number_without_bracket_explanation_display'),
     # 文字の計算
     path('character/print/', views.print_character_problem, name="character_print"),
     path('character/display', views.display_character_problem, name="character_display"),

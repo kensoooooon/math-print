@@ -1005,7 +1005,7 @@ def print_parallel_lines_and_angle(request):
     if not(used_information_list):
         used_information_list.append("corresponding_and_alternate_angle")
         used_information_list.append("vertical_angle")
-
+        used_information_list.append("multiple_corresponding_and_alternate_angle")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -1018,11 +1018,8 @@ def print_parallel_lines_and_angle(request):
             problem_type_and_answer_angle2 = ProblemTypeAndAnswerAngle(problem_type2, answer_angle2)
             math_problem_tuple_inner_list.append((problem_type_and_answer_angle1, problem_type_and_answer_angle2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
-    
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
-    # pprint.pprint(math_problem_list_of_list)
-
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
 
 def print_unit_conversion_problem(request):

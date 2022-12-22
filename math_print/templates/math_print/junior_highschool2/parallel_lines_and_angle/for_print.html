@@ -123,7 +123,10 @@ function refresh() {
     // start from bottom line
     var start_x = 70;
     var start_y = 155;
-    var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
+    // fixing //
+    // var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
+    // fixed?
+    var max_angle = 50;
     var min_angle = 20;
     var bottom_angle = Math.floor(Math.random() * (max_angle + 1 - min_angle) + min_angle);
     var bottom_radian = bottom_angle * Math.PI / 180;

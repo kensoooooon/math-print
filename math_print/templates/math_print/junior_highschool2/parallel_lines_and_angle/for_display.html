@@ -138,6 +138,22 @@ function refresh() {
     stage.update();
   }
 
+  function new_random_multiple_parallel_angle_draw (stage, answer_angle) {
+    // draw the top line
+    drawLine(stage, 0, 5, 320, 5);
+    // draw the bottom line
+    drawLine(stage, 0, 155, 320, 155);
+    // start from bottom line
+    // but bottom point range is fixed.(80, 155) ~ (160, 155)
+    let max_x = 170;
+    let min_x = 80; // no much evidence. can be more smaller. but next joined line may go too right.
+    let start_x = Math.floor(Math.random() * (max_x + 1 - min_x) + min_x);
+    let start_y = 105;
+    let answer_point_x = 170;
+    let answer_point_y = 105;
+    drawLine(stage, start_x, start_y, answer_point_x, answer_point_y);
+  }
+
   function random_parallel_angle_draw (stage, answer_angle) {
     // var docking_x = 150;
     var docking_x = 75;

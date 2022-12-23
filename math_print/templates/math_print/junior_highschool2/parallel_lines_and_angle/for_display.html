@@ -152,6 +152,17 @@ function refresh() {
     let answer_point_x = 170;
     let answer_point_y = 105;
     drawLine(stage, start_x, start_y, answer_point_x, answer_point_y);
+    // Math.atan(opposite / adjacent)
+    let opposite = start_y - 105;
+    let adjacent = 170 - start_x;
+    let bottom_radian = Math.atan(opposite / adjacent);
+    let bottom_angle = bottom_radian * 180 / Math.PI;
+    drawArc(stage, start_x, start_y, 20, 0, -bottom_angle, anticlockwise=true);
+    drawDegreeCharacter(stage, start_x + 40, start_y - 15, bottom_angle + "°");
+    // line from anwer point to upper
+    let middle_angle = answer_angle - bottom_angle;
+    let middle_radian = middle_angle * 180 / Math.PI;
+    
   }
 
   function random_parallel_angle_draw (stage, answer_angle) {

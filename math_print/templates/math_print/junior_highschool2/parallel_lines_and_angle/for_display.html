@@ -162,6 +162,16 @@ function refresh() {
     // line from anwer point to upper
     let middle_angle = answer_angle - bottom_angle;
     let middle_radian = middle_angle * 180 / Math.PI;
+    let middle_radius = 50 / Math.sin(middle_radian);
+    let upper_x = answer_point_x + Math.cos(Math.PI + middle_radian);
+    let upper_y = 55;
+    drawLine(stage, answer_point_x, anxswer_point_y, upper_x, upper_y);
+    drawArc(stage, answer_point_x, answer_point_y, 20, 180 - bottom_angle, 180 + middle_angle, anticlockwise=false);
+    drawDegreeCharacter(stage, answer_point_x - 40, answer_point_y - 10, "x°");
+    // line from upper to top
+    let max_top_x = 300; // end of x is 320. buffer is 20;
+    let min_top_x = 40; // start of x is 0. buffer is 40(to display top angle)
+    let top_y = 5;
     
   }
 

@@ -156,7 +156,8 @@ function refresh() {
     let max_x = 170;
     let min_x = 80; // no much evidence. can be more smaller. but next joined line may go too right.
     let start_x = Math.floor(Math.random() * (max_x + 1 - min_x) + min_x);
-    let start_y = 105;
+    // let start_y = 105; //may be wrong. not bottom.
+    let start_y = 155;
     let answer_point_x = 170;
     let answer_point_y = 105;
     drawLine(stage, start_x, start_y, answer_point_x, answer_point_y);
@@ -173,7 +174,8 @@ function refresh() {
     let answer_radian = answer_angle * 180 / Math.PI;
     let middle_radian = answer_radian - bottom_radian;
     let middle_angle = answer_angle - bottom_angle;
-    let middle_radius = 50 / Math.sin(middle_radian);
+    // may not need?
+    // let middle_radius = 50 / Math.sin(middle_radian);
     let upper_x = answer_point_x + Math.cos(Math.PI + middle_radian);
     let upper_y = 55;
     drawLine(stage, answer_point_x, anxswer_point_y, upper_x, upper_y);
@@ -181,11 +183,15 @@ function refresh() {
     drawDegreeCharacter(stage, answer_point_x - 40, answer_point_y - 10, "x°");
     // line from upper to top
     let max_top_x = 300; // end of x is 320. buffer is 20;
-    let min_top_x = 40; // start of x is 0. buffer is 40(to display top angle)
+    // upper should be more than upper_x?
+    // let min_top_x = 40; // start of x is 0. buffer is 40(to display top angle)
+    let min_top_x = upper_x + 10;
     let top_x = Math.floor(Math.random() * (max_to_x + 1 - min_top_x) + min_top_x);
     let top_y = 5;
     drawLine(stage, upper_x, upper_y, top_x, top_y);
-    let top_radian = Math.atan(50 / Math.abs(upper_x - top_x));
+    // the change with changing of min_top_x
+    // let top_radian = Math.atan(50 / Math.abs(upper_x - top_x));
+    let top_radian = Math.atan(50 / )
     drawArcByRadian(stage, upper_x, upper_y, 20, -top_radian, middle_radian, anticlockwise=false);
     drawArcByRadian(stage, top_x, top_y, 20, )
     drawDegreeCharacter(stage, )

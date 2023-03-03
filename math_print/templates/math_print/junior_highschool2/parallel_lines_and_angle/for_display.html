@@ -167,7 +167,7 @@ function refresh() {
     let bottom_radian = Math.atan(opposite / adjacent);
     // cut down point.
     let bottom_angle = Math.floor(bottom_radian * 180 / Math.PI);
-    drawArcByRadian(stage, start_x, start_y, 20, 0, -bottom_raidan, anticlockwise=true);
+    drawArcByRadian(stage, start_x, start_y, 20, 0, -bottom_radian, anticlockwise=true);
     drawDegreeCharacter(stage, start_x + 40, start_y - 15, bottom_angle + "°");
     // line from anwer point to upper
     // transformation
@@ -178,7 +178,7 @@ function refresh() {
     // let middle_radius = 50 / Math.sin(middle_radian);
     let upper_x = answer_point_x + Math.cos(Math.PI + middle_radian);
     let upper_y = 55;
-    drawLine(stage, answer_point_x, anxswer_point_y, upper_x, upper_y);
+    drawLine(stage, answer_point_x, answer_point_y, upper_x, upper_y);
     drawArcByRadian(stage, answer_point_x, answer_point_y, 20, Math.PI - bottom_radian, Math.PI + middle_radian, anticlockwise=false);
     drawDegreeCharacter(stage, answer_point_x - 40, answer_point_y - 10, "x°");
     // line from upper to top
@@ -186,15 +186,18 @@ function refresh() {
     // upper should be more than upper_x?
     // let min_top_x = 40; // start of x is 0. buffer is 40(to display top angle)
     let min_top_x = upper_x + 10;
-    let top_x = Math.floor(Math.random() * (max_to_x + 1 - min_top_x) + min_top_x);
+    let top_x = Math.floor(Math.random() * (max_top_x + 1 - min_top_x) + min_top_x);
     let top_y = 5;
     drawLine(stage, upper_x, upper_y, top_x, top_y);
     // the change with changing of min_top_x
     // let top_radian = Math.atan(50 / Math.abs(upper_x - top_x));
-    let top_radian = Math.atan(50 / )
+    let top_radian = Math.atan(50 / (top_x - upper_x));
+    let top_angle = Math.floor(top_radian * 180 / Math.PI);
     drawArcByRadian(stage, upper_x, upper_y, 20, -top_radian, middle_radian, anticlockwise=false);
-    drawArcByRadian(stage, top_x, top_y, 20, )
-    drawDegreeCharacter(stage, )
+    drawArcByRadian(stage, top_x, top_y, 20, Math.PI - top_radian, Math.PI, anticlockwise=false);
+    drawDegreeCharacter(stage, top_x-20, top_y, top_angle);
+    // after finish
+    stage.update();
   }
 
   function random_parallel_angle_draw (stage, answer_angle) {
@@ -334,7 +337,10 @@ function refresh() {
       }
     }
     else if (problem_type == "multiple_corresponding_and_alternate_angle") {
-      random_multiple_parallel_angle_draw(stage, answer_angle);
+      // the test
+      // random_multiple_parallel_angle_draw(stage, answer_angle);
+      console.log("answer_angle: " + answer_angle + "°");
+      new_random_multiple_parallel_angle_draw(stage, answer_angle);
     }
     else if (problem_type == "vertical_angle") {
       random_vertical_angle_draw(stage, answer_angle);

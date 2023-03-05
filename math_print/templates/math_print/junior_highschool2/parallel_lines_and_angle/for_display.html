@@ -147,6 +147,7 @@ function refresh() {
   }
 
   function new_random_multiple_parallel_angle_draw (stage, answer_angle) {
+    console.log("answer_angle: " + answer_angle + "°");
     // draw the top line
     drawLine(stage, 0, 5, 320, 5);
     // draw the bottom line
@@ -171,7 +172,9 @@ function refresh() {
     drawDegreeCharacter(stage, start_x + 40, start_y - 15, bottom_angle + "°");
     // line from anwer point to upper
     // transformation
-    let answer_radian = answer_angle * 180 / Math.PI;
+    //!?!?
+    // let answer_radian = answer_angle * 180 / Math.PI; wrong.
+    let answer_radian = answer_angle * Math.PI / 180;
     let middle_radian = answer_radian - bottom_radian;
     let middle_angle = answer_angle - bottom_angle;
     // may not need?
@@ -179,6 +182,8 @@ function refresh() {
     let upper_x = answer_point_x + Math.cos(Math.PI + middle_radian);
     let upper_y = 55;
     drawLine(stage, answer_point_x, answer_point_y, upper_x, upper_y);
+    console.log("bottom_angle: " + bottom_angle + "°");
+    console.log("middle_angle: " + middle_angle + "°");
     drawArcByRadian(stage, answer_point_x, answer_point_y, 20, Math.PI - bottom_radian, Math.PI + middle_radian, anticlockwise=false);
     drawDegreeCharacter(stage, answer_point_x - 40, answer_point_y - 10, "x°");
     // line from upper to top
@@ -193,9 +198,11 @@ function refresh() {
     // let top_radian = Math.atan(50 / Math.abs(upper_x - top_x));
     let top_radian = Math.atan(50 / (top_x - upper_x));
     let top_angle = Math.floor(top_radian * 180 / Math.PI);
+    console.log("top_angle: " + top_angle + "°");
     drawArcByRadian(stage, upper_x, upper_y, 20, -top_radian, middle_radian, anticlockwise=false);
     drawArcByRadian(stage, top_x, top_y, 20, Math.PI - top_radian, Math.PI, anticlockwise=false);
     drawDegreeCharacter(stage, top_x-20, top_y, top_angle);
+    console.log("---------------------");
     // after finish
     stage.update();
   }
@@ -339,7 +346,6 @@ function refresh() {
     else if (problem_type == "multiple_corresponding_and_alternate_angle") {
       // the test
       // random_multiple_parallel_angle_draw(stage, answer_angle);
-      console.log("answer_angle: " + answer_angle + "°");
       new_random_multiple_parallel_angle_draw(stage, answer_angle);
     }
     else if (problem_type == "vertical_angle") {

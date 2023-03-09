@@ -146,6 +146,55 @@ function refresh() {
     stage.update();
   }
 
+  function new_new_random_multiple_parallel_angle_draw(stage, answer_angle) {
+    console.log("answer_angle: " + answer_angle + "°");
+    // top and bottom line phase
+    drawLine(stage, 0, 5, 320, 5);
+    drawLine(stage, 0, 155, 320, 155);
+    //// from bottom to answer
+    // answer point is fixed
+    let answer_x = 180;
+    let answer_y = 105;
+    // x = 170 point angle
+    let radian_of_170 = Math.atan(50 / 10);
+    let answer_radian = answer_angle * Math.PI / 180;
+    let max_bottom_radian = radian_of_170;
+    if (radian_of_170 >= answer_radian) {
+      max_bottom_radian = answer_radian;
+    }
+    // x = 10 point angle
+    let radian_of_10 = Math.atan(50 / 170);
+    // should consider more? <- temporarily
+    let min_bottom_radian = radian_of_10;
+    let min_bottom_angle = min_bottom_radian * 180 / Math.PI;
+    console.log("min_bottom_angle: " + min_bottom_angle + "°");
+    let max_bottom_angle = max_bottom_radian * 180/ Math.PI;
+    console.log("max_bottom_angle: " + max_bottom_angle + "°");
+    // cut too much
+    //let bottom_radian = Math.floor(Math.random() * (max_bottom_radian + 1 - min_bottom_radian) + min_bottom_radian);
+    let bottom_radian = Math.random() * (max_bottom_radian - min_bottom_radian) + min_bottom_radian;
+    let bottom_angle = bottom_radian * 180 / Math.PI;
+    console.log("bottom_angle: " + bottom_angle + "°");
+    let bottom_radius = 50 / Math.sin(bottom_radian);
+    let bottom_x = 180 + bottom_radius * Math.cos(Math.PI - bottom_radian);
+    let bottom_y = 155;
+    drawLine(stage, answer_x, answer_y, bottom_x, bottom_y);
+    drawArcByRadian(stage, bottom_x, bottom_y, 20, 0, -bottom_radian, anticlockwise=true);
+    let floored_bottom_angle = Math.floor(bottom_angle);
+    drawDegreeCharacter(stage, bottom_x + 40, bottom_y - 15, floored_bottom_angle + "°");
+    //// from answer to upper
+    let upper_radian = answer_radian - bottom_radian;
+    let upper_angle = upper_radian * 180 / Math.PI;
+    console.log("upper_angle: " + upper_angle);
+    let upper_radius = 50 / Math.sin(upper_radian);
+    let upper_x = answer_x + upper_radius * Math.cos(Math.PI + upper_radian);
+    let upper_y = 55;
+    drawLine(stage, answer_x, answer_y, upper_x, upper_y);
+    // finally finished
+    console.log("-------------------------");
+    stage.update();
+  }
+
   function new_random_multiple_parallel_angle_draw (stage, answer_angle) {
     console.log("answer_angle: " + answer_angle + "°");
     // draw the top line
@@ -346,7 +395,7 @@ function refresh() {
     else if (problem_type == "multiple_corresponding_and_alternate_angle") {
       // the test
       // random_multiple_parallel_angle_draw(stage, answer_angle);
-      new_random_multiple_parallel_angle_draw(stage, answer_angle);
+      new_new_random_multiple_parallel_angle_draw(stage, answer_angle);
     }
     else if (problem_type == "vertical_angle") {
       random_vertical_angle_draw(stage, answer_angle);

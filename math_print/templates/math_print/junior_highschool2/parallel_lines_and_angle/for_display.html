@@ -160,7 +160,9 @@ function refresh() {
     let answer_radian = answer_angle * Math.PI / 180;
     let max_bottom_radian = radian_of_170;
     if (radian_of_170 >= answer_radian) {
-      max_bottom_radian = answer_radian;
+      // when answer and bottom radian value is near, upper point will go too left.
+      let buffer_for_max_bottom_radian = 25 * Math.PI / 180;
+      max_bottom_radian = answer_radian - buffer_for_max_bottom_radian;
     }
     // x = 10 point angle
     let radian_of_10 = Math.atan(50 / 170);
@@ -181,7 +183,7 @@ function refresh() {
     drawLine(stage, answer_x, answer_y, bottom_x, bottom_y);
     drawArcByRadian(stage, bottom_x, bottom_y, 20, 0, -bottom_radian, anticlockwise=true);
     let floored_bottom_angle = Math.floor(bottom_angle);
-    drawDegreeCharacter(stage, bottom_x + 40, bottom_y - 15, floored_bottom_angle + "°");
+    drawDegreeCharacter(stage, bottom_x + 40, bottom_y - 17, floored_bottom_angle + "°");
     //// from answer to upper
     let upper_radian = answer_radian - bottom_radian;
     let upper_angle = upper_radian * 180 / Math.PI;
@@ -190,6 +192,23 @@ function refresh() {
     let upper_x = answer_x + upper_radius * Math.cos(Math.PI + upper_radian);
     let upper_y = 55;
     drawLine(stage, answer_x, answer_y, upper_x, upper_y);
+    drawArcByRadian(stage, answer_x, answer_y, 20, Math.PI - bottom_radian, Math.PI + upper_radian, anticlockwise=false);
+    drawDegreeCharacter(stage, answer_x - 40, answer_y - 5, "x°");
+    //// from upper to top
+    let min_top_x = upper_x + 5;
+    let max_top_x = 300;
+    let top_x = Math.random() * (max_top_x - min_top_x) + min_top_x;
+    let top_y = 5;
+    drawLine(stage, upper_x, upper_y, top_x, top_y);
+    let top_radian = Math.atan((upper_y - top_y) / (top_x - upper_x));
+    let top_angle = top_radian * 180 / Math.PI;
+    let floored_top_angle = Math.floor(top_angle)
+    drawArcByRadian(stage, top_x, top_y, 20, Math.PI - top_radian, Math.PI, anticlockwise=false);
+    drawDegreeCharacter(stage, top_x-50, top_y+5, floored_top_angle + "°");
+    //// last adjusted upper angle
+    drawArcByRadian(stage, upper_x, upper_y, 20, answer_radian - bottom_radian, -top_radian, anticlockwise=true);
+    let adjusted_upper_angle = floored_top_angle + (answer_angle - floored_bottom_angle);
+    drawDegreeCharacter(stage, upper_x + 25, upper_y, adjusted_upper_angle + "°");
     // finally finished
     console.log("-------------------------");
     stage.update();

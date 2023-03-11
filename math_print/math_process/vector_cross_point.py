@@ -73,7 +73,7 @@ class VectorCrossPoint:
             f"辺\\( OB \\)を\\( {sy.latex(r1)}:{sy.latex(r2)} \\)に内分する点を\\( N \\)、\n"\
             f"線分\\( AN \\)と\\( MB \\)の交点を\\( P \\)、直線\\( OP \\)と辺\\( AB \\)との交点を\\( Q \\)とする。\n"\
             "\\( (1) \\) \\( \\overrightarrow{{OP}} \\)を\\( \\overrightarrow{{OA}} = \\overrightarrow{{a}}, \\overrightarrow{{OB}} = \\vec{{b}} \\)を用いて表せ。\n"\
-            "\\( (2) \\) \\( \\overrightarrow{{OP}} \\)を\\( \\overrightarrow{{OA}} = \\vec{{a}}, \\overrightarrow{{OB}} = \\vec{{b}} \\)を用いて表せ。"
+            "\\( (2) \\) \\( \\overrightarrow{{OQ}} \\)を\\( \\overrightarrow{{OA}} = \\vec{{a}}, \\overrightarrow{{OB}} = \\vec{{b}} \\)を用いて表せ。"
         
         latex_answer = "(1) \\( MP:PB = s:1-s, AP:PN = 1-t:t \\)とする。"\
             f"点Pは線分\\( MB \\)を\\( s:1-s \\)に内分する点であるため、内分の公式より、\n"\

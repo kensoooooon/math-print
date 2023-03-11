@@ -106,10 +106,20 @@ class HS1FactorizationProblem:
 
     def _make_to_cross_multiplication(self):
         # 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)'
+        """たすき掛け型の因数分解問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Developing:
+            a,bとc,dは互いに素でないと、中でくくれてしまう.
+            
+        """
         a_num = self._make_random_number(positive_or_negative="positive")
         a_term = a_num * self._used_character_dict["x"]
         c_num = self._make_random_number(positive_or_negative="positive")
-        c_term = c_num * self._used_character_dict["y"]
+        c_term = c_num * self._used_character_dict["x"]
         
         b_num = self._make_random_number()
         d_num = self._make_random_number()
@@ -120,7 +130,7 @@ class HS1FactorizationProblem:
             b_term = b_num
             d_term = d_num
         
-        answer = (a_term + b_term) * (c_term * d_term)
+        answer = (a_term + b_term) * (c_term + d_term)
         latex_answer = f"= {sy.latex(answer)}"
         problem = sy.expand(answer)
         latex_problem = sy.latex(problem)

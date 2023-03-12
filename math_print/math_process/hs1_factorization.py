@@ -114,22 +114,38 @@ class HS1FactorizationProblem:
         
         Developing:
             a,bとc,dは互いに素でないと、中でくくれてしまう.
-            
+            -> 辞書で組み込む？
         """
+        co_prime_numbers = {
+            1: (1, 2, 3, 4, 5, 6),
+            2: (1, 3, 5),
+            3: (1, 2, 4, 5),
+            4: (1, 3, 5),
+            5: (1, 2, 3, 4, 6),
+            6: (1, 5),
+        }
+        
         a_num = self._make_random_number(positive_or_negative="positive")
         a_term = a_num * self._used_character_dict["x"]
         c_num = self._make_random_number(positive_or_negative="positive")
         c_term = c_num * self._used_character_dict["x"]
-        
-        b_num = self._make_random_number()
-        d_num = self._make_random_number()
+        b_num = choice(co_prime_numbers[a_num])
+        if random() > 0.5:
+            b_num *= -1
+        d_num = choice(co_prime_numbers[c_num])
+        if random() > 0.5:
+            d_num *= -1
+        if (a_num == c_num) and (b_num == d_num):
+            if random() > 0.5:
+                b_num += 1
+            else:
+                d_num += 1
         if self._another_character_existence:
             b_term = b_num * self._used_character_dict["y"]
             d_term = d_num * self._used_character_dict["y"]
         else:
             b_term = b_num
             d_term = d_num
-        
         answer = (a_term + b_term) * (c_term + d_term)
         latex_answer = f"= {sy.latex(answer)}"
         problem = sy.expand(answer)
@@ -230,8 +246,18 @@ class HS1FactorizationProblem:
         
         return latex_answer, latex_problem
 
-    def _make_random_number(self, positive_or_negative=None):
-        number = sy.Integer(randint(1, 6))
+    def _make_random_number(self, positive_or_negative=None, min_number=1, max_number=6):
+        """指定された条件を満たす整数を返す
+
+        Args:
+            positive_or_negative (_type_, optional): 正か負の指定
+            min_number (int, optional): 最小値
+            max_number (int, optional): 最大値
+
+        Returns:
+            number (sy.Integer): 返す整数
+        """
+        number = sy.Integer(randint(min_number, max_number))
         
         if positive_or_negative is None:
             if random() > 0.5:

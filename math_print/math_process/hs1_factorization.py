@@ -115,6 +115,23 @@ class HS1FactorizationProblem:
         Developing:
             a,bとc,dは互いに素でないと、中でくくれてしまう.
             -> 辞書で組み込む？
+            
+            いったん完全ランダムにして展開、因数分解で問題解答を作る？
+        """
+        x = self._used_character_dict["x"]
+        a_num = self._make_random_number()
+        b_num = self._make_random_number()
+        c_num = self._make_random_number()
+        d_num = self._make_random_number()
+        
+        if self._another_character_existence:
+            y = self._used_character_dict["y"]
+            left = (a_num * x + b_num * y) * (c_num * x + d_num * y)
+        else:
+            left = (a_num * x + b_num) * (c_num * x + d_num)
+        
+        latex_problem = sy.latex(sy.expand(left))
+        latex_answer = f"= {sy.latex(sy.factor(left))}"
         """
         co_prime_numbers = {
             1: (1, 2, 3, 4, 5, 6),
@@ -150,6 +167,7 @@ class HS1FactorizationProblem:
         latex_answer = f"= {sy.latex(answer)}"
         problem = sy.expand(answer)
         latex_problem = sy.latex(problem)
+        """
         
         return latex_answer, latex_problem
 

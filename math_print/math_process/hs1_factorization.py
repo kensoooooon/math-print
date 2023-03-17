@@ -119,10 +119,10 @@ class HS1FactorizationProblem:
             いったん完全ランダムにして展開、因数分解で問題解答を作る？
         """
         x = self._used_character_dict["x"]
-        a_num = self._make_random_number()
-        b_num = self._make_random_number()
-        c_num = self._make_random_number()
-        d_num = self._make_random_number()
+        a_num = self._make_random_number(max_number=5)
+        b_num = self._make_random_number(max_number=5)
+        c_num = self._make_random_number(max_number=5)
+        d_num = self._make_random_number(max_number=5)
         
         if self._another_character_existence:
             y = self._used_character_dict["y"]
@@ -132,42 +132,6 @@ class HS1FactorizationProblem:
         
         latex_problem = sy.latex(sy.expand(left))
         latex_answer = f"= {sy.latex(sy.factor(left))}"
-        """
-        co_prime_numbers = {
-            1: (1, 2, 3, 4, 5, 6),
-            2: (1, 3, 5),
-            3: (1, 2, 4, 5),
-            4: (1, 3, 5),
-            5: (1, 2, 3, 4, 6),
-            6: (1, 5),
-        }
-        
-        a_num = self._make_random_number(positive_or_negative="positive")
-        a_term = a_num * self._used_character_dict["x"]
-        c_num = self._make_random_number(positive_or_negative="positive")
-        c_term = c_num * self._used_character_dict["x"]
-        b_num = choice(co_prime_numbers[a_num])
-        if random() > 0.5:
-            b_num *= -1
-        d_num = choice(co_prime_numbers[c_num])
-        if random() > 0.5:
-            d_num *= -1
-        if (a_num == c_num) and (b_num == d_num):
-            if random() > 0.5:
-                b_num += 1
-            else:
-                d_num += 1
-        if self._another_character_existence:
-            b_term = b_num * self._used_character_dict["y"]
-            d_term = d_num * self._used_character_dict["y"]
-        else:
-            b_term = b_num
-            d_term = d_num
-        answer = (a_term + b_term) * (c_term + d_term)
-        latex_answer = f"= {sy.latex(answer)}"
-        problem = sy.expand(answer)
-        latex_problem = sy.latex(problem)
-        """
         
         return latex_answer, latex_problem
 

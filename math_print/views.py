@@ -53,17 +53,15 @@ def index(request):
     return render(request, 'math_print/index.html', {})
 
 # for graphic sample
-
 def graphic_sample(request):
     return render(request, 'math_print/graphic_sample.html', {})
 
-
+# for loop sample
 def loop_sample(request):
     math_problem_tuple_list = []
     for i in range(10):
         math_problem_tuple_list.append((f"problem{i}_1", f"problem{i}_2"))
     return render(request, 'math_print/loop_sample.html', {'math_problem_tuple_list': math_problem_tuple_list})
-
 
 # index
 def show_elementary_school3(request):
@@ -90,6 +88,9 @@ def show_highschool1(request):
 def show_highschool2(request):
     return render(request, 'math_print/highschool2/highschool2.html', {})
 
+
+# problem and explanation
+## print section
 def print_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -549,9 +550,23 @@ def print_fraction_calculate_problem(request):
 def print_number_without_bracket_problem(request):
     PROBLEM_NUMBER = 20
     
-    operator_to_use_list = request.POST.getlist("operator_to_use")
-    number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
-    term_number = int(request.POST["term_number"])
+    operators_to_use = request.POST.getlist("number_without_bracket_operator_to_use")
+    if not(operators_to_use):
+        operators_to_use.append("plus")
+        operators_to_use.append("minus")
+    numbers_to_use = request.POST.getlist("number_without_bracket_number_to_use")
+    if not(numbers_to_use):
+        numbers_to_use.append("one_digit_integer")
+        numbers_to_use.append("two_digit_integer")
+        numbers_to_use.append("frac")
+        numbers_to_use.append("decimal")
+    term_numbers = request.POST.getlist("number_without_bracket_term_number")
+    if not(term_numbers):
+        term_numbers.append("2")
+        term_numbers.append("3")
+        term_numbers.append("4")
+        term_numbers.append("5")
+        term_numbers.append("6")
     paper_number = int(request.POST["paper_number"])
     
     math_problem_list_of_list = []
@@ -559,17 +574,21 @@ def print_number_without_bracket_problem(request):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
             problem1 = NumberWithoutBracketCalculateProblem(
-                operator_to_use_list=operator_to_use_list, number_to_use_list=number_to_use_list,
-                term_number=term_number
+                operators_to_use=operators_to_use, numbers_to_use=numbers_to_use,
+                term_numbers=term_numbers
             )
             problem2 = NumberWithoutBracketCalculateProblem(
-                operator_to_use_list=operator_to_use_list, number_to_use_list=number_to_use_list,
-                term_number=term_number
+                operators_to_use=operators_to_use, numbers_to_use=numbers_to_use,
+                term_numbers=term_numbers
             )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/junior_highschool1/number/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/number_without_bracket/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+def print_number_without_bracket_explanation(request):
+    # should add problem? how many??
+    return render(request, 'math_print/junior_highschool1/number_without_bracket/explanation_for_print.html', {})
     
 def print_sector_problem(request):
     PROBLEM_NUMBER = 20
@@ -986,7 +1005,7 @@ def print_parallel_lines_and_angle(request):
     if not(used_information_list):
         used_information_list.append("corresponding_and_alternate_angle")
         used_information_list.append("vertical_angle")
-
+        used_information_list.append("multiple_corresponding_and_alternate_angle")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -999,11 +1018,8 @@ def print_parallel_lines_and_angle(request):
             problem_type_and_answer_angle2 = ProblemTypeAndAnswerAngle(problem_type2, answer_angle2)
             math_problem_tuple_inner_list.append((problem_type_and_answer_angle1, problem_type_and_answer_angle2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
-    
     context = {}
     context["math_problem_list_of_list"] = math_problem_list_of_list
-    # pprint.pprint(math_problem_list_of_list)
-
     return render(request, 'math_print/junior_highschool2/parallel_lines_and_angle/for_print.html', context)
 
 def print_unit_conversion_problem(request):
@@ -1408,6 +1424,8 @@ def print_trigonometric_function(request):
     return render(request, 'math_print/highschool2/trigonometric_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+# display section
+
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
 
@@ -1810,6 +1828,42 @@ def display_fraction_calculate_problem(request):
 def display_number_without_bracket_problem(request):
     PROBLEM_NUMBER = 20
     
+    operators_to_use = request.POST.getlist("number_without_bracket_operator_to_use")
+    if not(operators_to_use):
+        operators_to_use.append("plus")
+        operators_to_use.append("minus")
+    numbers_to_use = request.POST.getlist("number_without_bracket_number_to_use")
+    if not(numbers_to_use):
+        numbers_to_use.append("one_digit_integer")
+        numbers_to_use.append("two_digit_integer")
+        numbers_to_use.append("frac")
+        numbers_to_use.append("decimal")
+    term_numbers = request.POST.getlist("number_without_bracket_term_number")
+    if not(term_numbers):
+        term_numbers.append("2")
+        term_numbers.append("3")
+        term_numbers.append("4")
+        term_numbers.append("5")
+        term_numbers.append("6")
+    
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER//2)):
+        problem1 = NumberWithoutBracketCalculateProblem(
+            operators_to_use=operators_to_use, numbers_to_use=numbers_to_use,
+            term_numbers=term_numbers
+        )
+        problem2 = NumberWithoutBracketCalculateProblem(
+            operators_to_use=operators_to_use, numbers_to_use=numbers_to_use,
+            term_numbers=term_numbers
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    
+    return render(request, 'math_print/junior_highschool1/number_without_bracket/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_number_without_bracket_explanation(request):
+    PROBLEM_NUMBER = 4
+    
     operator_to_use_list = request.POST.getlist("number_without_bracket_operator_to_use")
     number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
     term_number = int(request.POST["term_number"])
@@ -1825,8 +1879,8 @@ def display_number_without_bracket_problem(request):
             number_to_use_list=number_to_use_list
         )
         math_problem_tuple_list.append((problem1, problem2))
-    
-    return render(request, 'math_print/junior_highschool1/number/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/number_without_bracket/explanation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
 
 def display_sector_problem(request):
     PROBLEM_NUMBER = 20

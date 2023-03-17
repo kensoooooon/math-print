@@ -14,6 +14,17 @@
 {% endblock %}
 
 {% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
 <script>
     function checkAllStatus(target){
         let statuses = document.getElementsByName(target);
@@ -69,43 +80,43 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="ax_times_bx_plus_c" name="expand_equation_type" id="ax_times_bx_plus_c" checked>
                         <label class="form-check-label" for="ax_times_bx_plus_c">
-                            ax(bx+c)
+                            \( ax(bx+c) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="double_ax_times_bx_plus_c" name="expand_equation_type" id="double_ax_times_bx_plus_c">
                         <label class="form-check-label" for="double_ax_times_bx_plus_c">
-                            ax(bx+c) + dx(ex+f)
+                            \( ax(bx+c) + dx(ex+f) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="double_ax_plus_b" name="expand_equation_type" id="double_ax_plus_b">
                         <label class="form-check-label" for="double_ax_plus_b">
-                            (ax+b)(cx+d)
+                            \( (ax+b)(cx+d) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="double_ax_plus_by" name="expand_equation_type" id="double_ax_plus_by">
                         <label class="form-check-label" for="double_ax_plus_by">
-                            (ax+by)(cx+dy)
+                            \( (ax+by)(cx+dy) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="square_x_plus_a" name="expand_equation_type" id="square_x_plus_a">
                         <label class="form-check-label" for="square_x_plus_a">
-                            (x+a)^2
+                            \( (x+a)^2 \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="square_x_minus_a" name="expand_equation_type" id="square_x_minus_a">
                         <label class="form-check-label" for="square_x_minus_a">
-                            (x-a)^2
+                            \( (x-a)^2 \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x_plus_a_x_minus_a" name="expand_equation_type" id="x_plus_a_x_minus_a">
                         <label class="form-check-label" for="x_plus_a_x_minus_a">
-                            (x+a)(x-a)
+                            \( (x+a)(x-a) \)
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('expand_equation_type')" value="全部のせ">
@@ -145,31 +156,31 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="ax+ab=a(x+b)" name="factorization_type" id="factorization_ax+ab=a(x+b)" checked>
                         <label class="form-check-label" for="factorization_ax+ab=a(x+b)">
-                            ax+ab=a(x+b)
+                            \( ax+ab=a(x+b) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2+2ax+a^2=(x+a)^2" name="factorization_type" id="factorization_x^2+2ax+a^2=(x+a)^2" checked>
                         <label class="form-check-label" for="factorization_x^2+2ax+a^2=(x+a)^2">
-                            x^2+2ax+a^2=(x+a)^2
+                            \( x^2+2ax+a^2=(x+a)^2 \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2-2ax+a^2=(x-a)^2" name="factorization_type" id="factorization_x^2-2ax+a^2=(x-a)^2" checked>
                         <label class="form-check-label" for="factorization_x^2-2ax+a^2=(x-a)^2">
-                            x^2-2ax+a^2=(x-a)^2
+                            \( x^2-2ax+a^2=(x-a)^2 \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2+(a+b)x+ab=(x+a)(x+b)" name="factorization_type" id="factorization_x^2+(a+b)x+ab=(x+a)(x+b)" checked>
                         <label class="form-check-label" for="factorization_x^2+(a+b)x+ab=(x+a)(x+b)">
-                            x^2+(a+b)x+ab=(x+a)(x+b)
+                            \( x^2+(a+b)x+ab=(x+a)(x+b) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2-a^2=(x+a)(x-a)" name="factorization_type" id="factorization_x^2-a^2=(x+a)(x-a)" checked>
                         <label class="form-check-label" for="factorization_x^2-a^2=(x+a)(x-a)">
-                            x^2-a^2=(x+a)(x-a)
+                            \( x^2-a^2=(x+a)(x-a) \)
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('factorization_type')" value="全部のせ">
@@ -376,25 +387,25 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2+2ax+a^2=(x+a)^2" name="quadratic_equation_type" id="quadratic_equation_x^2+2ax+a^2=(x+a)^2" checked>
                         <label class="form-check-label" for="quadratic_equation_x^2+2ax+a^2=(x+a)^2">
-                            x^2+2ax+a^2=(x+a)^2
+                            \( x^2+2ax+a^2=(x+a)^2 \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2-2ax+a^2=(x-a)^2" name="quadratic_equation_type" id="quadratic_equation_x^2-2ax+a^2=(x-a)^2" checked>
                         <label class="form-check-label" for="quadratic_equation_x^2-2ax+a^2=(x-a)^2">
-                            x^2-2ax+a^2=(x-a)^2
+                            \( x^2-2ax+a^2=(x-a)^2 \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2+(a+b)x+ab=(x+a)(x+b)" name="quadratic_equation_type" id="quadratic_equation_x^2+(a+b)x+ab=(x+a)(x+b)" checked>
                         <label class="form-check-label" for="quadratic_equation_x^2+(a+b)x+ab=(x+a)(x+b)">
-                            x^2+(a+b)x+ab=(x+a)(x+b)
+                            \( x^2+(a+b)x+ab=(x+a)(x+b) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2-a^2=(x+a)(x-a)" name="quadratic_equation_type" id="quadratic_equation_x^2-a^2=(x+a)(x-a)" checked>
                         <label class="form-check-label" for="quadratic_equation_x^2-a^2=(x+a)(x-a)">
-                            x^2-a^2=(x+a)(x-a)
+                            \( x^2-a^2=(x+a)(x-a) \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">

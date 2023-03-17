@@ -106,24 +106,32 @@ class HS1FactorizationProblem:
 
     def _make_to_cross_multiplication(self):
         # 'acx^2+(ad+bc)x+ab=(ax+b)(cx+d)'
-        a_num = self._make_random_number(positive_or_negative="positive")
-        a_term = a_num * self._used_character_dict["x"]
-        c_num = self._make_random_number(positive_or_negative="positive")
-        c_term = c_num * self._used_character_dict["y"]
+        """たすき掛け型の因数分解問題と解答を出力
         
-        b_num = self._make_random_number()
-        d_num = self._make_random_number()
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Developing:
+            a,bとc,dは互いに素でないと、中でくくれてしまう.
+            -> 辞書で組み込む？
+            
+            いったん完全ランダムにして展開、因数分解で問題解答を作る？
+        """
+        x = self._used_character_dict["x"]
+        a_num = self._make_random_number(max_number=5)
+        b_num = self._make_random_number(max_number=5)
+        c_num = self._make_random_number(max_number=5)
+        d_num = self._make_random_number(max_number=5)
+        
         if self._another_character_existence:
-            b_term = b_num * self._used_character_dict["y"]
-            d_term = d_num * self._used_character_dict["y"]
+            y = self._used_character_dict["y"]
+            left = (a_num * x + b_num * y) * (c_num * x + d_num * y)
         else:
-            b_term = b_num
-            d_term = d_num
+            left = (a_num * x + b_num) * (c_num * x + d_num)
         
-        answer = (a_term + b_term) * (c_term * d_term)
-        latex_answer = f"= {sy.latex(answer)}"
-        problem = sy.expand(answer)
-        latex_problem = sy.latex(problem)
+        latex_problem = sy.latex(sy.expand(left))
+        latex_answer = f"= {sy.latex(sy.factor(left))}"
         
         return latex_answer, latex_problem
 
@@ -220,8 +228,18 @@ class HS1FactorizationProblem:
         
         return latex_answer, latex_problem
 
-    def _make_random_number(self, positive_or_negative=None):
-        number = sy.Integer(randint(1, 6))
+    def _make_random_number(self, positive_or_negative=None, min_number=1, max_number=6):
+        """指定された条件を満たす整数を返す
+
+        Args:
+            positive_or_negative (_type_, optional): 正か負の指定
+            min_number (int, optional): 最小値
+            max_number (int, optional): 最大値
+
+        Returns:
+            number (sy.Integer): 返す整数
+        """
+        number = sy.Integer(randint(min_number, max_number))
         
         if positive_or_negative is None:
             if random() > 0.5:

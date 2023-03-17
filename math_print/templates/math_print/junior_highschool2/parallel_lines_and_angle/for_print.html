@@ -87,6 +87,14 @@ function refresh() {
       var shape = new createjs.Shape(graphic);
       stage.addChild(shape);
   }
+
+  function drawArcByRadian(stage, center_x, center_y, radius, start_radian, end_radian, anticlockwise=false) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+  }
   
   function drawDegreeCharacter(stage, x, y, character) {
     //文字オブジェクトを作成する
@@ -114,7 +122,74 @@ function refresh() {
     drawDegreeCharacter(stage, 160-50, 80-20, "x");
     stage.update();
   }
-  
+
+  function new_new_random_multiple_parallel_angle_draw(stage, answer_angle) {
+    // top and bottom line phase
+    drawLine(stage, 0, 5, 320, 5);
+    drawLine(stage, 0, 155, 320, 155);
+    //// from bottom to answer
+    // answer point is fixed
+    let answer_x = 180;
+    let answer_y = 105;
+    // x = 170 point angle
+    let radian_of_170 = Math.atan(50 / 10);
+    let answer_radian = answer_angle * Math.PI / 180;
+    // 20 if buffer.
+    let max_bottom_radian = answer_radian - (20 * Math.PI / 180);
+    // let max_bottom_radian = answer_radian;
+    /* cut temporarily to prevent become answer = bot 
+    let max_bottom_radian = radian_of_170;
+    if (radian_of_170 >= answer_radian) {
+      // when answer and bottom radian value is near, upper point will go too left.
+      let buffer_for_max_bottom_radian = 25 * Math.PI / 180;
+      max_bottom_radian = answer_radian - buffer_for_max_bottom_radian;
+    }
+    // x = 10 point angle
+    */
+    let radian_of_10 = Math.atan(50 / 170);
+    // should consider more? <- temporarily
+    let min_bottom_radian = radian_of_10;
+    let min_bottom_angle = min_bottom_radian * 180 / Math.PI;
+    let max_bottom_angle = max_bottom_radian * 180/ Math.PI;
+    // cut too much
+    //let bottom_radian = Math.floor(Math.random() * (max_bottom_radian + 1 - min_bottom_radian) + min_bottom_radian);
+    let bottom_radian = Math.random() * (max_bottom_radian - min_bottom_radian) + min_bottom_radian;
+    let bottom_angle = bottom_radian * 180 / Math.PI;
+    let bottom_radius = 50 / Math.sin(bottom_radian);
+    let bottom_x = 180 + bottom_radius * Math.cos(Math.PI - bottom_radian);
+    let bottom_y = 155;
+    drawLine(stage, answer_x, answer_y, bottom_x, bottom_y);
+    drawArcByRadian(stage, bottom_x, bottom_y, 20, 0, -bottom_radian, anticlockwise=true);
+    let floored_bottom_angle = Math.floor(bottom_angle);
+    drawDegreeCharacter(stage, bottom_x + 50, bottom_y - 17, floored_bottom_angle + "°");
+    //// from answer to upper
+    let upper_radian = answer_radian - bottom_radian;
+    let upper_angle = upper_radian * 180 / Math.PI;
+    let upper_radius = 50 / Math.sin(upper_radian);
+    let upper_x = answer_x + upper_radius * Math.cos(Math.PI + upper_radian);
+    let upper_y = 55;
+    drawLine(stage, answer_x, answer_y, upper_x, upper_y);
+    drawArcByRadian(stage, answer_x, answer_y, 20, Math.PI - bottom_radian, Math.PI + upper_radian, anticlockwise=false);
+    drawDegreeCharacter(stage, answer_x - 40, answer_y - 5, "x°");
+    //// from upper to top
+    let min_top_x = upper_x + 5;
+    let max_top_x = 300;
+    let top_x = Math.random() * (max_top_x - min_top_x) + min_top_x;
+    let top_y = 5;
+    drawLine(stage, upper_x, upper_y, top_x, top_y);
+    let top_radian = Math.atan((upper_y - top_y) / (top_x - upper_x));
+    let top_angle = top_radian * 180 / Math.PI;
+    let floored_top_angle = Math.floor(top_angle)
+    drawArcByRadian(stage, top_x, top_y, 20, Math.PI - top_radian, Math.PI, anticlockwise=false);
+    drawDegreeCharacter(stage, top_x-60, top_y+2, floored_top_angle + "°");
+    //// last adjusted upper angle
+    drawArcByRadian(stage, upper_x, upper_y, 20, answer_radian - bottom_radian, -top_radian, anticlockwise=true);
+    let adjusted_upper_angle = floored_top_angle + (answer_angle - floored_bottom_angle);
+    drawDegreeCharacter(stage, upper_x + 25, upper_y, adjusted_upper_angle + "°");
+    // finally finished
+    stage.update();
+  }
+
   function random_multiple_parallel_angle_draw (stage, answer_angle) {
     // draw the top line
     drawLine(stage, 0, 5, 320, 5);
@@ -123,7 +198,10 @@ function refresh() {
     // start from bottom line
     var start_x = 70;
     var start_y = 155;
-    var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
+    // fixing //
+    // var max_angle = answer_angle - 30; // 20 is buffer. no much evidence.
+    // fixed?
+    var max_angle = 50;
     var min_angle = 20;
     var bottom_angle = Math.floor(Math.random() * (max_angle + 1 - min_angle) + min_angle);
     var bottom_radian = bottom_angle * Math.PI / 180;
@@ -193,7 +271,6 @@ function refresh() {
   }
 
   function random_parallel_out_angle_draw (stage, answer_angle) {
-    console.log("answer_angle: " + answer_angle);
     // upper line
     drawLine(stage, 0, 5, 320, 5);
     // middle line
@@ -208,7 +285,6 @@ function refresh() {
     var answer_radian = answer_angle * Math.PI / 180;
     var radius1 = 60 / Math.sin(answer_radian);
     var x1 = start_x + radius1 * Math.cos(Math.PI - answer_radian);
-    // console.log("x1: " + x1);
     var y1 = 140;
     drawLine(stage, start_x, start_y, x1, y1);
     // divide answer is more than 90, or less than 90
@@ -216,31 +292,21 @@ function refresh() {
       // to prevent that line goes over the canvas.
       drawDegreeCharacter(stage, start_x+20, start_y+10, "x");
       var radian_with_left_point = Math.atan(135 / (x1 - 0));
-      // console.log("radian_with_left_point: " + radian_with_left_point);
       var angle_with_left_point = radian_with_left_point * (180 / Math.PI);
-      // console.log("angle_with_left_point: " + angle_with_left_point);
       var max_radian = 2 * Math.PI - answer_radian - (Math.PI / 6);
-      // console.log("max_radian: " + max_radian);
       var max_angle = max_radian * (180 / Math.PI);
-      // console.log("max_angle: " + max_angle);
       var min_radian = Math.PI + radian_with_left_point;
-      // console.log("min_radian: " + min_radian);
       var min_angle = min_radian * (180 / Math.PI);
-      // console.log("min_angle: " + min_angle);
       // decide angle that doesn't go over the canvas and go over middle vetcial line.
       var bottom_angle = Math.floor(Math.random() * (max_angle - min_angle) + min_angle);
-      // console.log("bottom_angle: " + bottom_angle);
       var bottom_radian = bottom_angle * Math.PI / 180;
-      // console.log("bottom_radian: " + bottom_radian);
       var radius2 = 135 / Math.sin(bottom_radian - Math.PI);
-      // console.log("radius2: " + radius2);
       // draw arc with hidden line point.
       drawArc(stage, x1, y1, 15, -answer_angle, bottom_angle, anticlockwise=true);
       var angle_with_hidden_line_point = 360 - (bottom_angle + answer_angle);
       drawDegreeCharacter(stage, x1+15, y1-15, angle_with_hidden_line_point+"°");
       // draw line from hidden to top
       var x2 = x1 + radius2 * Math.cos(bottom_radian);
-      // console.log("x2: " + x2);
       var y2 = 5;
       drawLine(stage, x1, y1, x2, y2);
       // draw arc with top
@@ -252,30 +318,20 @@ function refresh() {
       drawDegreeCharacter(stage, start_x-20, start_y+10, "x");
       // to prevent that line goes over the canvas.
       var radian_with_right_point = Math.atan(135 / (320 - x1));
-      // console.log("radian_with_right_point: " + radian_with_right_point);
       var angle_with_right_point = radian_with_right_point * (180 / Math.PI);
-      // console.log("angle_with_right_point: " + angle_with_right_point);
       var max_radian = 2 * Math.PI - radian_with_right_point;
-      // console.log("max_radian: " + max_radian);
       var max_angle = max_radian * (180 / Math.PI);
-      // console.log("max_angle: " + max_angle);
       var min_radian = 2 * Math.PI - answer_radian + (Math.PI / 6);
-      // console.log("min_radian: " + min_radian);
       var min_angle = min_radian * (180 / Math.PI);
-      // console.log("min_angle: " + min_angle);
       // decide angle that doesn't go over the canvas and go over middle vetcial line.
       var bottom_angle = Math.floor(Math.random() * (max_angle - min_angle) + min_angle);
-      // console.log("bottom_angle: " + bottom_angle);
       var bottom_radian = bottom_angle * Math.PI / 180;
-      // console.log("bottom_radian: " + bottom_radian);
       var radius2 = 135 / Math.sin(2 * Math.PI - bottom_radian);
-      // console.log("radius2: " + radius2);
       drawArc(stage, x1, y1, 15, 360-answer_angle, bottom_angle, anticlockwise=false);
       var angle_with_hidden_line_point = bottom_angle - (360 - answer_angle);
       drawDegreeCharacter(stage, x1+20, y1-15, angle_with_hidden_line_point+"°");
       // draw line from hidden to top
       var x2 = x1 + radius2 * Math.cos(bottom_radian);
-      // console.log("x2: " + x2);
       var y2 = 5;
       drawLine(stage, x1, y1, x2, y2);
       // draw arc with top
@@ -297,7 +353,7 @@ function refresh() {
       }
     }
     else if (problem_type == "multiple_corresponding_and_alternate_angle") {
-      random_multiple_parallel_angle_draw(stage, answer_angle);
+      new_new_random_multiple_parallel_angle_draw(stage, answer_angle);
     }
     else if (problem_type == "vertical_angle") {
       random_vertical_angle_draw(stage, answer_angle);

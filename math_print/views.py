@@ -1423,6 +1423,8 @@ def print_trigonometric_function(request):
     
     return render(request, 'math_print/highschool2/trigonometric_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_quadratic_inequality(request):
+    return render(request, 'math_print/highschool1/quadratic_inequality/for_print.html', {})
 
 # display section
 
@@ -2565,3 +2567,7 @@ def display_trigonometric_function(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/trigonometric_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_quadratic_inequality(request):
+    return render(request, 'math_print/highschool1/quadratic_inequality/for_display.html', {})

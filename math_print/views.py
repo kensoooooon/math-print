@@ -47,6 +47,7 @@ from .math_process.base_n_numbers import BaseNNumbersProblem
 from .math_process.linear_function_with_graph import LinearFunctionWithGraphProblem
 from .math_process.trigonometric_ratio import TrigonometricRatioProblem
 from .math_process.trigonometric_function import TrigonometricFunctionProblem
+from .math_process.quadratic_inequality import QuadraticInequality
 
 
 def index(request):
@@ -1423,10 +1424,28 @@ def print_trigonometric_function(request):
     
     return render(request, 'math_print/highschool2/trigonometric_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+
 def print_quadratic_inequality(request):
-    return render(request, 'math_print/highschool1/quadratic_inequality/for_print.html', {})
+    PROBLEM_NUMBER = 20
+    used_quadratic_function = request.POST.getlist("used_quadratic_function")
+    if not(used_quadratic_function):
+        used_quadratic_function.append("two_different_answer")
+        used_quadratic_function.append("same_answer")
+        used_quadratic_function.append("no_answer")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER // 2)):
+            problem1 = QuadraticInequality(used_quadratic_function=used_quadratic_function)
+            problem2 = QuadraticInequality(used_quadratic_function=used_quadratic_function)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/highschool1/quadratic_inequality/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 
 # display section
+
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2556,7 +2575,7 @@ def display_trigonometric_function(request):
         used_trigonometric_functions.append("tan")
     
     math_problem_tuple_list = []
-    for _ in range((int(PROBLEM_NUMBER // 2))):
+    for _ in range(int(PROBLEM_NUMBER // 2)):
         problem1 = TrigonometricFunctionProblem(
             problem_types=problem_types, used_trigonometric_functions=used_trigonometric_functions,
             radian_range=radian_range
@@ -2570,4 +2589,15 @@ def display_trigonometric_function(request):
 
 
 def display_quadratic_inequality(request):
-    return render(request, 'math_print/highschool1/quadratic_inequality/for_display.html', {})
+    PROBLEM_NUMBER = 20
+    used_quadratic_function = request.POST.getlist("used_quadratic_function")
+    if not(used_quadratic_function):
+        used_quadratic_function.append("two_different_answer")
+        used_quadratic_function.append("same_answer")
+        used_quadratic_function.append("no_answer")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = QuadraticInequality(used_quadratic_function=used_quadratic_function)
+        problem2 = QuadraticInequality(used_quadratic_function=used_quadratic_function)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool1/quadratic_inequality/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

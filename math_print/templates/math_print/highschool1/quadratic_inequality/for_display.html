@@ -14,13 +14,6 @@
 </script>
 
 <script>
-function showFormula(){
-    var formulas = document.getElementsByClassName('formula');
-    for(var i = 0; i < formulas.length; i++){
-        formulas[i].style.visibility = 'visible';
-    }
-}
-
 function showAnswer(){
     var nodes = document.getElementsByClassName('answer');
     for(var i = 0; i < nodes.length; i++){
@@ -97,7 +90,6 @@ function refresh() {
 {% endif %}
 
 <div class="d-grid gap-3 col-6 mx-auto">
-    <button class="btn btn-outline-success" type="button" onclick="showFormula()">公式を表示する</button>
     <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
     <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
     <a href="{% url 'highschool1' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>

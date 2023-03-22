@@ -19,7 +19,8 @@ class QuadraticInequality:
             settings (dict): 問題の各種設定
         """
         sy.init_printing(order='grevlex')
-        used_quadratic_functions = settings["used_quadratic_function"]
+        used_quadratic_equation = settings["used_quadratic_equation"]
+        self._used_answer_in_quadratic_equation = settings["use_answer_in_quadratic_equation"]
         self.latex_answer, self.latex_problem = self._make_problem(used_quadratic_functions)
     
     def _make_problem(self, used_quadratic_functions):
@@ -141,7 +142,7 @@ class QuadraticInequality:
         latex_problem = "dummy problem in no_answer_problem"
         return latex_answer, latex_problem
     
-    def _make_random_numger(self, min_num=1, max_num=6, integer_or_frac=None, positive_or_negative=None):
+    def _make_random_number(self, min_num=1, max_num=6, integer_or_frac=None, positive_or_negative=None):
         
 
     def _make_random_integer(self, min_num=1, max_num=6, positive_or_negative=None):

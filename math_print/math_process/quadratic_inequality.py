@@ -20,8 +20,8 @@ class QuadraticInequality:
         """
         sy.init_printing(order='grevlex')
         used_quadratic_equation = settings["used_quadratic_equation"]
-        self._used_answer_in_quadratic_equation = settings["use_answer_in_quadratic_equation"]
-        self.latex_answer, self.latex_problem = self._make_problem(used_quadratic_functions)
+        self._used_answer_in_quadratic_equation = settings["used_answer_in_quadratic_equation"]
+        self.latex_answer, self.latex_problem = self._make_problem(used_quadratic_equation)
     
     def _make_problem(self, used_quadratic_functions):
         """問題と解答の出力を制御するコントローラ
@@ -61,8 +61,8 @@ class QuadraticInequality:
             plus equal type?
         """
         x = sy.Symbol("x", real=True)
-        answer1 = self._make_random_integer()
-        answer2 = answer1 + self._make_random_integer(min_num=1, max_num=5)
+        answer1 = self._make_random_number(min_num=1, max_num=3)
+        answer2 = answer1 + self._make_random_number()
         if answer1 > answer2:
             bigger_answer = answer1
             smaller_answer = answer2
@@ -72,7 +72,7 @@ class QuadraticInequality:
         inequality_sign_checker = random()
         # (k > 0) and (f(x) > 0): x < a, b < x
         if inequality_sign_checker < 0.25:
-            quadratic_coefficient = self._make_random_integer(min_num=1, max_num=3, positive_or_negative="positive")
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="positive")
             quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
             # containing equal
             if random() > 0.5:
@@ -84,7 +84,7 @@ class QuadraticInequality:
                 latex_problem = f"{sy.latex(quadratic_function)} > 0"
         # (k > 0) and (f(x) < 0): a < x < b
         elif 0.25 <= inequality_sign_checker < 0.5:
-            quadratic_coefficient = self._make_random_integer(min_num=1, max_num=3, positive_or_negative="positive")
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="positive")
             quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
             # containing equal
             if random() > 0.5:
@@ -96,7 +96,7 @@ class QuadraticInequality:
                 latex_problem = f"{sy.latex(quadratic_function)} < 0"
         # (k < 0) and (f(x) > 0): a < x < b
         elif 0.5 <= inequality_sign_checker < 0.75:
-            quadratic_coefficient = self._make_random_integer(min_num=1, max_num=3, positive_or_negative="negative")
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="negative")
             quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
             # containing equal
             if random() > 0.5:
@@ -108,7 +108,7 @@ class QuadraticInequality:
                 latex_problem = f"{sy.latex(quadratic_function)} < 0"
         #  (k < 0) and (f(x) < 0): x < a, b < x
         else:
-            quadratic_coefficient = self._make_random_integer(min_num=1, max_num=3, positive_or_negative="negative")
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="negative")
             quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
             if random() > 0.5:
                 latex_answer = f"x \\leqq {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\leqq x"
@@ -127,8 +127,9 @@ class QuadraticInequality:
             latex_problem (str): latex形式で記述された問題
         """
         x = sy.Symbol("x", real=True)
-        answer = self._make_random_integer()
-        
+        answer = self._make_random_number()
+        latex_answer = "dummy in same answer"
+        latex_problem = "dummy in same answer"
         return latex_answer, latex_problem
 
     def _make_no_answer_problem(self):
@@ -142,60 +143,79 @@ class QuadraticInequality:
         latex_problem = "dummy problem in no_answer_problem"
         return latex_answer, latex_problem
     
-    def _make_random_number(self, min_num=1, max_num=6, integer_or_frac=None, positive_or_negative=None):
+    def _make_random_number(self, min_num=1, max_num=6, positive_or_negative=None):
+        """条件を満たす数を出力
         
-
-    def _make_random_integer(self, min_num=1, max_num=6, positive_or_negative=None):
-        """条件を満たす整数を出力
-
         Args:
             min_num (int, optional): 出力される数の絶対値の最小値
             max_num (int, optional): 出力される数の絶対値の最大値
+            integer_or_frac (Union[str, None], optional): 整数か分数かの指定
             positive_or_negative (Union[str, None], optional): 正負の指定
         
         Return:
-            integer_num (sy.Integer): 条件を満たす整数
-        
-        Raise:
-            ValueError: 想定されていない数の指定が来た時に挙上
+            number (Union[sy.Integer, sy.Rational]): 整数または分数
         """
-        num = randint(min_num, max_num)
-        if positive_or_negative is None:
-            if random() > 0.5:
+
+        def make_random_integer(min_num, max_num, positive_or_negative):
+            """条件を満たす整数を出力
+
+            Args:
+                min_num (int): 出力される数の絶対値の最小値
+                max_num (int): 出力される数の絶対値の最大値
+                positive_or_negative (Union[str, None]): 正負の指定
+            
+            Return:
+                integer_num (sy.Integer): 条件を満たす整数
+            
+            Raise:
+                ValueError: 想定されていない数の指定が来た時に挙上
+            """
+            num = randint(min_num, max_num)
+            if positive_or_negative is None:
+                if random() > 0.5:
+                    num *= -1
+            elif positive_or_negative == "positive":
+                pass
+            elif positive_or_negative == "negative":
                 num *= -1
-        elif positive_or_negative == "positive":
-            pass
-        elif positive_or_negative == "negative":
-            num *= -1
-        else:
-            raise ValueError(f"'positive_or_negative' is {positive_or_negative}")
-        integer_num = sy.Integer(num)
-        return integer_num
-    
-    def _make_random_frac(self, min_num=1, max_num=6, positive_or_negative=None):
-        """条件を満たす分数を出力
+            else:
+                raise ValueError(f"'positive_or_negative' is {positive_or_negative}")
+            integer_num = sy.Integer(num)
+            return integer_num
         
-        Args:
-            min_num(int, optional): 分母分子にあてはめられる数の最小値
-            max_num(int, optional): 分母分子にあてはめられる数の最大値
-            positive_or_negative (Union[str, None], optional): 正負の指定
-  
-        Return:
-            frac (sy.Rational): 分数
-        """
-        while True:
-            denominator = randint(2, max_num)
-            numerator = randint(min_num, max_num)
-            frac = sy.Rational(numerator, denominator)
-            if frac.is_noninteger:
-                break
-        if positive_or_negative is None:
-            if random() > 0.5:
+        def make_random_frac(min_num, max_num, positive_or_negative):
+            """条件を満たす分数を出力
+            
+            Args:
+                min_num(int): 分母分子にあてはめられる数の最小値
+                max_num(int): 分母分子にあてはめられる数の最大値
+                positive_or_negative (Union[str, None]): 正負の指定
+    
+            Return:
+                frac (sy.Rational): 分数
+            """
+            while True:
+                denominator = randint(2, max_num)
+                numerator = randint(min_num, max_num)
+                frac = sy.Rational(numerator, denominator)
+                if frac.is_noninteger:
+                    break
+            if positive_or_negative is None:
+                if random() > 0.5:
+                    frac *= -1
+            elif positive_or_negative == "positive":
+                pass
+            elif positive_or_negative == "negative":
                 frac *= -1
-        elif positive_or_negative == "positive":
-            pass
-        elif positive_or_negative == "negative":
-            frac *= -1
+            else:
+                raise ValueError(f"'positive_or_negative' is {positive_or_negative}")
+            return frac
+        
+        integer_or_frac = choice(self._used_answer_in_quadratic_equation)
+        if integer_or_frac == "integer":
+            number = make_random_integer(min_num, max_num, positive_or_negative)
+        elif integer_or_frac == "frac":
+            number = make_random_frac(min_num, max_num, positive_or_negative)
         else:
-            raise ValueError(f"'positive_or_negative' is {positive_or_negative}")
-        return frac
+            raise ValueError(f"'integer_of_frac' is {integer_or_frac}. This isn't expected value.")
+        return number

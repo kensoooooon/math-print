@@ -1428,10 +1428,10 @@ def print_trigonometric_function(request):
 def print_quadratic_inequality(request):
     PROBLEM_NUMBER = 20
     used_quadratic_equation = request.POST.getlist("used_quadratic_equation")
-    if not(used_quadratic_function):
-        used_quadratic_function.append("two_different_answer")
-        used_quadratic_function.append("same_answer")
-        used_quadratic_function.append("no_answer")
+    if not(used_quadratic_equation):
+        used_quadratic_equation.append("two_different_answer")
+        used_quadratic_equation.append("same_answer")
+        used_quadratic_equation.append("no_answer")
     used_answer_in_quadratic_equation = request.POST.getlist("used_answer_in_quadratic_equation")
     if not(used_answer_in_quadratic_equation):
         used_answer_in_quadratic_equation.append("integer")
@@ -2595,11 +2595,14 @@ def display_trigonometric_function(request):
 def display_quadratic_inequality(request):
     PROBLEM_NUMBER = 20
     used_quadratic_equation = request.POST.getlist("used_quadratic_equation")
-    if not(used_quadratic_function):
-        used_quadratic_function.append("two_different_answer")
-        used_quadratic_function.append("same_answer")
-        used_quadratic_function.append("no_answer")
+    if not(used_quadratic_equation):
+        used_quadratic_equation.append("two_different_answer")
+        used_quadratic_equation.append("same_answer")
+        used_quadratic_equation.append("no_answer")
     used_answer_in_quadratic_equation = request.POST.getlist("used_answer_in_quadratic_equation")
+    if not(used_answer_in_quadratic_equation):
+        used_answer_in_quadratic_equation.append("integer")
+        used_answer_in_quadratic_equation.append("frac")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
         problem1 = QuadraticInequality(used_quadratic_equation=used_quadratic_equation, used_answer_in_quadratic_equation=used_answer_in_quadratic_equation)

@@ -185,8 +185,60 @@ class QuadraticInequality:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
         """
-        latex_answer = "dummy answer in no_answer_problem"
-        latex_problem = "dummy problem in no_answer_problem"
+        x = sy.Symbol("x", real=True)
+        x_axis = self._make_random_number(integer_or_frac="integer")
+        inequality_sign_checker = random()
+        # (k > 0) and (f(x) > 0): all real number
+        if inequality_sign_checker < 0.25:
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="positive")
+            y_axis = self._make_random_number(positive_or_negative="positive", min_num=1, max_num=3)
+            quadratic_function = sy.expand(quadratic_coefficient * (x - x_axis) ** 2 + y_axis)
+            # containing equal
+            if random() > 0.5:
+                latex_answer = f"\( x \)はすべての実数"
+                latex_problem = f"\( {sy.latex(quadratic_function)} \\geqq 0 \)"
+            # not containing equal
+            else:
+                latex_answer = f"\( x \)はすべての実数"
+                latex_problem = f"\( {sy.latex(quadratic_function)} > 0 \)"
+        # (k > 0) and (f(x) < 0): x doesn't exist.
+        elif 0.25 <= inequality_sign_checker < 0.5:
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="positive")
+            y_axis = self._make_random_number(positive_or_negative="positive", min_num=1, max_num=3)
+            quadratic_function = sy.expand(quadratic_coefficient * (x - x_axis) ** 2 + y_axis)
+            # containing equal
+            if random() > 0.5:
+                latex_answer = f"不等式を満たす\( x \)は存在しない"
+                latex_problem = f"\( {sy.latex(quadratic_function)} \\leqq 0 \)"
+            # not containing equal
+            else:
+                latex_answer = f"不等式を満たす\( x \)は存在しない"
+                latex_problem = f"\( {sy.latex(quadratic_function)} < 0 \)"
+        # (k < 0) and (f(x) > 0)
+        elif 0.5 <= inequality_sign_checker < 0.75:
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="negative")
+            y_axis = self._make_random_number(positive_or_negative="negative", min_num=1, max_num=3)
+            quadratic_function = sy.expand(quadratic_coefficient * (x - x_axis) ** 2 + y_axis)
+            # containing equal
+            if random() > 0.5:
+                latex_answer = f"不等式を満たす\( x \)は存在しない"
+                latex_problem = f"\( {sy.latex(quadratic_function)} \\geqq 0 \)"
+            # not containing equal
+            else:
+                latex_answer = f"不等式を満たす\( x \)は存在しない"
+                latex_problem = f"\( {sy.latex(quadratic_function)} > 0 \)"
+        #  (k < 0) and (f(x) < 0): x < a, b < x
+        else:
+            quadratic_coefficient = self._make_random_number(min_num=1, max_num=3, positive_or_negative="negative")
+            y_axis = self._make_random_number(positive_or_negative="negative", min_num=1, max_num=3)
+            quadratic_function = sy.expand(quadratic_coefficient * (x - x_axis) ** 2 + y_axis)
+            if random() > 0.5:
+                latex_answer = f"\( x \)はすべての実数"
+                latex_problem = f"\( {sy.latex(quadratic_function)} \\leqq 0 \)"
+            # not containing equal
+            else:
+                latex_answer = f"\( x \)はすべての実数"
+                latex_problem = f"\( {sy.latex(quadratic_function)} < 0 \)"    
         return latex_answer, latex_problem
     
     def _make_random_number(self, min_num=1, max_num=6, integer_or_frac=None, positive_or_negative=None):

@@ -15,6 +15,9 @@ urlpatterns = [
     ### 単位の変換 ###
     path('unit_conversion/print', views.print_unit_conversion_problem, name='unit_conversion_print'),
     path('unit_conversion/display', views.display_unit_conversion_problem, name='unit_conversion_display'),
+    ### 分母が同じ分数の計算 ###
+    path('same_denominator_calculate/print', views.print_same_denominator_calculate_problem, name='same_denominator_calculate_print'),
+    path('same_denominator_calculate/display', views.display_same_denominator_calculate_problem, name='same_denominator_calculate_display'),
     ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),

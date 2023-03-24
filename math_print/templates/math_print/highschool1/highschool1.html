@@ -487,6 +487,71 @@
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'hs1_quadratic_function_max_min_display' %}">      
             </form>
         </div>
+        <div class="col border-end border-bottom">
+            <p>2次不等式</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する2次方程式のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="two_different_answer" name="used_quadratic_equation" id="quadratic_inequality_two_different_answer" checked>
+                        <label class="form-check-label" for="quadratic_inequality_two_different_answer">
+                            異なる2つの解を持つ2次方程式
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="same_answer" name="used_quadratic_equation" id="quadratic_inequality_same_answer" checked>
+                        <label class="form-check-label" for="quadratic_inequality_same_answer">
+                            重解を持つ2次方程式
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="no_answer" name="used_quadratic_equation" id="quadratic_inequality_no_answer" checked>
+                        <label class="form-check-label" for="quadratic_inequality_no_answer">
+                            解を持たない2次方程式
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">使用される解のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer" name="used_answer_in_quadratic_equation" id="quadratic_inequality_integer" checked>
+                        <label class="form-check-label" for="quadratic_inequality_integer">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="frac" name="used_answer_in_quadratic_equation" id="quadratic_inequality_frac" checked>
+                        <label class="form-check-label" for="quadratic_inequality_frac">
+                            分数
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="QuadraticInEqualityFivePaperRadio" checked>
+                        <label class="form-check-label" for="QuadraticInEqualityFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="QuadraticInEqualityTenPaperRadio">
+                        <label class="form-check-label" for="QuadraticInEqualityTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="QuadraticInEqualityFifteenPaperRadio">
+                        <label class="form-check-label" for="QuadraticInEqualityFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'quadratic_inequality_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'quadratic_inequality_display' %}">      
+            </form>
+        </div>
     </div>
     <div class="row">
         <div class="col border-end border-bottom">

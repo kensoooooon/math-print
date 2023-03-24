@@ -47,6 +47,7 @@ from .math_process.base_n_numbers import BaseNNumbersProblem
 from .math_process.linear_function_with_graph import LinearFunctionWithGraphProblem
 from .math_process.trigonometric_ratio import TrigonometricRatioProblem
 from .math_process.trigonometric_function import TrigonometricFunctionProblem
+from .math_process.quadratic_inequality import QuadraticInequality
 
 
 def index(request):
@@ -1424,7 +1425,31 @@ def print_trigonometric_function(request):
     return render(request, 'math_print/highschool2/trigonometric_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+def print_quadratic_inequality(request):
+    PROBLEM_NUMBER = 20
+    used_quadratic_equation = request.POST.getlist("used_quadratic_equation")
+    if not(used_quadratic_equation):
+        used_quadratic_equation.append("two_different_answer")
+        used_quadratic_equation.append("same_answer")
+        used_quadratic_equation.append("no_answer")
+    used_answer_in_quadratic_equation = request.POST.getlist("used_answer_in_quadratic_equation")
+    if not(used_answer_in_quadratic_equation):
+        used_answer_in_quadratic_equation.append("integer")
+        used_answer_in_quadratic_equation.append("frac")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER // 2)):
+            problem1 = QuadraticInequality(used_quadratic_equation=used_quadratic_equation, used_answer_in_quadratic_equation=used_answer_in_quadratic_equation)
+            problem2 = QuadraticInequality(used_quadratic_equation=used_quadratic_equation, used_answer_in_quadratic_equation=used_answer_in_quadratic_equation)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/highschool1/quadratic_inequality/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
 # display section
+
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2554,7 +2579,7 @@ def display_trigonometric_function(request):
         used_trigonometric_functions.append("tan")
     
     math_problem_tuple_list = []
-    for _ in range((int(PROBLEM_NUMBER // 2))):
+    for _ in range(int(PROBLEM_NUMBER // 2)):
         problem1 = TrigonometricFunctionProblem(
             problem_types=problem_types, used_trigonometric_functions=used_trigonometric_functions,
             radian_range=radian_range
@@ -2565,3 +2590,22 @@ def display_trigonometric_function(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/trigonometric_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_quadratic_inequality(request):
+    PROBLEM_NUMBER = 20
+    used_quadratic_equation = request.POST.getlist("used_quadratic_equation")
+    if not(used_quadratic_equation):
+        used_quadratic_equation.append("two_different_answer")
+        used_quadratic_equation.append("same_answer")
+        used_quadratic_equation.append("no_answer")
+    used_answer_in_quadratic_equation = request.POST.getlist("used_answer_in_quadratic_equation")
+    if not(used_answer_in_quadratic_equation):
+        used_answer_in_quadratic_equation.append("integer")
+        used_answer_in_quadratic_equation.append("frac")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = QuadraticInequality(used_quadratic_equation=used_quadratic_equation, used_answer_in_quadratic_equation=used_answer_in_quadratic_equation)
+        problem2 = QuadraticInequality(used_quadratic_equation=used_quadratic_equation, used_answer_in_quadratic_equation=used_answer_in_quadratic_equation)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool1/quadratic_inequality/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

@@ -144,6 +144,9 @@ urlpatterns = [
     # 三角比
     path('trigonometric_ratio/print', views.print_trigonometric_ratio, name='trigonometric_ratio_print'),
     path('trigonometric_ratio/display', views.display_trigonometric_ratio, name='trigonometric_ratio_display'),
+    # 2次不等式
+    path('quadratic_inequality/print', views.print_quadratic_inequality, name='quadratic_inequality_print'),
+    path('quadratic_inequality/display', views.display_quadratic_inequality, name='quadratic_inequality_display'),
     #########################################
     ### 高2 ###
     path('highschool2/', views.show_highschool2, name='highschool2'),

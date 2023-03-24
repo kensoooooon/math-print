@@ -18,6 +18,7 @@ class SameDenominatorCalculate:
         """
         sy.init_printing(order='grevlex')
         self._calculate_type = settings["calculate_type"]
+        self._term_numbers = settings["term_number"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -27,6 +28,5 @@ class SameDenominatorCalculate:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題 
         """
-        latex_answer = "dummy answer"
-        latex_problem = "dummy problem"
+        
         return latex_answer, latex_problem

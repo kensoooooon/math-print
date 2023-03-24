@@ -1456,12 +1456,17 @@ def print_same_denominator_calculate_problem(request):
         calculate_type.append("addition")
         calculate_type.append("subtraction")
     paper_number = int(request.POST["paper_number"])
+    term_number = request.POST.getlist("term_number")
+    if not(term_number):
+        term_number.append("2")
+        term_number.append("3")
+        term_number.append("4")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER // 2)):
-            problem1 = SameDenominatorCalculate(calculate_type=calculate_type)
-            problem2 = SameDenominatorCalculate(calculate_type=calculate_type)
+            problem1 = SameDenominatorCalculate(calculate_type=calculate_type, term_number=term_number)
+            problem2 = SameDenominatorCalculate(calculate_type=calculate_type, term_number=term_number)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school3/same_denominator_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
@@ -2634,9 +2639,14 @@ def display_same_denominator_calculate_problem(request):
     if not(calculate_type):
         calculate_type.append("addition")
         calculate_type.append("subtraction")
+    term_number = request.POST.getlist("term_number")
+    if not(term_number):
+        term_number.append("2")
+        term_number.append("3")
+        term_number.append("4")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
-        problem1 = SameDenominatorCalculate(calculate_type=calculate_type)
-        problem2 = SameDenominatorCalculate(calculate_type=calculate_type)
+        problem1 = SameDenominatorCalculate(calculate_type=calculate_type, term_number=term_number)
+        problem2 = SameDenominatorCalculate(calculate_type=calculate_type, term_number=term_number)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school3/same_denominator_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

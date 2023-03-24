@@ -96,7 +96,7 @@ class FractionCalculateProblem:
     def _make_random_positive_integer(self, max_num, min_num):
         
         integer = sy.Integer(randint(min_num, max_num))
-        
+
         return integer
     
     def _make_random_positive_frac_number(self, max_num, min_num, denominator=randint(2, 15)):

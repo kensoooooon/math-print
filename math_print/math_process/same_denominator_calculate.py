@@ -1,4 +1,4 @@
-from random import choice, randint, random
+from random import choice, randint, random, shuffle
 
 
 import sympy as sy
@@ -52,28 +52,50 @@ class SameDenominatorCalculate:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        """
-        latex_problem = ""
-        string_
-        denominator = randint(2, 18)
-        term_number = int(choice(self._term_numbers))
-        for _ in range(term_number):
-            
         
+        Developing:
+            真分数のみ（帯分数、仮分数はなし）
+            -> 4項は厳しい？
+            -> 分母は最低5以上？
+            -> 分子は最低3以上(1 + 1 + 1)
+            
+        from random import randint, choice
+
+
+        import sympy as sy
+
+
+        # in 3 terms
+
+        for _ in range(20):
+            same_denominator = randint(5, 18)
+            max_numerator = randint(4, same_denominator)
+            print(f"same_denominator: {same_denominator}")
+            print(f"max_numerator: {max_numerator}")
+            numerator1 = randint(1, max_numerator - 3)
+            print(f"numerator1: {numerator1}")
+            # numerator1 + numerator2 < same_denominator
+            # numerator2 < same_denominator - numeartor1
+            numerator2 = randint(1, max_numerator - numerator1 - 2)
+            print(f"numerator2: {numerator2}")
+            numerator3 = randint(1, max_numerator - numerator1 - numerator2 - 1)
+            print(f"numerator3: {numerator3}")
+            print(f"numerator1 + numerator2 + numerator3: {numerator1 + numerator2 + numerator3}")
+            print("-------------------------")
+        """
+        common_denominator = randint(5, 18)
+        term_number = int(choice(self._term_numbers))
         # divided?
         if term_number == 2:
-            pass
+            numerator1 = randint(1, int(common_denominator / 2))
+            numerator2 = randint(1, common_denominator - numerator1 - 1)
+            latex_answer = f"= \\frac{{{numerator1 + numerator2}}}{{{common_denominator}}}"
+            if random() > 0.5:
+                numerator1, numerator2 = numerator2, numerator1
+            latex_problem = f"\\frac{{{numerator1}}}{{{common_denominator}}} + \\frac{{{numerator2}}}{{{common_denominator}}}"
+            latex_answer = f"= \\frac{{{numerator1 + numerator2}}}{{{common_denominator}}}"
         elif term_number == 3:
             pass
-        elif term_number == 4:
-            pass
         else:
-            raise ValueError(f"'term_number' is {term_number}. This must be 2, 3 or 4.")
-        
-
-    def _make_latex_and_eval_proper_fraction(self):
-        denominator = randint(2, 18)
-        numerator = denominator - randint(1, denominator-1)
-        latex_problem_to_add = f"\\frac{{ {numerator} }}{{ {denominator} }}"
-        string_for_eval_to_add = f"sy.Rational({numerator}, {denominator})"
-        return latex_problem_to_add, string_for_eval_to_add
+            raise ValueError(f"'term_number' is {term_number}. This must be 2 or 3.")
+        return latex_answer, latex_problem

@@ -56,15 +56,18 @@ class SameDenominatorCalculate:
         term_number = int(choice(self._term_numbers))
         # divided?
         if term_number == 2:
+            print("term_number is 2.")
+            print(f"common_denominator: {common_denominator}")
             # numerator1 = randint(1, int(common_denominator / 2))
-            numerator1 = randint(1, common_denominator - 1)
-            numerator2 = randint(1, common_denominator - numerator1 - 1)
+            numerator1 = randint(1, common_denominator - 2)
+            numerator2 = randint(1, numerator1 - 1)
             latex_answer = f"= \\frac{{{numerator1 + numerator2}}}{{{common_denominator}}}"
             if random() > 0.5:
                 numerator1, numerator2 = numerator2, numerator1
             latex_problem = f"\\frac{{{numerator1}}}{{{common_denominator}}} + \\frac{{{numerator2}}}{{{common_denominator}}}"
             latex_answer = f"= \\frac{{{numerator1 + numerator2}}}{{{common_denominator}}}"
         elif term_number == 3:
+            print("term_number is 3.")
             max_numerator = randint(4, common_denominator)
             numerator1 = randint(1, max_numerator - 3)
             numerator2 = randint(1, max_numerator - numerator1 - 2)

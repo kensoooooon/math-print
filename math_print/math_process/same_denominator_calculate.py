@@ -60,7 +60,9 @@ class SameDenominatorCalculate:
             print(f"common_denominator: {common_denominator}")
             # numerator1 = randint(1, int(common_denominator / 2))
             numerator1 = randint(1, common_denominator - 2)
-            numerator2 = randint(1, numerator1 - 1)
+            print(f"numerator1: {numerator1}")
+            numerator2 = randint(1, common_denominator - numerator1 - 1)
+            print(f"numerator2: {numerator2}")
             latex_answer = f"= \\frac{{{numerator1 + numerator2}}}{{{common_denominator}}}"
             if random() > 0.5:
                 numerator1, numerator2 = numerator2, numerator1
@@ -81,6 +83,7 @@ class SameDenominatorCalculate:
             latex_answer = f"= \\frac{{{numerator1 + numerator2 + numerator3}}}{{{common_denominator}}}"
         else:
             raise ValueError(f"'term_number' is {term_number}. This must be 2 or 3.")
+        print("-----------------------------------------------------------------")
         return latex_answer, latex_problem
     
     def _make_subtraction_only_problem(self):
@@ -116,3 +119,4 @@ class SameDenominatorCalculate:
             raise ValueError(f"'term_number' is {term_number}. This must be 2 or 3.")
         return latex_answer, latex_problem
         
+    

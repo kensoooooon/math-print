@@ -41,8 +41,17 @@ class SameDenominatorCalculate:
         elif self._calculate_type == ["subtraction"]:
             latex_answer, latex_problem = self._make_subtraction_only_problem()
         elif self._calculate_type == ["addition", "subtraction"]:
-            latex_answer = "dummy answer"
-            latex_problem = "dummy problem"
+            """
+            problem_checker = random()
+            if 0 <= problem_checker < 0.33:
+                latex_answer, latex_problem = self._make_addition_only_problem()
+            elif 0.33 <= problem_checker < 0.66:
+                latex_answer, latex_problem = self._make_subtraction_only_problem()
+            else:
+                latex_answer, latex_problem = self._make_mixed_problem()
+            """
+            # for making.
+            latex_answer, latex_problem = self._make_mixed_problem()
         return latex_answer, latex_problem
     
     def _make_addition_only_problem(self):
@@ -92,10 +101,6 @@ class SameDenominatorCalculate:
         Returns:
             latex_answer (str): latex形式で記述された解答
             latex_problem (str): latex形式で記述された問題
-        
-        Developing:
-            ・真分数
-            ・結果は正
         """
         common_denominator = randint(6, 20)
         term_number = int(choice(self._term_numbers))
@@ -118,5 +123,46 @@ class SameDenominatorCalculate:
         else:
             raise ValueError(f"'term_number' is {term_number}. This must be 2 or 3.")
         return latex_answer, latex_problem
-        
     
+    def _make_mixed_problem(self):
+        """足し算と引き算が混合された計算問題を作成
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+           
+        Developing:
+            ・真分数かつ答えは正
+            ・アクセスの方と共通の項をとるなら、とるので、3項限定
+            →a+b-c or a-b+c
+            →→本質的に同じ？←途中でも負にならないように(1-2...はNG) 
+        """
+        common_denominator = randint(6, 20)
+        # a + b -c
+        if random() > 0.5:
+            """
+            common_denominator: 6
+            plus_numerator1: 5
+            """
+            print(f"common_denominator: {common_denominator}")
+            plus_numerator1 = randint(2, common_denominator - 1)
+            print(f"plus_numerator1: {plus_numerator1}")
+            plus_numerator2 = randint(1, common_denominator - plus_numerator1 - 1)
+            print(f"plus_numerator2: {plus_numerator2}")
+            minus_numerator = randint(1, plus_numerator1 + plus_numerator2 - 1)
+            print(f"minus_numerator: {minus_numerator}")
+            print("---------------------------------")
+            latex_problem = f"\\frac{{{plus_numerator1}}}{{{common_denominator}}}"
+            latex_problem += f"+ \\frac{{{plus_numerator2}}}{{{common_denominator}}}"
+            latex_problem += f"- \\frac{{{minus_numerator}}}{{{common_denominator}}}"
+            latex_answer = f"= \\frac{{{plus_numerator1 + plus_numerator2 - minus_numerator}}}{{{common_denominator}}}"
+        # a - b + c
+        else:
+            plus_numerator1 = randint(2, common_denominator - 1)
+            minus_numerator = randint(1, plus_numerator1 - 1)
+            plus_numerator2 = randint(1, common_denominator - plus_numerator1 + minus_numerator - 1)
+            latex_problem = f"\\frac{{{plus_numerator1}}}{{{common_denominator}}}"
+            latex_problem += f"- \\frac{{{minus_numerator}}}{{{common_denominator}}}"
+            latex_problem += f"+ \\frac{{{plus_numerator2}}}{{{common_denominator}}}"
+            latex_answer = f"= \\frac{{{plus_numerator1 - minus_numerator + plus_numerator2}}}{{{common_denominator}}}"
+        return latex_answer, latex_problem

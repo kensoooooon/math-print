@@ -82,26 +82,87 @@
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FractionCalculateFivePaperRadio" checked>
-                        <label class="form-check-label" for="FractionCalculateFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="UnitConversionFivePaperRadio" checked>
+                        <label class="form-check-label" for="UnitConversionFivePaperRadio">
                             20問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FractionCalculateTenPaperRadio">
-                        <label class="form-check-label" for="FractionCalculateTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="UnitConversionTenPaperRadio">
+                        <label class="form-check-label" for="UnitConversionTenPaperRadio">
                             20問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FractionCalculateFifteenPaperRadio">
-                        <label class="form-check-label" for="FractionCalculateFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="UnitConversionFifteenPaperRadio">
+                        <label class="form-check-label" for="UnitConversionFifteenPaperRadio">
                             20問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'unit_conversion_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'unit_conversion_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>分母が同じ真分数の計算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition" name="same_denominator_calculate_type" id="same_denominator_calculate_type_addition" checked>
+                        <label class="form-check-label" for="same_denominator_calculate_type_addition">
+                            足し算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="subtraction" name="same_denominator_calculate_type" id="same_denominator_calulate_type_subtraction" checked>
+                        <label class="form-check-label" for="same_denominator_calulate_type_subtraction">
+                            引き算
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">項数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="term_number" id="same_denominator_2" checked>
+                        <label class="form-check-label" for="same_denominator_2">
+                            2項
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="term_number" id="same_denominator_3" checked>
+                        <label class="form-check-label" for="same_denominator_3">
+                            3項
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SameDenominatorFractionCalculateFivePaperRadio" checked>
+                        <label class="form-check-label" for="SameDenominatorCalculateFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SameDenominatorFractionCalculateTenPaperRadio">
+                        <label class="form-check-label" for="SameDenominatorFractionCalculateTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SameDenominatorFractionCalculateFifteenPaperRadio">
+                        <label class="form-check-label" for="SameDenominatorFractionCalculateFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'same_denominator_calculate_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'same_denominator_calculate_display' %}">      
             </form>
         </div>
     </div>

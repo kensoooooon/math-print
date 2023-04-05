@@ -8,7 +8,7 @@ class QuadraticInequality:
     """2次不等式の問題と解答を出力
     
     Attributes:
-        _used_quadratic_function (list): 登場する2次方程式のタイプを格納
+        _used_answer_in_quadratic_eqaution (list): 登場する2次方程式の解の種類(整数, 分数)を格納
         latex_answer (str): latex形式で記述された解答
         latex_problem (str): latex形式で記述された問題
     """

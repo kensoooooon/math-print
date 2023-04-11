@@ -1470,6 +1470,14 @@ def print_same_denominator_calculate_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school3/same_denominator_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
+def print_line_and_flat_positional_relationship(request):
+    PROBLEM_NUMBER = 10
+    math_problem_list_of_list = []
+    return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+# math_print\templates\math_print\junior_highschool1\line_and_flat_positional_relationship\for_display.html
 # display section
 
 
@@ -2650,3 +2658,9 @@ def display_same_denominator_calculate_problem(request):
         problem2 = SameDenominatorCalculate(calculate_type=calculate_type, term_number=term_number)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school3/same_denominator_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_line_and_flat_positional_relationship(request):
+    PROBLEM_NUMBER = 10
+    math_problem_list_of_list = []
+    return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_list_of_list': math_problem_list_of_list})

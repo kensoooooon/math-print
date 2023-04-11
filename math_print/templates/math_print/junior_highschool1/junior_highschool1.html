@@ -856,6 +856,54 @@
             </form>
         </div>
     </div>
+    <div class = "row">
+        <div class="col border-end border-bottom">
+            <p>直線と平面の位置関係</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する立体</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="quadrangular_prism" name="used_solid_body" id="line_and_flat_positional_relationship_quadrangular_prism" checked>
+                        <label class="form-check-label" for="line_and_flat_positional_relationship_quadrangular_prism">
+                            四角柱
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="triangular_prism" name="used_solid_body" id="sector_with_figure_radius_and_arc_length_to_area" checked>
+                        <label class="form-check-label" for="line_and_flat_positional_relationship_triangular_prism">
+                            三角柱
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_solid_body')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_solid_body')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="LineAndFlatPositionalRelationshipFivePaperRadio" checked>
+                        <label class="form-check-label" for="LineAndFlatPositionalRelationshipFivePaperRadio">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="LineAndFlatPositionalRelationshipTenPaperRadio">
+                        <label class="form-check-label" for="LineAndFlatPositionalRelationshipTenPaperRadio">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="LineAndFlatPositionalRelationshipFifteenPaperRadio">
+                        <label class="form-check-label" for="LineAndFlatPositionalRelationshipFifteenPaperRadio">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'line_and_flat_positional_relationship_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'line_and_flat_positional_relationship_display' %}">      
+            </form>
+        </div>
+    </div>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>

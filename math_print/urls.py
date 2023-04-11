@@ -79,8 +79,8 @@ urlpatterns = [
     path('sector_with_figure/print/', views.print_sector_with_figure_problem, name='sector_with_figure_print'),
     path('sector_with_figure/display/', views.display_sector_with_figure_problem, name='sector_with_figure_display'),
     # 直線と平面の位置関係
-    path('line_and_flat_positional_relationship/print/', views.print_line_and_flat_positional_relationship, name="print_line_and_flat_positional_relationship"),
-    path('line_and_flat_positional_relationship/print/', views.print_line_and_flat_positional_relationship, name="print_line_and_flat_positional_relationship"),
+    path('line_and_flat_positional_relationship/print/', views.print_line_and_flat_positional_relationship, name="line_and_flat_positional_relationship_print"),
+    path('line_and_flat_positional_relationship/display/', views.display_line_and_flat_positional_relationship, name="line_and_flat_positional_relationship_display"),
     ###########################################
     ### 中2 ###
     path('junior_highschool2/', views.show_junior_highschool2, name='junior_highschool2'),

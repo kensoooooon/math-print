@@ -2672,4 +2672,4 @@ def display_line_and_flat_positional_relationship(request):
         problem1 = LineAndFlatPositionalRelationship(used_solid_bodies=used_solid_bodies)
         problem2 = LineAndFlatPositionalRelationship(used_solid_bodies=used_solid_bodies)
         math_problem_tuple_list.append((problem1, problem2))
-    return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

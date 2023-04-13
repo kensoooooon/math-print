@@ -1,0 +1,250 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+  window.addEventListener("load", make);
+
+  function drawLine(stage, start_x, start_y, end_x, end_y) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+  
+  function drawDegreeCharacter(stage, x, y, character) {
+    //文字オブジェクトを作成する
+    var text = new createjs.Text(character, "15px Arial", "#000000");
+    //描画位置の指定
+    text.x = x;
+    text.y = y;
+    stage.addChild(text);
+  }
+
+  function draw() {
+    {% for information_tuple in math_problem_tuple_list %}
+    var container_div = document.createElement("div");
+    container_div.className = "container-fluid";
+
+    var row_container = document.createElement("div");
+    row_container.className = "row";
+
+    var left_div = document.createElement("div");
+    left_div.className = "col-md-6";
+
+    var left_canvas = document.createElement('canvas');
+    var left_canvas_id = "left_canvas" + {{ forloop.counter }};
+    left_canvas.id = left_canvas_id;
+    // left_canvas.width = 640;
+    left_canvas.width = 320;
+    // left_canvas.height = 320;
+    left_canvas.height = 160;
+    left_canvas.style = "background-color:#CCFFFF";
+
+    var right_div = document.createElement("div");
+    right_div.className = "col-md-6";
+
+    var right_canvas = document.createElement('canvas');
+    var right_canvas_id = "right_canvas" + {{ forloop.counter }};
+    right_canvas.id = right_canvas_id;
+    // right_canvas.width = 640;
+    right_canvas.width = 320;
+    // right_canvas.height = 320;
+    right_canvas.height = 160;
+    right_canvas.style = "background-color:#CCFFFF";
+
+    // insert part
+    left_div.appendChild(left_canvas);
+    // add left problem and answer to left_div
+    var left_problem_p = document.createElement('p');
+    left_problem_p.style = "visibility:visible";
+    left_problem_p.className = "problem";
+    var left_problem_string = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
+    var left_problem = document.createTextNode(left_problem_string);
+    left_problem_p.appendChild(left_problem);
+    left_div.appendChild(left_problem_p);
+    
+    var left_answer_p = document.createElement('p');
+    left_answer_p.style = "visibility:hidden";
+    left_answer_p.className = "answer";
+    var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
+    left_answer_p.appendChild(left_answer);
+    left_div.appendChild(left_answer_p);
+
+
+    right_div.appendChild(right_canvas);
+    // add right problem and answer to right_div
+    var right_problem_p = document.createElement('p');
+    right_problem_p.style = "visibility:visible";
+    right_problem_p.className = "problem";
+    var right_problem_string = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
+    var right_problem = document.createTextNode(right_problem_string);
+    right_problem_p.appendChild(right_problem);
+    right_div.appendChild(right_problem_p);
+
+    var right_answer_p = document.createElement('p');
+    right_answer_p.style = "visibility:hidden";
+    right_answer_p.className = "answer";
+    var right_answer = document.createTextNode("{{ information_tuple.1.latex_answer }}");
+    right_answer_p.appendChild(right_answer);
+    right_div.appendChild(right_answer_p);
+
+    row_container.appendChild(left_div);
+    row_container.appendChild(right_div);
+    container_div.appendChild(row_container);
+    document.body.appendChild(container_div);
+
+    var left_stage = new createjs.Stage(left_canvas_id);
+    var left_radius = Number({{ information_tuple.0.sector.radius }});
+    var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
+    drawSector(left_stage, 160, 80, 60, left_central_angle);
+    
+    var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
+    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+      addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "radius_and_arc_length_to_area") {
+      addRadiusAndArcLengthToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_arc_length }}");
+    }
+    else if (selected_problem_type == "radius_and_area_to_arc_length") {
+      addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
+    }
+    else if (selected_problem_type == "radius_and_area_to_central_angle") {
+      addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
+    }
+
+    var right_stage = new createjs.Stage(right_canvas_id);
+    var right_radius = Number({{ information_tuple.1.sector.radius }});
+    var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
+    drawSector(right_stage, 160, 80, 60, right_central_angle);
+
+    var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
+    
+    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+      addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
+    }
+    else if (selected_problem_type == "radius_and_arc_length_to_area") {
+      addRadiusAndArcLengthToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_arc_length }}");
+    }
+    else if (selected_problem_type == "radius_and_area_to_arc_length") {
+      addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
+    }
+    else if (selected_problem_type == "radius_and_area_to_central_angle") {
+      addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
+    }
+    {% endfor %}
+    MathJax.typeset();
+  }
+
+  function add_other_parts_to_page() {
+    // hero unit phase
+    var hero_outer_div = document.createElement('div');
+    hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
+    var hero_inner_div = document.createElement('div');
+    hero_inner_div.setAttribute("class", "container");
+    var h1_in_hero = document.createElement('h1');
+    h1_in_hero.setAttribute("class", "display-4");
+    h1_in_hero.innerHTML = "ようこそ!";
+    var p_in_hero = document.createElement('p');
+    p_in_hero.setAttribute("class", "text-dark");
+    p_in_hero.innerHTML = "おうぎ形の弧の長さや中心角、面積を求める";
+    //// hero unit add phase
+    hero_inner_div.appendChild(h1_in_hero);
+    hero_inner_div.appendChild(p_in_hero);
+    hero_outer_div.appendChild(hero_inner_div);
+    document.body.prepend(hero_outer_div);
+    // button unit phase
+    var button_div = document.createElement('div');
+    button_div.setAttribute("class", "d-grid gap-3 col-6 mx-auto");
+    var show_answer_button = document.createElement('button');
+    show_answer_button.setAttribute("class", "btn btn-outline-success");
+    show_answer_button.setAttribute("type", "button");
+    show_answer_button.setAttribute("onclick", "showAnswer()");
+    show_answer_button.innerHTML = "答えを表示する";
+    var reload_button = document.createElement('button');
+    reload_button.setAttribute("class", "btn btn-outline-success");
+    reload_button.setAttribute("type", "button");
+    reload_button.setAttribute("onclick", "location.reload(false)");
+    reload_button.innerHTML = "もう一度解く";
+    var problem_choice_a = document.createElement("a");
+    problem_choice_a.setAttribute("href", "{% url 'junior_highschool1' %}");
+    problem_choice_a.setAttribute("class", "btn btn-primary");
+    problem_choice_a.setAttribute("type", "button");
+    problem_choice_a.innerHTML = "問題選択へ戻る";
+    var top_a = document.createElement("a");
+    top_a.setAttribute("href", "{% url 'index' %}");
+    top_a.setAttribute("class", "btn btn-primary");
+    top_a.setAttribute("type", "button");
+    top_a.innerHTML = "トップへ戻る";
+    //// buttonunit add phase
+    button_div.appendChild(show_answer_button);
+    button_div.appendChild(reload_button);
+    button_div.appendChild(problem_choice_a);
+    button_div.appendChild(top_a);
+    document.body.appendChild(button_div);
+    // footer phase
+    var footer = document.createElement("footer");
+    footer.setAttribute("class", "container-fluid print_footer");
+    var small = document.createElement("small");
+    var footer_a = document.createElement("a");
+    footer_a.setAttribute("href", "#");
+    footer_a.innerHTML = "© 2022 有明学習振興";
+    //// footer add phase
+    small.appendChild(footer_a);
+    footer.appendChild(small);
+    document.body.appendChild(footer);
+    // top page remove and add phase
+    var navdiv = document.getElementById("top_page_nav");
+    var new_navdiv = navdiv.cloneNode(true);
+    navdiv.remove();
+    document.body.prepend(new_navdiv);
+  }
+
+  function make() {
+    draw();
+    add_other_parts_to_page();
+  }
+
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+直線と平面の位置関係を考える
+{% endblock %}
+
+{% block body %}
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+{% endblock %}

@@ -40,6 +40,65 @@ function refresh() {
     stage.addChild(text);
   }
 
+  function drawQuadrangularPrism(stage) {
+    /** ステージに対して四面体を描画する
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    */
+    let graphic = new createjs.Graphics();
+    //// bottom square part
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    let horizontal_side_length = 220;
+    let bottom_left_x = 50;
+    let bottom_left_y = 130;
+    let bottom_right_x = bottom_left_x + horizontal_side_length;
+    let bottom_right_y = bottom_left_y;
+    drawLine(stage, bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y);
+    let diagonal_side_length = 50;
+    let diagonal_angle = Math.PI / 6;
+    let bottom_right_back_x = bottom_right_x + diagonal_side_length * Math.cos(-diagonal_angle);
+    let bottom_right_back_y = bottom_right_y + diagonal_side_length * Math.sin(-diagonal_angle);
+    drawLine(stage, bottom_right_x, bottom_right_y, bottom_right_back_x, bottom_right_back_y);
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeDash([1, 1], 0);
+    let bottom_left_back_x = bottom_right_back_x - horizontal_side_length;
+    let bottom_left_back_y = bottom_right_back_y;
+    drawLine(stage, bottom_right_back_x, bottom_right_back_y, bottom_left_back_x, bottom_left_back_y);
+    drawLine(stage, bottom_left_x, bottom_left_y, bottom_left_back_x, bottom_left_back_y);
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    //// side from bottom to top part
+    let vertical_length = 100;
+    let top_left_x = bottom_left_x;
+    let top_left_y = bottom_left_y - vertical_length;
+    drawLine(stage, bottom_left_x, bottom_left_y, top_left_x, top_left_y);
+    let top_right_x = bottom_right_x;
+    let top_right_y = top_left_y;
+    drawLine(stage, bottom_right_x, bottom_right_y, top_right_x, top_right_y);
+    let top_right_back_x = bottom_right_back_x;
+    let top_right_back_y = bottom_right_back_y - vertical_length;
+    drawLine(stage, bottom_right_back_x, bottom_right_back_y, top_right_back_x, top_right_back_y);
+    graphic.endStroke();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeDash(0.5);
+    graphic.setStrokeDash([1, 1], 0);
+    let top_left_back_x = bottom_left_back_x;
+    let top_left_back_y = bottom_left_back_y - vertical_length;
+    drawLine(stage, bottom_left_back_x, bottom_left_back_y, top_left_back_x, top_left_back_y);
+    graphic.endStroke();
+    //// top square part
+    graphic.beginStroke("#000000");
+    graphic.setStrokeDash(0.5);
+    drawLine(stage, top_left_x, top_left_y, top_right_x, top_right_y);
+    drawLine(stage, top_right_x, top_right_y, top_right_back_x, top_right_back_y);
+    drawLine(stage, top_right_back_x, top_right_back_y, top_left_back_x, top_left_back_y);
+    drawLine(stage, top_left_back_x, top_left_back_y, top_left_x, top_left_y);
+    graphic.endStroke();
+    stage.update();
+  }
+
   function draw() {
     {% for information_tuple in math_problem_tuple_list %}
     var container_div = document.createElement("div");
@@ -54,9 +113,7 @@ function refresh() {
     var left_canvas = document.createElement('canvas');
     var left_canvas_id = "left_canvas" + {{ forloop.counter }};
     left_canvas.id = left_canvas_id;
-    // left_canvas.width = 640;
     left_canvas.width = 320;
-    // left_canvas.height = 320;
     left_canvas.height = 160;
     left_canvas.style = "background-color:#CCFFFF";
 
@@ -66,19 +123,16 @@ function refresh() {
     var right_canvas = document.createElement('canvas');
     var right_canvas_id = "right_canvas" + {{ forloop.counter }};
     right_canvas.id = right_canvas_id;
-    // right_canvas.width = 640;
     right_canvas.width = 320;
-    // right_canvas.height = 320;
     right_canvas.height = 160;
     right_canvas.style = "background-color:#CCFFFF";
 
     // insert part
     left_div.appendChild(left_canvas);
-    // add left problem and answer to left_div
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    var left_problem_string = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
+    var left_problem_string = "this is left problem.";
     var left_problem = document.createTextNode(left_problem_string);
     left_problem_p.appendChild(left_problem);
     left_div.appendChild(left_problem_p);
@@ -92,11 +146,10 @@ function refresh() {
 
 
     right_div.appendChild(right_canvas);
-    // add right problem and answer to right_div
     var right_problem_p = document.createElement('p');
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
-    var right_problem_string = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
+    var right_problem_string = "this is right problem.";
     var right_problem = document.createTextNode(right_problem_string);
     right_problem_p.appendChild(right_problem);
     right_div.appendChild(right_problem_p);
@@ -114,43 +167,18 @@ function refresh() {
     document.body.appendChild(container_div);
 
     var left_stage = new createjs.Stage(left_canvas_id);
+    console.log(typeof left_stage);
     var left_radius = Number({{ information_tuple.0.sector.radius }});
     var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
-    drawSector(left_stage, 160, 80, 60, left_central_angle);
-    
-    var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
-    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-      addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
-    }
-    else if (selected_problem_type == "radius_and_arc_length_to_area") {
-      addRadiusAndArcLengthToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_arc_length }}");
-    }
-    else if (selected_problem_type == "radius_and_area_to_arc_length") {
-      addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
-    }
-    else if (selected_problem_type == "radius_and_area_to_central_angle") {
-      addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
-    }
+    // drawSector(left_stage, 160, 80, 60, left_central_angle);
+    // quadrangular prism draw.
+    drawQuadrangularPrism(left_stage);
 
     var right_stage = new createjs.Stage(right_canvas_id);
     var right_radius = Number({{ information_tuple.1.sector.radius }});
     var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
-    drawSector(right_stage, 160, 80, 60, right_central_angle);
-
-    var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
-    
-    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-      addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
-    }
-    else if (selected_problem_type == "radius_and_arc_length_to_area") {
-      addRadiusAndArcLengthToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_arc_length }}");
-    }
-    else if (selected_problem_type == "radius_and_area_to_arc_length") {
-      addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
-    }
-    else if (selected_problem_type == "radius_and_area_to_central_angle") {
-      addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
-    }
+    // drawSector(right_stage, 160, 80, 60, right_central_angle);
+    drawQuadrangularPrism(right_stage);
     {% endfor %}
     MathJax.typeset();
   }

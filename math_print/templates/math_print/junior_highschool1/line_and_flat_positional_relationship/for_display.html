@@ -30,11 +30,27 @@ function refresh() {
       var shape = new createjs.Shape(graphic);
       stage.addChild(shape);
   }
+
+  function drawDashLine(stage, start_x, start_y, end_x, end_y) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([2, 2], 0);
+    graphic.moveTo(start_x, start_y);
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+  }
   
-  function drawDegreeCharacter(stage, x, y, character) {
-    //文字オブジェクトを作成する
+  function drawCharacter(stage, x, y, character) {
+    /**左上隅を指定して文字列を描き込む
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    * @param {number} x 左上隅のx座標
+    * @param {number} y 左上隅のy座標
+    * @param {string} character 描き込みたい文字列
+    */
     var text = new createjs.Text(character, "15px Arial", "#000000");
-    //描画位置の指定
     text.x = x;
     text.y = y;
     stage.addChild(text);
@@ -44,13 +60,10 @@ function refresh() {
     /** ステージに対して四面体を描画する
     * @param {object} stage キャンバスから取得した描画用のオブジェクト
     */
-    let graphic = new createjs.Graphics();
     //// bottom square part
-    graphic.beginStroke("#000000");
-    graphic.setStrokeStyle(0.5);
-    let horizontal_side_length = 220;
+    let horizontal_side_length = 150;
     let bottom_left_x = 50;
-    let bottom_left_y = 130;
+    let bottom_left_y = 140;
     let bottom_right_x = bottom_left_x + horizontal_side_length;
     let bottom_right_y = bottom_left_y;
     drawLine(stage, bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y);
@@ -59,16 +72,10 @@ function refresh() {
     let bottom_right_back_x = bottom_right_x + diagonal_side_length * Math.cos(-diagonal_angle);
     let bottom_right_back_y = bottom_right_y + diagonal_side_length * Math.sin(-diagonal_angle);
     drawLine(stage, bottom_right_x, bottom_right_y, bottom_right_back_x, bottom_right_back_y);
-    graphic.endStroke();
-    graphic.beginStroke("#000000");
-    graphic.setStrokeDash([1, 1], 0);
     let bottom_left_back_x = bottom_right_back_x - horizontal_side_length;
     let bottom_left_back_y = bottom_right_back_y;
-    drawLine(stage, bottom_right_back_x, bottom_right_back_y, bottom_left_back_x, bottom_left_back_y);
-    drawLine(stage, bottom_left_x, bottom_left_y, bottom_left_back_x, bottom_left_back_y);
-    graphic.endStroke();
-    graphic.beginStroke("#000000");
-    graphic.setStrokeStyle(0.5);
+    drawDashLine(stage, bottom_right_back_x, bottom_right_back_y, bottom_left_back_x, bottom_left_back_y);
+    drawDashLine(stage, bottom_left_x, bottom_left_y, bottom_left_back_x, bottom_left_back_y);
     //// side from bottom to top part
     let vertical_length = 100;
     let top_left_x = bottom_left_x;
@@ -80,22 +87,22 @@ function refresh() {
     let top_right_back_x = bottom_right_back_x;
     let top_right_back_y = bottom_right_back_y - vertical_length;
     drawLine(stage, bottom_right_back_x, bottom_right_back_y, top_right_back_x, top_right_back_y);
-    graphic.endStroke();
-    graphic.beginStroke("#000000");
-    graphic.setStrokeDash(0.5);
-    graphic.setStrokeDash([1, 1], 0);
     let top_left_back_x = bottom_left_back_x;
     let top_left_back_y = bottom_left_back_y - vertical_length;
-    drawLine(stage, bottom_left_back_x, bottom_left_back_y, top_left_back_x, top_left_back_y);
-    graphic.endStroke();
-    //// top square part
-    graphic.beginStroke("#000000");
-    graphic.setStrokeDash(0.5);
+    drawDashLine(stage, bottom_left_back_x, bottom_left_back_y, top_left_back_x, top_left_back_y);
     drawLine(stage, top_left_x, top_left_y, top_right_x, top_right_y);
     drawLine(stage, top_right_x, top_right_y, top_right_back_x, top_right_back_y);
     drawLine(stage, top_right_back_x, top_right_back_y, top_left_back_x, top_left_back_y);
     drawLine(stage, top_left_back_x, top_left_back_y, top_left_x, top_left_y);
-    graphic.endStroke();
+    //// corner name part.
+    drawCharacter(stage, top_left_x - 15, top_left_y, "A");
+    drawCharacter(stage, top_right_x + 15, top_right_y, "B");
+    drawCharacter(stage, top_right_back_x + 15, top_right_back_y, "C");
+    drawCharacter(stage, top_left_back_x - 15, top_left_back_y - 15, "D");
+    drawCharacter(stage, bottom_left_x - 15, bottom_left_y, "E");
+    drawCharacter(stage, bottom_right_x + 15, bottom_right_y, "F");
+    drawCharacter(stage, bottom_right_back_x + 15, bottom_right_back_y, "G");
+    drawCharacter(stage, bottom_left_back_x - 15, bottom_left_back_y, "H");
     stage.update();
   }
 
@@ -132,8 +139,7 @@ function refresh() {
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    var left_problem_string = "this is left problem.";
-    var left_problem = document.createTextNode(left_problem_string);
+    var left_problem = document.createTextNode("{{ information_tuple.0.latex_problem }}");
     left_problem_p.appendChild(left_problem);
     left_div.appendChild(left_problem_p);
     
@@ -149,8 +155,7 @@ function refresh() {
     var right_problem_p = document.createElement('p');
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
-    var right_problem_string = "this is right problem.";
-    var right_problem = document.createTextNode(right_problem_string);
+    var right_problem = document.createTextNode("{{ information_tuple.1.latex_problem }}");
     right_problem_p.appendChild(right_problem);
     right_div.appendChild(right_problem_p);
 
@@ -167,17 +172,9 @@ function refresh() {
     document.body.appendChild(container_div);
 
     var left_stage = new createjs.Stage(left_canvas_id);
-    console.log(typeof left_stage);
-    var left_radius = Number({{ information_tuple.0.sector.radius }});
-    var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
-    // drawSector(left_stage, 160, 80, 60, left_central_angle);
-    // quadrangular prism draw.
     drawQuadrangularPrism(left_stage);
 
     var right_stage = new createjs.Stage(right_canvas_id);
-    var right_radius = Number({{ information_tuple.1.sector.radius }});
-    var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
-    // drawSector(right_stage, 160, 80, 60, right_central_angle);
     drawQuadrangularPrism(right_stage);
     {% endfor %}
     MathJax.typeset();
@@ -194,7 +191,7 @@ function refresh() {
     h1_in_hero.innerHTML = "ようこそ!";
     var p_in_hero = document.createElement('p');
     p_in_hero.setAttribute("class", "text-dark");
-    p_in_hero.innerHTML = "おうぎ形の弧の長さや中心角、面積を求める";
+    p_in_hero.innerHTML = "直線と平面の位置関係を考える";
     //// hero unit add phase
     hero_inner_div.appendChild(h1_in_hero);
     hero_inner_div.appendChild(p_in_hero);

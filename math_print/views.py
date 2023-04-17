@@ -2662,14 +2662,28 @@ def display_same_denominator_calculate_problem(request):
 
 
 def display_line_and_flat_positional_relationship(request):
+    """直線と平面の位置関係の問題のリクエスト受信と問題出力を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+    """
+    print(f"type: {type(request)}")
     PROBLEM_NUMBER = 10
+    used_problems = request.POST.getlist("used_problem")
+    if not(used_problems):
+        used_problems.append("line_and_line")
+        used_problems.append("line_and_flat")
+        used_problems.append("flat_and_flat")
     used_solid_bodies = request.POST.getlist("used_solid_body")
     if not(used_solid_bodies):
         used_solid_bodies.append("quadrangular_prism")
         used_solid_bodies.append("triangular_prism")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
-        problem1 = LineAndFlatPositionalRelationship(used_solid_bodies=used_solid_bodies)
-        problem2 = LineAndFlatPositionalRelationship(used_solid_bodies=used_solid_bodies)
+        problem1 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies)
+        problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

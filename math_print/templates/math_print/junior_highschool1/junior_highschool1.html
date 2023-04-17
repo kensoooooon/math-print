@@ -861,6 +861,29 @@
             <p>直線と平面の位置関係</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                <small class="text-muted">登場する問題</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="line_and_line" name="used_problem" id="line_and_flat_positional_relationship_line_and_line" checked>
+                        <label class="form-check-label" for="line_and_flat_positional_relationship_line_and_line">
+                            直線同士の位置関係
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="line_and_flat" name="used_problem" id="line_and_flat_positional_relationship_line_and_flat" checked>
+                        <label class="form-check-label" for="line_and_flat_positional_relationship_line_and_flat">
+                            直線と平面の位置関係
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="flat_and_flat" name="used_problem" id="line_and_flat_positional_relationship_flat_and_flat" checked>
+                        <label class="form-check-label" for="line_and_flat_positional_relationship_flat_and_flat">
+                            平面同士の位置関係
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_problem')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_problem')" value="全部はずし">
+                </div>
                 <small class="text-muted">登場する立体</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
@@ -870,7 +893,7 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="triangular_prism" name="used_solid_body" id="sector_with_figure_radius_and_arc_length_to_area" checked>
+                        <input class="form-check-input" type="checkbox" value="triangular_prism" name="used_solid_body" id="line_and_flat_positional_relationship_triangular_prism" checked>
                         <label class="form-check-label" for="line_and_flat_positional_relationship_triangular_prism">
                             三角柱
                         </label>

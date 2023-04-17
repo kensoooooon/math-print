@@ -2670,7 +2670,6 @@ def display_line_and_flat_positional_relationship(request):
     Returns:
         math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
     """
-    print(f"type: {type(request)}")
     PROBLEM_NUMBER = 10
     used_problems = request.POST.getlist("used_problem")
     if not(used_problems):

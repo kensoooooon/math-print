@@ -139,14 +139,14 @@ function refresh() {
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    var left_problem = document.createTextNode("{{ information_tuple.0.latex_problem }}");
+    var left_problem = document.createTextNode(`{{ information_tuple.0.latex_problem | linebreaksbr }}`);
     left_problem_p.appendChild(left_problem);
     left_div.appendChild(left_problem_p);
     
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
-    var left_answer = document.createTextNode("{{ information_tuple.0.latex_answer }}");
+    var left_answer = document.createTextNode(`{{ information_tuple.0.latex_answer | linebreaksbr }}`);
     left_answer_p.appendChild(left_answer);
     left_div.appendChild(left_answer_p);
 
@@ -155,14 +155,14 @@ function refresh() {
     var right_problem_p = document.createElement('p');
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
-    var right_problem = document.createTextNode("{{ information_tuple.1.latex_problem }}");
+    var right_problem = document.createTextNode(`{{ information_tuple.1.latex_problem | linebreaksbr }}`);
     right_problem_p.appendChild(right_problem);
     right_div.appendChild(right_problem_p);
 
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
-    var right_answer = document.createTextNode("{{ information_tuple.1.latex_answer }}");
+    var right_answer = document.createTextNode(`{{ information_tuple.1.latex_answer | linebreaksbr }}`);
     right_answer_p.appendChild(right_answer);
     right_div.appendChild(right_answer_p);
 

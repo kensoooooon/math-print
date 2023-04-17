@@ -49,23 +49,114 @@ class LineAndFlatPositionalRelationship:
         """
         latex_answer = ""
         latex_problem = ""
-        for _ in range(3):
+        for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
                 """
                 二直線の位置関係
                 -> 平行, ねじれ, 垂直に交わる, (垂直以外に交わる)
                 """
+                problem_checker = random()
+                # parallel edge
+                if problem_checker < 0.33:                        
+                    parallel_edges_group = (
+                        ["辺AB", "辺CD", "辺EF", "辺GH",],
+                        ["辺AD", "辺BC", "辺EH", "辺FG",],
+                        ["辺AE", "辺BF", "辺CG", "辺DH",],
+                        )
+                    selected_parallel_edges = choice(parallel_edges_group)
+                    edge_used_for_problem = selected_parallel_edges.pop(randint(0, len(selected_parallel_edges) - 1))
+                    remained_edges = ", ".join(selected_parallel_edges)
+                    latex_answer += f"({problem_number}) {remained_edges} <br>"
+                    latex_problem += f"({problem_number}) {edge_used_for_problem}と平行な辺を答えなさい。<br>"
+                # skew edge
+                elif 0.33 <= problem_checker < 0.66:
+                    """
+                    # total
+                    from random import choice, randint
+
+
+                    all_edges = [
+                        "辺AB", "辺BC", "辺CD", "辺AD",
+                        "辺AE", "辺BF", "辺CG", "辺DH",
+                        "辺EF", "辺FG", "辺GH", "辺EH",
+                    ]
+                    parallel_edges_groups = (
+                        ["辺AB", "辺CD", "辺EF", "辺GH",],
+                        ["辺AD", "辺BC", "辺EH", "辺FG",],
+                        ["辺AE", "辺BF", "辺CG", "辺DH",],
+                        )
+                    edge_used_for_problem = "辺AB"
+                    for parallel_edges in parallel_edges_groups:
+                        if edge_used_for_problem in parallel_edges:
+                            parallel_edges_with_edge_used_for_problem = parallel_edges
+                    print(parallel_edges_with_edge_used_for_problem)
+                    edges_without_parallel = list(set(all_edges) - set(parallel_edges_with_edge_used_for_problem))
+                    print(edges_without_parallel)
+                    first_alphabet = edge_used_for_problem[1]
+                    second_alphabet = edge_used_for_problem[2]
+                    skew_edges = [edge for edge in edges_without_parallel if (first_alphabet not in edge) and (second_alphabet not in edge)]
+                    print(skew_edges)
+                    vertical_edges = [edge for edge in edges_without_parallel if (first_alphabet in edge) or (second_alphabet in edge)]
+                    print(vertical_edges)
+                    """
+                    all_edges = [
+                        "辺AB", "辺BC", "辺CD", "辺AD",
+                        "辺AE", "辺BF", "辺CG", "辺DH",
+                        "辺EF", "辺FG", "辺GH", "辺EH",
+                    ]
+                    edge_used_for_problem = choice(all_edges)
+                    print(f"edge_used_for_problem: {edge_used_for_problem}")
+                    latex_problem += f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を答えなさい。<br>"
+                    parallel_edges_group = (
+                        ["辺AB", "辺CD", "辺EF", "辺GH",],
+                        ["辺AD", "辺BC", "辺EH", "辺FG",],
+                        ["辺AE", "辺BF", "辺CG", "辺DH",],
+                        )
+                    for parallel_edges in parallel_edges_group:
+                        if edge_used_for_problem in parallel_edges:
+                            parallel_edges_with_edge_used_for_problem = parallel_edges
+                            break
+                    print(f"parallel_edges_with_edge_used_for_problem: {parallel_edges_with_edge_used_for_problem}")
+                    edges_without_parallel = list(set(all_edges) - set(parallel_edges_with_edge_used_for_problem))
+                    first_alphabet = edge_used_for_problem[1]
+                    second_alphabet = edge_used_for_problem[2]
+                    skew_edges = [edge for edge in edges_without_parallel if (first_alphabet not in edge) and (second_alphabet not in edge)]
+                    latex_answer += f"({problem_number}) {', '.join(skew_edges)}"
+                # vertical edge
+                else:
+                    all_edges = [
+                        "辺AB", "辺BC", "辺CD", "辺AD",
+                        "辺AE", "辺BF", "辺CG", "辺DH",
+                        "辺EF", "辺FG", "辺GH", "辺EH",
+                    ]
+                    edge_used_for_problem = choice(all_edges)
+                    latex_problem += f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を答えなさい。<br>"
+                    parallel_edges_group = (
+                        ["辺AB", "辺CD", "辺EF", "辺GH",],
+                        ["辺AD", "辺BC", "辺EH", "辺FG",],
+                        ["辺AE", "辺BF", "辺CG", "辺DH",],
+                        )
+                    for parallel_edges in parallel_edges_group:
+                        if edge_used_for_problem in parallel_edges:
+                            parallel_edges_with_edge_used_for_problem = parallel_edges
+                            break
+                    print(f"parallel_edges_with_edge_used_for_problem: {parallel_edges_with_edge_used_for_problem}")
+                    edges_without_parallel = list(set(all_edges) - set(parallel_edges_with_edge_used_for_problem))
+                    first_alphabet = edge_used_for_problem[1]
+                    second_alphabet = edge_used_for_problem[2]
+                    vertical_edges = [edge for edge in edges_without_parallel if (first_alphabet in edge) or (second_alphabet in edge)]
+                    latex_answer += f"({problem_number}) {', '.join(vertical_edges)} <br>"
             elif selected_problem_type == "line_and_flat":
+                latex_answer = "dummy answer in line_and_flat"
+                latex_problem = "dummy problem in line_and_flat"
             elif selected_problem_type == "flat_and_flat":
+                latex_answer = "dummy answer in flat_and_flat"
+                latex_problem = "dummy problem in flat_and_flat"
             else:
                 raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")
-        parallel_lines = (
-            ("直線AB", "直線CD", "直線EF", "直線GH",),
-            ("直線AD", "直線BC", "直線EH", "直線FG",),
-            ("直線AE", "直線BF", "直線CG", "直線DH",),
-            )
+            print("-------------------------------")
         return latex_answer, latex_problem
     
     def _make_triangular_prism_problem(self):

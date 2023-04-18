@@ -139,31 +139,55 @@ function refresh() {
     var left_problem_p = document.createElement('p');
     left_problem_p.style = "visibility:visible";
     left_problem_p.className = "problem";
-    var left_problem = document.createTextNode(`{{ information_tuple.0.latex_problem | linebreaksbr }}`);
-    left_problem_p.appendChild(left_problem);
+    var br = document.createElement("br");
+    var left_problem0 = document.createTextNode("{{ information_tuple.0.latex_problems.0 }}");
+    left_problem_p.appendChild(left_problem0);
+    left_problem_p.appendChild(br);
+    var left_problem1 = document.createTextNode("{{ information_tuple.0.latex_problems.1 }}");
+    left_problem_p.appendChild(left_problem1);
+    left_problem_p.appendChild(br);
+    var left_problem2 = document.createTextNode("{{ information_tuple.0.latex_problems.2 }}");
+    left_problem_p.appendChild(left_problem2);
     left_div.appendChild(left_problem_p);
     
     var left_answer_p = document.createElement('p');
     left_answer_p.style = "visibility:hidden";
     left_answer_p.className = "answer";
-    var left_answer = document.createTextNode(`{{ information_tuple.0.latex_answer | linebreaksbr }}`);
-    left_answer_p.appendChild(left_answer);
+    var left_answer0 = document.createTextNode("{{ information_tuple.0.latex_answers.0 }}");
+    left_answer_p.appendChild(left_answer0);
+    left_answer_p.appendChild(br);
+    var left_answer1 = document.createTextNode("{{ information_tuple.0.latex_answers.1 }}");
+    left_answer_p.appendChild(left_answer1);
+    left_answer_p.appendChild(br);
+    var left_answer2 = document.createTextNode("{{ information_tuple.0.latex_answers.2 }}");
+    left_answer_p.appendChild(left_answer2);
     left_div.appendChild(left_answer_p);
-
 
     right_div.appendChild(right_canvas);
     var right_problem_p = document.createElement('p');
     right_problem_p.style = "visibility:visible";
     right_problem_p.className = "problem";
-    var right_problem = document.createTextNode(`{{ information_tuple.1.latex_problem | linebreaksbr }}`);
-    right_problem_p.appendChild(right_problem);
+    var right_problem0 = document.createTextNode("{{ information_tuple.1.latex_problems.0 }}");
+    right_problem_p.appendChild(right_problem0);
+    right_problem_p.appendChild(br);
+    var right_problem1 = document.createTextNode("{{ information_tuple.1.latex_problems.1 }}");
+    right_problem_p.appendChild(right_problem1);
+    right_problem_p.appendChild(br);
+    var right_problem2 = document.createTextNode("{{ information_tuple.1.latex_problems.2 }}");
+    right_problem_p.appendChild(right_problem2);
     right_div.appendChild(right_problem_p);
 
     var right_answer_p = document.createElement('p');
     right_answer_p.style = "visibility:hidden";
     right_answer_p.className = "answer";
-    var right_answer = document.createTextNode(`{{ information_tuple.1.latex_answer | linebreaksbr }}`);
-    right_answer_p.appendChild(right_answer);
+    var right_answer0 = document.createTextNode("{{ information_tuple.1.latex_answers.0 }}");
+    right_answer_p.appendChild(right_answer0);
+    right_answer_p.appendChild(br);
+    var right_answer1 = document.createTextNode("{{ information_tuple.1.latex_answers.1 }}");
+    right_answer_p.appendChild(right_answer1);
+    right_answer_p.appendChild(br);
+    var right_answer2 = document.createTextNode("{{ information_tuple.1.latex_answers.2 }}");
+    right_answer_p.appendChild(right_answer2);
     right_div.appendChild(right_answer_p);
 
     row_container.appendChild(left_div);

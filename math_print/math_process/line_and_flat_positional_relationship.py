@@ -155,10 +155,12 @@ class LineAndFlatPositionalRelationship:
                     selected_flat = "面ABCD"
                     # アルファベットが含まれている直線は、すべて垂直
                     # じゃなくて、一文字だけ含まれる場合は垂直で、二文字含まれる場合は含む(順番は一致しない eg. ABCDのAD
-                    parallel_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
-                    print(sorted(parallel_edges))
-                    
-                    ↑垂直の、一文字だけ含まれる、をどう表現するか？？素直にfor文の中でちまちま？
+                    including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
+                    print(sorted(including_edges))
+                    vertical_edges = [edge for edge in all_edges if (edge[1] in selected_flat) != (edge[2] in selected_flat)]
+                    print(sorted(vertical_edges))
+                    parallel_edges_not_including = list(set(all_edges) - set(vertical_edges) - set(including_edges))
+                    print(sorted(parallel_edges_not_including))
                     """
             elif selected_problem_type == "flat_and_flat":
                 latex_answers = ["dummy answer1 in flat_and_flat", "dummy answer2 in flat_and_flat", "dummy answer3 in flat_and_flat"]

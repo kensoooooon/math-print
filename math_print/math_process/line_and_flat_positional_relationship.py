@@ -77,8 +77,9 @@ class LineAndFlatPositionalRelationship:
                     selected_parallel_edges = choice(parallel_edges_group)
                     edge_used_for_problem = selected_parallel_edges.pop(randint(0, len(selected_parallel_edges) - 1))
                     remained_edges = ", ".join(selected_parallel_edges)
+                    remained_edges.sort()
                     latex_answers.append(f"({problem_number}) {remained_edges}")
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を答えなさい。")
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
                 # skew edge
                 elif 0.33 <= problem_checker < 0.66:
                     all_edges = [
@@ -87,7 +88,7 @@ class LineAndFlatPositionalRelationship:
                         "辺EF", "辺FG", "辺GH", "辺EH",
                     ]
                     edge_used_for_problem = choice(all_edges)
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を答えなさい。")
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を全て答えなさい。")
                     parallel_edges_group = (
                         ["辺AB", "辺CD", "辺EF", "辺GH",],
                         ["辺AD", "辺BC", "辺EH", "辺FG",],
@@ -101,6 +102,7 @@ class LineAndFlatPositionalRelationship:
                     first_alphabet = edge_used_for_problem[1]
                     second_alphabet = edge_used_for_problem[2]
                     skew_edges = [edge for edge in edges_without_parallel if (first_alphabet not in edge) and (second_alphabet not in edge)]
+                    skew_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(skew_edges)}")
                 # vertical edge
                 else:
@@ -110,7 +112,7 @@ class LineAndFlatPositionalRelationship:
                         "辺EF", "辺FG", "辺GH", "辺EH",
                     ]
                     edge_used_for_problem = choice(all_edges)
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を答えなさい。")
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
                     parallel_edges_group = (
                         ["辺AB", "辺CD", "辺EF", "辺GH",],
                         ["辺AD", "辺BC", "辺EH", "辺FG",],
@@ -124,44 +126,33 @@ class LineAndFlatPositionalRelationship:
                     first_alphabet = edge_used_for_problem[1]
                     second_alphabet = edge_used_for_problem[2]
                     vertical_edges = [edge for edge in edges_without_parallel if (first_alphabet in edge) or (second_alphabet in edge)]
+                    vertical_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
             elif selected_problem_type == "line_and_flat":
-                """
-                Developing:
-                    直線と平面の位置関係は、"ふくまれる", "交わる", "交わらない"の3種。
-                    これを問題用に考えると、
-                        "ふくまれる"はとりあえず除外？ABCDなら、AB,BC,CD,DAで答えやすいから？
-                            ↑3:3で対比が取れてないと気持ち悪いし、もしかしたらわかっていない人もいるかもなので、追加
-                        "交わる"は実質垂直に交わる
-                        "交わらない"は平行
-                    
-                    面の示し方は一番若いアルファベットから時計回りに統一しといたほうがよいかも？
-                """
                 problem_checker = random()
-                # parallel between line and flat
+                # including edge between line and flat
+                all_edges = ['辺AB', '辺AD', '辺AE', '辺BC', '辺BF', '辺CD', '辺CG', '辺DH', '辺EF', '辺EH', '辺FG', '辺GH']
+                all_flats = ['面ABCD', '面AEFB', '面AEHD', '面BCGF', '面CDHG', '面EFGH']
+                selected_flat = choice(all_flats)
                 if problem_checker < 0.33:
-                    """
-                    ある面に平行な直線は、面とアルファベットを共有していない直線になる？
-                    逆に、ある直線に平行な面は、
-                        辺を1本選んだ際に、6面のうち2面は含まれる。2面は垂直。2面は平行（交わらない）
-
-                    # 指定された平面から、垂直な直線、含まれる直線、平行を考える
-                    from random import choice
-
-
-                    all_edges = ['辺AB', '辺AD', '辺AE', '辺BC', '辺BF', '辺CD', '辺CG', '辺DH', '辺EF', '辺EH', '辺FG', '辺GH']
-                    all_flats = ['面ABCD', '面AEFB', '面AEHD', '面BCGF', '面CDHG', '面EFGH']
-                    # selected_flat = choice(all_flats)
-                    selected_flat = "面ABCD"
-                    # アルファベットが含まれている直線は、すべて垂直
-                    # じゃなくて、一文字だけ含まれる場合は垂直で、二文字含まれる場合は含む(順番は一致しない eg. ABCDのAD
+                    latex_problems.append(f"({problem_number}) {selected_flat}にふくまれる辺を全て答えなさい。")
                     including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
-                    print(sorted(including_edges))
+                    including_edges.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(including_edges)}")
+                # vertical edges between line and flat
+                elif 0.33 <= problem_checker < 0.66:
+                    latex_problems.append(f"({problem_number}) {selected_flat}と垂直な辺を全て答えなさい。")
                     vertical_edges = [edge for edge in all_edges if (edge[1] in selected_flat) != (edge[2] in selected_flat)]
-                    print(sorted(vertical_edges))
-                    parallel_edges_not_including = list(set(all_edges) - set(vertical_edges) - set(including_edges))
-                    print(sorted(parallel_edges_not_including))
-                    """
+                    vertical_edges.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
+                # parallel edges between line and flat
+                else:
+                    latex_problems.append(f"({problem_number}) {selected_flat}と平行な辺を全て答えなさい。")
+                    including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
+                    vertical_edges = [edge for edge in all_edges if (edge[1] in selected_flat) != (edge[2] in selected_flat)]
+                    parallel_edges = list(set(all_edges) - set(including_edges) - set(vertical_edges))
+                    parallel_edges.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(parallel_edges)}")
             elif selected_problem_type == "flat_and_flat":
                 latex_answers = ["dummy answer1 in flat_and_flat", "dummy answer2 in flat_and_flat", "dummy answer3 in flat_and_flat"]
                 latex_problems = ["dummy problem1 in flat_and_flat", "dummy problem2 in flat_and_flat", "dummy problem3 in flat_and_flat"]

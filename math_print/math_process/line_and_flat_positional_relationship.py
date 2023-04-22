@@ -21,6 +21,11 @@ Developing:
     
     4/22
     ・直線と平面の位置関係は完了。次は平面の位置関係
+    ・「使用される問題のタイプも基準となる直線や平面も同じ」という状況がそこそこにありうる。特に平面は択が少ないため、結構かぶりうるかもしれない
+    →三角柱は多分平面も辺も少なめだから、この確率は上がりそう
+    ↑要対処
+        問題に使った平面や辺を記録しておく系？中で3問回してるからいけそうっぽい？
+        逆に候補を別枠で仕切ってあげて、どんどんpopなりしていって消えていく形？
 """
 from random import choice, random, randint
 
@@ -31,8 +36,8 @@ class LineAndFlatPositionalRelationship:
     """直線と平面の位置関係の問題と解答を出力
     
     Attributes:
-        latex_answers (list): latex形式で記述された解答が3問分格納されたリスト
-        latex_problems (list): latex形式で記述された問題が3問分格納されたリスト
+        latex_answers (list[str]): latex形式で記述された解答が3問分格納されたリスト
+        latex_problems (list[str]): latex形式で記述された問題が3問分格納されたリスト
         solid_body (str): 問題に使用される立体
     """
     def __init__(self, **settings):
@@ -56,11 +61,14 @@ class LineAndFlatPositionalRelationship:
         """直方体を用いた直線と平面の位置関係の問題を作成
 
         Args:
-            problem_types (list): 使用される問題(直線と直線, 直線と平面, 平面と平面)が格納されている
+            problem_types (list[str]): 使用される問題(直線と直線, 直線と平面, 平面と平面)が格納されている
 
         Returns:
-            latex_answers (list): latex形式で記述された解答が3問分格納されたリスト
-            latex_problems (list): latex形式で記述された問題が3問分格納されたリスト
+            latex_answers (list[str]): latex形式で記述された解答が3問分格納されたリスト
+            latex_problems (list[str]): latex形式で記述された問題が3問分格納されたリスト
+        
+        Raises:
+            ValueError: 想定されていない問題の種類が指定されたときに挙上
         
         Note:
             平行な辺は手動で指定している。
@@ -152,13 +160,6 @@ class LineAndFlatPositionalRelationship:
                         latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
                     else:
                         latex_problems.append(f"({problem_number}) {selected_flat}と平行な辺を全て答えなさい。")
-                        """
-                        余計な読み出ししないように改定
-                        including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
-                        vertical_edges = [edge for edge in all_edges if (edge[1] in selected_flat) != (edge[2] in selected_flat)]
-                        parallel_edges = list(set(all_edges) - set(including_edges) - set(vertical_edges))
-                        parallel_edges.sort()
-                        """
                         parallel_edges = [edge for edge in all_edges if (edge[1] not in (selected_flat)) and (edge[2] not in (selected_flat))]
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_edges)}")
                 # from edge to flat
@@ -181,30 +182,34 @@ class LineAndFlatPositionalRelationship:
                         parallel_flats.sort()
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             elif selected_problem_type == "flat_and_flat":
-                """
-                平面と平面は、交わるor交わらない
-                →問題になおすと、垂直に交わるor平行になる
                 
-                構想：指定された平面に対して、いずれかを共有→垂直に交わる。まったく共有しない→平行？
-                from random import choice, shuffle, randint
+                def including_checker(selected_flat: str, flat_to_check: str) -> bool:
+                    """平面の位置関係を把握するために、平面同士のアルファベット部分を比較する
 
-                def including_checker(selected_flat, flat_to_check):
+                    Args:
+                        selected_flat (str): 基準となる平面
+                        flat_to_check (str): チェックしたい平面
+
+                    Returns:
+                        True or False (bool): 一文字も含まれない場合はFalse, そうでないならTrue
+                    """
                     for alphabet in selected_flat[1:]:
                         if alphabet in flat_to_check:
                             return True
                     return False
-
-                # print(including_checker("面ABCD", "面EFGH"))
-                # print(including_checker("面ABCD", "面BCGF"))
-                    
+                
                 all_flats = ['面ABCD', '面AEFB', '面AEHD', '面BCGF', '面CDHG', '面EFGH']
-                selected_flat = all_flats.pop(randint(0, len(all_flats) - 1))
-                print(selected_flat)
-                vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
-                print(f"vertical_flats: {sorted(vertical_flats)}")
-                parallel_flat = [flat for flat in all_flats if not including_checker(selected_flat, flat)]
-                print(f"parallel_flat: {sorted(parallel_flat)}")
-                """
+                selected_flat = choice(all_flats)
+                if random() > 0.5:
+                    latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる平面を全て答えなさい。")
+                    vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
+                    vertical_flats.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
+                else:
+                    latex_problems.append(f"({problem_number}) {selected_flat}と平行な平面をすべて答えなさい。")
+                    parallel_flats = [flat for flat in all_flats if not including_checker(selected_flat, flat)]
+                    parallel_flats.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             else:
                 raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")

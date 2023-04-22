@@ -18,6 +18,9 @@ Developing:
     
     4/21
     ・直線と平面の位置関係のうち、平面→直線は完了。次は直線→平面
+    
+    4/22
+    ・直線と平面の位置関係は完了。次は平面の位置関係
 """
 from random import choice, random, randint
 
@@ -178,8 +181,30 @@ class LineAndFlatPositionalRelationship:
                         parallel_flats.sort()
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             elif selected_problem_type == "flat_and_flat":
-                latex_answers = ["dummy answer1 in flat_and_flat", "dummy answer2 in flat_and_flat", "dummy answer3 in flat_and_flat"]
-                latex_problems = ["dummy problem1 in flat_and_flat", "dummy problem2 in flat_and_flat", "dummy problem3 in flat_and_flat"]
+                """
+                平面と平面は、交わるor交わらない
+                →問題になおすと、垂直に交わるor平行になる
+                
+                構想：指定された平面に対して、いずれかを共有→垂直に交わる。まったく共有しない→平行？
+                from random import choice, shuffle, randint
+
+                def including_checker(selected_flat, flat_to_check):
+                    for alphabet in selected_flat[1:]:
+                        if alphabet in flat_to_check:
+                            return True
+                    return False
+
+                # print(including_checker("面ABCD", "面EFGH"))
+                # print(including_checker("面ABCD", "面BCGF"))
+                    
+                all_flats = ['面ABCD', '面AEFB', '面AEHD', '面BCGF', '面CDHG', '面EFGH']
+                selected_flat = all_flats.pop(randint(0, len(all_flats) - 1))
+                print(selected_flat)
+                vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
+                print(f"vertical_flats: {sorted(vertical_flats)}")
+                parallel_flat = [flat for flat in all_flats if not including_checker(selected_flat, flat)]
+                print(f"parallel_flat: {sorted(parallel_flat)}")
+                """
             else:
                 raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")

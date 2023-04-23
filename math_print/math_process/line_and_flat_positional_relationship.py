@@ -77,11 +77,48 @@ class LineAndFlatPositionalRelationship:
         """
         latex_answers = []
         latex_problems = []
+        """
+        4/23
+        ここで候補を用意して、ループ内で問題がかぶらないようにする？
+        用途によって使い分けなければならない同じ中身のやつがあるとややこしくなりそうな感じ
+        あとはpop?とか使っているやつはそもそも動作がやばそう？
+        →別のやり方を考える
+        →候補系は残しつつ、中での処理を考える
+        あと、コピーの深さを意識していないと、意図せず消えたり残ったりしそうではある
+        他の問題との兼ね合いも注意
+        コピーの候補を残すやつは悪くなさそう？弾き方に工夫はいる
+        問題自体のifとかの枝を別の感じで組み直す？結構手間はかかる系だが、すっきりさせるのには近いやり方？
+        
+        結局、edge_used_for_problemがかぶらなければそれでいい。
+        読み出すときに、減少する候補があればよい？
+        あと、一緒に使いまわしてるとこには重ね重ね注意がいる
+        
+        結局、初めに存在しているあれこれ（不変）と、使用した情報を記録するやつを個別に用意しておいたほうが良いっぽい？
+        
+        skew_edgeの参照を切る?
+        →少なくとも文字だけを見て切ることはできない。平行もねじれも、いずれも文字を共有しないから
+        """
+        parallel_edges_groups = (
+            ["辺AB", "辺CD", "辺EF", "辺GH",],
+            ["辺AD", "辺BC", "辺EH", "辺FG",],
+            ["辺AE", "辺BF", "辺CG", "辺DH",],
+            )
+        used_parallel_edges_groups = []
+        all_edges = (
+            "辺AB", "辺BC", "辺CD", "辺AD",
+            "辺AE", "辺BF", "辺CG", "辺DH",
+            "辺EF", "辺FG", "辺GH", "辺EH",
+        )
+        used_edges = []
+        all_flats = ('面ABCD', '面AEFB', '面AEHD', '面BCGF', '面CDHG', '面EFGH')
+        used_flats = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
                 problem_checker = random()
                 # parallel edge
+                # parallel_edges_groupsが減っていく
+                # 大本を参照してはいない？
                 if problem_checker < 0.33:                        
                     parallel_edges_group = (
                         ["辺AB", "辺CD", "辺EF", "辺GH",],
@@ -94,6 +131,9 @@ class LineAndFlatPositionalRelationship:
                     latex_answers.append(f"({problem_number}) {remained_edges}")
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
                 # skew edge
+                # 全ての辺から平行な辺をぬいたあと、一文字も含んでいない辺を読み出している
+                # all_edgesが減っていく
+                # 大本は参照している。全ての辺から、該当する
                 elif 0.33 <= problem_checker < 0.66:
                     all_edges = [
                         "辺AB", "辺BC", "辺CD", "辺AD",
@@ -118,6 +158,10 @@ class LineAndFlatPositionalRelationship:
                     skew_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(skew_edges)}")
                 # vertical edge
+                # 全ての辺のうち、平行なものを取り除いて、さらにいずれかを含んでいる系の処理
+                # ↑これ、!=とかで代用できない？いずれかを含んでいれば垂直な辺になりそう。なんとなくしばっていたほうが良い気が？
+                # all_edgesが減っていく
+                # 大本との比較はやってない
                 else:
                     all_edges = [
                         "辺AB", "辺BC", "辺CD", "辺AD",
@@ -126,19 +170,7 @@ class LineAndFlatPositionalRelationship:
                     ]
                     edge_used_for_problem = choice(all_edges)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
-                    parallel_edges_group = (
-                        ["辺AB", "辺CD", "辺EF", "辺GH",],
-                        ["辺AD", "辺BC", "辺EH", "辺FG",],
-                        ["辺AE", "辺BF", "辺CG", "辺DH",],
-                        )
-                    for parallel_edges in parallel_edges_group:
-                        if edge_used_for_problem in parallel_edges:
-                            parallel_edges_with_edge_used_for_problem = parallel_edges
-                            break
-                    edges_without_parallel = list(set(all_edges) - set(parallel_edges_with_edge_used_for_problem))
-                    first_alphabet = edge_used_for_problem[1]
-                    second_alphabet = edge_used_for_problem[2]
-                    vertical_edges = [edge for edge in edges_without_parallel if (first_alphabet in edge) or (second_alphabet in edge)]
+                    vertical_edges = [edge for edge in all_edges if (edge_used_for_problem[1] in edge) != (edge_used_for_problem[2] in edge)]
                     vertical_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
             elif selected_problem_type == "line_and_flat":
@@ -221,6 +253,9 @@ class LineAndFlatPositionalRelationship:
         Returns:
             latex_answers (list): latex形式で記述された解答が格納されている
             latex_problems (list): latex形式で記述された問題が格納されている
+        
+        Developing:
+
         """
         latex_answers = ["dummy answer1 in triangular prism", "dummy answer2 in triangular prism", "dummy answer3 in triangular prism"]
         latex_problems = ["dummy problem1 in triangular prism", "dummy problem2 in triangular prism", "dummy problem3 in triangular prism"]

@@ -27,6 +27,7 @@ Developing:
         問題に使った平面や辺を記録しておく系？中で3問回してるからいけそうっぽい？
         逆に候補を別枠で仕切ってあげて、どんどんpopなりしていって消えていく形？
 """
+from copy import deepcopy
 from random import choice, random, randint
 
 import sympy as sy
@@ -97,6 +98,14 @@ class LineAndFlatPositionalRelationship:
         
         skew_edgeの参照を切る?
         →少なくとも文字だけを見て切ることはできない。平行もねじれも、いずれも文字を共有しないから
+        skew_edgeだけ参照不可避だから、そのときだけdeepにcopyする？ほかは適宜popして消していくとか?
+        ↑初めの問題でpopされて、その後skew_edgeに入ると、消えたままやらされることになる？
+        ↑許容する系でいくか?
+        ↑大本は触らないようにして、適宜消していく系？
+        ↑下の方がスッキリしそう？popで要素を消すのが少し怖い感はある
+        
+        forを問題選択よりあとにすると、3問とも同じタイプになる。
+        次はline_and_flat
         """
         parallel_edges_groups = (
             ["辺AB", "辺CD", "辺EF", "辺GH",],
@@ -119,34 +128,24 @@ class LineAndFlatPositionalRelationship:
                 # parallel edge
                 # parallel_edges_groupsが減っていく
                 # 大本を参照してはいない？
-                if problem_checker < 0.33:                        
-                    parallel_edges_group = (
-                        ["辺AB", "辺CD", "辺EF", "辺GH",],
-                        ["辺AD", "辺BC", "辺EH", "辺FG",],
-                        ["辺AE", "辺BF", "辺CG", "辺DH",],
-                        )
-                    selected_parallel_edges = choice(parallel_edges_group)
+                if problem_checker < 0.33:
+                    # update not to display same problem.
+                    parallel_edges_candidates = list(set(parallel_edges_groups) - set(used_parallel_edges_groups))
+                    selected_parallel_edges = choice(parallel_edges_candidates)
+                    used_parallel_edges_groups.append(selected_parallel_edges)
                     edge_used_for_problem = selected_parallel_edges.pop(randint(0, len(selected_parallel_edges) - 1))
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
                     remained_edges = ", ".join(sorted(selected_parallel_edges))
                     latex_answers.append(f"({problem_number}) {remained_edges}")
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
                 # skew edge
                 # 全ての辺から平行な辺をぬいたあと、一文字も含んでいない辺を読み出している
                 # all_edgesが減っていく
                 # 大本は参照している。全ての辺から、該当する
                 elif 0.33 <= problem_checker < 0.66:
-                    all_edges = [
-                        "辺AB", "辺BC", "辺CD", "辺AD",
-                        "辺AE", "辺BF", "辺CG", "辺DH",
-                        "辺EF", "辺FG", "辺GH", "辺EH",
-                    ]
-                    edge_used_for_problem = choice(all_edges)
+                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    edge_used_for_problem = choice(all_edges_candidates)
+                    used_edges.append(edge_used_for_problem)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を全て答えなさい。")
-                    parallel_edges_group = (
-                        ["辺AB", "辺CD", "辺EF", "辺GH",],
-                        ["辺AD", "辺BC", "辺EH", "辺FG",],
-                        ["辺AE", "辺BF", "辺CG", "辺DH",],
-                        )
                     for parallel_edges in parallel_edges_group:
                         if edge_used_for_problem in parallel_edges:
                             parallel_edges_with_edge_used_for_problem = parallel_edges
@@ -163,12 +162,9 @@ class LineAndFlatPositionalRelationship:
                 # all_edgesが減っていく
                 # 大本との比較はやってない
                 else:
-                    all_edges = [
-                        "辺AB", "辺BC", "辺CD", "辺AD",
-                        "辺AE", "辺BF", "辺CG", "辺DH",
-                        "辺EF", "辺FG", "辺GH", "辺EH",
-                    ]
-                    edge_used_for_problem = choice(all_edges)
+                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    edge_used_for_problem = choice(all_edges_candidates)
+                    used_edges.append(edge_used_for_problem)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
                     vertical_edges = [edge for edge in all_edges if (edge_used_for_problem[1] in edge) != (edge_used_for_problem[2] in edge)]
                     vertical_edges.sort()

@@ -27,8 +27,8 @@ Developing:
         問題に使った平面や辺を記録しておく系？中で3問回してるからいけそうっぽい？
         逆に候補を別枠で仕切ってあげて、どんどんpopなりしていって消えていく形？
 """
-from copy import deepcopy
 from random import choice, random, randint
+from typing import List, Tuple
 
 import sympy as sy
 
@@ -58,7 +58,7 @@ class LineAndFlatPositionalRelationship:
         else:
             raise ValueError(f"'selected_solid_body' is {selected_solid_body}. This must be 'quadrangular_prism' or 'triangular_prism.")
     
-    def _make_quadrangular_prism_problem(self, problem_types):
+    def _make_quadrangular_prism_problem(self, problem_types: List[str]) -> Tuple[List[str]]:
         """直方体を用いた直線と平面の位置関係の問題を作成
 
         Args:
@@ -72,46 +72,13 @@ class LineAndFlatPositionalRelationship:
             ValueError: 想定されていない問題の種類が指定されたときに挙上
         
         Note:
-            平行な辺は手動で指定している。
-            垂直な辺は、辺とアルファベットを共有するものは全て垂直である点を利用(eg. 辺AB->AD, AE, BC, BF)。
-            ねじれの位置にある辺は、全ての辺のうち、平行でも垂直でもないものを差し引いて求めている。
+            - 平行な辺は手動で指定している。
+            - 垂直な辺は、辺とアルファベットを共有するものは全て垂直である点を利用(eg. 辺AB->AD, AE, BC, BF)。
+            - ねじれの位置にある辺は、全ての辺のうち、平行でも垂直でもないものを差し引いて求めている。
+            - 同じ問題が重複して出題されるのを避けるため、一度問題に使用された辺、平面については、ランダムな選択の候補から除外されている
         """
         latex_answers = []
         latex_problems = []
-        """
-        4/23
-        ここで候補を用意して、ループ内で問題がかぶらないようにする？
-        用途によって使い分けなければならない同じ中身のやつがあるとややこしくなりそうな感じ
-        あとはpop?とか使っているやつはそもそも動作がやばそう？
-        →別のやり方を考える
-        →候補系は残しつつ、中での処理を考える
-        あと、コピーの深さを意識していないと、意図せず消えたり残ったりしそうではある
-        他の問題との兼ね合いも注意
-        コピーの候補を残すやつは悪くなさそう？弾き方に工夫はいる
-        問題自体のifとかの枝を別の感じで組み直す？結構手間はかかる系だが、すっきりさせるのには近いやり方？
-        
-        結局、edge_used_for_problemがかぶらなければそれでいい。
-        読み出すときに、減少する候補があればよい？
-        あと、一緒に使いまわしてるとこには重ね重ね注意がいる
-        
-        結局、初めに存在しているあれこれ（不変）と、使用した情報を記録するやつを個別に用意しておいたほうが良いっぽい？
-        
-        skew_edgeの参照を切る?
-        →少なくとも文字だけを見て切ることはできない。平行もねじれも、いずれも文字を共有しないから
-        skew_edgeだけ参照不可避だから、そのときだけdeepにcopyする？ほかは適宜popして消していくとか?
-        ↑初めの問題でpopされて、その後skew_edgeに入ると、消えたままやらされることになる？
-        ↑許容する系でいくか?
-        ↑大本は触らないようにして、適宜消していく系？
-        ↑下の方がスッキリしそう？popで要素を消すのが少し怖い感はある
-        
-        forを問題選択よりあとにすると、3問とも同じタイプになる。
-        次はline_and_flat
-        
-        4/24
-        これはもう作成部を6種に分けた方がよい？
-        →(四角柱, 三角柱) × (直線直線, 直線平面, 平面平面)
-        そうなると、問題選択の部分をどこかに移す必要がある。もう一つ上？
-        """
         parallel_edges_groups = (
             ("辺AB", "辺CD", "辺EF", "辺GH"),
             ("辺AD", "辺BC", "辺EH", "辺FG"),
@@ -131,8 +98,6 @@ class LineAndFlatPositionalRelationship:
             if selected_problem_type == "line_and_line":
                 problem_checker = random()
                 if problem_checker < 0.33:
-                    print(f"parallel_edges_groups = {parallel_edges_groups}")
-                    print(f"used_parallel_edges_groups = {used_parallel_edges_groups}")
                     parallel_edges_candidates = list(set(parallel_edges_groups) - set(used_parallel_edges_groups))
                     selected_parallel_edges = choice(parallel_edges_candidates)
                     used_parallel_edges_groups.append(selected_parallel_edges)
@@ -238,16 +203,23 @@ class LineAndFlatPositionalRelationship:
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")
         return latex_answers, latex_problems
     
-    def _make_triangular_prism_problem(self):
+    def _make_triangular_prism_problem(self, problem_types: List[str]) -> Tuple[List[str]]:
         """三角柱を用いた直線と平面の位置関係の問題を作成
-
+        
+        Args:
+            problem_types (list[str]): 使用される問題(直線と直線, 直線と平面, 平面と平面)が格納されている
+            
         Returns:
-            latex_answers (list): latex形式で記述された解答が格納されている
-            latex_problems (list): latex形式で記述された問題が格納されている
+            latex_answers (list[str]): latex形式で記述された解答が格納されている
+            latex_problems (list[str]): latex形式で記述された問題が格納されている
+        
+        Note:
         
         Developing:
-
+        
         """
+        latex_answers = []
+        latex_problems = []
         latex_answers = ["dummy answer1 in triangular prism", "dummy answer2 in triangular prism", "dummy answer3 in triangular prism"]
         latex_problems = ["dummy problem1 in triangular prism", "dummy problem2 in triangular prism", "dummy problem3 in triangular prism"]
         return latex_answers, latex_problems

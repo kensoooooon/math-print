@@ -257,10 +257,10 @@ function refresh() {
     console.log("right quadrangular_prism in")
     drawQuadrangularPrism(right_stage);
     {% elif information_tuple.1.solid_body == "triangular_prism" %}
-    console.log("right quadrangular_prism in");
-    console.log("----------------------");
+    console.log("right triangular_prism in");
     drawTriangularPrism(right_stage);
-    {% endif %}  
+    {% endif %}
+    console.log("----------------------");
     {% endfor %}
     MathJax.typeset();
   }

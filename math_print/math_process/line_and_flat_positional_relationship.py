@@ -26,6 +26,9 @@ Developing:
     ↑要対処
         問題に使った平面や辺を記録しておく系？中で3問回してるからいけそうっぽい？
         逆に候補を別枠で仕切ってあげて、どんどんpopなりしていって消えていく形？
+    
+    4/25
+    ・for_display.html側に三角柱を出力できるように。問題作成
 """
 from random import choice, random, randint
 from typing import List, Tuple
@@ -213,13 +216,126 @@ class LineAndFlatPositionalRelationship:
             latex_answers (list[str]): latex形式で記述された解答が格納されている
             latex_problems (list[str]): latex形式で記述された問題が格納されている
         
+        Raises:
+            ValueError: 指定された問題タイプが存在しないものだったときに挙上
+        
         Note:
         
         Developing:
-        
+            問題自体は、四角柱と同じ3種類
         """
         latex_answers = []
         latex_problems = []
-        latex_answers = ["dummy answer1 in triangular prism", "dummy answer2 in triangular prism", "dummy answer3 in triangular prism"]
-        latex_problems = ["dummy problem1 in triangular prism", "dummy problem2 in triangular prism", "dummy problem3 in triangular prism"]
+        parallel_edges_groups = (
+            ("辺AB", "辺DE"), ("辺BC", "辺EF"),
+            ("辺AC", "辺DF"), ("辺AD", "辺BE", "辺CF")
+        )
+        used_parallel_edges_groups = []
+        all_edges = (
+            "辺AB", "辺BC", "辺AC",
+            "辺DE", "辺EF", "辺DF",
+            "辺AD", "辺BE", "辺CF"
+        )
+        used_edges = []
+        all_flats = ("面ABC", "面DEF", "面ADEB", "面BEFC", "面ADFC")
+        used_flats = []
+        for problem_number in range(1, 4):
+            selected_problem_type = choice(problem_types)
+            if selected_problem_type == "line_and_line":
+                problem_checker = random()
+                if problem_checker < 0.33:
+                    parallel_edges_candidates = list(set(parallel_edges_groups) - set(used_parallel_edges_groups))
+                    selected_parallel_edges = choice(parallel_edges_candidates)
+                    used_parallel_edges_groups.append(selected_parallel_edges)
+                    edge_used_for_problem = list(selected_parallel_edges).pop(randint(0, len(selected_parallel_edges) - 1))
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
+                    latex_answers.append(f"({problem_number}) {', '.join(sorted(selected_parallel_edges))}")
+                elif 0.33 <= problem_checker < 0.66:
+                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    edge_used_for_problem = choice(all_edges_candidates)
+                    used_edges.append(edge_used_for_problem)
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を全て答えなさい。")
+                    for parallel_edges in parallel_edges_groups:
+                        if edge_used_for_problem in parallel_edges:
+                            parallel_edges_with_edge_used_for_problem = parallel_edges
+                            break
+                    edges_without_parallel = list(set(all_edges) - set(parallel_edges_with_edge_used_for_problem))
+                    skew_edges = [edge for edge in edges_without_parallel if (edge_used_for_problem[1] not in edge) and (edge_used_for_problem[2] not in edge)]
+                    skew_edges.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(skew_edges)}")
+                else:
+                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    edge_used_for_problem = choice(all_edges_candidates)
+                    used_edges.append(edge_used_for_problem)
+                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
+                    vertical_edges = [edge for edge in all_edges if (edge_used_for_problem[1] in edge) != (edge_used_for_problem[2] in edge)]
+                    vertical_edges.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
+            elif selected_problem_type == "line_and_flat":
+                if random() > 0.5:
+                    problem_checker = random()
+                    all_flats_candidates = list(set(all_flats) - set(used_flats))
+                    selected_flat = choice(all_flats)
+                    used_flats.append(selected_flat)
+                    if problem_checker < 0.33:
+                        latex_problems.append(f"({problem_number}) {selected_flat}にふくまれる辺を全て答えなさい。")
+                        including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
+                        including_edges.sort()
+                        latex_answers.append(f"({problem_number}) {', '.join(including_edges)}")
+                    elif 0.33 <= problem_checker < 0.66:
+                        latex_problems.append(f"({problem_number}) {selected_flat}と垂直な辺を全て答えなさい。")
+                        vertical_edges = [edge for edge in all_edges if (edge[1] in selected_flat) != (edge[2] in selected_flat)]
+                        vertical_edges.sort()
+                        latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
+                    else:
+                        latex_problems.append(f"({problem_number}) {selected_flat}と平行な辺を全て答えなさい。")
+                        parallel_edges = [edge for edge in all_edges if (edge[1] not in (selected_flat)) and (edge[2] not in (selected_flat))]
+                        latex_answers.append(f"({problem_number}) {', '.join(parallel_edges)}")
+                else:
+                    problem_checker = random()
+                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    selected_edge = choice(all_edges_candidates)
+                    used_edges.append(selected_edge)
+                    if problem_checker < 0.33:
+                        latex_problems.append(f"({problem_number}) {selected_edge}をふくむ平面を全て答えなさい。")
+                        including_flats = [flat for flat in all_flats if (selected_edge[1] in flat) and (selected_edge[2] in flat)]
+                        including_flats.sort()
+                        latex_answers.append(f"({problem_number}) {', '.join(including_flats)}")
+                    elif 0.33 <= problem_checker < 0.66:
+                        latex_problems.append(f"({problem_number}) {selected_edge}に垂直な平面を全て答えなさい。")
+                        vertical_flats = [flat for flat in all_flats if (selected_edge[1] in flat) != (selected_edge[2] in flat)]
+                        vertical_flats.sort()
+                        latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
+                    else:
+                        latex_problems.append(f"({problem_number}) {selected_edge}に平行な平面を全て答えなさい。")
+                        parallel_flats = [flat for flat in all_flats if (selected_edge[1] not in flat) and (selected_edge[2] not in flat)]
+                        parallel_flats.sort()
+                        latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
+            elif selected_problem_type == "flat_and_flat":
+                
+                def including_checker(selected_flat: str, flat_to_check: str) -> bool:
+                    """平面の位置関係を把握するために、平面同士のアルファベット部分を比較する
+
+                    Args:
+                        selected_flat (str): 基準となる平面
+                        flat_to_check (str): チェックしたい平面
+
+                    Returns:
+                        True or False (bool): 一文字も含まれない場合はFalse, そうでないならTrue
+                    """
+                    for alphabet in selected_flat[1:]:
+                        if alphabet in flat_to_check:
+                            return True
+                    return False
+                
+                all_flats_candidates = list(set(all_flats) - set(used_flats))
+                selected_flat = choice(all_flats_candidates)
+                used_flats.append(selected_flat)
+                latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる平面を全て答えなさい。")
+                vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
+                vertical_flats.sort()
+                latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
+            else:
+                raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
+                                 "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")
         return latex_answers, latex_problems

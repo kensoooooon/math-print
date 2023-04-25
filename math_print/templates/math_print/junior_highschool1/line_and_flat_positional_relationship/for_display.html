@@ -113,19 +113,19 @@ function refresh() {
     //// bottom triangle part
     let front_left_length = 100;
     let bottom_left_x = 50;
-    let bottom_left_y = 140;
+    let bottom_left_y = 90;
     let angle_from_bottom_left_to_middle = Math.PI / 6;
     let bottom_middle_x = bottom_left_x + front_left_length * Math.cos(angle_from_bottom_left_to_middle);
     let bottom_middle_y = bottom_left_y + front_left_length * Math.sin(angle_from_bottom_left_to_middle);
     drawLine(stage, bottom_left_x, bottom_left_y, bottom_middle_x, bottom_middle_y);
-    let front_right_length = 120;
+    let front_right_length = 110;
     let angle_from_middle_to_bottom_right = Math.PI / 4;
     let bottom_right_x = bottom_middle_x + front_right_length * Math.cos(-angle_from_middle_to_bottom_right);
     let bottom_right_y = bottom_middle_y + front_right_length * Math.sin(-angle_from_middle_to_bottom_right);
     drawLine(stage, bottom_middle_x, bottom_middle_y, bottom_right_x, bottom_right_y);
     drawDashLine(stage, bottom_right_x, bottom_right_y, bottom_left_x, bottom_left_y);
     //// side from bottom to top part
-    let vertical_length = 70;
+    let vertical_length = 60;
     let top_left_x = bottom_left_x;
     let top_left_y = bottom_left_y - vertical_length;
     drawLine(stage, bottom_left_x, bottom_left_y, top_left_x, top_left_y);
@@ -138,13 +138,13 @@ function refresh() {
     //// top triangl part
     drawLine(stage, top_left_x, top_left_y, top_middle_x, top_middle_y);
     drawLine(stage, top_middle_x, top_middle_y, top_right_x, top_right_y);
-    drawDashLine(stage, top_right_x, top_right_y, top_left_x, top_left_y);
+    drawLine(stage, top_right_x, top_right_y, top_left_x, top_left_y);
     //// corner name part
     drawCharacter(stage, top_left_x - 15, top_left_y, "A");
-    drawCharacter(stage, top_middle_x, top_middle_y - 15, "B");
+    drawCharacter(stage, top_middle_x - 5, top_middle_y - 20, "B");
     drawCharacter(stage, top_right_x + 15, top_right_y, "C");
     drawCharacter(stage, bottom_left_x - 15, bottom_left_y, "D");
-    drawCharacter(stage, bottom_middle_x, bottom_middle_y + 15, "E");
+    drawCharacter(stage, bottom_middle_x - 5, bottom_middle_y + 3, "E");
     drawCharacter(stage, bottom_right_x, bottom_right_y,  "F");
     stage.update();
   }
@@ -241,26 +241,19 @@ function refresh() {
     document.body.appendChild(container_div);
 
     var left_stage = new createjs.Stage(left_canvas_id);
-    console.log("left_canvas_id: " + left_canvas_id);
-    console.log("information_tuple.0.solid_body: " + "{{ information_tuple.0.solid_body }}");
     {% if information_tuple.0.solid_body == "quadrangular_prism" %}
-    console.log("left quadrangular_prism in");
     drawQuadrangularPrism(left_stage);
-    {% elif information_tuple.0.solid_body == "triangular_prism "%}
-    console.log("left triangular_prism in");
+    {% elif information_tuple.0.solid_body == "triangular_prism" %}
     drawTriangularPrism(left_stage);
     {% endif %}
 
     var right_stage = new createjs.Stage(right_canvas_id);
-    console.log("right_canvas_id: " + right_canvas_id);
     {% if information_tuple.1.solid_body == "quadrangular_prism" %}
-    console.log("right quadrangular_prism in")
     drawQuadrangularPrism(right_stage);
     {% elif information_tuple.1.solid_body == "triangular_prism" %}
-    console.log("right triangular_prism in");
     drawTriangularPrism(right_stage);
     {% endif %}
-    console.log("----------------------");
+    
     {% endfor %}
     MathJax.typeset();
   }

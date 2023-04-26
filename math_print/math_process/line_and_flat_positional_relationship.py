@@ -29,6 +29,10 @@ Developing:
     
     4/25
     ・for_display.html側に三角柱を出力できるように。問題作成
+    
+    4/26
+    ・三角柱の問題の方に、四角柱の問題をそのまま組み入れているので、整合しているかチェック
+    ↑とりあえず辺とか平面とかは揃えたが、ルール自体が異なっている可能性がある。
 """
 from random import choice, random, randint
 from typing import List, Tuple
@@ -223,6 +227,24 @@ class LineAndFlatPositionalRelationship:
         
         Developing:
             問題自体は、四角柱と同じ3種類
+            ↑平面、平面間において、平行な平面が存在しない←判定部分を削除
+            ↑垂直な辺がそんなにたくさんない
+                四面体のときは、「いずれか1文字だけを共有している。(eg. ABに対して、ADやBFなど)が垂直だったが、三角柱は異なる。
+                たとえば辺EFについて垂直なのは、BE, CFのみ。DE, DFなどは含まれない。つまり、同じ方法で判定はできない
+                    !一方でBEはAB,BC,DE,EFがすべて垂直なので、同じ方法で判定できている。
+                判定できるものとできないものが混在していることで一律の処理は厳しそう。    
+                ぱっと思いつくやり方としては、事前に垂直な辺を登録しておくやり方。垂直は相互の関係なので、ちょうど平行と同じようにできる？
+                    !ただ、BEとEF, BEとBCは平行だが、一方でEF, BCは平行ではない。
+                    つまり、同じグループの中で処理することはできない
+                やはりベタ書きで解決する？？
+                    つまり、
+                    vertical_edges = {
+                        "辺AB": ("辺AD", "辺BE"),
+                        "辺BC": ("辺BE", "辺CF"),
+                        ...
+                    }
+                    のように、key: selected_edge, value: vertical_edges的な？
+                呼び出しに注意。辺を指定するときは常にアルファベットの若い方から
         """
         latex_answers = []
         latex_problems = []
@@ -239,6 +261,12 @@ class LineAndFlatPositionalRelationship:
         used_edges = []
         all_flats = ("面ABC", "面DEF", "面ADEB", "面BEFC", "面ADFC")
         used_flats = []
+        vertical_edges_groups = {
+            "辺AB": ("辺AD", "辺BE"), "辺BC": ("辺BE", "辺CF"), "辺AC": ("辺AD", "辺CF"),
+            "辺AD": ("辺AB", "辺AC", "辺DE", "辺DF"), "辺BE": ("辺AB", "辺BC", "辺DE", "辺EF"), "辺CF": ("辺AC", "辺DF", "辺BC", "辺EF"),
+            "辺DE": ("辺AD", "辺BE"), "辺EF": ("辺BE", "辺CF"), "辺DF": ("辺AD", "辺CF")
+        }
+        used_edges_for_vertical = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
@@ -264,11 +292,11 @@ class LineAndFlatPositionalRelationship:
                     skew_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(skew_edges)}")
                 else:
-                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_vertical))
                     edge_used_for_problem = choice(all_edges_candidates)
-                    used_edges.append(edge_used_for_problem)
+                    used_edges_for_vertical.append(edge_used_for_problem)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
-                    vertical_edges = [edge for edge in all_edges if (edge_used_for_problem[1] in edge) != (edge_used_for_problem[2] in edge)]
+                    vertical_edges = list(vertical_edges_groups[edge_used_for_problem])
                     vertical_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
             elif selected_problem_type == "line_and_flat":
@@ -312,7 +340,6 @@ class LineAndFlatPositionalRelationship:
                         parallel_flats.sort()
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             elif selected_problem_type == "flat_and_flat":
-                
                 def including_checker(selected_flat: str, flat_to_check: str) -> bool:
                     """平面の位置関係を把握するために、平面同士のアルファベット部分を比較する
 
@@ -327,7 +354,6 @@ class LineAndFlatPositionalRelationship:
                         if alphabet in flat_to_check:
                             return True
                     return False
-                
                 all_flats_candidates = list(set(all_flats) - set(used_flats))
                 selected_flat = choice(all_flats_candidates)
                 used_flats.append(selected_flat)

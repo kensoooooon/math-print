@@ -33,11 +33,15 @@ Developing:
     4/26
     ・三角柱の問題の方に、四角柱の問題をそのまま組み入れているので、整合しているかチェック
     ↑とりあえず辺とか平面とかは揃えたが、ルール自体が異なっている可能性がある。
+    
+    ・とりあえず表示自体はできるように変更
+    名前の変更が必要？命名が何かごちゃごちゃしてる
+    
+    ・三角柱の平面平面間にもガバ
+    ・直方体の平面平面間にもガバがある。自分自身がふくまれている
 """
 from random import choice, random, randint
 from typing import List, Tuple
-
-import sympy as sy
 
 
 class LineAndFlatPositionalRelationship:
@@ -91,15 +95,18 @@ class LineAndFlatPositionalRelationship:
             ("辺AD", "辺BC", "辺EH", "辺FG"),
             ("辺AE", "辺BF", "辺CG", "辺DH")
             )
-        used_parallel_edges_groups = []
         all_edges = (
             "辺AB", "辺BC", "辺CD", "辺AD",
             "辺AE", "辺BF", "辺CG", "辺DH",
             "辺EF", "辺FG", "辺GH", "辺EH",
         )
-        used_edges = []
-        all_flats = ('面ABCD', '面AEFB', '面AEHD', '面BCGF', '面CDHG', '面EFGH')
-        used_flats = []
+        all_flats = ('面ABCD', '面AEFB', '面AEHD', '面BFGC', '面CGHD', '面EFGH')
+        used_parallel_edges_groups = []
+        used_edges_for_skew = []
+        used_edges_for_vertical = []
+        used_edges_for_flat = []
+        used_flats_for_edge = []
+        used_flats_for_flat = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
@@ -113,9 +120,9 @@ class LineAndFlatPositionalRelationship:
                     remained_edges = ", ".join(sorted(selected_parallel_edges))
                     latex_answers.append(f"({problem_number}) {remained_edges}")
                 elif 0.33 <= problem_checker < 0.66:
-                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_skew))
                     edge_used_for_problem = choice(all_edges_candidates)
-                    used_edges.append(edge_used_for_problem)
+                    used_edges_for_skew.append(edge_used_for_problem)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を全て答えなさい。")
                     for parallel_edges in parallel_edges_groups:
                         if edge_used_for_problem in parallel_edges:
@@ -128,9 +135,9 @@ class LineAndFlatPositionalRelationship:
                     skew_edges.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(skew_edges)}")
                 else:
-                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_vertical))
                     edge_used_for_problem = choice(all_edges_candidates)
-                    used_edges.append(edge_used_for_problem)
+                    used_edges_for_vertical.append(edge_used_for_problem)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
                     vertical_edges = [edge for edge in all_edges if (edge_used_for_problem[1] in edge) != (edge_used_for_problem[2] in edge)]
                     vertical_edges.sort()
@@ -138,9 +145,9 @@ class LineAndFlatPositionalRelationship:
             elif selected_problem_type == "line_and_flat":
                 if random() > 0.5:
                     problem_checker = random()
-                    all_flats_candidates = list(set(all_flats) - set(used_flats))
+                    all_flats_candidates = list(set(all_flats) - set(used_flats_for_edge))
                     selected_flat = choice(all_flats)
-                    used_flats.append(selected_flat)
+                    used_flats_for_edge.append(selected_flat)
                     if problem_checker < 0.33:
                         latex_problems.append(f"({problem_number}) {selected_flat}にふくまれる辺を全て答えなさい。")
                         including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
@@ -157,9 +164,9 @@ class LineAndFlatPositionalRelationship:
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_edges)}")
                 else:
                     problem_checker = random()
-                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_flat))
                     selected_edge = choice(all_edges_candidates)
-                    used_edges.append(selected_edge)
+                    used_edges_for_flat.append(selected_edge)
                     if problem_checker < 0.33:
                         latex_problems.append(f"({problem_number}) {selected_edge}をふくむ平面を全て答えなさい。")
                         including_flats = [flat for flat in all_flats if (selected_edge[1] in flat) and (selected_edge[2] in flat)]
@@ -192,9 +199,9 @@ class LineAndFlatPositionalRelationship:
                             return True
                     return False
                 
-                all_flats_candidates = list(set(all_flats) - set(used_flats))
+                all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
                 selected_flat = choice(all_flats_candidates)
-                used_flats.append(selected_flat)
+                used_flats_for_flat.append(selected_flat)
                 if random() > 0.5:
                     latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる平面を全て答えなさい。")
                     vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
@@ -224,6 +231,8 @@ class LineAndFlatPositionalRelationship:
             ValueError: 指定された問題タイプが存在しないものだったときに挙上
         
         Note:
+            辺は常に若いほうのアルファベットを前にするように命名
+            面は一番若いほうのアルファベットから反時計回りになるように命名
         
         Developing:
             問題自体は、四角柱と同じ3種類
@@ -252,21 +261,28 @@ class LineAndFlatPositionalRelationship:
             ("辺AB", "辺DE"), ("辺BC", "辺EF"),
             ("辺AC", "辺DF"), ("辺AD", "辺BE", "辺CF")
         )
-        used_parallel_edges_groups = []
         all_edges = (
             "辺AB", "辺BC", "辺AC",
             "辺DE", "辺EF", "辺DF",
             "辺AD", "辺BE", "辺CF"
         )
-        used_edges = []
         all_flats = ("面ABC", "面DEF", "面ADEB", "面BEFC", "面ADFC")
-        used_flats = []
         vertical_edges_groups = {
             "辺AB": ("辺AD", "辺BE"), "辺BC": ("辺BE", "辺CF"), "辺AC": ("辺AD", "辺CF"),
             "辺AD": ("辺AB", "辺AC", "辺DE", "辺DF"), "辺BE": ("辺AB", "辺BC", "辺DE", "辺EF"), "辺CF": ("辺AC", "辺DF", "辺BC", "辺EF"),
             "辺DE": ("辺AD", "辺BE"), "辺EF": ("辺BE", "辺CF"), "辺DF": ("辺AD", "辺CF")
         }
+        vertical_flat_groups = {
+            "面ABC": ("面ADEB", "面BEFC", "面ADFC"),
+            "面ADEB": ("面ABC", "面DEF"), "面BEFC": ("面ABC", "面DEF"), "面ADFC": ("面ABC", "面DEF"),
+            "面DEF": ("面ADEB", "面BEFC", "面ADFC")
+        }
+        used_parallel_edges_groups = []
+        used_flats_for_edge = []
         used_edges_for_vertical = []
+        used_edges_for_skew = []
+        used_edges_for_flat = []
+        used_flats_for_flat = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
@@ -279,9 +295,9 @@ class LineAndFlatPositionalRelationship:
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
                     latex_answers.append(f"({problem_number}) {', '.join(sorted(selected_parallel_edges))}")
                 elif 0.33 <= problem_checker < 0.66:
-                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_vertical))
                     edge_used_for_problem = choice(all_edges_candidates)
-                    used_edges.append(edge_used_for_problem)
+                    used_edges_for_skew.append(edge_used_for_problem)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を全て答えなさい。")
                     for parallel_edges in parallel_edges_groups:
                         if edge_used_for_problem in parallel_edges:
@@ -302,9 +318,9 @@ class LineAndFlatPositionalRelationship:
             elif selected_problem_type == "line_and_flat":
                 if random() > 0.5:
                     problem_checker = random()
-                    all_flats_candidates = list(set(all_flats) - set(used_flats))
+                    all_flats_candidates = list(set(all_flats) - set(used_flats_for_edge))
                     selected_flat = choice(all_flats)
-                    used_flats.append(selected_flat)
+                    used_flats_for_edge.append(selected_flat)
                     if problem_checker < 0.33:
                         latex_problems.append(f"({problem_number}) {selected_flat}にふくまれる辺を全て答えなさい。")
                         including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
@@ -321,9 +337,9 @@ class LineAndFlatPositionalRelationship:
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_edges)}")
                 else:
                     problem_checker = random()
-                    all_edges_candidates = list(set(all_edges) - set(used_edges))
+                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_flat))
                     selected_edge = choice(all_edges_candidates)
-                    used_edges.append(selected_edge)
+                    used_edges_for_flat.append(selected_edge)
                     if problem_checker < 0.33:
                         latex_problems.append(f"({problem_number}) {selected_edge}をふくむ平面を全て答えなさい。")
                         including_flats = [flat for flat in all_flats if (selected_edge[1] in flat) and (selected_edge[2] in flat)]
@@ -354,11 +370,11 @@ class LineAndFlatPositionalRelationship:
                         if alphabet in flat_to_check:
                             return True
                     return False
-                all_flats_candidates = list(set(all_flats) - set(used_flats))
+                all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
                 selected_flat = choice(all_flats_candidates)
-                used_flats.append(selected_flat)
+                used_flats_for_flat.append(selected_flat)
                 latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる平面を全て答えなさい。")
-                vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
+                vertical_flats = list(vertical_flat_groups[selected_flat])
                 vertical_flats.sort()
                 latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
             else:

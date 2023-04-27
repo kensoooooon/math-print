@@ -2671,6 +2671,7 @@ def display_line_and_flat_positional_relationship(request):
         math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
     """
     PROBLEM_NUMBER = 10
+    question_format = request.POST["question_format"]
     used_problems = request.POST.getlist("used_problem")
     if not(used_problems):
         used_problems.append("line_and_line")
@@ -2682,7 +2683,7 @@ def display_line_and_flat_positional_relationship(request):
         used_solid_bodies.append("triangular_prism")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
-        problem1 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies)
-        problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies)
+        problem1 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
+        problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

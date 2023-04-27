@@ -39,6 +39,11 @@ Developing:
     
     ・三角柱の平面平面間にもガバ
     ・直方体の平面平面間にもガバがある。自分自身がふくまれている
+    
+    4/27
+    ・平面間のガバの修正開始
+        四角柱は垂直の判定にガバ
+    ↑おそらく修正完了。次は選択型問題の作成
 """
 from random import choice, random, randint
 from typing import List, Tuple
@@ -100,7 +105,15 @@ class LineAndFlatPositionalRelationship:
             "辺AE", "辺BF", "辺CG", "辺DH",
             "辺EF", "辺FG", "辺GH", "辺EH",
         )
-        all_flats = ('面ABCD', '面AEFB', '面AEHD', '面BFGC', '面CGHD', '面EFGH')
+        all_flats = ('面ABCD', '面AEFB', '面ADHE', '面BFGC', '面CGHD', '面EFGH')
+        vertical_flats_groups = {
+            "面ABCD": ("面AEFB", "面BFGC", "面CGHD", "面ADHE"),
+            "面AEFB": ("面ABCD", "面BFGC", "面ADHE", "面EFGH"),
+            "面BFGC": ("面ABCD", "面AEFB", "面CGHD", "面EFGH"),
+            "面CGHD": ("面ABCD", "面BFGC", "面ADHE", "面EFGH"),
+            "面ADHE": ("面ABCD", "面AEFB", "面CGHD", "面EFGH"),
+            "面EFGH": ("面AEFB", "面BFGC", "面CDHD", "面ADHE"),
+        }
         used_parallel_edges_groups = []
         used_edges_for_skew = []
         used_edges_for_vertical = []
@@ -183,33 +196,17 @@ class LineAndFlatPositionalRelationship:
                         parallel_flats.sort()
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             elif selected_problem_type == "flat_and_flat":
-                
-                def including_checker(selected_flat: str, flat_to_check: str) -> bool:
-                    """平面の位置関係を把握するために、平面同士のアルファベット部分を比較する
-
-                    Args:
-                        selected_flat (str): 基準となる平面
-                        flat_to_check (str): チェックしたい平面
-
-                    Returns:
-                        True or False (bool): 一文字も含まれない場合はFalse, そうでないならTrue
-                    """
-                    for alphabet in selected_flat[1:]:
-                        if alphabet in flat_to_check:
-                            return True
-                    return False
-                
                 all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
                 selected_flat = choice(all_flats_candidates)
                 used_flats_for_flat.append(selected_flat)
                 if random() > 0.5:
                     latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる平面を全て答えなさい。")
-                    vertical_flats = [flat for flat in all_flats if including_checker(selected_flat, flat)]
+                    vertical_flats = list(vertical_flats_groups[selected_flat])
                     vertical_flats.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
                 else:
                     latex_problems.append(f"({problem_number}) {selected_flat}と平行な平面を全て答えなさい。")
-                    parallel_flats = [flat for flat in all_flats if not including_checker(selected_flat, flat)]
+                    parallel_flats = list(set(all_flats) - set([selected_flat]) - set(vertical_flats_groups[selected_flat]))
                     parallel_flats.sort()
                     latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             else:
@@ -272,7 +269,7 @@ class LineAndFlatPositionalRelationship:
             "辺AD": ("辺AB", "辺AC", "辺DE", "辺DF"), "辺BE": ("辺AB", "辺BC", "辺DE", "辺EF"), "辺CF": ("辺AC", "辺DF", "辺BC", "辺EF"),
             "辺DE": ("辺AD", "辺BE"), "辺EF": ("辺BE", "辺CF"), "辺DF": ("辺AD", "辺CF")
         }
-        vertical_flat_groups = {
+        vertical_flats_groups = {
             "面ABC": ("面ADEB", "面BEFC", "面ADFC"),
             "面ADEB": ("面ABC", "面DEF"), "面BEFC": ("面ABC", "面DEF"), "面ADFC": ("面ABC", "面DEF"),
             "面DEF": ("面ADEB", "面BEFC", "面ADFC")
@@ -356,25 +353,11 @@ class LineAndFlatPositionalRelationship:
                         parallel_flats.sort()
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
             elif selected_problem_type == "flat_and_flat":
-                def including_checker(selected_flat: str, flat_to_check: str) -> bool:
-                    """平面の位置関係を把握するために、平面同士のアルファベット部分を比較する
-
-                    Args:
-                        selected_flat (str): 基準となる平面
-                        flat_to_check (str): チェックしたい平面
-
-                    Returns:
-                        True or False (bool): 一文字も含まれない場合はFalse, そうでないならTrue
-                    """
-                    for alphabet in selected_flat[1:]:
-                        if alphabet in flat_to_check:
-                            return True
-                    return False
                 all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
                 selected_flat = choice(all_flats_candidates)
                 used_flats_for_flat.append(selected_flat)
                 latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる平面を全て答えなさい。")
-                vertical_flats = list(vertical_flat_groups[selected_flat])
+                vertical_flats = list(vertical_flats_groups[selected_flat])
                 vertical_flats.sort()
                 latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
             else:

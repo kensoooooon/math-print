@@ -44,8 +44,14 @@ Developing:
     ・平面間のガバの修正開始
         四角柱は垂直の判定にガバ
     ↑おそらく修正完了。次は選択型問題の作成
+    
+    4/28
+    ・選択型の問題を引き続き作成
+    
+    別件で、記述型のときのpopが怪しい<-しれっとlistに変換しているからセーフっぽい。が、popを使うのは何かとあれかも？
+    直線直線間は完了。次は直線と平面
 """
-from random import choice, random, randint
+from random import choice, random, randint, sample, shuffle
 from typing import List, Tuple
 
 
@@ -102,6 +108,8 @@ class LineAndFlatPositionalRelationship:
         
         Developing:
             とりあえずは正答1、偽答2 or 3.
+            
+            ・辺の残数は気にしたほうがよさそう。popやらでエラーを吐く可能性
         """
         latex_answers = []
         latex_problems = []
@@ -135,18 +143,58 @@ class LineAndFlatPositionalRelationship:
             if selected_problem_type == "line_and_line":
                 problem_checker = random()
                 if problem_checker < 0.33:
+                    """
+                    平行な辺の選択式
+                    ある平行な辺は4本セット
+                    parallel_edges_candidates = parallel_edges_groups
+                    print(f"parallel_edges_candidates: {parallel_edges_candidates}")
+                    selected_parallel_edges = choice(parallel_edges_candidates)
+                    print(f"selected_parallel_edges: {selected_parallel_edges}")
+                    edge_used_for_problem, collect_edge = sample(selected_parallel_edges, 2)
+                    print(f"edge_used_for_problem: {edge_used_for_problem}")
+                    print(f"collect_edge: {collect_edge}")
+                    wrong_edges = sample(set(all_edges) - set(selected_parallel_edges), 3)
+                    print(f"wrong_edgs: {wrong_edges}")
+                    edges_choice = wrong_edges + [collect_edge]
+                    shuffle(edges_choice)
+                    print(f"edges_choice: {edges_choice}")
+                    """
                     parallel_edges_candidates = list(set(parallel_edges_groups) - set(used_parallel_edges_groups))
                     selected_parallel_edges = choice(parallel_edges_candidates)
                     used_parallel_edges_groups.append(selected_parallel_edges)
-                    edge_used_for_problem = list(selected_parallel_edges).pop(randint(0, len(selected_parallel_edges) - 1))
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
-                    remained_edges = ", ".join(sorted(selected_parallel_edges))
-                    latex_answers.append(f"({problem_number}) {remained_edges}")
+                    edge_used_for_problem, collect_edge = sample(selected_parallel_edges, 2)
+                    wrong_edges = sample(set(all_edges) - set(selected_parallel_edges), 3)
+                    edges_choice = wrong_edges + [collect_edge]
+                    shuffle(edges_choice)
+                    latex_problem = f"({problem_number}) {edge_used_for_problem}と平行な辺を以下から一つ選びなさい。:"
+                    latex_problem += f"{', '.join(edges_choice)}"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({(problem_number)}) {collect_edge}")
                 elif 0.33 <= problem_checker < 0.66:
+                    """
+                    all_edges_candidates = all_edges
+                    edge_used_for_problem = choice(all_edges_candidates)
+                    print(f"edge_used_for_problem: {edge_used_for_problem}")
+                    for parallel_edges in parallel_edges_groups:
+                        if edge_used_for_problem in parallel_edges:
+                            parallel_edges_with_edge_used_for_problem = parallel_edges
+                            break
+                    print(f"parallel_edges_with_edge_used_for_problem: {parallel_edges_with_edge_used_for_problem}")
+                    edges_without_parallel = list(set(all_edges) - set(parallel_edges_with_edge_used_for_problem))
+                    print(f"edges_without_parallel: {edges_without_parallel}")
+                    first_alphabet = edge_used_for_problem[1]
+                    second_alphabet = edge_used_for_problem[2]
+                    skew_edges = [edge for edge in edges_without_parallel if (first_alphabet not in edge) and (second_alphabet not in edge)]
+                    print(f"skew_edges: {skew_edges}")
+                    collect_edge = choice(skew_edges)
+                    print(f"collect_edge: {collect_edge}")
+                    wrong_edges = sample(set(all_edges) - set(skew_edges), 3)
+                    edge_choice = wrong_edges + [collect_edge]
+                    print(f"edge_choice: {edge_choice}")
+                    """
                     all_edges_candidates = list(set(all_edges) - set(used_edges_for_skew))
                     edge_used_for_problem = choice(all_edges_candidates)
                     used_edges_for_skew.append(edge_used_for_problem)
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を全て答えなさい。")
                     for parallel_edges in parallel_edges_groups:
                         if edge_used_for_problem in parallel_edges:
                             parallel_edges_with_edge_used_for_problem = parallel_edges
@@ -155,16 +203,27 @@ class LineAndFlatPositionalRelationship:
                     first_alphabet = edge_used_for_problem[1]
                     second_alphabet = edge_used_for_problem[2]
                     skew_edges = [edge for edge in edges_without_parallel if (first_alphabet not in edge) and (second_alphabet not in edge)]
-                    skew_edges.sort()
-                    latex_answers.append(f"({problem_number}) {', '.join(skew_edges)}")
+                    collect_edge = choice(skew_edges)
+                    wrong_edges = sample(set(all_edges) - set(skew_edges), 3)
+                    edges_choice = wrong_edges + [collect_edge]
+                    shuffle(edges_choice)
+                    latex_problem = f"({problem_number}) {edge_used_for_problem}とねじれの位置にある辺を以下から一つ選びなさい。 :"
+                    latex_problem += f"{', '.join(edges_choice)}"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({problem_number}) {collect_edge}")
                 else:
                     all_edges_candidates = list(set(all_edges) - set(used_edges_for_vertical))
                     edge_used_for_problem = choice(all_edges_candidates)
                     used_edges_for_vertical.append(edge_used_for_problem)
-                    latex_problems.append(f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を全て答えなさい。")
                     vertical_edges = [edge for edge in all_edges if (edge_used_for_problem[1] in edge) != (edge_used_for_problem[2] in edge)]
-                    vertical_edges.sort()
-                    latex_answers.append(f"({problem_number}) {', '.join(vertical_edges)}")
+                    collect_edge = choice(vertical_edges)
+                    wrong_edges = sample(set(all_edges) - set(vertical_edges), 3)
+                    edges_choice = wrong_edges + [collect_edge]
+                    shuffle(edges_choice)
+                    latex_problem = f"({problem_number}) {edge_used_for_problem}と垂直に交わる辺を以下から一つ選びなさい。 :"
+                    latex_problem += f"{', '.join(edges_choice)}"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({problem_number}) {collect_edge}")
             elif selected_problem_type == "line_and_flat":
                 if random() > 0.5:
                     problem_checker = random()

@@ -83,6 +83,14 @@ Developing:
     
         三角柱の「記述型」の辺と辺にも自身が登場する問題あり
         →平行な辺を答えさせる問題は修正完了。次はねじれと垂直のチェック（l.711~）
+        
+    5/4
+    三角柱のねじれと垂直のチェック
+        平面と辺の問題に問題あり。skew_edgesのとり方が四面体と同じになる？
+    
+    5/8
+    引き続き三角柱の平面と辺の問題のチェック
+
 """
 from random import choice, random, randint, sample, shuffle
 from typing import List, Tuple
@@ -491,6 +499,11 @@ class LineAndFlatPositionalRelationship:
         used_parallel_edges_groups = []
         used_flats_for_edge = []
         used_edges_for_vertical = []
+        used_edges_for_including_flat = []
+        used_edges_for_vertical_flat = []
+        used_edges_for_parallel_flat = []
+        used_flats_for_including_edge = []
+        used_edges_for_skew_flat = []
         used_edges_for_skew = []
         used_edges_for_flat = []
         used_flats_for_flat = []
@@ -550,9 +563,9 @@ class LineAndFlatPositionalRelationship:
                     problem_checker = random()
                     # ふくまれている辺→どの平面でもok
                     if problem_checker < 0.33:
-                        all_flats_candidates = list(set(all_flats) - set(used_flats_for_edge))
+                        all_flats_candidates = list(set(all_flats) - set(used_flats_for_including_edge))
                         selected_flat = choice(all_flats_candidates)
-                        used_flats_for_edge.append(selected_flat)
+                        used_flats_for_including_edge.append(selected_flat)
                         # 多分判定もok
                         including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
                         collect_edge = choice(including_edges)
@@ -600,10 +613,13 @@ class LineAndFlatPositionalRelationship:
                         latex_answers.append(f"({problem_number}) {collect_edge}")
                 else:
                     problem_checker = random()
-                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_flat))
-                    selected_edge = choice(all_edges_candidates)
-                    used_edges_for_flat.append(selected_edge)
+                    # all_edges_candidates = list(set(all_edges) - set(used_edges_for_including_flat))
+                    # selected_edge = choice(all_edges_candidates)
+                    # used_edges_for_flat.append(selected_edge)
                     if problem_checker < 0.33:
+                        all_edges_candidates = list(set(all_edges) - set(used_edges_for_including_flat))
+                        selected_edge = choice(all_edges_candidates)
+                        used_edges_for_including_flat.append(selected_edge)
                         including_flats = [flat for flat in all_flats if (selected_edge[1] in flat) and (selected_edge[2] in flat)]
                         collect_flat = choice(including_flats)
                         wrong_flats = sample(set(all_flats) - set(including_flats), 3)
@@ -614,9 +630,22 @@ class LineAndFlatPositionalRelationship:
                         latex_problems.append(latex_problem)
                         latex_answers.append(f"({problem_number}) {collect_flat}")
                     elif 0.33 <= problem_checker < 0.66:
-                        vertical_flats = [flat for flat in all_flats if (selected_edge[1] in flat) != (selected_edge[2] in flat)]
+                        """
+                        5/8
+                        ある辺に対して、垂直な平面は？
+                            AD, BE, CF以外では成立しない。たとえば、上面にあるABや、下面にあるDEに対して垂直な面は存在しない。
+                        """
+                        all_edges_candidates = list(set(["辺AD", "辺BE", "辺CF"]) - set(used_edges_for_vertical_flat))
+                        # all_edges_candidates = list(set(all_edges) - set(used_edges_for_vertical_flat))
+                        selected_edge = choice(all_edges_candidates)
+                        used_edges_for_vertical_flat.append(selected_edge)
+                        # ここの判定もガバ。実際は上面も下面も答えに該当する
+                        # vertical_flats = [flat for flat in all_flats if (selected_edge[1] in flat) != (selected_edge[2] in flat)]
+                        vertical_flats = ["面ABC", "面DEF"]
                         collect_flat = choice(vertical_flats)
-                        wrong_flats = sample(set(all_flats) - set(vertical_flats), 3)
+                        # 全部で平面は5つ。正解の面が2つ。残りの3つがそのまま間違いの面になるので、sampleする余地はない
+                        # wrong_flats = sample(set(all_flats) - set(vertical_flats), 3)
+                        wrong_flats = list(set(all_flats) - set(vertical_flats))
                         flats_choice = wrong_flats + [collect_flat]
                         shuffle(flats_choice)
                         latex_problem = f"({problem_number}) {selected_edge}に垂直な面を以下から一つ選びなさい。 "
@@ -624,9 +653,22 @@ class LineAndFlatPositionalRelationship:
                         latex_problems.append(latex_problem)
                         latex_answers.append(f"({problem_number}) {collect_flat}")
                     else:
-                        parallel_flats = [flat for flat in all_flats if (selected_edge[1] not in flat) and (selected_edge[2] not in flat)]
-                        collect_flat = choice(parallel_flats)
-                        wrong_flats = sample(set(all_flats) - set(parallel_flats), 3)
+                        """
+                        5/8
+                        ある辺に対して平行な平面は？
+                            AD, BE, EFでは成立しない。AB, BC, ACであれば下面DEF、DE, EF, DFであれば上面ABCのみが該当する
+                        """
+                        all_edges_candidates = list(set(["辺AB", "辺BC", "辺AC", "辺DE", "辺EF", "辺DF"]) - set(used_edges_for_parallel_flat))
+                        selected_edge = choice(all_edges_candidates)
+                        used_edges_for_parallel_flat.append(selected_edge)
+                        if ("A" in selected_edge) or ("B" in selected_edge) or ("C" in selected_edge):
+                            collect_flat = "面DEF"
+                        else:
+                            collect_flat = "面ABC"
+                        # parallel_flats = [flat for flat in all_flats if (selected_edge[1] not in flat) and (selected_edge[2] not in flat)]
+                        # collect_flat = choice(parallel_flats)
+                        # 全部で5面。正しい面が1つ。残りの4つがそのまま間違いの面になる。3つsampleする余地がある
+                        wrong_flats = sample(set(all_flats) - set([collect_flat]), 3)
                         flats_choice = wrong_flats + [collect_flat]
                         shuffle(flats_choice)
                         latex_problem = f"({problem_number}) {selected_edge}に平行な面を以下から一つ選びなさい。"
@@ -692,6 +734,10 @@ class LineAndFlatPositionalRelationship:
         used_edges_for_vertical = []
         used_edges_for_skew = []
         used_edges_for_flat = []
+        used_edges_for_including_flat = []
+        used_edges_for_vertical_flat = []
+        used_edges_for_parallel_flat = []
+        used_flats_for_including_edge = []
         used_flats_for_flat = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
@@ -741,9 +787,9 @@ class LineAndFlatPositionalRelationship:
                     used_flats_for_edge.append(selected_flat)
                     """
                     if problem_checker < 0.33:
-                        all_flats_candidates = list(set(all_flats) - set(used_flats_for_edge))
+                        all_flats_candidates = list(set(all_flats) - set(used_flats_for_including_edge))
                         selected_flat = choice(all_flats)
-                        used_flats_for_edge.append(selected_flat)
+                        used_flats_for_including_edge.append(selected_flat)
                         latex_problems.append(f"({problem_number}) {selected_flat}にふくまれる辺を全て答えなさい。")
                         including_edges = [edge for edge in all_edges if (edge[1] in selected_flat) and (edge[2] in selected_flat)]
                         including_edges.sort()
@@ -765,24 +811,34 @@ class LineAndFlatPositionalRelationship:
                         latex_answers.append(f"({problem_number}) {', '.join(parallel_edges)}")
                 else:
                     problem_checker = random()
-                    all_edges_candidates = list(set(all_edges) - set(used_edges_for_flat))
-                    selected_edge = choice(all_edges_candidates)
-                    used_edges_for_flat.append(selected_edge)
+                    # all_edges_candidates = list(set(all_edges) - set(used_edges_for_flat))
+                    # selected_edge = choice(all_edges_candidates)
+                    # used_edges_for_flat.append(selected_edge)
                     if problem_checker < 0.33:
+                        all_edges_candidates = list(set(all_edges) - set(used_edges_for_including_flat))
+                        selected_edge = choice(all_edges_candidates)
+                        used_edges_for_including_flat.append(selected_edge)
                         latex_problems.append(f"({problem_number}) {selected_edge}をふくむ面を全て答えなさい。")
                         including_flats = [flat for flat in all_flats if (selected_edge[1] in flat) and (selected_edge[2] in flat)]
                         including_flats.sort()
                         latex_answers.append(f"({problem_number}) {', '.join(including_flats)}")
                     elif 0.33 <= problem_checker < 0.66:
+                        all_edges_candidates = list(set(["辺AD", "辺BE", "辺CF"]) - set(used_edges_for_vertical_flat))
+                        selected_edge = choice(all_edges_candidates)
                         latex_problems.append(f"({problem_number}) {selected_edge}に垂直な面を全て答えなさい。")
-                        vertical_flats = [flat for flat in all_flats if (selected_edge[1] in flat) != (selected_edge[2] in flat)]
-                        vertical_flats.sort()
+                        used_edges_for_vertical_flat.append(selected_edge)
+                        vertical_flats = ["面ABC", "面DEF"]
                         latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
                     else:
+                        all_edges_candidates = list(set(["辺AB", "辺BC", "辺AC", "辺DE", "辺EF", "辺DF"]) - set(used_edges_for_parallel_flat))
+                        selected_edge = choice(all_edges_candidates)
                         latex_problems.append(f"({problem_number}) {selected_edge}に平行な面を全て答えなさい。")
-                        parallel_flats = [flat for flat in all_flats if (selected_edge[1] not in flat) and (selected_edge[2] not in flat)]
-                        parallel_flats.sort()
-                        latex_answers.append(f"({problem_number}) {', '.join(parallel_flats)}")
+                        used_edges_for_parallel_flat.append(selected_edge)
+                        if ("A" in selected_edge) or ("B" in selected_edge) or ("C" in selected_edge):
+                            parallel_flat = "面DEF"
+                        else:
+                            parallel_flat = "面ABC"
+                        latex_answers.append(f"({problem_number}) {parallel_flat}")
             elif selected_problem_type == "flat_and_flat":
                 all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
                 selected_flat = choice(all_flats_candidates)

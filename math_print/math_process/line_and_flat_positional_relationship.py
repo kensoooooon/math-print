@@ -90,6 +90,10 @@ Developing:
     
     5/8
     引き続き三角柱の平面と辺の問題のチェック
+    
+    5/9
+    チェッキング（四角柱の平面平面間）
+    面倒くさいが、最後にもう一回確認する必要はありそう
 
 """
 from random import choice, random, randint, sample, shuffle
@@ -173,7 +177,8 @@ class LineAndFlatPositionalRelationship:
         used_edges_for_vertical = []
         used_edges_for_flat = []
         used_flats_for_edge = []
-        used_flats_for_flat = []
+        used_flats_for_parallel_flat = []
+        used_flats_for_vertical_flat = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
@@ -297,21 +302,36 @@ class LineAndFlatPositionalRelationship:
                         latex_problems.append(latex_problem)
                         latex_answers.append(f"({problem_number}) {collect_flat}")
             elif selected_problem_type == "flat_and_flat":
-                all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
-                selected_flat = choice(all_flats_candidates)
-                used_flats_for_flat.append(selected_flat)
-                parallel_flats = list(set(all_flats) - set([selected_flat]) - set(vertical_flats_groups[selected_flat]))
-                collect_flat = choice(parallel_flats)
-                print(f"all_flats: {all_flats}")
-                print(f"parallel_flats: {parallel_flats}")
-                print(f"selected_flat: {selected_flat}")
-                wrong_flats = sample(set(all_flats) - (set(parallel_flats)) - set([selected_flat]), 3)
-                flats_choice = wrong_flats + [collect_flat]
-                shuffle(flats_choice)
-                latex_problem = f"({problem_number}) {selected_flat}に平行な面を以下から一つ選びなさい。 :"
-                latex_problem += f"({', '.join(flats_choice)})"
-                latex_problems.append(latex_problem)
-                latex_answers.append(f"({problem_number}) {collect_flat}")
+                if random() > 0.5:
+                    all_flats_candidates = list(set(all_flats) - set(used_flats_for_parallel_flat))
+                    selected_flat = choice(all_flats_candidates)
+                    used_flats_for_parallel_flat.append(selected_flat)
+                    parallel_flats = list(set(all_flats) - set([selected_flat]) - set(vertical_flats_groups[selected_flat]))
+                    collect_flat = choice(parallel_flats)
+                    wrong_flats = sample(set(all_flats) - (set(parallel_flats)) - set([selected_flat]), 3)
+                    flats_choice = wrong_flats + [collect_flat]
+                    shuffle(flats_choice)
+                    latex_problem = f"({problem_number}) {selected_flat}に平行な面を以下から一つ選びなさい。 :"
+                    latex_problem += f"({', '.join(flats_choice)})"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({problem_number}) {collect_flat}")
+                else:
+                    """
+                    ある面と垂直な面
+                        全部で6面。選択された面が1面。垂直な面は4面。誤った平行な面が1面。
+                    """
+                    all_flats_candidates = list(set(all_flats) - set(used_flats_for_vertical_flat))
+                    selected_flat = choice(all_flats_candidates)
+                    used_flats_for_vertical_flat.append(selected_flat)
+                    vertical_flats = vertical_flats_groups[selected_flat]
+                    collect_flat = choice(vertical_flats)
+                    wrong_flat = list(set(all_flats) - set(vertical_flats))
+                    flats_choice = [collect_flat] + [wrong_flat]
+                    shuffle(flats_choice)
+                    latex_problem = f"({problem_number}) {selected_flat}に垂直な面を以下から一つ選びなさい。 :"
+                    latex_problem += f"{', '.join(flats_choice)}"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({problem_number}) {collect_flat}")
             else:
                 raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")
@@ -506,7 +526,8 @@ class LineAndFlatPositionalRelationship:
         used_edges_for_skew_flat = []
         used_edges_for_skew = []
         used_edges_for_flat = []
-        used_flats_for_flat = []
+        used_flats_for_vertical_flat = []
+        used_flats_for_parallel_flat = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
@@ -676,14 +697,34 @@ class LineAndFlatPositionalRelationship:
                         latex_problems.append(latex_problem)
                         latex_answers.append(f"({problem_number}) {collect_flat}")
             elif selected_problem_type == "flat_and_flat":
-                all_flats_candidates = ["面ABC", "面DEF"]
-                selected_flat, collect_flat = sample(all_flats_candidates, 2)
-                flats_choice = list(set(all_flats) - set([selected_flat]))
-                shuffle(flats_choice)
-                latex_problem = f"({problem_number}) {selected_flat}と平行な面を以下から一つ選びなさい。 "
-                latex_problem += f"({', '.join(flats_choice)})"
-                latex_problems.append(latex_problem)
-                latex_answers.append(f"({problem_number}) {collect_flat}")
+                if random() > 0.5:
+                    """
+                    垂直な平面
+                        上面と下面→側面が垂直: 候補が2つ。正解の面が3つ。誤りの面が1つ。
+                        側面→上面と下面が垂直: 候補が3つ。正解の面が2つ。誤りの面が2つ。
+                            そのまま回答にぶっこむ
+                    """
+                    all_flats_candidates = list(set(all_flats) - set(used_flats_for_vertical_flat))
+                    selected_flat = choice(all_flats_candidates)
+                    used_flats_for_vertical_flat.append(selected_flat)
+                    vertical_flats = vertical_flats_groups[selected_flat]
+                    collect_flat = choice(vertical_flats)
+                    wrong_flats = list(set(all_flats) - set(vertical_flats) - set(selected_flat))
+                    flats_choice = [collect_flat] + wrong_flats
+                    shuffle(flats_choice)
+                    latex_problem = f"({problem_number}) {selected_flat}と垂直な面を以下から一つ選びなさい。"
+                    latex_problem += f"({', '.join(flats_choice)})"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({problem_number}) {collect_flat}")
+                else:
+                    all_flats_candidates = ["面ABC", "面DEF"]
+                    selected_flat, collect_flat = sample(all_flats_candidates, 2)
+                    flats_choice = list(set(all_flats) - set([selected_flat]))
+                    shuffle(flats_choice)
+                    latex_problem = f"({problem_number}) {selected_flat}と平行な面を以下から一つ選びなさい。 "
+                    latex_problem += f"({', '.join(flats_choice)})"
+                    latex_problems.append(latex_problem)
+                    latex_answers.append(f"({problem_number}) {collect_flat}")
             else:
                 raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")
@@ -738,7 +779,8 @@ class LineAndFlatPositionalRelationship:
         used_edges_for_vertical_flat = []
         used_edges_for_parallel_flat = []
         used_flats_for_including_edge = []
-        used_flats_for_flat = []
+        used_flats_for_vertical_flat = []
+        used_flats_for_parallel_flat = []
         for problem_number in range(1, 4):
             selected_problem_type = choice(problem_types)
             if selected_problem_type == "line_and_line":
@@ -840,13 +882,19 @@ class LineAndFlatPositionalRelationship:
                             parallel_flat = "面ABC"
                         latex_answers.append(f"({problem_number}) {parallel_flat}")
             elif selected_problem_type == "flat_and_flat":
-                all_flats_candidates = list(set(all_flats) - set(used_flats_for_flat))
-                selected_flat = choice(all_flats_candidates)
-                used_flats_for_flat.append(selected_flat)
-                latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる面を全て答えなさい。")
-                vertical_flats = list(vertical_flats_groups[selected_flat])
-                vertical_flats.sort()
-                latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
+                if random() > 0.5:
+                    all_flats_candidates = list(set(all_flats) - set(used_flats_for_vertical_flat))
+                    selected_flat = choice(all_flats_candidates)
+                    used_flats_for_vertical_flat.append(selected_flat)
+                    latex_problems.append(f"({problem_number}) {selected_flat}と垂直に交わる面を全て答えなさい。")
+                    vertical_flats = list(vertical_flats_groups[selected_flat])
+                    vertical_flats.sort()
+                    latex_answers.append(f"({problem_number}) {', '.join(vertical_flats)}")
+                else:
+                    all_flats_candidates = ["面ABC", "面DEF"]
+                    selected_flat, collect_flat = sample(all_flats_candidates, 2)
+                    latex_problems.append(f"({problem_number}) {selected_flat}と平行な面を全て答えなさい。")
+                    latex_answers.append(f"({problem_number}) {collect_flat}")
             else:
                 raise ValueError(f"'selected_problem_type' is {selected_problem_type}."\
                                  "This must be 'line_and_line', 'line_and_flat' or 'flat_and_flat'.")

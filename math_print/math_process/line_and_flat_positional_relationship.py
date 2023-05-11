@@ -396,14 +396,20 @@ class LineAndFlatPositionalRelationship:
             if selected_problem_type == "line_and_line":
                 problem_checker = random()
                 if problem_checker < 0.33:
+                    """
+                    平行な辺を答えてもらう問題
+                        平行な辺は、グループで構成されている。
+                        edge_used_for_problemをどう扱っていく？？
+                            tupleにpopはない。
+                            sampleする？
+                                +unpack
+                    """
                     parallel_edges_candidates = list(set(parallel_edges_groups) - set(used_parallel_edges_groups))
                     selected_parallel_edges = choice(parallel_edges_candidates)
-                    print(f"selected_parallel_edges: {selected_parallel_edges}")
-                    print(f"type: {type(selected_parallel_edges)}")
                     used_parallel_edges_groups.append(selected_parallel_edges)
-                    edge_used_for_problem = selected_parallel_edges.pop(randint(0, len(selected_parallel_edges) - 1))
+                    edge_used_for_problem, *remained_edges = sample(selected_parallel_edges, 4)
                     latex_problems.append(f"({problem_number}) {edge_used_for_problem}と平行な辺を全て答えなさい。")
-                    remained_edges = ", ".join(sorted(selected_parallel_edges))
+                    remained_edges = ", ".join(sorted(remained_edges))
                     latex_answers.append(f"({problem_number}) {remained_edges}")
                 elif 0.33 <= problem_checker < 0.66:
                     all_edges_candidates = list(set(all_edges) - set(used_edges_for_skew))
@@ -720,7 +726,7 @@ class LineAndFlatPositionalRelationship:
                     used_flats_for_vertical_flat.append(selected_flat)
                     vertical_flats = vertical_flats_groups[selected_flat]
                     collect_flat = choice(vertical_flats)
-                    wrong_flats = list(set(all_flats) - set(vertical_flats) - set(selected_flat))
+                    wrong_flats = list(set(all_flats) - set(vertical_flats) - set([selected_flat]))
                     flats_choice = [collect_flat] + wrong_flats
                     shuffle(flats_choice)
                     latex_problem = f"({problem_number}) {selected_flat}と垂直な面を以下から一つ選びなさい。"

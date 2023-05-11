@@ -1,0 +1,438 @@
+{% extends 'math_print/base.html' %}
+
+{% block css %}
+<style type="text/css">
+    .problem{
+        display: flex;
+        gap: 1em;
+    }
+    .problem>div{
+        width: 50%;
+    }
+</style>
+<style type="text/css" media="print">
+    .print_pages{
+        /*A4縦 172,251*/
+        width: 240mm;
+        height: 280mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav{
+        display: none;
+    }
+    p.number_of_problem {
+        text-align: right;
+    }
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+  window.addEventListener("load", make);
+
+  function drawLine(stage, start_x, start_y, end_x, end_y) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+
+  }
+
+  function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
+      // draw line detemined by angle
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      var radian = angle * Math.PI / 180;
+      var end_x = start_x + radius * Math.cos(radian);
+      var end_y = start_y + radius * Math.sin(radian);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+
+  function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      var start_radian = start_angle * Math.PI / 180;
+      var end_radian = end_angle * Math.PI / 180;
+      graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+  
+  function drawDegreeCharacter(stage, x, y, character) {
+    //文字オブジェクトを作成する
+    var text = new createjs.Text(character, "15px Arial", "#000000");
+    //描画位置の指定
+    text.x = x;
+    text.y = y;
+    stage.addChild(text);
+  }
+
+  function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
+    drawArc(stage, center_x, center_y, sector_radius, 0, sector_angle);
+    sector_radian = sector_angle * Math.PI / 180;
+    start_x = center_x + sector_radius * Math.cos(0);
+    start_y = center_y + sector_radius * Math.sin(0);
+    drawLine(stage, center_x, center_y, start_x, start_y);
+    end_x = center_x + sector_radius * Math.cos(sector_radian);
+    end_y = center_y + sector_radius * Math.sin(sector_radian);
+    drawLine(stage, center_x, center_y, end_x, end_y);
+    stage.update();
+  }
+
+  function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
+    // add radius
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
+    // add central_angle
+    drawArc(stage, 160, 80, 10, 0, central_angle);
+    drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
+    stage.update();
+  }
+
+  function addRadiusAndArcLengthToSector(stage, radius, coefficient_of_arc_length) {
+    // add radius
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
+    // add arc length
+    drawDegreeCharacter(stage, 180, 140, "弧の長さ: " + coefficient_of_arc_length + "π cm");
+    stage.update();
+  }
+
+  function addRadiusAndAreaToSector(stage, radius, coefficient_of_area) {
+    // add radius
+    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
+    //// guide line
+    drawArc(stage, 190, 80, 30, 0, 3);
+    drawArc(stage, 190, 80, 30, 6, 9);
+    drawArc(stage, 190, 80, 30, 12, 15);
+    drawArc(stage, 190, 80, 30, 18, 21);
+    drawArc(stage, 190, 80, 30, 24, 27);
+    drawArc(stage, 190, 80, 30, 30, 33);
+    ////// reverse
+    drawArc(stage, 190, 80, 30, 147, 150);
+    drawArc(stage, 190, 80, 30, 153, 156);
+    drawArc(stage, 190, 80, 30, 159, 162);
+    drawArc(stage, 190, 80, 30, 165, 168);
+    drawArc(stage, 190, 80, 30, 171, 174);
+    drawArc(stage, 190, 80, 30, 177, 180);
+    // add area
+    drawDegreeCharacter(stage, 200, 20, "面積: " + coefficient_of_area + "π ㎠");
+    stage.update();
+  }
+
+  function call_problem_string(selected_problem_type) {
+    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+      var problem_string = "弧の長さと面積を求めよ。"
+    }
+    else if (selected_problem_type == "radius_and_arc_length_to_area") {
+      var problem_string = "面積を求めよ。";
+    }
+    else if (selected_problem_type == "radius_and_area_to_arc_length") {
+      var problem_string = "弧の長さを求めよ。";
+    }
+    else if (selected_problem_type == "radius_and_area_to_central_angle") {
+      var problem_string = "中心角を求めよ。";
+    }
+    return problem_string;
+  }
+
+  function draw() {
+    {% for inner_list in math_problem_list_of_list %}
+        // problem section //
+        var problem_print_section = document.createElement("section");
+        problem_print_section.setAttribute("class", "print_pages");
+        // add body to read canvas
+        document.body.appendChild(problem_print_section);
+
+        var problem_number_p = document.createElement("p");
+        problem_number_p.setAttribute("class", "number_of_problem");
+        problem_number_p.innerHTML = "問題: No. {{ forloop.counter }}";
+        problem_print_section.appendChild(problem_number_p);
+        
+        var problem_ol = document.createElement("ol");
+        {% for information_tuple in inner_list %}
+            var problem_div = document.createElement("div");
+            problem_div.setAttribute("class", "problem");
+            // left_div
+            var left_div = document.createElement("div");
+            var left_li = document.createElement("li");
+            var left_canvas = document.createElement("canvas");
+            var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+            left_canvas.setAttribute("id", left_canvas_id);
+            left_canvas.setAttribute("width", 320);
+            left_canvas.setAttribute("height", 160);
+            // left_canvas.setAttribute("style", "background-color:#CCFFFF");
+            var left_problem_p = document.createElement("p");
+            left_problem_p.setAttribute("class", "problem");
+            left_problem_p.setAttribute("style", "visibility:visible");
+            left_problem_p.innerHTML = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
+            // var left_answer_p = document.createElement("p");
+            // left_answer_p.setAttribute("class", "answer");
+            // left_answer_p.setAttribute("style", "visibility:hidden");
+            //left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
+            // left_div add part
+            left_li.appendChild(left_canvas);
+            left_li.appendChild(left_problem_p);
+            // left_li.appendChild(left_answer_p);
+            left_div.appendChild(left_li);
+
+            var right_div = document.createElement("div");
+            var right_li = document.createElement("li");
+            var right_canvas = document.createElement("canvas");
+            var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+            right_canvas.setAttribute("id", right_canvas_id);
+            right_canvas.setAttribute("width", 320);
+            right_canvas.setAttribute("height", 160);
+            // right_canvas.setAttribute("style", "background-color:#CCFFFF");
+            var right_problem_p = document.createElement("p");
+            right_problem_p.setAttribute("class", "problem");
+            right_problem_p.setAttribute("style", "visibility:visible");
+            right_problem_p.innerHTML = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
+            // var right_answer_p = document.createElement("p");
+            // right_answer_p.setAttribute("class", "answer");
+            // right_answer_p.setAttribute("style", "visibility:hidden");
+            // right_answer_p.innerHTML =  "{{ information_tuple.1.latex_answer }}";
+            // right_div add part
+            right_li.appendChild(right_canvas);
+            right_li.appendChild(right_problem_p);
+            // right_li.appendChild(right_answer_p);
+            right_div.appendChild(right_li);
+
+            problem_div.appendChild(left_div);
+            problem_div.appendChild(right_div);
+            problem_ol.appendChild(problem_div);
+            problem_print_section.appendChild(problem_ol);
+
+            var left_stage = new createjs.Stage(left_canvas_id);
+            var left_radius = Number({{ information_tuple.0.sector.radius }});
+            var left_central_angle = Number({{ information_tuple.0.sector.central_angle }});
+            drawSector(left_stage, 160, 80, 60, left_central_angle);
+            var selected_problem_type = "{{ information_tuple.0.selected_problem_type }}";
+            if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+              addRadiusAndCentralAngleToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.central_angle }}");
+            }
+            else if (selected_problem_type == "radius_and_arc_length_to_area") {
+              addRadiusAndArcLengthToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_arc_length }}");
+            }
+            else if (selected_problem_type == "radius_and_area_to_arc_length") {
+              addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
+            }
+            else if (selected_problem_type == "radius_and_area_to_central_angle") {
+              addRadiusAndAreaToSector(left_stage, "{{ information_tuple.0.sector.radius }}", "{{ information_tuple.0.sector.coefficient_of_area }}");
+            }
+
+            var right_stage = new createjs.Stage(right_canvas_id);
+            var right_radius = Number({{ information_tuple.1.sector.radius }});
+            var right_central_angle = Number({{ information_tuple.1.sector.central_angle }});
+            drawSector(right_stage, 160, 80, 60, right_central_angle);
+        
+            var selected_problem_type = "{{ information_tuple.1.selected_problem_type }}";
+            
+            if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
+              addRadiusAndCentralAngleToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.central_angle }}");
+            }
+            else if (selected_problem_type == "radius_and_arc_length_to_area") {
+              addRadiusAndArcLengthToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_arc_length }}");
+            }
+            else if (selected_problem_type == "radius_and_area_to_arc_length") {
+              addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
+            }
+            else if (selected_problem_type == "radius_and_area_to_central_angle") {
+              addRadiusAndAreaToSector(right_stage, "{{ information_tuple.1.sector.radius }}", "{{ information_tuple.1.sector.coefficient_of_area }}");
+            }
+        {% endfor %}
+        // footer phase
+        var footer = document.createElement("footer");
+        footer.setAttribute("class", "container-fluid print_footer");
+        var small = document.createElement("small");
+        var footer_a = document.createElement("a");
+        footer_a.setAttribute("href", "#");
+        footer_a.innerHTML = "© 2022 有明学習振興";
+        //// footer add phase
+        small.appendChild(footer_a);
+        footer.appendChild(small);
+        problem_print_section.appendChild(footer);
+
+        // answer section //
+        var answer_print_section = document.createElement("section");
+        answer_print_section.setAttribute("class", "print_pages");
+        // add body to read canvas
+        document.body.appendChild(answer_print_section);
+
+        var answer_number_p = document.createElement("p");
+        answer_number_p.setAttribute("class", "number_of_problem");
+        answer_number_p.innerHTML = "解答: No. {{ forloop.counter }}";
+        answer_print_section.appendChild(answer_number_p);
+        
+        var answer_ol = document.createElement("ol");
+        {% for information_tuple in inner_list %}
+            var answer_div = document.createElement("div");
+            answer_div.setAttribute("class", "problem");
+            // left_div
+            var left_div = document.createElement("div");
+            var left_li = document.createElement("li");
+            var left_answer_p = document.createElement("p");
+            left_answer_p.setAttribute("class", "answer");
+            left_answer_p.setAttribute("style", "visibility:visible");
+            left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
+            left_li.appendChild(left_answer_p);
+            left_div.appendChild(left_li);
+
+            var right_div = document.createElement("div");
+            var right_li = document.createElement("li");
+            var right_answer_p = document.createElement("p");
+            right_answer_p.setAttribute("class", "answer");
+            right_answer_p.setAttribute("style", "visibility:visible");
+            right_answer_p.innerHTML = "{{ information_tuple.1.latex_answer }}";
+            // right_div add part
+            right_li.appendChild(right_answer_p);
+            right_div.appendChild(right_li);
+
+            answer_div.appendChild(left_div);
+            answer_div.appendChild(right_div);
+            answer_ol.appendChild(answer_div);
+            answer_print_section.appendChild(answer_ol);
+        {% endfor %}
+        // footer phase
+        var footer = document.createElement("footer");
+        footer.setAttribute("class", "container-fluid print_footer");
+        var small = document.createElement("small");
+        var footer_a = document.createElement("a");
+        footer_a.setAttribute("href", "#");
+        footer_a.innerHTML = "© 2022 有明学習振興";
+        //// footer add phase
+        small.appendChild(footer_a);
+        footer.appendChild(small);
+        answer_print_section.appendChild(footer);
+    {% endfor %}
+    MathJax.typeset();
+  }
+
+  function add_other_parts() {
+    // print button phase
+    var print_button_div = document.createElement("div");
+    print_button_div.setAttribute("class", "container button_container");
+    var inner_div = document.createElement("div");
+    inner_div.setAttribute("class", "row justify-content-start");
+    var break_line = document.createElement("br");
+    var innermost_div = document.createElement("div");
+    innermost_div.setAttribute("class", "col-6");
+    var button_form = document.createElement("form");
+    var print_button_input = document.createElement("input");
+    print_button_input.setAttribute("type", "button");
+    print_button_input.setAttribute("class", "btn btn-outline-primary");
+    print_button_input.setAttribute("value", "印刷する");
+    print_button_input.setAttribute("onclick", "window.print()");
+    //// print button add phase
+    button_form.appendChild(print_button_input);
+    innermost_div.appendChild(button_form);
+    inner_div.appendChild(innermost_div);
+    print_button_div.append(inner_div);
+    print_button_div.append(break_line);
+    document.body.prepend(print_button_div);
+    // hero unit phase
+    var hero_outer_div = document.createElement('div');
+    hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
+    var hero_inner_div = document.createElement('div');
+    hero_inner_div.setAttribute("class", "container");
+    var h1_in_hero = document.createElement('h1');
+    h1_in_hero.setAttribute("class", "display-4");
+    h1_in_hero.innerHTML = "ようこそ!";
+    var p_in_hero = document.createElement('p');
+    p_in_hero.setAttribute("class", "text-dark");
+    p_in_hero.innerHTML = "おうぎ形を求める";
+    //// hero unit add phase
+    hero_inner_div.appendChild(h1_in_hero);
+    hero_inner_div.appendChild(p_in_hero);
+    hero_outer_div.appendChild(hero_inner_div);
+    document.body.prepend(hero_outer_div);
+    // top page remove and add phase
+    var navdiv = document.getElementById("top_page_nav");
+    var new_navdiv = navdiv.cloneNode(true);
+    navdiv.remove();
+    document.body.prepend(new_navdiv);
+  }
+
+  function make() {
+    draw();
+    add_other_parts();
+  }
+</script>
+{% endblock %}
+
+{% block title %}
+おうぎ形の弧の長さや中心角、面積を求める
+{% endblock %}
+
+{% block hero_unit %}
+{% endblock %}
+
+{% block body %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+{% endblock %}

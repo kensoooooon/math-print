@@ -53,7 +53,7 @@ function refresh() {
 <script>
   window.addEventListener("load", make);
 
-  function drawLine(stage, start_x, start_y, end_x, end_y) {
+    function drawLine(stage, start_x, start_y, end_x, end_y) {
       var graphic = new createjs.Graphics();
       graphic.beginStroke("#000000");
       graphic.moveTo(start_x, start_y);
@@ -61,135 +61,124 @@ function refresh() {
       graphic.endStroke();
       var shape = new createjs.Shape(graphic);
       stage.addChild(shape);
-
   }
 
-  function drawLineWithAngle(stage, start_x, start_y, angle, radius=200) {
-      // draw line detemined by angle
-      var graphic = new createjs.Graphics();
-      graphic.beginStroke("#000000");
-      graphic.moveTo(start_x, start_y);
-      var radian = angle * Math.PI / 180;
-      var end_x = start_x + radius * Math.cos(radian);
-      var end_y = start_y + radius * Math.sin(radian);
-      graphic.lineTo(end_x, end_y);
-      graphic.endStroke();
-      var shape = new createjs.Shape(graphic);
-      stage.addChild(shape);
+  function drawDashLine(stage, start_x, start_y, end_x, end_y) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([2, 2], 0);
+    graphic.moveTo(start_x, start_y);
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
   }
 
-  function drawArc(stage, center_x, center_y, radius, start_angle, end_angle, anticlockwise=false) {
-      var graphic = new createjs.Graphics();
-      graphic.beginStroke("#000000");
-      var start_radian = start_angle * Math.PI / 180;
-      var end_radian = end_angle * Math.PI / 180;
-      graphic.arc(center_x, center_y, radius, start_radian, end_radian, anticlockwise);
-      var shape = new createjs.Shape(graphic);
-      stage.addChild(shape);
-  }
-  
-  function drawDegreeCharacter(stage, x, y, character) {
-    //文字オブジェクトを作成する
+  function drawCharacter(stage, x, y, character) {
+    /**左上隅を指定して文字列を描き込む
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    * @param {number} x 左上隅のx座標
+    * @param {number} y 左上隅のy座標
+    * @param {string} character 描き込みたい文字列
+    */
     var text = new createjs.Text(character, "15px Arial", "#000000");
-    //描画位置の指定
     text.x = x;
     text.y = y;
     stage.addChild(text);
   }
 
-  function drawSector(stage, center_x, center_y, sector_radius, sector_angle) {
-    drawArc(stage, center_x, center_y, sector_radius, 0, sector_angle);
-    sector_radian = sector_angle * Math.PI / 180;
-    start_x = center_x + sector_radius * Math.cos(0);
-    start_y = center_y + sector_radius * Math.sin(0);
-    drawLine(stage, center_x, center_y, start_x, start_y);
-    end_x = center_x + sector_radius * Math.cos(sector_radian);
-    end_y = center_y + sector_radius * Math.sin(sector_radian);
-    drawLine(stage, center_x, center_y, end_x, end_y);
+  function drawQuadrangularPrism(stage) {
+    /** ステージに対して直方体を描画する
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    */
+    //// bottom square part
+    let horizontal_side_length = 150;
+    let bottom_left_x = 50;
+    let bottom_left_y = 140;
+    let bottom_right_x = bottom_left_x + horizontal_side_length;
+    let bottom_right_y = bottom_left_y;
+    drawLine(stage, bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y);
+    let diagonal_side_length = 50;
+    let diagonal_angle = Math.PI / 6;
+    let bottom_right_back_x = bottom_right_x + diagonal_side_length * Math.cos(-diagonal_angle);
+    let bottom_right_back_y = bottom_right_y + diagonal_side_length * Math.sin(-diagonal_angle);
+    drawLine(stage, bottom_right_x, bottom_right_y, bottom_right_back_x, bottom_right_back_y);
+    let bottom_left_back_x = bottom_right_back_x - horizontal_side_length;
+    let bottom_left_back_y = bottom_right_back_y;
+    drawDashLine(stage, bottom_right_back_x, bottom_right_back_y, bottom_left_back_x, bottom_left_back_y);
+    drawDashLine(stage, bottom_left_x, bottom_left_y, bottom_left_back_x, bottom_left_back_y);
+    //// side from bottom to top part
+    let vertical_length = 100;
+    let top_left_x = bottom_left_x;
+    let top_left_y = bottom_left_y - vertical_length;
+    drawLine(stage, bottom_left_x, bottom_left_y, top_left_x, top_left_y);
+    let top_right_x = bottom_right_x;
+    let top_right_y = top_left_y;
+    drawLine(stage, bottom_right_x, bottom_right_y, top_right_x, top_right_y);
+    let top_right_back_x = bottom_right_back_x;
+    let top_right_back_y = bottom_right_back_y - vertical_length;
+    drawLine(stage, bottom_right_back_x, bottom_right_back_y, top_right_back_x, top_right_back_y);
+    let top_left_back_x = bottom_left_back_x;
+    let top_left_back_y = bottom_left_back_y - vertical_length;
+    drawDashLine(stage, bottom_left_back_x, bottom_left_back_y, top_left_back_x, top_left_back_y);
+    drawLine(stage, top_left_x, top_left_y, top_right_x, top_right_y);
+    drawLine(stage, top_right_x, top_right_y, top_right_back_x, top_right_back_y);
+    drawLine(stage, top_right_back_x, top_right_back_y, top_left_back_x, top_left_back_y);
+    drawLine(stage, top_left_back_x, top_left_back_y, top_left_x, top_left_y);
+    //// corner name part.
+    drawCharacter(stage, top_left_x - 15, top_left_y, "A");
+    drawCharacter(stage, top_right_x + 15, top_right_y, "B");
+    drawCharacter(stage, top_right_back_x + 15, top_right_back_y, "C");
+    drawCharacter(stage, top_left_back_x - 15, top_left_back_y - 15, "D");
+    drawCharacter(stage, bottom_left_x - 15, bottom_left_y, "E");
+    drawCharacter(stage, bottom_right_x + 15, bottom_right_y, "F");
+    drawCharacter(stage, bottom_right_back_x + 15, bottom_right_back_y, "G");
+    drawCharacter(stage, bottom_left_back_x - 15, bottom_left_back_y, "H");
     stage.update();
   }
 
-  function addRadiusAndCentralAngleToSector(stage, radius, central_angle) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add central_angle
-    drawArc(stage, 160, 80, 10, 0, central_angle);
-    drawDegreeCharacter(stage, 160-40, 80+10, central_angle+"°");
+  function drawTriangularPrism(stage) {
+    /** ステージに対して三角柱を描画する
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    */
+    //// bottom triangle part
+    let front_left_length = 100;
+    let bottom_left_x = 50;
+    let bottom_left_y = 90;
+    let angle_from_bottom_left_to_middle = Math.PI / 6;
+    let bottom_middle_x = bottom_left_x + front_left_length * Math.cos(angle_from_bottom_left_to_middle);
+    let bottom_middle_y = bottom_left_y + front_left_length * Math.sin(angle_from_bottom_left_to_middle);
+    drawLine(stage, bottom_left_x, bottom_left_y, bottom_middle_x, bottom_middle_y);
+    let front_right_length = 110;
+    let angle_from_middle_to_bottom_right = Math.PI / 4;
+    let bottom_right_x = bottom_middle_x + front_right_length * Math.cos(-angle_from_middle_to_bottom_right);
+    let bottom_right_y = bottom_middle_y + front_right_length * Math.sin(-angle_from_middle_to_bottom_right);
+    drawLine(stage, bottom_middle_x, bottom_middle_y, bottom_right_x, bottom_right_y);
+    drawDashLine(stage, bottom_right_x, bottom_right_y, bottom_left_x, bottom_left_y);
+    //// side from bottom to top part
+    let vertical_length = 60;
+    let top_left_x = bottom_left_x;
+    let top_left_y = bottom_left_y - vertical_length;
+    drawLine(stage, bottom_left_x, bottom_left_y, top_left_x, top_left_y);
+    let top_middle_x = bottom_middle_x;
+    let top_middle_y = bottom_middle_y - vertical_length;
+    drawLine(stage, bottom_middle_x, bottom_middle_y, top_middle_x, top_middle_y);
+    let top_right_x = bottom_right_x;
+    let top_right_y = bottom_right_y - vertical_length;
+    drawLine(stage, bottom_right_x, bottom_right_y, top_right_x, top_right_y);
+    //// top triangl part
+    drawLine(stage, top_left_x, top_left_y, top_middle_x, top_middle_y);
+    drawLine(stage, top_middle_x, top_middle_y, top_right_x, top_right_y);
+    drawLine(stage, top_right_x, top_right_y, top_left_x, top_left_y);
+    //// corner name part
+    drawCharacter(stage, top_left_x - 15, top_left_y, "A");
+    drawCharacter(stage, top_middle_x - 5, top_middle_y - 20, "B");
+    drawCharacter(stage, top_right_x + 15, top_right_y, "C");
+    drawCharacter(stage, bottom_left_x - 15, bottom_left_y, "D");
+    drawCharacter(stage, bottom_middle_x - 5, bottom_middle_y + 3, "E");
+    drawCharacter(stage, bottom_right_x + 15, bottom_right_y,  "F");
     stage.update();
-  }
-
-  function addRadiusAndArcLengthToSector(stage, radius, coefficient_of_arc_length) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add arc length
-    drawDegreeCharacter(stage, 180, 140, "弧の長さ: " + coefficient_of_arc_length + "π cm");
-    stage.update();
-  }
-
-  function addRadiusAndAreaToSector(stage, radius, coefficient_of_area) {
-    // add radius
-    drawDegreeCharacter(stage, 160+13, 80+5, radius+" cm");
-    //// guide line
-    drawArc(stage, 190, 80, 30, 0, 3);
-    drawArc(stage, 190, 80, 30, 6, 9);
-    drawArc(stage, 190, 80, 30, 12, 15);
-    drawArc(stage, 190, 80, 30, 18, 21);
-    drawArc(stage, 190, 80, 30, 24, 27);
-    drawArc(stage, 190, 80, 30, 30, 33);
-    ////// reverse
-    drawArc(stage, 190, 80, 30, 147, 150);
-    drawArc(stage, 190, 80, 30, 153, 156);
-    drawArc(stage, 190, 80, 30, 159, 162);
-    drawArc(stage, 190, 80, 30, 165, 168);
-    drawArc(stage, 190, 80, 30, 171, 174);
-    drawArc(stage, 190, 80, 30, 177, 180);
-    // add area
-    drawDegreeCharacter(stage, 200, 20, "面積: " + coefficient_of_area + "π ㎠");
-    stage.update();
-  }
-
-  function call_problem_string(selected_problem_type) {
-    if (selected_problem_type == "radius_and_central_angle_to_arc_length_and_area") {
-      var problem_string = "弧の長さと面積を求めよ。"
-    }
-    else if (selected_problem_type == "radius_and_arc_length_to_area") {
-      var problem_string = "面積を求めよ。";
-    }
-    else if (selected_problem_type == "radius_and_area_to_arc_length") {
-      var problem_string = "弧の長さを求めよ。";
-    }
-    else if (selected_problem_type == "radius_and_area_to_central_angle") {
-      var problem_string = "中心角を求めよ。";
-    }
-    return problem_string;
   }
 
   function draw() {
@@ -217,19 +206,13 @@ function refresh() {
             left_canvas.setAttribute("id", left_canvas_id);
             left_canvas.setAttribute("width", 320);
             left_canvas.setAttribute("height", 160);
-            // left_canvas.setAttribute("style", "background-color:#CCFFFF");
             var left_problem_p = document.createElement("p");
             left_problem_p.setAttribute("class", "problem");
             left_problem_p.setAttribute("style", "visibility:visible");
             left_problem_p.innerHTML = call_problem_string("{{ information_tuple.0.selected_problem_type }}");
-            // var left_answer_p = document.createElement("p");
-            // left_answer_p.setAttribute("class", "answer");
-            // left_answer_p.setAttribute("style", "visibility:hidden");
-            //left_answer_p.innerHTML = "{{ information_tuple.0.latex_answer }}";
             // left_div add part
             left_li.appendChild(left_canvas);
             left_li.appendChild(left_problem_p);
-            // left_li.appendChild(left_answer_p);
             left_div.appendChild(left_li);
 
             var right_div = document.createElement("div");
@@ -239,19 +222,13 @@ function refresh() {
             right_canvas.setAttribute("id", right_canvas_id);
             right_canvas.setAttribute("width", 320);
             right_canvas.setAttribute("height", 160);
-            // right_canvas.setAttribute("style", "background-color:#CCFFFF");
             var right_problem_p = document.createElement("p");
             right_problem_p.setAttribute("class", "problem");
             right_problem_p.setAttribute("style", "visibility:visible");
             right_problem_p.innerHTML = call_problem_string("{{ information_tuple.1.selected_problem_type }}");
-            // var right_answer_p = document.createElement("p");
-            // right_answer_p.setAttribute("class", "answer");
-            // right_answer_p.setAttribute("style", "visibility:hidden");
-            // right_answer_p.innerHTML =  "{{ information_tuple.1.latex_answer }}";
             // right_div add part
             right_li.appendChild(right_canvas);
             right_li.appendChild(right_problem_p);
-            // right_li.appendChild(right_answer_p);
             right_div.appendChild(right_li);
 
             problem_div.appendChild(left_div);
@@ -396,7 +373,7 @@ function refresh() {
     h1_in_hero.innerHTML = "ようこそ!";
     var p_in_hero = document.createElement('p');
     p_in_hero.setAttribute("class", "text-dark");
-    p_in_hero.innerHTML = "おうぎ形を求める";
+    p_in_hero.innerHTML = "直線と平面の位置関係を考える";
     //// hero unit add phase
     hero_inner_div.appendChild(h1_in_hero);
     hero_inner_div.appendChild(p_in_hero);
@@ -417,7 +394,7 @@ function refresh() {
 {% endblock %}
 
 {% block title %}
-おうぎ形の弧の長さや中心角、面積を求める
+直線と平面の位置関係を考える
 {% endblock %}
 
 {% block hero_unit %}

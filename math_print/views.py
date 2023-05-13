@@ -1504,9 +1504,10 @@ def print_line_and_flat_positional_relationship(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-# math_print\templates\math_print\junior_highschool1\line_and_flat_positional_relationship\for_display.html
 # display section
 
+def print_calculate_volume_by_integration(request):
+    return (request, 'math_print/highschool2/calculate_volume_by_integration/for_print.html', {})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2713,3 +2714,7 @@ def display_line_and_flat_positional_relationship(request):
         problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_calculate_volume_by_integration(request):
+    return render(request, 'math_print/highschool2/calculate_volume_by_integration/for_display.html', {})

@@ -1,0 +1,460 @@
+{% extends 'math_print/base.html' %}
+
+{% block css %}
+<style type="text/css">
+    .problem{
+        display: flex;
+        gap: 1em;
+    }
+    .problem>div{
+        width: 50%;
+    }
+</style>
+<style type="text/css" media="print">
+    .print_pages{
+        /*A4縦 172,251*/
+        width: 270mm;
+        height: 280mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav{
+        display: none;
+    }
+    p.number_of_problem {
+        text-align: right;
+    }
+</style>
+{% endblock %}
+
+{% block script %}
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+  var url = location.origin;
+  var pathname = location.pathname;
+  var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script>
+  window.addEventListener("load", make);
+
+    function drawLine(stage, start_x, start_y, end_x, end_y) {
+      var graphic = new createjs.Graphics();
+      graphic.beginStroke("#000000");
+      graphic.moveTo(start_x, start_y);
+      graphic.lineTo(end_x, end_y);
+      graphic.endStroke();
+      var shape = new createjs.Shape(graphic);
+      stage.addChild(shape);
+  }
+
+  function drawDashLine(stage, start_x, start_y, end_x, end_y) {
+    var graphic = new createjs.Graphics();
+    graphic.beginStroke("#000000");
+    graphic.setStrokeStyle(0.5);
+    graphic.setStrokeDash([2, 2], 0);
+    graphic.moveTo(start_x, start_y);
+    graphic.lineTo(end_x, end_y);
+    graphic.endStroke();
+    var shape = new createjs.Shape(graphic);
+    stage.addChild(shape);
+  }
+
+  function drawCharacter(stage, x, y, character) {
+    /**左上隅を指定して文字列を描き込む
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    * @param {number} x 左上隅のx座標
+    * @param {number} y 左上隅のy座標
+    * @param {string} character 描き込みたい文字列
+    */
+    var text = new createjs.Text(character, "15px Arial", "#000000");
+    text.x = x;
+    text.y = y;
+    stage.addChild(text);
+  }
+
+  function drawQuadrangularPrism(stage) {
+    /** ステージに対して直方体を描画する
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    */
+    //// bottom square part
+    let horizontal_side_length = 150;
+    let bottom_left_x = 50;
+    let bottom_left_y = 140;
+    let bottom_right_x = bottom_left_x + horizontal_side_length;
+    let bottom_right_y = bottom_left_y;
+    drawLine(stage, bottom_left_x, bottom_left_y, bottom_right_x, bottom_right_y);
+    let diagonal_side_length = 50;
+    let diagonal_angle = Math.PI / 6;
+    let bottom_right_back_x = bottom_right_x + diagonal_side_length * Math.cos(-diagonal_angle);
+    let bottom_right_back_y = bottom_right_y + diagonal_side_length * Math.sin(-diagonal_angle);
+    drawLine(stage, bottom_right_x, bottom_right_y, bottom_right_back_x, bottom_right_back_y);
+    let bottom_left_back_x = bottom_right_back_x - horizontal_side_length;
+    let bottom_left_back_y = bottom_right_back_y;
+    drawDashLine(stage, bottom_right_back_x, bottom_right_back_y, bottom_left_back_x, bottom_left_back_y);
+    drawDashLine(stage, bottom_left_x, bottom_left_y, bottom_left_back_x, bottom_left_back_y);
+    //// side from bottom to top part
+    let vertical_length = 100;
+    let top_left_x = bottom_left_x;
+    let top_left_y = bottom_left_y - vertical_length;
+    drawLine(stage, bottom_left_x, bottom_left_y, top_left_x, top_left_y);
+    let top_right_x = bottom_right_x;
+    let top_right_y = top_left_y;
+    drawLine(stage, bottom_right_x, bottom_right_y, top_right_x, top_right_y);
+    let top_right_back_x = bottom_right_back_x;
+    let top_right_back_y = bottom_right_back_y - vertical_length;
+    drawLine(stage, bottom_right_back_x, bottom_right_back_y, top_right_back_x, top_right_back_y);
+    let top_left_back_x = bottom_left_back_x;
+    let top_left_back_y = bottom_left_back_y - vertical_length;
+    drawDashLine(stage, bottom_left_back_x, bottom_left_back_y, top_left_back_x, top_left_back_y);
+    drawLine(stage, top_left_x, top_left_y, top_right_x, top_right_y);
+    drawLine(stage, top_right_x, top_right_y, top_right_back_x, top_right_back_y);
+    drawLine(stage, top_right_back_x, top_right_back_y, top_left_back_x, top_left_back_y);
+    drawLine(stage, top_left_back_x, top_left_back_y, top_left_x, top_left_y);
+    //// corner name part.
+    drawCharacter(stage, top_left_x - 15, top_left_y, "A");
+    drawCharacter(stage, top_right_x + 15, top_right_y, "B");
+    drawCharacter(stage, top_right_back_x + 15, top_right_back_y, "C");
+    drawCharacter(stage, top_left_back_x - 15, top_left_back_y - 15, "D");
+    drawCharacter(stage, bottom_left_x - 15, bottom_left_y, "E");
+    drawCharacter(stage, bottom_right_x + 15, bottom_right_y, "F");
+    drawCharacter(stage, bottom_right_back_x + 15, bottom_right_back_y, "G");
+    drawCharacter(stage, bottom_left_back_x - 15, bottom_left_back_y, "H");
+    stage.update();
+  }
+
+  function drawTriangularPrism(stage) {
+    /** ステージに対して三角柱を描画する
+    * @param {object} stage キャンバスから取得した描画用のオブジェクト
+    */
+    //// bottom triangle part
+    let front_left_length = 100;
+    let bottom_left_x = 50;
+    let bottom_left_y = 90;
+    let angle_from_bottom_left_to_middle = Math.PI / 6;
+    let bottom_middle_x = bottom_left_x + front_left_length * Math.cos(angle_from_bottom_left_to_middle);
+    let bottom_middle_y = bottom_left_y + front_left_length * Math.sin(angle_from_bottom_left_to_middle);
+    drawLine(stage, bottom_left_x, bottom_left_y, bottom_middle_x, bottom_middle_y);
+    let front_right_length = 110;
+    let angle_from_middle_to_bottom_right = Math.PI / 4;
+    let bottom_right_x = bottom_middle_x + front_right_length * Math.cos(-angle_from_middle_to_bottom_right);
+    let bottom_right_y = bottom_middle_y + front_right_length * Math.sin(-angle_from_middle_to_bottom_right);
+    drawLine(stage, bottom_middle_x, bottom_middle_y, bottom_right_x, bottom_right_y);
+    drawDashLine(stage, bottom_right_x, bottom_right_y, bottom_left_x, bottom_left_y);
+    //// side from bottom to top part
+    let vertical_length = 60;
+    let top_left_x = bottom_left_x;
+    let top_left_y = bottom_left_y - vertical_length;
+    drawLine(stage, bottom_left_x, bottom_left_y, top_left_x, top_left_y);
+    let top_middle_x = bottom_middle_x;
+    let top_middle_y = bottom_middle_y - vertical_length;
+    drawLine(stage, bottom_middle_x, bottom_middle_y, top_middle_x, top_middle_y);
+    let top_right_x = bottom_right_x;
+    let top_right_y = bottom_right_y - vertical_length;
+    drawLine(stage, bottom_right_x, bottom_right_y, top_right_x, top_right_y);
+    //// top triangl part
+    drawLine(stage, top_left_x, top_left_y, top_middle_x, top_middle_y);
+    drawLine(stage, top_middle_x, top_middle_y, top_right_x, top_right_y);
+    drawLine(stage, top_right_x, top_right_y, top_left_x, top_left_y);
+    //// corner name part
+    drawCharacter(stage, top_left_x - 15, top_left_y, "A");
+    drawCharacter(stage, top_middle_x - 5, top_middle_y - 20, "B");
+    drawCharacter(stage, top_right_x + 15, top_right_y, "C");
+    drawCharacter(stage, bottom_left_x - 15, bottom_left_y, "D");
+    drawCharacter(stage, bottom_middle_x - 5, bottom_middle_y + 3, "E");
+    drawCharacter(stage, bottom_right_x + 15, bottom_right_y,  "F");
+    stage.update();
+  }
+
+  function draw() {
+    {% for inner_list in math_problem_list_of_list %}
+        // problem section //
+        var problem_print_section = document.createElement("section");
+        problem_print_section.setAttribute("class", "print_pages");
+        // add body to read canvas
+        document.body.appendChild(problem_print_section);
+
+        var problem_number_p = document.createElement("p");
+        problem_number_p.setAttribute("class", "number_of_problem");
+        problem_number_p.innerHTML = "問題: No. {{ forloop.counter }}";
+        problem_print_section.appendChild(problem_number_p);
+        
+        var problem_ol = document.createElement("ol");
+        {% for information_tuple in inner_list %}
+            var problem_div = document.createElement("div");
+            problem_div.setAttribute("class", "problem");
+
+            var left_div = document.createElement("div");
+            var left_li = document.createElement("li");
+
+            var left_canvas = document.createElement("canvas");
+            var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+            left_canvas.setAttribute("id", left_canvas_id);
+            left_canvas.setAttribute("width", 320);
+            left_canvas.setAttribute("height", 160);
+            
+
+            var left_problem_div = document.createElement('div');
+            left_problem_div.style = "visibility:visible";
+            // left_problem_div.className = "problem";
+            // problem sentence part.(5/13)
+            var problem_sentence = document.createElement('p');
+            {% if information_tuple.0.solid_body == "quadrangular_prism" %}
+            problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
+            {% elif information_tuple.0.solid_body == "triangular_prism" %}
+            problem_sentence.innerHTML = "図の三角柱について、以下の問いに答えなさい。";
+            {% endif %}
+            var left_problem0 = document.createElement('p');
+            left_problem0.innerHTML = "{{ information_tuple.0.latex_problems.0 }}";
+            left_problem_div.appendChild(left_problem0);
+            var left_problem1 = document.createElement('p');
+            left_problem1.innerHTML = "{{ information_tuple.0.latex_problems.1 }}";
+            left_problem_div.appendChild(left_problem1);
+            var left_problem2 = document.createElement('p');
+            left_problem2.innerHTML = "{{ information_tuple.0.latex_problems.2 }}";
+            left_problem_div.appendChild(left_problem2);
+
+            left_li.appendChild(problem_sentence);
+            left_li.appendChild(left_canvas);
+            left_li.appendChild(left_problem_div);
+            left_div.appendChild(left_li);
+
+            var right_div = document.createElement("div");
+            var right_li = document.createElement("li");
+
+            
+            var right_canvas = document.createElement("canvas");
+            var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
+            right_canvas.setAttribute("id", right_canvas_id);
+            right_canvas.setAttribute("width", 320);
+            right_canvas.setAttribute("height", 160);
+          
+            var right_problem_div = document.createElement('div');
+            right_problem_div.style = "visibility:visible";
+            // right_problem_div.className = "problem";
+            var problem_sentence = document.createElement('p');
+            {% if information_tuple.1.solid_body == "quadrangular_prism" %}
+            problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
+            {% elif information_tuple.1.solid_body == "triangular_prism" %}
+            problem_sentence.innerHTML = "図の三角柱について、以下の問いに答えなさい。";
+            {% endif %}
+            var right_problem0 = document.createElement('p');
+            right_problem0.innerHTML = "{{ information_tuple.1.latex_problems.0 }}";
+            right_problem_div.appendChild(right_problem0);
+            var right_problem1 = document.createElement('p');
+            right_problem1.innerHTML = "{{ information_tuple.1.latex_problems.1 }}";
+            right_problem_div.appendChild(right_problem1);
+            var right_problem2 = document.createElement('p');
+            right_problem2.innerHTML = "{{ information_tuple.1.latex_problems.2 }}";
+            right_problem_div.appendChild(right_problem2);
+
+            right_li.appendChild(problem_sentence);
+            right_li.appendChild(right_canvas);
+            right_li.appendChild(right_problem_div);
+            right_div.appendChild(right_li);
+
+            /*
+            // not needed?
+            // left_div add part
+            left_li.appendChild(left_canvas);
+            left_li.appendChild(left_problem_div);
+            left_div.appendChild(left_li);
+            // right_div add part
+            right_li.appendChild(right_canvas);
+            right_li.appendChild(right_problem_div);
+            right_div.appendChild(right_li);
+            */
+            problem_div.appendChild(left_div);
+            problem_div.appendChild(right_div);
+            problem_ol.appendChild(problem_div);
+            problem_print_section.appendChild(problem_ol);
+
+            // draw left stage part
+            var left_stage = new createjs.Stage(left_canvas_id);
+            {% if information_tuple.0.solid_body == "quadrangular_prism" %}
+            drawQuadrangularPrism(left_stage);
+            {% elif information_tuple.0.solid_body == "triangular_prism" %}
+            drawTriangularPrism(left_stage);
+            {% endif %}
+
+            // draw right stage part
+            var right_stage = new createjs.Stage(right_canvas_id);
+            {% if information_tuple.1.solid_body == "quadrangular_prism" %}
+            drawQuadrangularPrism(right_stage);
+            {% elif information_tuple.1.solid_body == "triangular_prism" %}
+            drawTriangularPrism(right_stage);
+            {% endif %}
+        {% endfor %}
+        // footer phase
+        var footer = document.createElement("footer");
+        footer.setAttribute("class", "container-fluid print_footer");
+        var small = document.createElement("small");
+        var footer_a = document.createElement("a");
+        footer_a.setAttribute("href", "#");
+        footer_a.innerHTML = "© 2022 有明学習振興";
+        //// footer add phase
+        small.appendChild(footer_a);
+        footer.appendChild(small);
+        problem_print_section.appendChild(footer);
+
+        // answer section //
+        var answer_print_section = document.createElement("section");
+        answer_print_section.setAttribute("class", "print_pages");
+        // add body to read canvas
+        document.body.appendChild(answer_print_section);
+
+        var answer_number_p = document.createElement("p");
+        answer_number_p.setAttribute("class", "number_of_problem");
+        answer_number_p.innerHTML = "解答: No. {{ forloop.counter }}";
+        answer_print_section.appendChild(answer_number_p);
+        
+        var answer_ol = document.createElement("ol");
+        {% for information_tuple in inner_list %}
+            var answer_div = document.createElement("div");
+            answer_div.setAttribute("class", "problem");
+
+            var left_div = document.createElement("div");
+            var left_li = document.createElement("li");
+
+            var left_answer_div = document.createElement("div");
+            left_answer_div.style = "visibility:visible";
+            left_answer_div.className = "answer";
+            var left_answer0 = document.createElement("p");
+            left_answer0.innerHTML = "{{ information_tuple.0.latex_answers.0 }}"
+            left_answer_div.appendChild(left_answer0);
+            var left_answer1 = document.createElement("p");
+            left_answer1.innerHTML = "{{ information_tuple.0.latex_answers.1 }}"
+            left_answer_div.appendChild(left_answer1);
+            var left_answer2 = document.createElement("p");
+            left_answer2.innerHTML = "{{ information_tuple.0.latex_answers.2 }}"
+            left_answer_div.appendChild(left_answer2);
+
+            left_li.appendChild(left_answer_div);
+            left_div.appendChild(left_li);
+
+            var right_div = document.createElement("div");
+            var right_li = document.createElement("li");
+
+            var right_answer_div = document.createElement("div");
+            right_answer_div.style = "visibility:visible";
+            right_answer_div.className = "answer";
+            var right_answer0 = document.createElement("p");
+            right_answer0.innerHTML = "{{ information_tuple.1.latex_answers.0 }}"
+            right_answer_div.appendChild(right_answer0);
+            var right_answer1 = document.createElement("p");
+            right_answer1.innerHTML = "{{ information_tuple.1.latex_answers.1 }}"
+            right_answer_div.appendChild(right_answer1);
+            var right_answer2 = document.createElement("p");
+            right_answer2.innerHTML = "{{ information_tuple.1.latex_answers.2 }}"
+            right_answer_div.appendChild(right_answer2);
+
+            right_li.appendChild(right_answer_div);
+            right_div.appendChild(right_li);
+
+            answer_div.appendChild(left_div);
+            answer_div.appendChild(right_div);
+            answer_ol.appendChild(answer_div);
+            answer_print_section.appendChild(answer_ol);
+        {% endfor %}
+        // footer phase
+        var footer = document.createElement("footer");
+        footer.setAttribute("class", "container-fluid print_footer");
+        var small = document.createElement("small");
+        var footer_a = document.createElement("a");
+        footer_a.setAttribute("href", "#");
+        footer_a.innerHTML = "© 2022 有明学習振興";
+        //// footer add phase
+        small.appendChild(footer_a);
+        footer.appendChild(small);
+        answer_print_section.appendChild(footer);
+    {% endfor %}
+    MathJax.typeset();
+  }
+
+  function add_other_parts() {
+    // print button phase
+    var print_button_div = document.createElement("div");
+    print_button_div.setAttribute("class", "container button_container");
+    var inner_div = document.createElement("div");
+    inner_div.setAttribute("class", "row justify-content-start");
+    var break_line = document.createElement("br");
+    var innermost_div = document.createElement("div");
+    innermost_div.setAttribute("class", "col-6");
+    var button_form = document.createElement("form");
+    var print_button_input = document.createElement("input");
+    print_button_input.setAttribute("type", "button");
+    print_button_input.setAttribute("class", "btn btn-outline-primary");
+    print_button_input.setAttribute("value", "印刷する");
+    print_button_input.setAttribute("onclick", "window.print()");
+    //// print button add phase
+    button_form.appendChild(print_button_input);
+    innermost_div.appendChild(button_form);
+    inner_div.appendChild(innermost_div);
+    print_button_div.append(inner_div);
+    print_button_div.append(break_line);
+    document.body.prepend(print_button_div);
+    // hero unit phase
+    var hero_outer_div = document.createElement('div');
+    hero_outer_div.setAttribute("class", "p-3 p-sm-5 mb-4 bg-img hero_unit");
+    var hero_inner_div = document.createElement('div');
+    hero_inner_div.setAttribute("class", "container");
+    var h1_in_hero = document.createElement('h1');
+    h1_in_hero.setAttribute("class", "display-4");
+    h1_in_hero.innerHTML = "ようこそ!";
+    var p_in_hero = document.createElement('p');
+    p_in_hero.setAttribute("class", "text-dark");
+    p_in_hero.innerHTML = "直線と平面の位置関係を考える";
+    //// hero unit add phase
+    hero_inner_div.appendChild(h1_in_hero);
+    hero_inner_div.appendChild(p_in_hero);
+    hero_outer_div.appendChild(hero_inner_div);
+    document.body.prepend(hero_outer_div);
+    // top page remove and add phase
+    var navdiv = document.getElementById("top_page_nav");
+    var new_navdiv = navdiv.cloneNode(true);
+    navdiv.remove();
+    document.body.prepend(new_navdiv);
+  }
+
+  function make() {
+    draw();
+    add_other_parts();
+  }
+</script>
+{% endblock %}
+
+{% block title %}
+直線と平面の位置関係を考える
+{% endblock %}
+
+{% block hero_unit %}
+{% endblock %}
+
+{% block body %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+{% endblock %}

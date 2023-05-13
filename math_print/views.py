@@ -49,6 +49,7 @@ from .math_process.trigonometric_ratio import TrigonometricRatioProblem
 from .math_process.trigonometric_function import TrigonometricFunctionProblem
 from .math_process.quadratic_inequality import QuadraticInequality
 from .math_process.same_denominator_calculate import SameDenominatorCalculate
+from .math_process.line_and_flat_positional_relationship import LineAndFlatPositionalRelationship
 
 
 def index(request):
@@ -1470,6 +1471,40 @@ def print_same_denominator_calculate_problem(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school3/same_denominator_calculate/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
+def print_line_and_flat_positional_relationship(request):
+    """印刷用の直線と平面の位置関係の問題のリクエスト受信と問題出力と担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+    """
+    PROBLEM_NUMBER = 6
+    paper_number = int(request.POST["paper_number"])
+    question_format = request.POST["question_format"]
+    used_problems = request.POST.getlist("used_problem")
+    if not(used_problems):
+        used_problems.append("line_and_line")
+        used_problems.append("line_and_flat")
+        used_problems.append("flat_and_flat")
+    used_solid_bodies = request.POST.getlist("used_solid_body")
+    if not(used_solid_bodies):
+        used_solid_bodies.append("quadrangular_prism")
+        used_solid_bodies.append("triangular_prism")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER // 2)):
+            problem1 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
+            problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+# math_print\templates\math_print\junior_highschool1\line_and_flat_positional_relationship\for_display.html
 # display section
 
 
@@ -2650,3 +2685,31 @@ def display_same_denominator_calculate_problem(request):
         problem2 = SameDenominatorCalculate(calculate_type=calculate_type, term_number=term_number)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school3/same_denominator_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_line_and_flat_positional_relationship(request):
+    """画面用の直線と平面の位置関係の問題のリクエスト受信と問題出力を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+    """
+    PROBLEM_NUMBER = 10
+    question_format = request.POST["question_format"]
+    used_problems = request.POST.getlist("used_problem")
+    if not(used_problems):
+        used_problems.append("line_and_line")
+        used_problems.append("line_and_flat")
+        used_problems.append("flat_and_flat")
+    used_solid_bodies = request.POST.getlist("used_solid_body")
+    if not(used_solid_bodies):
+        used_solid_bodies.append("quadrangular_prism")
+        used_solid_bodies.append("triangular_prism")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
+        problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

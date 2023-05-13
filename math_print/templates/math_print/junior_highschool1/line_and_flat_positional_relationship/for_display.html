@@ -177,6 +177,13 @@ function refresh() {
     right_canvas.height = 160;
     right_canvas.style = "background-color:#CCFFFF";
 
+    var problem_sentence = document.createElement('p');
+    {% if information_tuple.0.solid_body == "quadrangular_prism" %}
+    problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
+    {% elif information_tuple.0.solid_body == "triangular_prism" %}
+    problem_sentence.innerHTML = "図の三角柱について、以下の問いに答えなさい。";
+    {% endif %}
+    left_div.appendChild(problem_sentence)
     left_div.appendChild(left_canvas);
     var left_problem_div = document.createElement('div');
     left_problem_div.style = "visibility:visible";
@@ -206,6 +213,13 @@ function refresh() {
     left_answer_div.appendChild(left_answer2);
     left_div.appendChild(left_answer_div);
 
+    var problem_sentence = document.createElement('p');
+    {% if information_tuple.1.solid_body == "quadrangular_prism" %}
+    problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
+    {% elif information_tuple.1.solid_body == "triangular_prism" %}
+    problem_sentence.innerHTML = "図の三角柱について、以下の問いに答えなさい。";
+    {% endif %}
+    right_div.appendChild(problem_sentence)
     right_div.appendChild(right_canvas);
     var right_problem_div = document.createElement('div');
     right_problem_div.style = "visibility:visible";

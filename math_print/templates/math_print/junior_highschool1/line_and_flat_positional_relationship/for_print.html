@@ -13,7 +13,7 @@
 <style type="text/css" media="print">
     .print_pages{
         /*A4縦 172,251*/
-        width: 240mm;
+        width: 270mm;
         height: 280mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
@@ -202,17 +202,23 @@ function refresh() {
             var left_div = document.createElement("div");
             var left_li = document.createElement("li");
 
-            /*
             var left_canvas = document.createElement("canvas");
             var left_canvas_id = "left_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
             left_canvas.setAttribute("id", left_canvas_id);
             left_canvas.setAttribute("width", 320);
             left_canvas.setAttribute("height", 160);
-            */
+            
 
             var left_problem_div = document.createElement('div');
             left_problem_div.style = "visibility:visible";
             // left_problem_div.className = "problem";
+            // problem sentence part.(5/13)
+            var problem_sentence = document.createElement('p');
+            {% if information_tuple.0.solid_body == "quadrangular_prism" %}
+            problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
+            {% elif information_tuple.0.solid_body == "triangular_prism" %}
+            problem_sentence.innerHTML = "図の三角柱について、以下の問いに答えなさい。";
+            {% endif %}
             var left_problem0 = document.createElement('p');
             left_problem0.innerHTML = "{{ information_tuple.0.latex_problems.0 }}";
             left_problem_div.appendChild(left_problem0);
@@ -223,24 +229,30 @@ function refresh() {
             left_problem2.innerHTML = "{{ information_tuple.0.latex_problems.2 }}";
             left_problem_div.appendChild(left_problem2);
 
-            // left_li.appendChild(left_canvas);
+            left_li.appendChild(problem_sentence);
+            left_li.appendChild(left_canvas);
             left_li.appendChild(left_problem_div);
             left_div.appendChild(left_li);
 
             var right_div = document.createElement("div");
             var right_li = document.createElement("li");
 
-            /*
+            
             var right_canvas = document.createElement("canvas");
             var right_canvas_id = "right_canvas" + {{ forloop.parentloop.counter }} + "-" + {{ forloop.counter }};
             right_canvas.setAttribute("id", right_canvas_id);
             right_canvas.setAttribute("width", 320);
             right_canvas.setAttribute("height", 160);
-            */
-
+          
             var right_problem_div = document.createElement('div');
             right_problem_div.style = "visibility:visible";
             // right_problem_div.className = "problem";
+            var problem_sentence = document.createElement('p');
+            {% if information_tuple.1.solid_body == "quadrangular_prism" %}
+            problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
+            {% elif information_tuple.1.solid_body == "triangular_prism" %}
+            problem_sentence.innerHTML = "図の三角柱について、以下の問いに答えなさい。";
+            {% endif %}
             var right_problem0 = document.createElement('p');
             right_problem0.innerHTML = "{{ information_tuple.1.latex_problems.0 }}";
             right_problem_div.appendChild(right_problem0);
@@ -251,7 +263,8 @@ function refresh() {
             right_problem2.innerHTML = "{{ information_tuple.1.latex_problems.2 }}";
             right_problem_div.appendChild(right_problem2);
 
-            // right_li.appendChild(right_canvas);
+            right_li.appendChild(problem_sentence);
+            right_li.appendChild(right_canvas);
             right_li.appendChild(right_problem_div);
             right_div.appendChild(right_li);
 
@@ -272,24 +285,20 @@ function refresh() {
             problem_print_section.appendChild(problem_ol);
 
             // draw left stage part
-            /*
             var left_stage = new createjs.Stage(left_canvas_id);
             {% if information_tuple.0.solid_body == "quadrangular_prism" %}
             drawQuadrangularPrism(left_stage);
             {% elif information_tuple.0.solid_body == "triangular_prism" %}
             drawTriangularPrism(left_stage);
             {% endif %}
-            */
 
             // draw right stage part
-            /*
             var right_stage = new createjs.Stage(right_canvas_id);
             {% if information_tuple.1.solid_body == "quadrangular_prism" %}
             drawQuadrangularPrism(right_stage);
             {% elif information_tuple.1.solid_body == "triangular_prism" %}
             drawTriangularPrism(right_stage);
             {% endif %}
-            */
         {% endfor %}
         // footer phase
         var footer = document.createElement("footer");
@@ -317,7 +326,7 @@ function refresh() {
         var answer_ol = document.createElement("ol");
         {% for information_tuple in inner_list %}
             var answer_div = document.createElement("div");
-            answer_div.setAttribute("class", "answer");
+            answer_div.setAttribute("class", "problem");
 
             var left_div = document.createElement("div");
             var left_li = document.createElement("li");
@@ -354,8 +363,6 @@ function refresh() {
             right_answer2.innerHTML = "{{ information_tuple.1.latex_answers.2 }}"
             right_answer_div.appendChild(right_answer2);
 
-            // right_li.appendChild(right_answer_div);
-            // right_div.appendChild(right_li);
             right_li.appendChild(right_answer_div);
             right_div.appendChild(right_li);
 

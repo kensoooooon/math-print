@@ -1482,7 +1482,7 @@ def print_line_and_flat_positional_relationship(request):
     Returns:
         math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
     """
-    PROBLEM_NUMBER = 10
+    PROBLEM_NUMBER = 6
     paper_number = int(request.POST["paper_number"])
     question_format = request.POST["question_format"]
     used_problems = request.POST.getlist("used_problem")

@@ -49,17 +49,35 @@ class CalculateAreaByIntegration:
         x = sy.Symbol("x", real=True)
         problem_type = choice(["between_quadratic_function_and_line", "between_quadratic_functions", "between_cubic_functions"])
         if problem_type == "between_quadratic_function_and_line":
-            quadratic_coefficient = randint(-3, 3)
-            answer1 = randint(-3, 3)
             if random() > 0.5:
-                answer2 = answer1 + randint(1, 3)
+                quadratic_coefficient = randint(-3, 3)
+                answer1 = randint(-3, 3)
+                if random() > 0.5:
+                    answer2 = answer1 + randint(1, 3)
+                else:
+                    answer2 = answer1 + randint(-3, -1)
+                if answer1 > answer2:
+                    bigger_answer, smaller_answer = answer1, answer2
+                else:
+                    bigger_answer, smaller_answer = answer2, answer1
+                quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
+                latex_problem = f"\\( {sy.latex(quadratic_function)} \\)"\
+                    "とx軸で囲まれた部分の面積を求めよ。"
+                area = abs(quadratic_coefficient / 6 * (answer1 - answer2) ** 3)
+                latex_answer = f"\\( {sy.latex(quadratic_function)} \\)"\
+                    f"\\( = {sy.latex(sy.factor(quadratic_function))}\\)となる。 \n"\
+                    f"よってx軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。そのため、2次関数とx軸で囲まれた面積は、\n"\
+                    f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(quadratic_function)} \\)"\
+                    f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function))} \\)\n"\
+                    f"\\( = |{quadratic_coefficient}| ({bigger_answer} - {smaller_answer} ) ** 3\\)"\
+                    f"\\( = {sy.latex(area)} \\)"
             else:
-                answer2 = answer1 + randint(-3, -1)
-            quadratic_function = quadratic_coefficient * (x - answer1) * (x - answer2)
+                latex_answer = "dummy answer of quadratic_function and line in one_sixth"
+                latex_problem = "dummy problem of quadratic_function and line in one_sixth"
         elif problem_type == "between_quadratic_functions":
-            pass
+            latex_answer = "dummy answer in between_quadratic_functions"
+            latex_problem = "dummy problem in between_quadratic_functions"
         elif problem_type == "between_cubic_functions":
-            pass
-        latex_answer = "dummy answer in one_sixth"
-        latex_problem = "dummy problem in one_sixth"
+            latex_answer = "dummy answer in between_cubic_functions"
+            latex_problem = "dummy problem in between_cubic_functions"
         return latex_answer, latex_problem

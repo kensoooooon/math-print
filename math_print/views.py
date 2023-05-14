@@ -2730,9 +2730,9 @@ def display_calculate_area_by_integration(request):
     used_formulas = request.POST.getlist("used_formula")
     if not (used_formulas):
         used_formulas.append("one_sixth")
-        math_problem_tuple_list = []
-        for _ in range(int(PROBLEM_NUMBER // 2)):
-            problem1 = CalculateAreaByIntegration(used_formulas=used_formulas)
-            problem2 = CalculateAreaByIntegration(used_formulas=used_formulas)
-            math_problem_tuple_list.append((problem1, problem2))
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = CalculateAreaByIntegration(used_formulas=used_formulas)
+        problem2 = CalculateAreaByIntegration(used_formulas=used_formulas)
+        math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/calculate_area_by_integration/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

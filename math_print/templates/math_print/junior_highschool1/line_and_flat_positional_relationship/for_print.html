@@ -212,7 +212,6 @@ function refresh() {
             var left_problem_div = document.createElement('div');
             left_problem_div.style = "visibility:visible";
             // left_problem_div.className = "problem";
-            // problem sentence part.(5/13)
             var problem_sentence = document.createElement('p');
             {% if information_tuple.0.solid_body == "quadrangular_prism" %}
             problem_sentence.innerHTML = "図の直方体について、以下の問いに答えなさい。";
@@ -268,17 +267,6 @@ function refresh() {
             right_li.appendChild(right_problem_div);
             right_div.appendChild(right_li);
 
-            /*
-            // not needed?
-            // left_div add part
-            left_li.appendChild(left_canvas);
-            left_li.appendChild(left_problem_div);
-            left_div.appendChild(left_li);
-            // right_div add part
-            right_li.appendChild(right_canvas);
-            right_li.appendChild(right_problem_div);
-            right_div.appendChild(right_li);
-            */
             problem_div.appendChild(left_div);
             problem_div.appendChild(right_div);
             problem_ol.appendChild(problem_div);

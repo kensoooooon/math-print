@@ -321,55 +321,12 @@
             <p>積分で面積を求める</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">出題される漸化式</small>
+                <small class="text-muted">使用される公式</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="arithmetic_progression" name="recurrence_relation_type" id="recurrence_relation_arithmetic_progression" checked>
-                        <label class="form-check-label" for="recurrence_relation_arithmetic_progression">
-                            \( a_{n+1} - a_{n} = d \)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="geometric_progression" name="recurrence_relation_type" id="recurrence_relation_geometric_progression" checked>
-                        <label class="form-check-label" for="recurrence_relation_geometric_progression">
-                            \( a_{n+1} = r a_{n} \)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="progression_of_differences" name="recurrence_relation_type" id="recurrence_relation_progression_of_differences" checked>
-                        <label class="form-check-label" for="recurrence_relation_progression_of_differences">
-                            \( a_{n+1} - a_{n} = f(n) \)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="harmonic_progression" name="recurrence_relation_type" id="recurrence_relation_harmonic_progression">
-                        <label class="form-check-label" for="recurrence_relation_harmonic_progression">
-                            \( a_{n+1} a_{n} - p a_{n+1} - p a_{n} = 0 \)
-                        </label>
-                    </div>
-                    <br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="linear_characteristic_equation" name="recurrence_relation_type" id="recurrence_relation_linear_characteristic_equation" checked>
-                        <label class="form-check-label" for="recurrence_relation_linear_characteristic_equation">
-                            \( a_{n+1} = p a_{n} + q \)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="coefficient_comparison_to_geometric_progression" name="recurrence_relation_type" id="recurrence_relation_coefficient_comparison_to_geometric_progression">
-                        <label class="form-check-label" for="recurrence_relation_coefficient_comparison_to_geometric_progression">
-                            \( a_{n+1} = p a_{n} + f(n) \)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="exponent_to_linear_characteristic_equation" name="recurrence_relation_type" id="recurrence_relation_exponent_to_linear_characteristic_equation">
-                        <label class="form-check-label" for="recurrence_relation_exponent_to_linear_characteristic_equation">
-                            \( a_{n+1} = p a_{n} + r^n \)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="three_adjacent_terms" name="recurrence_relation_type" id="recurrence_relation_three_adjacent_terms" checked>
-                        <label class="form-check-label" for="recurrence_relation_three_adjacent_terms">
-                            \( a_{n+2} + p a_{n+1} + q a_{n} = 0 \)
+                        <input class="form-check-input" type="checkbox" value="one_sixth" name="used_formula" id="calculate_area_by_integration_one_sixth" checked>
+                        <label class="form-check-label" for="calculate_area_by_integration_one_sixth">
+                            \( \frac{1}{6} \)公式
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`recurrence_relation_type`)" value="全部のせ">
@@ -378,26 +335,26 @@
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="RecurrenceRelationFivePaperRadio" checked>
-                        <label class="form-check-label" for="RecurrenceRelationFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="CalculateAreaByIntegrationFivePaperRadio" checked>
+                        <label class="form-check-label" for="CalculateAreaByIntegrationFivePaperRadio">
                             4問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="RecurrenceRelationTenPaperRadio">
-                        <label class="form-check-label" for="RecurrenceRelationTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="CalculateAreaByIntegrationTenPaperRadio">
+                        <label class="form-check-label" for="CalculateAreaByIntegrationTenPaperRadio">
                             4問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="RecurrenceRelationFifteenPaperRadio">
-                        <label class="form-check-label" for="RecurrenceRelationFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="CalculateAreaByIntegrationFifteenPaperRadio">
+                        <label class="form-check-label" for="CalculateAreaByIntegrationFifteenPaperRadio">
                             4問×15枚
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'recurrence_relation_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'recurrence_relation_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'calculate_area_by_integration_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'calculate_area_by_integration_display' %}">      
             </form>
         </div>
     </div>

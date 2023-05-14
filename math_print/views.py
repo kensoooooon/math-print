@@ -50,6 +50,7 @@ from .math_process.trigonometric_function import TrigonometricFunctionProblem
 from .math_process.quadratic_inequality import QuadraticInequality
 from .math_process.same_denominator_calculate import SameDenominatorCalculate
 from .math_process.line_and_flat_positional_relationship import LineAndFlatPositionalRelationship
+from .math_process.calculate_area_by_integration import CalculateAreaByIntegration
 
 
 def index(request):
@@ -1506,8 +1507,8 @@ def print_line_and_flat_positional_relationship(request):
 
 # display section
 
-def print_calculate_volume_by_integration(request):
-    return (request, 'math_print/highschool2/calculate_volume_by_integration/for_print.html', {})
+def print_calculate_area_by_integration(request):
+    return (request, 'math_print/highschool2/calculate_area_by_integration/for_print.html', {})
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2716,5 +2717,22 @@ def display_line_and_flat_positional_relationship(request):
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
-def display_calculate_volume_by_integration(request):
-    return render(request, 'math_print/highschool2/calculate_volume_by_integration/for_display.html', {})
+def display_calculate_area_by_integration(request):
+    """平面上の面積を、各種公式を使って求める問題のリクエスト受信と問題出力を担当。
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+    """
+    PROBLEM_NUMBER = 4
+    used_formulas = request.POST.getlist("used_formula")
+    if not (used_formulas):
+        used_formulas.append("one_sixth")
+        math_problem_tuple_list = []
+        for _ in range(int(PROBLEM_NUMBER // 2)):
+            problem1 = CalculateAreaByIntegration(used_formulas=used_formulas)
+            problem2 = CalculateAreaByIntegration(used_formulas=used_formulas)
+            math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool2/calculate_area_by_integration/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

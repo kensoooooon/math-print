@@ -12,9 +12,13 @@
         面積が無限小数になってしまう問題は解決済み
         混在型の式の表記が甘い
             ・ちゃんと上-下、つまり符号が調整されていない
+                
             ・最後の3乗の部分で、β-αの3乗の部分のカッコ回りがガバい
+                ちょっと試してみたが、手作業で追加してくのが妥当？
+                    とりあえずok
 """
 from random import choice, random, randint
+from typing import Dict, Tuple
 
 
 import sympy as sy
@@ -30,7 +34,7 @@ class CalculateAreaByIntegration:
     Raises:
         ValueError: 想定されていない公式が抽選されたときに挙上
     """
-    def __init__(self, **settings: dict) -> None:
+    def __init__(self, **settings: Dict) -> None:
         """初期設定
         
         Args:
@@ -43,7 +47,7 @@ class CalculateAreaByIntegration:
         else:
             raise ValueError(f"'used_formula' is {used_formula}. This isn't expected value. Please check {settings['used_formulas']}.")
     
-    def _make_one_sixth_problem(self) -> tuple[str, str]:
+    def _make_one_sixth_problem(self) -> Tuple[str, str]:
         """1/6公式を利用する問題と解答を出力
         
         Returns:
@@ -70,15 +74,22 @@ class CalculateAreaByIntegration:
                     bigger_answer, smaller_answer = answer2, answer1
                 quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
                 latex_problem = f"\\( {sy.latex(quadratic_function)} \\)"\
-                    "とx軸で囲まれた部分の面積を求めよ。"
+                    "と\\( x \\)軸で囲まれた部分の面積を求めよ。"
                 area = abs(quadratic_coefficient * sy.Rational(1, 6) * (answer1 - answer2) ** 3)
                 latex_answer = f"\\( {sy.latex(quadratic_function)} \\)"\
                     f"\\( = {sy.latex(sy.factor(quadratic_function))}\\)となる。 \n"\
-                    f"よってx軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。そのため、2次関数とx軸で囲まれた面積は、\n"\
-                    f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(quadratic_function)} \\)"\
-                    f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function))} \\)\n"\
-                    f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} ({bigger_answer} - {smaller_answer} ) ^ 3\\)"\
-                    f"\\( = {sy.latex(area)} \\)"
+                    f"そのため、2次関数と\\( x \\)軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。そのため、2次関数と\\( x \\)軸で囲まれた面積は、\n"\
+                    f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} ({sy.latex(quadratic_function)}) dx\\)"\
+                    f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function))} dx\\)\n"
+                if smaller_answer >= 0:
+                    latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} ({bigger_answer} - {smaller_answer})^3\\)"
+                else:
+                    if bigger_answer >= 0:
+                        latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
+                    else:
+                        latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace {bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
+                latex_answer += f"\\( = {sy.latex(area)} \\)"
+                # latex_answer = f"\\(\\lbrace  5 - 3 \\rbrace \\)"
             else:
                 latex_answer = "dummy answer of quadratic_function and line in one_sixth"
                 latex_problem = "dummy problem of quadratic_function and line in one_sixth"

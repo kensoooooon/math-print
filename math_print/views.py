@@ -2726,7 +2726,8 @@ def display_calculate_area_by_integration(request):
     Returns:
         math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
     """
-    PROBLEM_NUMBER = 4
+    # PROBLEM_NUMBER = 4
+    PROBLEM_NUMBER = 20
     used_formulas = request.POST.getlist("used_formula")
     if not (used_formulas):
         used_formulas.append("one_sixth")

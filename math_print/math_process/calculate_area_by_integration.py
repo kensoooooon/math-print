@@ -5,6 +5,14 @@
         ありうるパターンは、2次関数と直線の間の面積、2つの2次関数の間の面積、3次の係数が等しい3次関数の間の面積
     記入の流れとしては、vector_cross_pointに近い
         latexとそうでないものをこちらで混在させてhtmlに渡す感じになる
+
+5/15
+引き続き作成
+    そこそこによさげだが、細かいところで表記が甘い
+        面積が無限小数になってしまう問題は解決済み
+        混在型の式の表記が甘い
+            ・ちゃんと上-下、つまり符号が調整されていない
+            ・最後の3乗の部分で、β-αの3乗の部分のカッコ回りがガバい
 """
 from random import choice, random, randint
 
@@ -63,13 +71,13 @@ class CalculateAreaByIntegration:
                 quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
                 latex_problem = f"\\( {sy.latex(quadratic_function)} \\)"\
                     "とx軸で囲まれた部分の面積を求めよ。"
-                area = abs(quadratic_coefficient / 6 * (answer1 - answer2) ** 3)
+                area = abs(quadratic_coefficient * sy.Rational(1, 6) * (answer1 - answer2) ** 3)
                 latex_answer = f"\\( {sy.latex(quadratic_function)} \\)"\
                     f"\\( = {sy.latex(sy.factor(quadratic_function))}\\)となる。 \n"\
                     f"よってx軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。そのため、2次関数とx軸で囲まれた面積は、\n"\
                     f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(quadratic_function)} \\)"\
                     f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function))} \\)\n"\
-                    f"\\( = |{quadratic_coefficient}| ({bigger_answer} - {smaller_answer} ) ** 3\\)"\
+                    f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} ({bigger_answer} - {smaller_answer} ) ^ 3\\)"\
                     f"\\( = {sy.latex(area)} \\)"
             else:
                 latex_answer = "dummy answer of quadratic_function and line in one_sixth"

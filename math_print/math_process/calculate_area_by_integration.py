@@ -15,7 +15,10 @@
                 
             ・最後の3乗の部分で、β-αの3乗の部分のカッコ回りがガバい
                 ちょっと試してみたが、手作業で追加してくのが妥当？
-                    とりあえずok
+                    とりあえずok]
+
+5/16
+    引き算のきちんとした表示
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -78,16 +81,21 @@ class CalculateAreaByIntegration:
                 area = abs(quadratic_coefficient * sy.Rational(1, 6) * (answer1 - answer2) ** 3)
                 latex_answer = f"\\( {sy.latex(quadratic_function)} \\)"\
                     f"\\( = {sy.latex(sy.factor(quadratic_function))}\\)となる。 \n"\
-                    f"そのため、2次関数と\\( x \\)軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。そのため、2次関数と\\( x \\)軸で囲まれた面積は、\n"\
-                    f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} ({sy.latex(quadratic_function)}) dx\\)"\
-                    f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function))} dx\\)\n"
+                    f"そのため、2次関数と\\( x \\)軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。\n"\
+                    "よって、2次関数と\\( x \\)軸で囲まれた面積は、\n"
+                if quadratic_coefficient > 0:
+                    quadratic_function_for_integration = 0 - quadratic_function
+                else:
+                    quadratic_function_for_integration = quadratic_function - 0
+                latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} ({sy.latex(quadratic_function_for_integration)}) dx\\)"\
+                    f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function_for_integration))} dx\\)\n"
                 if smaller_answer >= 0:
                     latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} ({bigger_answer} - {smaller_answer})^3\\)"
                 else:
                     if bigger_answer >= 0:
                         latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
                     else:
-                        latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace {bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
                 latex_answer += f"\\( = {sy.latex(area)} \\)"
                 # latex_answer = f"\\(\\lbrace  5 - 3 \\rbrace \\)"
             else:
@@ -100,3 +108,22 @@ class CalculateAreaByIntegration:
             latex_answer = "dummy answer in between_cubic_functions"
             latex_problem = "dummy problem in between_cubic_functions"
         return latex_answer, latex_problem
+    
+    def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:
+        """指定された条件と範囲でランダムな整数を出力
+        
+        Args:
+            min_num (int, optional): 最小値
+            max_num (int, optional): 最大値
+            remove_zero(bool, optional): 返す値に0が入るか
+        
+        Return:
+            integer (sy.Integer): sympyで計算に用いられる整数
+        """
+        integer = randint(min_num, max_num)
+        if (integer == 0) and (remove_zero == True):
+            if random() > 0.5:
+                integer +=  randint(1, max_num)
+            else:
+                integer += randint(min_num, -1)
+        return sy.Integer(integer)

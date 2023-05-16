@@ -15,10 +15,12 @@
                 
             ・最後の3乗の部分で、β-αの3乗の部分のカッコ回りがガバい
                 ちょっと試してみたが、手作業で追加してくのが妥当？
-                    とりあえずok]
+                    とりあえずok
 
 5/16
     引き算のきちんとした表示
+        おおむねok
+    次は別のパターン(二次関数と直線)
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -93,12 +95,12 @@ class CalculateAreaByIntegration:
                 else:
                     latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(divided_quadratic_function)} dx\\)\n"
                 if smaller_answer >= 0:
-                    latex_answer += f"\\( = \\frac{{{quadratic_coefficient}}}{{6}} ({bigger_answer} - {smaller_answer})^3\\)"
+                    latex_answer += f"\\( = {-1 * abs(quadratic_coefficient)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer})^3\\)"
                 else:
                     if bigger_answer >= 0:
-                        latex_answer += f"\\( = \\frac{{{quadratic_coefficient}}}{{6}} \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = {-1 * abs(quadratic_coefficient)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
                     else:
-                        latex_answer += f"\\( = \\frac{{{quadratic_coefficient}}}{{6}} \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = {-1 * abs(quadratic_coefficient)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
                 latex_answer += f"\\( = {sy.latex(area)} \\)"
                 # latex_answer = f"\\(\\lbrace  5 - 3 \\rbrace \\)"
             else:

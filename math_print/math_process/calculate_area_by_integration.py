@@ -65,12 +65,9 @@ class CalculateAreaByIntegration:
         problem_type = choice(["between_quadratic_function_and_line", "between_quadratic_functions", "between_cubic_functions"])
         if problem_type == "between_quadratic_function_and_line":
             if random() > 0.5:
-                quadratic_coefficient = randint(-3, 3)
-                answer1 = randint(-3, 3)
-                if random() > 0.5:
-                    answer2 = answer1 + randint(1, 3)
-                else:
-                    answer2 = answer1 + randint(-3, -1)
+                quadratic_coefficient = self._random_integer(remove_zero=True)
+                answer1 = self._random_integer(min_num=-3, max_num=3)
+                answer2 = answer1 + self._random_integer(min_num=-3, max_num=3, remove_zero=True)
                 if answer1 > answer2:
                     bigger_answer, smaller_answer = answer1, answer2
                 else:
@@ -87,15 +84,21 @@ class CalculateAreaByIntegration:
                     quadratic_function_for_integration = 0 - quadratic_function
                 else:
                     quadratic_function_for_integration = quadratic_function - 0
-                latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} ({sy.latex(quadratic_function_for_integration)}) dx\\)"\
-                    f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function_for_integration))} dx\\)\n"
+                latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} ({sy.latex(quadratic_function_for_integration)}) dx\\)"
+                divided_quadratic_function = sy.factor(quadratic_function_for_integration / quadratic_coefficient)
+                if quadratic_coefficient == 1:
+                    latex_answer += f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(divided_quadratic_function)} dx\\)\n"
+                elif quadratic_coefficient == -1:
+                    latex_answer += f"\\( = - \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(divided_quadratic_function)} dx\\)\n"
+                else:
+                    latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(divided_quadratic_function)} dx\\)\n"
                 if smaller_answer >= 0:
-                    latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} ({bigger_answer} - {smaller_answer})^3\\)"
+                    latex_answer += f"\\( = \\frac{{{quadratic_coefficient}}}{{6}} ({bigger_answer} - {smaller_answer})^3\\)"
                 else:
                     if bigger_answer >= 0:
-                        latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = \\frac{{{quadratic_coefficient}}}{{6}} \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
                     else:
-                        latex_answer += f"\\( = \\frac{{|{quadratic_coefficient}|}}{{6}} \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = \\frac{{{quadratic_coefficient}}}{{6}} \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
                 latex_answer += f"\\( = {sy.latex(area)} \\)"
                 # latex_answer = f"\\(\\lbrace  5 - 3 \\rbrace \\)"
             else:

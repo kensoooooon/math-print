@@ -66,18 +66,19 @@ class CalculateAreaByIntegration:
         x = sy.Symbol("x", real=True)
         problem_type = choice(["between_quadratic_function_and_line", "between_quadratic_functions", "between_cubic_functions"])
         if problem_type == "between_quadratic_function_and_line":
+            # between quadratic function and x-axis
             if random() > 0.5:
                 quadratic_coefficient = self._random_integer(remove_zero=True)
                 answer1 = self._random_integer(min_num=-3, max_num=3)
                 answer2 = answer1 + self._random_integer(min_num=-3, max_num=3, remove_zero=True)
                 if answer1 > answer2:
                     bigger_answer, smaller_answer = answer1, answer2
-                else:
+                elif answer1 < answer2:
                     bigger_answer, smaller_answer = answer2, answer1
                 quadratic_function = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
-                latex_problem = f"\\( {sy.latex(quadratic_function)} \\)"\
+                latex_problem = f"\\( y = {sy.latex(quadratic_function)} \\)"\
                     "と\\( x \\)軸で囲まれた部分の面積を求めよ。"
-                area = abs(quadratic_coefficient * sy.Rational(1, 6) * (answer1 - answer2) ** 3)
+                area = abs(quadratic_coefficient) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
                 latex_answer = f"\\( {sy.latex(quadratic_function)} \\)"\
                     f"\\( = {sy.latex(sy.factor(quadratic_function))}\\)となる。 \n"\
                     f"そのため、2次関数と\\( x \\)軸との交点は、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。\n"\
@@ -104,8 +105,86 @@ class CalculateAreaByIntegration:
                 latex_answer += f"\\( = {sy.latex(area)} \\)"
                 # latex_answer = f"\\(\\lbrace  5 - 3 \\rbrace \\)"
             else:
-                latex_answer = "dummy answer of quadratic_function and line in one_sixth"
-                latex_problem = "dummy problem of quadratic_function and line in one_sixth"
+                """
+                quadratic_coefficient = 2
+                smaller_answer, bigger_answer= -1, 2
+
+                after_factorization_quadratic_function = sy.expand(2 * (x + 1) * (x - 2))
+                print(after_factorization_quadratic_function)
+                # b - m 
+                linear_coefficient = after_factorization_quadratic_function.coeff(x, 1)
+                # c - n
+                intercept = after_factorization_quadratic_function.coeff(x, 0)
+                print(linear_coefficient)
+                print(intercept)
+                print("---------------")
+                # quadratic function
+                quadratic_linear_coefficient = random_integer()
+                print(f"quadratic_linear_coefficient: {quadratic_linear_coefficient}")
+                quadratic_constant = random_integer()
+                print(f"quadratic_constant: {quadratic_constant}")
+                quadratic_function = sy.expand(quadratic_coefficient * x ** 2 + quadratic_linear_coefficient * x + quadratic_constant)
+                print(f"quadratic_function: {quadratic_function}")
+                print("-------------------------")
+                # m = b - linear_coefficient
+                line_linear_coefficient = quadratic_linear_coefficient - linear_coefficient
+                # n = c - intercept
+                line_intercept = quadratic_constant - intercept
+                line = line_linear_coefficient * x + line_intercept
+                print(f"line: {line}")
+                print("--------------------")
+                after = sy.factor(line - quadratic_function, x)
+                print(f"after: {after}")
+                """
+                answer1 = self._random_integer(min_num=-3, max_num=-3)
+                answer2 = answer1 + self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+                if answer1 > answer2:
+                    bigger_answer, smaller_answer = answer1, answer2
+                elif answer1 < answer2:
+                    bigger_answer, smaller_answer = answer2, answer1
+                quadratic_coefficient = self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+                if quadratic_coefficient > 0:
+                    quadratic_function_after_subtraction = sy.expand(-quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
+                elif quadratic_coefficient < 0:
+                    quadratic_function_after_subtraction = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
+                linear_coefficient_after_subtraction = quadratic_function_after_subtraction.coeff(x, 1)
+                constant_term_after_subtraction = quadratic_function_after_subtraction.coeff(x, 0)
+                linear_coefficient_of_quadratic_function = self._random_integer()
+                constant_term_of_quadratic_function = self._random_integer()
+                quadratic_function = quadratic_coefficient * x ** 2 + linear_coefficient_of_quadratic_function * x + constant_term_of_quadratic_function
+                if quadratic_coefficient > 0:
+                    linear_coefficient_of_linear_function = linear_coefficient_of_quadratic_function + linear_coefficient_after_subtraction
+                    constant_term_of_linear_function = constant_term_of_quadratic_function + constant_term_after_subtraction
+                elif quadratic_coefficient < 0:
+                    linear_coefficient_of_linear_function = linear_coefficient_of_quadratic_function - linear_coefficient_after_subtraction
+                    constant_term_of_linear_function = constant_term_of_quadratic_function - constant_term_after_subtraction
+                linear_function = linear_coefficient_of_linear_function * x + constant_term_of_linear_function
+                latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)"\
+                    f"と\\( y = {sy.latex(sy.expand(linear_function))} \\)で囲まれた部分の面積を求めよ。"
+                area = abs(quadratic_coefficient) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
+                latex_answer = "今、2次関数と直線は、"
+                if quadratic_coefficient > 0:
+                    latex_answer += "直線の方が上にある。\n"
+                    latex_answer += f"また、その交点は、\n \\( ({sy.latex(linear_function)}) - ({sy.latex(quadratic_function)}) = 0\\)\n"
+                elif quadratic_coefficient < 0:
+                    latex_answer += "2次関数の方が上にある。\n"
+                    latex_answer += f"また、その交点は、\n \\( ({sy.latex(quadratic_function)}) - ({sy.latex(linear_function)}) = 0\\)\n"
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_after_subtraction))} = 0\\)\n"
+                latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_after_subtraction))} = 0\\)\n"
+                latex_answer += f"より、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。\n"
+                latex_answer += "そのため、2次関数と直線で囲まれた面積は、\n"
+                latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function_after_subtraction))}\\)\n"
+                coefficient_before_integration = quadratic_function_after_subtraction.coeff(x, 2)
+                divided_quadratic_function_after_subtraction = quadratic_function_after_subtraction * sy.Rational(1, coefficient_before_integration)
+                latex_answer += f"\\( = {sy.latex(coefficient_before_integration)} \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(divided_quadratic_function_after_subtraction))} \\)\n"
+                if smaller_answer > 0:
+                    latex_answer += f"\\( = {sy.latex(coefficient_before_integration)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer})^3\\)"
+                else:
+                    if bigger_answer >= 0:
+                        latex_answer += f"\\( = {sy.latex(coefficient_before_integration)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3\\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(coefficient_before_integration)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3\\)\n"
+                latex_answer += f"\\( = {sy.latex(area)} \\)"
         elif problem_type == "between_quadratic_functions":
             latex_answer = "dummy answer in between_quadratic_functions"
             latex_problem = "dummy problem in between_quadratic_functions"

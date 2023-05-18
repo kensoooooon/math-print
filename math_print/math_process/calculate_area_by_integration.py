@@ -23,6 +23,11 @@
     次は別のパターン(二次関数と直線)
         多分ok
     次の次は2次関数間
+    
+5/17
+    一部計算がガバ
+        具体的には1次の係数が怪しい
+            初めに制定した2次関数のcoeffの扱いが怪しい
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -157,7 +162,7 @@ class CalculateAreaByIntegration:
                         latex_answer += f"\\( = {sy.latex(coefficient_before_integration)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3\\)\n"
                 latex_answer += f"\\( = {sy.latex(area)} \\)"
         elif problem_type == "between_quadratic_functions":
-            quadratic_coefficient = self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+            quadratic_coefficient = self._random_integer(min_num=-4, max_num=-2, remove_zero=True)
             print(f"quadratic_coefficient: {quadratic_coefficient}")
             answer1 = self._random_integer(min_num=-3, max_num=3)
             answer2 = answer1 + self._random_integer(min_num=-3, max_num=3, remove_zero=True)
@@ -166,8 +171,9 @@ class CalculateAreaByIntegration:
             elif answer1 < answer2:
                 bigger_answer, smaller_answer = answer2, answer1
             print(f"bigger_answer: {bigger_answer}, smaller_answer: {smaller_answer}")
-            quadratic_function_after_subtraction = quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer)
+            quadratic_function_after_subtraction = sy.expand(quadratic_coefficient * (x - smaller_answer) * (x - bigger_answer))
             print(f"quadratic_function_after_subtraction: {quadratic_function_after_subtraction}")
+            print(f"expanded quadratic_function_after_subtraction: {sy.expand(quadratic_function_after_subtraction)}")
             linear_coefficient_of_quadratic_function_after_subtraction = quadratic_function_after_subtraction.coeff(x, 1)
             print(f"linear_coefficient_of_quadratic_function_after_subtraction: {linear_coefficient_of_quadratic_function_after_subtraction}")
             constant_term_of_quadratic_function_after_subtraction = quadratic_function_after_subtraction.coeff(x, 0)
@@ -177,11 +183,11 @@ class CalculateAreaByIntegration:
             ここでイコールになるとやばい
             0もダメ
             """
-            negative_quadratic_coefficient = quadratic_coefficient + self._random_integer(min_num=-3, max_num=-1, remove_zero=True)
+            negative_quadratic_coefficient = quadratic_coefficient + self._random_integer(min_num=quadratic_coefficient+1, max_num=, remove_zero=True)
             if negative_quadratic_coefficient == 0:
                 negative_quadratic_coefficient = self._random_integer(min_num=-3, max_num=-1)
             print(f"negative_quadratic_coefficient: {negative_quadratic_coefficient}")
-            linear_coefficient_of_negative_quadratic_function = self._random_integer(min_num=-3, max_num=3)
+            linear_coefficient_of_negative_quadratic_function = self._random_integer(min_num=-3, max_num=-1)
             print(f"linear_coefficient_of_negative_quadratic_function: {linear_coefficient_of_negative_quadratic_function}")
             constant_term_of_negative_quadratic_function = self._random_integer(min_num=-3, max_num=3)
             print(f"constant_term_of_negative_quadratic_function: {constant_term_of_negative_quadratic_function}")
@@ -226,6 +232,8 @@ class CalculateAreaByIntegration:
         Return:
             integer (sy.Integer): sympyで計算に用いられる整数
         """
+        print(f"min_num: {min_num}")
+        print(f"max_num: {max_num}")
         integer = randint(min_num, max_num)
         if (integer == 0) and (remove_zero == True):
             if random() > 0.5:

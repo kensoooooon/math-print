@@ -45,6 +45,13 @@
         わりと終わり
     上下関係の示し方が少し怪しい？
         不等式で示す？
+
+5/20
+    上下の示し方について追加
+        f(x) > g(x)....でカウントする？
+        示し方はいくらか考えられるが、印刷したときの表示エリアなんかも踏まえると、絶対必須というわけでもなさそう
+        とりあえず追加しとく
+            2次関数とx軸には追加完了。とりあえずよさげ？何もないよりは        
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -102,13 +109,36 @@ class CalculateAreaByIntegration:
                 quadratic_function_after_subtraction = sy.expand(a * (x - smaller_answer) * (x - bigger_answer))
                 b = quadratic_function_after_subtraction.coeff(x, 1)
                 c = quadratic_function_after_subtraction.coeff(x, 0)
+                # 多分不要。負のやつしか出てこなくなる
+                """
                 if a > 0:
                     quadratic_function = -1 * quadratic_function_after_subtraction
                 elif a < 0:
                     quadratic_function = quadratic_function_after_subtraction
+                """
+                if random() > 0.5:
+                    quadratic_function = quadratic_function_after_subtraction
+                else:
+                    quadratic_function = -1 * quadratic_function_after_subtraction
                 latex_problem = f"\\( y = {sy.latex(quadratic_function)} \\)と\\( x \\)軸で囲まれた部分の面積を求めよ。"
                 area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
-                latex_answer = "今、2次関数と\\( x \\)軸は、"
+                # new added part to describe which is upper
+                a1 = quadratic_function.coeff(x, 2)
+                latex_answer = f"まず、x軸と2次関数の関係を確認するために、"
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function))} \\geqq 0\\)を解くと、\n"
+                if a1 > 0:
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function))} \\geqq 0\\)\n"
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function * sy.Rational(1, a1)))} \\geqq 0\\)\n"
+                    latex_answer += f"\\( x \\leqq {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\leqq x\\)\n"
+                elif a1 < 0:
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function))} \\geqq 0\\)\n"
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function * sy.Rational(1, a1)))} \\leqq 0\\)\n"
+                    latex_answer += f"\\( {sy.latex(smaller_answer)} \\leqq x \\leqq {sy.latex(bigger_answer)} \\)\n"
+                latex_answer += f"となるため、2次関数と\\( x \\)軸で囲まれた面積は、\\( {sy.latex(smaller_answer)} \\leqq x \\leqq {sy.latex(bigger_answer)}\\)の範囲にある。\n"
+                latex_answer += "また、その範囲において、2次関数と\\( x \\)軸の位置関係は、"
+                # new removed part for inequality
+                # 不等式追加して冗長になったのでいったん取り外しておく
+                """
                 if a > 0:
                     latex_answer += "\\( x \\)軸の方が上にある。\n"
                     latex_answer += "また、その交点は、\n"
@@ -120,6 +150,11 @@ class CalculateAreaByIntegration:
                 latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_after_subtraction))}  = 0 \\)\n"
                 latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_after_subtraction))} = 0 \\)\n"
                 latex_answer += f"より、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。\n"
+                """
+                if a1 > 0:
+                    latex_answer += "\\( x \\)軸の方が上にある。\n"
+                elif a1 < 0:
+                    latex_answer += f"\\( x \\)軸の方が下にある。\n"
                 latex_answer += f"よって、2次関数と\\( x \\)軸で囲まれた面積は、\n"
                 latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function_after_subtraction))} dx\\)"
                 divided_quadratic_function_after_subtraction = quadratic_function_after_subtraction * sy.Rational(1, a)

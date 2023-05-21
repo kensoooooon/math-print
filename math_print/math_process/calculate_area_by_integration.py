@@ -124,7 +124,7 @@ class CalculateAreaByIntegration:
                 area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
                 # new added part to describe which is upper
                 a1 = quadratic_function.coeff(x, 2)
-                latex_answer = f"まず、x軸と2次関数の関係を確認するために、"
+                latex_answer = f"まず、\\( x \\)軸と2次関数の関係を確認するために、"
                 latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function))} \\geqq 0\\)を解くと、\n"
                 if a1 > 0:
                     latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function))} \\geqq 0\\)\n"
@@ -179,24 +179,49 @@ class CalculateAreaByIntegration:
                 elif answer1 < answer2:
                     bigger_answer, smaller_answer = answer2, answer1
                 a = self._random_integer(min_num=-3, max_num=-1, remove_zero=True)
-                quadratic_function_after_subtraction = sy.expand(a * (x - smaller_answer) * (bigger_answer))
+                quadratic_function_after_subtraction = sy.expand(a * (x - smaller_answer) * (x - bigger_answer))
+                print(f"quadratic_function_after_subtraction: {quadratic_function_after_subtraction}")
                 b = quadratic_function_after_subtraction.coeff(x, 1)
                 c = quadratic_function_after_subtraction.coeff(x, 0)
+                # a1 > 0
+                if random() > 0.5:
+                    a1 = -a
+                else:
+                    a1 = a
                 # prevent not to be b1 == 0
-                b1 = b + self._random_integer(-3, 3, remove_zero=True)
-                c1 = self._random_integer()
-                quadratic_function = a * x ** 2 + b1 * x + c1
-                if a > 0:
+                b1 = b + self._random_integer(remove_zero=False)
+                c1 = self._random_integer(remove_zero=False)
+                quadratic_function = a1 * x ** 2 + b1 * x + c1
+                print(f"quadratic_function: {quadratic_function}")
+                if a1 > 0:
                     m = b1 + b
                     n = c1 + c
-                elif a < 0:
+                elif a1 < 0:
                     m = b1 - b
                     n = c1 - c
                 linear_function = m * x + n
+                print(f"linear_function: {linear_function}")
+                print("-------------------------------------")
                 latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)"\
                     f"と\\( y = {sy.latex(sy.expand(linear_function))} \\)で囲まれた部分の面積を求めよ。"
                 area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
-                latex_answer = "今、2次関数と直線は、"
+                latex_answer = f"まず、 2次関数と直線の位置関係を確認するために、"
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function))} \\geqq {sy.latex(sy.expand(linear_function))} \\)を解くと、\n"
+                quadratic_function_for_display = quadratic_function - linear_function
+                if a1 > 0:
+                    latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_for_display * sy.Rational(1, a1)))} \\geqq 0 \\)\n"
+                    latex_answer += f"\\( x \\leqq {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\leqq x \\)\n"
+                elif a1 < 0:
+                    latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                    latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_for_display * sy.Rational(1, a1)))} \\leqq 0 \\)\n"
+                    latex_answer += f"\\( {sy.latex(smaller_answer)} \\leqq x \\leqq {sy.latex(bigger_answer)} \\)\n"
+                latex_answer += f"となるため、2次関数と直線で囲まれた面積は、\\( {sy.latex(smaller_answer)} \\leqq x \\leqq {sy.latex(bigger_answer)} \\)の範囲にある。\n"
+                latex_answer += "また、その範囲において、2次関数と直線の位置関係は、"
+                # new removed part for inequality
+                """
                 if a > 0:
                     latex_answer += "直線の方が上にある。\n"
                     latex_answer += f"また、その交点は、\n \\( ({sy.latex(linear_function)}) - ({sy.latex(quadratic_function)}) = 0\\)\n"
@@ -206,6 +231,11 @@ class CalculateAreaByIntegration:
                 latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_after_subtraction))} = 0\\)\n"
                 latex_answer += f"\\( {sy.latex(sy.factor(quadratic_function_after_subtraction))} = 0\\)\n"
                 latex_answer += f"より、\\( x = {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\)である。\n"
+                """
+                if a1 > 0:
+                    latex_answer += "直線の方が上にある。\n"
+                elif a1 < 0:
+                    latex_answer += "2次関数のほうが上にある。\n"
                 latex_answer += "よって、2次関数と直線で囲まれた面積は、\n"
                 latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function_after_subtraction))} dx \\)\n"
                 divided_quadratic_function_after_subtraction = quadratic_function_after_subtraction * sy.Rational(1, a)

@@ -258,8 +258,8 @@ class CalculateAreaByIntegration:
                 latex_answer += f"\\( {sy.latex(sy.expand(upper_quadratic_function))} \\geqq {sy.latex(sy.expand(lower_quadratic_function))} \\)を解くと、\n"
                 quadratic_function_for_display = upper_quadratic_function - lower_quadratic_function
                 latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
-                factored_quadratic_function_display = sy.factor(quadratic_function_for_display)
-                latex_answer += f"\\( {sy.latex(factored_quadratic_function_display)} \\geqq 0 \\)\n"
+                factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
+                latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
                 quadratic_coefficient = sy.expand(factored_quadratic_function_display).coeff(x, 2)
                 divided_and_factored_quadratic_function_for_display = factored_quadratic_function_display * sy.Rational(1, quadratic_coefficient)
                 latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\leqq 0 \\)\n"
@@ -323,6 +323,26 @@ class CalculateAreaByIntegration:
             c2 = c1 - c
             d2 = d1 - d
             lower_cubic_function = a * x ** 3 + b2 * x ** 2 + c2 * x + d2
+            area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
+            display_mode = choice(["upper_is_first", "lower_is_first"])
+            if display_mode == "upper_is_first":
+                first_display_cubic_function = sy.expand(upper_cubic_function)
+                second_display_cubic_function = sy.expand(lower_cubic_function)
+            elif display_mode == "lower_is_first":
+                first_display_cubic_function = sy.expand(lower_cubic_function)
+                second_display_cubic_function = sy.expand(upper_cubic_function)
+            latex_problem = f"\\( y = {sy.latex(first_display_cubic_function)} \\)と"
+            latex_problem += f"\\( y = {sy.latex(second_display_cubic_function)} \\)で囲まれた部分の面積を求めよ。"
+            latex_answer = "まず、3次関数同士の位置関係を確認するために、"
+            if display_mode == "upper_is_first":
+                latex_answer += f"\\( {sy.latex(sy.expand(upper_cubic_function))} \\geqq {sy.latex(sy.expand(lower_cubic_function))} \\)を解くと、\n"
+                cubic_function_for_display = upper_cubic_function - lower_cubic_function
+                latex_answer += f"\\( {sy.latex(sy.expand(cubic_function_for_display))} \\geqq 0 \\)\n"
+                factored_cubic_function_for_display = sy.factor(cubic_function_for_display)
+                latex_answer += f"\\( {sy.latex(factored_cubic_function_for_display)} \\geqq 0\\)"
+            # here
+            elif display_mode == "lower_is_first":
+                pass
             latex_answer = "dummy answer in between_cubic_functions"
             latex_problem = "dummy problem in between_cubic_functions"
         return latex_answer, latex_problem

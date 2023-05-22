@@ -51,7 +51,10 @@
         f(x) > g(x)....でカウントする？
         示し方はいくらか考えられるが、印刷したときの表示エリアなんかも踏まえると、絶対必須というわけでもなさそう
         とりあえず追加しとく
-            2次関数とx軸には追加完了。とりあえずよさげ？何もないよりは        
+            2次関数とx軸には追加完了。とりあえずよさげ？何もないよりは
+
+5/22
+    追加説明は一通り。次は3次関数間
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -297,7 +300,29 @@ class CalculateAreaByIntegration:
             elif smaller_answer == 0:
                 latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer}) ^3\\)\n"
             latex_answer += f"\\( = {sy.latex(area)} \\)"
+        # (ax^3+b1x^2+c1x+d1) - (ax^3+b2x^2+c2x+d2) = b(x-a)(x-b) = bx^2 + cx + d
         elif problem_type == "between_cubic_functions":
+            b = self._random_integer(min_num=-3, max_num=-1, remove_zero=True)
+            answer1 = self._random_integer(min_num=-3, max_num=3)
+            answer2 = answer1 + self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+            if answer1 > answer2:
+                bigger_answer, smaller_answer = answer1, answer2
+            elif answer1 < answer2:
+                bigger_answer, smaller_answer = answer2, answer1
+            quadratic_function_after_subtraction = sy.expand(b * (x - smaller_answer) * (x - bigger_answer))
+            c = quadratic_function_after_subtraction.coeff(x, 1)
+            d = quadratic_function_after_subtraction.coeff(x, 0)
+            # ax^3 + b1x^2 + c1x + d1
+            a = self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+            b1 = self._random_integer(min_num=-3, max_num=3)
+            c1 = self._random_integer(min_num=-3, max_num=3)
+            d1 = self._random_integer(min_num=-3, max_num=3)
+            upper_cubic_function = a * x ** 3 + b1 * x ** 2 + c1 * x + d1
+            # ax^3 + b2x^2 + c2x + d2
+            b2 = b1 - b
+            c2 = c1 - c
+            d2 = d1 - d
+            lower_cubic_function = a * x ** 3 + b2 * x ** 2 + c2 * x + d2
             latex_answer = "dummy answer in between_cubic_functions"
             latex_problem = "dummy problem in between_cubic_functions"
         return latex_answer, latex_problem

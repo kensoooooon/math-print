@@ -2718,7 +2718,7 @@ def display_line_and_flat_positional_relationship(request):
 
 
 def display_calculate_area_by_integration(request):
-    """平面上の面積を、各種公式を使って求める問題のリクエスト受信と問題出力を担当。
+    """平面上の面積を、積分の各種公式を使って求める問題のリクエスト受信と問題出力を担当。
 
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -2728,12 +2728,18 @@ def display_calculate_area_by_integration(request):
     """
     # PROBLEM_NUMBER = 4
     PROBLEM_NUMBER = 20
-    used_formulas = request.POST.getlist("used_formula")
-    if not (used_formulas):
-        used_formulas.append("one_sixth")
+    problem_types = []
+    problem_types += request.POST.getlist("one_sixth_problem")
+    problem_types += request.POST.getlist("one_third_problem")
+    problem_types += request.POST.getlist("one_twelfth_problem")
+    if not (problem_types):
+        problem_types.append("between_quadratic_function_and_x_axis")
+        problem_types.append("between_quadratic_function_and_line")
+        problem_types.append("between_quadratic_functions")
+        problem_types.append("between_cubic_functions")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
-        problem1 = CalculateAreaByIntegration(used_formulas=used_formulas)
-        problem2 = CalculateAreaByIntegration(used_formulas=used_formulas)
+        problem1 = CalculateAreaByIntegration(problem_types=problem_types)
+        problem2 = CalculateAreaByIntegration(problem_types=problem_types)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/calculate_area_by_integration/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})

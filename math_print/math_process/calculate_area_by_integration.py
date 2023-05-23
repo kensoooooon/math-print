@@ -55,6 +55,11 @@
 
 5/22
     追加説明は一通り。次は3次関数間
+
+5/23
+    引き続き3次関数間
+        ひとまず作成完了
+    あとは出題の選択肢をもっと細かくとって、解説と続きの問題を追加
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -144,12 +149,12 @@ class CalculateAreaByIntegration:
                 else:
                     latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(divided_quadratic_function_after_subtraction))} dx\\)\n"
                 if smaller_answer >= 0:
-                    latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer})^3\\)"
+                    latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer})^3 \\)\n"
                 else:
                     if bigger_answer >= 0:
-                        latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3 \\)\n"
                     else:
-                        latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\) "
+                        latex_answer += f"\\( = {sy.latex(a)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3 \\)\n"
                 latex_answer += f"\\( = {sy.latex(area)} \\)"
             # between quadratic function and line(y = ax^2 + bx + c, y = mx + n)
             else:
@@ -260,8 +265,8 @@ class CalculateAreaByIntegration:
                 latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
                 factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
                 latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
-                quadratic_coefficient = sy.expand(factored_quadratic_function_display).coeff(x, 2)
-                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_display * sy.Rational(1, quadratic_coefficient)
+                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
                 latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\leqq 0 \\)\n"
                 latex_answer += f"\\( {sy.latex(smaller_answer)} \\leqq x \\leqq {sy.latex(bigger_answer)} \\)\n"
             elif display_mode == "lower_is_first":
@@ -323,7 +328,7 @@ class CalculateAreaByIntegration:
             c2 = c1 - c
             d2 = d1 - d
             lower_cubic_function = a * x ** 3 + b2 * x ** 2 + c2 * x + d2
-            area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
+            area = abs(b) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
             display_mode = choice(["upper_is_first", "lower_is_first"])
             if display_mode == "upper_is_first":
                 first_display_cubic_function = sy.expand(upper_cubic_function)
@@ -336,15 +341,50 @@ class CalculateAreaByIntegration:
             latex_answer = "まず、3次関数同士の位置関係を確認するために、"
             if display_mode == "upper_is_first":
                 latex_answer += f"\\( {sy.latex(sy.expand(upper_cubic_function))} \\geqq {sy.latex(sy.expand(lower_cubic_function))} \\)を解くと、\n"
-                cubic_function_for_display = upper_cubic_function - lower_cubic_function
-                latex_answer += f"\\( {sy.latex(sy.expand(cubic_function_for_display))} \\geqq 0 \\)\n"
-                factored_cubic_function_for_display = sy.factor(cubic_function_for_display)
-                latex_answer += f"\\( {sy.latex(factored_cubic_function_for_display)} \\geqq 0\\)"
-            # here
+                quadratic_function_for_display = upper_cubic_function - lower_cubic_function
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
+                latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0\\)\n"
+                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
+                latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\leqq 0 \\)\n"
+                latex_answer += f"\\( {sy.latex(smaller_answer)} \\leqq x \\leqq {sy.latex(bigger_answer)} \\)\n"
             elif display_mode == "lower_is_first":
-                pass
-            latex_answer = "dummy answer in between_cubic_functions"
-            latex_problem = "dummy problem in between_cubic_functions"
+                latex_answer += f"\\( {sy.latex(sy.expand(lower_cubic_function))} \\geqq {sy.latex(sy.expand(upper_cubic_function))} \\)を解くと、\n"
+                quadratic_function_for_display = lower_cubic_function - upper_cubic_function
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
+                latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
+                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
+                latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
+                latex_answer += f"\\( x \\leqq {sy.latex(smaller_answer)}, {sy.latex(bigger_answer)} \\leqq x \\)\n"
+            latex_answer += f"となるため、3次関数同士で囲まれた面積は、\\( {sy.latex(smaller_answer )} \\leqq x \\leqq {sy.latex(bigger_answer)} \\)の範囲にある。\n"
+            latex_answer += "また、その範囲において、3次関数同士の位置関係は、"
+            latex_answer += f"\\( y = {sy.latex(sy.expand(upper_cubic_function))} \\)が上、\\( y = {sy.latex(sy.expand(lower_cubic_function))} \\)が下にある。\n"
+            latex_answer += "よって、2つの3次関数で囲まれた面積は、\n"
+            latex_answer += f"\\( \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} ({sy.latex(sy.expand(quadratic_function_after_subtraction))}) dx \\)\n"
+            latex_answer += f"\\( = \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(quadratic_function_after_subtraction))} dx \\)\n"
+            divided_quadratic_function_after_subtraction = quadratic_function_after_subtraction * sy.Rational(1, b)
+            if b == -1:
+                latex_answer += f"\\( = - \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(divided_quadratic_function_after_subtraction))} dx \\)\n"
+            else:
+                latex_answer += f"\\( = {sy.latex(b)} \\int_{{{sy.latex(smaller_answer)}}}^{{{sy.latex(bigger_answer)}}} {sy.latex(sy.factor(divided_quadratic_function_after_subtraction))} dx \\)\n"
+            # bigger_answer > 0
+            if smaller_answer > 0:
+                latex_answer += f"\\( = {sy.latex(b)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer})^3\\)"
+            # bigger_answer > 0 or < 0
+            elif smaller_answer < 0:
+                if bigger_answer > 0:
+                    latex_answer += f"\\( = {sy.latex(b)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3\\)\n"
+                elif bigger_answer < 0:
+                    latex_answer += f"\\( = {sy.latex(b)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace ({bigger_answer}) - ({smaller_answer}) \\rbrace ^3\\)\n"
+                elif bigger_answer == 0:
+                    latex_answer += f"\\( = {sy.latex(b)} \\cdot (-\\frac{{1}}{{6}}) \\lbrace {bigger_answer} - ({smaller_answer}) \\rbrace ^3\\)\n"
+            # bigger_answer > 0
+            elif smaller_answer == 0:
+                latex_answer += f"\\( = {sy.latex(b)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer}) ^3\\)\n"
+            latex_answer += f"\\( = {sy.latex(area)} \\)"
         return latex_answer, latex_problem
     
     def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:

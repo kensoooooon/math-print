@@ -438,13 +438,23 @@ class CalculateAreaByIntegration:
             b = self._random_integer()
             c = self._random_integer()
             quadratic_function = a * x ** 2 + b * x + c
-            tangent_x = self._random_integer()
+            tangent_x = self._random_integer(min_num=-3, max_num=3)
             tangent_y = quadratic_function.subs(x, tangent_x)
             parallel_line_with_y_axis = tangent_x + self._random_integer(remove_zero=True)
             latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、"
             latex_problem += f"その上の点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線、\n"
             latex_problem += f"および \\( x = {sy.latex(parallel_line_with_y_axis)} \\)で囲まれた部分の面積を求めよ。"
-            latex_answer = "dummy answer in between_quadratic_function_and_tangent_and_parallel_line_with_y_axis"
+            latex_answer = "まずは2次関数の接線を求める。\n"
+            differentiated_quadratic_function = sy.diff(quadratic_function)
+            tangent_slope = differentiated_quadratic_function.subs(x, tangent_x)
+            tangent = tangent_slope * (x - tangent_x) + tangent_y
+            latex_answer += f"\\( y' =  {sy.latex(sy.expand(differentiated_quadratic_function))} \\)より、\\( x = {sy.latex(tangent_x)} \\)における接線の傾きは、"
+            latex_answer += f"\\( {sy.latex(tangent_slope)} \\)である。\n"
+            latex_answer += f"よって、接点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線は、\n"
+            if tangent_y > 0:
+                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。"
+            else:
+                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。"
         # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
             latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"

@@ -60,6 +60,15 @@
     引き続き3次関数間
         ひとまず作成完了
     あとは出題の選択肢をもっと細かくとって、解説と続きの問題を追加
+
+5/24
+    1/3公式に着手
+        とりあえずガワは整えた
+        まずは2次関数と接線、およびy軸に平行な直線の間の面積
+            微分等の計算は確認したが、接点のx座標と、x=kのkの大小関係を縛るべきか否かが不明
+                まず等しいのはそもそも囲めないのでアウツ
+                問題は、「左側にできようが右側にできようが、結局同じ計算方法でいけるのか？」という点
+                    手計算してみる系か~
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -74,20 +83,22 @@ class CalculateAreaByIntegration:
     Attributes:
         latex_answer (str): latex形式と通常の文字が混在した解答
         latex_problem (str): latex形式と通常の文字が混在した問題
-    
-    Raises:
-        ValueError: 想定されていない公式が抽選されたときに挙上
     """
     def __init__(self, **settings: Dict) -> None:
         """初期設定
         
         Args:
             settings (dict): 問題を決定する各種設定を格納
+
+        Raises:
+            ValueError: 想定されていない問題のタイプが混入したときに挙上
         """
         sy.init_printing(order="grevlex")
         problem_type = choice(settings["problem_types"])
         if (problem_type == "between_quadratic_function_and_x_axis") or (problem_type == "between_quadratic_function_and_line") or (problem_type == "between_quadratic_functions") or (problem_type == "between_cubic_functions"):
             self.latex_answer, self.latex_problem = self._make_one_sixth_problem(problem_type)
+        elif (problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis") or (problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"):
+            self.latex_answer, self.latex_problem = self._make_one_third_problem(problem_type)
         else:
             raise ValueError(f"'problem_type' is {problem_type}. This isn't expected value. Please check {settings['problem_types']}.")
     
@@ -102,7 +113,10 @@ class CalculateAreaByIntegration:
             latex_problem (str): latex形式と通常の文字が混在した問題
             
         
-        Developing:
+        Raises:
+            ValueError: 1/6公式を利用する問題として想定されていないものが指定されたときに挙上
+        
+        Note:
             2次関数と直線の間の面積、2つの2次関数の間の面積、3次の係数が等しい3次関数の3種を実装
         """
         x = sy.Symbol("x", real=True)
@@ -387,7 +401,54 @@ class CalculateAreaByIntegration:
                 latex_answer += f"\\( = {sy.latex(b)} \\cdot (-\\frac{{1}}{{6}}) ({bigger_answer} - {smaller_answer}) ^3\\)\n"
             latex_answer += f"\\( = {sy.latex(area)} \\)"
         else:
-            raise ValueError(f"'problem_type' is {problem_type}. This must be wrong.")
+            raise ValueError(f"'problem_type' is {problem_type}. This isn't expected value.")
+        return latex_answer, latex_problem
+    
+    def _make_one_third_problem(self, problem_type: str) -> Tuple[str, str]:
+        """1/3公式を利用する問題と解答を出力
+        
+        Args:
+            problem_type (str): 1/3公式を使う問題のうち、選択されたもの
+        
+        Returns:
+            latex_answer (str): latex形式と通常の文字が混在した解答
+            latex_problem (str): latex形式と通常の文字が混在した問題
+            
+
+        Raises:
+            ValueError: 1/6公式を利用する問題として想定されていないものが指定されたときに挙上
+
+        Note:
+            2次関数とその接線、およびy軸に平行な直線の間の面積、2つの接する2次関数とy軸に平行な直線の間の面積を実装
+        """
+        x = sy.Symbol("x", real=True)
+        # f(x) = ax^2 + bx + c, y = f'(a)(x-a) + y(a), y = k
+        if problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis":
+            """
+            x = sy.Symbol("x", real=True)
+            y1 = sy.Rational(1, 2) * x ** 2 - x + sy.Rational(1, 2)
+            tx = 3
+            ty = 2
+            tangent_slope = sy.diff(y1).subs(x, tx)
+            print(f"tangent_slope: {tangent_slope}")
+            tangent = tangent_slope * (x - tx) + ty
+            print(f"tangent: {tangent}")
+            """
+            a = self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+            b = self._random_integer()
+            c = self._random_integer()
+            quadratic_function = a * x ** 2 + b * x + c
+            tangent_x = self._random_integer()
+            tangent_y = quadratic_function.subs(x, tangent_x)
+            parallel_line_with_y_axis = tangent_x + self._random_integer(remove_zero=True)
+            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、"
+            latex_problem += f"その上の点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線、\n"
+            latex_problem += f"および \\( x = {sy.latex(parallel_line_with_y_axis)} \\)で囲まれた部分の面積を求めよ。"
+            latex_answer = "dummy answer in between_quadratic_function_and_tangent_and_parallel_line_with_y_axis"
+        # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
+        elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
+            latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"
+            latex_answer = "dummy answer in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"
         return latex_answer, latex_problem
     
     def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:

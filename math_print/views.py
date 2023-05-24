@@ -2729,14 +2729,16 @@ def display_calculate_area_by_integration(request):
     # PROBLEM_NUMBER = 4
     PROBLEM_NUMBER = 20
     problem_types = []
-    problem_types += request.POST.getlist("one_sixth_problem")
-    problem_types += request.POST.getlist("one_third_problem")
-    problem_types += request.POST.getlist("one_twelfth_problem")
+    problem_types += request.POST.getlist("one_sixth_problem_type")
+    problem_types += request.POST.getlist("one_third_problem_type")
+    problem_types += request.POST.getlist("one_twelfth_problem_type")
     if not (problem_types):
         problem_types.append("between_quadratic_function_and_x_axis")
         problem_types.append("between_quadratic_function_and_line")
         problem_types.append("between_quadratic_functions")
         problem_types.append("between_cubic_functions")
+        problem_types.append("between_quadratic_function_and_tangent_and_parallel_line_with_y_axis")
+        problem_types.append("between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
         problem1 = CalculateAreaByIntegration(problem_types=problem_types)

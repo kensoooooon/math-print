@@ -499,13 +499,45 @@ class CalculateAreaByIntegration:
             quadratic_coefficient = sy.expand(quadratic_function_after_subtraction).coeff(x, 2)
             divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, quadratic_coefficient) * factored_quadratic_function_after_subtraction
             if quadratic_coefficient == 1:
-                latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
-                latex_answer += f"\\( = \\left\\lbrack \\dfrac{{({sy.latex(x - tangent_x)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+                if tangent_x == 0:
+                    latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = \\left \\lbrack \\dfrac{{{sy.latex(x)}^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+                else:
+                    latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = \\left \\lbrack \\dfrac{{({sy.latex(x - tangent_x)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
             else:
-                latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
-                latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\left\\lbrack \\dfrac{{({sy.latex(x - tangent_x)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
-            left_x_for_area = ((x - tangent_x) ** 3).subs(end_x)
-            right_x_for_area = ((x - tangent_x) ** 3).subs(start_x)
+                if tangent_x == 0:
+                    latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\left\\lbrack \\dfrac{{{sy.latex(x)}^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+                else:
+                    latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\left\\lbrack \\dfrac{{({sy.latex(x - tangent_x)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+            left_x_for_area = ((x - tangent_x) ** 3).subs(x, end_x) * sy.Rational(1, 3)
+            right_x_for_area = ((x - tangent_x) ** 3).subs(x, start_x) * sy.Rational(1, 3)
+            if quadratic_coefficient == 1:
+                if left_x_for_area >= 0:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = ({sy.latex(left_x_for_area)} - {sy.latex(right_x_for_area)}) \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\lbrace {sy.latex(left_x_for_area)} - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+                else:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = \\lbrace ({sy.latex(left_x_for_area)}) - {sy.latex(right_x_for_area)} \\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\lbrace ({sy.latex(left_x_for_area)}) - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+            else:
+                if left_x_for_area >= 0:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} ({sy.latex(left_x_for_area)} - {sy.latex(right_x_for_area)}) \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\lbrace {sy.latex(left_x_for_area)} - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+                else:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\lbrace ({sy.latex(left_x_for_area)}) - {sy.latex(right_x_for_area)} \\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\lbrace ({sy.latex(left_x_for_area)}) - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+            area = sy.Abs(a) * sy.Rational(1, 3) * (end_x - start_x) ** 3
+            latex_answer += f"\\(  = {sy.latex(area)} \\)"
         # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
             latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"

@@ -439,12 +439,19 @@ class CalculateAreaByIntegration:
             tangent = tangent_slope * (x - tx) + ty
             print(f"tangent: {tangent}")
             """
-            a = self._random_integer(min_num=-3, max_num=3, remove_zero=True)
-            b = self._random_integer()
-            c = self._random_integer()
+            a = self._random_integer(min_num=-2, max_num=2, remove_zero=True)
+            b = self._random_integer(min_num=-3, max_num=3)
+            c = self._random_integer(min_num=-3, max_num=3)
             quadratic_function = a * x ** 2 + b * x + c
+            differentiated_quadratic_function = sy.diff(quadratic_function)
+            # new added part not to become tangent is 0.
+            tangent_x_with_zero_slope = sy.solve(differentiated_quadratic_function)[0]
             tangent_x = self._random_integer(min_num=-3, max_num=3)
+            if tangent_x == tangent_x_with_zero_slope:
+                tangent_x += self._random_integer(min_num=-2, max_num=2, remove_zero=True)
             tangent_y = quadratic_function.subs(x, tangent_x)
+            tangent_slope = differentiated_quadratic_function.subs(x, tangent_x)
+            tangent = tangent_slope * (x - tangent_x) + tangent_y
             parallel_line_with_y_axis = tangent_x + self._random_integer(remove_zero=True)
             latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、"
             latex_problem += f"その上の点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線、\n"
@@ -456,17 +463,26 @@ class CalculateAreaByIntegration:
             latex_answer += f"\\( y' =  {sy.latex(sy.expand(differentiated_quadratic_function))} \\)より、\\( x = {sy.latex(tangent_x)} \\)における接線の傾きは、"
             latex_answer += f"\\( {sy.latex(tangent_slope)} \\)である。\n"
             latex_answer += f"そのため、接点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線は、\n"
-            if tangent_y > 0:
-                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
+            if tangent_x == 0:
+                if tangent_y == 0:
+                    latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x)}) = {sy.latex(sy.expand(tangent))} \\)である。\n"
+                elif tangent_y > 0:
+                    latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
+                elif tangent_y < 0:
+                    latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
             else:
-                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
+                if tangent_y == 0:
+                    latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)})= {sy.latex(sy.expand(tangent))} \\)である。\n"
+                elif tangent_y > 0:
+                    latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
+                elif tangent_y < 0:
+                    latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
             latex_answer += "また、今回の2次関数は"
             if a > 0:
                 latex_answer += "下に凸なので、2次関数が上、接線が下にある。\n"
             elif a < 0:
                 latex_answer += "上に凸なので、2次関数が下、接線が上にある。\n"
             latex_answer += "よって、求める面積は\n"
-            # here
             if tangent_x > parallel_line_with_y_axis:
                 start_x, end_x = parallel_line_with_y_axis, tangent_x
             elif tangent_x < parallel_line_with_y_axis:
@@ -483,9 +499,13 @@ class CalculateAreaByIntegration:
             quadratic_coefficient = sy.expand(quadratic_function_after_subtraction).coeff(x, 2)
             divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, quadratic_coefficient) * factored_quadratic_function_after_subtraction
             if quadratic_coefficient == 1:
-                latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)"
+                latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                latex_answer += f"\\( = \\left\\lbrack \\dfrac{{({sy.latex(x - tangent_x)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
             else:
-                latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)"
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\left\\lbrack \\dfrac{{({sy.latex(x - tangent_x)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+            left_x_for_area = ((x - tangent_x) ** 3).subs(end_x)
+            right_x_for_area = ((x - tangent_x) ** 3).subs(start_x)
         # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
             latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"

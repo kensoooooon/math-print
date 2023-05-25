@@ -69,6 +69,11 @@
                 まず等しいのはそもそも囲めないのでアウツ
                 問題は、「左側にできようが右側にできようが、結局同じ計算方法でいけるのか？」という点
                     手計算してみる系か~
+
+5/25
+    引き続き作成。
+        2次関数の接線の傾きがちょうど0になるタイミングがある
+            問題の設定的に、ゼロにならないようにしておくべき
 """
 from random import choice, random, randint
 from typing import Dict, Tuple
@@ -452,9 +457,9 @@ class CalculateAreaByIntegration:
             latex_answer += f"\\( {sy.latex(tangent_slope)} \\)である。\n"
             latex_answer += f"そのため、接点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線は、\n"
             if tangent_y > 0:
-                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。"
+                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
             else:
-                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。"
+                latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。\n"
             latex_answer += "また、今回の2次関数は"
             if a > 0:
                 latex_answer += "下に凸なので、2次関数が上、接線が下にある。\n"
@@ -462,6 +467,25 @@ class CalculateAreaByIntegration:
                 latex_answer += "上に凸なので、2次関数が下、接線が上にある。\n"
             latex_answer += "よって、求める面積は\n"
             # here
+            if tangent_x > parallel_line_with_y_axis:
+                start_x, end_x = parallel_line_with_y_axis, tangent_x
+            elif tangent_x < parallel_line_with_y_axis:
+                start_x, end_x = tangent_x, parallel_line_with_y_axis
+            if a > 0:
+                upper_function = quadratic_function
+                lower_function = tangent
+            elif a < 0:
+                upper_function = tangent
+                lower_function = quadratic_function
+            latex_answer += f"\\( \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\lbrace ({sy.latex(sy.expand(upper_function))}) - ({sy.latex(sy.expand(lower_function))}) \\rbrace dx \\)\n"
+            quadratic_function_after_subtraction = upper_function - lower_function
+            factored_quadratic_function_after_subtraction = sy.factor(quadratic_function_after_subtraction)
+            quadratic_coefficient = sy.expand(quadratic_function_after_subtraction).coeff(x, 2)
+            divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, quadratic_coefficient) * factored_quadratic_function_after_subtraction
+            if quadratic_coefficient == 1:
+                latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)"
+            else:
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)"
         # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
             latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"

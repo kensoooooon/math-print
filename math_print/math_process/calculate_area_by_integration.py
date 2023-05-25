@@ -450,11 +450,18 @@ class CalculateAreaByIntegration:
             tangent = tangent_slope * (x - tangent_x) + tangent_y
             latex_answer += f"\\( y' =  {sy.latex(sy.expand(differentiated_quadratic_function))} \\)より、\\( x = {sy.latex(tangent_x)} \\)における接線の傾きは、"
             latex_answer += f"\\( {sy.latex(tangent_slope)} \\)である。\n"
-            latex_answer += f"よって、接点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線は、\n"
+            latex_answer += f"そのため、接点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線は、\n"
             if tangent_y > 0:
                 latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) + {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。"
             else:
                 latex_answer += f"\\( y = {sy.latex(tangent_slope)}({sy.latex(x - tangent_x)}) {sy.latex(tangent_y)} = {sy.latex(sy.expand(tangent))} \\)である。"
+            latex_answer += "また、今回の2次関数は"
+            if a > 0:
+                latex_answer += "下に凸なので、2次関数が上、接線が下にある。\n"
+            elif a < 0:
+                latex_answer += "上に凸なので、2次関数が下、接線が上にある。\n"
+            latex_answer += "よって、求める面積は\n"
+            # here
         # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
             latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"

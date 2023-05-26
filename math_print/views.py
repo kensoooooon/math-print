@@ -2696,7 +2696,7 @@ def display_line_and_flat_positional_relationship(request):
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
     
     Returns:
-        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
     PROBLEM_NUMBER = 10
     question_format = request.POST["question_format"]
@@ -2724,7 +2724,7 @@ def display_calculate_area_by_integration(request):
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
     
     Returns:
-        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
     # PROBLEM_NUMBER = 4
     PROBLEM_NUMBER = 20
@@ -2745,3 +2745,17 @@ def display_calculate_area_by_integration(request):
         problem2 = CalculateAreaByIntegration(problem_types=problem_types)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/calculate_area_by_integration/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+# explain part
+def explain_calculate_area_by_integration(request):
+    """平面上の面積を、積分の各種公式を使って求める問題の解き方の解説を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain.html', {})
+    return returned_render

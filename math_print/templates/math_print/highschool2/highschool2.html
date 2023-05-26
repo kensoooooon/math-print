@@ -13,6 +13,23 @@
     </div>
 {% endblock %}
 
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">
@@ -322,6 +339,7 @@
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">\( \frac{1}{6} \)公式</small>
+                <a href="{% url 'calculate_area_by_integration_explain' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="between_quadratic_function_and_x_axis" name="one_sixth_problem_type" id="calculate_area_by_integration_between_quadratic_function_and_line" checked>

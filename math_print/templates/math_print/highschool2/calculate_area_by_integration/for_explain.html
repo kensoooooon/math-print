@@ -3,6 +3,7 @@
 
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         extensions: ["tex2jax.js"],
@@ -31,9 +32,6 @@ function refresh() {
 {% endblock %}
 
 {% block css %}
-p {
-    line-height=1.5;
-}
 {% endblock %}
 
 {% block title %}
@@ -55,8 +53,10 @@ p {
         定積分で面積を求める
         <small class="text-muted">-公式を上手く活用して、時間と労力を節約しよう-</small>
     </h1>
-    <div class="row m-4 p-4">
-        <h2 class="text-muted h5">前書き</h4>
+
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5">前書き</h2>
         <p class="lh-1">積分は共通テスト、2次試験ともに頻出の分野です。特に定積分を用いて面積を求める問題は非常によく出題されています。</p>
         <p class="lh-1">この面積を求めるための計算、これ自体はさして複雑な仕組みの計算ではありません。計算部分だけを見れば、中学生でも十分やれるレベルになっています。</p>
         <p class="lh-1">ですが、実際の数学のテスト(これは学校の定期テストから入試の本番までを含みます)では、<span class="text-decoration-underline">時間の不足</span>がしばしば皆さんの足を引っ張ります。</p>
@@ -68,8 +68,9 @@ p {
         <p class="lh-1">そこで、このページでは、この面積を求める作業が少しでも楽になるように、種々の考え方や公式を紹介していきます。極力手間暇を減らしつつ、効率よく問題を解いていきましょう。</p>
     </div>
 
-    <div class="row m-4 p-4">
-        <h2 class="text-muted h5">定積分の定義の確認</h4>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5">定積分の定義の確認</h2>
         <p class="lh-1">まず、ここで一度定義を確認しておきましょう。</p>
         <div class="border border-primary col-md-5">
             <p>ある関数\( f(x) \)の原始関数、つまり積分先の関数を\( F(x)\)。積分範囲を\(a, b\)とすると、</p>
@@ -109,16 +110,31 @@ p {
         <div class="m-2 p-2">
             <p class="lh-1">さて、定積分の計算の確認は以上ですが、この時点で<span class="text-decoration-underline">わりと複雑な計算になっている</span>ことが伝わるでしょうか。</p>
             <p class="lh-1">眉をひそめるほどの難しさではないですが、時間自体は割りとかかってしまいます。</p>
+            <p class="lh-1">落ち着いて計算できる練習の段階であればさして問題にならないかもしれませんが、<span class="text-decoration-underline">本番の限られた時間中で行えばミスが増える</span>のも納得できる複雑さです。</p>
         </div>
     </div>
 
-    <div class="row" style="line-height:2rem">
-        <br>
-        <p>次に、この定積分を用いて面積を求める方法を確認していきます。</p>
-        <p>とはいっても、先程の計算の積分対象を<span class="text-primary">上 - 下</span>にするだけです。</p>
-        <p>こちらでは、具体的な例を用いて計算してみましょう。</p>
-        <br>
-        <p class="fst-italic">例題1: \( y = x^2-5x+6\)と\(x\)軸で囲まれた面積を求めよ。</p>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5">定積分を用いた面積の計算(公式なし)</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">さて、お次はいよいよ、定積分を用いた面積の計算になります。</p>
+            <p class="lh-1">先程と同じく、まずは公式の確認からいってみましょう。</p>
+        </div>
+
+        <div class="border border-primary col-md-6">
+            <p>ある区間、\( a \leqq x \leqq b \)において、上にある関数が\( y = f(x) \)、下にある関数が\( y = g(x) \)であるとき、</p>
+            <p>その関数で囲まれた面積\( S \)は、</p>
+            <p>\( S = \int_{a}^{b} \left\lbrace f(x) - g(x) \right\rbrace dx \)</p>
+            <p>と計算できる。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">ここで注目してほしいのは、<span class=="text-decoration-underline">上下関係に言及している</span>ことです。</p>
+            <p class="lh-1">これは定積分を用いた面積の計算では常に確認しておかなければならない事項になります。</p>
+            <p class="lh-1">3次関数や2次関数、直線など様々な関数が登場する中で、みなさんは的確にそれらの上下関係を考える必要があるわけです。</p>
+            <p class="lh-1">このあたりに微分と絡めて出題される理由があると言えるでしょう。</p>
+        </div>
     </div>
 </div>
 

@@ -3,7 +3,10 @@
 
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         extensions: ["tex2jax.js"],
@@ -28,6 +31,21 @@ function refresh() {
     var hash = location.hash;
     location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
 }
+
+window.addEventListener("load", (event)=>{
+	// JSXGraph
+	const jsx = JXG.JSXGraph.initBoard("jxgbox", {axis: true, boundingbox: [-0.5, 1, 4, -1]});
+    jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, 2, 3], {strokeColor: "blue"});
+    jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, 3, 5], {strokeColor: "gray", dash: 2});
+    jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, -5, 2], {strokeColor: "gray", dash: 2});
+    jsx.create("functiongraph", [x => 0, 2, 3], {strokeColor: "red"});
+    // axis
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+    jsx.create('text', [3.8, 0.07, 'x'],{ fontSize: 16, cssStyle: text_css });
+    jsx.create('text', [0.05, 0.9, 'y'],{ fontSize: 16, cssStyle: text_css });
+    jsx.create('text', [2.1, -0.4, 'y = x^2 - 5x + 6'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx.create('text', [2.4, 0.3, 'y = 0'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+});
 </script>
 {% endblock %}
 
@@ -87,10 +105,12 @@ function refresh() {
             <p class="lh-1">まずは項が一つのときの計算です。</p>
             <p class="lh-1">積分したい関数が◯次関数のときは、以下の公式を利用します。</p>
             <div class="border border-primary col-md-5">
-                <p>\( \int x^n dx = \dfrac{1}{n+1} x^n + C \) (\(C\); 積分定数)</p>
+                <p>\( \int x^n dx = \dfrac{1}{n+1} x^{n+1} + C \) (\(C\); 積分定数)</p>
             </div>
-            <p class="lh-1">例題1: \( \int_{-2}^{3} x^2 dx \)</p>
-            <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} x^3 \right\rbrack_{-2}^{3} \)</p>
+            <br>
+            <p class="lh-1 fst-italic border-bottom col-md-2">例題1: \( \int_{-2}^{3} x^2 dx \)</p>
+            <br>
+            <p class="lh-1">\( = \left\lbrack \dfrac{1}{2+1} x^{2+1} \right\rbrack_{-2}^{3} \)</p>
             <p class="lh-1">\( = \dfrac{1}{3} \left\lbrack x^3 \right\rbrack_{-2}^{3} \)</p>
             <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace 3^3 - (-2)^3 \right\rbrace \)</p>
             <p class="lh-1">\( = \dfrac{35}{3} \)</p>
@@ -99,8 +119,10 @@ function refresh() {
         <div class="m-2 p-2">
             <p class="lh-1">次は多項式の計算です。</p>
             <p class="lh-1">といっても、先程の公式を項ごとに適用して、そこに代入するだけです。</p>
-            <p class="lh-1">例題2: \( \int_{-2}^{3} (x^2 + 2x) dx \)</p>
-            <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} x^3 + 2 \cdot \dfrac{1}{2} x^2 \right\rbrack_{-2}^{3} \)</p>
+            <br>
+            <p class="lh-1 fst-italic border-bottom col-md-2">例題2: \( \int_{-2}^{3} (x^2 + 2x) dx \)</p>
+            <br>
+            <p class="lh-1">\( = \left\lbrack \dfrac{1}{2+1} x^{2+1} + 2 \cdot \dfrac{1}{1+1} x^{1+1} \right\rbrack_{-2}^{3} \)</p>
             <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} x^3 + x^2 \right\rbrack_{-2}^{3} \)</p>
             <p class="lh-1">\( = \left( \dfrac{1}{3} \cdot 3^3 + 3^2 \right) - \left\lbrace \dfrac{1}{3}\cdot (-2)^3 + (-2)^2 \right\rbrace \)
             <p class="lh-1">\( = 18 - \dfrac{4}{3} \)</p>
@@ -134,6 +156,66 @@ function refresh() {
             <p class="lh-1">これは定積分を用いた面積の計算では常に確認しておかなければならない事項になります。</p>
             <p class="lh-1">3次関数や2次関数、直線など様々な関数が登場する中で、みなさんは的確にそれらの上下関係を考える必要があるわけです。</p>
             <p class="lh-1">このあたりに微分と絡めて出題される理由があると言えるでしょう。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">それでは早速、いくつか面積を計算してみましょう。</p>
+            <br>
+            <p class="lh-1 fst-italic border-bottom col-md-4">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
+            <br>
+            <p class="lh-1">まずは\( y = x^2 -5x + 6 \)と\( x \)軸の関係をチェックしましょう。</p>
+            <p class="lh-1">今回の2次関数は、2次の係数が正なので下に凸。さらに\( x \)軸、つまり\( y=0 \)との交点は、例のごとく連立して、</p>
+            <p class="lh-1">
+                \(
+                    \left\{
+                        \begin{array}{l}
+                            y = x^2 - 5x + 6 \\
+                            y = 0
+                    \end{array}
+                    \right.
+                \)
+            </p>
+            <p class="lh-1">\( x^2 - 5x + 6 = 0\)</p>
+            <p class="lh-1">\( (x - 2)(x - 3) = 0 \)</p>
+            <p class="lh-1">\( x = 2, 3 \)</p>
+            <p class="lh-1">と求められます。これをグラフに描くと、以下のような感じになります。</p>
+            <!-- Graph -->
+            <br>
+            <div id="jxgbox" class="jxgbox" style="width:500px; height:500px;"></div>
+            <br>
+            <!--Graph-->
+            <p class="lh-1">このようにグラフが描ければ、あとは先程の公式に当てはめるだけ……</p>
+            <p class="lh-1">なのですが、この上下関係、<span class=="text-decoration-underline">グラフを描かなければ求められないということはない</span>です。</p>
+            <p class="lh-1">具体的には以下のように不等式を作って解くことで、ある程度の上下関係を求めることが可能です。</p>
+            <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
+            <p class="lh-1">\( (x - 2)(x - 3) \geqq 0 \)</p>
+            <p class="lh-1">\( x \leqq 2, 3 \leqq x \)</p>
+            <br>
+            <p class="lh-1">この結果を見ると、\( y = x^2 - 5x + 6 \)が\( y = 0 \)より上になっている\( x \)の範囲は閉じていないことがわかります。</p>
+            <p class="lh-1">裏を返すと、閉じている範囲\( 2 \leqq x \leqq 3 \)では\( y = 0 \)が上であることがわかります。</p>
+            <p class="lh-1">これはこの例だけでなく、他の組み合わせでも利用できます。たとえば、2次関数\( y = x^2 \)と1次関数\( y = x \)だと、</p>
+            <p class="lh-1">\( x^2 \geqq x \)</p>
+            <p class="lh-1">\( x^2 - x \geqq 0 \)</p>
+            <p class="lh-1">\( x(x - 1) \geqq 0\)</p>
+            <p class="lh-1">\( x \leqq 0, 1 \leqq x \)</p>
+            <p class="lh-1">となり、囲まれた範囲は\( 0 \leqq x \leqq 1 \)では\( y = x \)の方が上だということがわかります。</p>
+            <p class="lh-1">もちろん、特に難易度が高い問題ではグラフをしっかりと描くことで得られるものもありますし、グラフを描くという行為自体が全く不要というわけではありません。</p>
+            <p class="lh-1">一つの手段として知っておくようにしましょう。</p>
+            <br>
+            <p class="lh-1">さて、それでは問題に戻って、続きを解いていきましょう。</p>
+            <p class="lh-1">今回の問題では、\( y = x^2 - 5x + 6 \)が下で、\( y = 0 \)が上。さらに\( 2 \leqq x \leqq 3 \)の範囲で囲まれているので、その面積は、</p>
+            <p class="lh-1">\( \int_{2}^{3} \left\lbrace 0 - \left( x^2 - 5x + 6 \right) \right\rbrace dx \)</p>
+            <p class="lh-1">\( = \int_{2}^{3} \left( -x^2 + 5x - 6 \right) dx \)</p>
+            <p class="lh-1">\( = \left\lbrack - \dfrac{1}{3} x^3 + \dfrac{5}{2} x^2 - 6x \right\rbrack_{2}^{3} \)</p>
+            <p class="lh-1">\( = \left( - \dfrac{1}{3} \cdot 3^3 + \dfrac{5}{2} \cdot 3^2 - 6 \cdot 3 \right)  - \left( - \dfrac{1}{3} \cdot 2^3 + \dfrac{5}{2} \cdot 2^2 - 6 \cdot 2 \right) \)</p>
+            <p class="lh-1">\( = \left(-9 + \dfrac{45}{2}  - 18 \right) - \left( -\dfrac{8}{3} + 10 - 12 \right) \)</p>
+            <p class="lh-1">\( = -9 + \dfrac{45}{2} - 18 + \dfrac{8}{3} - 10 + 12 \)</p>
+            <p class="lh-1">\( = -9 - 18 - 10 + 12 + \dfrac{45}{2} + \dfrac{8}{3} \)</p>
+            <p class="lh-1">\( = -25 + \dfrac{135 + 16}{6} \)</p>
+            <p class="lh-1">\( = \dfrac{-150 + 151}{6} \)</p>
+            <p class="lh-1">\( = \dfrac{1}{6} \)</p>
+            <br>
+            <p class="lh-1">……といった流れで、答えは結局\( \dfrac{1}{6} \)です。</p>
         </div>
     </div>
 </div>

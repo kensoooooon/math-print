@@ -238,13 +238,9 @@ window.addEventListener("load", (event)=>{
         </div>
 
         <div class="m-2 p-2">
-            <p class="lh-1">この公式で重要なのは、<span class="text-decoration-underline">積分範囲と因数分解に使われた定数が一致している</span>ことです。</p>
-            <p class="lh-1">つまり、\( \int_{\color{blue}1\color{black}}^{\color{red}3} \color{black} (x - \color{blue}1\color{black}) (x - \color{red}3\color{black}) dx \)には公式が使えますが、
-                \( \int_{\color{blue}1\color{black}}^{\color{red}3} \color{black} (x - \color{blue}1\color{black}) (x - \color{orange}5\color{black}) dx \)には公式が使えない、ということです。
-            </p>
-            <p class="lh-1">これは問題を解いていく上で非常に重要になるので、しっかりと把握しておきましょう。</p>
             <p class="lh-1">なお、なぜこの公式が成り立つのか？については、今回の本筋ではありませんので、下に折りたたんでおきます。</p>
-            <p class="lh-1">一部数Ⅲの公式が出てくることもあり、なかなか難易度が高いです。ただ、その分得られるものも多いので、確認は必須ではありませんが、余力があれば追いかけてみて下さい。</p>
+            <p class="lh-1">特にひねらずに、そのまま計算していっても証明は可能ですが、せっかくなので数Ⅲの公式を利用したより発展的な証明をおいておきます。</p>
+            <p class="lh-1">なかなか難易度は高いですが、その分得られるものも多いので、余力があれば追いかけてみて下さい。</p>
             <details>
                 <summary><small class="text-muted">\( \dfrac{1}{6}公式の導出 \)</small></summary>
                     <div class="m-2 p-2">
@@ -257,16 +253,106 @@ window.addEventListener("load", (event)=>{
                         </div>
                         <br>
                         <p class="lh-1">この公式は、数Ⅲで学ぶものですが、そこまで取っつきづらい感じはしないのではないでしょうか。</p>
-                        <p class="lh-1">あまり正確ではありませんが、感覚としては「\(x^n\)が\((x-\alpha)^n\)になっても、同じように取り扱える」と考えてもらえれば大丈夫です。</p>
+                        <p class="lh-1">せっかくなので、これを使った不定積分の計算をいくつか書いておきましょう。</p>
+                        <br>
+                        <p class="lh-1">\( \int (x - 5)^2 dx = \dfrac{1}{2 + 1} (x - 5)^{2+1} + C = \dfrac{1}{3} (x - 5)^3 + C\)</p>
+                        <p class="lh-1">\( \int (x + 2)^3 dx = \dfrac{1}{3 + 1} (x + 2)^{3+1} + C = \dfrac{1}{4} (x + 2)^4 + C\)</p>
+                        <p class="lh-1">\( \int (x - 1)^4 dx = \dfrac{1}{4 + 1} (x - 1)^{4+1} + C = \dfrac{1}{5} (x - 1)^5 + C\)</p>
+                        <br>
+                        <p class="lh-1">いかがでしょう。あまり正確ではありませんが、感覚としては「\(x^n\)が\((x-\alpha)^n\)になっても、同じように取り扱える」と考えてもらえれば大丈夫です。</p>
                     </div>
                     <div class="m-2 p-2">
                         <p class="lh-1">それでは、この公式を利用して\( \dfrac{1}{6} \)公式の証明をしていきましょう。</p>
                         <br>
                         <p class="lh-1">\( \int_{\alpha}^{\beta}  (x - \alpha)(x - \beta) dx \)</p>
-                        <p class="lh-1">\( = \int_{\alpha}^{beta} (x - \alpha)(x - \beta) dx \)</p>
+                        <p class="lh-1">\( = \int_{\alpha}^{\beta} (x - \alpha)\lbrace(x - \alpha) + (\alpha - \beta)\rbrace dx \)</p>
+                        <br>
+                        <p class="lh-1">さて、ここでいったん軽く説明をはさみます。</p>
+                        <p class="lh-1">今、\( (x - \beta) = \lbrace(x - \alpha) + (\alpha - \beta)\rbrace \)という式変形を行いました。</p>
+                        <p class="lh-1">計算してもらえればわかるのですが、\( (x - \beta) \)に\( -\alpha + \alpha \)、つまり0を足しているだけなので、イコールが崩れてはいません。</p>
+                        <p class="lh-1">なぜわざわざ妙な変形を使ったのかは、後々判明します。今は、無理矢理にでも\( ( x - \alpha) \)が欲しかった、ということだけ確認しておいてください。</p>
+                        <p class="lh-1">それでは続きの計算を行っていきましょう。</p>
+                        <br>
+                        <p class="lh-1">\( = \int_{\alpha}^{\beta} \lbrace (x - \alpha)^2 + (\alpha - \beta) (x - \alpha) \rbrace dx \)</p>
+                        <br>
+                        <p class="lh-1">ここはシンプルに展開法則を使って、かっこの外側にある\( (x - \alpha) \)を、中にある\( (x - \alpha) \)と\( (\alpha - \beta) \)にかけました。</p>
+                        <p class="lh-1">両方の項に\( (x - \alpha) \)が含まれているのがポイントです。</p>
+                        <br>
+                        <p class="lh-1">
+                            \( = \int_{\alpha}^{\beta} (x - \alpha)^2 dx + \int_{\alpha}^{\beta} (\alpha - \beta) (x - \alpha) dx \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \int_{\alpha}^{\beta} (x - \alpha)^2 dx + (\alpha - \beta) \int_{\alpha}^{\beta} (x - \alpha) dx \)
+                        </p>
+                        <br>
+                        <p class="lh-1">ここでは積分記号をそれぞれに振り分けました。一番最初にやった多項式の計算と同じ流れです。</p>
+                        <p class="lh-1">さらに、\( (\alpha - \beta) \)は積分の対象である\( x \)と無関係な文字、つまり定数扱いなので前に出しています。</p>
+                        <br>
+                        <p class="lh-1">
+                            \( = \left\lbrack \dfrac{1}{2 + 1} (x - \alpha)^{2 + 1} \right\rbrack_{\alpha}^{\beta} + (\alpha - \beta) \left\lbrack \dfrac{1}{1 + 1} (x - \alpha)^{1 + 1} \right\rbrack_{\alpha}^{\beta} \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \dfrac{1}{3} \left\lbrack (x - \alpha)^3 \right\rbrack_{\alpha}^{\beta} + \dfrac{1}{2} (\alpha - \beta) \left\lbrack (x - \alpha)^2 \right\rbrack_{\alpha}^{\beta} \)
+                        </p>
+                        <br>
+                        <p class="lh-1">この計算では、この説明の初めに書いた数Ⅲの公式を使い、全体を積分しています。</p>
+                        <p class="lh-1">また、細かい部分の計算と、定数を前に出す作業も合わせて行いました。</p>
+                        <br>
+                        <p class="lh-1">
+                            \( =  \dfrac{1}{3} \left\lbrace (\beta - \alpha)^3 - (\alpha - \alpha^3) \right\rbrace + \dfrac{1}{2} (\alpha - \beta) \left\lbrace (\beta - \alpha)^2 - (\alpha - \alpha)^2 \right\rbrace \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \dfrac{1}{3} (\beta - \alpha)^3 + \dfrac{1}{2} (\alpha - \beta) (\beta - \alpha)^2 \)
+                        </p>
+                        <br>
+                        <p class="lh-1">この計算最大のポイントがここです。多少無理やりにでも\( (x - \alpha) \)を残していたおかげで、<span class="text-decoration-underline">\( \alpha \)を代入したときに0がでてきて、引き算をやる必要がなくなっています</span>。</p>
+                        <p class="lh-1"><span class="text-decoration-underline">実質的に計算量が半分になっている</span>といってもよいでしょう。</p>
+                        <p class="lh-1">ここまでくれば、あとは残りを計算していくだけです。</p>
+                        <br>
+                        <p class="lh-1">\( = \dfrac{1}{3} (\beta - \alpha)^3 + \dfrac{1}{2} \left\lbrace - (\beta - \alpha) \right\rbrace (\beta - \alpha)^2 \)</p>
+                        <p class="lh-1">\( = \dfrac{1}{3} (\beta - \alpha)^3 - \dfrac{1}{2} (\beta - \alpha)^3 \)</p>
+                        <p class="lh-1">\( = - \dfrac{1}{6} (\beta - \alpha)^3 \)</p>
+                        <br>
+                        <p class="lh-1">一つだけ\( (\alpha - \beta) \)になっていて収まりが悪いので、マイナスでくくることで中身を反転させて、3乗にまとめました。</p>
+                        <p class="lh-1">最後に両方の\( (\beta - \alpha) \)をまとめて終わりです。</p>
+                        <p class="lh-1">説明を省いた通しの計算は、以下のようになります。</p>
+                        <br>
+                        <p class="lh-1">\( \int_{\alpha}^{\beta}  (x - \alpha)(x - \beta) dx \)</p>
+                        <p class="lh-1">\( = \int_{\alpha}^{\beta} (x - \alpha)\lbrace(x - \alpha) + (\alpha - \beta)\rbrace dx \)</p>
+                        <p class="lh-1">\( = \int_{\alpha}^{\beta} \lbrace (x - \alpha)^2 + (\alpha - \beta) (x - \alpha) \rbrace dx \)</p>
+                        <p class="lh-1">
+                            \( = \int_{\alpha}^{\beta} (x - \alpha)^2 dx + \int_{\alpha}^{\beta} (\alpha - \beta) (x - \alpha) dx \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \int_{\alpha}^{\beta} (x - \alpha)^2 dx + (\alpha - \beta) \int_{\alpha}^{\beta} (x - \alpha) dx \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \left\lbrack \dfrac{1}{2 + 1} (x - \alpha)^{2 + 1} \right\rbrack_{\alpha}^{\beta} + (\alpha - \beta) \left\lbrack \dfrac{1}{1 + 1} (x - \alpha)^{1 + 1} \right\rbrack_{\alpha}^{\beta} \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \dfrac{1}{3} \left\lbrack (x - \alpha)^3 \right\rbrack_{\alpha}^{\beta} + \dfrac{1}{2} (\alpha - \beta) \left\lbrack (x - \alpha)^2 \right\rbrack_{\alpha}^{\beta} \)
+                        </p>
+                        <p class="lh-1">
+                            \( =  \dfrac{1}{3} \left\lbrace (\beta - \alpha)^3 - (\alpha - \alpha^3) \right\rbrace + \dfrac{1}{2} (\alpha - \beta) \left\lbrace (\beta - \alpha)^2 - (\alpha - \alpha)^2 \right\rbrace \)
+                        </p>
+                        <p class="lh-1">
+                            \( = \dfrac{1}{3} (\beta - \alpha)^3 + \dfrac{1}{2} (\alpha - \beta) (\beta - \alpha)^2 \)
+                        </p>
+                        <p class="lh-1">\( = \dfrac{1}{3} (\beta - \alpha)^3 + \dfrac{1}{2} \left\lbrace - (\beta - \alpha) \right\rbrace (\beta - \alpha)^2 \)</p>
+                        <p class="lh-1">\( = \dfrac{1}{3} (\beta - \alpha)^3 - \dfrac{1}{2} (\beta - \alpha)^3 \)</p>
+                        <p class="lh-1">\( = - \dfrac{1}{6} (\beta - \alpha)^3 \)</p>
                     </div>
                 ----------------------折りたたみここまで----------------------
             </details>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">この公式で重要なのは、<span class="text-decoration-underline">積分範囲と因数分解に使われた定数が一致している</span>ことです。</p>
+            <p class="lh-1">つまり、\( \int_{\color{blue}1\color{black}}^{\color{red}3} \color{black} (x - \color{blue}1\color{black}) (x - \color{red}3\color{black}) dx \)には公式が使えますが、
+                \( \int_{\color{blue}1\color{black}}^{\color{red}3} \color{black} (x - \color{blue}1\color{black}) (x - \color{orange}5\color{black}) dx \)には公式が使えない、ということです。
+            </p>
+            <br>
+            <p class="lh-1">これを見た、まだあまり公式に慣れていない方は「因数分解できて、さらに積分範囲が一致するような都合が良いことが度々あるのか？」と感じるかもしれません。</p>
+            <p class="lh-1">結論から言いますと、<span class="text-decoration-underline">あります。何なら頻繁に出てきます。</span></p>
         </div>
     </div>
 </div>

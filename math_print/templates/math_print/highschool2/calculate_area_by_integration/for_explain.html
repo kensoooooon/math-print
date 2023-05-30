@@ -45,6 +45,9 @@ window.addEventListener("load", (event)=>{
     jsx.create('text', [0.05, 0.9, 'y'],{ fontSize: 16, cssStyle: text_css });
     jsx.create('text', [2.1, -0.4, 'y = x^2 - 5x + 6'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
     jsx.create('text', [2.4, 0.3, 'y = 0'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+
+    //JSXGraph2
+    let jsx2 = JXG.JSXGraph.initBoard('jxgbox2', {axis: true, boundingbox: [-0.5, 1, 4, -1]});
 });
 </script>
 {% endblock %}
@@ -353,6 +356,43 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">これを見た、まだあまり公式に慣れていない方は「因数分解できて、さらに積分範囲が一致するような都合が良いことが度々あるのか？」と感じるかもしれません。</p>
             <p class="lh-1">結論から言いますと、<span class="text-decoration-underline">あります。何なら頻繁に出てきます。</span></p>
+            <p class="lh-1">たとえば、上で例としたあげた問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1 fst-italic border-bottom col-md-5">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
+            <br>
+            <p class="lh-1">この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
+            <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
+            <p class="lh-1">\( (x - 2)(x - 3) \geqq 0 \)</p>
+            <p class="lh-1">また、その結果、以下のような式で面積を求めることとなりました。</p>
+            <p class="lh-1">\( \int_{2}^{3} \left\lbrace 0 - \left( x^2 - 5x + 6 \right) \right\rbrace dx \)</p>
+            <p class="lh-1">\( = \int_{2}^{3} \left( -x^2 + 5x - 6 \right) dx \)</p>
+            <p class="lh-1">さて、先ほどはここから即座に積分を行いましたが、不等式を参考に式を因数分解してみましょう。</p>
+            <p class="lh-1">\( = \int_{2}^{3} - (x - 2)(x - 3) dx \)</p>
+            <p class="lh-1">\( = - \int_{\color{blue}2 \color{black}}^{\color{red}3} \color{black} (x - \color{blue}2 \color{black})(x - \color{red}3 \color{black}) dx \)</p>
+            <p class="lh-1">式をよくよく見てみると、\( \dfrac{1}{6} \)公式を使える形が登場していますね。よって、このまま一気に面積を求められます。</p>
+            <p class="lh-1">\( = - \left\lbrace - \dfrac{1}{6} (3 - 2)^3 \right\rbrace \)</p>
+            <p class="lh-1">\( = \dfrac{1}{6} \)</p>
+            <p class="lh-1">以上のように、囲まれた面積を求めるためには交点と上下関係が必要になりますが、そもそも<span class="text-decoration-underline">この作業に自然と因数分解の形が登場</span>します。<span class="text-decoration-underline">積分される関数も同様</span>です。</p>
+            <p class="lh-1">また、交点間の面積を求めるので、積分範囲にもこれまた<span class="text-decoration-underline">交点と同じ値が登場</span>します。</p>
+            <p class="lh-1">つまり、多少大げさに言うのであれば、<span class="text-decoration-underline">この公式は必然的に登場する</span>ことになるとも言えるでしょう。偶然ではないわけですね。</p>
+            <p class="lh-1">他の例も確認してみましょう。</p>
+            <br>
+            <p class="lh-1 fst-italic border-bottom col-md-5">例題4: \( y = x^2 \)と\( y = x \)で囲まれた部分の面積を求めよ。</p>
+            <br>
+            <p class="lh-1">今回はx軸、つまり\( y = 0 \)が相方ではありませんが、やることは同じです。</p>
+            <p class="lh-1">まず、上下関係を求めるために、\( x^2 - x \geqq 0 \)を解きます。</p>
+            <p class="lh-1">\( x (x - 1) \geqq 0 \)</p>
+            <p class="lh-1">\( x \leqq 0, 1 \leqq x \)</p>
+            <p class="lh-1">この結果から、この2つの関数で囲まれた面積は\( 0 \leqq x \leqq 1 \)の範囲にあり、\(y = x^2 \)は下、\( y = x \)は上であることがわかります。</p>
+            <p class="lh-1">実際、グラフは以下のようになっていますので、これは正しい関係です。</p>
+            <!-- Graph -->
+            <br>
+            <div id="jxgbox2" class="jxgbox" style="width:500px; height:500px;"></div>
+            <br>
+            <!--Graph-->
+            <p class="lh-1">そのため求めたい面積を\( S \)とすると、</p>
+            <p class="lh-1">\( S = \int_{0}^{1} \left( x - x^2 \right) dx \)</p>
+            <p class="lh-1">\( = \int_{0}^{1} x (x - 1) dx \)</p>
         </div>
     </div>
 </div>

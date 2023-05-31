@@ -48,7 +48,7 @@ window.addEventListener("load", (event)=>{
     jsx.create('text', [2.4, 0.3, 'y = 0'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
 
     //JSXGraph2
-    let jsx2 = JXG.JSXGraph.initBoard('jxgbox2', {axis: true, boundingbox: [-0.5, 2, 3, -1]});
+    let jsx2 = JXG.JSXGraph.initBoard('jxgbox2', {axis: true, boundingbox: [-0.5, 2.5, 3, -1]});
     jsx2.create("functiongraph", [x => x, 0, 1], {strokeColor: "red"});
     jsx2.create("functiongraph", [x => x, -5, 0], {strokeColor: "gray", dash: 2});
     jsx2.create("functiongraph", [x => x, 1, 5], {strokeColor: "gray", dash: 2});
@@ -60,6 +60,17 @@ window.addEventListener("load", (event)=>{
     jsx2.create('text', [0.05, 1.8, 'y'],{ fontSize: 16, cssStyle: text_css });
     jsx2.create('text', [0.5, -0.25, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
     jsx2.create('text', [0.5, 1, 'y = x'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+
+    //JSXGraph3
+    let jsx3 = JXG.JSXGraph.initBoard('jxgbox3', {axis: true, boundingbox: [-2, 3, 2, -1]});
+    jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, -1, 1], {strokeColor: "red"});
+    jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, -5, -1], {strokeColor: "gray", dash: 2});
+    jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, 1, 5], {strokeColor: "gray", dash: 2});
+    jsx3.create("functiongraph", [x => x ** 2, -1, 1], {strokeColor: "blue"});
+    jsx3.create("functiongraph", [x => x ** 2, -5, -1], {strokeColor: "gray", dash: 2});
+    jsx3.create("functiongraph", [x => x ** 2, 1, 5], {strokeColor: "gray", dash: 2});
+    jsx3.create('text', [0.75, -0.25, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx3.create('text', [0.75, 2.1, 'y = -x^2 + 2'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
 });
 </script>
 {% endblock %}
@@ -364,11 +375,13 @@ window.addEventListener("load", (event)=>{
         </div>
         <div class="m-2 p-2">
             <p class="lh-1">この公式で重要なのは、<span class="text-decoration-underline">積分範囲と因数分解に使われた定数が一致している</span>ことです。</p>
-            <p class="lh-1">つまり、\( \int_{\color{green}1\color{black}}^{\color{magenta}3} \color{black} (x - \color{green}1\color{black}) (x - \color{magenta}3\color{black}) dx \)には公式が使えますが、
-                \( \int_{\color{green}1\color{black}}^{\color{magenta}3} \color{black} (x - \color{green}1\color{black}) (x - \color{orange}5\color{black}) dx \)には公式が使えない、ということです。
+            <p class="lh-1">つまり、\( \int_{\color{green}1\color{black}}^{\color{magenta}3} \color{black} (x - \color{green}1\color{black}) (x - \color{magenta}3\color{black}) dx \)には公式が使えますが、</p>
+            <p class="lh-1">\( \int_{\color{green}1\color{black}}^{\color{magenta}3} \color{black} (x - \color{green}1\color{black}) (x - \color{orange}5\color{black}) dx \)や、</p>
+            <p class="lh-1">\( \int_{\color{green}-5\color{black}}^{\color{magenta}-3\color{black}} (x - \color{skyblue}1\color{black}) \left\lbrace x - (\color{magenta}-3\color{black}) \right\rbrace dx = \int_{\color{green}-5\color{black}}^{\color{magenta}-3\color{black}} (x - \color{skyblue}1\color{black}) ( x + \color{magenta}3\color{black} ) dx \)には公式が使えない、ということです。</p>
             </p>
+            <p class="lh-1">あくまで両方が一致していないとダメです。注意しましょう。</p>
             <br>
-            <p class="lh-1">これを見た、まだあまり公式に慣れていない方は「因数分解できて、さらに積分範囲が一致するような都合が良いことが度々あるのか？」と感じるかもしれません。</p>
+            <p class="lh-1">これを見て、まだあまり公式に慣れていない方は「因数分解できて、さらに積分範囲が一致するような都合が良いことが度々あるのか？」と感じるかもしれません。</p>
             <p class="lh-1">結論から言いますと、<span class="text-decoration-underline">あります。何なら頻繁に出てきます。</span></p>
             <p class="lh-1">たとえば、上で例としたあげた問題を見てみましょう。</p>
             <br>
@@ -398,7 +411,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( x^2 - x \geqq 0 \)</p>
             <p class="lh-1">\( x (x - 1) \geqq 0 \)</p>
             <p class="lh-1">\( x \leqq 0, 1 \leqq x \)</p>
-            <p class="lh-1">この結果から、この2つの関数で囲まれた面積は\( 0 \leqq x \leqq 1 \)の範囲にあり、\(y = x^2 \)は下、\( y = x \)は上であることがわかります。</p>
+            <p class="lh-1">この結果から、この2つの関数で囲まれた面積は\( 0 \leqq x \leqq 1 \)の範囲にあり、\(y = \color{blue}x^2\color{black} \)は下、\( y = \color{red}x\color{black} \)は上であることがわかります。</p>
             <p class="lh-1">実際、グラフは以下のようになっていますので、これは正しい関係です。</p>
             <!-- Graph -->
             <br>
@@ -406,7 +419,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <!--Graph-->
             <p class="lh-1">そのため求めたい面積を\( S \)とすると、</p>
-            <p class="lh-1">\( S = \int_{0}^{1} \left( x - x^2 \right) dx \)</p>
+            <p class="lh-1">\( S = \int_{0}^{1} \left( \color{red}x\color{black} - \color{blue}x^2\color{black} \right) dx \)</p>
             <p class="lh-1">\( = \int_{0}^{1} - \left( x^2 - x \right) dx \)</p>
             <p class="lh-1">\( = \int_{0}^{1} -x (x - 1)  \)</p>
             <p class="lh-1">\( = - \int_{\color{green}0\color{black}}^{\color{magenta}1\color{black}} (x - \color{green}0\color{black}) (x - \color{magenta}1\color{black}) dx \)</p>
@@ -427,7 +440,8 @@ window.addEventListener("load", (event)=>{
             <p>ある区間、\( \alpha \leqq x \leqq \beta \)において、上にある関数が\( y = f(x) \)、下にある関数が\( y = g(x) \)であるとき、</p>
             <p>その関数で囲まれた面積\( S \)は、\( S = \int_{\alpha}^{\beta} \left\lbrace f(x) - g(x) \right\rbrace dx \)と計算できる。</p>
             <br>
-            <p>このとき、\( f(x) - g(x) = k (x - \alpha)(x - \beta) \)と交点が積分範囲と一致するように因数分解できるのであれば、</p>
+            <p>また、\( f(x) \)と\( g(x) \)が\( x = \alpha, \beta \)で交わる、</p>
+            <p>すなわち、\( f(x) - g(x) = k (x - \alpha)(x - \beta) \)と因数分解できるのであれば、</p>
             <p>\( \int_{\alpha}^{\beta}  (x - \alpha)(x - \beta) dx  = -\dfrac{1}{6} (\beta - \alpha)^3 \) (\( \alpha, \beta \); 定数)を用いて、</p>
             <p>\( S = \int_{\alpha}^{\beta} \left\lbrace f(x) - g(x) \right\rbrace dx \)</p>
             <p>\( = \int_{\alpha}^{\beta} k (x - \alpha)(x - \beta) dx \)</p>
@@ -439,6 +453,43 @@ window.addEventListener("load", (event)=>{
 
         <div class="m-2 p-2">
             <p class="lh-1">以上になります。実際の計算においては、</p>
+            <ol class="list-group list-group-numbered" style="max-width: 400px;">
+                <li class="list-group-item">1.) 上下関係と交点のチェックを兼ねて、不等式を解く</li>
+                <li class="list-group-item">2.) 上下関係を意識しながら面積を求める式を立てる</li>
+                <li class="list-group-item">3.) 積分範囲と交点が一致している注意しつつ公式を使う</li>
+            </ol>
+            <p class="lh-1">という流れで解いていくことになります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">最後に、2次関数とx軸、2次関数と直線以外のパターンも確認してみましょう。</p>
+            <br>
+            <p class="lh-1 fst-italic border-bottom col-md-5">例題5: \( y = x^2 \)と\( y = -x^2 + 2 \)で囲まれた部分の面積を求めよ。</p>
+            <br>
+            <p class="lh-1">まずは\( y = x^2 \)と\( y = -x^2 + 2 \)の上下関係を確認するために、以下の不等式を解きます。</p>
+            <p class="lh-1">\( x^2 \geqq -x^2 + 2 \)</p>
+            <p class="lh-1">\( 2x^2 - 2 \geqq 0 \)</p>
+            <p class="lh-1">\( 2(x - 1)(x + 1) \geqq 0 \)</p>
+            <p class="lh-1">\( x \leqq -1, 1 \geqq x \)</p>
+            <p class="lh-1">以上の計算から、2つの関数で囲まれた部分の面積は、\( -1 \leqq x \leqq 1 \)にあり、この範囲では\( y = \color{red} -x^2 + 2 \color{black}\)が上、\( y = \color{blue} x^2 \color{black} \)が下であることがわかります。</p>
+            <br>
+            <div id="jxgbox3" class="jxgbox" style="width:500px; height:500px;"></div>
+            <br>
+            <p class="lh-1">よって求めたい面積を\( S \)とすると、</p>
+            <p class="lh-1">\( S = \int_{-1}^{1} \left\lbrace (\color{red} -x^2 + 2 \color{black}) - \color{blue} x^2 \color{black} \right\rbrace dx \)</p>
+            <p class="lh-1">\( = \int_{-1}^{1} \left( -2x^2 + 2 \right) dx \)</p>
+            <p class="lh-1">\( = \int_{-1}^{1} -2 (x + 1)(x - 1) dx \)</p>
+            <p class="lh-1">\( = -2 \int_{\color{green}-1\color{black}}^{\color{magenta}1\color{black}} \lbrace x - (\color{green}-1\color{black}) \rbrace (x - \color{magenta}1\color{black}) dx \)</p>
+        </div>
+    </div>
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5">あとがき</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">解説は以上になります。いかがでしたか。</p>
+            <p class="lh-1">途中でも書いた通り、\( \dfrac{1}{6} \)公式は慣れるまでは中々難儀しますが、使いこなせるようになれば非常に頼もしい公式です。</p>
+            <p class="lh-1">慣れるための一番のコツは、常に「この問題には適用できるだろうか？」と考えることです。</p>
+            <p class="lh-1">その他の面積のところでふれたように、ざっくり2つの交点を持つ関数で囲まれた面積であれば、\( \dfrac{1}{6} \)公式が利用できます。</p>
+            <p class="lh-1">たくさん練習して、マスターしていきましょう。</p>
         </div>
     </div>
 </div>

@@ -41,7 +41,7 @@ window.addEventListener("load", (event)=>{
     jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, 3, 5], {strokeColor: "gray", dash: 2});
     jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, -5, 2], {strokeColor: "gray", dash: 2});
     jsx.create("functiongraph", [x => 0, 2, 3], {strokeColor: "red"});
-    jsx.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css})
+    jsx.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css});
     jsx.create('text', [3.8, 0.07, 'x'],{ fontSize: 16, cssStyle: text_css });
     jsx.create('text', [0.05, 0.9, 'y'],{ fontSize: 16, cssStyle: text_css });
     jsx.create('text', [2.1, -0.4, 'y = x^2 - 5x + 6'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
@@ -112,7 +112,7 @@ window.addEventListener("load", (event)=>{
 <div class="container-fluid">
     <h1 class="h4">
         定積分で面積を求める
-        <small class="text-muted">-公式を上手く活用して、時間と労力を節約しよう-</small>
+        <small class="text-muted">～\( \dfrac{1}{6} \)公式を上手く活用して、時間と労力を節約しよう～</small>
     </h1>
 
 
@@ -270,7 +270,7 @@ window.addEventListener("load", (event)=>{
 
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">公式を用いた面積の計算</h2>
+        <h2 class="text-muted h5">\( \dfrac{1}{6} \)公式を用いた面積の計算</h2>
         <div class="m-2 p-2">
             <p class="lh-1">さて、次はいよいよ、公式を用いた面積の計算になります。</p>
             <p class="lh-1">ここで、使う公式は以下になります。</p>
@@ -404,7 +404,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1 fst-italic border-bottom col-md-5">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
             <br>
-            <p class="lh-1">この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
+            <p class="lh-1">先程、１１この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
             <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
             <p class="lh-1">\( (x - 2)(x - 3) \geqq 0 \)</p>
             <p class="lh-1">また、その結果、以下のような式で面積を求めることとなりました。</p>

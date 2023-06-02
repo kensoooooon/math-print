@@ -115,9 +115,21 @@ window.addEventListener("load", (event)=>{
         <small class="text-muted">～\( \dfrac{1}{6} \)公式を上手く活用して、時間と労力を節約しよう～</small>
     </h1>
 
+    <br>
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item"><a href="#foreword">前書き</a></li>
+        <li class="list-group-item"><a href="#confirmation_of_integration_formula">定積分の定義の確認</a></li>
+        <li class="list-group-item"><a href="#calculate_area_by_integration_without_formula">\( \dfrac{1}{6} \)公式を用いない面積の計算</a></li>
+        <li class="list-group-item"><a href="#calculate_area_by_integration_with_formula">\( \dfrac{1}{6} \)公式を用いた面積の計算</a></li>
+        <li class="list-group-item"><a href="#others_type_with_formula">公式を用いて計算できるその他の面積</a></li>
+        <li class="list-group-item"><a href="#afterword">後書き</a></li>
+    </ul>
+    <br>
+
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">前書き</h2>
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">積分は共通テスト、2次試験ともに頻出の分野です。特に定積分を用いて面積を求める問題は非常によく出題されています。</p>
         <p class="lh-1">この面積を求めるための計算、これ自体はさして複雑な仕組みの計算ではありません。計算部分だけを見れば、中学生でも十分やれるレベルになっています。</p>
         <p class="lh-1">ですが、実際の数学のテスト(これは学校の定期テストから入試の本番までを含みます)では、<span class="text-decoration-underline">時間の不足</span>がしばしば皆さんの足を引っ張ります。</p>
@@ -131,7 +143,7 @@ window.addEventListener("load", (event)=>{
 
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">定積分の定義の確認</h2>
+        <h2 class="text-muted h5" id="confirmation_of_integration_formula">定積分の定義の確認</h2>
         <p class="lh-1">まず、ここで一度定義を確認しておきましょう。</p>
         <div class="border border-primary col-md-5">
             <p>ある関数\( f(x) \)の原始関数、つまり積分先の関数を\( F(x)\)。積分範囲を\(a, b\)とすると、</p>
@@ -181,7 +193,7 @@ window.addEventListener("load", (event)=>{
 
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">定積分を用いた面積の計算</h2>
+        <h2 class="text-muted h5" id="calculate_area_by_integration_without_formula">\( \dfrac{1}{6} \)公式を用いない面積の計算</h2>
         <div class="m-2 p-2">
             <p class="lh-1">さてお次は、定積分を用いた面積の計算になります。</p>
             <p class="lh-1">先程と同じく、まずは公式の確認からいってみましょう。</p>
@@ -270,7 +282,7 @@ window.addEventListener("load", (event)=>{
 
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">\( \dfrac{1}{6} \)公式を用いた面積の計算</h2>
+        <h2 class="text-muted h5" id="calculate_area_by_integration_with_formula">\( \dfrac{1}{6} \)公式を用いた面積の計算</h2>
         <div class="m-2 p-2">
             <p class="lh-1">さて、次はいよいよ、公式を用いた面積の計算になります。</p>
             <p class="lh-1">ここで、使う公式は以下になります。</p>
@@ -404,7 +416,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1 fst-italic border-bottom col-md-5">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
             <br>
-            <p class="lh-1">先程、１１この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
+            <p class="lh-1">先程、この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
             <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
             <p class="lh-1">\( (x - 2)(x - 3) \geqq 0 \)</p>
             <p class="lh-1">また、その結果、以下のような式で面積を求めることとなりました。</p>
@@ -448,7 +460,7 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">公式を用いて計算できるその他の面積</h2>
+        <h2 class="text-muted h5" id="others_type_with_formula">公式を用いて計算できるその他の面積</h2>
         <div class="m-2 p-2">
             <p class="lh-1">ここで一度、ここまで説明してきたことをまとめておきましょう。</p>
         </div>
@@ -532,7 +544,7 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">あとがき</h2>
+        <h2 class="text-muted h5" id="afterword">後書き</h2>
         <div class="m-2 p-2">
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
             <p class="lh-1">途中でも書いた通り、\( \dfrac{1}{6} \)公式は慣れるまでは中々難儀しますが、使いこなせるようになれば非常に頼もしい公式です。</p>

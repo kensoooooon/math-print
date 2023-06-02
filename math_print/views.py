@@ -1505,10 +1505,34 @@ def print_line_and_flat_positional_relationship(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-# display section
 
 def print_calculate_area_by_integration(request):
-    return (request, 'math_print/highschool2/calculate_area_by_integration/for_print.html', {})
+    print(f"request: {request}")
+    PROBLEM_NUMBER = 4
+    paper_number = int(request.POST["paper_number"])
+    problem_types = []
+    problem_types += request.POST.getlist("one_sixth_problem_type")
+    problem_types += request.POST.getlist("one_third_problem_type")
+    problem_types += request.POST.getlist("one_twelfth_problem_type")
+    if not (problem_types):
+        problem_types.append("between_quadratic_function_and_x_axis")
+        problem_types.append("between_quadratic_function_and_line")
+        problem_types.append("between_quadratic_functions")
+        problem_types.append("between_cubic_functions")
+        problem_types.append("between_quadratic_function_and_tangent_and_parallel_line_with_y_axis")
+        problem_types.append("between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = CalculateAreaByIntegration(problem_types=problem_types)
+            problem2 = CalculateAreaByIntegration(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/highschool2/calculate_area_by_integration/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
+# display section
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -2748,8 +2772,8 @@ def display_calculate_area_by_integration(request):
 
 
 # explain part
-def explain_calculate_area_by_integration(request):
-    """平面上の面積を、積分の各種公式を使って求める問題の解き方の解説を担当。
+def explain_one_sixth_calculate_area_by_integration(request):
+    """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
     
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -2757,5 +2781,5 @@ def explain_calculate_area_by_integration(request):
     Returns:
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
-    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain.html', {})
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth.html', {})
     return returned_render

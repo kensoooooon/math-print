@@ -5,9 +5,9 @@ import sympy as sy
 
 class NumberWithoutBracketCalculateProblem:
     def __init__(self, **settings):
-        self._term_number = settings["term_number"]
-        self._operator_to_use_list = settings["operator_to_use_list"]
-        self._number_to_use_list = settings["number_to_use_list"]
+        self._term_number = int(choice(settings["term_numbers"]))
+        self._operator_to_use_list = settings["operators_to_use"]
+        self._number_to_use_list = settings["numbers_to_use"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):

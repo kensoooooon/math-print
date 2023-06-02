@@ -174,5 +174,5 @@ urlpatterns = [
     # 面積を求める積分
     path('calculate_area_by_integration/print', views.print_calculate_area_by_integration, name='calculate_area_by_integration_print'),
     path('calculate_area_by_integration/display', views.display_calculate_area_by_integration, name='calculate_area_by_integration_display'),
-    path('calculate_area_by_integration/explanation', views.explain_calculate_area_by_integration, name='calculate_area_by_integration_explain'),
+    path('calculate_area_by_integration/explanation_one_sixth', views.explain_one_sixth_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_sixth'),
 ]

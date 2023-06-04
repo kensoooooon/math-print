@@ -36,23 +36,27 @@ window.addEventListener("load", (event)=>{
     const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
 
 	// JSXGraph
-	let jsx = JXG.JSXGraph.initBoard("jxgbox", {axis: true, boundingbox: [-0.5, 1, 4, -1]});
-    jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, 2, 3], {strokeColor: "blue"});
-    jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, 3, 5], {strokeColor: "gray", dash: 2});
-    jsx.create("functiongraph", [x => x ** 2 - 5 * x + 6, -5, 2], {strokeColor: "gray", dash: 2});
-    jsx.create("functiongraph", [x => 0, 2, 3], {strokeColor: "red"});
-    jsx.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css});
-    jsx.create('text', [3.8, 0.07, 'x'],{ fontSize: 16, cssStyle: text_css });
-    jsx.create('text', [0.05, 0.9, 'y'],{ fontSize: 16, cssStyle: text_css });
-    jsx.create('text', [2.1, -0.4, 'y = x^2 - 5x + 6'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
-    jsx.create('text', [2.4, 0.3, 'y = 0'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+	let jsx1 = JXG.JSXGraph.initBoard("jxgbox", {axis: true, boundingbox: [-0.5, 1, 4, -1]});
+    let function1_1 = jsx1.create("functiongraph", [x => 0, 2, 3], {strokeColor: "red", strokeWidth: 4});
+    let function1_2 = jsx1.create("functiongraph", [x => x ** 2 - 5 * x + 6, 2, 3], {strokeColor: "blue", strokeWidth: 4});
+    jsx1.create("functiongraph", [x => x ** 2 - 5 * x + 6, 3, 5], {strokeColor: "gray", dash: 2});
+    jsx1.create("functiongraph", [x => x ** 2 - 5 * x + 6, -5, 2], {strokeColor: "gray", dash: 2});
+    jsx1.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css});
+    jsx1.create('text', [3.8, 0.07, 'x'],{ fontSize: 16, cssStyle: text_css });
+    jsx1.create('text', [0.05, 0.9, 'y'],{ fontSize: 16, cssStyle: text_css });
+    jsx1.create('text', [2.1, -0.4, 'y = x^2 - 5x + 6'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx1.create('text', [2.4, 0.3, 'y = 0'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    // added for filling.
+    let ineq1_1 = jsx1.create('inequality', [function1_1], {inverse: false, fillColor: 'white'});
+    let ineq1_2 = jsx1.create('inequality', [function1_2], {inverse: true, fillColor: 'white'});
+    jsx1.create('curveintersection', [ineq1_1, ineq1_2], {fillColor: 'yellow', fillOpacity: 0.3, strokeWidth: 0.01});
 
     //JSXGraph2
     let jsx2 = JXG.JSXGraph.initBoard('jxgbox2', {axis: true, boundingbox: [-0.5, 2.5, 3, -1]});
-    jsx2.create("functiongraph", [x => x, 0, 1], {strokeColor: "red"});
+    let function2_1 = jsx2.create("functiongraph", [x => x, 0, 1], {strokeColor: "red", strokeWidth: 4});
     jsx2.create("functiongraph", [x => x, -5, 0], {strokeColor: "gray", dash: 2});
     jsx2.create("functiongraph", [x => x, 1, 5], {strokeColor: "gray", dash: 2});
-    jsx2.create("functiongraph", [x => x ** 2, 0, 1], {strokeColor: "blue"});
+    let function2_2 = jsx2.create("functiongraph", [x => x ** 2, 0, 1], {strokeColor: "blue", strokeWidth: 4});
     jsx2.create("functiongraph", [x => x ** 2, -5, 0], {strokeColor: "gray", dash: 2});
     jsx2.create("functiongraph", [x => x ** 2, 1, 5], {strokeColor: "gray", dash: 2});
     jsx2.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css})
@@ -60,13 +64,16 @@ window.addEventListener("load", (event)=>{
     jsx2.create('text', [0.05, 1.8, 'y'],{ fontSize: 16, cssStyle: text_css });
     jsx2.create('text', [0.5, -0.25, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
     jsx2.create('text', [0.5, 1, 'y = x'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    let ineq2_1 = jsx2.create('inequality', [function2_1], {inverse: false, fillColor: 'white'});
+    let ineq2_2 = jsx2.create('inequality', [function2_2], {inverse: true, fillColor: 'white'});
+    jsx2.create('curveintersection', [ineq2_1, ineq2_2], {fillColor: 'yellow', fillOpacity: 0.3, strokeWidth: 0.01});
 
     //JSXGraph3
     let jsx3 = JXG.JSXGraph.initBoard('jxgbox3', {axis: true, boundingbox: [-2, 3, 2, -1]});
-    jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, -1, 1], {strokeColor: "red"});
+    let function3_1 = jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, -1, 1], {strokeColor: "red", strokeWidth: 4});
     jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, -5, -1], {strokeColor: "gray", dash: 2});
     jsx3.create("functiongraph", [x => -1 * x ** 2 + 2, 1, 5], {strokeColor: "gray", dash: 2});
-    jsx3.create("functiongraph", [x => x ** 2, -1, 1], {strokeColor: "blue"});
+    let function3_2 = jsx3.create("functiongraph", [x => x ** 2, -1, 1], {strokeColor: "blue", strokeWidth: 4});
     jsx3.create("functiongraph", [x => x ** 2, -5, -1], {strokeColor: "gray", dash: 2});
     jsx3.create("functiongraph", [x => x ** 2, 1, 5], {strokeColor: "gray", dash: 2});
     jsx3.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css})
@@ -74,13 +81,17 @@ window.addEventListener("load", (event)=>{
     jsx3.create('text', [0.05, 1.8, 'y'],{ fontSize: 16, cssStyle: text_css });
     jsx3.create('text', [0.75, -0.25, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
     jsx3.create('text', [0.75, 2.1, 'y = -x^2 + 2'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    // added or filling.
+    let ineq3_1 = jsx3.create('inequality', [function3_1], {inverse: false, fillColor: 'white'});
+    let ineq3_2 = jsx3.create('inequality', [function3_2], {inverse: true, fillColor: 'white'});
+    jsx3.create('curveintersection', [ineq3_1, ineq3_2], {fillColor: 'yellow', fillOpacity: 0.3, strokeWidth: 0.01});
 
     //JSXGraph4
     let jsx4 = JXG.JSXGraph.initBoard('jxgbox4', {axis: true, boundingbox: [-5, 5, 5, -5]});
-    jsx4.create("functiongraph", [x => x ** 3 + x + 1, -1, 1], {strokeColor: "red"});
+    let function4_1 = jsx4.create("functiongraph", [x => x ** 3 + x + 1, -1, 1], {strokeColor: "red", strokeWidth: 4});
     jsx4.create("functiongraph", [x => x ** 3 + x + 1, -5, -1], {strokeColor: "gray", dash: 2});
     jsx4.create("functiongraph", [x => x ** 3 + x + 1, 1, 11], {strokeColor: "gray", dash: 2});
-    jsx4.create("functiongraph", [x => x ** 3 + x ** 2 + x, -1, 1], {strokeColor: "blue"});
+    let function4_2 = jsx4.create("functiongraph", [x => x ** 3 + x ** 2 + x, -1, 1], {strokeColor: "blue", strokeWidth: 4});
     jsx4.create("functiongraph", [x => x ** 3 + x ** 2 + x, -5, -1], {strokeColor: "gray", dash: 2});
     jsx4.create("functiongraph", [x => x ** 3 + x ** 2 + x, 1, 11], {strokeColor: "gray", dash: 2});
     jsx4.create('text', [0.125, -0.125, 'O'], {fontSize: 16, cssStyle: text_css})
@@ -88,6 +99,10 @@ window.addEventListener("load", (event)=>{
     jsx4.create('text', [0.05, 1.8, 'y'],{ fontSize: 16, cssStyle: text_css });
     jsx4.create('text', [-2.5, 1.5, 'y = x^3 + x + 1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
     jsx4.create('text', [1, -1, 'y = x^3 + x^2 + x'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    // added for filling.
+    let ineq4_1 = jsx4.create('inequality', [function4_1], {inverse: false, fillColor: 'white'});
+    let ineq4_2 = jsx4.create('inequality', [function4_2], {inverse: true, fillColor: 'white'});
+    jsx4.create('curveintersection', [ineq4_1, ineq4_2], {fillColor: 'yellow', fillOpacity: 0.3, strokeWidth: 0.01});
 });
 </script>
 {% endblock %}

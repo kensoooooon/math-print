@@ -102,7 +102,7 @@ class CalculateAreaByIntegration:
         problem_type = choice(settings["problem_types"])
         if (problem_type == "between_quadratic_function_and_x_axis") or (problem_type == "between_quadratic_function_and_line") or (problem_type == "between_quadratic_functions") or (problem_type == "between_cubic_functions"):
             self.latex_answer, self.latex_problem = self._make_one_sixth_problem(problem_type)
-        elif (problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis") or (problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"):
+        elif (problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis") or (problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis") or (problem_type == "between_quadratic_function_and_two_tangents"):
             self.latex_answer, self.latex_problem = self._make_one_third_problem(problem_type)
         else:
             raise ValueError(f"'problem_type' is {problem_type}. This isn't expected value. Please check {settings['problem_types']}.")
@@ -429,16 +429,6 @@ class CalculateAreaByIntegration:
         x = sy.Symbol("x", real=True)
         # f(x) = ax^2 + bx + c, y = f'(a)(x-a) + y(a), y = k
         if problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis":
-            """
-            x = sy.Symbol("x", real=True)
-            y1 = sy.Rational(1, 2) * x ** 2 - x + sy.Rational(1, 2)
-            tx = 3
-            ty = 2
-            tangent_slope = sy.diff(y1).subs(x, tx)
-            print(f"tangent_slope: {tangent_slope}")
-            tangent = tangent_slope * (x - tx) + ty
-            print(f"tangent: {tangent}")
-            """
             a = self._random_integer(min_num=-2, max_num=2, remove_zero=True)
             b = self._random_integer(min_num=-3, max_num=3)
             c = self._random_integer(min_num=-3, max_num=3)
@@ -538,10 +528,92 @@ class CalculateAreaByIntegration:
                         latex_answer += f"\\( = {sy.latex(quadratic_coefficient)} \\lbrace ({sy.latex(left_x_for_area)}) - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
             area = sy.Abs(a) * sy.Rational(1, 3) * (end_x - start_x) ** 3
             latex_answer += f"\\(  = {sy.latex(area)} \\)"
-        # f(x) = ax^2 + bx + c, y1 = f'(a)(x-a) + y(a), g(x) = ax^2 + bx + c, y2 = g'(a?) ..
+        # f(x) = a1x^2 + b1x + c1, g(x) = a2x^2 + b2x + c2, f(x) - g(x) = k(x - t)^2 = ax^2 + bx + c
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
-            latex_problem = "dummy problem in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"
-            latex_answer = "dummy answer in between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis"
+            k = self._random_integer(min_num=1, max_num=2)
+            t = self._random_integer(min_num=-3, max_num=3)
+            quadratic_function_after_subtraction = sy.expand(k * (x - t) ** 2)
+            a = quadratic_function_after_subtraction.coeff(x, 2)
+            b = quadratic_function_after_subtraction.coeff(x, 1)
+            c = quadratic_function_after_subtraction.coeff(x, 0)
+            another_integration_point = t + self._random_integer(min_num=-3, max_num=3, remove_zero=True)
+            area = sy.Rational(1, 3) * k * sy.Abs((t - another_integration_point) ** 3)
+            # not to become a = a1
+            while True:    
+                a1 = a + self._random_integer(min_num=-2, max_num=2, remove_zero=True)
+                if a1 != 0:
+                    break                
+            b1 = self._random_integer(min_num=-3, max_num=3)
+            c1 = self._random_integer(min_num=-3, max_num=3)
+            # not to become b = b1 and c = c1
+            if (b == b1) and (c == c1):
+                increment_checker = choice(["b1_only", "c1_only", "b1_and_c1"])
+                if increment_checker == "b1_only":
+                    b1 += self._random_integer(min_num=-2, max_num=2, remove_zero=True)
+                elif increment_checker == "c1_only":
+                    c1 += self._random_integer(min_num=-2, max_num=2, remove_zero=True)
+                elif increment_checker == "b1_and_c1":
+                    b1 += self._random_integer(min_num=-2, max_num=2, remove_zero=True)
+                    c1 += self._random_integer(min_num=-2, max_num=2, remove_zero=True)
+            upper_quadratic_function = a1 * x ** 2 + b1 * x + c1
+            # a1 - a2 = a <--> a2 = a1 - a
+            a2 = a1 - a
+            # b1 - b2 = b <--> b2 = b1 - b
+            b2 = b1 - b
+            # c1 - c2 = c <--> c2 = c1 - c
+            c2 = c1 - c
+            lower_quadratic_function = a2 * x ** 2 + b2 * x + c2
+            display_mode = choice(["upper_is_first", "lower_is_first"])
+            if display_mode == "upper_is_first":
+                latex_problem = f"\\( y = {sy.latex(sy.expand(upper_quadratic_function))} \\)と、"
+                latex_problem += f"\\( y = {sy.latex(sy.expand(lower_quadratic_function))} \\)、\n"
+                latex_problem += f"および\\( x = {sy.latex(another_integration_point)} \\)で囲まれた面積を求めよ。"
+            elif display_mode == "lower_is_first":
+                latex_problem = f"\\( y = {sy.latex(sy.expand(lower_quadratic_function))} \\)と、"
+                latex_problem += f"\\( y = {sy.latex(sy.expand(upper_quadratic_function))} \\)、\n"
+                latex_problem += f"および\\( x = {sy.latex(another_integration_point)} \\)で囲まれた面積を求めよ。"
+            latex_answer = "まず、2次関数同士の位置関係を確認するために、"
+            if display_mode == "upper_is_first":
+                latex_answer += f"\\( {sy.latex(sy.expand(upper_quadratic_function))} \\geqq {sy.latex(sy.expand(lower_quadratic_function))} \\)を解くと、\n"
+                quadratic_function_for_display = upper_quadratic_function - lower_quadratic_function
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
+                latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
+                # quadratic_coefficient > 0
+                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
+                latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
+                # (x - t)^2 >= 0
+                latex_answer += "\\( x \\)は全ての実数。\n"
+            elif display_mode == "lower_is_first":
+                latex_answer += f"\\( {sy.latex(sy.expand(lower_quadratic_function))} \\geqq {sy.latex(sy.expand(upper_quadratic_function))} \\)を解くと、\n"
+                quadratic_function_for_display = lower_quadratic_function - upper_quadratic_function
+                latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function_for_display))} \\geqq 0 \\)\n"
+                factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
+                latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
+                # quadratic_coefficient < 0
+                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
+                latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\leqq 0 \\)\n"
+                latex_answer += f"\\( x \\)は\\( x = {sy.latex(t)} \\)を除く、全ての実数。\n"
+            latex_answer += f"以上より、\\( y = {sy.latex(upper_quadratic_function)} \\)が上、\\( y = {sy.latex(lower_quadratic_function)}\\)が下であり、"
+            latex_answer += f"\\( x = {sy.latex(t)} \\)で接する。\n"
+            latex_answer += f"よって、求める面積\\( S \\)は、\n"
+            if t > another_integration_point:
+                latex_answer += f"\\( S = \\int_{{{sy.latex(another_integration_point)}}}^{{{sy.latex(t)}}} \\left\\lbrace \\left( {sy.latex(sy.expand(upper_quadratic_function))} \\right) - \\left( {sy.latex(sy.expand(lower_quadratic_function))} \\right) \\right\\rbrace dx \\)\n"
+                factored_quadratic_function_after_subtraction = sy.factor(quadratic_function_after_subtraction)
+                latex_answer += f"\\( = \\int_{{{sy.latex(another_integration_point)}}}^{{{sy.latex(t)}}} {sy.latex(factored_quadratic_function_after_subtraction)} dx \\)\n"
+                divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, a) * factored_quadratic_function_after_subtraction
+                latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(another_integration_point)}}}^{{{sy.latex(t)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+            elif t < another_integration_point:
+                latex_answer += f"\\( S = \\int_{{{sy.latex(t)}}}^{{{sy.latex(another_integration_point)}}} \\left\\lbrace \\left( {sy.latex(sy.expand(upper_quadratic_function))} \\right) - \\left( {sy.latex(sy.expand(lower_quadratic_function))} \\right) \\right\\rbrace dx \\)\n"
+                factored_quadratic_function_after_subtraction = sy.factor(quadratic_function_after_subtraction)
+                latex_answer += f"\\( = \\int_{{{sy.latex(t)}}}^{{{sy.latex(another_integration_point)}}} {sy.latex(factored_quadratic_function_after_subtraction)} dx \\)\n"
+                divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, a) * factored_quadratic_function_after_subtraction
+                latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(t)}}}^{{{sy.latex(another_integration_point)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+        elif problem_type == "between_quadratic_function_and_two_tangents":
+            latex_answer = "between_quadratic_function_and_two_tangents answer"
+            latex_problem = "between_quadratic_function_and_two_tangents problem"
         return latex_answer, latex_problem
     
     def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:

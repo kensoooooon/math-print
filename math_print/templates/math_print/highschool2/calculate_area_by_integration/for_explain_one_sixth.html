@@ -431,13 +431,13 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1 fst-italic border-bottom col-md-5">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
             <br>
-            <p class="lh-1">先程、この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
+            <p class="lh-1">先ほど、この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
             <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
             <p class="lh-1">\( (x - 2)(x - 3) \geqq 0 \)</p>
             <p class="lh-1">また、その結果、以下のような式で面積を求めることとなりました。</p>
             <p class="lh-1">\( \int_{2}^{3} \left\lbrace 0 - \left( x^2 - 5x + 6 \right) \right\rbrace dx \)</p>
             <p class="lh-1">\( = \int_{2}^{3} \left( -x^2 + 5x - 6 \right) dx \)</p>
-            <p class="lh-1">さて、先ほどはここから即座に積分を行いましたが、不等式を参考に式を因数分解してみましょう。</p>
+            <p class="lh-1">さて、さっきはここから即座に積分を行いましたが、ここでは不等式を参考に、いったん式を因数分解してみましょう。</p>
             <p class="lh-1">\( = \int_{2}^{3} - (x - 2)(x - 3) dx \)</p>
             <p class="lh-1">\( = - \int_{\color{green}2 \color{black}}^{\color{magenta}3} \color{black} (x - \color{green}2 \color{black})(x - \color{magenta}3 \color{black}) dx \)</p>
             <p class="lh-1">式をよくよく見てみると、\( \dfrac{1}{6} \)公式を使える形が登場していますね。よって、このまま一気に面積を求められます。</p>
@@ -465,7 +465,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">そのため求めたい面積を\( S \)とすると、</p>
             <p class="lh-1">\( S = \int_{0}^{1} \left( \color{red}x\color{black} - \color{blue}x^2\color{black} \right) dx \)</p>
             <p class="lh-1">\( = \int_{0}^{1} - \left( x^2 - x \right) dx \)</p>
-            <p class="lh-1">\( = \int_{0}^{1} -x (x - 1)  \)</p>
+            <p class="lh-1">\( = \int_{0}^{1} -x (x - 1) dx \)</p>
             <p class="lh-1">\( = - \int_{\color{green}0\color{black}}^{\color{magenta}1\color{black}} (x - \color{green}0\color{black}) (x - \color{magenta}1\color{black}) dx \)</p>
             <p class="lh-1">\( = - \left\lbrace -\dfrac{1}{6} (\color{magenta}1\color{black} - \color{green}0\color{green}\color{black})^3 \right\rbrace \)</p>
             <p class="lh-1">\( = \dfrac{1}{6} \)</p>
@@ -514,7 +514,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( x^2 \geqq -x^2 + 2 \)</p>
             <p class="lh-1">\( 2x^2 - 2 \geqq 0 \)</p>
             <p class="lh-1">\( 2(x - 1)(x + 1) \geqq 0 \)</p>
-            <p class="lh-1">\( x \leqq -1, 1 \geqq x \)</p>
+            <p class="lh-1">\( x \leqq -1, 1 \leqq x \)</p>
             <p class="lh-1">以上の計算から、2つの関数で囲まれた部分の面積は、\( -1 \leqq x \leqq 1 \)にあり、この範囲では\( y = \color{red} -x^2 + 2 \color{black}\)が上、\( y = \color{blue} x^2 \color{black} \)が下であることがわかります。</p>
             <br>
             <div id="jxgbox3" class="jxgbox" style="width:500px; height:500px;"></div>

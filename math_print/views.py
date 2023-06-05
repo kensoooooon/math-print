@@ -1521,6 +1521,7 @@ def print_calculate_area_by_integration(request):
         problem_types.append("between_cubic_functions")
         problem_types.append("between_quadratic_function_and_tangent_and_parallel_line_with_y_axis")
         problem_types.append("between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis")
+        problem_types.append("between_quadratic_function_and_two_tangents")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -2763,6 +2764,7 @@ def display_calculate_area_by_integration(request):
         problem_types.append("between_cubic_functions")
         problem_types.append("between_quadratic_function_and_tangent_and_parallel_line_with_y_axis")
         problem_types.append("between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis")
+        problem_types.append("between_quadratic_function_and_two_tangents")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
         problem1 = CalculateAreaByIntegration(problem_types=problem_types)

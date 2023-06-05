@@ -530,8 +530,8 @@ class CalculateAreaByIntegration:
             latex_answer += f"\\(  = {sy.latex(area)} \\)"
         # f(x) = a1x^2 + b1x + c1, g(x) = a2x^2 + b2x + c2, f(x) - g(x) = k(x - t)^2 = ax^2 + bx + c
         elif problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis":
-            k = self._random_integer(min_num=1, max_num=2)
-            t = self._random_integer(min_num=-3, max_num=3)
+            k = self._random_integer(min_num=1, max_num=3)
+            t = self._random_integer(min_num=-4, max_num=4)
             quadratic_function_after_subtraction = sy.expand(k * (x - t) ** 2)
             a = quadratic_function_after_subtraction.coeff(x, 2)
             b = quadratic_function_after_subtraction.coeff(x, 1)
@@ -580,8 +580,8 @@ class CalculateAreaByIntegration:
                 factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
                 latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
                 # quadratic_coefficient > 0
-                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
-                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
+                quadratic_coefficient_for_display = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient_for_display)
                 latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
                 # (x - t)^2 >= 0
                 latex_answer += "\\( x \\)は全ての実数。\n"
@@ -592,25 +592,35 @@ class CalculateAreaByIntegration:
                 factored_quadratic_function_for_display = sy.factor(quadratic_function_for_display)
                 latex_answer += f"\\( {sy.latex(factored_quadratic_function_for_display)} \\geqq 0 \\)\n"
                 # quadratic_coefficient < 0
-                quadratic_coefficient = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
-                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient)
+                quadratic_coefficient_for_display = sy.expand(factored_quadratic_function_for_display).coeff(x, 2)
+                divided_and_factored_quadratic_function_for_display = factored_quadratic_function_for_display * sy.Rational(1, quadratic_coefficient_for_display)
                 latex_answer += f"\\( {sy.latex(divided_and_factored_quadratic_function_for_display)} \\leqq 0 \\)\n"
                 latex_answer += f"\\( x \\)は\\( x = {sy.latex(t)} \\)を除く、全ての実数。\n"
             latex_answer += f"以上より、\\( y = {sy.latex(upper_quadratic_function)} \\)が上、\\( y = {sy.latex(lower_quadratic_function)}\\)が下であり、"
             latex_answer += f"\\( x = {sy.latex(t)} \\)で接する。\n"
             latex_answer += f"よって、求める面積\\( S \\)は、\n"
             if t > another_integration_point:
-                latex_answer += f"\\( S = \\int_{{{sy.latex(another_integration_point)}}}^{{{sy.latex(t)}}} \\left\\lbrace \\left( {sy.latex(sy.expand(upper_quadratic_function))} \\right) - \\left( {sy.latex(sy.expand(lower_quadratic_function))} \\right) \\right\\rbrace dx \\)\n"
-                factored_quadratic_function_after_subtraction = sy.factor(quadratic_function_after_subtraction)
-                latex_answer += f"\\( = \\int_{{{sy.latex(another_integration_point)}}}^{{{sy.latex(t)}}} {sy.latex(factored_quadratic_function_after_subtraction)} dx \\)\n"
-                divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, a) * factored_quadratic_function_after_subtraction
-                latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(another_integration_point)}}}^{{{sy.latex(t)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                start_x = another_integration_point
+                end_x = t
             elif t < another_integration_point:
-                latex_answer += f"\\( S = \\int_{{{sy.latex(t)}}}^{{{sy.latex(another_integration_point)}}} \\left\\lbrace \\left( {sy.latex(sy.expand(upper_quadratic_function))} \\right) - \\left( {sy.latex(sy.expand(lower_quadratic_function))} \\right) \\right\\rbrace dx \\)\n"
-                factored_quadratic_function_after_subtraction = sy.factor(quadratic_function_after_subtraction)
-                latex_answer += f"\\( = \\int_{{{sy.latex(t)}}}^{{{sy.latex(another_integration_point)}}} {sy.latex(factored_quadratic_function_after_subtraction)} dx \\)\n"
-                divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, a) * factored_quadratic_function_after_subtraction
-                latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(t)}}}^{{{sy.latex(another_integration_point)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                start_x = t
+                end_x = another_integration_point
+            factored_quadratic_function_after_subtraction = sy.factor(quadratic_function_after_subtraction)
+            divided_and_factored_quadratic_function_after_subtraction = sy.Rational(1, a) * factored_quadratic_function_after_subtraction
+            if a == 1:
+                if t == 0:
+                    latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)"
+                    latex_answer += f"\\( = \\left \\lbrack \\dfrac{{{sy.latex(x)}^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+                else:
+                    latex_answer += f"\\( = \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = \\left \\lbrack \\dfrac{{({sy.latex(x - t)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+            else:
+                if t == 0:
+                    latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = {sy.latex(a)} \\left\\lbrack \\dfrac{{{sy.latex(x)}^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+                else:
+                    latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
+                    latex_answer += f"\\( = {sy.latex(a)} \\left\\lbrack \\dfrac{{({sy.latex(x - t)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
         elif problem_type == "between_quadratic_function_and_two_tangents":
             latex_answer = "between_quadratic_function_and_two_tangents answer"
             latex_problem = "between_quadratic_function_and_two_tangents problem"

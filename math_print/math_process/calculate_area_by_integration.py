@@ -621,6 +621,32 @@ class CalculateAreaByIntegration:
                 else:
                     latex_answer += f"\\( = {sy.latex(a)} \\int_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction)} dx \\)\n"
                     latex_answer += f"\\( = {sy.latex(a)} \\left\\lbrack \\dfrac{{({sy.latex(x - t)})^ 3}}{{3}} \\right\\rbrack_{{{sy.latex(start_x)}}}^{{{sy.latex(end_x)}}} \\)\n"
+            left_x_for_area = ((x - t) ** 3).subs(x, end_x) * sy.Rational(1, 3)
+            right_x_for_area = ((x - t) ** 3).subs(x, start_x) * sy.Rational(1, 3)
+            if a == 1:
+                if left_x_for_area >= 0:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = ({sy.latex(left_x_for_area)} - {sy.latex(right_x_for_area)}) \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\lbrace {sy.latex(left_x_for_area)} - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+                else:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = \\lbrace ({sy.latex(left_x_for_area)}) - {sy.latex(right_x_for_area)} \\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\lbrace ({sy.latex(left_x_for_area)}) - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+            else:
+                if left_x_for_area >= 0:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = {sy.latex(a)} ({sy.latex(left_x_for_area)} - {sy.latex(right_x_for_area)}) \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(a)} \\lbrace {sy.latex(left_x_for_area)} - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+                else:
+                    if right_x_for_area >= 0:
+                        latex_answer += f"\\( = {sy.latex(a)} \\lbrace ({sy.latex(left_x_for_area)}) - {sy.latex(right_x_for_area)} \\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(a)} \\lbrace ({sy.latex(left_x_for_area)}) - ({sy.latex(right_x_for_area)}) \\rbrace \\)\n"
+            area = sy.Abs(a) * sy.Rational(1, 3) * (end_x - start_x) ** 3
+            latex_answer += f"\\(  = {sy.latex(area)} \\)"
         elif problem_type == "between_quadratic_function_and_two_tangents":
             latex_answer = "between_quadratic_function_and_two_tangents answer"
             latex_problem = "between_quadratic_function_and_two_tangents problem"

@@ -648,9 +648,71 @@ class CalculateAreaByIntegration:
             area = sy.Abs(a) * sy.Rational(1, 3) * (end_x - start_x) ** 3
             latex_answer += f"\\(  = {sy.latex(area)} \\)"
         elif problem_type == "between_quadratic_function_and_two_tangents":
-            latex_answer = "between_quadratic_function_and_two_tangents answer"
-            latex_problem = "between_quadratic_function_and_two_tangents problem"
-        return latex_answer, latex_problem
+            a = self._random_integer(-3, 3, remove_zero=True)
+            b = self._random_integer(-4, 4)
+            c = self._random_integer(-4, 4)
+            quadratic_function = a * x ** 2 + b * x + c
+            left_tangent_x = self._random_integer(-3, 3)
+            right_tangent_x = left_tangent_x + self._random_integer(-3, 3, remove_zero=True)
+            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、2つの接点\\( x = {sy.latex(left_tangent_x)}, {sy.latex(right_tangent_x)} \\)における接線で囲まれた面積を求めよ。"
+            mid_x = sy.Rational(left_tangent_x + right_tangent_x, 2)
+            latex_answer = "まずは接線を求める。\n"
+            latex_answer += f"与えられた2次関数\\( y = {sy.latex(sy.expand(quadratic_function))} \\)に\\( x = {sy.latex(left_tangent_x)} \\)を代入すると、"
+            left_tangent_y = quadratic_function.subs(x, left_tangent_x)
+            latex_answer += f"\\( ({sy.latex(left_tangent_x)}, {sy.latex(left_tangent_y)}) \\)と接点を求められる。\n"
+            differentiated_quadratic_function = sy.diff(quadratic_function, x)
+            latex_answer += f"\( y' = {sy.latex(sy.expand(differentiated_quadratic_function))} \)なので、\\( ({sy.latex(left_tangent_x)}, {sy.latex(left_tangent_y)}) \\)における接線は、\n"
+            # left tangent line part
+            left_tangent_slope = differentiated_quadratic_function.subs(x, left_tangent_x)
+            left_tangent = left_tangent_slope * (x - left_tangent_x) + left_tangent_y
+            if left_tangent_x == 0:
+                if left_tangent_y == 0:
+                    latex_answer += f"\\( y = {sy.latex(left_tangent_slope)}({sy.latex(x)} - 0) = {sy.latex(sy.expand(left_tangent))} \\)である。\n"
+                elif left_tangent_y > 0:
+                    latex_answer += f"\\( y = {sy.latex(left_tangent_slope)}({sy.latex(x)} - 0) + {sy.latex(left_tangent_y)} = {sy.latex(sy.expand(left_tangent))} \\)である。\n"
+                elif left_tangent_y < 0:
+                    latex_answer += f"\\( y = {sy.latex(left_tangent_slope)}({sy.latex(x)} - 0) {sy.latex(left_tangent_y)} = {sy.latex(sy.expand(left_tangent))} \\)である。\n"
+            else:
+                if left_tangent_y == 0:
+                    latex_answer += f"\\( y = {sy.latex(left_tangent_slope)}({sy.latex(x - left_tangent_x)})= {sy.latex(sy.expand(left_tangent))} \\)である。\n"
+                elif left_tangent_y > 0:
+                    latex_answer += f"\\( y = {sy.latex(left_tangent_slope)}({sy.latex(x - left_tangent_x)}) + {sy.latex(left_tangent_y)} = {sy.latex(sy.expand(left_tangent))} \\)である。\n"
+                elif left_tangent_y < 0:
+                    latex_answer += f"\\( y = {sy.latex(left_tangent_slope)}({sy.latex(x - left_tangent_x)}) {sy.latex(left_tangent_y)} = {sy.latex(sy.expand(left_tangent))} \\)である。\n"
+            # right tangent line part
+            latex_answer += f"同様に、与えられた2次関数に\\( x = {sy.latex(right_tangent_x)} \\)を代入すると、"
+            right_tangent_y = quadratic_function.subs(x, right_tangent_x)
+            latex_answer += f"\\( ({sy.latex(right_tangent_x)}, {sy.latex(right_tangent_y)}) \\)と接点を求められ、\n"
+            right_tangent_slope = differentiated_quadratic_function.subs(x, right_tangent_x)
+            right_tangent = right_tangent_slope * (x - right_tangent_x) + right_tangent_y
+            if right_tangent_x == 0:
+                if right_tangent_y == 0:
+                    latex_answer += f"\\( y = {sy.latex(right_tangent_slope)}({sy.latex(x)}) = {sy.latex(sy.expand(right_tangent))} \\)が接線となる。\n"
+                elif right_tangent_y > 0:
+                    latex_answer += f"\\( y = {sy.latex(right_tangent_slope)}({sy.latex(x)}) + {sy.latex(right_tangent_y)} = {sy.latex(sy.expand(right_tangent))} \\)が接線となる。\n"
+                elif right_tangent_y < 0:
+                    latex_answer += f"\\( y = {sy.latex(right_tangent_slope)}({sy.latex(x)}) {sy.latex(right_tangent_y)} = {sy.latex(sy.expand(right_tangent))} \\)が接線となる。\n"
+            else:
+                if right_tangent_y == 0:
+                    latex_answer += f"\\( y = {sy.latex(right_tangent_slope)}({sy.latex(x - right_tangent_x)})= {sy.latex(sy.expand(right_tangent))} \\)が接線となる。\n"
+                elif right_tangent_y > 0:
+                    latex_answer += f"\\( y = {sy.latex(right_tangent_slope)}({sy.latex(x - right_tangent_x)}) + {sy.latex(right_tangent_y)} = {sy.latex(sy.expand(right_tangent))} \\)が接線となる。\n"
+                elif right_tangent_y < 0:
+                    latex_answer += f"\\( y = {sy.latex(right_tangent_slope)}({sy.latex(x - right_tangent_x)}) {sy.latex(right_tangent_y)} = {sy.latex(sy.expand(right_tangent))} \\)が接線となる。\n"
+            latex_answer += "次に、接線同士の交点を求めると、\n"
+            latex_answer += f"\\( {sy.latex(sy.expand(left_tangent))} = {sy.latex(sy.expand(right_tangent))} \\)より、"
+            cross_x = sy.solve(left_tangent - right_tangent, x)[0]
+            assert cross_x == mid_x
+            latex_answer += f"\\( x = {sy.latex(cross_x)} \\)となる。\n"
+            latex_answer += "最後に接線ごとに面積を求めていく。\n"
+            latex_answer += f"\\( x = {sy.latex(left_tangent_x)} \\)における接線\\( y = {sy.latex(sy.expand(left_tangent))} \\)と2次関数\\( y = {sy.latex(sy.expand(quadratic_function))} \\)における面積を\\( S_1 \\)とすると、\n"
+            if a > 0:
+                latex_answer += "2次関数は下に凸であり、2次関数が上、接線が下になることから、\n"
+                latex_answer += f"\\( S_1 = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(quadratic_function))}) - ({sy.latex(sy.expand(left_tangent))}) \\right\\rbrace dx \\)"
+            elif a < 0:
+                latex_answer += "2次関数は上に凸であり、接線が上、接線が下になることから、\n"
+                latex_answer += f"\\( S_1 = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(left_tangent))}) - ({sy.latex(sy.expand(quadratic_function))}) \\right\\rbrace dx \\)"
+            return latex_answer, latex_problem
     
     def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:
         """指定された条件と範囲でランダムな整数を出力

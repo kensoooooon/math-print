@@ -648,12 +648,16 @@ class CalculateAreaByIntegration:
             area = sy.Abs(a) * sy.Rational(1, 3) * (end_x - start_x) ** 3
             latex_answer += f"\\(  = {sy.latex(area)} \\)"
         elif problem_type == "between_quadratic_function_and_two_tangents":
-            a = self._random_integer(-3, 3, remove_zero=True)
-            b = self._random_integer(-4, 4)
-            c = self._random_integer(-4, 4)
+            a = self._random_integer(-2, 2, remove_zero=True)
+            b = self._random_integer(-3, 3)
+            c = self._random_integer(-3, 3)
             quadratic_function = a * x ** 2 + b * x + c
-            left_tangent_x = self._random_integer(-3, 3)
-            right_tangent_x = left_tangent_x + self._random_integer(-3, 3, remove_zero=True)
+            tangent_x1 = self._random_integer(-2, 3)
+            tangent_x2 = tangent_x1 + self._random_integer(-2, 3, remove_zero=True)
+            if tangent_x1 < tangent_x2:
+                left_tangent_x, right_tangent_x = tangent_x1, tangent_x2
+            elif tangent_x2 < tangent_x1:
+                left_tangent_x, right_tangent_x = tangent_x2, tangent_x1
             latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、2つの接点\\( x = {sy.latex(left_tangent_x)}, {sy.latex(right_tangent_x)} \\)における接線で囲まれた面積を求めよ。"
             mid_x = sy.Rational(left_tangent_x + right_tangent_x, 2)
             latex_answer = "まずは接線を求める。\n"
@@ -705,13 +709,100 @@ class CalculateAreaByIntegration:
             assert cross_x == mid_x
             latex_answer += f"\\( x = {sy.latex(cross_x)} \\)となる。\n"
             latex_answer += "最後に接線ごとに面積を求めていく。\n"
-            latex_answer += f"\\( x = {sy.latex(left_tangent_x)} \\)における接線\\( y = {sy.latex(sy.expand(left_tangent))} \\)と2次関数\\( y = {sy.latex(sy.expand(quadratic_function))} \\)における面積を\\( S_1 \\)とすると、\n"
+            # s1 part.
+            latex_answer += f"\\( x = {sy.latex(left_tangent_x)} \\)における接線\\( y = {sy.latex(sy.expand(left_tangent))} \\)と、2次関数\\( y = {sy.latex(sy.expand(quadratic_function))} \\)における面積を\\( S_1 \\)とすると、\n"
             if a > 0:
                 latex_answer += "2次関数は下に凸であり、2次関数が上、接線が下になることから、\n"
-                latex_answer += f"\\( S_1 = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(quadratic_function))}) - ({sy.latex(sy.expand(left_tangent))}) \\right\\rbrace dx \\)"
+                latex_answer += f"\\( S_1 = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(quadratic_function))}) - ({sy.latex(sy.expand(left_tangent))}) \\right\\rbrace dx \\)\n"
+                factored_quadratic_function_after_subtraction1 = sy.factor(quadratic_function - left_tangent)
             elif a < 0:
-                latex_answer += "2次関数は上に凸であり、接線が上、接線が下になることから、\n"
-                latex_answer += f"\\( S_1 = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(left_tangent))}) - ({sy.latex(sy.expand(quadratic_function))}) \\right\\rbrace dx \\)"
+                latex_answer += "2次関数は上に凸であり、接線が上、2次関数が下になることから、\n"
+                latex_answer += f"\\( S_1 = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(left_tangent))}) - ({sy.latex(sy.expand(quadratic_function))}) \\right\\rbrace dx \\)\n"
+                factored_quadratic_function_after_subtraction1 = sy.factor(left_tangent - quadratic_function)
+            latex_answer += f"\\( = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}} {sy.latex(factored_quadratic_function_after_subtraction1)} dx \\)\n"
+            quadratic_coefficient_after_subtraction1 = sy.expand(factored_quadratic_function_after_subtraction1).coeff(x, 2)
+            divided_and_factored_quadratic_function_after_subtraction1 = factored_quadratic_function_after_subtraction1 * sy.Rational(1, quadratic_coefficient_after_subtraction1)
+            if quadratic_coefficient_after_subtraction1 == 1:
+                latex_answer += f"\\( = \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction1)} dx\\)\n"
+                latex_answer += f"\\( = \\left\\lbrack \\dfrac{{({sy.latex(x - left_tangent_x)})^3}}{{3}} \\right\\rbrack_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}} \\)\n"
+            else:
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction1)} \\int_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction1)} dx\\)\n"
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction1)} \\left\\lbrack \\dfrac{{({sy.latex(x - left_tangent_x)})^3}}{{3}} \\right\\rbrack_{{{sy.latex(left_tangent_x)}}}^{{{sy.latex(cross_x)}}} \\)\n"
+            left_value1 = ((x - left_tangent_x) ** 3).subs(x, cross_x) * sy.Rational(1, 3)
+            right_value1 = ((x - left_tangent_x) ** 3).subs(x, left_tangent_x) * sy.Rational(1, 3)
+            if quadratic_coefficient_after_subtraction1 == 1:
+                if left_value1 >= 0:
+                    if right_value1 >= 0:
+                        latex_answer += f"\\( = {sy.latex(left_value1)} - {sy.latex(right_value1)} \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\left\\lbrace {sy.latex(left_value1)} - \\left({sy.latex(right_value1)}\\right) \\right\\rbrace \\)\n"
+                else:
+                    if right_value1 >= 0:
+                        latex_answer += f"\\( = \\left\\lbrace \\left({sy.latex(left_value1)}\\right) - {sy.latex(right_value1)} \\right\\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\left\\lbrace \\left({sy.latex(left_value1)}\\right) - \\left({sy.latex(right_value1)} \\right) \\right\\rbrace \\)\n"
+            else:
+                if left_value1 >= 0:
+                    if right_value1 >= 0:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction1)} \\left( {sy.latex(left_value1)} - {sy.latex(right_value1)} \\right) \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction1)} \\left\\lbrace {sy.latex(left_value1)} - \\left({sy.latex(right_value1)}\\right) \\right\\rbrace \\)\n"
+                else:
+                    if right_value1 >= 0:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction1)} \\left\\lbrace \\left({sy.latex(left_value1)}\\right) - {sy.latex(right_value1)} \\right\\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction1)} \\left\\lbrace \\left({sy.latex(left_value1)}\\right) - \\left({sy.latex(right_value1)} \\right) \\right\\rbrace \\)\n"
+            area1 = quadratic_coefficient_after_subtraction1 * (left_value1 - right_value1)
+            latex_answer += f"\\( = {sy.latex(area1)} \\)\n"
+            # s2 part.
+            latex_answer += f"同様に、\\( x = {sy.latex(right_tangent_x)} \\)における接線\\( y = {sy.latex(sy.expand(right_tangent))} \\)と、2次関数\\( y = {sy.latex(sy.expand(quadratic_function))} \\)における面積を\\( S_2 \\)とすると、\n"
+            if a > 0:
+                latex_answer += "2次関数は下に凸であり、2次関数が上、接線が下になることから、\n"
+                latex_answer += f"\\( S_2 = \\int_{{{sy.latex(cross_x)}}}^{{{sy.latex(right_tangent_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(quadratic_function))}) - ({sy.latex(sy.expand(right_tangent))}) \\right\\rbrace dx \\)\n"
+                factored_quadratic_function_after_subtraction2 = sy.factor(quadratic_function - right_tangent)
+            elif a < 0:
+                latex_answer += "2次関数は上に凸であり、接線が上、2次関数が下になることから、\n"
+                latex_answer += f"\\( S_2 = \\int_{{{sy.latex(cross_x)}}}^{{{sy.latex(right_tangent_x)}}}  \\left\\lbrace ({sy.latex(sy.expand(right_tangent))}) - ({sy.latex(sy.expand(quadratic_function))}) \\right\\rbrace dx \\)\n"
+                factored_quadratic_function_after_subtraction2 = sy.factor(right_tangent - quadratic_function)
+            latex_answer += f"\\( = \\int_{{{sy.latex(cross_x)}}}^{{{sy.latex(right_tangent_x)}}} {sy.latex(factored_quadratic_function_after_subtraction2)} dx \\)\n"
+            quadratic_coefficient_after_subtraction2 = sy.expand(factored_quadratic_function_after_subtraction2).coeff(x, 2)
+            divided_and_factored_quadratic_function_after_subtraction2 = factored_quadratic_function_after_subtraction2 * sy.Rational(1, quadratic_coefficient_after_subtraction2)
+            if quadratic_coefficient_after_subtraction2 == 1:
+                latex_answer += f"\\( = \\int_{{{sy.latex(cross_x)}}}^{{{sy.latex(right_tangent_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction2)} dx\\)\n"
+                latex_answer += f"\\( = \\left\\lbrack \\dfrac{{({sy.latex(x - right_tangent_x)})^3}}{{3}} \\right\\rbrack_{{{sy.latex(cross_x)}}}^{{{sy.latex(right_tangent_x)}}} \\)\n"
+            else:
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction2)} \\int_{{{sy.latex(right_tangent_x)}}}^{{{sy.latex(cross_x)}}} {sy.latex(divided_and_factored_quadratic_function_after_subtraction2)} dx\\)\n"
+                latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction2)} \\left\\lbrack \\dfrac{{({sy.latex(x - right_tangent_x)})^3}}{{3}} \\right\\rbrack_{{{sy.latex(cross_x)}}}^{{{sy.latex(right_tangent_x)}}} \\)\n"
+            left_value2 = ((x - right_tangent_x) ** 3).subs(x, right_tangent_x) * sy.Rational(1, 3)
+            right_value2 = ((x - right_tangent_x) ** 3).subs(x, cross_x) * sy.Rational(1, 3)
+            if quadratic_coefficient_after_subtraction2 == 1:
+                if left_value2 >= 0:
+                    if right_value2 >= 0:
+                        latex_answer += f"\\( = {sy.latex(left_value2)} - {sy.latex(right_value2)} \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\left\\lbrace {sy.latex(left_value2)} - \\left({sy.latex(right_value2)}\\right) \\right\\rbrace \\)\n"
+                else:
+                    if right_value2 >= 0:
+                        latex_answer += f"\\( = \\left\\lbrace \\left({sy.latex(left_value2)}\\right) - {sy.latex(right_value2)} \\right\\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = \\left\\lbrace \\left({sy.latex(left_value2)}\\right) - \\left({sy.latex(right_value2)} \\right) \\right\\rbrace \\)\n"
+            else:
+                if left_value2 >= 0:
+                    if right_value2 >= 0:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction2)} \\left( {sy.latex(left_value2)} - {sy.latex(right_value2)} \\right) \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction2)} \\left\\lbrace {sy.latex(left_value2)} - \\left({sy.latex(right_value2)}\\right) \\right\\rbrace \\)\n"
+                else:
+                    if right_value1 >= 0:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction2)} \\left\\lbrace \\left({sy.latex(left_value2)}\\right) - {sy.latex(right_value2)} \\right\\rbrace \\)\n"
+                    else:
+                        latex_answer += f"\\( = {sy.latex(quadratic_coefficient_after_subtraction2)} \\left\\lbrace \\left({sy.latex(left_value2)}\\right) - \\left({sy.latex(right_value2)} \\right) \\right\\rbrace \\)\n"
+            area2 = quadratic_coefficient_after_subtraction2 * (left_value2 - right_value2)
+            latex_answer += f"\\( = {sy.latex(area2)} \\)\n"
+            total_area = area1 + area2
+            latex_answer += "よって、求めたい面積を\\( S \\)とすると、\n"
+            latex_answer += "\\( S = S_1 + S_2 \\)\n"
+            latex_answer += f"\\( = {sy.latex(total_area)}\\)"
             return latex_answer, latex_problem
     
     def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:

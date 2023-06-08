@@ -1508,7 +1508,7 @@ def print_line_and_flat_positional_relationship(request):
 
 def print_calculate_area_by_integration(request):
     print(f"request: {request}")
-    PROBLEM_NUMBER = 4
+    PROBLEM_NUMBER = 2
     paper_number = int(request.POST["paper_number"])
     problem_types = []
     problem_types += request.POST.getlist("one_sixth_problem_type")

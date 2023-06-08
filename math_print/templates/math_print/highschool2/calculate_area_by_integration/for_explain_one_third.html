@@ -71,6 +71,43 @@ window.addEventListener("load", (event)=>{
     let ineq2_2 = jsx2.create('inequality', [function2_2], {inverse: true, fillColor: 'white'});
     jsx2.create('curveintersection', [ineq2_1, ineq2_2], {fillColor: 'yellow', fillOpacity: 0.3, strokeWidth: 0.01});
     //
+
+    // graph3
+    let jsx3 = JXG.JSXGraph.initBoard("jxgbox3", {axis: true, boundingbox: [-7, 10, 7, -4]});
+    let function3_1 = jsx3.create("functiongraph", [x => x ** 2, -10, 10], {strokeColor: "red"});
+    let function3_2 = jsx3.create("functiongraph", [x => -2 * x - 1, -10, 10], {strokeColor: "blue"});
+    jsx3.create("text", [0.5, -0.5, 'O'], {fontsize: 16, cssStyle: text_css});
+    jsx3.create('text', [6.5, 0.2, 'x'],{ fontSize: 16, cssStyle: text_css });
+    jsx3.create('text', [0.08, 9.5, 'y'],{ fontSize: 16, cssStyle: text_css });
+    jsx3.create('text', [-1.5, 4, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx3.create('text', [-4, 2, 'y = -2x - 1'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+
+    let jsx4 = JXG.JSXGraph.initBoard("jxgbox4", {axis: true, boundingbox: [-7, 10, 7, -4]});
+    let function4_1 = jsx4.create("functiongraph", [x => x ** 2, -10, 10], {strokeColor: "red"});
+    let function4_2 = jsx4.create("functiongraph", [x => 6 * x - 9, -10, 10], {strokeColor: "orange"});
+    jsx4.create("text", [0.5, -0.5, 'O'], {fontsize: 16, cssStyle: text_css});
+    jsx4.create('text', [6.5, 0.2, 'x'],{ fontSize: 16, cssStyle: text_css });
+    jsx4.create('text', [0.08, 9.5, 'y'],{ fontSize: 16, cssStyle: text_css });
+    jsx4.create('text', [-1.5, 4, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx4.create('text', [2, 2.3, 'y = 6x - 9'], {fontSize: 16, cssStyle: text_css, strokeColor: "orange"});
+
+    let jsx5 = JXG.JSXGraph.initBoard("jxgbox5", {axis: true, boundingbox: [-7, 10, 7, -4]});
+    let function5_1 = jsx5.create("functiongraph", [x => x ** 2, -1, 3], {strokeColor: "red"});
+    let function5_1_1 = jsx5.create("functiongraph", [x => x ** 2, -10, -1], {strokeColor: "gray", dash: 2});
+    let function5_1_2 = jsx5.create("functiongraph", [x => x ** 2, 3, 12], {strokeColor: "gray", dash: 2});
+    let function5_2 = jsx5.create("functiongraph", [x => -2 * x - 1, -1, 1], {strokeColor: "blue"});
+    let function5_2_1 = jsx5.create("functiongraph", [x => -2 * x - 1, -10, -1], {strokeColor: "gray", dash:2});
+    let function5_2_2 = jsx5.create("functiongraph", [x => -2 * x - 1, 1, 10], {strokeColor: "gray", dash: 2});
+    let function5_3 = jsx5.create("functiongraph", [x => 6 * x - 9, 1, 3], {strokeColor: "orange"});
+    let function5_3_1 = jsx5.create("functiongraph", [x => 6 * x - 9, -8, 1], {strokeColor: "gray", dash:2});
+    let function5_3_2 = jsx5.create("functiongraph", [x => 6 * x - 9, 3, 11], {strokeColor: "gray", dash: 2});
+    let point5 = jsx5.create('point', [1, -3], {strokeColor: "purple"});
+    jsx5.create("text", [0.5, -0.5, 'O'], {fontsize: 16, cssStyle: text_css});
+    jsx5.create('text', [6.5, 0.2, 'x'],{ fontSize: 16, cssStyle: text_css });
+    jsx5.create('text', [0.08, 9.5, 'y'],{ fontSize: 16, cssStyle: text_css });
+    jsx5.create('text', [-1.5, 4, 'y = x^2'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx5.create('text', [-4, 2, 'y = -2x - 1'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx5.create('text', [2, 2.3, 'y = 6x - 9'], {fontSize: 16, cssStyle: text_css, strokeColor: "orange"});
 });
 </script>
 {% endblock %}
@@ -225,7 +262,41 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">さらにさらに接線が2つある場合にも有効です。</p>
             <br>
-            <p class="lh-1 fst-italic border_bottom col-md-7">例題3: </p>
+            <p class="lh-1 fst-italic border_bottom col-md-7">例題3: \( y = x^2 \)と、2つの接点\( x = -1, 3 \)における接線で囲まれた部分の面積を求めよ。</p>
+            <br>
+            <p class="lh-1">まずは接線を求めていきましょう。</p>
+            <p class="lh-1">\( x = -1 \)を\( y = x^2 \)に代入すると、\( y = (-1)^2 = 1 \)となるので、接点は\( (-1, 1) \)であることがわかります。</p>
+            <p class="lh-1">また、\( y' = 2x \)より、\( x = -1 \)における接線の傾きは、\( y' = 2 \cdot (-1) = -2 \)です。</p>
+            <p class="lh-1">そのため、\( x = -1 \)における接線は、</p>
+            <p class="lh-1">\( y = -2 \left\lbrace x - (-1) \right\rbrace + 1 = -2x -1 \)であることがわかります。</p>
+            <p class="lh-1">同じように、\( x = 3 \)を\( y = x^2 \)に代入すると接点は\( (3, 9) \)、</p>
+            <p class="lh-1">接線の傾きは\( y' = 2 \cdot 3 = 6 \)となるので、\( x = 3 \)における接線は、</p>
+            <p class="lh-1">\( y = 6 (x - 3) + 9 = 6x - 9 \)となります。</p>
+            <br>
+            <p class="lh-1">次に面積を求めていくのですが、ご存知の通り面積では上下関係が重要です。</p>
+            <p class="lh-1">下に凸の2次関数で、2本の接線が使われているので、なんとなく予想はできるのですが、念のためこれまでのように不等式を解いてみましょう。</p>
+            <p class="lh-1">まずは\( y = x^2 \)と\( y = -2x - 1 \)の上下関係です。</p>
+            <p class="lh-1">\( x^2 \geqq -2x - 1 \)</p>
+            <p class="lh-1">\( x^2 + 2x + 1 \geqq 0 \)</p>
+            <p class="lh-1">\( (x + 1)^2 \geqq 0 \)</p>
+            <p class="lh-1">これは全ての\( x \)で成り立ちます。よって、\( y = \color{red}x^2\color{black} \)が常に上、\( y = \color{blue}-2x - 1\color{black} \)が常に下です。</p>
+            <br>
+            <div id="jxgbox3" class="jxgbox" style="width:500px; height:500px;"></div>
+            <br>
+            <p class="lh-1">同じように、\( y = x^2 \)と\( y = 6x - 9 \)の上下関係を確認します。</p>
+            <p class="lh-1">\( x^2 \geqq 6x - 9 \)</p>
+            <p class="lh-1">\( x^2 - 6x + 9 \geqq 0 \)</p>
+            <p class="lh-1">\( (x - 3)^2 \geqq 0 \)</p>
+            <p class="lh-1">これも同様に、全ての\( x \)で成り立ち、\( y = \color{red}x^2\color{black} \)が常に上、\( y = \color{orange}6x - 9\color{black} \)が常に下です。</p>
+            <br>
+            <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
+            <p class="lh-1">以上のように、接線が使われていることから、上下関係はわかりやすいものになっています。</p>
+            <p class="lh-1">ただ、面積を求める際には少し注意が必要です。</p>
+            <p class="lh-1">というのも、<span class="text-decoration-underline">接線の交点である点\( \color{purple} A \)を境目に上下関係、正確には下に来るものが入れ替わる</span>からです。</p>
+            <br>
+            <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
         </div>
     </div>
 

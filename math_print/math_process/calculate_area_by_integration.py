@@ -100,6 +100,7 @@ class CalculateAreaByIntegration:
         """
         sy.init_printing(order="grevlex")
         problem_type = choice(settings["problem_types"])
+        print(f"problem_type: {problem_type}")
         if (problem_type == "between_quadratic_function_and_x_axis") or (problem_type == "between_quadratic_function_and_line") or (problem_type == "between_quadratic_functions") or (problem_type == "between_cubic_functions"):
             self.latex_answer, self.latex_problem = self._make_one_sixth_problem(problem_type)
         elif (problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis") or (problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis") or (problem_type == "between_quadratic_function_and_two_tangents"):
@@ -141,7 +142,8 @@ class CalculateAreaByIntegration:
                 quadratic_function = quadratic_function_after_subtraction
             else:
                 quadratic_function = -1 * quadratic_function_after_subtraction
-            latex_problem = f"\\( y = {sy.latex(quadratic_function)} \\)と\\( x \\)軸で囲まれた部分の面積を求めよ。"
+            latex_problem = f"\\( y = {sy.latex(quadratic_function)} \\)と\n"
+            latex_problem += "\\( x \\)軸で囲まれた部分の面積を求めよ。"
             area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
             a1 = quadratic_function.coeff(x, 2)
             latex_answer = f"まず、\\( x \\)軸と2次関数の関係を確認するために、"
@@ -204,8 +206,8 @@ class CalculateAreaByIntegration:
                 m = b1 - b
                 n = c1 - c
             linear_function = m * x + n
-            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)"\
-                f"と\\( y = {sy.latex(sy.expand(linear_function))} \\)で囲まれた部分の面積を求めよ。"
+            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と\n"
+            latex_problem += f"\\( y = {sy.latex(sy.expand(linear_function))} \\)で囲まれた部分の面積を求めよ。"
             area = abs(a) * sy.Rational(1, 6) * (bigger_answer - smaller_answer) ** 3
             latex_answer = "まず、 2次関数と直線の位置関係を確認するために、"
             latex_answer += f"\\( {sy.latex(sy.expand(quadratic_function))} \\geqq {sy.latex(sy.expand(linear_function))} \\)を解くと、\n"
@@ -275,8 +277,9 @@ class CalculateAreaByIntegration:
             elif display_mode == "lower_is_first":
                 first_display_quadratic_function = sy.expand(lower_quadratic_function)
                 second_display_quadratic_function = sy.expand(upper_quadratic_function)
-            latex_problem = f"\\( y = {sy.latex(first_display_quadratic_function)}\\)"\
-                    f"と\\( y = {sy.latex(sy.expand(second_display_quadratic_function))} \\)で囲まれた部分の面積を求めよ。"
+            latex_problem = f"\\( y = {sy.latex(first_display_quadratic_function)}\\)と\n"
+            latex_problem += f"\\( y = {sy.latex(sy.expand(second_display_quadratic_function))} \\)で囲まれた部分の\n"
+            latex_problem += "面積を求めよ。"
             # new added part describe which is upper
             latex_answer = "まず、2次関数同士の位置関係を確認するために、"
             if display_mode == "upper_is_first":
@@ -356,8 +359,9 @@ class CalculateAreaByIntegration:
             elif display_mode == "lower_is_first":
                 first_display_cubic_function = sy.expand(lower_cubic_function)
                 second_display_cubic_function = sy.expand(upper_cubic_function)
-            latex_problem = f"\\( y = {sy.latex(first_display_cubic_function)} \\)と"
-            latex_problem += f"\\( y = {sy.latex(second_display_cubic_function)} \\)で囲まれた部分の面積を求めよ。"
+            latex_problem = f"\\( y = {sy.latex(first_display_cubic_function)} \\)と\n"
+            latex_problem += f"\\( y = {sy.latex(second_display_cubic_function)} \\)で\n"
+            latex_problem += "囲まれた部分の面積を求めよ。"
             latex_answer = "まず、3次関数同士の位置関係を確認するために、"
             if display_mode == "upper_is_first":
                 latex_answer += f"\\( {sy.latex(sy.expand(upper_cubic_function))} \\geqq {sy.latex(sy.expand(lower_cubic_function))} \\)を解くと、\n"
@@ -443,7 +447,7 @@ class CalculateAreaByIntegration:
             tangent_slope = differentiated_quadratic_function.subs(x, tangent_x)
             tangent = tangent_slope * (x - tangent_x) + tangent_y
             parallel_line_with_y_axis = tangent_x + self._random_integer(remove_zero=True)
-            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、"
+            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、\n"
             latex_problem += f"その上の点\\( ({sy.latex(tangent_x)}, {sy.latex(tangent_y)}) \\)における接線、\n"
             latex_problem += f"および \\( x = {sy.latex(parallel_line_with_y_axis)} \\)で囲まれた部分の面積を求めよ。"
             latex_answer = "まずは2次関数の接線を求める。\n"
@@ -565,11 +569,11 @@ class CalculateAreaByIntegration:
             lower_quadratic_function = a2 * x ** 2 + b2 * x + c2
             display_mode = choice(["upper_is_first", "lower_is_first"])
             if display_mode == "upper_is_first":
-                latex_problem = f"\\( y = {sy.latex(sy.expand(upper_quadratic_function))} \\)と、"
+                latex_problem = f"\\( y = {sy.latex(sy.expand(upper_quadratic_function))} \\)と、\n"
                 latex_problem += f"\\( y = {sy.latex(sy.expand(lower_quadratic_function))} \\)、\n"
                 latex_problem += f"および\\( x = {sy.latex(another_integration_point)} \\)で囲まれた面積を求めよ。"
             elif display_mode == "lower_is_first":
-                latex_problem = f"\\( y = {sy.latex(sy.expand(lower_quadratic_function))} \\)と、"
+                latex_problem = f"\\( y = {sy.latex(sy.expand(lower_quadratic_function))} \\)と、\n"
                 latex_problem += f"\\( y = {sy.latex(sy.expand(upper_quadratic_function))} \\)、\n"
                 latex_problem += f"および\\( x = {sy.latex(another_integration_point)} \\)で囲まれた面積を求めよ。"
             latex_answer = "まず、2次関数同士の位置関係を確認するために、"
@@ -658,7 +662,8 @@ class CalculateAreaByIntegration:
                 left_tangent_x, right_tangent_x = tangent_x1, tangent_x2
             elif tangent_x2 < tangent_x1:
                 left_tangent_x, right_tangent_x = tangent_x2, tangent_x1
-            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、2つの接点\\( x = {sy.latex(left_tangent_x)}, {sy.latex(right_tangent_x)} \\)における接線で囲まれた面積を求めよ。"
+            latex_problem = f"\\( y = {sy.latex(sy.expand(quadratic_function))} \\)と、\n"
+            latex_problem += f"2つの接点\\( x = {sy.latex(left_tangent_x)}, {sy.latex(right_tangent_x)} \\)における接線で囲まれた面積を求めよ。"
             mid_x = sy.Rational(left_tangent_x + right_tangent_x, 2)
             latex_answer = "まずは接線を求める。\n"
             latex_answer += f"与えられた2次関数\\( y = {sy.latex(sy.expand(quadratic_function))} \\)に\\( x = {sy.latex(left_tangent_x)} \\)を代入すると、"
@@ -803,7 +808,7 @@ class CalculateAreaByIntegration:
             latex_answer += "よって、求めたい面積を\\( S \\)とすると、\n"
             latex_answer += "\\( S = S_1 + S_2 \\)\n"
             latex_answer += f"\\( = {sy.latex(total_area)}\\)"
-            return latex_answer, latex_problem
+        return latex_answer, latex_problem
     
     def _random_integer(self, min_num: int=-5, max_num: int=5, *, remove_zero: bool=False) -> sy.Integer:
         """指定された条件と範囲でランダムな整数を出力

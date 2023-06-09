@@ -180,15 +180,21 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item"><a href="#foreword">前書き</a></li>
-        <li class="list-group-item"><a href="#confirmation_of_integration_formula">定積分の定義の確認</a></li>
         <li class="list-group-item"><a href="#calculate_area_by_integration_with_formula">\( \dfrac{1}{3} \)公式を用いた面積の計算</a></li>
+        <li class="list-group-item list-group-horizontal">
+
+                <a href="#quadratic_function_and_tangent">2次関数と接線</a>
+                <a href="#quadratic_functions">接する2次関数</a>
+                <a href="#quadratic_function_and_two_tangents">2次関数と2本の接線</a>
+
+        </li>
         <li class="list-group-item"><a href="#afterword">あとがき</a></li>
     </ul>
     <br>
 
     <div class="row m-4 p-4 border-bottom" id="foreword">
-        <h2 class="text-muted h5">前書き</h2>
-        <p class="lh-1">今回は\( \dfrac{1}{3} \)公式のお話を確認していきます。</p>
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <p class="lh-1">今回は\( \dfrac{1}{3} \)公式を確認していきます。</p>
         <p class="lh-1">お話の内容としては\( \dfrac{1}{6} \)公式と同じく、「<span class="text-decoration-underline">いかに公式が使える場面を見つけて、それを適用していくか</span>」というものになります。</p>
         <p class="lh-1">なお、\( \dfrac{1}{3} \)公式が\( \dfrac{1}{6} \)公式と比べて応用的なものであることを踏まえて、\( \dfrac{1}{6} \)公式の序盤で説明したような基礎的な部分は省いていきます。</p>
         <p class="lh-1">もし、定積分の基本的な考え方や、\( \dfrac{1}{6} \)公式の使い方などに不安がある場合は、まずは以下のリンクから解説を確認してみてください。こちらは基礎から解説しています。
@@ -222,7 +228,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">シンプルにわかりやすいのは、以下のような<span class="text-decoration-underline">接線が登場する</span>パターンですね。</p>
         </div>
         <br>
-        <p class="lh-1 fst-italic border-bottom col-md-7">例題1: \( y = x^2 \)と、その上の点\( (2, 4) \)における接線、および\( y \)軸で囲まれた部分の面積を求めよ。</p>
+        <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_function_and_tangent">例題1: \( y = x^2 \)と、その上の点\( (2, 4) \)における接線、および\( y \)軸で囲まれた部分の面積を求めよ。</p>
         <br>
         <div class="m-2 p-2">
             <p class="lh-1">まずは接線を求めてみましょう。</p>
@@ -264,19 +270,20 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">ちなみに、1点で接しているものであれば、接線以外でも構いません。別の例も見てみましょう。</p>
             <br>
-            <p class="lh-1 fst-italic border-bottom col-md-7">例題2: \( y =  -x^2 + 3x + 1 \)と、\( y = x^2 - x + 3 \)と\( x = -1 \)で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_functions">例題2: \( y =  -x^2 + 3x + 1 \)と、\( y = x^2 - x + 3 \)と\( x = -1 \)で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">さて、例のごとく、上下関係と交点を確認するために不等式を解いていきましょう。</p>
             <p class="lh-1">\( -x^2 + 3x + 1 \geqq x^2 - x + 3 \)</p>
             <p class="lh-1">\( -2x^2 + 4x - 2 \geqq 0 \)</p>
             <p class="lh-1">\( -2(x^2 - 2x + 1) \geqq 0 \)</p>
             <p class="lh-1">\( 2(x - 1)^2 \leqq 0 \)</p>
-            <p class="lh-1">この結果から、\( x = 1 \)が接点で、\( y = \color{red}x^2 - x + 3\)が上、\( y = \color{blue} -x^2 + 3x + 1 \)が下にあることがわかります。</p>
+            <p class="lh-1">この不等式が成り立つのは、\( x = 1 \)という一点に限られます。</p>
+            <p class="lh-1">つまり、\( x = 1 \)以外では、常に\( y = \color{red}x^2 - x + 3\)が上、\( y = \color{blue} -x^2 + 3x + 1 \)が下にあるということです。</p>
             <p class="lh-1">実際に上下関係と、その間にできる面積を示したグラフは以下のようになっていますので、これは正しいです。</p>
             <br>
             <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 500px;"></div>
             <br>
-            <p class="lh-1">最後に求めたい面積を\( S \)とすると、</p>
+            <p class="lh-1">これらを踏まえて、求めたい面積を\( S \)とすると、</p>
             <p class="lh-1">\( S = \int_{-1}^{1} \left\lbrace \left( \color{red}x^2 - x + 3 \color{black} \right) - \left( \color{blue} -x^2 + 3x + 1 \color{black} \right) \right\rbrace dx \)</p>
             <p class="lh-1">\( = \int_{-1}^{1} \left( 2x^2 - 4x + 2 \right) dx \)</p>
             <p class="lh-1">\( = \int_{-1}^{1} 2(x - 1)^2 dx \)</p>
@@ -284,12 +291,13 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( = 2 \left\lbrace \dfrac{(1 -1)^3}{3} - \dfrac{(-1 - 1)^3}{3} \right\rbrace \)</p>
             <p class="lh-1">\( = 2 \cdot \dfrac{8}{3} \)</p>
             <p class="lh-1">\( = \dfrac{16}{3} \)</p>
+            <p class="lh-1">となります。これが答えです。</p>
         </div>
 
         <div class="m-2 p-2">
             <p class="lh-1">さらにさらに接線が2つある場合にも有効です。</p>
             <br>
-            <p class="lh-1 fst-italic border_bottom col-md-7">例題3: \( y = x^2 \)と、2つの接点\( x = -1, 3 \)における接線で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 fst-italic border_bottom col-md-7" id="quadratic_function_and_two_tangents">例題3: \( y = x^2 \)と、2つの接点\( x = -1, 3 \)における接線で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">まずは接線を求めていきましょう。</p>
             <p class="lh-1">\( x = -1 \)を\( y = x^2 \)に代入すると、\( y = (-1)^2 = 1 \)となるので、接点は\( (-1, 1) \)であることがわかります。</p>
@@ -374,7 +382,7 @@ window.addEventListener("load", (event)=>{
                     <p class="lh-1">これらの接線は、当然ながら2次関数と接していますので、</p>
                     <p class="lh-1">\( (ax^2 + bx + c) - (m_1 x + n_1) = a (x - \alpha)^2, (ax^2 + bx + c) - (m_2 x + n_2) = a (x - \beta)^2\)と因数分解可能です。</p>
                     <p class="lh-1">さらにこれらを\( m_1 x + n_1 = (ax^2 + bx + c) - a (x - \alpha)^2, m_2 x + n_2 = (ax^2 + bx + c) - a (x - \beta)^2 \)と式変形します。</p>
-                    <p class="lh-1">ここで、接線同士の交点を求めるために、上の式たちを連立してあげると、以下のような流れになります。</p>
+                    <p class="lh-1">ここで、接線同士の交点を求めるために、直線同士を連立してあげると、以下のような流れになります。</p>
                     <p class="lh-1">\( m_1 x + n_1 = m_2 x + n_2\)</p>
                     <p class="lh-1">\( (ax^2 + bx + c) - a (x - \alpha)^2 = (ax^2 + bx + c) - a (x - \beta)^2 \)</p>
                     <p class="lh-1">\( (x - \alpha)^2 = (x - \beta)^2 \)</p>
@@ -407,6 +415,8 @@ window.addEventListener("load", (event)=>{
                     <p class="lh-1">以上より、2次関数が下に凸であるとき、\( S_1 = S_2 \)が成り立つことが示されました。</p>
                     <p class="lh-1">上に凸の場合も似たような計算で示すことができます。2次関数と接線の順番こそ入れ替わるものの、結局2乗の形に因数分解できることは変わりません。</p>
                     <p class="lh-1">練習がてら、証明してみてください。</p>
+                    <p class="lh-1">なお、これらをまとめて、\( \dfrac{1}{12} \)公式として取り扱われることもあります。</p>
+                    <p class="lh-1">興味がある方はチェックしてみてください。</p>
                 </div>
                 ----------------------折りたたみここまで----------------------
             </details>
@@ -414,7 +424,7 @@ window.addEventListener("load", (event)=>{
     </div>
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5">あとがき</h2>
+        <h2 class="text-muted h5" id="afterword">あとがき</h2>
         <div class="m-2 p-2">
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
             <p class="lh-1">例題で触れたように、接点が登場する面積であれば、\( \dfrac{1}{3} \)公式が利用できる可能性があります。</p>

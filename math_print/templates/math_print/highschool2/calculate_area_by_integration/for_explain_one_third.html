@@ -369,8 +369,44 @@ window.addEventListener("load", (event)=>{
                 <summary>交点が中点であることと、左右の面積がそれぞれ等しくなることの証明</summary>
                 <div class="m-2 p-2">
                     <p class="lh-1">まずは交点が中点となることから示していきましょう。</p>
-                    <p class="lh-1">2次関数を\( y = ax^2 + bx + c \)とし、接点を\( x = \alpha, \beta \)とします。</p>
-                    <p class="lh-1">また、それぞれにおける接線を\( y_1 = m_1 x + n_1 \)、\( y_2 = m_2 x + n_2\)
+                    <p class="lh-1">2次関数を\( y = ax^2 + bx + c \)とし、接点を\( x = \alpha, \beta (\alpha < \beta )\)とします。</p>
+                    <p class="lh-1">また、それぞれにおける接線を\( y_1 = m_1 x + n_1 \)、\( y_2 = m_2 x + n_2\)とします。</p>
+                    <p class="lh-1">これらの接線は、当然ながら2次関数と接していますので、</p>
+                    <p class="lh-1">\( (ax^2 + bx + c) - (m_1 x + n_1) = a (x - \alpha)^2, (ax^2 + bx + c) - (m_2 x + n_2) = a (x - \beta)^2\)と因数分解可能です。</p>
+                    <p class="lh-1">さらにこれらを\( m_1 x + n_1 = (ax^2 + bx + c) - a (x - \alpha)^2, m_2 x + n_2 = (ax^2 + bx + c) - a (x - \beta)^2 \)と式変形します。</p>
+                    <p class="lh-1">ここで、接線同士の交点を求めるために、上の式たちを連立してあげると、以下のような流れになります。</p>
+                    <p class="lh-1">\( m_1 x + n_1 = m_2 x + n_2\)</p>
+                    <p class="lh-1">\( (ax^2 + bx + c) - a (x - \alpha)^2 = (ax^2 + bx + c) - a (x - \beta)^2 \)</p>
+                    <p class="lh-1">\( (x - \alpha)^2 = (x - \beta)^2 \)</p>
+                    <p class="lh-1">\( x^2 -2 \alpha x + \alpha^2 = x^2 - 2 \beta x + \beta^2 \)</p>
+                    <p class="lh-1">\( 2 (\alpha - \beta)x = \alpha^2 - \beta^2 \)</p>
+                    <p class="lh-1">\( 2 (\alpha - \beta)x = (\alpha + \beta)(\alpha - \beta) \)</p>
+                    <p class="lh-1">\( \alpha \neq \beta \)より、\( \alpha - \beta \neq 0 \)です。気兼ねなく両辺を\( \alpha - \beta \)で割ると、</p>
+                    <p class="lh-1">\( 2 x = \alpha + \beta \)</p>
+                    <p class="lh-1">\( x = \dfrac{\alpha + \beta}{2} \)</p>
+                    <p class="lh-1">となり、これは中点と等しいことがわかります。</p>
+                    <p class="lh-1">接点も個別に文字でおくことで、煩雑な計算を防いでいるのがポイントとなります。</p>
+                    <br>
+                    <p class="lh-1">次は面積です。まずは左側の面積\( S_1 \)を、2次関数が下に凸である条件のもとで求めてみましょう。</p>
+                    <p class="lh-1">2次関数が上、接線が下。範囲は\( \alpha \leqq x \leqq \dfrac{\alpha + \beta}{2} \)なので、</p>
+                    <p class="lh-1">\( S_1 = \int_{\alpha}^{\frac{\alpha + \beta}{2}} \left\lbrace (ax^2 + bx + c) - (m_1 x + n_1) \right\rbrace dx \)</p>
+                    <p class="lh-1">\( = \int_{\alpha}^{\frac{\alpha + \beta}{2}} \left\lbrace a(x - \alpha)^2 \right\rbrace dx \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{3} \left\lbrack (x - \alpha)^3 \right\rbrack_{\alpha}^{\frac{\alpha + \beta}{2}} \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{3} \left\lbrace \left( \dfrac{\alpha + \beta}{2} - \alpha \right)^3 - (\alpha - \alpha)^3 \right\rbrace \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{3} \left( \dfrac{\beta - \alpha}{2} \right)^3 \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{24} \left( \beta^3 - 3 \beta^2 \alpha + 3 \beta \alpha^2 - \alpha^3 \right) \)</p>
+                    <br>
+                    <p class="lh-1">次は右側の面積\( S_2 \)です。同じく2次関数が上、接線が下。範囲は\( \dfrac{\alpha + \beta}{2} \leqq x \leqq \beta \)ですので、</p>
+                    <p class="lh-1">\( S_2 = \int_{\frac{\alpha + \beta}{2}}^{\beta} \left\lbrace (ax^2 + bx + c) - (m_2 x + n_2) \right\rbrace dx \)</p>
+                    <p class="lh-1">\( = \int_{\frac{\alpha + \beta}{2}}^{\beta} \left\lbrace a(x - \beta)^2 \right\rbrace dx \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{3} \left\lbrack (x - \beta)^3 \right\rbrack_{\frac{\alpha + \beta}{2}}^{\beta} \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{3} \left\lbrace (\beta - \beta)^3 - \left( \dfrac{\alpha + \beta}{2} - \beta \right)^3 \right\rbrace \)</p>
+                    <p class="lh-1">\( = -\dfrac{a}{3} \left( \dfrac{\alpha - \beta}{2} \right)^3 \)</p>
+                    <p class="lh-1">\( = -\dfrac{a}{24} \left( \alpha^3 - 3 \alpha^2 \beta + 3 \alpha \beta^2 - \beta^3 \right) \)</p>
+                    <p class="lh-1">\( = \dfrac{a}{24} \left( \beta^3 - 3 \beta^2 \alpha + 3 \beta \alpha^2 - \alpha^3 \right) \)</p>
+                    <p class="lh-1">以上より、2次関数が下に凸であるとき、\( S_1 = S_2 \)が成り立つことが示されました。</p>
+                    <p class="lh-1">上に凸の場合も似たような計算で示すことができます。2次関数と接線の順番こそ入れ替わるものの、結局2乗の形に因数分解できることは変わりません。</p>
+                    <p class="lh-1">練習がてら、証明してみてください。</p>
                 </div>
                 ----------------------折りたたみここまで----------------------
             </details>

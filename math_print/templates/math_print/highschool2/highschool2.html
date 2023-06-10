@@ -13,6 +13,23 @@
     </div>
 {% endblock %}
 
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">
@@ -313,6 +330,92 @@
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'vector_cross_point_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(6問)" formaction="{% url 'vector_cross_point_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>積分で面積を求める</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">\( \frac{1}{6} \)公式</small>
+                <a href="{% url 'calculate_area_by_integration_explain_one_sixth' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_quadratic_function_and_x_axis" name="one_sixth_problem_type" id="calculate_area_by_integration_between_quadratic_function_and_x_axis" checked>
+                        <label class="form-check-label" for="calculate_area_by_integration_between_quadratic_function_and_x_axis">
+                            2次関数とx軸で囲まれた面積
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_quadratic_function_and_line" name="one_sixth_problem_type" id="calculate_area_by_integration_between_quadratic_function_and_line" checked>
+                        <label class="form-check-label" for="calculate_area_by_integration_between_quadratic_function_and_line">
+                            2次関数と直線で囲まれた面積
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_quadratic_functions" name="one_sixth_problem_type" id="calculate_area_by_integration_between_quadratic_functions" checked>
+                        <label class="form-check-label" for="calculate_area_by_integration_between_quadratic_functions">
+                            2つの2次関数で囲まれた面積
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_cubic_functions" name="one_sixth_problem_type" id="calculate_area_by_integration_between_cubic_functions" checked>
+                        <label class="form-check-label" for="calculate_area_by_integration_between_cubic_functions">
+                            係数が等しい2つの3次関数で囲まれた面積
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`one_sixth_problem_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`one_sixth_problem_type`)" value="全部はずし">
+                </div>
+                <small class="text-muted">\( \frac{1}{3} \)公式</small>
+                <a href="{% url 'calculate_area_by_integration_explain_one_third' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_quadratic_function_and_tangent_and_parallel_line_with_y_axis" name="one_third_problem_type" id="calculate_area_by_integration_between_quadratic_function_and_tangent_and_parallel_line_with_y_axis" checked>
+                        <label class="form-check-label" for="calculate_area_by_integration_between_quadratic_function_and_tangent_and_parallel_line_with_y_axis">
+                            2次関数とその接線、およびy軸に平行な直線の間の面積
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis" name="one_third_problem_type" id="calculate_area_by_integration_between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis" >
+                        <label class="form-check-label" for="calculate_area_by_integration_between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis">
+                            2つの接する2次関数とy軸に平行な直線の間の面積
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="between_quadratic_function_and_two_tangents" name="one_third_problem_type" id="calculate_area_by_integration_between_quadratic_function_and_two_tangents" >
+                        <label class="form-check-label" for="calculate_area_by_integration_between_quadratic_function_and_two_tangents">
+                            2次関数と2本の接線
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`one_third_problem_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`one_third_problem_type`)" value="全部はずし">
+                </div>
+                
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="CalculateAreaByIntegrationFivePaperRadio" checked>
+                        <label class="form-check-label" for="CalculateAreaByIntegrationFivePaperRadio">
+                            2問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="CalculateAreaByIntegrationTenPaperRadio">
+                        <label class="form-check-label" for="CalculateAreaByIntegrationTenPaperRadio">
+                            2問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="CalculateAreaByIntegrationFifteenPaperRadio">
+                        <label class="form-check-label" for="CalculateAreaByIntegrationFifteenPaperRadio">
+                            2問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'calculate_area_by_integration_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'calculate_area_by_integration_display' %}">      
             </form>
         </div>
     </div>

@@ -9,9 +9,8 @@
         tex2jax: {
             inlineMath: [["$","$"],["\\(","\\)"]],
             displayMath: [["$$","$$"],["\\[","\\]"]]
-            }
         }
-    );
+        });
 </script>
 
 <script>
@@ -37,8 +36,8 @@ function showAnswer(){
 <style type="text/css" media="print">
     .print_pages{
         /*A4縦 172,251*/
-        width: 240mm;
-        height: 320mm;
+        width: 210mm;
+        height: 260mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
         page-break-after: always;
@@ -50,6 +49,7 @@ function showAnswer(){
     .hero_unit, .base_footer, .button_container, .nav{
         display: none;
     }
+
     p.number_of_problem {
         text-align: right;
     }
@@ -57,14 +57,14 @@ function showAnswer(){
 {% endblock %}
 
 {% block title %}
-指数の計算
+定積分で面積を求める
 {% endblock %}
 
 {% block hero_unit %}
 <div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
     <div class="container">
         <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">指数の計算</p>
+        <p class="text-dark">定積分で面積を求める</p>
     </div>
 </div>
 {% endblock %}
@@ -90,10 +90,7 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                \({{ math_problem_tuple.0.latex_problem }}\)
-                            </p>
-                            <p class="answer" style="visibility:hidden;">
-                                \({{ math_problem_tuple.0.latex_answer }}\)
+                                {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                             </p>
                         </li>
                     </div>
@@ -101,16 +98,48 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                \({{ math_problem_tuple.1.latex_problem }}\)
-                            </p>
-                            <p class="answer" style="visibility:hidden;">
-                                \({{ math_problem_tuple.1.latex_answer }}\)
+                                {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                             </p>
                         </li>
                     </div>
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>
@@ -122,29 +151,22 @@ function showAnswer(){
                 <div class="problem">
                     <div>
                         <li>
-                            <p>
-                                \( \quad \)
-                                \({{ math_problem_tuple.0.latex_problem }}\)
-                            </p>
                             <p class="answer" style="visibility:visible;">
-                                \({{ math_problem_tuple.0.latex_answer }}\)
+                                {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
                             </p>
                         </li>
                     </div>
                     <div>
                         <li>
-                            <p>
-                                \( \quad \)
-                                \({{ math_problem_tuple.1.latex_problem }}\)
-                            </p>
                             <p class="answer" style="visibility:visible;">
-                                \({{ math_problem_tuple.1.latex_answer }}\)
+                                {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
                             </p>
                         </li>
                     </div>
                 </div>
             {% endfor %}
         </ol>
+        <br>
         <footer class="container-fluid print_footer">
             <small><a href="#">© 2022 有明学習振興</a></small>
         </footer>

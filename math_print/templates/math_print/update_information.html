@@ -1,0 +1,30 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+更新履歴一覧
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <p class="text-dark">更新履歴一覧</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <h2 class="text-muted h5">2023/06/10</h2>
+        <div class="col md-6 p-3">
+            <h3 class="text-muted h6">新規追加</h3>
+            <small class="lh-1">・高校2年生向けに、<a href="{% url 'highschool2' %}#calculate_area_by_integration_between_quadratic_function_and_x_axis">積分で面積を求める</a>計算問題と解説を追加しました。</small>
+            <br>
+            <h3 class="text-muted h6">修正</h3>
+            <small class="lh-1">・高校2年生向けの<a href="{% url 'highschool2' %}">指数計算</a>において、印刷時の表示が正しくなかった問題を修正しました。</small>
+            <br>
+            <small class="lh-1">・中学1年生向けの<a href="{% url 'junior_highschool1' %}">カッコがつかない正負の足し算引き算</a>が利用できなかった問題を修正しました。</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

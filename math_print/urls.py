@@ -6,6 +6,8 @@ from . import views
 urlpatterns = [
     ### 全体共通 ###
     path('', views.index, name='index'),
+    ### インデックス ###
+    path('update_information/', views.update_information, name='update_information'),
     # sample
     path('graphic_sample', views.graphic_sample, name='graphic_sample'),
     path('loop_sample/', views.loop_sample, name='loop_sample'),
@@ -55,8 +57,6 @@ urlpatterns = [
     path('number_without_bracket/print/', views.print_number_without_bracket_problem, name='number_without_bracket_print'),
     path('number_without_bracket/display/', views.display_number_without_bracket_problem, name='number_without_bracket_display'),
     #### 説明 ####
-    path('number_without_bracket/explanation/print', views.print_number_without_bracket_explanation, name='number_without_bracket_explanation_print'),
-    path('number_without_bracket/explanation/display', views.display_number_without_bracket_explanation, name='number_without_bracket_explanation_display'),
     # 文字の計算
     path('character/print/', views.print_character_problem, name="character_print"),
     path('character/display', views.display_character_problem, name="character_display"),
@@ -171,4 +171,9 @@ urlpatterns = [
     # 三角関数
     path('trigonometric_function/print', views.print_trigonometric_function, name='trigonometric_function_print'),
     path('trigonometric_function/display', views.display_trigonometric_function, name='trigonometric_function_display'),
+    # 面積を求める積分
+    path('calculate_area_by_integration/print', views.print_calculate_area_by_integration, name='calculate_area_by_integration_print'),
+    path('calculate_area_by_integration/display', views.display_calculate_area_by_integration, name='calculate_area_by_integration_display'),
+    path('calculate_area_by_integration/explanation_one_sixth', views.explain_one_sixth_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_sixth'),
+    path('calculate_area_by_integration/explanation_one_third', views.explain_one_third_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_third'),
 ]

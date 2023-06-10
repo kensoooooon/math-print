@@ -9,6 +9,12 @@
     </div>
 {% endblock %}
 
+{% block nav_link %}
+<li class="nav-item justify-content-center">
+    <a class="nav-link" href="{% url 'update_information' %}">更新履歴</a>
+</li>
+{% endblock %}
+
 {% block body %}
 <div class="container-fluid">
     <ul class="list-group center-block" style="max-width: 800px;">
@@ -19,8 +25,9 @@
         <li class="list-group-item"><a href="{% url 'junior_highschool2' %}">中2の計算練習</a><br>(連立方程式, 文字計算, 1次関数を求める, グラフを描く, 等式の変形, 分数の文字計算, 角度を求める)</li>
         <li class="list-group-item"><a href="{% url 'junior_highschool3' %}">中3の計算練習</a><br>(式の展開・整理, 因数分解, 2次方程式, 2次関数, 平方根)</li>
         <li class="list-group-item"><a href="{% url 'highschool1' %}">高1の計算練習</a><br>(平方完成, 式の展開・整理, 因数分解, 2次関数を求める, 2次関数の最大最小, 2次不等式, <br> n進数の変換, 三角比の値を求める)</li>
-        <li class="list-group-item"><a href="{% url 'highschool2' %}">高2の計算練習</a><br>(指数の計算, 対数の計算, 交点の位置ベクトルを求める, 漸化式から一般項を求める, 三角関数)
+        <li class="list-group-item"><a href="{% url 'highschool2' %}">高2の計算練習</a><br>(指数の計算, 対数の計算, 交点の位置ベクトルを求める, 漸化式から一般項を求める, 三角関数, 定積分で面積を求める)
     </ul>
+    <br>
 </div>
 <footer class="container-fluid print_footer">
     <small><a href="#">© 2022 有明学習振興</a></small>

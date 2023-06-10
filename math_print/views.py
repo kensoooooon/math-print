@@ -50,10 +50,16 @@ from .math_process.trigonometric_function import TrigonometricFunctionProblem
 from .math_process.quadratic_inequality import QuadraticInequality
 from .math_process.same_denominator_calculate import SameDenominatorCalculate
 from .math_process.line_and_flat_positional_relationship import LineAndFlatPositionalRelationship
+from .math_process.calculate_area_by_integration import CalculateAreaByIntegration
 
 
 def index(request):
     return render(request, 'math_print/index.html', {})
+
+
+# for update information
+def update_information(request):
+    return render(request, 'math_print/update_information.html', {})
 
 # for graphic sample
 def graphic_sample(request):
@@ -589,9 +595,6 @@ def print_number_without_bracket_problem(request):
     
     return render(request, 'math_print/junior_highschool1/number_without_bracket/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-def print_number_without_bracket_explanation(request):
-    # should add problem? how many??
-    return render(request, 'math_print/junior_highschool1/number_without_bracket/explanation_for_print.html', {})
     
 def print_sector_problem(request):
     PROBLEM_NUMBER = 20
@@ -1504,9 +1507,35 @@ def print_line_and_flat_positional_relationship(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-# math_print\templates\math_print\junior_highschool1\line_and_flat_positional_relationship\for_display.html
-# display section
 
+def print_calculate_area_by_integration(request):
+    print(f"request: {request}")
+    PROBLEM_NUMBER = 2
+    paper_number = int(request.POST["paper_number"])
+    problem_types = []
+    problem_types += request.POST.getlist("one_sixth_problem_type")
+    problem_types += request.POST.getlist("one_third_problem_type")
+    problem_types += request.POST.getlist("one_twelfth_problem_type")
+    if not (problem_types):
+        problem_types.append("between_quadratic_function_and_x_axis")
+        problem_types.append("between_quadratic_function_and_line")
+        problem_types.append("between_quadratic_functions")
+        problem_types.append("between_cubic_functions")
+        problem_types.append("between_quadratic_function_and_tangent_and_parallel_line_with_y_axis")
+        problem_types.append("between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis")
+        problem_types.append("between_quadratic_function_and_two_tangents")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = CalculateAreaByIntegration(problem_types=problem_types)
+            problem2 = CalculateAreaByIntegration(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/highschool2/calculate_area_by_integration/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
+# display section
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -1941,27 +1970,6 @@ def display_number_without_bracket_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool1/number_without_bracket/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
-
-
-def display_number_without_bracket_explanation(request):
-    PROBLEM_NUMBER = 4
-    
-    operator_to_use_list = request.POST.getlist("number_without_bracket_operator_to_use")
-    number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
-    term_number = int(request.POST["term_number"])
-    
-    math_problem_tuple_list = []
-    for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = NumberWithoutBracketCalculateProblem(
-            term_number=term_number, operator_to_use_list=operator_to_use_list,
-            number_to_use_list=number_to_use_list
-        )
-        problem2 = NumberWithoutBracketCalculateProblem(
-            term_number=term_number, operator_to_use_list=operator_to_use_list,
-            number_to_use_list=number_to_use_list
-        )
-        math_problem_tuple_list.append((problem1, problem2))
-    return render(request, 'math_print/junior_highschool1/number_without_bracket/explanation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
 def display_sector_problem(request):
@@ -2694,7 +2702,7 @@ def display_line_and_flat_positional_relationship(request):
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
     
     Returns:
-        math_problem_tuple_list (list): 2問ずつ問題が格納されたタプルのリスト
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
     PROBLEM_NUMBER = 10
     question_format = request.POST["question_format"]
@@ -2713,3 +2721,60 @@ def display_line_and_flat_positional_relationship(request):
         problem2 = LineAndFlatPositionalRelationship(used_problems=used_problems, used_solid_bodies=used_solid_bodies, question_format=question_format)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool1/line_and_flat_positional_relationship/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_calculate_area_by_integration(request):
+    """平面上の面積を、積分の各種公式を使って求める問題のリクエスト受信と問題出力を担当。
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    # PROBLEM_NUMBER = 4
+    PROBLEM_NUMBER = 20
+    problem_types = []
+    problem_types += request.POST.getlist("one_sixth_problem_type")
+    problem_types += request.POST.getlist("one_third_problem_type")
+    problem_types += request.POST.getlist("one_twelfth_problem_type")
+    if not (problem_types):
+        problem_types.append("between_quadratic_function_and_x_axis")
+        problem_types.append("between_quadratic_function_and_line")
+        problem_types.append("between_quadratic_functions")
+        problem_types.append("between_cubic_functions")
+        problem_types.append("between_quadratic_function_and_tangent_and_parallel_line_with_y_axis")
+        problem_types.append("between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis")
+        problem_types.append("between_quadratic_function_and_two_tangents")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = CalculateAreaByIntegration(problem_types=problem_types)
+        problem2 = CalculateAreaByIntegration(problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool2/calculate_area_by_integration/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+# explain part
+def explain_one_sixth_calculate_area_by_integration(request):
+    """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth.html', {})
+    return returned_render
+
+def explain_one_third_calculate_area_by_integration(request):
+    """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third.html', {})
+    return returned_render

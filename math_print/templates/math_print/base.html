@@ -27,6 +27,8 @@
             <li class="nav-item justify-content-center">
                 <a class="nav-link" href="{% url 'index' %}">トップページ</a>
             </li>
+            {% block nav_link %}
+            {% endblock %}
         </nav>
 
         {% block hero_unit %}

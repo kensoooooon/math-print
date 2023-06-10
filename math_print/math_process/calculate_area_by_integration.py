@@ -100,7 +100,6 @@ class CalculateAreaByIntegration:
         """
         sy.init_printing(order="grevlex")
         problem_type = choice(settings["problem_types"])
-        print(f"problem_type: {problem_type}")
         if (problem_type == "between_quadratic_function_and_x_axis") or (problem_type == "between_quadratic_function_and_line") or (problem_type == "between_quadratic_functions") or (problem_type == "between_cubic_functions"):
             self.latex_answer, self.latex_problem = self._make_one_sixth_problem(problem_type)
         elif (problem_type == "between_quadratic_function_and_tangent_and_parallel_line_with_y_axis") or (problem_type == "between_two_quadratic_functions_that_touch_each_other_and_parallel_line_with_y_axis") or (problem_type == "between_quadratic_function_and_two_tangents"):

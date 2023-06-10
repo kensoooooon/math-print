@@ -6,6 +6,8 @@ from . import views
 urlpatterns = [
     ### 全体共通 ###
     path('', views.index, name='index'),
+    ### インデックス ###
+    path('update_information/', views.update_information, name='update_information'),
     # sample
     path('graphic_sample', views.graphic_sample, name='graphic_sample'),
     path('loop_sample/', views.loop_sample, name='loop_sample'),
@@ -55,8 +57,6 @@ urlpatterns = [
     path('number_without_bracket/print/', views.print_number_without_bracket_problem, name='number_without_bracket_print'),
     path('number_without_bracket/display/', views.display_number_without_bracket_problem, name='number_without_bracket_display'),
     #### 説明 ####
-    path('number_without_bracket/explanation/print', views.print_number_without_bracket_explanation, name='number_without_bracket_explanation_print'),
-    path('number_without_bracket/explanation/display', views.display_number_without_bracket_explanation, name='number_without_bracket_explanation_display'),
     # 文字の計算
     path('character/print/', views.print_character_problem, name="character_print"),
     path('character/display', views.display_character_problem, name="character_display"),

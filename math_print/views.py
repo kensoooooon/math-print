@@ -56,6 +56,11 @@ from .math_process.calculate_area_by_integration import CalculateAreaByIntegrati
 def index(request):
     return render(request, 'math_print/index.html', {})
 
+
+# for update information
+def update_information(request):
+    return render(request, 'math_print/update_information.html', {})
+
 # for graphic sample
 def graphic_sample(request):
     return render(request, 'math_print/graphic_sample.html', {})
@@ -590,9 +595,6 @@ def print_number_without_bracket_problem(request):
     
     return render(request, 'math_print/junior_highschool1/number_without_bracket/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
-def print_number_without_bracket_explanation(request):
-    # should add problem? how many??
-    return render(request, 'math_print/junior_highschool1/number_without_bracket/explanation_for_print.html', {})
     
 def print_sector_problem(request):
     PROBLEM_NUMBER = 20
@@ -1968,27 +1970,6 @@ def display_number_without_bracket_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool1/number_without_bracket/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
-
-
-def display_number_without_bracket_explanation(request):
-    PROBLEM_NUMBER = 4
-    
-    operator_to_use_list = request.POST.getlist("number_without_bracket_operator_to_use")
-    number_to_use_list = request.POST.getlist("number_to_use_without_bracket_problem")
-    term_number = int(request.POST["term_number"])
-    
-    math_problem_tuple_list = []
-    for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = NumberWithoutBracketCalculateProblem(
-            term_number=term_number, operator_to_use_list=operator_to_use_list,
-            number_to_use_list=number_to_use_list
-        )
-        problem2 = NumberWithoutBracketCalculateProblem(
-            term_number=term_number, operator_to_use_list=operator_to_use_list,
-            number_to_use_list=number_to_use_list
-        )
-        math_problem_tuple_list.append((problem1, problem2))
-    return render(request, 'math_print/junior_highschool1/number_without_bracket/explanation_for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
 def display_sector_problem(request):

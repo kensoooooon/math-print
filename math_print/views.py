@@ -2778,3 +2778,8 @@ def explain_one_third_calculate_area_by_integration(request):
     """
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third.html', {})
     return returned_render
+
+
+def explain_number_without_bracket(request):
+    returned_render = render(request, 'math_print/junior_highschool1/number_without_bracket/for_explain.html', {})
+    return returned_render

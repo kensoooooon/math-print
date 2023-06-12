@@ -21,7 +21,8 @@
 window.addEventListener("load", (event)=>{
     const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
 
-    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-5.2, 2, 5.2, -2]});
+    // 4 - 2
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 2, 4.2, -2]});
     jsx1.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: true,
@@ -35,12 +36,13 @@ window.addEventListener("load", (event)=>{
         }
     }
     );
-    let point1_1 = jsx1.create('point', [-3, 0], {strokeColor: "black"});
-    let point1_2 = jsx1.create('point', [-1, 0], {strokeColor: "black"});
-    jsx1.create('arrow', [point1_1, point1_2], {strokeColor: "red"});
-    jsx1.create('text', [-2, 0.3, '+2'], {strokeColor: "red", cssStyle: text_css, fontSize: 16});
+    jsx1.create('point', [4, 0], {strokeColor: "black"});
+    jsx1.create('point', [2, 0], {strokeColor: "black"});
+    jsx1.create('arrow', [[4, 0], [2, 0]], {strokeColor: "blue"});
+    jsx1.create('text', [2.8, 0.5, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
 
-    let jsx2 = JXG.JSXGraph.initBoard("jxgbox2", {boundingbox: [-9.2, 2, 1.2, -3]});
+    // 1 + 4
+    let jsx2 = JXG.JSXGraph.initBoard("jxgbox2", {boundingbox: [-0.5, 2, 6.2, -2]});
     jsx2.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: true,
@@ -54,19 +56,13 @@ window.addEventListener("load", (event)=>{
         }
     }
     );
-    jsx2.create('point', [-5, 0], {strokeColor: "black"});
-    jsx2.create('point', [-7, 0], {strokeColor: "black"});
-    jsx2.create('point', [-6, 0], {strokeColor: "black"});
-    jsx2.create('arrow', [[-5, -1], [-7, -1]], {strokeColor: "blue"}); 
-    jsx2.create('text', [-6.5, -0.7, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
-    jsx2.create('arrow', [[-7, -2], [-6, -2]], {strokeColor: "red"});
-    jsx2.create('text', [-6.8, -1.7, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"})
-    jsx2.create('segment', [[-5, 0], [-5, -2]], {strokeColor: "gray", dash: 2});
-    jsx2.create('segment', [[-7, 0], [-7, -2]], {strokeColor: "gray", dash: 2});
-    jsx2.create('segment', [[-6, 0], [-6, -2]], {strokeColor: "gray", dash: 2});
-    jsx2.create('text', [-6.8, -1.7, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx2.create('point', [1, 0], {strokeColor: "black"});
+    jsx2.create('point', [5, 0], {strokeColor: "black"});
+    jsx2.create('arrow', [[1, 0], [5, 0]], {strokeColor: "red"});
+    jsx2.create('text', [2.8, 0.5, '+4'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
 
-    let jsx3 = JXG.JSXGraph.initBoard("jxgbox3", {boundingbox: [-8.2, 2, 3.2, -5]});
+    // -3 + 2
+    let jsx3 = JXG.JSXGraph.initBoard("jxgbox3", {boundingbox: [-5.2, 2, 5.2, -2]});
     jsx3.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: true,
@@ -80,21 +76,99 @@ window.addEventListener("load", (event)=>{
         }
     }
     );
-    // -3 - 2 + 4 + 1
     jsx3.create('point', [-3, 0], {strokeColor: "black"});
-    jsx3.create('point', [-5, 0], {strokeColor: "black"});
     jsx3.create('point', [-1, 0], {strokeColor: "black"});
-    jsx3.create('point', [0, 0], {strokeColor: "black"});
-    jsx3.create('segment', [[-3, 0], [-3, -7]], {strokeColor: "gray", dash: 2});
-    jsx3.create('segment', [[-5, 0], [-5, -7]], {strokeColor: "gray", dash: 2});
-    jsx3.create('segment', [[-1, 0], [-1, -7]], {strokeColor: "gray", dash: 2});
-    jsx3.create('segment', [[0, 0], [0, -7]], {strokeColor: "gray", dash: 2});
-    jsx3.create('text', [-4, -0.75, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
-    jsx3.create('arrow', [[-3, -1.5], [-5, -1.5]], {strokeColor: "blue"});
-    jsx3.create('text', [-3, -2, '+4'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
-    jsx3.create('arrow', [[-5, -2.5], [-1, -2.5]], {strokeColor: "red"});
-    jsx3.create('text', [-0.5, -3, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
-    jsx3.create('arrow', [[-1, -3.5], [0, -3.5]], {strokeColor: "red"});
+    jsx3.create('arrow', [[-3, 0], [-1, 0]], {strokeColor: "red"});
+    jsx3.create('text', [-2, 0.3, '+2'], {strokeColor: "red", cssStyle: text_css, fontSize: 16});
+
+    // -5 -2 + 1
+    let jsx4 = JXG.JSXGraph.initBoard("jxgbox4", {boundingbox: [-9.2, 2, 1.2, -3]});
+    jsx4.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx4.create('point', [-5, 0], {strokeColor: "black"});
+    jsx4.create('point', [-7, 0], {strokeColor: "black"});
+    jsx4.create('point', [-6, 0], {strokeColor: "black"});
+    jsx4.create('arrow', [[-5, -1], [-7, -1]], {strokeColor: "blue"}); 
+    jsx4.create('text', [-6.5, -0.7, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx4.create('arrow', [[-7, -2], [-6, -2]], {strokeColor: "red"});
+    jsx4.create('text', [-6.8, -1.7, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"})
+    jsx4.create('segment', [[-5, 0], [-5, -2]], {strokeColor: "gray", dash: 2});
+    jsx4.create('segment', [[-7, 0], [-7, -2]], {strokeColor: "gray", dash: 2});
+    jsx4.create('segment', [[-6, 0], [-6, -2]], {strokeColor: "gray", dash: 2});
+    jsx4.create('text', [-6.8, -1.7, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+
+
+    // -3 - 2 + 4 + 1(not gather)
+    let jsx5 = JXG.JSXGraph.initBoard("jxgbox5", {boundingbox: [-8.2, 2, 3.2, -5]});
+    jsx5.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx5.create('point', [-3, 0], {strokeColor: "black"});
+    jsx5.create('point', [1, 0], {strokeColor: "black"});
+    jsx5.create('point', [-1, 0], {strokeColor: "black"});
+    jsx5.create('point', [0, 0], {strokeColor: "black"});
+    jsx5.create('segment', [[-3, 0], [-3, -7]], {strokeColor: "gray", dash: 2});
+    jsx5.create('segment', [[1, 0], [1, -7]], {strokeColor: "gray", dash: 2});
+    jsx5.create('segment', [[-1, 0], [-1, -7]], {strokeColor: "gray", dash: 2});
+    jsx5.create('segment', [[0, 0], [0, -7]], {strokeColor: "gray", dash: 2});
+    jsx5.create('text', [-2, -1, '+4'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx5.create('arrow', [[-3, -1.5], [1, -1.5]], {strokeColor: "red"});
+    jsx5.create('text', [-0.4, -2, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx5.create('arrow', [[1, -2.5], [-1, -2.5]], {strokeColor: "blue"});
+    jsx5.create('text', [-0.5, -3, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx5.create('arrow', [[-1, -3.5], [0, -3.5]], {strokeColor: "red"});
+    
+    
+    // -3 - 2 + 4 + 1(gather)
+    let jsx6 = JXG.JSXGraph.initBoard("jxgbox6", {boundingbox: [-8.2, 2, 3.2, -5]});
+    jsx6.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx6.create('point', [-3, 0], {strokeColor: "black"});
+    jsx6.create('point', [-5, 0], {strokeColor: "black"});
+    jsx6.create('point', [-1, 0], {strokeColor: "black"});
+    jsx6.create('point', [0, 0], {strokeColor: "black"});
+    jsx6.create('segment', [[-3, 0], [-3, -7]], {strokeColor: "gray", dash: 2});
+    jsx6.create('segment', [[-5, 0], [-5, -7]], {strokeColor: "gray", dash: 2});
+    jsx6.create('segment', [[-1, 0], [-1, -7]], {strokeColor: "gray", dash: 2});
+    jsx6.create('segment', [[0, 0], [0, -7]], {strokeColor: "gray", dash: 2});
+    jsx6.create('text', [-4, -0.75, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+    jsx6.create('arrow', [[-3, -1.5], [-5, -1.5]], {strokeColor: "blue"});
+    jsx6.create('text', [-3, -2, '+4'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx6.create('arrow', [[-5, -2.5], [-1, -2.5]], {strokeColor: "red"});
+    jsx6.create('text', [-0.5, -3, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
+    jsx6.create('arrow', [[-1, -3.5], [0, -3.5]], {strokeColor: "red"});
 });
 </script>
 {% endblock %}
@@ -126,7 +200,8 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item"><a href="#foreword">前書き</a></li>
-        <li class="list-group-item"><a href="#confirmation_of_basic_knowledge">基本知識の確認</a></li>
+        <li class="list-group-item"><a href="#confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</a></li>
+        <li class="list-group-item"><a href="#confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</a></li>
         <li class="list-group-item"><a href="#afterword">後書き</a></li>
     </ul>
     <br>
@@ -144,33 +219,58 @@ window.addEventListener("load", (event)=>{
 
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5" id="confirmation_of_basic_knowledge">基本知識の確認</h2>
+        <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</h2>
         <div class="m-2 p-2">
-            <p class="lh-1">まずは順番に、基礎の確認から進めていきましょう。</p>
-            <p class="lh-1">正負の数の足し算引き算の基本は<span class="text-decoration-underline">打ち消し</span>です。</p>
-            <p class="lh-1">たとえば、\( -3 + 2 \)を数直線上で表現すると、以下のようになります。</p>
+            <p class="lh-1">まずは基本の確認からやっていきましょう。</p>
+            <p class="lh-1">足し算・引き算の基本は、<span class="text-decoration-underline">数直線上の移動</span>です。</p>
+            <p class="lh-1">たとえば、\( 4 \color{blue}- 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
             <br>
             <div id="jxgbox1" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <br>
+            <p class="lh-1">点\( A(4) \)がスタートで、そこから\( \color{blue} -2 \color{black} \)、つまり左に2だけ動きます。結果として、答えは点\( B(2) \)となるわけです。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">足し算も同じです。次は\( 1 \color{red}+ 4 \color{black}\)を見てみましょう。</p>
+            <br>
+            <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <br>
+            <p class="lh-1">点\( A(1) \)がスタートで、そこから\( \color{red} + 4 \color{black} \)、つまり右に4だけ動きます。答えは点\( B(5) \)となります。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">小学校範囲の足し算・引き算の基本知識確認は終わりました。次は中学校範囲に進んでいきます。</p>
+            <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線より左、つまり<span class="text-decoration-underline">負の数が登場する</span>だけで、足し算・引き算の考え方自体はそのままです。</p>
+            <p class="lh-1">たとえば、\( -3 \color{red}+ 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
+            <br>
+            <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
             <p class="lh-1">スタートが点\( A(-3) \)で、そこから\( \color{red}+2  \color{black}\)、つまり正の方向に2だけ動き、答えが点\( B(-1) \)になります。</p>
         </div>
 
         <div class="m-2 p-2">
-            <p class="lh-1">これは3つ以上の数の足し引きでも同じです。\( -5 -2 + 1\)を見てみましょう。</p>
+            <p class="lh-1">これは3つ以上の数の足し引きでも同じです。\( -5 \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を見てみましょう。</p>
             <br>
-            <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
             <p class="lh-1">スタートが点\( A(-5) \)で、そこから\( \color{blue}-2 \)、負の方向に2だけ動き、点\( B(-7) \)になります。</p>
             <p class="lh-1">そこからさらに\( \color{red}+1 \)、正の方向に1だけ動き、点\( C(-6) \)が答えとなります。</p>
         </div>
 
         <div class="m-2 p-2">
-            <p class="lh-1">もう一つ確認してみます。\( -3 + 4 -2 + 1\)を計算しましょう。</p>
-            <p class="lh-1">先程と同じように計算すれば解けるのですが、右に左に移動するのが面倒に感じるようであれば、負は負、正は正にまとめてもよいでしょう。</p>
-            <p class="lh-1">\( -3 + 4 - 2 + 1 \)</p>
-            <p class="lh-1">\( = -3 - 2 + 4 + 1\)</p>
+            <p class="lh-1">もう一つ確認してみます。\( -3 \color{red}+ 4 \color{black} \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を計算しましょう。</p>
             <br>
-            <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <br>
+            <p class="lh-1"></p>
+            <p class="lh-1">以上のように計算すれば解けるますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてにまとめてもよいでしょう。</p>
+            <p class="lh-1">\( -3 \color{red} + 4 \color{black} \color{blue}- 2 \color{black} \color{red} + 1 \color{black} \)</p>
+            <p class="lh-1">\( = -3 \color{blue} - 2 \color{black} \color{red} + 4 \color{black}  \color{red} + 1 \color{black} \)</p>
+            <br>
+            <div id="jxgbox6" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
         </div>
     </div>

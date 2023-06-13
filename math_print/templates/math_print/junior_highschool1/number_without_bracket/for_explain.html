@@ -169,6 +169,46 @@ window.addEventListener("load", (event)=>{
     jsx6.create('arrow', [[-5, -2.5], [-1, -2.5]], {strokeColor: "red"});
     jsx6.create('text', [-0.5, -3, '+1'], {fontSize: 16, cssStyle: text_css, strokeColor: "red"});
     jsx6.create('arrow', [[-1, -3.5], [0, -3.5]], {strokeColor: "red"});
+
+    let jsx7 = JXG.JSXGraph.initBoard("jxgbox7", {boundingbox: [-3.2, 3, 3.2, -5]});
+    jsx7.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx7.create('point', [1/2, 0], {strokeColor: "black"});
+    jsx7.create('text', [1/2, 1.3, '$$\\frac{1}{2}$$'], {fontSize: 8, cssStyle: text_css, strokeColor: "black",  useMathJax: true});
+    jsx7.create('point', [1/2-5/3, 0], {strokeColor: "black"});
+    jsx7.create('text', [1/2 - 5/3, 1.3, '$$-\\frac{7}{6}$$'], {fontSize: 8, cssStyle: text_css, strokeColor: "black",  useMathJax: true});
+    jsx7.create('arrow', [[1/2, 0], [1/2 - 5/3, 0]], {strokeColor: "blue"});
+    jsx7.create('text', [(1/2 + (-7/6))/2, 1.3, '$$-\\frac{5}{3}$$'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue", useMathJax: true});
+
+    let jsx8 = JXG.JSXGraph.initBoard("jxgbox8", {boundingbox: [-8.2, 3, 4.2, -2]});
+    jsx8.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx8.create('point', [3, 0], {strokeColor: "black"});
+    jsx8.create('arrow', [[3, 0], [-7, 0]], {strokeColor: "blue"});
+    jsx8.create('point', [-7, 0], {strokeColor: "black"});
+
 });
 </script>
 {% endblock %}
@@ -202,6 +242,7 @@ window.addEventListener("load", (event)=>{
         <li class="list-group-item"><a href="#foreword">前書き</a></li>
         <li class="list-group-item"><a href="#confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</a></li>
         <li class="list-group-item"><a href="#confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</a></li>
+        <li class="list-group-item"><a href="#how_to_solve_advanced_question">応用問題の解き方</a></li>
         <li class="list-group-item"><a href="#afterword">後書き</a></li>
     </ul>
     <br>
@@ -237,13 +278,18 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">点\( A(1) \)がスタートで、そこから\( \color{red} + 4 \color{black} \)、つまり右に4だけ動きます。答えは点\( B(5) \)となります。</p>
         </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">ここで確認しておいてほしいのは、<span class="text-decoration-underline">足し算だと<span style="color:red;">右</span>、引き算だと<span style="color:blue;">左</span></span>に動くということです。</p>
+            <p class="lh-1">一般的に右は<span style="color: red;">正の方向</span>、左は<span style="color: blue;">負の方向</span>とよばれます。ここでも、今後はこの呼び方に統一していきましょう。</p>
+        </div>
     </div>
 
     <div class="row m-4 p-4 border-bottom">
         <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</h2>
         <div class="m-2 p-2">
             <p class="lh-1">小学校範囲の足し算・引き算の基本知識確認は終わりました。次は中学校範囲に進んでいきます。</p>
-            <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線より左、つまり<span class="text-decoration-underline">負の数が登場する</span>だけで、足し算・引き算の考え方自体はそのままです。</p>
+            <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線の原点より左、つまり<span class="text-decoration-underline">負の数が登場する</span>だけで、足し算・引き算の考え方自体はそのままです。</p>
             <p class="lh-1">たとえば、\( -3 \color{red}+ 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
             <br>
             <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -256,7 +302,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
-            <p class="lh-1">スタートが点\( A(-5) \)で、そこから\( \color{blue}-2 \)、負の方向に2だけ動き、点\( B(-7) \)になります。</p>
+            <p class="lh-1">スタートが点\( A(-5) \)で、そこから\( \color{blue}-2 \)、つまり負の方向に2だけ動き、点\( B(-7) \)になります。</p>
             <p class="lh-1">そこからさらに\( \color{red}+1 \)、正の方向に1だけ動き、点\( C(-6) \)が答えとなります。</p>
         </div>
 
@@ -266,12 +312,37 @@ window.addEventListener("load", (event)=>{
             <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
             <p class="lh-1"></p>
-            <p class="lh-1">以上のように計算すれば解けるますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてにまとめてもよいでしょう。</p>
+            <p class="lh-1">以上のように計算すれば解けますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてにまとめてもよいでしょう。</p>
             <p class="lh-1">\( -3 \color{red} + 4 \color{black} \color{blue}- 2 \color{black} \color{red} + 1 \color{black} \)</p>
             <p class="lh-1">\( = -3 \color{blue} - 2 \color{black} \color{red} + 4 \color{black}  \color{red} + 1 \color{black} \)</p>
             <br>
             <div id="jxgbox6" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="how_to_solve_advanced_question">応用問題の解き方</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">次は応用問題の確認をしていきましょう。具体的には<span class="text-decoration-underline">分数や小数が使われているときの計算</span>の解き方です。</p>
+            <p class="lh-1">とはいっても、小数だけ、分数だけであれば、これまでとさして違いはありません。</p>
+            <p class="lh-1">たとえば分数だけのとき、\( \dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)を確認してみます。</p>
+            <br>
+            <div id="jxgbox7" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <br>
+            <p class="lh-1">スタートが点\( A\left(\dfrac{1}{2}\right) \)で、そこから\( \color{blue} -\dfrac{5}{3} \)、つまり負の方向に\( \dfrac{5}{3} \)だけ動きます。</p>
+            <p class="lh-1">結果として答えが点\( B\left(-\dfrac{7}{6}\right) \)になる、といった流れです。やっていること自体は先程までと同じ流れです。</p>
+            <br>
+            <p class="lh-1">ただ、実際に計算するときに、これをいきなり頭のなかでやるのはなかなか大変です。</p>
+            <p class="lh-1">このようなときは、まず通分して考えます。\( 2 \)と\( 3 \)の最小公倍数である\( 6 \)で通分してみましょう。</p>
+            <p class="lh-1">\(\dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)</p>
+            <p class="lh-1">\( = \dfrac{1 \times 3}{2 \times 3} \color{blue} - \dfrac{5 \times 2}{3 \times 2} \)</p>
+            <p class="lh-1">\( = \dfrac{3 - \color{blue} 10 \color{black}}{6} \)</p>
+            <p class="lh-1">こうすることで、分子部分の\( 3 - \color{blue} 10 \color{black} \)だけ計算すればよくなります。これなら先程までの整数の計算と同じですね。</p>
+            <br>
+            <div id="jxgbox8" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <br>
+
         </div>
     </div>
 

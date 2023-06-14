@@ -239,7 +239,7 @@ window.addEventListener("load", (event)=>{
     jsx9.create('arrow', [[17, -3], [11, -3]], {strokeColor: 'blue'});
 
     // -0.8 + 0.3
-    let jsx10 = JXG.JSXGraph.initBoard("jxgbox10", {boundingbox: [-1.1, 2, 1.1, -5]});
+    let jsx10 = JXG.JSXGraph.initBoard("jxgbox10", {boundingbox: [-1.1, 2, 0.2, -2]});
     jsx10.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: true,
@@ -255,7 +255,34 @@ window.addEventListener("load", (event)=>{
     );
     jsx10.create('point', [-0.8, 0], {strokeColor: 'black'});
     jsx10.create('point', [-0.5, 0], {strokeColor: 'black'});
+    jsx10.create('arrow', [[-0.8, 0], [-0.5, 0]], {strokeColor: 'red'});
+    jsx10.create('text', [(-0.8 - 0.5) / 2, 0.75, '+0.3'], {strokeColor: 'red'});
 
+    // 0.05 - 0.3 + 0.1
+    let jsx11 = JXG.JSXGraph.initBoard("jxgbox11", {boundingbox: [-0.3, 2, 0.1, -5]});
+    jsx11.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx11.create('point', [0.05, 0], {strokeColor: 'black'});
+    jsx11.create('point', [-0.25, 0], {strokeColor: 'black'});
+    jsx11.create('point', [-0.15, 0], {strokeColor: 'black'});
+    jsx11.create('segment', [[0.05, 0], [0.05, -8]], {strokeColor: 'gray', dash: 2});
+    jsx11.create('segment', [[-0.25, 0], [-0.25, -8]], {strokeColor: 'gray', dash: 2});
+    jsx11.create('segment', [[-0.15, 0], [-0.15, -8]], {strokeColor: 'gray', dash: 2});
+    jsx11.create('text', [(0.05 - 0.25) / 2, -0.85, '-0.3'], {strokeColor: 'blue', cssStyle: text_css, fontSize: 16});
+    jsx11.create('arrow', [[0.05, -1.5], [-0.25, -1.5]], {strokeColor: 'blue'});
+    jsx11.create('text', [(-0.25 - 0.15) / 2, -2.25, '+0.1'], {strokeColor: 'red', cssStyle: text_css, fontSize: 16});
+    jsx11.create('arrow', [[-0.25, -3], [-0.15, -3]], {strokeColor: 'red'});
 });
 </script>
 {% endblock %}
@@ -289,7 +316,8 @@ window.addEventListener("load", (event)=>{
         <li class="list-group-item"><a href="#foreword">前書き</a></li>
         <li class="list-group-item"><a href="#confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</a></li>
         <li class="list-group-item"><a href="#confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</a></li>
-        <li class="list-group-item"><a href="#how_to_solve_advanced_question">応用問題の解き方</a></li>
+        <li class="list-group-item"><a href="#how_to_solve_frac_xor_decimal">分数か小数が使われている計算の解き方</a></li>
+        <li class="list-group-item"><a href="#how_to_solve_frac_and_decimal">分数と小数が使われている計算の解き方</a></li>
         <li class="list-group-item"><a href="#afterword">後書き</a></li>
     </ul>
     <br>
@@ -362,7 +390,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">次に、そこから\( \color{blue} -2 \)だけ動き、点\( C(-1) \)へ。</p>
             <p class="lh-1">最後に\( \color{red} +1 \)動くと、点\( D(0) \)に到着します。ここが答えです。</p>
             <br>
-            <p class="lh-1">以上のように計算すれば解けますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてにまとめてもよいでしょう。</p>
+            <p class="lh-1">以上のように計算すれば解けますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてまとめてから計算してもよいでしょう。</p>
             <p class="lh-1">\( -3 \color{red} + 4 \color{black} \color{blue}- 2 \color{black} \color{red} + 1 \color{black} \)</p>
             <p class="lh-1">\( = -3 \color{blue} - 2 \color{black} \color{red} + 4 \color{black}  \color{red} + 1 \color{black} \)</p>
             <br>
@@ -374,9 +402,9 @@ window.addEventListener("load", (event)=>{
     </div>
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 class="text-muted h5" id="how_to_solve_advanced_question">応用問題の解き方</h2>
+        <h2 class="text-muted h5" id="how_to_solve_frac_xor_decimal">分数か小数が使われている計算</h2>
         <div class="m-2 p-2">
-            <p class="lh-1">次は応用問題の確認をしていきましょう。具体的には<span class="text-decoration-underline">分数や小数が使われているときの計算</span>の解き方です。</p>
+            <p class="lh-1">次は分数や小数が使われているときの計算をみてみましょう。</p>
             <p class="lh-1">とはいっても、小数だけ、分数だけであれば、これまでとさして違いはありません。</p>
             <p class="lh-1">たとえば分数だけのとき、\( \dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)を確認してみます。</p>
             <br>
@@ -386,7 +414,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">結果として答えが点\( B\left(-\dfrac{7}{6}\right) \)になる、といった流れです。やっていること自体は先程までと同じですね。</p>
             <br>
             <p class="lh-1">ただ、実際に計算するときに、これをいきなり頭のなかでやるのはなかなか大変です。</p>
-            <p class="lh-1">そんなときは、まず通分してから考えましょう。\( 2 \)と\( 3 \)の最小公倍数である\( 6 \)で通分してみましょう。</p>
+            <p class="lh-1">そんなときは、まず通分してから考えましょう。\( 2 \)と\( 3 \)の最小公倍数である\( 6 \)で通分してみます。</p>
             <p class="lh-1">\(\dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)</p>
             <p class="lh-1">\( = \dfrac{1 \times 3}{2 \times 3} \color{blue} - \dfrac{5 \times 2}{3 \times 2} \)</p>
             <p class="lh-1">\( = \dfrac{3 - \color{blue} 10 \color{black}}{6} \)</p>
@@ -395,26 +423,53 @@ window.addEventListener("load", (event)=>{
             <div id="jxgbox8" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
             <p class="lh-1">スタート地点が点\( A(3) \)で、そこから\( \color{blue} -10 \)、つまり負の方向に\( 10 \)だけ動き、\( -7 \)に到着します。</p>
-            <p class="lh-1">答えは\( -\dfrac{7}{6} \)です。これなら先程までの整数の計算と同じですね。</p>
+            <p class="lh-1">分子部分が\( -7 \)なので、答えは\( -\dfrac{7}{6} \)です。これなら先程までの整数の計算と同じですね。</p>
             <br>
-            <p class="lh-1">もちろん3つ以上の数の計算でも同じです。\( \dfrac{4}{3} + \dfrac{6}{5} - \dfrac{1}{2} \)を計算してみましょう。</p>
-            <p class="lh-1">\( \dfrac{2}{3} + \dfrac{3}{4} - \dfrac{7}{2} \)</p>
-            <p class="lh-1">\( = \dfrac{2 \times 4}{3 \times 4} + \dfrac{3 \times 3}{4 \times 3} - \dfrac{1 \times 6}{2 \times 6}\)</p>
-            <p class="lh-1">\( = \dfrac{8}{12} + \dfrac{9}{12} - \dfrac{6}{12} \)</p>
+            <p class="lh-1">もちろん3つ以上の数の計算でも同じです。\( \dfrac{2}{3} \color{red} + \dfrac{3}{4} \color{black} \color{blue} - \dfrac{1}{2} \color{black} \)を計算してみましょう。分母は\( 2, 3, 4 \)の最小公倍数である\( 12 \)です。</p>
+            <p class="lh-1">\( \dfrac{2}{3} \color{red} + \dfrac{3}{4} \color{black} \color{blue} - \dfrac{1}{2} \color{black} \)</p>
+            <p class="lh-1">\( = \dfrac{2 \times 4}{3 \times 4} \color{red} + \dfrac{3 \times 3}{4 \times 3} \color{black} \color{blue} - \dfrac{1 \times 6}{2 \times 6} \color{black} \)</p>
+            <p class="lh-1">\( = \dfrac{8}{12} \color{red} + \dfrac{9}{12} \color{blue} - \dfrac{6}{12} \)</p>
             <p class="lh-1">\( = \dfrac{8 \color{red} + 9 \color{black} \color{blue} - 6}{12} \)</p>
             <br>
             <div id="jxgbox9" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
             <p class="lh-1">分子部分の計算は点\( A(8) \)からスタートして、\( \color{red} +9 \)、つまり正の方向に9動き、点\( B(17) \)につきます。</p>
-            <p class="lh-1">そこからさらに\( \color{blue} -6 \)、つまり負の方向に6動き、点\( C(11) \)につきます。最終的には\( \dfrac{11}{12} \)が答えとなります。</p>
+            <p class="lh-1">そこからさらに\( \color{blue} -6 \)、つまり負の方向に6動き、点\( C(11) \)につきます。</p>
+            <p class="lh-1">分子が\( 11 \)なので、答えは\( \dfrac{11}{12} \)となります。</p>
         </div>
 
         <div class="m-2 p-2">
             <p class="lh-1">このように、分数であっても通分を挟めば、整数と同じように計算できます。</p>
-            <p class="lh-1">そしてこれは、小数でもあまり変わりません。\( -0.8 + 0.3 \)を見てみましょう。</p>
+            <p class="lh-1">そしてこれは、小数でもあまり変わりません。\( -0.8 \color{red} + 0.3 \color{black} \)を見てみましょう。</p>
             <br>
             <div id="jxgbox10" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
+            <p class="lh-1">スタートは点\( A(-0.8) \)で、そこから\( \color{red} + 0.3 \)、つまり正の方向に\( 0.3 \)だけ動きます。結果として、答えは点\( B(-0.5) \)となります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">3つ以上の場合も同じです。\( 0.05 \color{blue} - 0.3  \color{red} + 0.1\)を見てみましょう。</p>
+            <br>
+            <div id="jxgbox11" class="jxgbox" style="width: 500px; height: 200px;"></div>
+            <br>
+            <p class="lh-1">スタートは点\( A(0.05) \)で、そこから\( \color{blue} -0.3 \)、つまり負の方向に\( 0.3 \)だけ動き、点\( B(-0.25) \)につきます。</p>
+            <p class="lh-1">次に、そこから\( \color{red} + 0.1 \)、つまり正の方向に\( 0.1 \)だけ動き、点\( C(-0.25) \)にたどりつきます。これが答えです。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border_bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="how_to_solve_frac_and_decimal">分数と小数が使われている計算の解き方</h2>
+            <p class="lh-1">最後に確認するのは、<span class="text-decoration-underline">分数と小数が同時に使われている</span>ときの計算方法です。</p>
+            <p class="lh-1">初めに結論からいってしまうと、<span class="text-decoration-underline">小数を分数に直してから計算する</span>というのがポイントとなります。</p>
+            <p class="lh-1">というのも、\( \dfrac{1}{3} = 0.3333.... \)のように小数では表せない分数は無数にありますが、<span class="text-decoration-underline">分数で表せない小数は存在しない</span>からです。</p>
+            <p class="lh-1">小数を分数に直す方法については以下に折りたたんでおきますので、理解が怪しい方は確認してみてください。</p>
+            <details>
+                <summary><small class="text-muted">小数を分数に直す方法</small></summary>
+                <div class="m-2 p-2">
+                    <p class="lh-1">小数を分数に直すときの基本は、\( \)</p>
+                </div>
+            </details>
         </div>
     </div>
 

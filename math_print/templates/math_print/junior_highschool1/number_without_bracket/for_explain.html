@@ -287,9 +287,6 @@ window.addEventListener("load", (event)=>{
 </script>
 {% endblock %}
 
-{% block css %}
-{% endblock %}
-
 {% block title %}
 カッコがつかない正負の足し算引き算(解説)
 {% endblock %}
@@ -301,6 +298,23 @@ window.addEventListener("load", (event)=>{
         <p class="text-dark">カッコがつかない正負の足し算引き算(解説)</p>
     </div>
 </div>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
@@ -467,7 +481,28 @@ window.addEventListener("load", (event)=>{
             <details>
                 <summary><small class="text-muted">小数を分数に直す方法</small></summary>
                 <div class="m-2 p-2">
-                    <p class="lh-1">小数を分数に直すときの基本は、\( \)</p>
+                    <p class="lh-1">小数を分数に直すときには、\( 0.1 \)や\( 0.01 \)などが何個あるのか？というふうに考えていきます。</p>
+                    <p class="lh-1">たとえば\( 0.4 \)は\( 0.4 = 0.1 \times 4 \)と書き換えられます。つまり、\( 0.1 \)が\( 4 \)個あるということです。</p>
+                    <p class="lh-1">\( 0.1 = \dfrac{1}{10} \)なので、\( 0.4 = 0.1 \times 4 = \dfrac{1}{10} \times 4 = \dfrac{4}{10} = \dfrac{2}{5} \)となります。</p>
+                    <p class="lh-1">このように、小数第一位まで続いている数であれば、\( 0.\bigcirc = 0.1 \times \bigcirc = \dfrac{1}{10} \times \bigcirc \)と計算することで分数になおせます。</p>
+                </div>
+                <div class="m-2 p-2">
+                    <p class="lh-1">では、小数第二位、第三位のように、より多くの数字が続いている場合はどうするのでしょうか。こちらも合わせてみてみましょう。</p>
+                    <p class="lh-1">まず小数第二位まで続く数の例として、\( 0.25 \)を見てみます。こちらは\( 0.01 \times 25 \)と書き換えられます。</p>
+                    <p class="lh-1">\( 0.01 = \dfrac{1}{100} \)なので、\( 0.25 = 0.01 \times 25 = \dfrac{1}{100} = \dfrac{25}{100} = \dfrac{1}{4} \)となります。</p>
+                    <p class="lh-1">つまり、小数第二位まで続く数は、\( 0.\bigcirc\triangle = 0.01 \times \bigcirc\triangle = \dfrac{1}{100} \times \bigcirc\triangle \)と計算することで分数になおせます。</p>
+                    <br>
+                    <p class="lh-1">小数第三位まで続く数も似たようなものです。こちらは\( 0.001 = \dfrac{1}{1000} \)であることを利用します。</p>
+                    <p class="lh-1">例として、\( 0.238 \)を見てみましょう。</p>
+                    <p class="lh-1">\( 0.238 = 0.001 \times 238 = \dfrac{1}{1000} \times 238 = \dfrac{238}{1000} = \dfrac{119}{500} \)となります。</p>
+                    <p class="lh-1">つまり、小数第三位まで続く数は、\( 0.\bigcirc\triangle\square = 0.01 \times \bigcirc\triangle\square = \dfrac{1}{1000} \times \bigcirc\triangle\square \)と計算すれば分数になります。</p>
+                </div>
+                <div class="m-2 p-2">
+                    <p class="lh-1">以降の流れもだいたい同じですね。小数第四位まで続くなら\( 0.0001 = \dfrac{1}{10000} \)を使いますし、小数第五位まで続くなら\( 0.00001 = \dfrac{1}{100000} \)を使います。</p>
+                    <p class="lh-1">
+                        この計算をもう少し練習したいという方は、以下にリンクを張っておきますので、そちらにアクセスしてみてください。
+                        <a href="{% url 'elementary_school5' %}#conversion_between_frac_and_decimal" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">小数と分数の相互変換</small></a>
+                    </p>
                 </div>
             </details>
         </div>

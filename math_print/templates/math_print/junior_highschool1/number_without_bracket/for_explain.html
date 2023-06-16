@@ -325,6 +325,13 @@ window.addEventListener("load", (event)=>{
     jsx13.create('segment', [[12, 0], [12, -8]], {strokeColor: 'gray', dash: 2});
     jsx13.create('segment', [[3, 0], [3, -8]], {strokeColor: 'gray', dash: 2});
     jsx13.create('segment', [[39, 0], [39, -8]], {strokeColor: 'gray', dash: 2});
+    jsx13.create('text', [12, 0.8, '12'], {strokeColor: 'black'});
+    jsx13.create('text', [3, 0.8, '3'], {strokeColor: 'black'});
+    jsx13.create('text', [39, 0.8, '39'], {strokeColor: 'black'});
+    jsx13.create('text', [(12 + 3) / 2, -0.75, '-9'], {strokeColor: 'blue', fontSize: 16, cssStyle: text_css});
+    jsx13.create('arrow', [[12, -1.5], [3, -1.5]], {strokeColor: 'blue'});
+    jsx13.create('text', [(3 + 39) / 2, -2.25, '+36'], {strokeColor: 'red', fontSize: 16, cssStyle: text_css});
+    jsx13.create('arrow', [[3, -3], [39, -3]], {strokeColor: 'red'});
 });
 </script>
 {% endblock %}
@@ -561,7 +568,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <div id="jxgbox12" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
-            <p class="lh-1">分子部分の計算は点\( A(-5) \)から始まり、そこから\( \color{red} +6 \)だけ右に動いて、点\( B(1) \)にたどりつきます。</p>
+            <p class="lh-1">分子部分の計算は点\( A(-5) \)から始まり、そこから\( \color{red} +6 \)、つまり正の方向に6だけ動き、点\( B(1) \)にたどりつきます。</p>
             <p class="lh-1">よって答えは、\( \dfrac{1}{15} \)となります。</p>
             <p class="lh-1">小数を分数にさえ直してあげれば、あとは分数同士の計算と同じであることがわかってもらえるでしょうか？</p>
         </div>
@@ -589,7 +596,10 @@ window.addEventListener("load", (event)=>{
             <br>
             <div id="jxgbox13" class="jxgbox" style="width: 500px; height: 200px;"></div>
             <br>
-
+            <p class="lh-1">分子部分の計算は点\( A(12) \)から始まり、そこから\( \color{blue} -9 \)、つまり負の方向に9だけ動き、点\( B(3) \)にたどりつきます。</p>
+            <p class="lh-1">そこからさらに\( \color{red} + 36 \)、つまり正の方向に36だけ動き、点\( C(39) \)にたどりつきます。</p>
+            <p class="lh-1">分子部分が\( 39 \)なので、最終的な答えは\( \dfrac{39}{20} \)となります。</p>
+            <p class="lh-1">ちなみに、ここで紹介したものには入っていませんでしたが、もし整数も含まれていたとしても、\( 3 = \dfrac{3}{1}, -2 = -\dfrac{2}{1} \)のように分母を1とすれば問題なく計算可能です。</p>
         </div>
     </div>
 
@@ -597,6 +607,25 @@ window.addEventListener("load", (event)=>{
         <h2 class="text-muted h5" id="afterword">後書き</h2>
         <div class="m-2 p-2">
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
+            <p class="lh-1">ここまでいくつかの例を交えて正負の計算を解説してきましたが、ここで紹介したやり方は<span class="text-decoration-underline">あくまで例の一つに過ぎない</span>ことに注意してください。</p>
+            <p class="lh-1">たとえばある程度計算に慣れてくれば、数直線ではなく頭の中で考えることもできるでしょう。</p>
+            <p class="lh-1">また、小数と分数が混在する計算においても、以下のように、分数部分だけ、小数部分だけでいったん計算してから、あらためて計算してもよいでしょう。</p>
+            <p class="lh-1">\( -0.3 + 0.5 - \dfrac{5}{3} + \dfrac{1}{2} \)</p>
+            <p class="lh-1">\( = 0.2 - \dfrac{5 \times 2}{3 \times 2} + \dfrac{1 \times 3}{2 \times 3}\)</p>
+            <p class="lh-1">\( = 0.2 + \dfrac{-10 + 3}{6} \)</p>
+            <p class="lh-1">\( = 0.2 - \dfrac{7}{6}\)</p>
+            <p class="lh-1">\( = \dfrac{2}{10} - \dfrac{7}{6}\)</p>
+            <p class="lh-1">\( = \dfrac{1}{5} - \dfrac{7}{6}\)</p>
+            <p class="lh-1">\( = \dfrac{1 \times 6}{5 \times 6} - \dfrac{7 \times 5}{6 \times 5}\)</p>
+            <p class="lh-1">\( = \dfrac{6 - 35}{30}\)</p>
+            <p class="lh-1">\( = - \dfrac{29}{30} \)</p>
+            <p class="lh-1">極論、答えが正しく、素早く計算できればどのような計算であってもOKです。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">ただ、頭の中で多くの計算をやればやるほど、計算ミスをしやすくなってしまいます。</p>
+            <p class="lh-1">また、毎度毎度異なったやり方を使っていると、これまた間違いの原因になりやすいです。</p>
+            <p class="lh-1">まずは正確に計算できるように、決まったやり方で解いていくことを心がけましょう。</p>
         </div>
     </div>
 </div>

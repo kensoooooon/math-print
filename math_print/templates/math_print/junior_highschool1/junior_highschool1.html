@@ -167,7 +167,7 @@
             </form>
         </div>
         <div class="col border-end border-bottom">
-            <p>カッコがつかない正負の足し算引き算</p>
+            <p id="number_without_bracket_title">カッコがつかない正負の足し算引き算</p>
             <a href="{% url 'number_without_bracket_explain' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

@@ -63,9 +63,7 @@ class LCMAndGCD:
         latex_problem = f"\\({num1}, {num2}\\)の公倍数を、小さい順に5つ求めよ。"
         lcms_list = lcms(num1, num2)
         lcms_str = str(lcms_list).replace("[", "").replace("]", "")
-        print(f"lcms_str: {lcms_str}")
         latex_answer = f"{lcms_str}"
-        print(f"latex_answer: {latex_answer}")
         return latex_answer, latex_problem
 
     def _make_gcd_problem(self):
@@ -104,9 +102,7 @@ class LCMAndGCD:
         latex_problem = f"\\({num1}, {num2}\\)の公約数をすべて求めよ。"
         gcds_list = divisors(num1, num2)
         gcds_str = str(gcds_list).replace("[", "").replace("]", "")
-        print(f"gcds_str: {gcds_str}")
         latex_answer = f"{gcds_str}"
-        print(f"latex_answer: {latex_answer}")
         return latex_answer, latex_problem
     
     def _base_num_maker(self):

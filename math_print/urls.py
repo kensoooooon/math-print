@@ -66,6 +66,7 @@ urlpatterns = [
     # 特定の形と解を持つ1次方程式の計算
     path('specific_linear_equation/print/',views.print_specific_linear_equation, name='specific_linear_equation_print'),
     path('specific_linear_equation/display/',views.display_specific_linear_equation, name='specific_linear_equation_display'),
+    path('specific_linear_equation/explanation', views.explain_specific_linear_equation, name='specific_linear_equation_explain'),
     # 比例
     path('proportional_expression/print/', views.print_proportional_expression, name='proportional_expression_print'),
     path('proportional_expression/display/', views.display_proportional_expression, name='proportional_expression_display'),

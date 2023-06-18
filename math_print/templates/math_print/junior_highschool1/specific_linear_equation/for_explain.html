@@ -1,0 +1,123 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+window.addEventListener("load", (event)=>{
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+
+    // 4 - 2
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 2, 4.2, -2]});
+    jsx1.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: true,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            ticksDistance: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx1.create('point', [4, 0], {strokeColor: "black"});
+    jsx1.create('point', [2, 0], {strokeColor: "black"});
+    jsx1.create('arrow', [[4, 0], [2, 0]], {strokeColor: "blue"});
+    jsx1.create('text', [2.8, 0.5, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
+});
+</script>
+{% endblock %}
+
+{% block title %}
+形が決まった1次方程式(解説)
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">形が決まった1次方程式(解説)</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h4">
+        形が決まった1次方程式
+        <small class="text-muted">～いろいろな形の1次方程式に対応できるようにしていこう～</small>
+    </h1>
+
+    <br>
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+        <li class="list-group-item col-md-6"><a href="#rule_of_equation" class="text-decoration-none text-reset">等式の性質</a></li>
+        <li class="list-group-item col-md-6"><a href="#ax=b" class="text-decoration-none text-reset">一番シンプルな\( ax = b \)の形</a></li>
+    </ul>
+    <br>
+
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">1次方程式は皆さんが数学に入って初めて出会う方程式であり、今後たくさん出てくる◯◯方程式(連立方程式, 2次方程式など)の先駆けです。</p>
+            <p class="lh-1">また、本格的に文章問題が登場してくるのもこの辺りです。</p>
+            <p class="lh-1">総じて1次方程式は<span class="text-decoration-underline">中学1年生範囲の数学の前半の山場</span>と言えるでしょう。</p>
+            <p class="lh-1">そういうわけで、1次方程式がしっかりと解けるというのは非常に重要です。複雑な計算も、難解な文章問題も、まずは1次方程式が解けないと始まりません。</p>
+            <p class="lh-1">まずは決まった形の1次方程式が解けるように理解して、練習を重ねていきましょう。</p>
+        </div>
+    </div>
+
+    
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="rule_of_equation">等式の性質</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">実際に方程式の解き方を解説していく前に、まずはそれら全ての根っこにある等式の性質を確認しておきましょう。</p>
+            <p class="lh-1">まずは等式とは？という話ですが、これはシンプルです。<span class="text-decoration-underline">イコールでつながった式は全部等式</span>という認識でOKです。</p>
+        </div>
+    </div>
+</div>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <a href="{% url 'junior_highschool1' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2023 有明学習振興</a></small>
+</footer>
+{% endblock %}

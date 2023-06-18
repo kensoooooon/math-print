@@ -1509,7 +1509,6 @@ def print_line_and_flat_positional_relationship(request):
 
 
 def print_calculate_area_by_integration(request):
-    print(f"request: {request}")
     PROBLEM_NUMBER = 2
     paper_number = int(request.POST["paper_number"])
     problem_types = []
@@ -1559,7 +1558,6 @@ def display_character_problem(request):
     PROBLEM_NUMBER = 20
     
     number_to_use = request.POST.getlist("character_number_to_use")
-    print(f"number_to_use: {number_to_use}")
     operator_to_use = request.POST.getlist("character_operator_to_use")
     term_number = int(request.POST["term_number"])
     character_to_use = request.POST["character_to_use"]
@@ -2328,7 +2326,6 @@ def display_parallel_lines_and_angle(request):
 def display_unit_conversion_problem(request):
     PROBLEM_NUMBER = 20
     
-    print(f"request: {request}")
     used_unit_list = request.POST.getlist("unit_type")
     if not(used_unit_list):
         used_unit_list.append("length")
@@ -2398,7 +2395,7 @@ def display_exponent_calculation(request):
 def display_lcm_and_gcd_problem(request):
     PROBLEM_NUMBER = 20
 
-    problem_type_list = request.POST.getlist("problem")
+    problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
         problem_type_list.append("lcm")
         problem_type_list.append("gcd")
@@ -2777,4 +2774,9 @@ def explain_one_third_calculate_area_by_integration(request):
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third.html', {})
+    return returned_render
+
+
+def explain_number_without_bracket(request):
+    returned_render = render(request, 'math_print/junior_highschool1/number_without_bracket/for_explain.html', {})
     return returned_render

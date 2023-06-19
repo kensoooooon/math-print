@@ -144,11 +144,11 @@ window.addEventListener("load", (event)=>{
         <h2 class="text-muted h5" id="ax=b">\( ax = b \)型の方程式</h2>
         <div class="m-2 p-2">
             <p class="lh-1">さて、それではさっそく方程式の解き方を確認していきましょう。初めに紹介するのは\( ax = b\)型の方程式。一番シンプルな形です。</p>
-            <p class="lh-1">このタイプの方程式は、<span class="text-decoration-underline">両辺を\( x \)の手前についている\( \underline{a} \)で割れば解くことができます。</span></p>
+            <p class="lh-1">このタイプの方程式は、両辺を\( x \)の手前についている\( {a} \)で割れば解くことができます。</p>
         </div>
 
         <div class="m-2 p-2">
-            <p class="lh-1">例題1: \( 2x = 4 \)</p>
+            <p class="lh-1">\( 2x = 4 \)</p>
             <p class="lh-1">\( x \)の手前についているのは\( 2 \)なので、これで両辺を割ると、</p>
             <p class="lh-1">\( 2x \color{red} \div 2 \color{black} = 4 \color{red} \div 2 \)より、</p>
             <p class="lh-1">\( x = 2 \)となります。これが答えです。実際、\( x = 2 \)を代入すると\( 2 \times 2 = 4 \)となるため、正しいことがわかります。</p>
@@ -156,20 +156,22 @@ window.addEventListener("load", (event)=>{
 
         <div class="m-2 p-2">
             <p class="lh-1">手前についている数が分数や小数でも同じです。</p>
-            <p class="lh-1">例題2: \( \dfrac{2}{3}x = 8 \)</p>
+            <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
             <p class="lh-1">\( \dfrac{2}{3}x \color{red} \div \dfrac{2}{3} \color{black} = 8 \color{red} \div \dfrac{2}{3} \color{black} \)</p>
             <p class="lh-1">\( \dfrac{2}{3}x \times \dfrac{3}{2} = 8 \times \dfrac{3}{2} \)</p>
             <p class="lh-1">\( x = 12 \)</p>
-            <p class="lh-1">例題3: \( 0.5 x = 3 \)</p>
+            <br>
+            <p class="lh-1">\( 0.5 x = 3 \)</p>
             <p class="lh-1">\( 0.5x \color{red} \div 0.5 \color{black} = 3 \color{red} \div 0.5 \)</p>
             <p class="lh-1">\( x = 6 \)</p>
             <br>
+            <br>
             <p class="lh-1">ただ、このあとにやるもっと複雑な計算のことも想定すると、<span class="text-decoration-underline">分数や小数は初めに消してから取り組む</span>方が楽です。</p>
-            <p class="lh-1">例題2: \( \dfrac{2}{3}x = 8 \)</p>
+            <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
             <p class="lh-1">ここで両辺に3をかけると、</p>
             <p class="lh-1">\( \dfrac{2}{3}x \color{red} \times 3 \color{black} = 8 \color{red} \times 3\)</p>
             <p class="lh-1">\( 2x = 24 \)と例題1のときのように、整数だけの形になります。あとは両辺を2で割ってあげれば、\( x = 12 \)となります。</p>
-            <p class="lh-1">同じように\( 0.5 x = 3 \)についても、小数をずらすために10をかけてから取り組んでみると、</p>
+            <p class="lh-1">同じように\( 0.5 x = 3 \)についても、小数点をずらすために10をかけてから取り組んでみると、</p>
             <p class="lh-1">\( 0.5 x \times 10 = 3 \times 10 \)</p>
             <p class="lh-1">\( 5x = 30 \)となります。こちらも両辺を5で割ってあげれば、\( x = 6 \)となります。</p>
             <br>
@@ -191,12 +193,37 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( x = 2 \)</p>
             <p class="lh-1">解けましたね。もう1問見てみましょう。</p>
             <br>
-            <p class="lh-1">例題4: \( -3x + 5 = 9 \)</p>
+            <p class="lh-1">\( -3x + 5 = 9 \)</p>
             <p class="lh-1">\( -3x + 5 \color{red} - 5 \color{black} = 9 \color{red} - 5\)</p>
             <p class="lh-1">\( -3x = 4 \)</p>
             <p class="lh-1">\( -3x \div (-3) = 4 \div (-3) \)</p>
             <p class="lh-1">\( x = 4 \times \dfrac{-1}{3} \)</p>
             <p class="lh-1">\( x = -\dfrac{4}{3} \)</p>
+            <br>
+            <br>
+            <p class="lh-1">以上の流れで解くことが可能ですが、これをもう少し見てみると、<span class="text-decoration-underline">数字を消すと、結局逆側の辺に符号が反転したものだけが残っている</span>ことがわかります。</p>
+            <p class="lh-1">\( 3x - 5 = 6 \)</p>
+            <p class="lh-1">\( 3x - 5 \color{red} + 5 \color{black} = 6 + \color{red} 5\)</p>
+            <p class="lh-1">\( 3x = 6 + \color{red} 5\)</p>
+            <p class="lh-1">もともと左辺にあった数字を消すための数を足し引きしているので、当たり前といえば当たり前なのですが、左辺の数の部分は必ず0になります。</p>
+            <p class="lh-1">そのため、その部分の計算は省かれるのが一般的です。移項などと呼ばれるものですね。</p>
+            <p class="lh-1">\( -2x + 1 = 5 \)</p>
+            <p class="lh-1">ここから移項、つまり\( +1 \)を符号を反転させて、\( -1 \)として右辺に移します。</p>
+            <p class="lh-1">\( -2x = 5 \color{red} - 1 \)</p>
+            <p class="lh-1">\( -2x = 4 \)</p>
+            <p class="lh-1">\( ax = b \)の形になったので、そのまま解くことが可能です。</p>
+            <br>
+            <p class="lh-1">なお、小数や分数が含まれている場合は、そちらを消すほうを優先してください。</p>
+            <p class="lh-1">\( \dfrac{2}{5} x - \dfrac{1}{2} = 2 \)</p>
+            <p class="lh-1">両辺に分母の最小公倍数である10をかけると、</p>
+            <p class="lh-1">\( 10 \times \left(\dfrac{2}{5}x - \dfrac{1}{2}\right) = 10 \times 2 \)</p>
+            <p class="lh-1">\( 4x - 5 = 20 \)</p>
+            <p class="lh-1">\( -5 \)を\( +5 \)として右辺に移すと、</p>
+            <p class="lh-1">\( 4x = 20 + 5 \)</p>
+            <p class="lh-1">\( 4x = 25 \)</p>
+            <p class="lh-1">こちらもあとは、両辺を4で割ってあげるだけです。</p>
+            <br>
+            <p class="lh-1">以上のような流れで\( ax + b = c \)型の方程式を解くことができます。</p>
         </div>
     </div>
 </div>

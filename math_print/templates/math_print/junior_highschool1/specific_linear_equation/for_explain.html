@@ -86,7 +86,7 @@ window.addEventListener("load", (event)=>{
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
         <li class="list-group-item col-md-6"><a href="#rule_of_equation" class="text-decoration-none text-reset">等式の性質</a></li>
-        <li class="list-group-item col-md-6"><a href="#ax=b" class="text-decoration-none text-reset">一番シンプルな\( ax = b \)の形</a></li>
+        <li class="list-group-item col-md-6"><a href="#ax=b" class="text-decoration-none text-reset">\( ax = b \)型の方程式</a></li>
     </ul>
     <br>
 
@@ -108,7 +108,95 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">実際に方程式の解き方を解説していく前に、まずはそれら全ての根っこにある等式の性質を確認しておきましょう。</p>
             <p class="lh-1">まずは等式とは？という話ですが、これはシンプルです。<span class="text-decoration-underline">イコールでつながった式は全部等式</span>という認識でOKです。</p>
-            <p class="lh-1">そして、肝心の等式の性質</p>
+            <p class="lh-1">そして、肝心の等式の性質ですが、一言でいうと<span class="text-decoration-underline">等式の両辺に同じことをしても、イコールは崩れない</span>というものになります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">具体的な例として、\( 1 + 2 = 3 \)を考えてみましょう。</p>
+            <p class="lh-1">たとえばこの両辺から1を引すと、</p>
+            <p class="lh-1">\( 1 + 2 \color{red} + 1 \color{black} = 3 \color{red} + 1\)から</p>
+            <p class="lh-1">\( 4 = 4 \)となり、イコールは崩れていません。</p>
+            <p class="lh-1">また、同じように3を引いてみると、</p>
+            <p class="lh-1">\( 1 + 2 \color{red} - 3 \color{black} = 3 \color{red} - 3\)から</p>
+            <p class="lh-1">\( 0 = 0 \)となり、やはりイコールは崩れていません。</p>
+            <p class="lh-1">以上のように、等式の両辺に同じ数を足したり引いたりしても、イコールはイコールのままです。</p>
+        </div>
+        
+        <div class="m-2 p-2">  
+            <p class="lh-1">次にかけ算とわり算を見てみますが、こちらは少し注意が必要です。</p>
+            <p class="lh-1">というのも、<span class="text-decoration-underline">きちんと全体に計算してあげないと、イコールが崩れる</span>からです。</p>
+            <p class="lh-1">例として、\( 2 + 4 = 6 \)を使って考えていきます。</p>
+            <p class="lh-1">両辺に2をかけるときに、\( 2 \times 2 + 4 = 6 \times 2 \)と一部にだけ2をかけると、</p>
+            <p class="lh-1">\( 8 \neq 12 \)とイコールが崩れてしまいます。</p>
+            <p class="lh-1">正しくは、\( \color{red} 2 \times ( \color{black} 2 + 4 \color{red}) \color{black} = 6 \times 2  \)とすべきです。</p>
+            <p class="lh-1">こうしてあげれば\( 12 = 12 \)で等しいままです。</p>
+            <p class="lh-1">これはわり算でも同じです。両辺を2で割るときに\( 2 + 4 \div 2 = 2 \div 2 \)とすると、\( 4 \neq 1 \)となり、イコールが崩れます。</p>
+            <p class="lh-1">\( \color{red}( \color{black}2 + 4 \color{red}) \div 2 \color{black} = 6 \div 2 \)と全体を割ってあげることで、\( 3 = 3 \)とイコールが保たれます。</p>
+        </div>
+        
+        <div class="m-2 p-2">
+            <p class="lh-1">以上が等式の性質です。このあと学んでいく1次方程式では、このルールにもとづいて話が進んでいきます。しっかりと確認しておきましょう。</p>
+        </div>
+    </div>
+
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="ax=b">\( ax = b \)型の方程式</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">さて、それではさっそく方程式の解き方を確認していきましょう。初めに紹介するのは\( ax = b\)型の方程式。一番シンプルな形です。</p>
+            <p class="lh-1">このタイプの方程式は、<span class="text-decoration-underline">両辺を\( x \)の手前についている\( \underline{a} \)で割れば解くことができます。</span></p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">例題1: \( 2x = 4 \)</p>
+            <p class="lh-1">\( x \)の手前についているのは\( 2 \)なので、これで両辺を割ると、</p>
+            <p class="lh-1">\( 2x \color{red} \div 2 \color{black} = 4 \color{red} \div 2 \)より、</p>
+            <p class="lh-1">\( x = 2 \)となります。これが答えです。実際、\( x = 2 \)を代入すると\( 2 \times 2 = 4 \)となるため、正しいことがわかります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">手前についている数が分数や小数でも同じです。</p>
+            <p class="lh-1">例題2: \( \dfrac{2}{3}x = 8 \)</p>
+            <p class="lh-1">\( \dfrac{2}{3}x \color{red} \div \dfrac{2}{3} \color{black} = 8 \color{red} \div \dfrac{2}{3} \color{black} \)</p>
+            <p class="lh-1">\( \dfrac{2}{3}x \times \dfrac{3}{2} = 8 \times \dfrac{3}{2} \)</p>
+            <p class="lh-1">\( x = 12 \)</p>
+            <p class="lh-1">例題3: \( 0.5 x = 3 \)</p>
+            <p class="lh-1">\( 0.5x \color{red} \div 0.5 \color{black} = 3 \color{red} \div 0.5 \)</p>
+            <p class="lh-1">\( x = 6 \)</p>
+            <br>
+            <p class="lh-1">ただ、このあとにやるもっと複雑な計算のことも想定すると、<span class="text-decoration-underline">分数や小数は初めに消してから取り組む</span>方が楽です。</p>
+            <p class="lh-1">例題2: \( \dfrac{2}{3}x = 8 \)</p>
+            <p class="lh-1">ここで両辺に3をかけると、</p>
+            <p class="lh-1">\( \dfrac{2}{3}x \color{red} \times 3 \color{black} = 8 \color{red} \times 3\)</p>
+            <p class="lh-1">\( 2x = 24 \)と例題1のときのように、整数だけの形になります。あとは両辺を2で割ってあげれば、\( x = 12 \)となります。</p>
+            <p class="lh-1">同じように\( 0.5 x = 3 \)についても、小数をずらすために10をかけてから取り組んでみると、</p>
+            <p class="lh-1">\( 0.5 x \times 10 = 3 \times 10 \)</p>
+            <p class="lh-1">\( 5x = 30 \)となります。こちらも両辺を5で割ってあげれば、\( x = 6 \)となります。</p>
+            <br>
+            <p class="lh-1">一見、余計な手間がかかっているように見えるかもしれませんが、問題が面倒になればなるほど、小数や分数を初めに消しておいた方が楽です。</p>
+        </div>
+    </div>
+    
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="ax=b">\( ax + b = c \)型の方程式</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">次に紹介するのは、\( ax + b = c \)型の方程式です。具体的には\( 2x + 3 = 7 \)のような、左辺に新しく数が追加されているものになります。</p>
+            <p class="lh-1">\( 2x = \circ \)の形にすれば上と同じように解けるので、\( + 3 \)を消すのが重要になってきます。</p>
+            <p class="lh-1">ここで利用するのは、一番初めに確認した等式の性質です。\( +3 \)を消すために、両辺から\( -3 \)をしてみましょう。</p>
+            <p class="lh-1">\( 2x + 3 \color{red} - 3 \color{black} = 7 \color{red} - 3 \)</p>
+            <p class="lh-1">\( 2x = 4 \)</p>
+            <p class="lh-1">これで同じ形になりましたので、xの手前にある2で両辺を割ると、</p>
+            <p class="lh-1">\( 2x \div 2 = 4 \div 2 \)</p>
+            <p class="lh-1">\( x = 2 \)</p>
+            <p class="lh-1">解けましたね。もう1問見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題4: \( -3x + 5 = 9 \)</p>
+            <p class="lh-1">\( -3x + 5 \color{red} - 5 \color{black} = 9 \color{red} - 5\)</p>
+            <p class="lh-1">\( -3x = 4 \)</p>
+            <p class="lh-1">\( -3x \div (-3) = 4 \div (-3) \)</p>
+            <p class="lh-1">\( x = 4 \times \dfrac{-1}{3} \)</p>
+            <p class="lh-1">\( x = -\dfrac{4}{3} \)</p>
         </div>
     </div>
 </div>

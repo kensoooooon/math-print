@@ -61,16 +61,10 @@ def index(request):
 def update_information(request):
     return render(request, 'math_print/update_information.html', {})
 
-# for graphic sample
-def graphic_sample(request):
-    return render(request, 'math_print/graphic_sample.html', {})
+# for description about website
+def about_me(request):
+    return render(request, 'math_print/about_me.html', {})
 
-# for loop sample
-def loop_sample(request):
-    math_problem_tuple_list = []
-    for i in range(10):
-        math_problem_tuple_list.append((f"problem{i}_1", f"problem{i}_2"))
-    return render(request, 'math_print/loop_sample.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 # index
 def show_elementary_school3(request):
@@ -217,7 +211,7 @@ def print_specific_linear_equation(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
-    return render(request, 'math_print/junior_highschool1/linear_equation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/junior_highschool1/specific_linear_equation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 def print_simultaneous_equations(request):
     PROBLEM_NUMBER = 20
@@ -1637,7 +1631,7 @@ def display_specific_linear_equation(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     
-    return render(request, 'math_print/junior_highschool1/linear_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    return render(request, 'math_print/junior_highschool1/specific_linear_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_simultaneous_equations(request):
     PROBLEM_NUMBER = 20
@@ -2778,5 +2772,26 @@ def explain_one_third_calculate_area_by_integration(request):
 
 
 def explain_number_without_bracket(request):
+    """カッコなしの正負の計算の解き方の解説を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
     returned_render = render(request, 'math_print/junior_highschool1/number_without_bracket/for_explain.html', {})
+    return returned_render
+
+
+def explain_specific_linear_equation(request):
+    """特定の形の1次方程式の解き方の解説を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/junior_highschool1/specific_linear_equation/for_explain.html', {})
     return returned_render

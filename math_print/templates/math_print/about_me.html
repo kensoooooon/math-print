@@ -1,0 +1,34 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+このサイトについて
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <p class="text-dark">このサイトについて</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row border-bottom">
+        <div class="col md-6 p-3">
+            <p class="lh-1">・繰り返し計算練習を行うために作成したサイトです。</p>
+            <p class="lh-1">・小学3年生から高校3年生まで、繰り返し練習が必要と思われる内容を随時追加しています。</p>
+            <p class="lh-1">・解説についても、同様に随時追加しています。</p>
+            <p class="lh-1">・A4サイズを想定した印刷にも対応しています。</p>
+            <p class="lh-1">・予習、あるいは復習のお供にして、たくさん練習するのにご利用ください。</p>
+        </div>
+    </div>
+
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2023 有明学習振興</a></small>
+    </footer>
+</div>
+{% endblock %}

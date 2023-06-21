@@ -6,11 +6,10 @@ from . import views
 urlpatterns = [
     ### 全体共通 ###
     path('', views.index, name='index'),
-    ### インデックス ###
+    ### サイト説明 ###
+    path('about_me', views.about_me, name='about_me'),
+    ### 更新情報 ###
     path('update_information/', views.update_information, name='update_information'),
-    # sample
-    path('graphic_sample', views.graphic_sample, name='graphic_sample'),
-    path('loop_sample/', views.loop_sample, name='loop_sample'),
     ##########################################
     ### 小3 ###
     path('elementary_school3/', views.show_elementary_school3, name='elementary_school3'),

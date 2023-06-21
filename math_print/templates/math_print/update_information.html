@@ -14,7 +14,17 @@
 
 {% block body %}
 <div class="container-fluid">
-    <div class="row">
+    <div class="row border-bottom">
+        <h2 class="text-muted h5">2023/06/22</h2>
+        <div class="col md-6 p-3">
+            <h3 class="text-muted h6">新規追加</h3>
+            <small class="lh-1">・中学1年生向けの<a href="{% url 'junior_highschool1' %}#specific_linear_equaton_title">形が決まった1次方程式</a>に解説を追加しました。</small>
+            <br>
+            <small class="lh-1">・<a href="{% url 'about_me' %}">このサイトについての説明</a>を追加しました。</small>
+        </div>
+    </div>
+
+    <div class="row border-bottom">
         <h2 class="text-muted h5">2023/06/18</h2>
         <div class="col md-6 p-3">
             <h3 class="text-muted h6">新規追加</h3>
@@ -25,7 +35,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row border-bottom">
         <h2 class="text-muted h5">2023/06/10</h2>
         <div class="col md-6 p-3">
             <h3 class="text-muted h6">新規追加</h3>
@@ -37,5 +47,12 @@
             <small class="lh-1">・中学1年生向けの<a href="{% url 'junior_highschool1' %}">カッコがつかない正負の足し算引き算</a>が利用できなかった問題を修正しました。</small>
         </div>
     </div>
+
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2022 有明学習振興</a></small>
+    </footer>
 </div>
 {% endblock %}

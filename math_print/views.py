@@ -61,16 +61,10 @@ def index(request):
 def update_information(request):
     return render(request, 'math_print/update_information.html', {})
 
-# for graphic sample
-def graphic_sample(request):
-    return render(request, 'math_print/graphic_sample.html', {})
+# for description about website
+def about_me(request):
+    return render(request, 'math_print/about_me.html', {})
 
-# for loop sample
-def loop_sample(request):
-    math_problem_tuple_list = []
-    for i in range(10):
-        math_problem_tuple_list.append((f"problem{i}_1", f"problem{i}_2"))
-    return render(request, 'math_print/loop_sample.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 # index
 def show_elementary_school3(request):

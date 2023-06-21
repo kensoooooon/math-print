@@ -16,32 +16,6 @@
         }
         });
 </script>
-
-<script>
-window.addEventListener("load", (event)=>{
-    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
-
-    // 4 - 2
-    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 2, 4.2, -2]});
-    jsx1.create('axis', [[0, 0], [1, 0]], 
-    {
-        firstArrow: true,
-        lastArrow: true,
-        ticks: {
-            drawZero: true,
-            ticksDistance: 1,
-            majorHeight: 30,
-            tickEndings: [1, 1],
-            minorTicks: 0
-        }
-    }
-    );
-    jsx1.create('point', [4, 0], {strokeColor: "black"});
-    jsx1.create('point', [2, 0], {strokeColor: "black"});
-    jsx1.create('arrow', [[4, 0], [2, 0]], {strokeColor: "blue"});
-    jsx1.create('text', [2.8, 0.5, '-2'], {fontSize: 16, cssStyle: text_css, strokeColor: "blue"});
-});
-</script>
 {% endblock %}
 
 {% block title %}
@@ -89,6 +63,7 @@ window.addEventListener("load", (event)=>{
         <li class="list-group-item col-md-6"><a href="#ax=b" class="text-decoration-none text-reset">\( ax = b \)型の方程式</a></li>
         <li class="list-group-item col-md-6"><a href="#ax+b=c" class="text-decoration-none text-reset">\( ax + b = c \)型の方程式</a></li>
         <li class="list-group-item col-md-6"><a href="#ax+b=cx+d" class="text-decoration-none text-reset">\( ax + b = cx + d \)型の方程式</a></li>
+        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
 
@@ -152,29 +127,49 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">\( 2x = 4 \)</p>
             <p class="lh-1">\( x \)の手前についているのは\( 2 \)なので、これで両辺を割ると、</p>
-            <p class="lh-1">\( 2x \color{red} \div 2 \color{black} = 4 \color{red} \div 2 \)より、</p>
+            <p class="lh-1">\( 2x \color{red} \div 2 \color{black} = 4 \color{red} \div 2 \)</p>
+            <p class="lh-1">\( 2x \times \dfrac{1}{2} = 4 \times \dfrac{1}{2} \)</p>
             <p class="lh-1">\( x = 2 \)となります。これが答えです。実際、\( x = 2 \)を代入すると\( 2 \times 2 = 4 \)となるため、正しいことがわかります。</p>
+            <br>
+            <p class="lh-1">……と、これが等式の性質に則った解き方なのですが、毎度毎度割り算→分数の流れをやるのも手間です。</p>
+            <p class="lh-1">実際には、いきなり<span class="text-decoration-underline">右辺の分母にxの手前の係数を持ってくる</span>という感じで解いていくことが多いです。</p>
+            <p class="lh-1">たとえば\( 3x = 5 \)であれば、\( 5 \)の分母に\( 3 \)を持ってきて、</p>
+            <p class="lh-1">\( x = \dfrac{5}{3} \)とした方がスムーズです。</p>
         </div>
 
         <div class="m-2 p-2">
-            <p class="lh-1">手前についている数が分数や小数でも同じです。</p>
+            <p class="lh-1">手前についている数が分数でも同じように解けます。</p>
             <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
             <p class="lh-1">\( \dfrac{2}{3}x \color{red} \div \dfrac{2}{3} \color{black} = 8 \color{red} \div \dfrac{2}{3} \color{black} \)</p>
             <p class="lh-1">\( \dfrac{2}{3}x \times \dfrac{3}{2} = 8 \times \dfrac{3}{2} \)</p>
             <p class="lh-1">\( x = 12 \)</p>
             <br>
+            <p class="lh-1">というのがルールに則った解き方ですが、これも分母に持ってきて考えます。\( \dfrac{a}{b} = a \div b \)であることを使いましょう。</p>
+            <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
+            <p class="lh-1">\( x = \dfrac{8}{\cfrac{2}{3}} \)</p>
+            <p class="lh-1">\( x = 8 \div \dfrac{2}{3} = 8 \times \dfrac{3}{2} = 12\)</p>
+            <br>
+            <p class="lh-1">小数の場合も同じように解けますが……</p>
             <p class="lh-1">\( 0.5 x = 3 \)</p>
             <p class="lh-1">\( 0.5x \color{red} \div 0.5 \color{black} = 3 \color{red} \div 0.5 \)</p>
             <p class="lh-1">\( x = 6 \)</p>
             <br>
-            <p class="lh-1">ただ、このあとにやるもっと複雑な計算のことも想定すると、<span class="text-decoration-underline">分数や小数は初めに消してから取り組む</span>方が楽です。</p>
+            <p class="lh-1">これもさっさと分母に持ってきた方が早いです。</p>
+            <p class="lh-1">\( 0.5x = 3 \)</p>
+            <p class="lh-1">\( x = \dfrac{3}{0.5} = 3 \div 0.5 = 6\)</p>
+            <br>
+            <br>
+            <p class="lh-1">ただ、ちゃぶ台を返すようで申し訳ないのですが、このあとにやるもっと複雑な計算のことも想定すると、<span class="text-decoration-underline">そもそも分数や小数は初めに消してから取り組む</span>方が楽です。</p>
             <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
             <p class="lh-1">ここで両辺に3をかけると、</p>
-            <p class="lh-1">\( \dfrac{2}{3}x \color{red} \times 3 \color{black} = 8 \color{red} \times 3\)</p>
-            <p class="lh-1">\( 2x = 24 \)と例題1のときのように、整数だけの形になります。あとは両辺を2で割ってあげれば、\( x = 12 \)となります。</p>
+            <p class="lh-1">\( \dfrac{2}{3}x \color{red} \times 3 \color{black} = 8 \color{red} \times 3\)から、</p>
+            <p class="lh-1">\( 2x = 24 \)と例題1のときのように、整数だけの形になります。
+            <p class="lh-1">あとは分母に持ってくれば、\( x = \dfrac{24}{12} = 2 \)となります。</p>
+            <br>
             <p class="lh-1">同じように\( 0.5 x = 3 \)についても、小数点をずらすために10をかけてから取り組んでみると、</p>
-            <p class="lh-1">\( 0.5 x \times 10 = 3 \times 10 \)</p>
-            <p class="lh-1">\( 5x = 30 \)となります。こちらも両辺を5で割ってあげれば、\( x = 6 \)となります。</p>
+            <p class="lh-1">\( 0.5 x \times 10 = 3 \times 10 \)から、</p>
+            <p class="lh-1">\( 5x = 30 \)となります。</p>
+            <p class="lh-1">あとは\( x = \dfrac{30}{5} = 6 \)で解けます。</p>
             <br>
             <p class="lh-1">一見、余計な手間がかかっているように見えるかもしれませんが、問題が面倒になればなるほど、小数や分数を初めに消しておいた方がトータルでは楽です。</p>
         </div>
@@ -189,18 +184,14 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">ここで利用するのは、一番初めに確認した等式の性質です。\( +3 \)を消すために、両辺から\( -3 \)をしてみましょう。</p>
             <p class="lh-1">\( 2x + 3 \color{red} - 3 \color{black} = 7 \color{red} - 3 \)</p>
             <p class="lh-1">\( 2x = 4 \)</p>
-            <p class="lh-1">これで同じ形になりましたので、xの手前にある2で両辺を割ると、</p>
-            <p class="lh-1">\( 2x \div 2 = 4 \div 2 \)</p>
-            <p class="lh-1">\( x = 4 \times \dfrac{1}{2} \)</p>
-            <p class="lh-1">\( x = 2 \)</p>
+            <p class="lh-1">これで\( ax = b \)の形になりましたので、</p>
+            <p class="lh-1">\( x = \dfrac{4}{2} = 4 \times \dfrac{1}{2} = 2\)</p>
             <p class="lh-1">解けましたね。もう1問見てみましょう。</p>
             <br>
             <p class="lh-1">\( -3x + 5 = 9 \)</p>
             <p class="lh-1">\( -3x + 5 \color{red} - 5 \color{black} = 9 \color{red} - 5\)</p>
             <p class="lh-1">\( -3x = 4 \)</p>
-            <p class="lh-1">\( -3x \div (-3) = 4 \div (-3) \)</p>
-            <p class="lh-1">\( x = 4 \times \dfrac{-1}{3} \)</p>
-            <p class="lh-1">\( x = -\dfrac{4}{3} \)</p>
+            <p class="lh-1">\( x = \dfrac{4}{-3} = -\dfrac{4}{3} \)</p>
             <br>
             <br>
             <p class="lh-1">以上の流れで解くことが可能ですが、これをもう少し見てみると、<span class="text-decoration-underline">数字を消すと、結局逆側の辺に符号が反転したものだけが残っている</span>ことがわかります。</p>
@@ -213,54 +204,54 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">ここから移項、つまり\( +1 \)を符号を反転させて、\( -1 \)として右辺に移します。</p>
             <p class="lh-1">\( -2x = 5 \color{red} - 1 \)</p>
             <p class="lh-1">\( -2x = 4 \)</p>
-            <p class="lh-1">\( ax = b \)の形になったので、そのまま解くことが可能です。\( -2 \)で割っていきましょう。</p>
-            <p class="lh-1">\( -2x \div (-2) = 4 \div (-2) \)</p>
-            <p class="lh-1">\( -2x \times \dfrac{-1}{2} = 4 \times \dfrac{-1}{2} \)</p>
-            <p class="lh-1">\( x = -2 \)</p>
+            <p class="lh-1">\( x = \dfrac{4}{-2} = -2 \)</p>
             <br>
-            <p class="lh-1">なお、分数が含まれている場合は、そちらを消すほうを優先してください。<span class="text-decoration-underline">分母の最小公倍数をかけてあげる</span>と、スムーズに解くことができます。</p>
+            <p class="lh-1">なお、分数が含まれている場合は、そちらを消すほうを優先してください。</p>
             <p class="lh-1">\( \dfrac{2}{5} x - \dfrac{1}{2} = 2 \)</p>
-            <p class="lh-1">両辺に分母の最小公倍数である10をかけると、</p>
+            <p class="lh-1">複数の分数があるときは、<span class="text-decoration-underline">分母の最小公倍数をかけてあげる</span>と、スムーズに解くことができます。</p>
             <p class="lh-1">\( 10 \times \left(\dfrac{2}{5}x - \dfrac{1}{2}\right) = 10 \times 2 \)</p>
             <p class="lh-1">\( 4x \color{red}- 5 \color{black} = 20 \)</p>
             <p class="lh-1">\( -5 \)を\( +5 \)として右辺に移項すると、</p>
             <p class="lh-1">\( 4x = 20 \color{red} + 5 \)</p>
             <p class="lh-1">\( 4x = 25 \)</p>
-            <p class="lh-1">こちらもあとは、両辺を4で割ってあげるだけです。</p>
-            <p class="lh-1">\( 4x \div 4 = 25 \div 4\)</p>
-            <p class="lh-1">\( 4x \times \dfrac{1}{4} = 25 \times \dfrac{1}{4} \)</p>
             <p class="lh-1">\( x = \dfrac{25}{4} \)</p>
             <br>
-            <p class="lh-1">小数も同じく最優先で消す対象になります。<span class="text-decoration-underline">小数点以下の桁数が一番多いものが消えるように、10や100などをかけていく</span>ようにしましょう。</p>
+            <p class="lh-1">小数も同じく最優先で消す対象になります。</p>
             <p class="lh-1">\( 0.35x + 0.2 = 0.1 \)</p>
-            <p class="lh-1">今回は\( 0.35x \)が一番桁数が多いので、こちらが整数になるように\( \times 100 \)をしていきましょう。</p>
+            <p class="lh-1"><span class="text-decoration-underline">小数点以下の桁数が一番多いものが消えるように、10や100などをかけていく</span>ようにしましょう。今回は\( 0.35x \)が一番桁数が多いので、こちらが整数になるように\( \times 100 \)をしていきましょう。</p>
             <p class="lh-1">\( 100 \times (0.35x + 0.2) = 100 \times 0.1 \)</p>
             <p class="lh-1">\( 35x \color{red} + 20 \color{black} = 10\)</p>
             <p class="lh-1">\( +20 \)を\( -20 \)として右辺に移項すると、</p>
             <p class="lh-1">\( 35x = 10 \color{red} -20 \)</p>
             <p class="lh-1">\( 35x = -10 \)</p>
-            <p class="lh-1">あとは両辺を35で割ってあげると、</p>
-            <p class="lh-1">\( 35x \div 35 = -10 \div 35 \)</p>
-            <p class="lh-1">\( 35x \times \dfrac{1}{35} = -10 \times \dfrac{1}{35} \)</p>
-            <p class="lh-1">\( x = -\dfrac{10}{35} \)</p>
-            <p class="lh-1">\( x = -\dfrac{2}{7} \)</p>
+            <p class="lh-1">\( x = \dfrac{-10}{35} = -\dfrac{2}{7}\)</p>
+            <br>
+            <p class="lh-1">小数と分数が混ざっているときは、小数を分数にしてから計算しましょう。</p>
+            <p class="lh-1">\( 0.5x + \dfrac{5}{6} = 2\)</p>
+            <p class="lh-1">\( 0.5 = \dfrac{1}{10} = \dfrac{1}{2} \)なので、</p>
+            <p class="lh-1">\( \dfrac{1}{2}x + \dfrac{5}{6} = 2 \)</p>
+            <p class="lh-1">両辺に分母の最小公倍数である12をかけると、</p>
+            <p class="lh-1">\( 12 \times \left( \dfrac{1}{2}x + \dfrac{5}{6} \right) = 12 \times 2 \)</p>
+            <p class="lh-1">\( 6x + 10 = 24 \)</p>
+            <p class="lh-1">\( 6x = 14 \)</p>
+            <p class="lh-1">\( x = \dfrac{14}{6} = \dfrac{7}{3} \)</p>
             <br>
             <p class="lh-1">以上のような流れで\( ax + b = c \)型の方程式を解くことができます。</p>
-            <p class="lh-1">移項して\( ax = b \)の形を目指すのがポイントです。</p>
+            <p class="lh-1">小数や分数はさっさと消しつつ、移項して\( ax = b \)の形を目指すのがポイントです。</p>
         </div>
     </div>
 
     <div class="row m-4 p-4 border-bottom">
         <h2 class="text-muted h5" id="ax+b=cx+d">\( ax + b = cx + d \)型の方程式</h2>
         <div class="m-2 p-2">
-            <p class="lh-1">最後に紹介するのは\( ax + b = cx + d \)型の方程式です。具体的には\( 3x - 5 = 4x + 2\)のような方程式ですね。</p>
+            <p class="lh-1">最後に紹介するのは\( ax + b = cx + d \)型の方程式です。これまでの集大成ですね。</p>
+            <p class="lh-1">具体的には\( 3x - 5 = 4x + 2\)のような方程式です。</p>
             <p class="lh-1">ここでも目指すのは\( ax = b \)の形になります。そのために<span class="text-decoration-underline">文字は左に、数字は右に移項</span>していきます。</p>
             <p class="lh-1">\( 3x \color{red} - 5 \color{black} = \color{blue} 4x \color{black} + 2 \)</p>
             <p class="lh-1">\( 3x \color{blue} - 4x \color{black} = 2 \color{red} + 5 \)</p>
             <p class="lh-1">\( -x = 7 \)</p>
-            <p class="lh-1">これで\( ax = b \)の形になりましたので、あとは両辺を\( -1 \)で割るだけです。</p>
-            <p class="lh-1">\( -x \div (-1) = 7 \div (-1) \)</p>
-            <p class="lh-1">\( x = -7 \)</p>
+            <p class="lh-1">\( -x \)は\( -1 \times x \)と同じなので、</p>
+            <p class="lh-1">\( x = \dfrac{7}{-1} = -7\)</p>
             <p class="lh-1">これが一連の流れです。移項の際に符号を変え忘れないように注意しましょう。</p>
             <br>
             <p class="lh-1">先程までと同じく、分数が入っているときは、そちらを消すことを優先します。</p>
@@ -272,24 +263,37 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( 12x \color{red} - 2 \color{black} = \color{blue} 5x \color{black} + 8 \)</p>
             <p class="lh-1">\( 12x \color{blue} - 5x \color{black} = 8 \color{red} + 2 \)</p>
             <p class="lh-1">\( 7x = 10 \)</p>
-            <p class="lh-1">最後に両辺を\( 7 \)で割ると、</p>
-            <p class="lh-1">\( 7x \div 7 = 10 \div 7\)</p>
-            <p class="lh-1">\( 7x \times \dfrac{1}{7} = 10 \times \dfrac{1}{7} \)</p>
-            <p class="lh-1">\( x = \dfrac{10}{7} \)</p>
-            <p class="lh-1">と答えがでてきます。</p>
+            <p class="lh-1">\( x = \dfrac{10}{7}\)</p>
             <br>
             <p class="lh-1">小数が使われているときも同じく小数を初めに消してしまいましょう。</p>
             <p class="lh-1">\( 0.3x - 2 = -1.5x + 0.4 \)</p>
-            <p class="lh-1">今回は全部小数第一位までしか数が続いていないので、10をかけていきます。</p>
+            <p class="lh-1">今回はどの小数も小数第一位までしか数が続いていないので、10をかけていきます。</p>
             <p class="lh-1">\( 10 \times (0.3x - 2) = 10 \times (-1.5x + 0.4) \)</p>
             <p class="lh-1">\( 3x - 20 = -15x + 4 \)</p>
             <p class="lh-1">小数が消えたので、例のごとく移項していきましょう。</p>
             <p class="lh-1">\( 3x \color{red} - 20 \color{black} = \color{blue} -15x \color{black} + 4 \)</p>
             <p class="lh-1">\( 3x \color{blue} +15x \color{black} = 4 \color{red} + 20 \)</p>
             <p class="lh-1">\( 18x = 24 \)</p>
-            <p class="lh-1">両辺を\( 18 \)で割ると、</p>
-            <p class="lh-1">\( 18x \div 18 = 24 \div 18\)</p>
-            <p class="lh-1">\( 18x \times \dfrac{1}{18} = 24 \times \dfrac{1}{18} \)</p>
+            <p class="lh-1">\( x = \dfrac{24}{18} = \dfrac{4}{3} \)</p>
+            <br>
+            <p class="lh-1">分数と小数が一緒にあるときの対処法も同じです。</p>
+            <p class="lh-1">\( 0.5x + \dfrac{2}{5} = \dfrac{1}{6}x - 0.3\)</p>
+            <p class="lh-1">\( 0.5 = \dfrac{5}{10} = \dfrac{1}{2}, 0.3 = \dfrac{3}{10} \)なので、</p>
+            <p class="lh-1">\( \dfrac{1}{2}x + \dfrac{2}{5} = \dfrac{1}{6}x - \dfrac{3}{10} \)</p>
+            <p class="lh-1">\( 2,5, 6, 10\)の最小公倍数である\( 30 \)をかけて整理します。</p>
+            <p class="lh-1">\( 30 \times \left( \dfrac{1}{2}x + \dfrac{2}{5} \right) = 30 \times \left( \dfrac{1}{6}x - \dfrac{3}{10} \right) \)</p>
+            <p class="lh-1">\( 15x \color{red} + 12 \color{black} = \color{blue} 5x \color{black} - 9\)</p>
+            <p class="lh-1">\( 15x \color{blue} - 5x \color{black} = -9 \color{red} -12 \)</p>
+            <p class="lh-1">\( 10x = -21 \)</p>
+            <p class="lh-1">\( x = \dfrac{-21}{10} \)</p>            
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="afterword">後書き</h2>
+        <div class="m-2 p-2">
+            <p class="lh-1">以上になります。小数や分数を消して、左側が文字、右側が数字になるように移行して答えを求めるというのが一連の流れになります。</p>
+            <p class="lh-1">\( ax + b = cx + d \)まで解けるようになれば、大抵の1次方程式は問題なく答えられるようになります。</p>
         </div>
     </div>
 </div>

@@ -2770,9 +2770,9 @@ def display_logarithmic_equation(request):
     PROBLEM_NUMBER = 6
     problem_types = request.POST.getlist("logarithmic_equation_type")
     if not(problem_types):
-        problem_types.append("without_calculation_and_change_base_of_formula")
         problem_types.append("only_with_calculation")
         problem_types.append("with_calculation_and_change_base_of_formula")
+        problem_types.append("with_replacement")
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
         problem1 = LogarithmicEquation(problem_types=problem_types)

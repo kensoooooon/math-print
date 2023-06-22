@@ -51,6 +51,7 @@ from .math_process.quadratic_inequality import QuadraticInequality
 from .math_process.same_denominator_calculate import SameDenominatorCalculate
 from .math_process.line_and_flat_positional_relationship import LineAndFlatPositionalRelationship
 from .math_process.calculate_area_by_integration import CalculateAreaByIntegration
+from .math_process.logarithmic_equation import LogarithmicEquation
 
 
 def index(request):
@@ -1528,6 +1529,18 @@ def print_calculate_area_by_integration(request):
     return render(request, 'math_print/highschool2/calculate_area_by_integration/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+def print_logarithmic_equation(request):
+    """印刷用対数方程式の問題のリクエスト受信と問題出力を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 6
+    return render(request, 'math_print/highschool2/logarithmic_equation/for_print.html', {})
+
 # display section
 
 def display_number_problem(request):
@@ -2745,6 +2758,29 @@ def display_calculate_area_by_integration(request):
     return render(request, 'math_print/highschool2/calculate_area_by_integration/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
+def display_logarithmic_equation(request):
+    """対数方程式の問題のリクエスト受信と問題出力を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 6
+    problem_types = request.POST.getlist("logarithmic_equation_type")
+    if not(problem_types):
+        problem_types.append("without_calculation_and_change_base_of_formula")
+        problem_types.append("only_with_calculation")
+        problem_types.append("with_calculation_and_change_base_of_formula")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = LogarithmicEquation(problem_types=problem_types)
+        problem2 = LogarithmicEquation(problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool2/logarithmic_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
 # explain part
 def explain_one_sixth_calculate_area_by_integration(request):
     """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
@@ -2794,4 +2830,17 @@ def explain_specific_linear_equation(request):
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
     returned_render = render(request, 'math_print/junior_highschool1/specific_linear_equation/for_explain.html', {})
+    return returned_render
+
+
+def explain_logarithmic_equation(request):
+    """対数方程式の解き方の解説を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/logarithmic_equation/for_explain.html', {})
     return returned_render

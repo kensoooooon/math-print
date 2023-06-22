@@ -176,4 +176,8 @@ urlpatterns = [
     path('calculate_area_by_integration/display', views.display_calculate_area_by_integration, name='calculate_area_by_integration_display'),
     path('calculate_area_by_integration/explanation_one_sixth', views.explain_one_sixth_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_sixth'),
     path('calculate_area_by_integration/explanation_one_third', views.explain_one_third_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_third'),
+    # 対数方程式・不等式
+    path('logarithmic_equation/print', views.print_logarithmic_equation, name='logarithmic_equation_print'),
+    path('logarithmic_equation/display', views.display_logarithmic_equation, name='logarithmic_equation_display'),
+    path('logarithmic_equation/explain', views.explain_logarithmic_equation, name='logarithmic_equation_explain'),
 ]

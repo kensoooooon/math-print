@@ -1,0 +1,104 @@
+
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+    location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+
+window.addEventListener("load", (event)=>{
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+});
+</script>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+対数方程式を解く(解説)
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">対数方程式を解く(解説)</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h4">
+        対数方程式を解く
+        <small class="text-muted">～対数+方程式～</small>
+    </h1>
+
+    <br>
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+    </ul>
+    <br>
+
+    <div class="row m-4 p-4 border-bottom" id="foreword">
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <p class="lh-1">今回は\( \dfrac{1}{3} \)公式を確認していきます。</p>
+        <p class="lh-1">お話の内容としては\( \dfrac{1}{6} \)公式と同じく、「<span class="text-decoration-underline">いかに公式が使える場面を見つけて、それを適用していくか</span>」というものになります。</p>
+        <p class="lh-1">なお、\( \dfrac{1}{3} \)公式が\( \dfrac{1}{6} \)公式と比べて応用的なものであることを踏まえて、\( \dfrac{1}{6} \)公式の序盤で説明したような基礎的な部分は省いていきます。</p>
+        <p class="lh-1">もし、定積分の基本的な考え方や、\( \dfrac{1}{6} \)公式の使い方などに不安がある場合は、まずは以下のリンクから解説を確認してみてください。こちらは基礎から解説しています。
+            (<a href="{% url 'calculate_area_by_integration_explain_one_sixth' %}" class="fa-solid fa-link" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>)
+        </p>
+    </div>
+</div>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <a href="{% url 'highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2023 有明学習振興</a></small>
+</footer>
+{% endblock %}

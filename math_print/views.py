@@ -2767,7 +2767,7 @@ def display_logarithmic_equation(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
-    PROBLEM_NUMBER = 6
+    PROBLEM_NUMBER = 20
     problem_types = request.POST.getlist("logarithmic_equation_type")
     if not(problem_types):
         problem_types.append("only_with_calculation")

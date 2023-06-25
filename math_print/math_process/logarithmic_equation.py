@@ -41,10 +41,13 @@ class LogarithmicEquation:
         
         Developing:
             log(a)(bx + c) = d
+                b,cが整数でないとノイズになるっぽい
+            
             log(a)(bx + c)(dx + e) = f
         """
         x = sy.Symbol("x", real=True)
-        selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(bx + c)(dx + e) = f"])
+        # selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(bx + c)(dx + e) = f"])
+        selected_equation_type = "log(a)(bx + c) = d"
         if selected_equation_type == "log(a)(bx + c) = d":
             """
             log(a)(bx + c) = log(a)(a^d)
@@ -58,16 +61,35 @@ class LogarithmicEquation:
             b > 0
             c: any?
             d: int
-            """
-            a = randint(2, 4)
-            b = randint(1, 6)
-            c = randint(0, 6)
-            d = randint(1, 3)
             
+            b,c: 分数だとノイジー？問題のバリエーションは出る
+                ->とりあえず整数だけで
+            c = 0
+                ->場合分けが面倒ではある。
+            
+            結局バリュエーション最優先とするのであれば、分数も0も許容すべき
+            """
+            a = self._random_number(max_num=3, positive_or_negative="positive", remove_one=True, remove_zero=True)
+            b = self._random_number(positive_or_negative="positive", remove_zero=True, )
+            c = self._random_number()
+            d = self._random_number(integer_or_frac="integer", max_num=4)
+            if c == 0:
+                latex_problem = f"\\( \\log_{{{sy.latex(a)}}} {sy.latex(b * x)} = {sy.latex(d)} \\)を満たす\\( x \\)を求めよ。"
+            else:
+                latex_problem = f"\\( \\log_{{{sy.latex(a)}}}\\left({sy.latex(b * x + c)}\\right) = {sy.latex(d)} \\)を満たす\\( x \\)を求めよ。"
+            latex_answer = f"真数条件より、\\( {sy.latex(b * x + c)} > 0 \\)、すなわち\\( x > {sy.latex(sy.Rational(-c, b))} \\) でなければならない。\n"
+            latex_answer += f"また、\\( {sy.latex(d)} = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^{{{sy.latex(d)}}} = \\log_{{{sy.latex(a)}}} {sy.latex(a ** d)} \\)より、\n"
+            if c == 0:
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(a)}}}{sy.latex(b * x)} = \\log_{{{sy.latex(a)}}} {sy.latex(a ** d)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( {sy.latex(b * x)} = {sy.latex(a ** d)} \\)となり、これを解くと、\n"
+            else:
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(a)}}}\\left({sy.latex(b * x + c)}\\right) = \\log_{{{sy.latex(a)}}} {sy.latex(a ** d)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( {sy.latex(b * x + c)} = {sy.latex(a ** d)} \\)となり、これを解くと、\n"
+            answer = (a ** d - c) / b
+            latex_answer += f"\\( x = {sy.latex(answer)} \\)となる。これは\\( x > {sy.latex(sy.Rational(-b, c))} \\)を満たすので、解である。"
         elif selected_equation_type == "log(a)(bx + c)(dx + e) = f":
-            pass
-        latex_answer = "dummy answer in _make_only_with_calculation_problem"
-        latex_problem = "dummy problem in _make_only_with_calculation_problem"
+            latex_answer = "dummy answer in _make_only_with_calculation_problem of log(a)(bx + c)(dx + e) = f"
+            latex_problem = "dummy problem in _make_only_with_calculation_problem of log(a)(bx + c)(dx + e) = f"
         return latex_answer, latex_problem
     
     def _make_with_calculation_and_change_base_of_formula_problem(self):
@@ -92,42 +114,93 @@ class LogarithmicEquation:
         latex_problem = "dummy problem in _make_with_replacement_problem"
         return latex_answer, latex_problem
     
-    def _random_number(self, integer_or_frac=None, positive_or_negative=None, remove_zero=None, remove_one=None):
-        # not one == not zero, frac, 
+    def _random_number(self, max_num: int = 6, integer_or_frac: Optional[str] = None, positive_or_negative: Optional[str] = None, remove_zero: Optional[bool] = False, remove_one: Optional[bool] = False) -> Union[sy.Integer, sy.Rational]:
+        """指定された条件の数を出力し、底や真数などに利用
 
-        if positive_or_negative is None:
-            pass
-        elif positive_or_negative == "positive":
-            number = sy.Abs(number)
-        elif positive_or_negative == "negative":
-            number = -1 * sy.Abs(number)
-        return number
-    
-    def _random_integer(self, positive_or_negative: Optional[str] = None, remove_zero: Optional[bool] = None, remove_one: Optional[bool]=None) -> sy.Integer:
-        """指定された条件の整数を出力し、底や真数などに利用する
-        
         Args:
-            positive_or_negative (:obj:`str`, optional): 正負の指定。 Defaults to None.
-            remove_zero (:obj:`bool`, optional): 1を除くかどうかの指定。 Defaults to None.
-            remove_one (:obj:`bool`, optional): 1を除くかどうかの指定。 Defaults to None.
+            max_num (int, optional): 出力に利用する数の最大値. Defaults to 6.
+            integer_or_frac (str, optional): 整数か分数かの指定. Defaults to None.
+            positive_or_negative (str, optional): 正か負かの指定. Defaults to None.
+            remove_zero (bool, optional): ゼロを除くか否か. Defaults to False
+            remove_one (bool, optional): 1を除くか否か. Defaults to False.
         """
-        if remove_one is None:
-            if remove_zero is None:
-                integer = sy.Integer(randint(0, 6))
+    
+        def random_integer(max_num: int, positive_or_negative: str, remove_zero: bool, remove_one: bool) -> sy.Integer:
+            """指定された条件の整数を出力し、底や真数などに利用する
+            
+            Args:
+                max_num (int): 出力に利用する数の最大値
+                positive_or_negative (str): 正負の指定。 
+                remove_zero (bool): 0を除くかどうかの指定。 
+                remove_one (bool): 1を除くかどうかの指定。
+            
+            Returns:
+                integer (sy.Integer): 整数
+            """
+            if remove_one:
+                # 0なし1なし
+                if remove_zero:
+                    integer = sy.Integer(randint(2, max_num))
+                # 0あり1なし
+                else:
+                    candidates = [0] + list(range(2, max_num+1))
+                    integer = sy.Integer(choice(candidates))
             else:
-                integer = sy.Integer(randint(1, 6))
+                # 0なし1あり
+                if remove_zero:
+                    integer = sy.Integer(randint(1, max_num))
+                # 0あり1あり
+                else:
+                    integer = sy.Integer(randint(0, max_num))
+            
+            if positive_or_negative is None:
+                if random() > 0.5:
+                    integer *= -1
+            elif positive_or_negative == "positive":
+                pass
+            elif positive_or_negative == "negative":
+                integer *= -1
+            else:
+                raise ValueError(f"'positive_or_negative' is {positive_or_negative}. this isn't expected value.")
+            return integer
+        
+        def random_frac(max_num: int, positive_or_negative: str) -> sy.Rational:
+            """指定された条件の分数を出力し、底や真数などに利用する
+            
+            Args:
+                max_num (int): 出力に利用する数の最大値
+                positive_or_negative (str): 正負の指定。
+            
+            Returns:
+                frac (sy.Rational): 分数
+            """
+            while True:
+                numerator = randint(1, max_num)
+                denominator = randint(1, max_num)
+                frac = sy.Rational(numerator, denominator)
+                if not(frac.is_integer):
+                    break
+            
+            if positive_or_negative is None:
+                if random() > 0.5:
+                    frac *= -1
+            elif positive_or_negative == "positive":
+                pass
+            elif positive_or_negative == "negative":
+                frac *= -1
+            else:
+                raise ValueError(f"'positive_or_negative is {positive_or_negative}. this isn't expected value.")
+            return frac
+        
+        if integer_or_frac is None:
+            if random() > 0.5:
+                number = random_integer(max_num=max_num, positive_or_negative=positive_or_negative, remove_zero=remove_zero, remove_one=remove_one)
+            else:
+                number = random_frac(max_num=max_num, positive_or_negative=positive_or_negative)
+        elif integer_or_frac == "integer":
+            number = random_integer(max_num=max_num, positive_or_negative=positive_or_negative, remove_zero=remove_zero, remove_one=remove_one)
+        elif integer_or_frac == "frac":
+            number = random_frac(max_num=max_num, positive_or_negative=positive_or_negative)
         else:
-            if remove_zero is None:
-                integer = sy.Integer(choice[0, 2, 3, 4, 5, 6])
-            else:
-                integer = sy.Integer(randint(2, 6))
-        
-        if positive_or_negative is None:
-            pass
-        elif positive_or_negative == "positive":
-            integer = sy.Abs(integer)
-        elif positive_or_negative == "negative":
-            integer = -1 * sy.Abs(integer)
-        return integer
-        
-    def _random_frac(self, positive_or_negative=None, remove_zero=None):
+            raise ValueError(f"'integer_or_frac' is {integer_or_frac}. this isn't expected value.")
+        return number

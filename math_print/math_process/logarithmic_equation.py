@@ -97,6 +97,16 @@ class LogarithmicEquation:
             f = 0, or 1で簡略化
             a = 0, 1は通らない
             
+            import sympy as sy
+
+            # log_a(x+c)(x+e) = 0, alpha is answer
+            alpha, beta = sy.symbols("\\alpha, \\beta", real=True)
+            a, c, e = sy.symbols("a, c, e", real=True)
+            eq = sy.Eq(sy.log((alpha + c) * (alpha + e), a), 0)
+            ans = sy.solve(eq, [a, c, e])
+            print(ans)
+            display(ans)
+            
             一番シンプルな# f = 0かつb=d=1 <--> log_a(x+c)(x+e)=0から実装
             
             log_a(x+c)(x+e)=0
@@ -104,29 +114,9 @@ class LogarithmicEquation:
             [(a, (-\alpha**2 - \alpha*e + 1)/(\alpha + e), e)]
             c = (-\alpha**2 - \alpha*e + 1)/(\alpha + e)
             """
-            # log_a(x + c)(x + e) = 0, 
+            # log_a(x + c)(x + e) = 0, alpha is answer
             if random() > 0.5:
-                answer1 = self._random_number(max_num=4, integer_or_frac="integer")
-                answer2 = answer1 + self._random_number(max_num=4, integer_or_frac="integer", remove_zero=True)
-                e = 1 - answer2
-                a = self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_one=True, remove_zero=True)
-                c_numerator = -answer1 * answer2 - answer1 * e + 1
-                c_denominator = answer2 + e
-                c = sy.Rational(c_numerator, c_denominator)
-                left_bracket = x + c
-                right_bracket = x + e
-                antilog = sy.factor(left_bracket * right_bracket)
-                latex_problem = f"\\( \\log_{{{sy.latex(a)}}} {sy.latex(antilog)} = 0 \\)を満たす\\( x \\)を求めよ。"
-                left_bracket_min = -c
-                right_bracket_min = -e
-                if left_bracket_min > right_bracket_min:
-                    smaller_x = right_bracket_min
-                    larger_x = left_bracket_min
-                else:
-                    smaller_x = left_bracket_min
-                    larger_x = right_bracket_min
-                latex_answer = f"真数条件より、\\( {sy.latex(antilog)} > 0 \\)、すなわち\\( x < {sy.latex(smaller_x)}, x < {sy.latex(larger_x)} \\)でなければならない。"
-                
+                pass
             else:
                 latex_answer = "dummy answer in _make_only_with_calculation_problem of log(a)(bx + c)(dx + e) = f"
                 latex_problem = "dummy problem in _make_only_with_calculation_problem of log(a)(bx + c)(dx + e) = f"

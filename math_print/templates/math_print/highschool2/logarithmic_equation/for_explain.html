@@ -79,11 +79,12 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#log_{a}(ax + b) = c" class="text-decoration-none text-reset">\( \log_{a}(ax + b) = c \)型の対数方程式</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b) = c" class="text-decoration-none text-reset">\( \log_{a}(x + b) = c \)型の対数方程式</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b)(x + c) = d" class="text-decoration-none text-reset">\( \log_{a}(x + b)(x + c) = d \)型の対数方程式</a></li>
     </ul>
     <br>
 
-    <div class="row m-4 p-4 border-bottom" id="foreword">
+    <div class="row m-4 p-4 border-bottom">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">ここでは対数方程式を確認していきます。対数と方程式の知識の両方が要求される応用問題ですね。</p>
         <p class="lh-1">やり方としては決まった手順を守っておけば解けるようになっていますが、特に真数条件には要注意です。</p>
@@ -91,12 +92,12 @@ window.addEventListener("load", (event)=>{
         <p class="lh-1">解き初めの段階で確認する癖をつけておきましょう。</p>
     </div>
 
-    <div class="row m-4 p-4 border-bottom" id="foreword">
+    <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="log_{a}(ax + b) = c">\( \log_{a}(bx + c) = d \)型の対数方程式</h2>
+            <h2 class="text-muted h5" id="log_{a}(x + b) = c">\( \log_{a}(x + b) = c \)型の対数方程式</h2>
             <p class="lh-1">対数方程式を解く上で目指すべき形は、\( \log_{a}f(x) = \log_{a}g(x) \)です。</p>
             <p class="lh-1">具体的には、\( \log_{2}(x + 3) = \log_{2}3 \)や\( \log_{3}(x + 1) = \log_{3}(2x - 8) \)のような形ですね。</p>
-            <p class="lh-1">このように底が同じ状態であれば、真数同士の比較を行うことで答えが出せます。</p>
+            <p class="lh-1">このように<span class="text-decoration-underline">底が同じ状態であれば、真数同士の比較を行うことで答えが出せます。</span></p>
             <p class="lh-1">逆に\( \log_{2}(x + 3) = \log_{3}3 \)や\( \log_{5}(x + 1) = \log_{3}(2x - 8) \)のように底が異なると比較が行えず、答えが出せません。</p>
             <p class="lh-1">この底が同じ状態を目指して、対数の様々な計算法則を利用していくことになります。底の真数条件も忘れないようにしてください。</p>
         </div>
@@ -108,14 +109,21 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">前書きでも述べた通り、まずは真数条件を確認しましょう。</p>
             <p class="lh-1">今回の真数は\( x- 1 \)なので、\( x- 1 > 0 \)、すなわち\( x > 1 \)が成り立つ必要があります。</p>
             <p class="lh-1">次に両辺を底が同じ対数になるようにします。今回は左辺の底が2なので、右辺もこれに合わせていきましょう。</p>
-            <p class="lh-1">ここでは、\( k \log_{a}b = \log_{a} b^k \)を利用します。</p>
-            <p class="lh-1">\( 3 = 3 \log_{2}2 = \log_{2}2^3 = \log_{2}8 \)</p>
-            <p class="lh-1">このように変形することで、与えられた対数方程式は、\( \log_{2}(x - 1) = \log_{2}8 \)となります。</p>
+            <p class="lh-1">ここでは、\( k \log_{a}b = \log_{a} b^k \)を利用します。対数の手前にある係数は、真数の指数としてよい、という公式ですね。</p>
+            <p class="lh-1">また、対数がない場所に対数を作り出す方法として、\( 1 = \log_{a}a \)も利用します。</p>
+            <p class="lh-1">両方を合わせて利用すると、\( 3 \cdot 1 = 3 \log_{2}2 = \log_{2}2^3 = \log_{2}8 \)となります。</p>
+            <p class="lh-1">このように変形することで、与えられた対数方程式は、\( \log_{2}(x - 1) = \log_{2}8 \)と変形することができました。</p>
             <p class="lh-1">ここまで変形すれば、あとは真数部分を比較するだけです。</p>
             <p class="lh-1">\( x - 1 = 8 \)</p>
             <p class="lh-1">\( x = 9 \)</p>
             <p class="lh-1">これは\( x > 1 \)を満たすので、答えとなります。</p>
-            <p class="lh-1">以上が対数方程式の基本の流れです。<span class="text-decoration-underline">両辺を底が同じ対数にしてからの比較</span>ですね。</p>
+            <p class="lh-1">以上が対数方程式の基本の流れです。<span class="text-decoration-underline">両辺を底が同じ対数にしてからの、真数同士の比較</span>ですね。しっかりと確認しておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{a}(x + b)(x + c) = d">\( \log_{a}(x + b)(x + c) = d \)型の対数方程式</h2>
         </div>
     </div>
 </div>

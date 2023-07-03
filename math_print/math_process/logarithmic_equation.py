@@ -46,8 +46,8 @@ class LogarithmicEquation:
             log(a)(bx + c)(dx + e) = f
         """
         x = sy.Symbol("x", real=True)
-        # selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(bx + c)(dx + e) = f"])
-        selected_equation_type = "log(a)(bx + c)(dx + e) = f"
+        # selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(x + c)(x + e) = f"])
+        selected_equation_type = "log(a)(x + c)(x + e) = f"
         if selected_equation_type == "log(a)(bx + c) = d":
             """
             log(a)(bx + c) = log(a)(a^d)
@@ -87,39 +87,46 @@ class LogarithmicEquation:
                 latex_answer += f"真数同士を比較すると、\\( {sy.latex(b * x + c)} = {sy.latex(a ** d)} \\)となり、これを解くと、\n"
             answer = (a ** d - c) / b
             latex_answer += f"\\( x = {sy.latex(answer)} \\)となる。これは\\( x > {sy.latex(sy.Rational(-b, c))} \\)を満たすので、解である。"
-        elif selected_equation_type == "log(a)(bx + c)(dx + e) = f":
-            """
-            bdx^2 + (be + cd)x + ce - a^f = 0
-            bx + c > 0, dx + e > 0
-            [(a, (-\beta*c*d - c*e + 1)/(\alpha*(\beta*d + e)), c, d, e)]
-            で通りそう
-            
-            f = 0, or 1で簡略化
-            a = 0, 1は通らない
-            
-            import sympy as sy
-
-            # log_a(x+c)(x+e) = 0, alpha is answer
-            alpha, beta = sy.symbols("\\alpha, \\beta", real=True)
-            a, c, e = sy.symbols("a, c, e", real=True)
-            eq = sy.Eq(sy.log((alpha + c) * (alpha + e), a), 0)
-            ans = sy.solve(eq, [a, c, e])
-            print(ans)
-            display(ans)
-            
-            一番シンプルな# f = 0かつb=d=1 <--> log_a(x+c)(x+e)=0から実装
-            
-            log_a(x+c)(x+e)=0
-            alpha is answer, beta is not answer.
-            [(a, (-\alpha**2 - \alpha*e + 1)/(\alpha + e), e)]
-            c = (-\alpha**2 - \alpha*e + 1)/(\alpha + e)
-            """
-            # log_a(x + c)(x + e) = 0, alpha is answer
-            if random() > 0.5:
-                pass
+        elif selected_equation_type == "log(a)(x + c)(x + e) = f":
+            smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
+            bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+            smaller_k = self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive")
+            bigger_k = smaller_k + self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+            before = (x - (smaller_answer - smaller_k)) * (x - (bigger_answer + smaller_k))
+            after = (x - (smaller_answer - bigger_k)) * (x - (bigger_answer + bigger_k))
+            diff = sy.expand(before - after)
+            diff_dict = sy.factorint(diff)
+            if len(diff_dict.keys()) != 1:
+                base = diff
+                constant = 1
             else:
-                latex_answer = "dummy answer in _make_only_with_calculation_problem of log(a)(bx + c)(dx + e) = f"
-                latex_problem = "dummy problem in _make_only_with_calculation_problem of log(a)(bx + c)(dx + e) = f"
+                for key, value in diff_dict.items():
+                    base = key
+                    constant = value
+            left_antilog = x - (smaller_answer - smaller_k)
+            right_antilog = x - (bigger_answer - smaller_k)
+            if (left_antilog != x) and (right_antilog == x):
+                latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(left_antilog)} \\right) {sy.latex(right_antilog)} = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+            elif (left_antilog == x) and (right_antilog != x):
+                latex_problem = f"\\( \\log_{{{sy.latex(base)}}}  {sy.latex(left_antilog)}  \\left( {sy.latex(right_antilog)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+            else:
+                latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(left_antilog)} \\right) \\left( {sy.latex(right_antilog)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+            antilog_condition = bigger_answer - smaller_k
+            latex_answer = f"真数条件より、\\( {sy.latex(left_antilog)} > 0 \\)かつ\\( {sy.latex(right_antilog)} > 0 \\)、すなわち\\( x > {sy.latex(antilog_condition)} \\)でなければならない。\n"
+            latex_answer += f"また、\\( {sy.latex(constant)} = \\log_{{{sy.latex(base)}}} {sy.latex(base)}^{{{sy.latex(constant)}}} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)より、\n"
+            if (left_antilog != x) and (right_antilog == x):
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(left_antilog)} \\right) {sy.latex(right_antilog)} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( \\left( {sy.latex(left_antilog)} \\right) {sy.latex(right_antilog)} = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+            elif (left_antilog == x) and (right_antilog != x):
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}}  {sy.latex(left_antilog)}  \\left( {sy.latex(x - (bigger_answer - smaller_k))} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( {sy.latex(left_antilog)}  \\left( {sy.latex(right_antilog)} \\right) = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+            else:
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(left_antilog)} \\right) \\left( {sy.latex(right_antilog)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( \\left( {sy.latex(left_antilog)} \\right)  \\left( {sy.latex(right_antilog)} \\right) = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+            antilog_eq = sy.Eq(left_antilog * right_antilog - base ** constant, 0)
+            latex_answer += f"\\( {sy.latex(antilog_eq)} \\)\n"
+            factored_antilog_eq = sy.Eq(sy.factor(left_antilog * right_antilog - base ** constant), 0)
+            latex_answer += f"\\( {sy.latex(factored_antilog_eq)} \\)\n"
         return latex_answer, latex_problem
     
     def _make_with_calculation_and_change_base_of_formula_problem(self):

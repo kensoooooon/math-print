@@ -79,8 +79,9 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b) = c" class="text-decoration-none text-reset">\( \log_{a}(x + b) = c \)型の対数方程式</a></li>
-        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b)(x + c) = d" class="text-decoration-none text-reset">\( \log_{a}(x + b)(x + c) = d \)型の対数方程式</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b) = c" class="text-decoration-none text-reset">\( \log_{a}(x + b) = c \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b)(x + c) = d" class="text-decoration-none text-reset">\( \log_{a}(x + b)(x + c) = d \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{x}a = b" class="text-decoration-none text-reset">\( \log_{x}a = b \)型</a></li>
     </ul>
     <br>
 
@@ -94,7 +95,8 @@ window.addEventListener("load", (event)=>{
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="log_{a}(x + b) = c">\( \log_{a}(x + b) = c \)型の対数方程式</h2>
+            <h2 class="text-muted h5" id="log_{a}(x + b) = c">\( \log_{a}(x + b) = c \)型</h2>
+            <br>
             <p class="lh-1">対数方程式を解く上で目指すべき形は、\( \log_{a}f(x) = \log_{a}g(x) \)です。</p>
             <p class="lh-1">具体的には、\( \log_{2}(x + 3) = \log_{2}3 \)や\( \log_{3}(x + 1) = \log_{3}(2x - 8) \)のような形ですね。</p>
             <p class="lh-1">このように<span class="text-decoration-underline">底が同じ状態であれば、真数同士の比較を行うことで答えが出せます。</span></p>
@@ -104,7 +106,7 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">では、さっそく問題を見てみましょう。</p>
             <br>
-            <p class="lh-1">例題1: \( \log_{2}(x - 1) = 3\)</p>
+            <p class="lh-1">例題1: \( \log_{2}(x - 1) = 3\)を満たす\( x \)を求めよ。</p>
             <br>
             <p class="lh-1">前書きでも述べた通り、まずは真数条件を確認しましょう。</p>
             <p class="lh-1">今回の真数は\( x- 1 \)なので、\( x- 1 > 0 \)、すなわち\( x > 1 \)が成り立つ必要があります。</p>
@@ -123,12 +125,41 @@ window.addEventListener("load", (event)=>{
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="log_{a}(x + b)(x + c) = d">\( \log_{a}(x + b)(x + c) = d \)型の対数方程式</h2>
+            <h2 class="text-muted h5" id="log_{a}(x + b)(x + c) = d">\( \log_{a}(x + b)(x + c) = d \)型</h2>
+            <br>
             <p class="lh-1">上の解き方は真数部分が2次式になっても、真数条件の確認がやや煩雑になるくらいで、あまり変わりません。具体的に問題を見てみましょう。</p>
         </div>
         <div class="m-2 p-2">
-            <p class="lh-1">例題2: \(  \)</p>
-        </p>
+            <p class="lh-1">例題2: \( \log_{2}(x + 3)(x + 1) = 3 \)を満たす\( x \)を求めよ。</p>
+            <br>
+            <p class="lh-1">繰り返しになりますが、まずは何につけ真数条件を確認してください。今回は真数部分が2次式なので、2次不等式を解くことになります。</p>
+            <p class="lh-1">\( (x + 3)(x + 1) > 0 \)を解くと、\( x < -3, -1 < x \)となります。この問題では、このいずれかを満たしておく必要があるわけです。</p>
+            <p class="lh-1">次に真数同士を比較できるように、底を揃えていきます。</p>
+            <p class="lh-1">右辺を先程と同じように、底が2の対数に書き換えると、\( 3 = 3 \log_{2}2 = \log_{2}2^3 = \log_{2}8 \)となります。</p>
+            <p class="lh-1">この時点で与えられた対数方程式は\( \log_{2}(x + 3)(x + 1) = \log_{2}8 \)となり、真数同士が比較可能となります。</p>
+            <p class="lh-1">\( (x + 3)(x + 1) = 8 \)</p>
+            <p class="lh-1">\( x^2 + 4x - 5 = 0 \)</p>
+            <p class="lh-1">\( (x + 5)(x - 1) = 0 \)</p>
+            <p class="lh-1">\( x = -5, 1 \)</p>
+            <p class="lh-1">これは\( x < -3, -1 < x \)をそれぞれ満たしますので、いずれも答えとなります。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-r border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{x}a = b">\( \log_{x}a = b \)型</h2>
+            <br>
+            <p class="lh-1">次は少し趣向を変えて、真数ではなく底の部分に\( x \)があるパターンを見てみましょう。</p>
+            <p class="lh-1">一般的に対数\( \log_{a}b \)では、底\( a \)は、\( a > 0, a \neq 1 \)を満たさなければなりません。</p>
+            <p class="lh-1">底に\( x \)が含まれる対数方程式では、<span class="text-decoration-underline">真数条件だけでなく、底の条件も確認しておく必要があります。</span></p>
+            <br>
+            <p class="lh-1">例題3: \( \log_{x}4 = -2 \)を満たす\( x \)を求めよ。</p>
+            <br>
+            <p class="lh-1">底の条件より、\( x > 0, x \neq 1 \)を満たさなければなりません。</p>
+            <p class="lh-1">ここで対数の定義より、\( x^{-2} = 4 \)が成り立ちます。</p>
+            <p class="lh-1">これを変形すると、\( x^2 = \dfrac{1}{4} \)となり、\( x = \pm \sqrt{\dfrac{1}{4}} = \pm\dfrac{1}{2} \)と求められます。</p>
+            <p class="lh-1">ここで、\( x > 0, x \neq 1 \)より、答えは\( x = \dfrac{1}{2} \)となります。</p>
+        </div>
     </div>
 </div>
 

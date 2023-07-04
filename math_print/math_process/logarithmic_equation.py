@@ -46,29 +46,9 @@ class LogarithmicEquation:
             log(a)(bx + c)(dx + e) = f
         """
         x = sy.Symbol("x", real=True)
-        # selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(x + c)(x + e) = f"])
-        selected_equation_type = "log(a)(x + c)(x + e) = f"
+        # selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(x + b)(x + c) = d", "log(a)(x + b) + log(a)(x + c) = d", "log(x)(a) = b"])
+        selected_equation_type = "log(a)(x + b) + log(a)(x + c) = d"
         if selected_equation_type == "log(a)(bx + c) = d":
-            """
-            log(a)(bx + c) = log(a)(a^d)
-            bx + c = a^d
-            bx = a^d - c
-            x = (a^d - c) / b
-                bx + c > 0
-                    x > -c/b(b > 0)
-                    x < -c/b(b < 0)
-            a > 0
-            b > 0
-            c: any?
-            d: int
-            
-            b,c: 分数だとノイジー？問題のバリエーションは出る
-                ->とりあえず整数だけで
-            c = 0
-                ->場合分けが面倒ではある。
-            
-            結局バリュエーション最優先とするのであれば、分数も0も許容すべき
-            """
             a = self._random_number(max_num=3, positive_or_negative="positive", remove_one=True, remove_zero=True)
             b = self._random_number(positive_or_negative="positive", remove_zero=True, )
             c = self._random_number()
@@ -87,20 +67,14 @@ class LogarithmicEquation:
                 latex_answer += f"真数同士を比較すると、\\( {sy.latex(b * x + c)} = {sy.latex(a ** d)} \\)となり、これを解くと、\n"
             answer = (a ** d - c) / b
             latex_answer += f"\\( x = {sy.latex(answer)} \\)となる。これは\\( x > {sy.latex(sy.Rational(-b, c))} \\)を満たすので、解である。"
-        elif selected_equation_type == "log(a)(x + c)(x + e) = f":
+        elif selected_equation_type == "log(a)(x + b)(x + c) = d":
             smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
             bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
-            print(f"smaller_answer: {smaller_answer}, bigger_answer: {bigger_answer}")
             smaller_k = self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive")
             bigger_k = smaller_k + self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
-            print(f"smaller_k: {smaller_k}, bigger_k: {bigger_k}")
             before = (x - (smaller_answer - smaller_k)) * (x - (bigger_answer + smaller_k))
-            print(f"before: {before}")
             after = (x - (smaller_answer - bigger_k)) * (x - (bigger_answer + bigger_k))
-            print(f"after: {after}")
             diff = sy.expand(before - after)
-            print(f"diff: {diff}")
-            print("-----------------------------")
             diff_dict = sy.factorint(diff)
             if len(diff_dict.keys()) != 1:
                 base = diff
@@ -120,7 +94,6 @@ class LogarithmicEquation:
             else:
                 latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(left_antilog)} \\right) \\left( {sy.latex(right_antilog)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
                 latex_answer = f"真数条件より、\\( \\left( {sy.latex(left_antilog)} \\right) \\left( {sy.latex(right_antilog)} \\right) > 0 \\)、すなわち\\( x < {sy.latex(smaller_answer - smaller_k)}, {sy.latex(bigger_answer + smaller_k)} < x\\)でなければならない。\n"
-            # antilog_condition = bigger_answer + smaller_k
             latex_answer += f"また、\\( {sy.latex(constant)} = \\log_{{{sy.latex(base)}}} {sy.latex(base)}^{{{sy.latex(constant)}}} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)より、\n"
             if (left_antilog != x) and (right_antilog == x):
                 latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(left_antilog)} \\right) {sy.latex(right_antilog)} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
@@ -135,6 +108,56 @@ class LogarithmicEquation:
             latex_answer += f"\\( {sy.latex(sy.factor(after))} = 0\\)\n"
             latex_answer += f"\\( x = {sy.latex(smaller_answer - bigger_k)}, {sy.latex(bigger_answer + bigger_k)} \\)\n"
             latex_answer += f"\\( x < {sy.latex(smaller_answer - smaller_k)}, {sy.latex(bigger_answer + smaller_k)} < x \\)より、\\( x =  {sy.latex(smaller_answer - bigger_k)}, {sy.latex(bigger_answer + bigger_k)} \\)"
+        elif selected_equation_type == "log(x)(a) = b":
+            base = self._random_number(max_num=5, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True, remove_one=True)
+            right = self._random_number(max_num=4, integer_or_frac="integer", remove_zero=True)
+            antilog = base ** right
+            latex_problem = f"\\( \\log_{{{sy.latex(x)}}} {sy.latex(antilog)} = {right} \\)を満たす\\( x \\)を求めよ。"
+            latex_answer = f"底の条件より、\\( x > 0, x \\neq 1 \\)でなければならない。\n"
+            latex_answer += f"また、\\( \\log_{{{sy.latex(x)}}} {sy.latex(antilog)} = {right} \\)より、\\( x^{{{sy.latex(right)}}} = {sy.latex(antilog)} \\)が成り立つ。\n"
+            if right < 0:
+                latex_answer += f"これを変形すると、\\( x^{{{sy.latex(-right)}}} = {sy.latex(sy.Rational(1, antilog))} \\)となる。\n"
+            if (right % 2 == 0):
+                latex_answer += f"よって、\\( x = \\pm {sy.latex(base)} \\)である。\\( x > 0, x \\neq 1 \\)より、\\( x = {sy.latex(base)} \\)"
+            else:
+                latex_answer += f"よって、\\( x = {sy.latex(base)} \\)である。これは\\( x > 0, x \\neq 1 \\)を満たす。"
+        elif selected_equation_type == "log(a)(x + b) + log(a)(x + c) = d":
+            smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
+            bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+            smaller_k = self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive")
+            bigger_k = smaller_k + self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+            before_left = x - (smaller_answer - smaller_k)
+            before_right = x - (bigger_answer + smaller_k)
+            after_left = x - (smaller_answer - bigger_k)
+            after_right = x - (bigger_answer + bigger_k)
+            before = before_left * before_right
+            after = after_left * after_right
+            diff = sy.expand(before - after)
+            diff_dict = sy.factorint(diff)
+            if len(diff_dict.keys()) != 1:
+                base = diff
+                constant = 1
+            else:
+                for key, value in diff_dict.items():
+                    base = key
+                    constant = value
+            if (before_left != x) and (before_right == x):
+                latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} {sy.latex(before_right)} = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+            elif (before_left == x) and (before_right != x):
+                latex_problem = f"\\( \\log_{{{sy.latex(base)}}}  {sy.latex(before_left)}  + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+            else:
+                latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+            latex_answer = f"真数条件より、\\( {sy.latex(before_left)} > 0 \\)かつ\\( {sy.latex(before_right)} > 0 \\)、すなわち\\( x > {sy.latex(bigger_answer + smaller_k)} \\)でなければならない。\n"
+            latex_answer += f"\\( {sy.latex(constant)} = \\log_{{{sy.latex(base)}}} {sy.latex(base)}^{{{sy.latex(constant)}}} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)より、\n"
+            if (before_left != x) and (before_right == x):
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+            elif (before_left == x) and (before_right != x):
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}}  {sy.latex(before_left)}  \\left( {sy.latex(x - (bigger_answer - smaller_k))} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( {sy.latex(before_left)}  \\left( {sy.latex(before_right)} \\right) = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+            else:
+                latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)と書き換えられる。\n"
+                latex_answer += f"真数同士を比較すると、\\( \\left( {sy.latex(before_left)} \\right)  \\left( {sy.latex(before_right)} \\right) = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
         return latex_answer, latex_problem
     
     def _make_with_calculation_and_change_base_of_formula_problem(self):

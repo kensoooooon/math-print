@@ -38,21 +38,14 @@ class LogarithmicEquation:
         Returns:
             latex_answer (str): latex形式と通常の文字が混在した解答
             latex_problem (str): latex形式と通常の文字が混在した問題
-        
-        Developing:
-            log(a)(bx + c) = d
-                b,cが整数でないとノイズになるっぽい
-            
-            log(a)(bx + c)(dx + e) = f
         """
         x = sy.Symbol("x", real=True)
-        # selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(x + b)(x + c) = d", "log(a)(x + b) + log(a)(x + c) = d", "log(x)(a) = b"])
-        selected_equation_type = "log(a)(x + b) + log(a)(x + c) = d"
+        selected_equation_type = choice(["log(a)(bx + c) = d", "log(a)(x + b)(x + c) = d", "log(a)(x + b) + log(a)(x + c) = d", "log(x)(a) = b"])
         if selected_equation_type == "log(a)(bx + c) = d":
-            a = self._random_number(max_num=3, positive_or_negative="positive", remove_one=True, remove_zero=True)
-            b = self._random_number(positive_or_negative="positive", remove_zero=True, )
-            c = self._random_number()
-            d = self._random_number(integer_or_frac="integer", max_num=4)
+            a = self._random_number(max_num=4, positive_or_negative="positive", integer_or_frac="integer", remove_one=True, remove_zero=True)
+            b = self._random_number(max_num=3, positive_or_negative="positive", integer_or_frac="integer", remove_zero=True)
+            c = self._random_number(max_num=4)
+            d = self._random_number(max_num=2, integer_or_frac="integer")
             if c == 0:
                 latex_problem = f"\\( \\log_{{{sy.latex(a)}}} {sy.latex(b * x)} = {sy.latex(d)} \\)を満たす\\( x \\)を求めよ。"
             else:
@@ -66,7 +59,7 @@ class LogarithmicEquation:
                 latex_answer += f"与えられた対数方程式は、\\( \\log_{{{sy.latex(a)}}}\\left({sy.latex(b * x + c)}\\right) = \\log_{{{sy.latex(a)}}} {sy.latex(a ** d)} \\)と書き換えられる。\n"
                 latex_answer += f"真数同士を比較すると、\\( {sy.latex(b * x + c)} = {sy.latex(a ** d)} \\)となり、これを解くと、\n"
             answer = (a ** d - c) / b
-            latex_answer += f"\\( x = {sy.latex(answer)} \\)となる。これは\\( x > {sy.latex(sy.Rational(-b, c))} \\)を満たすので、解である。"
+            latex_answer += f"\\( x = {sy.latex(answer)} \\)となる。これは\\( x > {sy.latex(sy.Rational(-c, b))} \\)を満たすので、解である。"
         elif selected_equation_type == "log(a)(x + b)(x + c) = d":
             smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
             bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
@@ -175,7 +168,48 @@ class LogarithmicEquation:
         Returns:
             latex_answer (str): latex形式と通常の文字が混在した解答
             latex_problem (str): latex形式と通常の文字が混在した問題
+        
+        Developing:
+        1.) 片方だけがマイナスになっているパターン
+            reversed_baseを用意してあげればよい
+        
+        2.) 両方に底の変換が入るパターン
+            両方の底をいじる必要が出てくる。
+            eg. log_{4}(x + 1) + log_{1/2}x = 1
+            
+            せいぜい2乗程度にしておくほうが整理はしやすそう
+            
+            左は2乗されて、右は負がつく、右辺は2倍になる
+            
+            (x + a)とxだけにしておくことで、判定をシンプルに絞れる
+                ここ自体はそこまで重要ではなさそう
+
+            問題は適当に値を設定したときに、どれくらい解が出るのか？という話
+                適当に2次式になるようにさえしてあげればよいのなら楽だが……
         """
+        x = sy.Symbol("x", real=True)
+        selected_equation_type = choice(["log(a)(x + b) + log(c)(x + d) = e"])
+        if selected_equation_type == "log(a)(x + b) + log(c)(x + d) = e":
+            smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
+            bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+            smaller_k = self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive")
+            bigger_k = smaller_k + self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+            before_left = x - (smaller_answer - smaller_k)
+            before_right = x - (bigger_answer + smaller_k)
+            after_left = x - (smaller_answer - bigger_k)
+            after_right = x - (bigger_answer + bigger_k)
+            before = before_left * before_right
+            after = after_left * after_right
+            diff = sy.expand(before - after)
+            diff_dict = sy.factorint(diff)
+            if len(diff_dict.keys()) != 1:
+                base = diff
+                constant = 1
+            else:
+                for key, value in diff_dict.items():
+                    base = key
+                    constant = value
+            reversed_base = sy.Rational(1, base)
         latex_answer = "dummy answer in _make_with_calculation_and_change_base_of_formula_problem"
         latex_problem = "dummy problem in _make_with_calculation_and_change_base_of_formula_problem"
         return latex_answer, latex_problem

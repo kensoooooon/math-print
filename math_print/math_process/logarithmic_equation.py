@@ -190,28 +190,48 @@ class LogarithmicEquation:
         x = sy.Symbol("x", real=True)
         selected_equation_type = choice(["log(a)(x + b) + log(c)(x + d) = e"])
         if selected_equation_type == "log(a)(x + b) + log(c)(x + d) = e":
-            smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
-            bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
-            smaller_k = self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive")
-            bigger_k = smaller_k + self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
-            before_left = x - (smaller_answer - smaller_k)
-            before_right = x - (bigger_answer + smaller_k)
-            after_left = x - (smaller_answer - bigger_k)
-            after_right = x - (bigger_answer + bigger_k)
-            before = before_left * before_right
-            after = after_left * after_right
-            diff = sy.expand(before - after)
-            diff_dict = sy.factorint(diff)
-            if len(diff_dict.keys()) != 1:
-                base = diff
-                constant = 1
+            # reversed_base type
+            if random() > 0.5:
+                smaller_answer = self._random_number(max_num=3, integer_or_frac="integer")
+                bigger_answer = smaller_answer + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+                smaller_k = self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive")
+                bigger_k = smaller_k + self._random_number(max_num=2, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+                before_left = x - (smaller_answer - smaller_k)
+                before_right = x - (bigger_answer + smaller_k)
+                after_left = x - (smaller_answer - bigger_k)
+                after_right = x - (bigger_answer + bigger_k)
+                before = before_left * before_right
+                after = after_left * after_right
+                diff = sy.expand(before - after)
+                diff_dict = sy.factorint(diff)
+                if len(diff_dict.keys()) != 1:
+                    base = diff
+                    constant = 1
+                else:
+                    for key, value in diff_dict.items():
+                        base = key
+                        constant = value
+                reversed_base = sy.Rational(1, base)
+                if (before_left != x) and (before_right == x):
+                    latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) - \\log_{{{sy.latex(reversed_base)}}} {sy.latex(before_right)} = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+                elif (before_left == x) and (before_right != x):
+                    latex_problem = f"\\( \\log_{{{sy.latex(base)}}}  {sy.latex(before_left)}  - \\log_{{{sy.latex(reversed_base)}}} \\left( {sy.latex(before_right)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+                else:
+                    latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) - \\log_{{{sy.latex(reversed_base)}}} \\left( {sy.latex(before_right)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
+                latex_answer = f"真数条件より、\\( {sy.latex(before_left)} > 0 \\)かつ\\( {sy.latex(before_right)} > 0 \\)、すなわち\\( x > {sy.latex(bigger_answer + smaller_k)} \\)でなければならない。\n"
+                if (before_left != x) and (before_right == x):
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}} {sy.latex(before_right)} = \\dfrac{{\\log_{{{sy.latex(base)}}}{sy.latex(before_right)}}}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}}{sy.latex(before_right)} \\)であり、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} {sy.latex(before_right)} = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} \\)である。\n"
+                elif (before_left == x) and (before_right != x):
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}}\\left( {sy.latex(before_right)} \\right) = \\dfrac{{\\log_{{{sy.latex(base)}}}\\left( {sy.latex(before_right)} \\right) }}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) \\)であり、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}}  {sy.latex(before_left)} + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(before_left)} \\left( {sy.latex(before_right)} \\right) \\)である。\n"
+                else:
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}}\\left( {sy.latex(before_right)} \\right) = \\dfrac{{\\log_{{{sy.latex(base)}}}\\left( {sy.latex(before_right)} \\right) }}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) \\)であり、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}}  \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) \\left( {sy.latex(before_right)} \\right) \\)である。\n"
+                latex_answer += f"さらに、\\( {sy.latex(constant)} = \\log_{{{sy.latex(base)}}} {sy.latex(base)}^{{{sy.latex(constant)}}} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)より、\n"
             else:
-                for key, value in diff_dict.items():
-                    base = key
-                    constant = value
-            reversed_base = sy.Rational(1, base)
-        latex_answer = "dummy answer in _make_with_calculation_and_change_base_of_formula_problem"
-        latex_problem = "dummy problem in _make_with_calculation_and_change_base_of_formula_problem"
+                latex_answer = "dummy answer in _make_with_calculation_and_change_base_of_formula_problem"
+                latex_problem = "dummy problem in _make_with_calculation_and_change_base_of_formula_problem"
         return latex_answer, latex_problem
     
     def _make_with_replacement_problem(self):

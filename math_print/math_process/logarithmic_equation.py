@@ -220,15 +220,28 @@ class LogarithmicEquation:
                     latex_problem = f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) - \\log_{{{sy.latex(reversed_base)}}} \\left( {sy.latex(before_right)} \\right) = {sy.latex(constant)} \\)を満たす\\( x \\)を求めよ。"
                 latex_answer = f"真数条件より、\\( {sy.latex(before_left)} > 0 \\)かつ\\( {sy.latex(before_right)} > 0 \\)、すなわち\\( x > {sy.latex(bigger_answer + smaller_k)} \\)でなければならない。\n"
                 if (before_left != x) and (before_right == x):
-                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}} {sy.latex(before_right)} = \\dfrac{{\\log_{{{sy.latex(base)}}}{sy.latex(before_right)}}}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}}{sy.latex(before_right)} \\)であり、\n"
-                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} {sy.latex(before_right)} = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} \\)である。\n"
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}} {sy.latex(before_right)} = \\dfrac{{\\log_{{{sy.latex(base)}}}{sy.latex(before_right)}}}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}}{sy.latex(before_right)} \\)であるため、\n"
+                    latex_answer += f"(左辺) \\( = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} {sy.latex(before_right)} = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} \\)である。\n"
                 elif (before_left == x) and (before_right != x):
-                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}}\\left( {sy.latex(before_right)} \\right) = \\dfrac{{\\log_{{{sy.latex(base)}}}\\left( {sy.latex(before_right)} \\right) }}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) \\)であり、\n"
-                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}}  {sy.latex(before_left)} + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(before_left)} \\left( {sy.latex(before_right)} \\right) \\)である。\n"
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}}\\left( {sy.latex(before_right)} \\right) = \\dfrac{{\\log_{{{sy.latex(base)}}}\\left( {sy.latex(before_right)} \\right) }}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) \\)であるため、\n"
+                    latex_answer += f"(左辺) \\( = \\log_{{{sy.latex(base)}}}  {sy.latex(before_left)} + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(before_left)} \\left( {sy.latex(before_right)} \\right) \\)である。\n"
                 else:
-                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}}\\left( {sy.latex(before_right)} \\right) = \\dfrac{{\\log_{{{sy.latex(base)}}}\\left( {sy.latex(before_right)} \\right) }}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) \\)であり、\n"
-                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}}  \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) \\left( {sy.latex(before_right)} \\right) \\)である。\n"
-                latex_answer += f"さらに、\\( {sy.latex(constant)} = \\log_{{{sy.latex(base)}}} {sy.latex(base)}^{{{sy.latex(constant)}}} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)より、\n"
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(reversed_base)}}}\\left( {sy.latex(before_right)} \\right) = \\dfrac{{\\log_{{{sy.latex(base)}}}\\left( {sy.latex(before_right)} \\right) }}{{\\log_{{{sy.latex(base)}}}{sy.latex(reversed_base)}}} = -\\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) \\)であるため、\n"
+                    latex_answer += f"(左辺) \\( = \\log_{{{sy.latex(base)}}}  \\left( {sy.latex(before_left)} \\right) + \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) \\left( {sy.latex(before_right)} \\right) \\)である。\n"
+                latex_answer += f"さらに、\\( {sy.latex(constant)} = \\log_{{{sy.latex(base)}}} {sy.latex(base)}^{{{sy.latex(constant)}}} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)より、与えられた対数方程式は、\n"
+                if (before_left != x) and (before_right == x):
+                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)となる。\n"
+                    latex_answer += f"真数同士を比較すると、\\( \\left( {sy.latex(before_left)} \\right) {sy.latex(before_right)} = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+                elif (before_left == x) and (before_right != x):
+                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}} {sy.latex(before_left)} \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)となる。\n"
+                    latex_answer += f"真数同士を比較すると、\\( {sy.latex(before_left)}  \\left( {sy.latex(before_right)} \\right) = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+                else:
+                    latex_answer += f"\\( \\log_{{{sy.latex(base)}}} \\left( {sy.latex(before_left)} \\right) \\left( {sy.latex(before_right)} \\right) = \\log_{{{sy.latex(base)}}} {sy.latex(base ** constant)} \\)となる。\n"
+                    latex_answer += f"真数同士を比較すると、\\( \\left( {sy.latex(before_left)} \\right)  \\left( {sy.latex(before_right)} \\right) = {sy.latex(base ** constant)} \\)となり、これを解くと、\n"
+                latex_answer += f"\\( {sy.latex(sy.expand(after))} = 0 \\)\n"
+                latex_answer += f"\\( {sy.latex(sy.factor(after))} = 0 \\)\n"
+                latex_answer += f"\\( x = {sy.latex(smaller_answer - bigger_k)}, {sy.latex(bigger_answer + bigger_k)} \\)\n"
+                latex_answer += f"\\( x > {sy.latex(bigger_answer + smaller_k)} \\)より、\\( x = {sy.latex(bigger_answer + bigger_k)} \\)"
             else:
                 latex_answer = "dummy answer in _make_with_calculation_and_change_base_of_formula_problem"
                 latex_problem = "dummy problem in _make_with_calculation_and_change_base_of_formula_problem"

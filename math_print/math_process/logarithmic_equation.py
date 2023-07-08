@@ -188,28 +188,32 @@ class LogarithmicEquation:
                 適当に2次式になるようにさえしてあげればよいのなら楽だが……
     
         # true answer?
+        # log_{a^2}(x ; c) + log{a^-1}(x + d) = 1
+        # a, c, d, k = 1
+        # -> c > d, -c < -d
         import sympy as sy
         from random import randint
 
         exist_count = {"double": 0, "single": 0, "no": 0}
-        for _ in range(1000):
-            x = sy.Symbol("x", real=True)
+        x = sy.Symbol("x", real=True)
+        sy.init_printing(order="grevlex")
+
+        # a, c, d = sy.symbols("a, c, d")
+        for _ in range(10):
             a = randint(2, 3)
-            d = randint(-3, 3)
-            c = d + randint(1, 3)
-            # add(c > d, <=> -c < -d)
+            d = randint(-3, 2)
+            c = d + randint(1, 2)
             checker = -d
+            k = 1
             eq_left = (a ** (2 * k)) * (x ** 2) + (2 * (a ** (2 * k)) * d - 1) * x + (a ** (2 * k)) * (d ** 2) - c
             eq = sy.Eq(eq_left, 0)
             ans1, ans2 = sy.solve(eq, x)
-            if (ans1 > checker) and (ans2 > checker):
-                exist_count["double"] += 1
-            elif (ans1 < checker) and (ans2 < checker):
-                exist_count["no"] += 1
-            else:
-                exist_count["single"] += 1
-
-        print(exist_count)
+            if ans1 > checker:
+                print("ans1")
+                display(ans1)
+            if ans2 > checker:
+                print("ans2")
+                display(ans2)
         """
         x = sy.Symbol("x", real=True)
         selected_equation_type = choice(["log(a)(x + b) + log(c)(x + d) = e"])
@@ -266,9 +270,53 @@ class LogarithmicEquation:
                 latex_answer += f"\\( {sy.latex(sy.factor(after))} = 0 \\)\n"
                 latex_answer += f"\\( x = {sy.latex(smaller_answer - bigger_k)}, {sy.latex(bigger_answer + bigger_k)} \\)\n"
                 latex_answer += f"\\( x > {sy.latex(bigger_answer + smaller_k)} \\)より、\\( x = {sy.latex(bigger_answer + bigger_k)} \\)"
+            # log_{a^2}(x + c) + log{a^-1}(x + d) = 1
             else:
-                latex_answer = "dummy answer in _make_with_calculation_and_change_base_of_formula_problem"
-                latex_problem = "dummy problem in _make_with_calculation_and_change_base_of_formula_problem"
+                a = self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True, remove_one=True)
+                d = self._random_number(max_num=3, integer_or_frac="integer")
+                c = d + self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_zero=True)
+                if (c == 0) and (d != 0):
+                    latex_problem = f"\\( \\log_{{{sy.latex(a ** 2)}}} x + \\log_{{{sy.latex(sy.Rational(1, a))}}} ({sy.latex(x + d)}) = 1 \\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( {sy.latex(x + d)} > 0 \\)、すなわち\\( x > {sy.latex(-d)} \\)でなければならない。\n"
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(a ** 2)}}} x = \\dfrac{{\\log_{sy.latex(a)} x}}{{\\log_{sy.latex(a)}{sy.latex(a)}^2}} = \\dfrac{1}{2} \\log_{{{sy.latex(a)}}}x \\)、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(sy.Rational(1, a))}}} ({sy.latex(x + d)}) = \\dfrac{{\\log_{sy.latex(a)} x}}{{\\log_{sy.latex(a)}{sy.latex(a)}^{{-1}}}} = -\\log_{{{sy.latex(a)}}} ({sy.latex(x + d)}) \\)、\n"
+                    latex_answer += f"\\( 1 = \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)であるため、\n"
+                    latex_answer += f"与えられた対数方程式は、\\( \\dfrac{1}{2} \\log_{{{sy.latex(a)}}}x - \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)となる。これを変形すると、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}}x - 2 \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)}) = 2 \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}}x - \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)})^2 = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}}x = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 + \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)})^2 \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}}x = \\log_{{{sy.latex(a)}}} {sy.latex(a ** 2)}({sy.latex(x + d)})^2 \\)\n"
+                    latex_answer += f"真数同士を比較すると、\\( x =  {sy.latex(a ** 2)}({sy.latex(x + d)})^2 \\)となる。これを整理すると、\n"
+                elif (c != 0) and (d == 0):
+                    latex_problem = f"\\( \\log_{{{sy.latex(a ** 2)}}} ({sy.latex(x + c)}) + \\log_{{{sy.latex(sy.Rational(1, a))}}} x = 1 \\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( {sy.latex(x + c)} > 0 \\)かつ\\( x > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(a ** 2)}}} ({sy.latex(x + c)}) = \\dfrac{{\\log_{sy.latex(a)} ({sy.latex(x + c)})}}{{\\log_{sy.latex(a)}{sy.latex(a)}^2}} = \\dfrac{1}{2} \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) \\)、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(sy.Rational(1, a))}}} x = \\dfrac{{\\log_{sy.latex(a)} x}}{{\\log_{sy.latex(a)}{sy.latex(a)}^{{-1}}}} = -\\log_{{{sy.latex(a)}}} x \\)、\n"
+                    latex_answer += f"\\( 1 = \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)であるため、\n"
+                    latex_answer += f"与えられた対数方程式は、\\( \\dfrac{1}{2} \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) -\\log_{{{sy.latex(a)}}} x = \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)となる。これを変形すると、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) - 2 \\log_{{{sy.latex(a)}}} x = 2 \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) - \\log_{{{sy.latex(a)}}} x^2 = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 + \\log_{{{sy.latex(a)}}} x^2 \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a ** 2)} x^2 \\)\n"
+                    latex_answer += f"真数同士を比較すると、\\( {sy.latex(x + c)} =  {sy.latex(a ** 2)} x^2 \\)となる。これを整理すると、\n"
+                else:
+                    latex_problem = f"\\( \\log_{{{sy.latex(a ** 2)}}} ({sy.latex(x + c)}) + \\log_{{{sy.latex(sy.Rational(1, a))}}} ({sy.latex(x + d)}) = 1 \\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( {sy.latex(x + c)} > 0 \\)かつ\\( {sy.latex(x + d)} > 0 \\)、すなわち\\( x > {sy.latex(-d)} \\)でなければならない。\n"
+                    latex_answer += f"また、\\( \\log_{{{sy.latex(a ** 2)}}} ({sy.latex(x + c)}) = \\dfrac{{\\log_{sy.latex(a)} ({sy.latex(x + c)})}}{{\\log_{sy.latex(a)}{sy.latex(a)}^2}} = \\dfrac{1}{2} \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) \\)、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(sy.Rational(1, a))}}} ({sy.latex(x + d)}) = \\dfrac{{\\log_{sy.latex(a)} x}}{{\\log_{sy.latex(a)}{sy.latex(a)}^{{-1}}}} = -\\log_{{{sy.latex(a)}}} ({sy.latex(x + d)}) \\)、\n"
+                    latex_answer += f"\\( 1 = \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)であるため、\n"
+                    latex_answer += f"与えられた対数方程式は、\\( \\dfrac{1}{2} \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) -\\log_{{{sy.latex(a)}}} ({sy.latex(x + d)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)となる。これを変形すると、\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) - 2 \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)}) = 2 \\log_{{{sy.latex(a)}}} {sy.latex(a)} \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) - \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)})^2 = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 + \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)})^2 \\)\n"
+                    latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a ** 2)} ({sy.latex(x + d)})^2 \\)\n"
+                    latex_answer += f"真数同士を比較すると、\\( {sy.latex(x + c)} =  {sy.latex(a ** 2)} ({sy.latex(x + d)})^2 \\)となる。これを整理すると、\n"
+                eq_left = sy.expand((x + c) - (a ** 2) * ((x + d) ** 2))
+                eq = sy.Eq(eq_left, 0)
+                latex_answer += f"\\( {sy.latex(eq)} \\)\n"
+                ans1, ans2 = sy.solve(eq, x)
+                latex_answer += f"\\( x = {sy.latex(ans1)}, {sy.latex(ans2)} \\)\n"
+                latex_answer += f"\\( x > {sy.latex(-d)} \\)より、\\( x = {sy.latex(ans2)} \\)"
         return latex_answer, latex_problem
     
     def _make_with_replacement_problem(self):
@@ -279,29 +327,6 @@ class LogarithmicEquation:
             latex_problem (str): latex形式と通常の文字が混在した問題
         
         Developing:
-            import sympy as sy
-            from random import randint
-
-            # 2倍だのなんだの
-            x = sy.Symbol("x", real=True)
-            sy.init_printing(order="grevlex")
-
-            for _ in range(10):
-                left_base = randint(2, 4)
-                right_base = left_base * randint(1, 2)
-                left_antilog = x - randint(-3, 3)
-                right_antilog = x - randint(-3, 3)
-                constant = randint(2, 3)
-                eq = sy.Eq(sy.log(left_antilog, left_base) + sy.log(right_antilog, right_base), constant)
-                display(eq)
-                ans = sy.solve(eq, x)
-                display(ans)
-                print("---------------------------")
-            
-        適当に2次方程式を突っ込むと、なんか値が出ないところがある
-        eg. log_{4}x + log_{8}(x - 1) = 2
-        -> 次数が結局5になると、明らかにヤバい値がでる。
-        log_
         """
         latex_answer = "dummy answer in _make_with_replacement_problem"
         latex_problem = "dummy problem in _make_with_replacement_problem"

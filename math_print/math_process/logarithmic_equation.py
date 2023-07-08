@@ -253,6 +253,31 @@ class LogarithmicEquation:
         Returns:
             latex_answer (str): latex形式と通常の文字が混在した解答
             latex_problem (str): latex形式と通常の文字が混在した問題
+        
+        Developing:
+            import sympy as sy
+            from random import randint
+
+            # 2倍だのなんだの
+            x = sy.Symbol("x", real=True)
+            sy.init_printing(order="grevlex")
+
+            for _ in range(10):
+                left_base = randint(2, 4)
+                right_base = left_base * randint(1, 2)
+                left_antilog = x - randint(-3, 3)
+                right_antilog = x - randint(-3, 3)
+                constant = randint(2, 3)
+                eq = sy.Eq(sy.log(left_antilog, left_base) + sy.log(right_antilog, right_base), constant)
+                display(eq)
+                ans = sy.solve(eq, x)
+                display(ans)
+                print("---------------------------")
+            
+        適当に2次方程式を突っ込むと、なんか値が出ないところがある
+        eg. log_{4}x + log_{8}(x - 1) = 2
+        -> 次数が結局5になると、明らかにヤバい値がでる。
+        log_
         """
         latex_answer = "dummy answer in _make_with_replacement_problem"
         latex_problem = "dummy problem in _make_with_replacement_problem"

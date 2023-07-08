@@ -186,6 +186,30 @@ class LogarithmicEquation:
 
             問題は適当に値を設定したときに、どれくらい解が出るのか？という話
                 適当に2次式になるようにさえしてあげればよいのなら楽だが……
+    
+        # true answer?
+        import sympy as sy
+        from random import randint
+
+        exist_count = {"double": 0, "single": 0, "no": 0}
+        for _ in range(1000):
+            x = sy.Symbol("x", real=True)
+            a = randint(2, 3)
+            d = randint(-3, 3)
+            c = d + randint(1, 3)
+            # add(c > d, <=> -c < -d)
+            checker = -d
+            eq_left = (a ** (2 * k)) * (x ** 2) + (2 * (a ** (2 * k)) * d - 1) * x + (a ** (2 * k)) * (d ** 2) - c
+            eq = sy.Eq(eq_left, 0)
+            ans1, ans2 = sy.solve(eq, x)
+            if (ans1 > checker) and (ans2 > checker):
+                exist_count["double"] += 1
+            elif (ans1 < checker) and (ans2 < checker):
+                exist_count["no"] += 1
+            else:
+                exist_count["single"] += 1
+
+        print(exist_count)
         """
         x = sy.Symbol("x", real=True)
         selected_equation_type = choice(["log(a)(x + b) + log(c)(x + d) = e"])

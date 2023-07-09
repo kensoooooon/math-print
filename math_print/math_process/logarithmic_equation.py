@@ -311,7 +311,7 @@ class LogarithmicEquation:
                     latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a)}^2 + \\log_{{{sy.latex(a)}}} ({sy.latex(x + d)})^2 \\)\n"
                     latex_answer += f"\\( \\log_{{{sy.latex(a)}}} ({sy.latex(x + c)}) = \\log_{{{sy.latex(a)}}} {sy.latex(a ** 2)} ({sy.latex(x + d)})^2 \\)\n"
                     latex_answer += f"真数同士を比較すると、\\( {sy.latex(x + c)} =  {sy.latex(a ** 2)} ({sy.latex(x + d)})^2 \\)となる。これを整理すると、\n"
-                eq_left = sy.expand((x + c) - (a ** 2) * ((x + d) ** 2))
+                eq_left = sy.expand((a ** 2) * ((x + d) ** 2) - (x + c))
                 eq = sy.Eq(eq_left, 0)
                 latex_answer += f"\\( {sy.latex(eq)} \\)\n"
                 ans1, ans2 = sy.solve(eq, x)

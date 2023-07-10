@@ -327,9 +327,151 @@ class LogarithmicEquation:
             latex_problem (str): latex形式と通常の文字が混在した問題
         
         Developing:
+            import sympy as sy
+            from random import randint
+
+            sy.init_printing(order="grevlex")
+            x = sy.Symbol("x", real=True)
+            t = sy.Symbol("t", real=True)
+
+            base = randint(2, 5)
+            print(f"base: {base}")
+            index1 = randint(-3, 3)
+            index2 = index1 + randint(-3, 3)
+            if index1 == index2:
+                index2 += randint(1, 3)
+            print(f"index1: {index1}, index2: {index2}")
+            alpha = sy.Pow(base, index1)
+            beta = sy.Pow(base, index2)
+            print(f"alpha: {alpha}, beta: {beta}")
         """
-        latex_answer = "dummy answer in _make_with_replacement_problem"
-        latex_problem = "dummy problem in _make_with_replacement_problem"
+        t = sy.Symbol("t", real=True)
+        base = self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_one=True, remove_zero=True)
+        index1 = self._random_number(max_num=2, integer_or_frac="integer")
+        index2 = index1 + self._random_number(max_num=2, integer_or_frac="integer", remove_zero=True)
+        replaced_quadratic_function = sy.expand((t - index1) * (t - index2))
+        print(sy.latex(replaced_quadratic_function).replace("t", f"\\log_{{{base}}}x"))
+        linear_coeff = -(index1 + index2)
+        const = index1 * index2
+        # on the shoulder
+        if linear_coeff > 0:
+            if linear_coeff == 1:
+                if const > 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(const)} = 0 \\)となる。\n"
+                        latex_answer += f"これを満たす実数\\( t \\)は存在しないため、この方程式に解はない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                elif const == 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                elif const < 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+            else:
+                if const > 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+                elif const == 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+                elif const < 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+        elif linear_coeff == 0:
+            if const > 0:
+                if random() > 0.5:
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                else:
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+            elif const == 0:
+                if random() > 0.5:
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 = 0\\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                else:
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 = 0\\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+            elif const < 0:
+                if random() > 0.5:
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                else:
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+        elif linear_coeff < 0:
+            if linear_coeff == -1:
+                if const > 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+                elif const == 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+                elif const < 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+            else:
+                if const > 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+                elif const == 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+                elif const < 0:
+                    if random() > 0.5:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。"
+                    else:
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。"
+        # replaced_quadratic_function = sy.expand((t - index1) * (t - index2))
+        eq = sy.Eq((t - index1) * (t - index2), 0)
+        ans1, ans2 = sy.solve(eq, t)
+        latex_answer += f"\\( \\log_{{{base}}}x = {sy.latex(ans1)}, {sy.latex(ans2)} \\)"
         return latex_answer, latex_problem
     
     def _random_number(self, max_num: int = 6, integer_or_frac: Optional[str] = None, positive_or_negative: Optional[str] = None, remove_zero: Optional[bool] = False, remove_one: Optional[bool] = False) -> Union[sy.Integer, sy.Rational]:

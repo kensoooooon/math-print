@@ -168,52 +168,6 @@ class LogarithmicEquation:
         Returns:
             latex_answer (str): latex形式と通常の文字が混在した解答
             latex_problem (str): latex形式と通常の文字が混在した問題
-        
-        Developing:
-        1.) 片方だけがマイナスになっているパターン
-            reversed_baseを用意してあげればよい
-        
-        2.) 両方に底の変換が入るパターン
-            両方の底をいじる必要が出てくる。
-            eg. log_{4}(x + 1) + log_{1/2}x = 1
-            
-            せいぜい2乗程度にしておくほうが整理はしやすそう
-            
-            左は2乗されて、右は負がつく、右辺は2倍になる
-            
-            (x + a)とxだけにしておくことで、判定をシンプルに絞れる
-                ここ自体はそこまで重要ではなさそう
-
-            問題は適当に値を設定したときに、どれくらい解が出るのか？という話
-                適当に2次式になるようにさえしてあげればよいのなら楽だが……
-    
-        # true answer?
-        # log_{a^2}(x ; c) + log{a^-1}(x + d) = 1
-        # a, c, d, k = 1
-        # -> c > d, -c < -d
-        import sympy as sy
-        from random import randint
-
-        exist_count = {"double": 0, "single": 0, "no": 0}
-        x = sy.Symbol("x", real=True)
-        sy.init_printing(order="grevlex")
-
-        # a, c, d = sy.symbols("a, c, d")
-        for _ in range(10):
-            a = randint(2, 3)
-            d = randint(-3, 2)
-            c = d + randint(1, 2)
-            checker = -d
-            k = 1
-            eq_left = (a ** (2 * k)) * (x ** 2) + (2 * (a ** (2 * k)) * d - 1) * x + (a ** (2 * k)) * (d ** 2) - c
-            eq = sy.Eq(eq_left, 0)
-            ans1, ans2 = sy.solve(eq, x)
-            if ans1 > checker:
-                print("ans1")
-                display(ans1)
-            if ans2 > checker:
-                print("ans2")
-                display(ans2)
         """
         x = sy.Symbol("x", real=True)
         selected_equation_type = choice(["log(a)(x + b) + log(c)(x + d) = e"])
@@ -325,168 +279,224 @@ class LogarithmicEquation:
         Returns:
             latex_answer (str): latex形式と通常の文字が混在した解答
             latex_problem (str): latex形式と通常の文字が混在した問題
-        
-        Developing:
-            import sympy as sy
-            from random import randint
-
-            sy.init_printing(order="grevlex")
-            x = sy.Symbol("x", real=True)
-            t = sy.Symbol("t", real=True)
-
-            base = randint(2, 5)
-            print(f"base: {base}")
-            index1 = randint(-3, 3)
-            index2 = index1 + randint(-3, 3)
-            if index1 == index2:
-                index2 += randint(1, 3)
-            print(f"index1: {index1}, index2: {index2}")
-            alpha = sy.Pow(base, index1)
-            beta = sy.Pow(base, index2)
-            print(f"alpha: {alpha}, beta: {beta}")
         """
         t = sy.Symbol("t", real=True)
-        base = self._random_number(max_num=3, integer_or_frac="integer", positive_or_negative="positive", remove_one=True, remove_zero=True)
-        index1 = self._random_number(max_num=2, integer_or_frac="integer")
+        base = sy.Integer(choice([2, 3, 5]))
+        index1 = self._random_number(max_num=3, integer_or_frac="integer")
         index2 = index1 + self._random_number(max_num=2, integer_or_frac="integer", remove_zero=True)
-        print(f"index1: {index1}, index2: {index2}")
-        # replaced_quadratic_function = sy.expand((t - index1) * (t - index2))
-        # print(sy.latex(replaced_quadratic_function).replace("t", f"\\log_{{{base}}}x"))
         linear_coeff = -(index1 + index2)
         const = index1 * index2
-        # on the shoulder
         if linear_coeff > 0:
             if linear_coeff == 1:
                 if const > 0:
-                    if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(const)} = 0 \\)となる。\n"
-                        latex_answer += f"これを満たす実数\\( t \\)は存在しないため、この方程式に解はない。"
-                    else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0 \\)を満たす\( x \)を求めよ。"
-                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t + {sy.latex(const)} = 0 \\)となる。\n"
-                        d_value = (1 ** 2) - 4 * 1 * const
-                        latex_answer += f"ここで、\( t \)の2次方程式の判別式の値を\\( D \\)とすると、\\( D = {sy.latex(d_value)} < 0 \\)である。\n"
-                        latex_answer += f"よってこれを満たす実数\\( t \\)は存在しないため、この方程式に解はない。"
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                    latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t + {sy.latex(const)} = 0 \\)となる。\n"
+                    d_value = (1 ** 2) - 4 * 1 * const
+                    latex_answer += f"ここで、\( t \)の2次方程式の判別式の値を\\( D \\)とすると、\\( D = {sy.latex(d_value)} < 0 \\)である。\n"
+                    latex_answer += f"よってこれを満たす実数\\( t \\)は存在しないため、この方程式に解はない。"
                 elif const == 0:
-                    if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
-                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t = 0 \\)となる。\n"
-                        latex_answer += f"この2次方程式を解くと、\\( t(t + 1) = 0 \\)より、\\( t = 0, -1 \\)と求められる。\n"
-                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = 0, -1 \\)より、\\( x = {sy.latex(sy.Pow(base, 0))}, {sy.latex(sy.Pow(base, -1))} \\) \n"
-                        latex_answer += f"これはいずれも\\( x > 0 \\)を満たすので、解となる。"
-                    else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
-                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t = 0 \\)となる。\n"
-                        latex_answer += f"この2次方程式を解くと、\\( t(t + 1) = 0 \\)より、\\( t = 0, -1 \\)と求められる。\n"
-                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = 0, -1 \\)より、\\( x = {sy.latex(sy.Pow(base, 0))}, {sy.latex(sy.Pow(base, -1))} \\) \n"
-                        latex_answer += f"これはいずれも\\( x > 0 \\)を満たすので、解となる。"
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\\( x \\)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                    latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t = 0 \\)となる。\n"
+                    latex_answer += f"この2次方程式を解くと、\\( t(t + 1) = 0 \\)より、\\( t = 0, -1 \\)と求められる。\n"
+                    latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = 0, -1 \\)より、\\( x = {sy.latex(sy.Pow(base, 0))}, {sy.latex(sy.Pow(base, -1))} \\) \n"
+                    latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const < 0:
-                    if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t {sy.latex(const)} = 0 \\)となる。\n"
-                        factored_quadratic_equation = sy.factor(t ** 2 + t + const)
-                    else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                        latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。^n"
+                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
+                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                    latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + t {sy.latex(const)} = 0 \\)となる。\n"
+                    factored_quadratic_equation = sy.factor(t ** 2 + t + const)
+                    latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation )} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                    latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                    latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
             else:
                 if const > 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(linear_coeff)} t + {sy.latex(const)} = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0 \\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 + {{{sy.latex(linear_coeff)}}} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(linear_coeff)} t + {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const == 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(linear_coeff)} t = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 + {{{sy.latex(linear_coeff)}}} \\log_{{{sy.latex(base)}}}x= 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(linear_coeff)} t = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const < 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(linear_coeff)} t {sy.latex(const)}  = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"まあ、与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 + {{{sy.latex(linear_coeff)}}} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(linear_coeff)} t {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
         elif linear_coeff == 0:
             if const > 0:
-                if random() > 0.5:
-                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                else:
-                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
+                latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + {sy.latex(const)} = 0 \\)となる。\n"
+                d_value = (1 ** 2) - 4 * 1 * const
+                latex_answer += f"ここで、\( t \)の2次方程式の判別式の値を\\( D \\)とすると、\\( D = {sy.latex(d_value)} < 0 \\)である。\n"
+                latex_answer += f"よってこれを満たす実数\\( t \\)は存在しないため、この方程式に解はない。"
             elif const == 0:
-                if random() > 0.5:
-                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 = 0\\)を満たす\( x \)を求めよ。"
-                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                else:
-                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 = 0\\)を満たす\( x \)を求めよ。"
-                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 = 0\\)を満たす\\( x \\)を求めよ。"
+                latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 = 0 \\)となる。\n"
+                latex_answer += f"この2次方程式を満たすのは\\( t = 0 \\)であるため、、\\( \\log_{{{sy.latex(base)}}}x = 0 \\)となる。\n"
+                latex_answer += f"よって、\\( x = 1 \\)である。これは\\( x > 0 \\)を満たすため、解となる。"
             elif const < 0:
-                if random() > 0.5:
-                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
-                else:
-                    latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
-                    latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
+                latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2  {sy.latex(const)} = 0 \\)となる。\n"
+                factored_quadratic_equation = sy.factor(t ** 2 + const)
+                latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
         elif linear_coeff < 0:
             if linear_coeff == -1:
                 if const > 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 + - t + {sy.latex(const)} = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 - t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation )} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 - t + {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const == 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 - {sy.latex(linear_coeff)} t = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 - {sy.latex(linear_coeff)} t = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const < 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 - \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 - t {sy.latex(const)} = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 -\\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 - t {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
             else:
                 if const > 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 {sy.latex(linear_coeff)} t + {sy.latex(const)} = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} + {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)}\\log_{{{sy.latex(base)}}}x + {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 {sy.latex(linear_coeff)} t + {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const == 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 {sy.latex(linear_coeff)} t = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)}\\log_{{{sy.latex(base)}}}x = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 {sy.latex(linear_coeff)} t = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                 elif const < 0:
                     if random() > 0.5:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)} \\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)でなければならない。\n"
+                        latex_answer += f"また、与えられた対数方程式は、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 {sy.latex(linear_coeff)} t {sy.latex(const)} = 0 \\)となる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += f"これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
                     else:
-                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\( x \)を求めよ。"
+                        latex_problem = f"\\( (\\log_{{{sy.latex(base)}}}x)^2 + \\log_{{{sy.latex(base)}}}x^{{{sy.latex(linear_coeff)}}} {sy.latex(const)} = 0\\)を満たす\\( x \\)を求めよ。"
                         latex_answer = f"真数条件より、\\( x > 0 \\)かつ\\( x^{{{sy.latex(linear_coeff)}}} > 0 \\)、すなわち\\( x > 0 \\)でなければならない。\n"
-        # replaced_quadratic_function = sy.expand((t - index1) * (t - index2))
-        eq = sy.Eq((t - index1) * (t - index2), 0)
-        ans1, ans2 = sy.solve(eq, t)
-        latex_answer += f"\\( \\log_{{{base}}}x = {sy.latex(ans1)}, {sy.latex(ans2)} \\)"
+                        latex_answer += f"与えられた対数方程式は、\\( (\\log_{{{sy.latex(base)}}}x)^2 {sy.latex(linear_coeff)}\\log_{{{sy.latex(base)}}}x {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        latex_answer += f"ここで、\\( t = \\log_{{{sy.latex(base)}}}x \\)とすると、\\( t^2 {sy.latex(linear_coeff)} t {sy.latex(const)} = 0 \\)と書き換えられる。\n"
+                        factored_quadratic_equation = sy.factor(t ** 2 + linear_coeff * t + const)
+                        latex_answer += f"この2次方程式を解くと、\\( {sy.latex(factored_quadratic_equation)} = 0 \\)より、\\( t = {sy.latex(index1)}, {sy.latex(index2)} \\)となる。\n"
+                        latex_answer += f"すなわち、\\( \\log_{{{sy.latex(base)}}}x = {sy.latex(index1)}, {sy.latex(index2)} \\)より、\\( x = {sy.latex(sy.Pow(base, index1))}, {sy.latex(sy.Pow(base, index2))} \\)\n"
+                        latex_answer += "これらはいずれも\\( x > 0 \\)を満たすので、解となる。"
         return latex_answer, latex_problem
     
     def _random_number(self, max_num: int = 6, integer_or_frac: Optional[str] = None, positive_or_negative: Optional[str] = None, remove_zero: Optional[bool] = False, remove_one: Optional[bool] = False) -> Union[sy.Integer, sy.Rational]:

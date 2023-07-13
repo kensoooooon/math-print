@@ -4,6 +4,11 @@ import sympy as sy
 
 
 class QuadraticEquationProblem:
+    """指定されたタイプの2次方程式の問題とその解答を出力
+    
+    Attributes:
+        latex_answer (str): latex形式
+    """
     
     def __init__(self, **settings):
         sy.init_printing(order='grevlex')
@@ -12,16 +17,10 @@ class QuadraticEquationProblem:
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
-        if self._quadratic_equation_type_list:
-            selected_quadratic_equation_type = choice(self._quadratic_equation_type_list)
-        else:
-            selected_quadratic_equation_type = choice(
-                ["x^2+2ax+a^2=(x+a)^2", "x^2-2ax+a^2=(x-a)^2",
-                "x^2+(a+b)x+ab=(x+a)(x+b)", "x^2-a^2=(x+a)(x-a)",
-                "quadratic_formula"]
-            )
-
-        if selected_quadratic_equation_type == "x^2+2ax+a^2=(x+a)^2":
+        selected_quadratic_equation_type = choice(self._quadratic_equation_type_list)
+        if selected_quadratic_equation_type == "x^2=k":
+            latex_answer, latex_problem = self._make_root_problem()
+        elif selected_quadratic_equation_type == "x^2+2ax+a^2=(x+a)^2":
             latex_answer, latex_problem = self._make_square_plus_problem()
         elif selected_quadratic_equation_type == "x^2-2ax+a^2=(x-a)^2":
             latex_answer, latex_problem = self._make_square_minus_problem()
@@ -31,7 +30,8 @@ class QuadraticEquationProblem:
             latex_answer, latex_problem = self._make_square_minus_square_problem()
         elif selected_quadratic_equation_type == "quadratic_formula":
             latex_answer, latex_problem = self._make_quadratic_formula_problem()
-
+        else:
+            raise ValueError(f"selected_quadratic_equation_type is {selected_quadratic_equation_type}. This isn't expected value.")
         return latex_answer, latex_problem
         
     def _make_square_plus_problem(self):

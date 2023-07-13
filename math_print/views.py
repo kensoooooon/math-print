@@ -668,6 +668,13 @@ def print_quadratic_equation(request):
     PROBLEM_NUMBER = 20
     
     quadratic_equation_type_list = request.POST.getlist("quadratic_equation_type")
+    if not(quadratic_equation_type_list):
+        quadratic_equation_type_list.append("x^2=k")
+        quadratic_equation_type_list.append("x^2+2ax+a^2=(x+a)^2")
+        quadratic_equation_type_list.append("x^2-2ax+a^2=(x-a)^2")
+        quadratic_equation_type_list.append("x^2+(a+b)x+ab=(x+a)(x+b)")
+        quadratic_equation_type_list.append("x^2-a^2=(x+a)(x-a)")
+        quadratic_equation_type_list.append("quadratic_formula")
     paper_number = int(request.POST["paper_number"])
     if request.POST["organization_coefficient_or_not"] == "organization_coefficient":
         organization_coefficient = True
@@ -676,6 +683,8 @@ def print_quadratic_equation(request):
     
     used_formula_list = []
     if quadratic_equation_type_list:
+        if "x^2=k" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
         if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
@@ -685,8 +694,9 @@ def print_quadratic_equation(request):
         if "x^2-a^2=(x+a)(x-a)" in quadratic_equation_type_list:
             used_formula_list.append("\( x^2-a^2=(x+a)(x-a) \)")
         if "quadratic_formula" in quadratic_equation_type_list:
-            used_formula_list.append("\( x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
+            used_formula_list.append("\( ax^2 + bx + c = 0 \Leftrightarrow x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
     else:
+        used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
         used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
@@ -2057,6 +2067,8 @@ def display_quadratic_equation(request):
     
     used_formula_list = []
     if quadratic_equation_type_list:
+        if "x^2=k":
+            used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
         if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
@@ -2068,6 +2080,7 @@ def display_quadratic_equation(request):
         if "quadratic_formula" in quadratic_equation_type_list:
             used_formula_list.append("\( x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
     else:
+        used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
         used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")

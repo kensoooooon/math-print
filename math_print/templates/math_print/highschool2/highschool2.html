@@ -202,13 +202,13 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="with_calculation_and_change_base_of_formula" name="logarithmic_equation_type" id="logarithmic_equation_with_calculation_and_change_base_of_formula">
+                        <input class="form-check-input" type="checkbox" value="with_calculation_and_change_base_of_formula" name="logarithmic_equation_type" id="logarithmic_equation_with_calculation_and_change_base_of_formula" checked>
                         <label class="form-check-label" for="logarithmic_equation_with_calculation_and_change_base_of_formula">
                             対数計算、底の変換を行うもの
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="with_replacement" name="logarithmic_equation_type" id="logarithmic_equation_with_replacement">
+                        <input class="form-check-input" type="checkbox" value="with_replacement" name="logarithmic_equation_type" id="logarithmic_equation_with_replacement" checked>
                         <label class="form-check-label" for="logarithmic_equation_with_replacement">
                             置換を利用するもの
                         </label>
@@ -221,24 +221,24 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="LogarithmicEquationFivePaperRadio" checked>
                         <label class="form-check-label" for="LogarithmicEquationFivePaperRadio">
-                            6問×5枚
+                            4問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="LogarithmicEquationTenPaperRadio">
                         <label class="form-check-label" for="LogarithmicEquationTenPaperRadio">
-                            6問×10枚
+                            4問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="LogarithmicEquationFifteenPaperRadio">
                         <label class="form-check-label" for="LogarithmicEquationFifteenPaperRadio">
-                            6問×15枚
+                            4問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'logarithmic_equation_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(6問)" formaction="{% url 'logarithmic_equation_display' %}">      
+                <input class="btn btn-primary" type="submit" value="そのまま解く(4問)" formaction="{% url 'logarithmic_equation_display' %}">      
             </form>
         </div>
         

@@ -1538,8 +1538,22 @@ def print_logarithmic_equation(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
-    PROBLEM_NUMBER = 6
-    return render(request, 'math_print/highschool2/logarithmic_equation/for_print.html', {})
+    paper_number = int(request.POST["paper_number"])
+    PROBLEM_NUMBER = 4
+    problem_types = request.POST.getlist("logarithmic_equation_type")
+    if not(problem_types):
+        problem_types.append("only_with_calculation")
+        problem_types.append("with_calculation_and_change_base_of_formula")
+        problem_types.append("with_replacement")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = LogarithmicEquation(problem_types=problem_types)
+            problem2 = LogarithmicEquation(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/highschool2/logarithmic_equation/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
 # display section
 
@@ -2767,7 +2781,7 @@ def display_logarithmic_equation(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 4
     problem_types = request.POST.getlist("logarithmic_equation_type")
     if not(problem_types):
         problem_types.append("only_with_calculation")

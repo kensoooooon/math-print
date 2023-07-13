@@ -1,0 +1,338 @@
+
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+    location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+
+window.addEventListener("load", (event)=>{
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+});
+</script>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+対数方程式を解く(解説)
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">対数方程式を解く(解説)</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h4">
+        対数方程式を解く
+        <small class="text-muted">～対数+方程式～</small>
+    </h1>
+
+    <br>
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b) = c" class="text-decoration-none text-reset">\( \log_{a}(x + b) = c \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b)(x + c) = d" class="text-decoration-none text-reset">\( \log_{a}(x + b)(x + c) = d \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b) + log_{a}(x + c) = d" class="text-decoration-none text-reset">\( \log_{a}(x + b) + \log_{a}(x + c) = d \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{x}a = b" class="text-decoration-none text-reset">\( \log_{x}a = b \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#log_{a}(x + b) + log_{c}(x + d) = e" class="text-decoration-none text-reset">\( \log_{a}(x + b) + log_{c}(x + d) = e \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#replacement" class="text-decoration-none text-reset">置換型</a></li>
+        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+    </ul>
+    <br>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <p class="lh-1">ここでは対数方程式を確認していきます。対数と方程式の知識の両方が要求される応用問題ですね。</p>
+        <p class="lh-1">やり方としては決まった手順を守っておけば解けるようになっていますが、特に真数条件には要注意です。</p>
+        <p class="lh-1">場合によっては解が弾かれる場合もあります。また、今後の応用問題にも常について回ります。</p>
+        <p class="lh-1">解き初めの段階で確認する癖をつけておきましょう。</p>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{a}(x + b) = c">\( \log_{a}(x + b) = c \)型</h2>
+            <br>
+            <p class="lh-1">対数方程式を解く上で目指すべき形は、\( \log_{a}f(x) = \log_{a}g(x) \)です。</p>
+            <p class="lh-1">具体的には、\( \log_{2}(x + 3) = \log_{2}3 \)や\( \log_{3}(x + 1) = \log_{3}(2x - 8) \)のような形ですね。</p>
+            <p class="lh-1">このように<span class="text-decoration-underline">底が同じ状態であれば、真数同士の比較を行うことで答えが出せます。</span></p>
+            <p class="lh-1">逆に\( \log_{2}(x + 3) = \log_{3}3 \)や\( \log_{5}(x + 1) = \log_{3}(2x - 8) \)のように底が異なると比較が行えず、答えが出せません。</p>
+            <p class="lh-1">この底が同じ状態を目指して、対数の様々な計算法則を利用していくことになります。底の真数条件も忘れないようにしてください。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">では、さっそく問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題1: \( \log_{2}(x - 1) = 3\)を満たす\( x \)を求めよ。</p>
+            <br>
+            <p class="lh-1">前書きでも述べた通り、まずは真数条件を確認しましょう。</p>
+            <p class="lh-1">今回の真数は\( x- 1 \)なので、\( x- 1 > 0 \)、すなわち\( x > 1 \)が成り立つ必要があります。</p>
+            <p class="lh-1">次に両辺を底が同じ対数になるようにします。今回は左辺の底が2なので、右辺もこれに合わせていきましょう。</p>
+            <p class="lh-1">ここでは、\( k \log_{a}b = \log_{a} b^k \)を利用します。対数の手前にある係数は、真数の指数としてよい、という公式ですね。</p>
+            <p class="lh-1">また、対数がない場所に対数を作り出す方法として、\( 1 = \log_{a}a \)も利用します。</p>
+            <p class="lh-1">両方を合わせて利用すると、\( 3 \cdot 1 = 3 \log_{2}2 = \log_{2}2^3 = \log_{2}8 \)となります。</p>
+            <p class="lh-1">このように変形することで、与えられた対数方程式は、\( \log_{2}(x - 1) = \log_{2}8 \)と変形することができました。</p>
+            <p class="lh-1">ここまで変形すれば、あとは真数部分を比較するだけです。</p>
+            <p class="lh-1">\( x - 1 = 8 \)</p>
+            <p class="lh-1">\( x = 9 \)</p>
+            <p class="lh-1">これは\( x > 1 \)を満たすので、答えとなります。</p>
+            <br>
+            <p class="lh-1">以上が対数方程式の基本の流れです。<span class="text-decoration-underline">両辺を底が同じ対数にしてからの、真数同士の比較</span>ですね。しっかりと確認しておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{a}(x + b)(x + c) = d">\( \log_{a}(x + b)(x + c) = d \)型</h2>
+            <br>
+            <p class="lh-1">上の解き方は真数部分が2次式になっても、真数条件の確認がやや煩雑になるくらいで、あまり変わりません。具体的に問題を見てみましょう。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">例題2: \( \log_{2}(x - 2)(x - 5) = 2 \)を満たす\( x \)を求めよ。</p>
+            <br>
+            <p class="lh-1">繰り返しになりますが、まずは何につけ真数条件を確認してください。今回は真数部分が2次式なので、2次不等式を解くことになります。</p>
+            <p class="lh-1">\( (x - 2)(x - 5) > 0 \)を解くと、\( x < 2, 5 < x \)となります。この問題では、このいずれかを満たしておく必要があるわけです。</p>
+            <p class="lh-1">次に真数同士を比較できるように、底を揃えていきます。</p>
+            <p class="lh-1">右辺を先程と同じように、底が2の対数に書き換えると、\( 2 = 2 \log_{2}2 = \log_{2}2^2 = \log_{2}4 \)となります。</p>
+            <p class="lh-1">この時点で与えられた対数方程式は\( \log_{2}(x - 2)(x - 5) = \log_{2}4 \)となり、真数同士が比較可能となります。</p>
+            <p class="lh-1">\( (x - 2)(x - 5) = 4 \)</p>
+            <p class="lh-1">\( x^2 - 7x + 6 = 0 \)</p>
+            <p class="lh-1">\( (x - 1)(x - 6) = 0 \)</p>
+            <p class="lh-1">\( x = 1, 6 \)</p>
+            <p class="lh-1">これは\( x < 2, 5 < x \)をそれぞれ満たしますので、いずれも答えとなります。</p>
+            <br>
+            <p class="lh-1">真数条件の確認以外は、基本的な流れは同じです。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{a}(x + b) + log_{a}(x + c) = d">\( \log_{a}(x + b) + \log_{a}(x + c) = d \)型</h2>
+            <br>
+            <p class="lh-1">今度は対数の計算法則のうち、和を使ってまとめるタイプの計算になります。</p>
+            <p class="lh-1">対数の和の計算法則、すなわち\( \log_{a}M + \log_{a}N = \log_{a}MN \)のことですね。</p>
+            <p class="lh-1">まとめた後の見かけは\( \log_{a}(x + b)(x + c) = d \)型と変わりませんが、まとめる前にはそれぞれ独立した対数になっていることにはきちんと意味があります。</p>
+            <p class="lh-1">具体的には、<span class="text-decoration-underline">まとめる前に真数条件を確認</span>しなければなりません。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">例題3: \( \log_{2}(x - 2) + \log_{2}(x - 5) = 2 \)</p>
+            <br>
+            <p class="lh-1">まず真数条件から、\( x - 2 > 0 \)かつ\( x - 5 > 0\)が成り立たなければなりません。これは\( x > 2 \)かつ\( x > 5 \)という条件であり、結局のところ\( x > 5 \)という条件にまとめられます。</p>
+            <p class="lh-1">次に、左辺をまとめると、\( \log_{2}(x - 2) + \log_{2}(x - 5) = \log_{2}(x - 2)(x - 5) \)。</p>
+            <p class="lh-1">また、右辺を変形すると、\( 2 = 2 \log_{2}2 = \log_{2}2^2 = \log_{2}4 \)。</p>
+            <p class="lh-1">すると、与えられた対数方程式は\( \log_{2}(x - 2)(x - 5) = \log_{2}4 \)となり、真数同士で比較可能になります。</p>
+            <p class="lh-1">\( (x - 2)(x - 5) = 4 \)</p>
+            <p class="lh-1">\( x^2 - 7x + 6 = 0 \)</p>
+            <p class="lh-1">\( (x- 1)(x - 6) = 0 \)</p>
+            <p class="lh-1">\( x = 1, 6 \)</p>
+            <p class="lh-1">ここで真数条件は\( x > 5 \)なので、\( x = 6 \)が答えです。</p>
+            <br>
+            <p class="lh-1">\( \log_{2}(x - 2)(x - 5) = 2 \)のときには\( x = 1, 6 \)の両方が解でしたが、</p>
+            <p class="lh-1">\( \log_{2}(x - 2) + \log_{2}(x - 5) = 2 \)のときには\( x = 6 \)だけが解となります。\( x = 1 \)は\( \log_{2}(x - 2) \)に代入すると対数が破綻するからです。</p>
+            <p class="lh-1">繰り返しになりますが。真数条件は初めに確認するようにしておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-r border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{x}a = b">\( \log_{x}a = b \)型</h2>
+            <br>
+            <p class="lh-1">次は少し趣向を変えて、真数ではなく底の部分に\( x \)があるパターンを見てみましょう。</p>
+            <p class="lh-1">一般的に対数\( \log_{a}b \)では、底\( a \)は、\( a > 0, a \neq 1 \)を満たさなければなりません。</p>
+            <p class="lh-1">底に\( x \)が含まれる対数方程式では、<span class="text-decoration-underline">真数条件だけでなく、底の条件も確認しておく</span>必要があります。</p>
+        </div>
+        <div class="m-2 p-2">
+            <br>
+            <p class="lh-1">例題4: \( \log_{x}4 = -2 \)を満たす\( x \)を求めよ。</p>
+            <br>
+            <p class="lh-1">底の条件より、\( x > 0, x \neq 1 \)を満たさなければなりません。</p>
+            <p class="lh-1">ここで対数の定義より、\( x^{-2} = 4 \)が成り立ちます。</p>
+            <p class="lh-1">これを変形すると、\( x^2 = \dfrac{1}{4} \)となり、\( x = \pm \sqrt{\dfrac{1}{4}} = \pm\dfrac{1}{2} \)と求められます。</p>
+            <p class="lh-1">ここで、\( x > 0, x \neq 1 \)より、答えは\( x = \dfrac{1}{2} \)となります。</p>
+            <br>
+            <p class="lh-1">これまでは底は自動的に条件を満たしていて、真数条件に主に注目していました。</p>
+            <p class="lh-1">それに対して今回の問題は、<span class="text-decoration-underline">真数は自動的に条件を満たしている代わりに、底の条件に着目</span>しなければなりません。</p>
+            <p class="lh-1">やや珍しいケースですが、念のために確認しておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-r border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="log_{a}(x + b) + log_{c}(x + d) = e">\( \log_{a}(x + b) + log_{c}(x + d) = e \)型</h2>
+            <br>
+            <p class="lh-1">次は底が異なるタイプの対数方程式です。具体的には、\( \log_{2}(x - 2) + \log_{4}(x + 3) = 5 \)のような形です。</p>
+            <p class="lh-1">ここで思い出してほしいのは、<span class="text-decoration-underline">対数の計算法則は、基本的に底が共通であることを前提としている</span>という点です。</p>
+            <p class="lh-1">\( \log_{a}M + \log_{a}N = \log_{a}MN, \log_{a}M - \log_{a}N = \log_{a}\dfrac{M}{N} \)は、いずれも底が\( a \)になっていますよね。</p>
+            <p class="lh-1">対数方程式として目指すべき形はこれまでと同じ、\( \log_{a}f(x) = \log_{a}g(x) \)なのですが、底が揃っていないと、そもそもこれらの法則を使うことができず、まとめることができません。</p>
+            <p class="lh-1">そのため、<span class="text-decoration-underline">底が揃っていないときは、底の変換公式を使って揃えてから計算に入る</span>ようにしましょう。</p>
+            <p class="lh-1">なお、底の変換公式は、以下の式になります。聞き覚えが無い方は確認しておいてください。</p>
+            <p class="lh-1">\( \log_{a}b = \dfrac{\log_{c}a}{\log_{c}b} \)</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">例題5: \( \log_{3}x - \log_{\frac{1}{3}}(x - 2) = 1 \)を満たす\( x \)を求めよ。</p>
+            <br>
+            <p class="lh-1">まずは例のごとく真数条件の確認から。\( x > 0 \)かつ\( x - 2 > 0\)、すなわち\( x > 2 \)になります。</p>
+            <p class="lh-1">次に底の統一です。底をまとめるときは、<span class="text-decoration-underline">それらの数を表せる整数の底のうち、なるべく小さな値</span>にするのが好ましいです。</p>
+            <p class="lh-1">\( 2, 4 \)なら\( 4 \)は\( 2^2 \)と表せるので\( 2 \)。\( 3, \dfrac{1}{9} \)なら\( \dfrac{1}{9} = 3^{-2} \)と表せるので\( 3 \)といった具合です。もちろん、これらとは違う底でも計算を進めることは可能ですが、基本的に複雑な式が出てきて、手間が増えてしまいます。</p>
+            <p class="lh-1">今回の例ですと、底は\( 3, \dfrac{1}{3} \)で、\( \dfrac{1}{3} = 3^{-1} \)と表せるので、\( 3 \)にまとめていくことになります。</p>
+            <p class="lh-1">底の変換公式を使うと、\( \log_{\frac{1}{3}}(x - 2) = \dfrac{\log_{3}(x - 2)}{\log_{3}\dfrac{1}{3}} = \dfrac{\log_{3}(x - 2)}{\log_{3}3^{-1}} = \dfrac{\log_{3}(x - 2)}{-1} = -\log_{3}(x - 2) \)となります。</p>
+            <p class="lh-1">そのため、等式の左辺は、\( \log_{3}x - \log_{\frac{1}{3}}(x - 2) = \log_{3}x - \left\lbrace -\log_{3}(x - 2) \right\rbrace = \log_{3}x + \log_{3}(x - 2) = \log_{3}x(x - 2) \)となります。</p>
+            <p class="lh-1">さらに右辺は、これまでと同じく\( 1 = \log_{3}3 \)と変形可能です。</p>
+            <p class="lh-1">結局与えられた対数方程式は、\( \log_{3}x(x - 2) = \log_{3}3 \)となります。</p>
+            <p class="lh-1">底が揃ったので、真数同士を比較すると、</p>
+            <p class="lh-1">\( x(x - 2) = 3 \)</p>
+            <p class="lh-1">\( x^2 - 2x - 3 = 0 \)</p>
+            <p class="lh-1">\( (x - 3)(x + 1) = 0 \)</p>
+            <p class="lh-1">\( x = 3, -1 \)</p>
+            <p class="lh-1">最後に、\( x > 2 \)より、答えは\( x = 3 \)となります。</p>
+            <br>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">もう一問見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題6: \( \log_{4}x + \log_{\frac{1}{2}}(x - 1) = 1 \)</p>
+            <br>
+            <p class="lh-1">真数条件を確認すると、\( x > 0 \)かつ\( x - 1 > 0 \)、すなわち\( x > 1 \)となります。</p>
+            <p class="lh-1">次に底を統一していきます。今回は\( 4 = 2^2, \dfrac{1}{2} = 2^{-1} \)と、いずれも2で表現できるので、2に統一していきます。</p>
+            <p class="lh-1">底の変換公式より、\( \log_{4}x = \dfrac{\log_{2}x}{\log_{2}4} = \dfrac{\log_{2}x}{2} = \dfrac{1}{2} \log_{2}x \)、</p>
+            <p class="lh-1">\( \log_{\frac{1}{2}}(x - 1) = \dfrac{\log_{2}(x - 1)}{\log_{2}\frac{1}{2}} = \dfrac{\log_{2}(x - 1)}{-1} = -\log_{2}(x - 1) \)とそれぞれ変形可能です。</p>
+            <p class="lh-1">また右辺もこれまでと同様に、\( 1 = \log_{2}2 \)と書き換え可能です。結局与えられた対数方程式は、</p>
+            <p class="lh-1">\( \dfrac{1}{2} \log_{2}x - \log_{2}(x - 1) = \log_{2}2 \)となります。</p>
+            <p class="lh-1">このまままとめにいってもよいのですが、ここでは少し工夫してみましょう。</p>
+            <p class="lh-1">具体的には、分数を消して、負の項を移項します。こうすることで、真数部分にルートの値が出てきたり、商の式が出てくるのを防げて、スムーズに解けるようになります。</p>
+            <p class="lh-1">全体に\( 2 \)をかけると、\( \log_{2}x - 2 \log_{2}(x - 1) = 2 \log_{2}2\)</p>
+            <p class="lh-1">さらに\( - 2 \log_{2}(x - 1) \)を右辺に移行すると、\( \log_{2}x = 2 \log_{2}2 + 2 \log_{2}(x - 1) \)となります。</p>
+            <p class="lh-1">あとはこれまでと同じように、右辺は右辺、左辺は左辺で一つの対数になるようにまとめていきましょう。</p>
+            <p class="lh-1">\( \log_{2}x = 2 \log_{2}2 + 2 \log_{2}(x - 1) \)</p>
+            <p class="lh-1">\( \log_{2}x = \log_{2}2^2 + \log_{2}(x - 1)^2 \)</p>
+            <p class="lh-1">\( \log_{2}x = \log_{2}4(x - 1)^2 \)</p>
+            <p class="lh-1">真数同士を比較すると、\( x = 4(x- 1)^2 \)</p>
+            <p class="lh-1">\( 4x^2 - 9x + 4 = 0\)</p>
+            <p class="lh-1">たすき掛けでは解けなさそうなので、解の公式を用いると、</p>
+            <p class="lh-1">\( x = \dfrac{-(-9) \pm \sqrt{(-9)^2 - 4 \cdot 4 \cdot 4}}{2 \cdot 4}\)</p>
+            <p class="lh-1">\( = \dfrac{9 \pm \sqrt{17}}{8}\)となります。</p>
+            <p class="lh-1">最後に真数条件\( x > 1 \)と比較すると、\( x = \dfrac{9 + \sqrt{17}}{8} \)のみが解となります。</p>
+            <p class="lh-1">平方根を含む数との大小比較は本筋とは関係ないので、以下に折りたたんでおきます。</p>
+            <details>
+                <summary>平方根を含む数の概算</summary>
+                <p class="lh-1">ポイントは、平方根の中の値に注目し、一番近い整数になる平方根で囲んであげることです。</p>
+                <p class="lh-1">今回の例であれば、\( -\sqrt{49} < -\sqrt{37} < -\sqrt{36} \)より、\( -7 < -\sqrt{37} < -6 \)となります。あとはここから問題の形に寄せていくだけです。</p>
+                <p class="lh-1">それぞれに9を足すと、\( 2 < 9 - \sqrt{37} < 3 \)</p>
+                <p class="lh-1">それぞれを8で割ると、\( \dfrac{2}{8} < \dfrac{9 - \sqrt{37}}{8} < \dfrac{3}{8} \)となります。1より小さいので、真数条件を満たしません。</p>
+                <p class="lh-1">ついでに、もう一方の解が真数条件を満たすことも確認しておきましょう。</p>
+                <p class="lh-1">\( \sqrt{36} < \sqrt{37} < \sqrt{49} \)</p>
+                <p class="lh-1">\( 6 < \sqrt{37} < 7 \)</p>
+                <p class="lh-1">\( 15 < \sqrt{37} < 16 \)</p>
+                <p class="lh-1">\( \dfrac{15}{8} < \dfrac{9 + \sqrt{37}}{8} < \dfrac{16}{8} \)</p>
+                <p class="lh-1">----------折りたたみここまで----------</p>
+            </details>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">以上のように、底さえ揃えられれば、これまでと同じように計算可能です。</p>
+            <p class="lh-1">ただし、対数の計算、底の変換、そして方程式と、要求される計算量も増えていますので、慣れていないと時間がかかったり、間違ったりしてしまう可能性があります。</p>
+            <p class="lh-1">スムーズに行えるように、練習をしておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-r border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="replacement">置換型</h2>
+            <br>
+            <p class="lh-1">最後に置換型の対数方程式もご紹介しておきます。具体的には、\( (\log_{2}x)^2 + \log_{2}x^3 + 2 = 0 \)のような形です。</p>
+            <p class="lh-1">このタイプでは、これまでのように底を統一する方向ではなく、対数を置換する方向で話が進みます。</p>
+            <p class="lh-1">すなわち、底と真数が共通の対数と、定数だけで式全体を表してから、置換を行うことになります。</p>
+            <p class="lh-1">たとえば、\( (\log_{5}x)^2 + log_{5}x - 6 = 0\)であれば、\( log_{5}x = t \)とすることで、\( t^2 + t - 6 = 0 \)という2次方程式に置き換えが可能です。</p>
+            <p class="lh-1">置き換えさえできてしまえば、あとは2次方程式を解いて、その後あらためて\( x \)を求められるようになります。</p>
+            <p class="lh-1">それでは早速例を見てみましょう。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">例題7: \( (\log_{2}x)^2 + \log_{2}x^3 + 2 = 0 \)</p>
+            <br>
+            <p class="lh-1">まずは真数条件から、\( x > 0 \)かつ\( x^3 > 0 \)、すなわち\( x > 0 \)となります。</p>
+            <p class="lh-1">次に置換に入りたいところですが、\( \log_{2}x^3 \neq (log_{2}x)^3 \)なので、このままでは\( \log_{2}x = t \)と置換しても、式全体を\( t \)で表すことができません。</p>
+            <p class="lh-1">そのため、置換する前に\( \log_{2}x^3 = 3 \log_{2}x \)としてあげましょう。</p>
+            <p class="lh-1">こうすれば与えられた対数方程式は\( (\log_{2}x)^2 + 3 \log_{2}x + 2 = 0 \)となり、\( log_{2}x = t \)とすると、</p>
+            <p class="lh-1">\( t^2 + 3t + 2 = 0 \)と置換が完了します。あとはこれを解いていくだけです。</p>
+            <p class="lh-1">\( (t + 1)(t + 2) = 0 \)と因数分解できるので、</p>
+            <p class="lh-1">\( t = -1, -2 \)となります。</p>
+            <p class="lh-1">最後に置換したものをもとに戻すと、</p>
+            <p class="lh-1">\( \log_{2}x = -1 \)より、\( x = 2^{-1} = \dfrac{1}{2} \)</p>
+            <p class="lh-1">\( \log_{2}x = -2 \)より、\( x = 2^{-2} = \dfrac{1}{4} \)</p>
+            <p class="lh-1">これらはいずれも\( x > 0 \)を満たすので、最終的な解は\( x = \dfrac{1}{2}, \dfrac{1}{4} \)となります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">これが置換型の対数方程式です。\( log_{2}x^3 = t^3 \)のような誤った置換に気をつけましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="afterword">後書き</h2>
+        <p class="lh-1">今回の解説は以上になります。</p>
+        <p class="lh-1">初めに述べた通り、要求される計算が多様なのが対数方程式です。</p>
+        <p class="lh-1">計算問題に限らず、様々な応用問題に利用されるため、スムーズに解けるように練習しておきたいところです。</p>
+    </div>
+
+</div>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <a href="{% url 'highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2023 有明学習振興</a></small>
+</footer>
+{% endblock %}

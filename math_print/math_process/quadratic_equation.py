@@ -1,4 +1,6 @@
 from random import choice, randint, random
+from typing import Dict, Optional, Tuple, Union
+
 
 import sympy as sy
 
@@ -7,17 +9,35 @@ class QuadraticEquationProblem:
     """指定されたタイプの2次方程式の問題とその解答を出力
     
     Attributes:
-        latex_answer (str): latex形式
+        _organization_coefficient (bool): 全体を割ったりかけたりする工程を含むか否か
+        latex_answer (str): latex形式で記述された解答
+        latex_answer (str): latex形式で記述された問題
     """
     
-    def __init__(self, **settings):
+    def __init__(self, **settings: Dict) -> None:
+        """初期設定
+        
+        Args:
+            settings (dict): 問題の各種設定を格納
+        """
         sy.init_printing(order='grevlex')
-        self._quadratic_equation_type_list = settings["quadratic_equation_type_list"]
+        selected_quadratic_equation_type = choice(settings["quadratic_equation_type_list"])
         self._organization_coefficient = settings["organization_coefficient"]
-        self.latex_answer, self.latex_problem = self._make_problem()
+        self.latex_answer, self.latex_problem = self._make_problem(selected_quadratic_equation_type)
     
-    def _make_problem(self):
-        selected_quadratic_equation_type = choice(self._quadratic_equation_type_list)
+    def _make_problem(self, selected_quadratic_equation_type) -> Tuple[str, str]:
+        """選択された問題のタイプに応じて、問題と解答を出力
+        
+        Args:
+            selected_equation_type (str): 問題タイプの指定
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Raises:
+            ValueError: 想定されていないタイプの問題が出力された場合に挙上
+        """
         if selected_quadratic_equation_type == "x^2=k":
             latex_answer, latex_problem = self._make_root_problem()
         elif selected_quadratic_equation_type == "x^2+2ax+a^2=(x+a)^2":
@@ -32,6 +52,13 @@ class QuadraticEquationProblem:
             latex_answer, latex_problem = self._make_quadratic_formula_problem()
         else:
             raise ValueError(f"selected_quadratic_equation_type is {selected_quadratic_equation_type}. This isn't expected value.")
+        return latex_answer, latex_problem
+    
+    def _make_root_problem(self):
+        """x^=k型の2次方程式の問題と解答を出力
+        """
+        latex_answer = "dummy answer in root problem"
+        latex_problem = "dummy problem in root problem."
         return latex_answer, latex_problem
         
     def _make_square_plus_problem(self):

@@ -54,11 +54,25 @@ class QuadraticEquationProblem:
             raise ValueError(f"selected_quadratic_equation_type is {selected_quadratic_equation_type}. This isn't expected value.")
         return latex_answer, latex_problem
     
-    def _make_root_problem(self):
+    def _make_root_problem(self) -> Tuple[str, str]:
         """x^=k型の2次方程式の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
         """
-        latex_answer = "dummy answer in root problem"
-        latex_problem = "dummy problem in root problem."
+        x = sy.Symbol("x", real=True)
+        left = x ** 2
+        right = randint(1, 16)
+        latex_answer = f"x = \pm {sy.latex(sy.sqrt(right))}"
+        if self._organization_coefficient:
+            if random() > 0.7:
+                multiplied_for_equation = self._make_random_number(integer_or_frac_specification="frac")
+            else:
+                multiplied_for_equation = self._make_random_number(integer_or_frac_specification="integer")
+            left *= multiplied_for_equation
+            right *= multiplied_for_equation
+        latex_problem = f"{sy.latex(left)} = {sy.latex(right)}"
         return latex_answer, latex_problem
         
     def _make_square_plus_problem(self):

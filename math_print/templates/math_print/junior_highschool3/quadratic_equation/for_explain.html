@@ -1,0 +1,150 @@
+
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+    location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+
+window.addEventListener("load", (event)=>{
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+});
+</script>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+2次方程式を解く(解説)
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">2次方程式を解く(解説)</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h4">
+        2次方程式を解く
+        <small class="text-muted">～使うべき公式を見極める～</small>
+    </h1>
+
+    <br>
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+        <li class="list-group-item col-md-6"><a href="#x^2=k" class="text-decoration-none text-reset">\( x^2 = k \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+    </ul>
+    <br>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <p class="lh-1">今回は2次方程式を解説していきます。\( x \)の次数が2、つまり\( x^2 \)が含まれている方程式ですね。</p>
+        <p class="lh-1">この2次方程式、1次方程式と比べて解き方のパターンが非常に多いのが特徴となります。</p>
+        <p class="lh-1">1次方程式は、ざっくり文字を左、数字を右に移項して、最後に\( x = \cdots \)の形にすれば解けるようになっていました。</p>
+        <p class="lh-1">これに対して2次方程式は、<span class="text-decoration-underline">式ごとに異なる公式を当てはめる</span>必要があります。</p>
+        <p class="lh-1">解説の方も、用いる公式ごとに分けながら行っていきます。</p>
+        <p class="lh-1">まずは決まった形の方程式をそれぞれ解けるようにして、それから色々なタイプが混在している問題を解いて練習していくと良いでしょう。</p>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="x^2=k">\( x^2 = k \)型</h2>
+            <br>
+            <p class="lh-1">まずは一番シンプルな\( x^2 = k \)型の2次方程式からです。\( x^2 = 4 \)や\( \dfrac{1}{2}x^2 = 5 \)のような2次方程式ですね。</p>
+            <p class="lh-1">このタイプの2次方程式は、<span class="text-decoration-underline">平方根の定義に従って解く</span>ことになります。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">では、さっそく問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題1: \( x^2 = 3 \)</p>
+            <br>
+            <p class="lh-1">平方根とはそもそも、<span class="text-decoration-underline">2乗するとその数になる値のこと</span>です。</p>
+            <p class="lh-1">たとえば\( \sqrt{5} \)は2乗すると5になる数なので、当然ながら\( (\sqrt{5})^2 = 5 \)が成り立ちます。</p>
+            <p class="lh-1">そして例題1は「2乗すると3になる\( x \)はいくつ？」と聞かれているのと同じことです。</p>
+            <p class="lh-1">そのため、特に計算することもなく\( \sqrt{3} \)と求められる……かと思いきや、実は追加で<span class="text-decoration-underline">負の数も入ってくる</span>点には要注意です。</p>
+            <p class="lh-1">負の数の2乗、つまり負の数と負の数の積も、正の数の2乗と同じく正の数になるからです。</p>
+            <p class="lh-1">そのため、正しい答えは\( x = \pm \sqrt{3} \)になります。</p>
+            <br>
+            <p class="lh-1">以上が\( x^2 = k \)型の2次方程式の基本的な解き方です。\( \pm \)を忘れないようにして、ルートをつけるだけですね。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">同じタイプの問題でも、中にはルートをつける前に少し操作が必要なものもあります。次の例題を見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題2: \( \dfrac{2}{3}x^2 = 8 \)</p>
+            <br>
+            <p class="lh-1">この式は\( x^2 = \cdots \)の形になっていません。そのため、まずは両辺に\( \dfrac{3}{2} \)をかけて、\( x^2 \)の係数を\( 1 \)にしてあげましょう。</p>
+            <p class="lh-1">\( \dfrac{2}{3}x^2 \times \dfrac{3}{2} = 8 \times \dfrac{3}{2} \)</p>
+            <p class="lh-1">\( x^2 = 12 \)</p>
+            <p class="lh-1">ここまで変形すれば、あとは例題1と同じように、</p>
+            <p class="lh-1">\( x = \pm \sqrt{12} = \pm 2\sqrt{3} \)と解くことができます。</p>
+            <p class="lh-1">ルートの中から数字を出せるときは出しておく、というのはルートの計算と同じですね。</p>
+            <br>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="afterword">後書き</h2>
+        <p class="lh-1">今回の解説は以上になります。</p>
+        <p class="lh-1">初めに述べた通り、要求される計算が多様なのが対数方程式です。</p>
+        <p class="lh-1">計算問題に限らず、様々な応用問題に利用されるため、スムーズに解けるように練習しておきたいところです。</p>
+    </div>
+
+</div>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <a href="{% url 'junior_highschool3' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2023 有明学習振興</a></small>
+</footer>
+{% endblock %}

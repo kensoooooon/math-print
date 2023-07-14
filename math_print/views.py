@@ -684,7 +684,7 @@ def print_quadratic_equation(request):
     used_formula_list = []
     if quadratic_equation_type_list:
         if "x^2=k" in quadratic_equation_type_list:
-            used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
+            used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt{{k}} \)")
         if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
@@ -696,7 +696,7 @@ def print_quadratic_equation(request):
         if "quadratic_formula" in quadratic_equation_type_list:
             used_formula_list.append("\( ax^2 + bx + c = 0 \Leftrightarrow x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
     else:
-        used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
+        used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt{{k}} \)")
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
         used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
@@ -2067,8 +2067,8 @@ def display_quadratic_equation(request):
     
     used_formula_list = []
     if quadratic_equation_type_list:
-        if "x^2=k":
-            used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
+        if "x^2=k" in quadratic_equation_type_list:
+            used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt{{k}} \)")
         if "x^2+2ax+a^2=(x+a)^2" in quadratic_equation_type_list:
             used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         if "x^2-2ax+a^2=(x-a)^2" in quadratic_equation_type_list:
@@ -2080,7 +2080,7 @@ def display_quadratic_equation(request):
         if "quadratic_formula" in quadratic_equation_type_list:
             used_formula_list.append("\( ax^2 + bx + c = 0 \Leftrightarrow x = \\frac{-b\pm\sqrt{b^2-4ac}}{2a} \)")
     else:
-        used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt\{k\} \)")
+        used_formula_list.append("\( x^2 = k \Leftrightarrow x = \pm \sqrt{{k}} \)")
         used_formula_list.append("\( x^2 + 2ax + a^2 = (x + a)^2 \)")
         used_formula_list.append("\( x^2 - 2ax + a^2 = (x - a)^2 \)")
         used_formula_list.append("\( x^2+(a+b)x+ab=(x+a)(x+b) \)")
@@ -2870,4 +2870,17 @@ def explain_logarithmic_equation(request):
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
     returned_render = render(request, 'math_print/highschool2/logarithmic_equation/for_explain.html', {})
+    return returned_render
+
+
+def explain_quadratic_equation(request):
+    """2次方程式の解き方の解説を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/junior_highschool3/quadratic_equation/for_explain.html', {})
     return returned_render

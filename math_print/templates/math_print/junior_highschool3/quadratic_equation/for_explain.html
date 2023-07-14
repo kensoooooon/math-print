@@ -80,6 +80,7 @@ window.addEventListener("load", (event)=>{
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
         <li class="list-group-item col-md-6"><a href="#x^2=k" class="text-decoration-none text-reset">\( x^2 = k \)型</a></li>
+        <li class="list-group-item col-md-6"><a href="#x^2+2ax+a^2=(x+a)^2" class="text-decoration-none text-reset">\( x^2 + 2ax + a^2 = (x + a)^2 \)型</a></li>
         <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
@@ -128,6 +129,33 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">ルートの中から数字を出せるときは出しておく、というのはルートの計算と同じですね。</p>
             <br>
         </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="x^2+2ax+a^2=(x+a)^2">\( x^2 + 2ax + a^2 = (x + a)^2 \)型</h2>
+            <br>
+            <p class="lh-1">次に解説するのは2乗の公式を用いたものになります。ここでいう2乗の公式とは、\( x^2 + 2ax + a^2 = (x + a)^2 \)のことを指します。</p>
+            <p class="lh-1">使い方自体は単純なのですが、使えるかどうかを判定するのがやや難しくなっています。</p>
+            <p class="lh-1">\( a \)に値を代入したときに、<span class="text-decoration-underline">出てくる式がきちんと問題の式と一致するかどうか</span>を判断して公式を使うようにしましょう。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">例題3: \( x^2 + 6x + 9 = 0 \)</p>
+            <br>
+            <p class="lh-1">まず定数項は\( 9 \)、つまり\( 3^2 \)になっています。</p>
+            <p class="lh-1">ここで、もしこの式が公式の通り因数分解できるのであれば、\( a=3 \)になるはずです。</p>
+            <p class="lh-1">実際に公式に\( a = 3 \)を代入してみると、\( x^2 + 2 \cdot 3 \cdot x + 3^2 = x^2 + 6x + 9 \)ということで問題の式と一致します。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">もう一つ、今度は公式使えない例を見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題4: \( x^2 + 5x + 4 = 0 \)</p>
+            <br>
+            <p class="lh-1">まず定数項は\( 4 \)、つまり\( 2^2 \)になっています。ここまでは例題3と同じです。</p>
+            <p class="lh-1">しかしこの問題では、\( 2 \)を2倍した\( 4 \)が1次の項と<span class="text-decoration-underline">一致していません。つまり公式通りに変形することができません。</span></p>
+            <p class="lh-1">その証拠に、公式に\( a = 2 \)を代入しても、\( (x + 2)^2 = x^2 + 4x + 4 \neq x^2 + 5x + 4 \)と等しくならないことがわかります。</p>
+            <p class="lh-1">2乗の公式でよくある間違いが、この定数の部分だけを見て公式を使ってしまうパターンです。</p>
+        </p>
     </div>
 
     <div class="row m-4 p-4 border-bottom">

@@ -13,6 +13,23 @@
     </div>
 {% endblock %}
 
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">
@@ -379,11 +396,18 @@
     </div>
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>2次方程式</p>
+            <p id="quadratic_equation_title">2次方程式</p>
+            <a href="{% url 'quadratic_equation_explain' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">使用する公式</small>
                 <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="x^2=k" name="quadratic_equation_type" id="quadratic_equation_x^2=k">
+                        <label class="form-check-label" for="quadratic_equation_x^2=k">
+                            \( x^2 = k \Leftrightarrow x = \pm \sqrt{k} \)
+                        </label>
+                    </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="x^2+2ax+a^2=(x+a)^2" name="quadratic_equation_type" id="quadratic_equation_x^2+2ax+a^2=(x+a)^2" checked>
                         <label class="form-check-label" for="quadratic_equation_x^2+2ax+a^2=(x+a)^2">

@@ -1,27 +1,46 @@
 from random import choice, randint, random
+from typing import Dict, Optional, Tuple, Union
+
 
 import sympy as sy
 
 
 class QuadraticEquationProblem:
+    """指定されたタイプの2次方程式の問題とその解答を出力
     
-    def __init__(self, **settings):
+    Attributes:
+        _organization_coefficient (bool): 全体を割ったりかけたりする工程を含むか否か
+        latex_answer (str): latex形式で記述された解答
+        latex_answer (str): latex形式で記述された問題
+    """
+    
+    def __init__(self, **settings: Dict) -> None:
+        """初期設定
+        
+        Args:
+            settings (dict): 問題の各種設定を格納
+        """
         sy.init_printing(order='grevlex')
-        self._quadratic_equation_type_list = settings["quadratic_equation_type_list"]
+        selected_quadratic_equation_type = choice(settings["quadratic_equation_type_list"])
         self._organization_coefficient = settings["organization_coefficient"]
-        self.latex_answer, self.latex_problem = self._make_problem()
+        self.latex_answer, self.latex_problem = self._make_problem(selected_quadratic_equation_type)
     
-    def _make_problem(self):
-        if self._quadratic_equation_type_list:
-            selected_quadratic_equation_type = choice(self._quadratic_equation_type_list)
-        else:
-            selected_quadratic_equation_type = choice(
-                ["x^2+2ax+a^2=(x+a)^2", "x^2-2ax+a^2=(x-a)^2",
-                "x^2+(a+b)x+ab=(x+a)(x+b)", "x^2-a^2=(x+a)(x-a)",
-                "quadratic_formula"]
-            )
-
-        if selected_quadratic_equation_type == "x^2+2ax+a^2=(x+a)^2":
+    def _make_problem(self, selected_quadratic_equation_type) -> Tuple[str, str]:
+        """選択された問題のタイプに応じて、問題と解答を出力
+        
+        Args:
+            selected_equation_type (str): 問題タイプの指定
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        
+        Raises:
+            ValueError: 想定されていないタイプの問題が出力された場合に挙上
+        """
+        if selected_quadratic_equation_type == "x^2=k":
+            latex_answer, latex_problem = self._make_root_problem()
+        elif selected_quadratic_equation_type == "x^2+2ax+a^2=(x+a)^2":
             latex_answer, latex_problem = self._make_square_plus_problem()
         elif selected_quadratic_equation_type == "x^2-2ax+a^2=(x-a)^2":
             latex_answer, latex_problem = self._make_square_minus_problem()
@@ -31,7 +50,29 @@ class QuadraticEquationProblem:
             latex_answer, latex_problem = self._make_square_minus_square_problem()
         elif selected_quadratic_equation_type == "quadratic_formula":
             latex_answer, latex_problem = self._make_quadratic_formula_problem()
-
+        else:
+            raise ValueError(f"selected_quadratic_equation_type is {selected_quadratic_equation_type}. This isn't expected value.")
+        return latex_answer, latex_problem
+    
+    def _make_root_problem(self) -> Tuple[str, str]:
+        """x^=k型の2次方程式の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式で記述された解答
+            latex_problem (str): latex形式で記述された問題
+        """
+        x = sy.Symbol("x", real=True)
+        left = x ** 2
+        right = randint(1, 16)
+        latex_answer = f"x = \pm {sy.latex(sy.sqrt(right))}"
+        if self._organization_coefficient:
+            if random() > 0.7:
+                multiplied_for_equation = self._make_random_number(integer_or_frac_specification="frac")
+            else:
+                multiplied_for_equation = self._make_random_number(integer_or_frac_specification="integer")
+            left *= multiplied_for_equation
+            right *= multiplied_for_equation
+        latex_problem = f"{sy.latex(left)} = {sy.latex(right)}"
         return latex_answer, latex_problem
         
     def _make_square_plus_problem(self):

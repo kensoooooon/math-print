@@ -120,6 +120,7 @@ urlpatterns = [
     # 2次方程式
     path('quadratic_equation/print/', views.print_quadratic_equation, name='quadratic_equation_print'),
     path('quadratic_equation/display/', views.display_quadratic_equation, name='quadratic_equation_display'),
+    path('quadratic_equation/explain', views.explain_quadratic_equation, name='quadratic_equation_explain'),
     # 平方根を求める
     path('square_root/print/', views.print_square_root_problem, name='square_root_print'),
     path('square_root/display/', views.display_square_root_problem, name='square_root_display'),

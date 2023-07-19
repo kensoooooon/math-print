@@ -41,6 +41,7 @@ class RatioProblem:
         
         Develop:
             重さ、長さ、体積、人数や個数など
+            割合以外は整数になるぱたーん
         """
         selected_theme = choice(["weight", "length", "volume", "quantity"])
         if selected_theme == "weight":
@@ -77,8 +78,58 @@ class RatioProblem:
         latex_problem = "dummy problem in ratio problem."
         return latex_answer, latex_problem
     
-    def _make_random_number(self, ):
-        """
+    def _make_random_number(self, max_num: int = 3, number_type: Optional[str]=None) -> Union[sy.Integer, sy.Rational]:
+        """正の整数と分数を指定された最大値以下を利用して出力
+        
+        Args:
+            max_num (int, optional): 出力に利用する数の最大値。デフォルトは6
+            number_type (str, optional): 整数か分数か小数かの指定。デフォルトは指定なしで、どちらも出力
+        
+        Returns:
+            number (Union[sy.Integer, sy.Rational]): 指定された条件を満たす数
+        
         Developing:
-            整数, 分数, 小数
+            分数と整数と小数の混同に注意
+            割合に利用するのであれば、1以下だが、ここまでのようにmax_numをとるとやばそう
         """
+        
+        def random_integer(max_num: int) -> sy.Integer:
+            """指定された最大値以下の整数を出力
+            
+            Args:
+                max_num (int): 最大値
+
+            Returns:
+                integer (sy.Integer): 整数 
+            """
+            integer = sy.Integer(randint(1, max_num))
+            return integer
+        
+        def random_frac(max_num: int) -> sy.Rational:
+            """指定された最大値以下の分数を出力            
+
+            Args:
+                max_num (int): 最大値
+
+            Returns:
+                frac (sy.Rational): 分数
+            """
+            while True:
+                numerator = randint(1, max_num)
+                denominator = numerator + randint(2, max_num)
+                frac = sy.Rational(numerator, denominator)
+                if not(frac.is_Integer):
+                    break
+            return frac
+        
+        def random_decimal(max_num: int) -> sy.Float:
+            """指定された最大値以下の小数を出力
+
+            Args:
+                max_num (int): 最大値
+
+            Returns:
+                decimal (sy.Float): 小数
+            """
+            decimal = sy.Float(0.1 * randint(1, max_num))
+            return decimal

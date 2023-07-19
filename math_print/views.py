@@ -52,6 +52,7 @@ from .math_process.same_denominator_calculate import SameDenominatorCalculate
 from .math_process.line_and_flat_positional_relationship import LineAndFlatPositionalRelationship
 from .math_process.calculate_area_by_integration import CalculateAreaByIntegration
 from .math_process.logarithmic_equation import LogarithmicEquation
+from .math_process.ratio_problem import RatioProblem
 
 
 def index(request):
@@ -1565,6 +1566,38 @@ def print_logarithmic_equation(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/highschool2/logarithmic_equation/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
+
+def print_ratio(request):
+    """分数の倍や割合の問題のリクエスト受信と問題出力を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 10
+    paper_number = int(request.POST["paper_number"])
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("amount_to_compare")
+        problem_types.append("standard_amount")
+        problem_types.append("ratio")
+    used_numbers_for_ratio = request.POST.getlist("used_number_for_ratio")
+    if not(used_numbers_for_ratio):
+        used_numbers_for_ratio.append("decimal")
+        used_numbers_for_ratio.append("frac")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio)
+            problem2 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school6/ratio/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
+
+
 # display section
 
 def display_number_problem(request):
@@ -2807,6 +2840,32 @@ def display_logarithmic_equation(request):
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/logarithmic_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
+
+def display_ratio(request):
+    """分数の倍や割合を求める問題のリクエスト受信と問題出力を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 10
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("amount_to_compare")
+        problem_types.append("standard_amount")
+        problem_types.append("ratio")
+    used_numbers_for_ratio = request.POST.getlist("used_number_for_ratio")
+    if not(used_numbers_for_ratio):
+        used_numbers_for_ratio.append("decimal")
+        used_numbers_for_ratio.append("frac")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio)
+        problem2 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school6/ratio/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
 
 # explain part
 def explain_one_sixth_calculate_area_by_integration(request):

@@ -1587,6 +1587,7 @@ def print_ratio(request):
     if not(used_numbers_for_ratio):
         used_numbers_for_ratio.append("decimal")
         used_numbers_for_ratio.append("frac")
+        used_numbers_for_ratio.append("percentage")
     unit_change = request.POST["unit_change"]
     if unit_change == "yes":
         used_unit_change = True
@@ -2865,6 +2866,7 @@ def display_ratio(request):
     if not(used_numbers_for_ratio):
         used_numbers_for_ratio.append("decimal")
         used_numbers_for_ratio.append("frac")
+        used_numbers_for_ratio.append("percentage")
     unit_change = request.POST["unit_change"]
     if unit_change == "yes":
         used_unit_change = True

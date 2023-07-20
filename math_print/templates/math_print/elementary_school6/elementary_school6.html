@@ -83,6 +83,14 @@ function uncheckAllStatus(target){
                             分数
                         </label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="percentage" name="used_number_for_ratio" id="ratio_percentage" checked>
+                        <label class="form-check-label" for="ratio_percentage">
+                            百分率
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_number_for_ratio')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_number_for_ratio')" value="全部はずし">
                 </div>
                 <small class="text-muted">長さや重さ、面積の問題で単位の変換を必要とすることがあるか</small>
                 <div class="form-group">

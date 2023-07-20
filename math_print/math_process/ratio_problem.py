@@ -1,3 +1,14 @@
+"""
+7/20
+百分率をどう扱うか？
+0.1 = 1/10は計算でも同様に扱えるが、10%になると話が変わる。
+->初めの段階で分数に直すようにする？？
+->表示をどうするか？
+    現実的には問題の表示において、percentageが選択されたときに、問題文を変更する。
+    どこで分岐させるべき？根本？途中？？？初手without, with??
+
+"""
+
 from random import choice, random, randint
 from typing import Dict, Optional, Tuple, Union
 
@@ -46,7 +57,7 @@ class RatioProblem:
         """
         selected_theme = choice(["weight", "length", "volume", "quantity"])
         if selected_theme == "weight":
-            ratio = self._random_ratio
+            ratio = self._random_ratio()
             standard_amount = self._random_integer(max_num=30)
             amount_to_compare = standard_amount * ratio
             if not(self._used_unit_change):
@@ -63,7 +74,10 @@ class RatioProblem:
                         latex_answer = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
                         latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)"
                     elif 0.5 <= problem_sentence_checker < 0.75:
-                        pass
+                        latex_problem = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)あった{item}のうち、\\( {sy.latex(ratio)} \\)を運びました。残った{item}の重さは\\( (\\, \\, \\, ) \\mathrm{{kg}} \\)です。"
+                        latex_answer += f"まずは運んだ量を求める。\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)が運んだ量となる。\n"
+                        latex_answer += f"もともとあった{item}は\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)なので、残った量は\\( {standard_amount} - {amount_to_compare} = {sy.latex(standard_amount - amount_to_compare)} \\mathrm{{kg}} \\)"
                     else:
                         pass
                 elif from_to_unit == "g_to_g":
@@ -116,19 +130,19 @@ class RatioProblem:
         integer = sy.Integer(randint(min_num, max_num))
         return integer
     
-    def _random_ratio(self, digit_under_decimal_point: int = 1) -> Union[sy.Float, sy.Rational]:
+    def _random_ratio(self, decimal_or_frac: Optional[str] = None, digit_under_decimal_point: int = 1) -> Union[sy.Float, sy.Rational]:
         """割合のための0より大きくて1より小さな値を、指定された形に応じて出力
 
         Args:
+            decimal_or_frac (str, optional): 割合の表示を小数にするか分数にするか
             digit_under_decimal_point (int, optional): 小数点以下の最大の桁数. デフォルトは1.
 
         Raises:
             ValueError: 想定されていない形が要求されたときに挙上
 
         Returns:
-            Union[sy.Float, sy.Rational]: 割合のための値
+            Union[frac_ratio, decimal_ratio] (Union[sy.Float, sy.Rational]): 割合のための値
         """
-        decimal_or_frac = choice(self._used_numbers_for_ratio)
         denominator = 10 ** digit_under_decimal_point
         numerator = (1, denominator - 1)
         frac_ratio = sy.Rational(numerator, denominator)

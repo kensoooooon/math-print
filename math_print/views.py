@@ -1587,12 +1587,17 @@ def print_ratio(request):
     if not(used_numbers_for_ratio):
         used_numbers_for_ratio.append("decimal")
         used_numbers_for_ratio.append("frac")
+    unit_change = request.POST["unit_change"]
+    if unit_change == "yes":
+        used_unit_change = True
+    elif unit_change == "no":
+        used_unit_change = False
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio)
-            problem2 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio)
+            problem1 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio, used_unit_change=used_unit_change)
+            problem2 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio, used_unit_change=used_unit_change)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school6/ratio/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
@@ -2860,10 +2865,15 @@ def display_ratio(request):
     if not(used_numbers_for_ratio):
         used_numbers_for_ratio.append("decimal")
         used_numbers_for_ratio.append("frac")
+    unit_change = request.POST["unit_change"]
+    if unit_change == "yes":
+        used_unit_change = True
+    elif unit_change == "no":
+        used_unit_change = False
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
-        problem1 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio)
-        problem2 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio)
+        problem1 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio, used_unit_change=used_unit_change)
+        problem2 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio, used_unit_change=used_unit_change)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school6/ratio/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
 

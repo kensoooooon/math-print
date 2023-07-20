@@ -22,6 +22,7 @@ class RatioProblem:
             ValueError: 想定されていない問題のタイプが混入したときに挙上
         """
         self._used_numbers_for_ratio = settings["used_numbers_for_ratio"]
+        self._used_unit_change = settings["used_unit_change"]
         selected_problem_type = choice(settings["problem_types"])
         if selected_problem_type == "amount_to_compare":
             self.latex_answer, self.latex_problem = self._make_amount_to_compare_problem()
@@ -45,7 +46,30 @@ class RatioProblem:
         """
         selected_theme = choice(["weight", "length", "volume", "quantity"])
         if selected_theme == "weight":
-            pass
+            ratio = self._random_ratio
+            standard_amount = self._random_integer(max_num=30)
+            amount_to_compare = standard_amount * ratio
+            if not(self._used_unit_change):
+                from_to_unit = choice(["kg_to_kg", "g_to_g"])
+                if from_to_unit == "kg_to_kg":
+                    problem_sentence_checker = random()
+                    if problem_sentence_checker < 0.25:
+                        latex_problem = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)の\\( {sy.latex(ratio)} \\)は\\(  (\\, \\, \\, ) \\mathrm{{kg}} \\)です。"
+                        latex_answer = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)"
+                    elif 0.25 <= problem_sentence_checker < 0.5:
+                        item = self._random_item(selected_theme)
+                        latex_problem = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)あった{item}のうち、\\( {sy.latex(ratio)} \\)を運びました。運んだ{item}の重さは\\( (\\, \\, \\, )  \\mathrm{{kg}} \\)です。"
+                        latex_answer = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)"
+                    elif 0.5 <= problem_sentence_checker < 0.75:
+                        pass
+                    else:
+                        pass
+                elif from_to_unit == "g_to_g":
+                    pass
+            elif self._used_unit_change:
+                from_to_unit = choice(["kg_to_g", "g_to_kg", ""])
         elif selected_theme == "length":
             pass
         elif selected_theme == "volume":
@@ -77,59 +101,80 @@ class RatioProblem:
         latex_answer = "dummy answer in ratio problem."
         latex_problem = "dummy problem in ratio problem."
         return latex_answer, latex_problem
-    
-    def _make_random_number(self, max_num: int = 3, number_type: Optional[str]=None) -> Union[sy.Integer, sy.Rational]:
-        """正の整数と分数を指定された最大値以下を利用して出力
-        
+
+
+    def _random_integer(self, min_num: int = 1, max_num: int = 20) -> sy.Integer:
+        """指定された範囲で整数を出力
+
         Args:
-            max_num (int, optional): 出力に利用する数の最大値。デフォルトは6
-            number_type (str, optional): 整数か分数か小数かの指定。デフォルトは指定なしで、どちらも出力
+            min_num (int, optional): 最小値. Defaults to 1.
+            max_num (int, optional): 最大値. Defaults to 20.
         
         Returns:
-            number (Union[sy.Integer, sy.Rational]): 指定された条件を満たす数
-        
-        Developing:
-            分数と整数と小数の混同に注意
-            割合に利用するのであれば、1以下だが、ここまでのようにmax_numをとるとやばそう
+            integer (sy.Integer): 整数
         """
-        
-        def random_integer(max_num: int) -> sy.Integer:
-            """指定された最大値以下の整数を出力
-            
-            Args:
-                max_num (int): 最大値
+        integer = sy.Integer(randint(min_num, max_num))
+        return integer
+    
+    def _random_ratio(self, digit_under_decimal_point: int = 1) -> Union[sy.Float, sy.Rational]:
+        """割合のための0より大きくて1より小さな値を、指定された形に応じて出力
 
-            Returns:
-                integer (sy.Integer): 整数 
-            """
-            integer = sy.Integer(randint(1, max_num))
-            return integer
-        
-        def random_frac(max_num: int) -> sy.Rational:
-            """指定された最大値以下の分数を出力            
+        Args:
+            digit_under_decimal_point (int, optional): 小数点以下の最大の桁数. デフォルトは1.
 
-            Args:
-                max_num (int): 最大値
+        Raises:
+            ValueError: 想定されていない形が要求されたときに挙上
 
-            Returns:
-                frac (sy.Rational): 分数
-            """
-            while True:
-                numerator = randint(1, max_num)
-                denominator = numerator + randint(2, max_num)
-                frac = sy.Rational(numerator, denominator)
-                if not(frac.is_Integer):
-                    break
-            return frac
-        
-        def random_decimal(max_num: int) -> sy.Float:
-            """指定された最大値以下の小数を出力
+        Returns:
+            Union[sy.Float, sy.Rational]: 割合のための値
+        """
+        decimal_or_frac = choice(self._used_numbers_for_ratio)
+        denominator = 10 ** digit_under_decimal_point
+        numerator = (1, denominator - 1)
+        frac_ratio = sy.Rational(numerator, denominator)
+        decimal_ratio = sy.Float(decimal_ratio)
+        if decimal_or_frac == "frac":
+            return frac_ratio
+        elif decimal_or_frac == "decimal":
+            return decimal_ratio
+        elif decimal_or_frac is None:
+            if random() > 0.5:
+                return frac_ratio
+            else:
+                return decimal_ratio
+        else:
+            raise ValueError(f"'decimal_or_frac' is {decimal_or_frac}. This must be 'frac' or 'decimal' or None.")
 
-            Args:
-                max_num (int): 最大値
+    def _random_item(self, theme: str) -> str:
+        """物品の名前をランダムに出力することで、問題のバリュエーションを増やす
 
-            Returns:
-                decimal (sy.Float): 小数
-            """
-            decimal = sy.Float(0.1 * randint(1, max_num))
-            return decimal
+        Args:
+            theme (str): 物品をカウントする際に、着目することが多い単位
+
+        Returns:
+            selected_item (str): 選択された物品
+        """
+        if theme == "weight":
+            items = [
+                "砂", "小麦粉", "米", "水",
+                "本", "紙", "アボガド",
+            ]
+        elif theme == "length":
+            items = [
+                "ロープ", "ひも", "リボン", "テープ",
+                "ワイヤー", "ケーブル", "ロールケーキ",
+            ]
+        elif theme == "volume":
+            items = [
+                "水", "りんごジュース", "オレンジジュース", "牛乳",
+                "炭酸水", "お茶", "レモネード",
+            ]
+        elif theme == "quantity":
+            items = [
+                "りんご", "みかん", "おはじき", "あめ",
+                "石", "アボガド", "ビー玉",
+            ]
+        else:
+            raise ValueError(f"'theme' is {theme}. This isn't expected.")
+        selected_item = choice(items)
+        return selected_item

@@ -7,10 +7,24 @@
     現実的には問題の表示において、percentageが選択されたときに、問題文を変更する。
     どこで分岐させるべき？根本？途中？？？初手without, with??
 
+7/21
+引き続き百分率の扱いについて
+    そもそもありうるパターンとして、
+    frac
+    decimal
+    percentage
+    frac, decimal
+    frac, percentage
+    decimal, percentage
+    frac, decimal, percentage
+    がある。
+    
+    percentageのありなしだけでも、途中で小数に挟むひと手間がかかる。
+    ⇒あとは、最初で分けたほうが良いのか、それとも残り分けたほうがよいのかもんだい
 """
 
 from random import choice, random, randint
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, NamedTuple, Optional, Tuple, Union
 
 import sympy as sy
 
@@ -56,6 +70,7 @@ class RatioProblem:
             割合以外は整数になるぱたーん
         """
         selected_theme = choice(["weight", "length", "volume", "quantity"])
+        selected_ratio = 
         if selected_theme == "weight":
             ratio = self._random_ratio()
             standard_amount = self._random_integer(max_num=30)
@@ -67,7 +82,7 @@ class RatioProblem:
                     if problem_sentence_checker < 0.25:
                         latex_problem = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)の\\( {sy.latex(ratio)} \\)は\\(  (\\, \\, \\, ) \\mathrm{{kg}} \\)です。"
                         latex_answer = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} ) \\)"
                     elif 0.25 <= problem_sentence_checker < 0.5:
                         item = self._random_item(selected_theme)
                         latex_problem = f"\\( {sy.latex(standard_amount)} \\mathrm{{kg}} \\)あった{item}のうち、\\( {sy.latex(ratio)} \\)を運びました。運んだ{item}の重さは\\( (\\, \\, \\, )  \\mathrm{{kg}} \\)です。"
@@ -130,34 +145,60 @@ class RatioProblem:
         integer = sy.Integer(randint(min_num, max_num))
         return integer
     
-    def _random_ratio(self, decimal_or_frac: Optional[str] = None, digit_under_decimal_point: int = 1) -> Union[sy.Float, sy.Rational]:
-        """割合のための0より大きくて1より小さな値を、指定された形に応じて出力
+    def _random_ratio(self, digit_under_decimal_point: int = 1):
+        """割合のための0より大きくて1より小さな値を、指定された形に応じて出力->割合の各表現（分数, 小数, 百分率, 歩合）をあわせて格納
 
         Args:
-            decimal_or_frac (str, optional): 割合の表示を小数にするか分数にするか
             digit_under_decimal_point (int, optional): 小数点以下の最大の桁数. デフォルトは1.
 
         Raises:
             ValueError: 想定されていない形が要求されたときに挙上
 
         Returns:
-            Union[frac_ratio, decimal_ratio] (Union[sy.Float, sy.Rational]): 割合のための値
+            ratio_units (RatioUnits): 計算に必要な値と、それに対応した各種表現を格納したコンテナ
+        
+        Debelopign:
+        In [25]: for (digit, name) in zip(num2_list, names):
+    ...:     print(digit)
+    ...:     print(name)
+    ...:     print("------------------------------------")
+    ...:
         """
+        class RatioUnits(NamedTuple):
+            """割合を表現ごとにあわせて格納
+            
+            Args:
+                ratio (sy.Float): 小数の割合
+                decimal_ratio (str): latex表示された小数の割合
+                frac_ratio (str): latex表示された分数の割合
+                percentage (str): %表示された割合
+                japanese_percentage (str): 割, 分, 厘で表示された割合
+            """
+            ratio: sy.Float
+            decimal_ratio: str
+            frac_ratio: str
+            float_ratio_latex: str
+            percentage: str
+            japanese_percentage: str
+        
         denominator = 10 ** digit_under_decimal_point
         numerator = (1, denominator - 1)
-        frac_ratio = sy.Rational(numerator, denominator)
-        decimal_ratio = sy.Float(decimal_ratio)
-        if decimal_or_frac == "frac":
-            return frac_ratio
-        elif decimal_or_frac == "decimal":
-            return decimal_ratio
-        elif decimal_or_frac is None:
-            if random() > 0.5:
-                return frac_ratio
-            else:
-                return decimal_ratio
-        else:
-            raise ValueError(f"'decimal_or_frac' is {decimal_or_frac}. This must be 'frac' or 'decimal' or None.")
+        frac = sy.Rational(numerator, denominator)
+        ratio = sy.Float(frac)
+        decimal_ratio = sy.latex(ratio)
+        frac_ratio = sy.Rational(frac)
+        percentage = f"{ratio * 100} \\%"
+        digit_list = list(decimal_ratio)[2:]
+        japanese_percentage_names = ["割", "分", "厘", "毛"]
+        japanese_percentage = ""
+        for digit, name in zip(digit_list, japanese_percentage_names):
+            japanese_percentage += (digit + name)
+        ratio_units = RatioUnits(
+            ratio=ratio, decimal_ratio=decimal_ratio,
+            frac_ratio=frac_ratio, percentage=percentage
+            japanese_percentage=japanese_percentage
+        )
+        return ratio_units
 
     def _random_item(self, theme: str) -> str:
         """物品の名前をランダムに出力することで、問題のバリュエーションを増やす

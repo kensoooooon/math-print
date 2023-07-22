@@ -21,6 +21,19 @@
     
     percentageのありなしだけでも、途中で小数に挟むひと手間がかかる。
     ⇒あとは、最初で分けたほうが良いのか、それとも残り分けたほうがよいのかもんだい
+
+7/22
+百分率、および割、分、厘の扱いについて
+    全部細かく分けるのは正直アレ
+    ->1つselectして、そこからざっくり使い分けたい
+    
+    percentage, japanese_percentageを使って、小数分数が選択されていない場合は？
+    →強制的に小数を選ばざるを得ない。もともとの割合が小数を意識して作られているし、初めて学ぶのが小数になるから
+    
+    値と割合 eg. 34%=0.34, 2割3分=0.23,
+    
+    いっそ、小数と分数、もっというと6年の内容ではなく、5年の内容にフォーカスするのは？
+        fracは抜いて、decimal, percentage, japanese_percentageで統一する
 """
 
 from random import choice, random, randint
@@ -164,11 +177,9 @@ class RatioProblem:
         ratio = sy.Float(frac)
         if selected_ratio == "decimal":
             ratio_latex = sy.latex(ratio)
-        elif selected_ratio == "frac":
-            ratio_latex = sy.latex(frac)
         elif selected_ratio == "percentage":
-            percentage = f"{ratio * 100} \\%"
-        digit_list = list(decimal_ratio)[2:]
+            ratio_latex = f"{ratio * 100} \\%"
+        digit_list = list(str(ratio))[2:]
         japanese_percentage_names = ["割", "分", "厘", "毛"]
         japanese_percentage = ""
         for digit, name in zip(digit_list, japanese_percentage_names):

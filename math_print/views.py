@@ -1586,7 +1586,6 @@ def print_ratio(request):
     used_numbers_for_ratio = request.POST.getlist("used_number_for_ratio")
     if not(used_numbers_for_ratio):
         used_numbers_for_ratio.append("decimal")
-        used_numbers_for_ratio.append("frac")
         used_numbers_for_ratio.append("percentage")
         used_numbers_for_ratio.append("japanese_percentage")
     unit_change = request.POST["unit_change"]
@@ -2866,7 +2865,6 @@ def display_ratio(request):
     used_numbers_for_ratio = request.POST.getlist("used_number_for_ratio")
     if not(used_numbers_for_ratio):
         used_numbers_for_ratio.append("decimal")
-        used_numbers_for_ratio.append("frac")
         used_numbers_for_ratio.append("percentage")
         used_numbers_for_ratio.append("japanese_percentage")
     unit_change = request.POST["unit_change"]

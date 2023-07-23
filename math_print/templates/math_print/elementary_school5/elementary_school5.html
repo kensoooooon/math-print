@@ -565,7 +565,7 @@
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>
-                <small class="text-muted">割合に利用される数</small>
+                <small class="text-muted">割合に利用される数の表示形式</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="decimal" name="used_number_for_ratio" id="ratio_decimal" checked>
@@ -580,13 +580,36 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="japanese_percentage" name="used_number_for_ratio" id="ratio_japanese_percentage" checked>
+                        <input class="form-check-input" type="checkbox" value="japanese_percentage" name="used_number_for_ratio" id="ratio_japanese_percentage">
                         <label class="form-check-label" for="ratio_japanese_percentage">
                             割,分,厘
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_number_for_ratio')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_number_for_ratio')" value="全部はずし">
+                </div>
+                <small class="text-muted">割合に利用される数の小数点以下の桁数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="digit_under_decimal_point" id="ratio_1" checked>
+                        <label class="form-check-label" for="ratio_1">
+                            1桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="digit_under_decimal_point" id="ratio_2" checked>
+                        <label class="form-check-label" for="ratio_2">
+                            2桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="digit_under_decimal_point" id="ratio_3">
+                        <label class="form-check-label" for="ratio_3">
+                            3桁
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('digit_under_decimal_point')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('digit_under_decimal_point')" value="全部はずし">
                 </div>
                 <small class="text-muted">長さや重さ、面積の問題で単位の変換を必要とすることがあるか</small>
                 <div class="form-group">

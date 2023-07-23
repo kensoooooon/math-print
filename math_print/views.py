@@ -1593,12 +1593,23 @@ def print_ratio(request):
         used_unit_change = True
     elif unit_change == "no":
         used_unit_change = False
+    digit_under_the_decimal_point = [int(num_str) for num_str in request.POST.getlist("digit_under_the_decimal_point")]
+    if not(digit_under_the_decimal_point):
+        digit_under_the_decimal_point.append(1)
+        digit_under_the_decimal_point.append(2)
+        digit_under_the_decimal_point.append(3)
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio, used_unit_change=used_unit_change)
-            problem2 = RatioProblem(problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio, used_unit_change=used_unit_change)
+            problem1 = RatioProblem(
+                problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio,
+                used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+            )
+            problem2 = RatioProblem(
+                problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio,
+                used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+            )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school6/ratio/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
@@ -2872,10 +2883,21 @@ def display_ratio(request):
         used_unit_change = True
     elif unit_change == "no":
         used_unit_change = False
+    digit_under_the_decimal_point = [int(num_str) for num_str in request.POST.getlist("digit_under_the_decimal_point")]
+    if not(digit_under_the_decimal_point):
+        digit_under_the_decimal_point.append(1)
+        digit_under_the_decimal_point.append(2)
+        digit_under_the_decimal_point.append(3)
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER // 2)):
-        problem1 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio, used_unit_change=used_unit_change)
-        problem2 = RatioProblem(problem_types=problem_types, used_numbers=used_numbers_for_ratio, used_unit_change=used_unit_change)
+        problem1 = RatioProblem(
+            problem_types=problem_types, used_numbers=used_numbers_for_ratio,
+            used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+        )
+        problem2 = RatioProblem(
+            problem_types=problem_types, used_numbers=used_numbers_for_ratio,
+            used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+        )
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school6/ratio/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
 

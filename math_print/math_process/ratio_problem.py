@@ -120,13 +120,17 @@ class RatioProblem:
                             latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
                             latex_answer += f"次には運んだ量を求めると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
                         latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)が運んだ量となる。\n"
-                        latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、残った量は\\( {standard_amount} - {amount_to_compare} = {sy.latex(standard_amount - amount_to_compare)} \\mathrm{{kg}} \\)"
+                        latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、残った量は\\( {sy.latex(standard_amount)} - {sy.latex(amount_to_compare)} = {sy.latex(standard_amount - amount_to_compare)} \\mathrm{{kg}} \\)"
                     else:
                         increase_or_decrease = choice(["increase", "decrease"])
                         if increase_or_decrease == "increase":
                             latex_problem = f"{standard_amount_in_latex}の{item}を{ratio_in_latex}だけ増やしました。増やした後の重さは\\( (\\, \\, \\, ) \\mathrm{{kg}} \\)です。"
                             if selected_ratio == "decimal":
-                                latex_problem = f"{standard_amount_in_latex}の{item}を{ratio_in_latex}だけ増やしました。増やした後の重さは\\( (\\, \\, \\, ) \\mathrm{{kg}} \\)です。"
+                                latex_answer = f"まずは増やした量をもとめると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                            elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
+                                pass
+                            latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)が増やした量となる。\n" 
+                            latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、増やした後の重さは\\( {sy.latex(standard_amount)} + {sy.latex(amount_to_compare)} = {sy.latex(standard_amount + amount_to_compare)} \\mathrm{{kg}} \\)"                           
                 elif from_to_unit == "g_to_g":
                     pass
             elif self._used_unit_change:

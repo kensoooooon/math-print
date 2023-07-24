@@ -39,6 +39,15 @@
 ratioまわり
     0.6が60.0%になる。
     ->.0patternのみを排除する？re??[:]??
+    
+    def decimal_normalize(f):
+        text = str(f)
+        while True:
+            if ("." in text and text[-1] == "0") or (text[-1] == "."):
+                text = text[:-1]
+                continue
+            break
+        return text
 """
 
 from random import choice, random, randint
@@ -139,7 +148,7 @@ class RatioProblem:
                                 latex_answer = f"まずは増やした量をもとめると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
                             elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
                                 latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                                latex_answer += f"次に増やした量を求めると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                                latex_answer += f"次に増やした量を求めると、{standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
                             latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} (\\mathrm{{kg}} )\\)が増やした量となる。\n" 
                             latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、増やした後の重さは\\( {sy.latex(standard_amount)} + {sy.latex(amount_to_compare)} = {sy.latex(standard_amount + amount_to_compare)} \\mathrm{{kg}} \\)"                           
                         elif increase_or_decrease == "decrease":
@@ -226,14 +235,22 @@ class RatioProblem:
         # numerator = randint(1, denominator - 1)
         # frac = sy.Rational(numerator, denominator)
         # ratio_value = sy.Float(frac)
+        
+        def decimal_normalize(f):
+            text = str(f)
+            while True:
+                if ("." in text and text[-1] == "0") or (text[-1] == "."):
+                    text = text[:-1]
+                    continue
+                break
+            return text
+        
         ratio_value = (10 ** -digit_under_decimal_point) * randint(1, 10 ** digit_under_decimal_point - 1)
-        print(f"ratio_value: {ratio_value}")
         if selected_ratio == "decimal":
             ratio_in_latex = f"\\( {sy.latex(ratio_value)} \\)"
-            print(f"ratio_in_latex in decimal: {ratio_in_latex}")
         elif selected_ratio == "percentage":
-            ratio_in_latex = f"\\( {sy.latex(ratio_value * 100)} \\% \\)"
-            print(f"ratio_in_latex in percentage: {ratio_in_latex}")
+            normalized_percentage = decimal_normalize(sy.latex(ratio_value * 100))
+            ratio_in_latex = f"\\( {normalized_percentage} \\% \\)"
         elif selected_ratio == "japanese_percentage":
             digit_list = sy.latex(ratio_value)[2:]
             japanese_percentage_names = ["割", "分", "厘", "毛"]

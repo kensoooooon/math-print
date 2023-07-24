@@ -34,6 +34,11 @@
     
     いっそ、小数と分数、もっというと6年の内容ではなく、5年の内容にフォーカスするのは？
         fracは抜いて、decimal, percentage, japanese_percentageで統一する
+
+7/24
+ratioまわり
+    0.6が60.0%になる。
+    ->.0patternのみを排除する？re??[:]??
 """
 
 from random import choice, random, randint
@@ -209,9 +214,13 @@ class RatioProblem:
             ratio_in_latex (str): latexが入り混じった問題や解答で、そのまま用いることができる割合
 
         for _ in range(10):
-            num = 0.01 * randint(1, 99)
-            per = num * 100
-            print(sy.latex(num))
+            under_the_decimal_point = randint(1, 2)
+            num = (0.1 ** under_the_decimal_point) * randint(1, 10 ** under_the_decimal_point - 1)
+            print(f"num:{num}")
+            print(f"latex:{sy.latex(num)}")
+            print(f"multi: {num * 100}")
+            print(f"percentage: {sy.latex(num * 100)}")
+            print("----------------------")
         """        
         # denominator = 10 ** digit_under_decimal_point
         # numerator = randint(1, denominator - 1)

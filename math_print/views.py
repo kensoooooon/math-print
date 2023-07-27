@@ -1576,7 +1576,7 @@ def print_ratio(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
-    PROBLEM_NUMBER = 10
+    PROBLEM_NUMBER = 8
     paper_number = int(request.POST["paper_number"])
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
@@ -2867,7 +2867,7 @@ def display_ratio(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    PROBLEM_NUMBER = 10
+    PROBLEM_NUMBER = 8
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("amount_to_compare")
@@ -2883,9 +2883,7 @@ def display_ratio(request):
         used_unit_change = True
     elif unit_change == "no":
         used_unit_change = False
-    print(f"digit gotten: {request.POST.getlist('digit_under_the_decimal_point')}")
     digit_under_the_decimal_point = [int(num_str) for num_str in request.POST.getlist("digit_under_the_decimal_point")]
-    print(f"digit_under_the_decimal_point: {digit_under_the_decimal_point}")
     if not(digit_under_the_decimal_point):
         digit_under_the_decimal_point.append(1)
         digit_under_the_decimal_point.append(2)

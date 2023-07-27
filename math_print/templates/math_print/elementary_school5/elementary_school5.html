@@ -582,7 +582,7 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="japanese_percentage" name="used_number_for_ratio" id="ratio_japanese_percentage">
                         <label class="form-check-label" for="ratio_japanese_percentage">
-                            割,分,厘
+                            歩合(割,分,厘)
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_number_for_ratio')" value="全部のせ">
@@ -631,24 +631,24 @@
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="RatioFivePaperRadio" checked>
                         <label class="form-check-label" for="RatioFivePaperRadio">
-                            10問×5枚
+                            8問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="RatioTenPaperRadio">
                         <label class="form-check-label" for="RatioTenPaperRadio">
-                            10問×10枚
+                            8問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="RatioFifteenPaperRadio">
                         <label class="form-check-label" for="RatioFifteenPaperRadio">
-                            10問×15枚
+                            8問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'ratio_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'ratio_display' %}">   
+                <input class="btn btn-primary" type="submit" value="そのまま解く(8問)" formaction="{% url 'ratio_display' %}">   
             </form>
         </div>
     </div>

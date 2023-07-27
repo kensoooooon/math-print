@@ -139,7 +139,7 @@ class RatioProblem:
                         latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
                         latex_answer += f"次には運んだ量を求めると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
                     latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} ({unit_in_latex} )\\)が運んだ量となる。\n"
-                    latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、残った量は\\( {sy.latex(standard_amount)} - {sy.latex(amount_to_compare)} = {sy.latex(standard_amount - amount_to_compare)} {unit_in_latex} \\)"
+                    latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、残った量は\\( {sy.latex(standard_amount)} - {sy.latex(amount_to_compare)} = {self._decimal_normalize(sy.latex(standard_amount - amount_to_compare))} {unit_in_latex} \\)"
                 else:
                     item = self._random_item(selected_theme)
                     increase_or_decrease = choice(["increase", "decrease"])
@@ -214,7 +214,7 @@ class RatioProblem:
                     elif from_to_unit == "g_to_kg":
                         to_remained = from_remained / 1000
                         to_remained_in_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{kg}} \\)"
-                    latex_answer += f"もともとあった{item}は{from_standard_amount_in_latex}なので、残った量は\\( {self._decimal_normalize(sy.latex(from_standard_amount))} - {self._decimal_normalize(sy.latex(from_amount_to_compare))} = {sy.latex(from_remained)} {from_unit_in_latex} \\)\n"
+                    latex_answer += f"もともとあった{item}は{from_standard_amount_in_latex}なので、残った量は\\( {self._decimal_normalize(sy.latex(from_standard_amount))} - {self._decimal_normalize(sy.latex(from_amount_to_compare))} = {self._decimal_normalize(sy.latex(from_remained))} {from_unit_in_latex} \\)\n"
                     latex_answer += f"さらにこれを指定された単位になおすと、{to_remained_in_latex}となる。"
                 else:
                     item = self._random_item(selected_theme)

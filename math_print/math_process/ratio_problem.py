@@ -48,6 +48,10 @@ ratioまわり
                 continue
             break
         return text
+
+
+7/27
+重さの分は完成。ただ、表記がぶれていてすこぶる見づらい
 """
 
 from random import choice, random, randint
@@ -94,119 +98,129 @@ class RatioProblem:
             latex_problem (str): latex形式と通常の文字が混在した問題
         
         Develop:
-            重さ、長さ、体積、人数や個数など
-            割合以外は整数になるぱたーん
+            ひとまず完成こそしたものの、すこぶる見づらい案件
+            in_latexとかの周りの名づけ方、あるいは使い方が煩雑である
+                in_latexのときは、\\( \\)の中で使うことを前提
+                out_of_latexのときは、\\( \\)の外で使うことを前提
+            
+            おおむねok
+            あとは、単位選択にランダム性を持たせる方がよい？
+                views.pyとratio_problem.pyで一回ずつかませるとか
+
         """
         # selected_theme = choice(["weight", "length", "volume", "quantity"])
         selected_theme = "weight"
         if selected_theme == "weight":
             selected_ratio = choice(self._used_numbers_for_ratio)
             selected_digit_under_the_decimal_point = choice(self._digit_under_the_decimal_point)
-            ratio, ratio_in_latex = self._random_ratio(selected_ratio=selected_ratio, digit_under_decimal_point=selected_digit_under_the_decimal_point)
+            ratio_value, ratio_out_of_latex = self._random_ratio(selected_ratio=selected_ratio, digit_under_decimal_point=selected_digit_under_the_decimal_point)
+            ratio_value_in_latex = self._decimal_normalize(sy.latex(ratio_value))
             if not(self._used_unit_change):
                 from_to_unit = choice(["kg_to_kg", "g_to_g"])
                 standard_amount = self._random_integer(max_num=200)
-                amount_to_compare = standard_amount * ratio
+                amount_to_compare = standard_amount * ratio_value
+                amount_to_compare_in_latex = f"{self._decimal_normalize(sy.latex(amount_to_compare))}"
                 if from_to_unit == "kg_to_kg":
                     unit_in_latex = "\\mathrm{kg}"
                 elif from_to_unit == "g_to_g":
                     unit_in_latex = "\\mathrm{g}"
-                standard_amount_in_latex = f"\\( {sy.latex(standard_amount)} {unit_in_latex} \\)"
+                standard_amount_in_latex = f"{self._decimal_normalize(sy.latex(standard_amount))}"
+                standard_amount_out_of_latex_with_unit = f"\\( {standard_amount_in_latex} {unit_in_latex} \\)"
                 problem_sentence_checker = random()
                 if problem_sentence_checker < 0.25:
-                    latex_problem = f"{standard_amount_in_latex}の{ratio_in_latex}は\\(  (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                    latex_problem = f"{standard_amount_out_of_latex_with_unit}の{ratio_out_of_latex}は\\(  (\\, \\, \\, ) {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
-                        latex_answer = f"{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                        latex_answer = f"{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_out_of_latex}が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                        latex_answer = f"{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                        latex_answer += f"{standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} ({unit_in_latex}) \\)"
+                        latex_answer = f"{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex} \\)となる。\n"
+                        latex_answer += f"{standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {ratio_value_in_latex} = {amount_to_compare_in_latex} ({unit_in_latex}) \\)"
                 elif 0.25 <= problem_sentence_checker < 0.5:
                     item = self._random_item(selected_theme)
-                    latex_problem = f"{standard_amount_in_latex}あった{item}のうち{ratio_in_latex}を運びました。運んだ{item}の重さは\\( (\\, \\, \\, )  {unit_in_latex} \\)です。"
+                    latex_problem = f"{standard_amount_out_of_latex_with_unit}あった{item}のうち{ratio_out_of_latex}を運びました。運んだ{item}の重さは\\( (\\, \\, \\, )  {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
-                        latex_answer = f"{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                        latex_answer = f"{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_out_of_latex}が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                        latex_answer = f"{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                        latex_answer += f"{standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} ({unit_in_latex} )\\)"
+                        latex_answer = f"{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                        latex_answer += f"{standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {ratio_value_in_latex}= {amount_to_compare_in_latex} ({unit_in_latex} )\\)"
                 elif 0.5 <= problem_sentence_checker < 0.75:
                     item = self._random_item(selected_theme)
-                    latex_problem = f"{standard_amount_in_latex}あった{item}のうち、{ratio_in_latex}を運びました。残った{item}の重さは\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                    latex_problem = f"{standard_amount_out_of_latex_with_unit}あった{item}のうち、{ratio_out_of_latex}を運びました。残った{item}の重さは\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
-                        latex_answer = f"まずは運んだ量を求めると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                        latex_answer = f"まずは運んだ量を求めると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                        latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                        latex_answer += f"次には運んだ量を求めると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
-                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} ({unit_in_latex} )\\)が運んだ量となる。\n"
-                    latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、残った量は\\( {sy.latex(standard_amount)} - {sy.latex(amount_to_compare)} = {self._decimal_normalize(sy.latex(standard_amount - amount_to_compare))} {unit_in_latex} \\)"
+                        latex_answer = f"まずは{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                        latex_answer += f"次には運んだ量を求めると、{standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
+                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {ratio_value_in_latex}= {amount_to_compare_in_latex} ({unit_in_latex} )\\)が運んだ量となる。\n"
+                    latex_answer += f"もともとあった{item}は{standard_amount_out_of_latex_with_unit}なので、残った量は\\( {sy.latex(standard_amount)} - {amount_to_compare_in_latex} = {self._decimal_normalize(sy.latex(standard_amount - amount_to_compare))} {unit_in_latex} \\)"
                 else:
                     item = self._random_item(selected_theme)
                     increase_or_decrease = choice(["increase", "decrease"])
                     if increase_or_decrease == "increase":
-                        latex_problem = f"{standard_amount_in_latex}の{item}を{ratio_in_latex}だけ増やしました。増やした後の重さは\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                        latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ増やしました。増やした後の重さは\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
                         if selected_ratio == "decimal":
-                            latex_answer = f"まずは増やした量をもとめると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                            latex_answer = f"まずは増やした量をもとめると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                         elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                            latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                            latex_answer += f"次に増やした量を求めると、{standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} ({unit_in_latex} )\\)が増やした量となる。\n" 
-                        latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、増やした後の重さは\\( {sy.latex(standard_amount)} + {sy.latex(amount_to_compare)} = {sy.latex(standard_amount + amount_to_compare)} {unit_in_latex} \\)"                           
+                            latex_answer = f"まずは{ratio_value_in_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                            latex_answer += f"次に増やした量を求めると、{standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {ratio_value_in_latex}= {amount_to_compare_in_latex} ({unit_in_latex} )\\)が増やした量となる。\n" 
+                        latex_answer += f"もともとあった{item}は{standard_amount_out_of_latex_with_unit}なので、増やした後の重さは\\( {sy.latex(standard_amount)} + {amount_to_compare_in_latex} = {self._decimal_normalize(sy.latex(standard_amount + amount_to_compare))} {unit_in_latex} \\)"                           
                     elif increase_or_decrease == "decrease":
-                        latex_problem = f"{standard_amount_in_latex}の{item}を{ratio_in_latex}だけ減らした。減らした後の重さは\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                        latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らした。減らした後の重さは\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
                         if selected_ratio == "decimal":
-                            latex_answer = f"まずは減らした量をもとめると、{standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                            latex_answer = f"まずは減らした量をもとめると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                         elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                            latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                            latex_answer += f"次に減らした量を求めると、{standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {sy.latex(ratio)} = {sy.latex(amount_to_compare)} ({unit_in_latex} )\\)が増やした量となる。\n" 
-                        latex_answer += f"もともとあった{item}は{standard_amount_in_latex}なので、減らした後の重さは\\( {sy.latex(standard_amount)} - {sy.latex(amount_to_compare)} = {sy.latex(standard_amount - amount_to_compare)} {unit_in_latex} \\)"                    
+                            latex_answer = f"まずは{ratio_value_in_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                            latex_answer += f"次に減らした量を求めると、{standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(standard_amount)}  \\times {ratio_value_in_latex}= {amount_to_compare_in_latex} ({unit_in_latex} )\\)が増やした量となる。\n" 
+                        latex_answer += f"もともとあった{item}は{standard_amount_out_of_latex_with_unit}なので、減らした後の重さは\\( {sy.latex(standard_amount)} - {amount_to_compare_in_latex} = {self._decimal_normalize(sy.latex(standard_amount - amount_to_compare))} {unit_in_latex} \\)"                    
             elif self._used_unit_change:
                 from_to_unit = choice(["kg_to_g", "g_to_kg"])
                 if from_to_unit == "kg_to_g":
                     from_unit_in_latex = "\\mathrm{kg}"
                     to_unit_in_latex = "\\mathrm{g}"
                     from_standard_amount = self._random_integer(max_num=20)
-                    from_amount_to_compare = from_standard_amount * ratio
+                    from_amount_to_compare = from_standard_amount * ratio_value
                     to_amount_to_compare = from_amount_to_compare * 1000
                 elif from_to_unit == "g_to_kg":
                     from_unit_in_latex = "\\mathrm{g}"
                     to_unit_in_latex = "\\mathrm{kg}"
                     from_standard_amount = 250 * self._random_integer(20)
-                    from_amount_to_compare = from_standard_amount * ratio
+                    from_amount_to_compare = from_standard_amount * ratio_value
                     to_amount_to_compare = from_amount_to_compare / 1000
-                from_standard_amount_in_latex = f"\\( {sy.latex(from_standard_amount)} {from_unit_in_latex} \\)"
+                from_standard_amount_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(from_standard_amount))} {from_unit_in_latex} \\)"
                 from_amount_to_compare_in_latex = f"\\( {self._decimal_normalize(sy.latex(from_amount_to_compare))} {from_unit_in_latex}\\)" 
-                to_amount_to_compare_in_latex = f"\\( {self._decimal_normalize(sy.latex(to_amount_to_compare))} {to_unit_in_latex} \\)"
+                to_amount_to_compare_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_amount_to_compare))} {to_unit_in_latex} \\)"
                 problem_sentence_checker = random()
                 if problem_sentence_checker < 0.25:
-                    latex_problem = f"{from_standard_amount_in_latex}の{ratio_in_latex}は\\(  (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{ratio_out_of_latex}は\\(  (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
-                        latex_answer = f"{from_standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                        latex_answer = f"{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                        latex_answer = f"{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                        latex_answer += f"{from_standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {sy.latex(ratio)} = {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex}) \\)\n"
-                    latex_answer += f"さらにこれを指定された単位になおすと、{to_amount_to_compare_in_latex}となる。"
+                        latex_answer = f"{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                        latex_answer += f"{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {ratio_value_in_latex}= {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex}) \\)\n"
+                    latex_answer += f"さらにこれを指定された単位になおすと、{to_amount_to_compare_out_of_latex}となる。"
                 elif 0.25 <= problem_sentence_checker < 0.5:
                     item = self._random_item(selected_theme)
-                    latex_problem = f"{from_standard_amount_in_latex}あった{item}のうち{ratio_in_latex}を運びました。運んだ{item}の重さは\\( (\\, \\, \\, )  {to_unit_in_latex} \\)です。"
+                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}あった{item}のうち{ratio_out_of_latex}を運びました。運んだ{item}の重さは\\( (\\, \\, \\, )  {to_unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
-                        latex_answer = f"{from_standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                        latex_answer = f"{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                        latex_answer = f"{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                        latex_answer += f"{from_standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {sy.latex(ratio)} = {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex} )\\)\n"
-                    latex_answer += f"さらにこれを指定された単位になおすと、{to_amount_to_compare_in_latex}となる。"
+                        latex_answer = f"{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                        latex_answer += f"{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {ratio_value_in_latex}= {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex} )\\)\n"
+                    latex_answer += f"さらにこれを指定された単位になおすと、{to_amount_to_compare_out_of_latex}となる。"
                 elif 0.5 <= problem_sentence_checker < 0.75:
                     item = self._random_item(selected_theme)
-                    latex_problem = f"{from_standard_amount_in_latex}あった{item}のうち、{ratio_in_latex}を運びました。残った{item}の重さは\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}あった{item}のうち、{ratio_out_of_latex}を運びました。残った{item}の重さは\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
-                        latex_answer = f"まずは運んだ量を求めると、{from_standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                        latex_answer = f"まずは運んだ量を求めると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                        latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                        latex_answer += f"次に運んだ量を求めると、{from_standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {sy.latex(ratio)} = {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex} )\\)が運んだ量となる。\n"
+                        latex_answer = f"まずは{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                        latex_answer += f"次に運んだ量を求めると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                    latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {ratio_value_in_latex}= {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex} )\\)が運んだ量となる。\n"
                     from_remained = from_standard_amount - from_amount_to_compare
                     if from_to_unit == "kg_to_g":
                         to_remained = from_remained * 1000
@@ -214,19 +228,19 @@ class RatioProblem:
                     elif from_to_unit == "g_to_kg":
                         to_remained = from_remained / 1000
                         to_remained_in_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{kg}} \\)"
-                    latex_answer += f"もともとあった{item}は{from_standard_amount_in_latex}なので、残った量は\\( {self._decimal_normalize(sy.latex(from_standard_amount))} - {self._decimal_normalize(sy.latex(from_amount_to_compare))} = {self._decimal_normalize(sy.latex(from_remained))} {from_unit_in_latex} \\)\n"
+                    latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、残った量は\\( {self._decimal_normalize(sy.latex(from_standard_amount))} - {self._decimal_normalize(sy.latex(from_amount_to_compare))} = {self._decimal_normalize(sy.latex(from_remained))} {from_unit_in_latex} \\)\n"
                     latex_answer += f"さらにこれを指定された単位になおすと、{to_remained_in_latex}となる。"
                 else:
                     item = self._random_item(selected_theme)
                     increase_or_decrease = choice(["increase", "decrease"])
                     if increase_or_decrease == "increase":
-                        latex_problem = f"{from_standard_amount_in_latex}の{item}を{ratio_in_latex}だけ増やしました。増やした後の重さは\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                        latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ増やしました。増やした後の重さは\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
                         if selected_ratio == "decimal":
-                            latex_answer = f"まずは増やした量をもとめると、{from_standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                            latex_answer = f"まずは増やした量をもとめると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                         elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                            latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                            latex_answer += f"次に増やした量を求めると、{from_standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {sy.latex(ratio)} = {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex} )\\)が増やした量となる。\n" 
+                            latex_answer = f"まずは{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                            latex_answer += f"次に増やした量を求めると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {ratio_value_in_latex}= {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({from_unit_in_latex} )\\)が増やした量となる。\n" 
                         from_added = from_standard_amount + from_amount_to_compare
                         if from_to_unit == "kg_to_g":
                             to_added = from_added * 1000
@@ -234,16 +248,16 @@ class RatioProblem:
                         elif from_to_unit == "g_to_kg":
                             to_added = from_added / 1000
                             to_added_in_latex = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{kg}} \\)"
-                        latex_answer += f"もともとあった{item}は{from_standard_amount_in_latex}なので、増やした後の重さは\\( {sy.latex(from_standard_amount)} + {sy.latex(from_amount_to_compare)} = {self._decimal_normalize(sy.latex(from_added))} {from_unit_in_latex} \\)\n"
+                        latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、増やした後の重さは\\( {sy.latex(from_standard_amount)} + {sy.latex(from_amount_to_compare)} = {self._decimal_normalize(sy.latex(from_added))} {from_unit_in_latex} \\)\n"
                         latex_answer += f"さらにこれを指定された単位になおすと、{to_added_in_latex}となる。"                           
                     elif increase_or_decrease == "decrease":
-                        latex_problem = f"{from_standard_amount_in_latex}の{item}を{ratio_in_latex}だけ減らした。減らした後の重さは\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                        latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らした。減らした後の重さは\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
                         if selected_ratio == "decimal":
-                            latex_answer = f"まずは減らした量をもとめると、{from_standard_amount_in_latex}がもとにする量、{ratio_in_latex}が割合なので、\n"
+                            latex_answer = f"まずは減らした量をもとめると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                         elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
-                            latex_answer = f"まずは{ratio_in_latex}を小数の割合になおすと、\\( {sy.latex(ratio)} \\)となる。\n"
-                            latex_answer += f"次に減らした量を求めると、{from_standard_amount_in_latex}がもとにする量、\\( {sy.latex(ratio)} \\)が割合なので、\n"
-                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {sy.latex(ratio)} = {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({to_unit_in_latex} )\\)が減らした量となる。\n" 
+                            latex_answer = f"まずは{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"
+                            latex_answer += f"次に減らした量を求めると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex}\\)が割合なので、\n"
+                        latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {sy.latex(from_standard_amount)}  \\times {ratio_value_in_latex}= {self._decimal_normalize(sy.latex(from_amount_to_compare))} ({to_unit_in_latex} )\\)が減らした量となる。\n" 
                         from_remained = from_standard_amount - from_amount_to_compare
                         if from_to_unit == "kg_to_g":
                             to_remained = from_remained * 1000
@@ -251,7 +265,7 @@ class RatioProblem:
                         elif from_to_unit == "g_to_kg":
                             to_remained = from_remained / 1000
                             from_remained_in_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{kg}} \\)"
-                        latex_answer += f"もともとあった{item}は{from_standard_amount_in_latex}なので、減らした後の重さは\\( {sy.latex(from_standard_amount)} - {sy.latex(from_amount_to_compare)} = {self._decimal_normalize(sy.latex(from_remained))} {from_unit_in_latex} \\)\n"
+                        latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、減らした後の重さは\\( {sy.latex(from_standard_amount)} - {sy.latex(from_amount_to_compare)} = {self._decimal_normalize(sy.latex(from_remained))} {from_unit_in_latex} \\)\n"
                         latex_answer += f"さらにこれを指定された単位になおすと、{from_remained_in_latex}となる。"                           
         elif selected_theme == "length":
             latex_answer = "dummy answer in amout to compare problem in length."
@@ -313,35 +327,12 @@ class RatioProblem:
         Returns:
             ratio_value (sy.Float): 計算に用いる小数の割合
             ratio_in_latex (str): latexが入り混じった問題や解答で、そのまま用いることができる割合
-
-        for _ in range(10):
-            under_the_decimal_point = randint(1, 2)
-            num = (0.1 ** under_the_decimal_point) * randint(1, 10 ** under_the_decimal_point - 1)
-            print(f"num:{num}")
-            print(f"latex:{sy.latex(num)}")
-            print(f"multi: {num * 100}")
-            print(f"percentage: {sy.latex(num * 100)}")
-            print("----------------------")
         """        
-        # denominator = 10 ** digit_under_decimal_point
-        # numerator = randint(1, denominator - 1)
-        # frac = sy.Rational(numerator, denominator)
-        # ratio_value = sy.Float(frac)
-        
-        def decimal_normalize(f):
-            text = str(f)
-            while True:
-                if ("." in text and text[-1] == "0") or (text[-1] == "."):
-                    text = text[:-1]
-                    continue
-                break
-            return text
-        
         ratio_value = (10 ** -digit_under_decimal_point) * randint(1, 10 ** digit_under_decimal_point - 1)
         if selected_ratio == "decimal":
             ratio_in_latex = f"\\( {sy.latex(ratio_value)} \\)"
         elif selected_ratio == "percentage":
-            normalized_percentage = decimal_normalize(sy.latex(ratio_value * 100))
+            normalized_percentage = self._decimal_normalize(sy.latex(ratio_value * 100))
             ratio_in_latex = f"\\( {normalized_percentage} \\% \\)"
         elif selected_ratio == "japanese_percentage":
             digit_list = sy.latex(ratio_value)[2:]

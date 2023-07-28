@@ -435,8 +435,15 @@ class RatioProblem:
             elif 0.5 <= problem_sentence_checker < 0.75:
                 # next
                 item = self._random_item(selected_theme)
-                latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}運んだとき、残りの{}は{}"
+                remained = standard_amount - amount_to_compare
+                remained_in_latex = f"{self._decimal_normalize(sy.latex(remained))}"
+                remained_out_of_latex_with_unit = f"\\( {remained_in_latex} {unit_in_latex} \\)"
+                latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}運んだとき、残りの{item}は{remained_out_of_latex_with_unit}でした。運ぶ前にあった{item}の{japanese_unit}は\\( (\\, \\, \\, )  {unit_in_latex} \\)です"
                 if selected_ratio == "decimal":
+                    remained_ratio = 1 - ratio_value
+                    remained_ratio_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(remained_ratio))} \\)"
+                    latex_answer = f"{ratio_out_of_latex}運んだということは、残った{japanese_unit}は{remained_ratio_out_of_latex}と等しい。\n"
+                    latex_answer += f"よって、(もとにする量) = (比べる量) \\( \\div \\) (割合) \\( = {amount_} \\)"
                     latex_answer = f"まずは運んだ量を求めると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
                     latex_answer = f"まずは{ratio_out_of_latex}を小数の割合になおすと、\\( {ratio_value_in_latex}\\)となる。\n"

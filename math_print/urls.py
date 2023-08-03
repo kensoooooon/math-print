@@ -40,15 +40,16 @@ urlpatterns = [
     ### 通分 ###
     path('common_denominator/print/', views.print_common_denominator_problem, name='common_denominator_print'),
     path('common_denominator/display/', views.display_common_denominator_problem, name='common_denominator_display'),
+    ### 分数の倍, 割合 ###
+    path('ratio/print', views.print_ratio, name='ratio_print'),
+    path('ratio/display', views.display_ratio, name='ratio_display'),
+    path('ratio/explanation/', views.explain_ratio, name='ratio_explain'),
     ##########################################
     ### 小6 ###
     path('elementary_school6/', views.show_elementary_school6, name='elementary_school6'),
     ### 穴埋め算 ###
     path('fill_in_the_square/print', views.print_fill_in_the_square_problem, name='fill_in_the_square_print'),
     path('fill_in_the_square/display', views.display_fill_in_the_square_problem, name='fill_in_the_square_display'),
-    ### 分数の倍, 割合 ###
-    path('ratio/print', views.print_ratio, name='ratio_print'),
-    path('ratio/display', views.display_ratio, name='ratio_display'),
     ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),

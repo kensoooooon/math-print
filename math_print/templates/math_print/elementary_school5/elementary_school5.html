@@ -13,6 +13,23 @@
     </div>
 {% endblock %}
 
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
 {% block script %}
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
@@ -539,7 +556,8 @@
 
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>割合・百分率・歩合</p>
+            <p id="ratio_title">割合・百分率・歩合</p>
+            <a href="{% url 'ratio_explain' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">問われるもの</small>

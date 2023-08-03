@@ -2977,3 +2977,15 @@ def explain_quadratic_equation(request):
     """
     returned_render = render(request, 'math_print/junior_highschool3/quadratic_equation/for_explain.html', {})
     return returned_render
+
+def explain_ratio(request):
+    """割合・百分率・歩合の問題の解き方の表示を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ    
+    """
+    returned_render = render(request, 'math_print/elementary_school5/ratio/for_explain.html', {})
+    return returned_render

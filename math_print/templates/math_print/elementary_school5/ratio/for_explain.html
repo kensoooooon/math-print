@@ -1,0 +1,143 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+    location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+
+window.addEventListener("load", (event)=>{
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+});
+</script>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+割合・百分率・歩合(解説)
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">割合・百分率・歩合(解説)</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h4">
+        割合・百分率・歩合
+        <small class="text-muted">～文章から、割合・比べる量・もとにする量を見ぬこう～</small>
+    </h1>
+    <br>
+
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+        <li class="list-group-item col-md-6"><a href="#formula" class="text-decoration-none text-reset">公式の確認</a></li>
+        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+    </ul>
+    <br>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <p class="lh-1">ここでは割合の問題を解説していきます。文章問題が中心になっていて、受験でもよく出てくる分野です。</p>
+        <p class="lh-1">ポイントはずばり、<span class="text-decoration-underline">問題の文から、どの数字がどの量にあたるのかをしっかりと見抜くこと</span>です。</p>
+        <p class="lh-1">特に、あとで紹介する比べる量、もとにする量は、どちらなのかわかりづらくなりやすいです。</p>
+        <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="formula">割合とは？</h2>
+            <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
+            <p class="lh-1">割合とは、<span class="text-decoration">ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</span>を表現した数です。</p>
+            <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">具体的な問題を見てみましょう。</p>
+            <p class="lh-1">例1: \( 10 \mathrm{cm} \)は\( 2 \mathrm{cm} \)の何倍ですか?</p>
+            <br>
+            <p class="lh-1">これが一番シンプルな割合のたずね方です。</p>
+            <p class="lh-1">まず、「\( 2 \mathrm{cm} \)の何倍」と聞かれているので、\( 2 \mathrm{cm} \)がもとにする量になります。</p>
+            <p class="lh-1">そして、\( 10 \mathrm{cm} \)が割合を知りたい量、つまり比べる量になります。</p>
+            <p class="lh-1">そのため、この時の割合は\( 10 \div 2 = 5 \)で5倍となります。</p>
+            <p class="lh-1">実際に、\( 2 \mathrm{cm} \)を5倍にすれば、\( 2 \times 5 = 10 \)できちんと\( 10 \mathrm{cm} \)となっています。</p>
+            <p class="lh-1">この流れが割合を計算するときの基本です。何がもとにする量で、何が比べる量なのかが重要です。</p>
+        </div>
+        
+        <div class="m-2 p-2">
+            <p class="lh-1">そしてこれは、割合が小数になったとしても変わりません。次の例を見てみましょう。</p>
+            <br>
+            <p class="lh-1">例2: \( 6 \mathrm{kg} \)は\( 10 \mathrm{kg} \)の何倍ですか?</p>
+            <br>
+            <p class="lh-1">まず、「\( 10 \mathrm{kg} \)の何倍」と聞かれているので、\( 10 \mathrm{kg} \)がもとにする量となります。</p>
+            <p class="lh-1">次に、\( 6 \mathrm{kg} \)が比べる量になります。</p>
+            <p class="lh-1">よって、この時の割合は\( 6 \div 10 = 0.6 \)で0.6倍となります。</p>
+            <p class="lh-1">例1と同じように、\( 10 \mathrm{kg} \)を0.6倍すれば、\( 10 \times 0.6 = 6 \)できちんと\( 6 \mathrm{kg} \)となっていることもわかります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">例1はそれこそ日ごろの生活で自然とやっている計算です。</p>
+            <p class="lh-1">ただ、なれないうちは例2のような計算、つまり小数が出る計算になると、とまどってしまう人が多いです。</p>
+            <p class="lh-1">しかし見ての通り、<span class="text-decoration-underline">やっていること自体は全く同じ</span>になっています。</p>
+            <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
+            <p class="lh-1">あえて公式にするのであれば、「(割合) \( = \) (比べる量) \( \div \) (もとにする量)」となります。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 cloass="text-muted h5" id="afterword">後書き</h2>
+        <p class="lh-1">sample</p>
+    </div>
+</div>
+{% endblock %}

@@ -78,7 +78,7 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#formula" class="text-decoration-none text-reset">公式の確認</a></li>
+        <li class="list-group-item col-md-6"><a href="#formula" class="text-decoration-none text-reset">割合と、その求め方(単位は同じ)</a></li>
         <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
@@ -86,16 +86,16 @@ window.addEventListener("load", (event)=>{
     <div class="row m-4 p-4 border-bottom">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">ここでは割合の問題を解説していきます。文章問題が中心になっていて、受験でもよく出てくる分野です。</p>
-        <p class="lh-1">ポイントはずばり、<span class="text-decoration-underline">問題の文から、どの数字がどの量にあたるのかをしっかりと見抜くこと</span>です。</p>
+        <p class="lh-1">ポイントはずばり、<span class="text-decoration-underline text-warning">問題の文から、どの数字がどの量にあたるのかをしっかりと見抜くこと</span>です。</p>
         <p class="lh-1">特に、あとで紹介する比べる量、もとにする量は、どちらなのかわかりづらくなりやすいです。</p>
         <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
     </div>
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="formula">割合とは？</h2>
+            <h2 class="text-muted h5" id="formula">割合と、その求め方(単位は同じ)</h2>
             <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
-            <p class="lh-1">割合とは、<span class="text-decoration">ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</span>を表現した数です。</p>
+            <p class="lh-1">割合とは、<span class="text-decoration-underline text-warning">ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</span>を表現した数です。</p>
             <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
         </div>
 
@@ -125,7 +125,7 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">例題1はそれこそ日ごろの生活で自然とやっている計算です。</p>
             <p class="lh-1">ただ、なれないうちは例2のような計算、つまり小数が出る計算になると、とまどってしまう人が多いです。</p>
-            <p class="lh-1">しかし見ての通り、<span class="text-decoration-underline">やっていること自体は全く同じ</span>になっています。</p>
+            <p class="lh-1">しかし見ての通り、<span class="text-decoration-underline text-warning">やっていること自体は全く同じ</span>になっています。</p>
             <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
             <p class="lh-1">この計算を公式にすると、「(割合) \( = \) (比べる量) \( \div \) (もとにする量)」となります。</p>
         </div>
@@ -133,7 +133,36 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">それでは次の問題を見てみましょう。</p>
             <br>
-            <p class="lh-1">例題3: </p>
+            <p class="lh-1">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を百分率で表しなさい。</p>
+            <br>
+            <p class="lh-1">初めの計算は、例題1,2と変わりません。</p>
+            <p class="lh-1">\( 40 \mathrm{cm} \)がもとにする量、\( 10 \mathrm{cm} \)が比べる量なので、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)から、割合は\( 0.25 \)です。</p>
+            <p class="lh-1">ここで、<span class="text-decoration-underline text-warning">百分率になおすためには、小数の割合に100をかければよい</span>ので、</p>
+            <p class="lh-1">百分率での割合は、\( 0.25 \times 100 = 25 \)より、\( 25 \% \)となります。</p>
+            <p class="lh-1">問題によっては、このように小数とは違った割合を使わなければならないこともあります。</p>
+            <p class="lh-1">百分率はその代表です。しっかりと書きかえられるようにしておきましょう。</p>
+        </div>
+
+        <div class="m-2 p-2">
+            <p class="lh-1">違う割合関係として、もう1問見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題4: \(  105 \mathrm{m^3} \)の、\( 500 \mathrm{m^3} \)に対する割合を歩合で表しなさい。</p>
+            <br>
+            <p class="lh-1">こちらもやはり、初めの計算は変わりません。</p>
+            <p class="lh-1">\( 105 \mathrm{m^3} \)が比べる量、\( 500 \mathrm{m^3} \)がもとにする量なので、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 105 \div 500 = 0.21 \)から、割合は\( 0.21 \)です。</p>
+            <p class="lh-1">ここで、この数字を<span class="text-decoration-underline">歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</span>必要があります。</p>
+            <p class="lh-1">漢字の方は、とりあえず大きい方から4つ、「<ruby>割<rt>わり</rt></ruby>」「<ruby>分<rt>ぶ</rt></ruby>」「<ruby>厘<rt>りん</rt></ruby>」、それから「<ruby>毛<rt>もう</rt></ruby>」を覚えておけば良いでしょう。それより小さい値は基本的に算数には登場しません。</p>           
+            <p class="lh-1">今回の割合は、\( 0.\color{blue}2\color{orange}1 \)なので、歩合になおすと、
+                <span class="text-primary">2</span>割<span class="text-warning">1</span>分となります。
+            </p>
+            <p class="lh-1">数字に割り当てる漢字さえ覚えておけば、あとは順番に当てはめるだけになっています。</p>
+            <br>
+            <p class="lh-1">また、今回は関係ありませんでしたが、たとえば\( 0.405 \)や\( 0.03 \)のように小数点以下に0が入っているときは、割り当てをすることなく飛ばしましょう。</p>
+            <p class="lh-1">\( 0.\color{blue}4\color{black}0\color{green}5 \)なら<span class="text-primary">4</span>割<span class="text-success">5</span>厘、
+                \( 0.0\color{orange}3 \)なら<span class="text-warning">3</span>厘です。
+            </p>
         </div>
     </div>
 

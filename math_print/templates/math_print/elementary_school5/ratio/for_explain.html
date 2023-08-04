@@ -78,7 +78,8 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#formula" class="text-decoration-none text-reset">割合と、その求め方(単位は同じ)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_without_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位は同じ)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_with_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が異なる)</a></li>
         <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
@@ -93,7 +94,7 @@ window.addEventListener("load", (event)=>{
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="formula">割合と、その求め方(単位は同じ)</h2>
+            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位は同じ)</h2>
             <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
             <p class="lh-1">割合とは、<span class="text-decoration-underline text-warning">ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</span>を表現した数です。</p>
             <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
@@ -145,14 +146,14 @@ window.addEventListener("load", (event)=>{
         </div>
 
         <div class="m-2 p-2">
-            <p class="lh-1">違う割合関係として、もう1問見てみましょう。</p>
+            <p class="lh-1">違う割合の表現として、もう1問見てみましょう。</p>
             <br>
             <p class="lh-1">例題4: \(  105 \mathrm{m^3} \)の、\( 500 \mathrm{m^3} \)に対する割合を歩合で表しなさい。</p>
             <br>
             <p class="lh-1">こちらもやはり、初めの計算は変わりません。</p>
             <p class="lh-1">\( 105 \mathrm{m^3} \)が比べる量、\( 500 \mathrm{m^3} \)がもとにする量なので、</p>
             <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 105 \div 500 = 0.21 \)から、割合は\( 0.21 \)です。</p>
-            <p class="lh-1">ここで、この数字を<span class="text-decoration-underline">歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</span>必要があります。</p>
+            <p class="lh-1">ここで、この数字を<span class="text-decoration-underline text-warning">歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</span>必要があります。</p>
             <p class="lh-1">漢字の方は、とりあえず大きい方から4つ、「<ruby>割<rt>わり</rt></ruby>」「<ruby>分<rt>ぶ</rt></ruby>」「<ruby>厘<rt>りん</rt></ruby>」、それから「<ruby>毛<rt>もう</rt></ruby>」を覚えておけば良いでしょう。それより小さい値は基本的に算数には登場しません。</p>           
             <p class="lh-1">今回の割合は、\( 0.\color{blue}2\color{orange}1 \)なので、歩合になおすと、
                 <span class="text-primary">2</span>割<span class="text-warning">1</span>分となります。
@@ -164,6 +165,25 @@ window.addEventListener("load", (event)=>{
                 \( 0.0\color{orange}3 \)なら<span class="text-warning">3</span>厘です。
             </p>
         </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる)</h2>
+            <p class="lh-1">次も割合を求める問題ですが、<span class="text-decoration-underline">単位が異なる</span>場合を見ていきます。</p>
+            <p class="lh-1"><span class="text-decoration-underline text-warning">単位が異なるときは、単位をそろえてから割合を求める</span>必要があります。</p>
+            <p class="lh-1">そのため、単位が異なる計算が怪しいときは、一度確認するようにしておきましょう。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">例題5: \( 100 \mathrm{g} \)に対する\( 1 \mathrm{kg} \)の割合を歩合で答えなさい。</p>
+            <br>
+            <p class="lh-1">まずは\( 100 \mathrm{g} \)を\( \mathrm{kg} \)になおすか、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおすか、いずれかをやる必要があります。</p>
+            <p class="lh-1">ここでは小さくする方と大きくする方、両方で計算してみて、違いを確認してみましょう。</p>
+            <br>
+            <p class="lh-1">まず小さくする方です。つまり、\( 100 \mathrm{g} \)を\( \mathrm{kg}\)</p>
+            <br>
+            <p class="lh-1">このように、どちらでも答えが出ますので、好みで選んでしまって構いません。</p>
+            <p class="lh-1">ただ、あえていうのであれば、<span class="text-decoration-underline text-warning">小数をなるべくさけたければ、数字が大きくなる方になおす</span>方がよいでしょう。</p>        </div>
     </div>
 
     <div class="row m-4 p-4 border-bottom">

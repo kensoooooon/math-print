@@ -118,7 +118,7 @@ class RatioProblem:
             change_unit = choice([True, False])
         else:
             change_unit = False
-        selected_theme = choice(["weight", "length", "volume"])
+        selected_theme = choice(["weight", "length", "area", "volume"])
         if not(change_unit):
             if selected_theme == "weight":
                 japanese_unit = "重さ"
@@ -140,6 +140,16 @@ class RatioProblem:
                     unit_in_latex = "\\mathrm{m}"
                 elif from_to_unit == "cm_to_cm":
                     unit_in_latex = "\\mathrm{cm}"
+            elif selected_theme == "area":
+                japanese_unit = "面積"
+                from_to_unit = choice(["m^2_to_m^2", "cm^2_to_cm^2"])
+                standard_amount = 10 * self._random_integer(max_num=20)
+                amount_to_compare = standard_amount * ratio_value
+                amount_to_compare_in_latex = f"{self._decimal_normalize(sy.latex(amount_to_compare))}"
+                if from_to_unit == "m^2_to_m^2":
+                    unit_in_latex = "\\mathrm{m^2}"
+                elif from_to_unit == "cm^2_to_cm^2":
+                    unit_in_latex = "\\mathrm{{cm}^2}"
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_m^3", "cm^3_to_cm^3"])
@@ -232,6 +242,21 @@ class RatioProblem:
                     from_standard_amount = 25 * self._random_integer(max_num=20)
                     from_amount_to_compare = from_standard_amount * ratio_value
                     to_amount_to_compare = from_amount_to_compare / 100
+            elif selected_theme == "area":
+                japanese_unit = "面積"
+                from_to_unit = choice(["m^2_to_cm^2", "cm^2_to_m^2"])
+                if from_to_unit == "m^2_to_cm^2":
+                    from_unit_in_latex = "\\mathrm{m^2}"
+                    to_unit_in_latex = "\\mathrm{{cm}^2}"
+                    from_standard_amount = self._random_integer(max_num=20)
+                    from_amount_to_compare = from_standard_amount * ratio_value
+                    to_amount_to_compare = from_amount_to_compare * 100
+                elif from_to_unit == "cm^2_to_m^2":
+                    from_unit_in_latex = "\\mathrm{{cm}^2}"
+                    to_unit_in_latex = "\\mathrm{m^2}"
+                    from_standard_amount = 250 * self._random_integer(max_num=20)
+                    from_amount_to_compare = from_standard_amount * ratio_value
+                    to_amount_to_compare = from_amount_to_compare / 100
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_cm^3", "cm^3_to_m^3"])
@@ -287,24 +312,23 @@ class RatioProblem:
                 from_remained_in_latex_with_unit = f"{from_remained_in_latex} {from_unit_in_latex}"
                 if from_to_unit == "kg_to_g":
                     to_remained = from_remained * 1000
-                    to_remained_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{g}} \\)"
                 elif from_to_unit == "g_to_kg":
                     to_remained = from_remained / 1000
-                    to_remained_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{kg}} \\)"
                 elif from_to_unit == "m_to_cm":
                     to_remained = from_remained * 100
-                    to_remained_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{cm}} \\)"
                 elif from_to_unit == "cm_to_m":
                     to_remained = from_remained / 100
-                    to_remained_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{m}} \\)"
+                elif from_to_unit == "m^2_to_cm^2":
+                    to_remained = from_remained * ((10 ** 2) ** 2)
+                elif from_to_unit == "cm^2_to_m^2":
+                    to_remained = from_remained / ((10 ** 2) ** 2)
                 elif from_to_unit == "m^3_to_cm^3":
                     to_remained = from_remained * ((10 ** 2) ** 3)
-                    to_remained_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{{{cm}}^3}} \\)"
                 elif from_to_unit == "cm^3_to_m^3":
                     to_remained = from_remained / ((10 ** 2) ** 3)
-                    to_remained_out_of_latex = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{m^3}} \\)"
+                to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} {to_unit_in_latex} \\)"
                 latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、残った量は\\( {from_standard_amount_in_latex} - {from_amount_to_compare_in_latex} = {from_remained_in_latex_with_unit} \\)\n"
-                latex_answer += f"さらにこれを指定された単位になおすと、{to_remained_out_of_latex}となる。"
+                latex_answer += f"さらにこれを指定された単位になおすと、{to_remained_out_of_latex_with_unit}となる。"
             else:
                 item = self._random_item(selected_theme)
                 increase_or_decrease = choice(["increase", "decrease"])
@@ -321,22 +345,21 @@ class RatioProblem:
                     from_added_in_latex_with_unit = f"{from_added_in_latex} {from_unit_in_latex}"
                     if from_to_unit == "kg_to_g":
                         to_added = from_added * 1000
-                        to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{g}} \\)"
                     elif from_to_unit == "g_to_kg":
                         to_added = from_added / 1000
-                        to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{kg}} \\)"
                     elif from_to_unit == "m_to_cm":
                         to_added = from_added * 100
-                        to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{cm}} \\)"
                     elif from_to_unit == "cm_to_m":
                         to_added = from_added / 100
-                        to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{m}} \\)"
+                    elif from_to_unit == "m^2_to_cm^2":
+                        to_added = from_added * ((10 ** 2) ** 2)
+                    elif from_to_unit == "cm^2_to_m^2":
+                        to_added = from_added / ((10 ** 2) ** 2)
                     elif from_to_unit == "m^3_to_cm^3":
                         to_added = from_added * ((10 ** 2) ** 3)
-                        to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{{{cm}}^3}} \\)"
                     elif from_to_unit == "cm^3_to_m^3":
                         to_added = from_added / ((10 ** 2) ** 3)
-                        to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} \\mathrm{{m^3}} \\)"
+                    to_added_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_added))} {to_unit_in_latex} \\)"
                     latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、増やした後の{japanese_unit}は\\( {from_standard_amount_in_latex} + {from_amount_to_compare_in_latex} = {from_added_in_latex_with_unit} \\)\n"
                     latex_answer += f"さらにこれを指定された単位になおすと、{to_added_out_of_latex_with_unit}となる。"                           
                 elif increase_or_decrease == "decrease":
@@ -352,22 +375,21 @@ class RatioProblem:
                     from_remained_in_latex_with_unit = f"{from_remained_in_latex} {from_unit_in_latex}"
                     if from_to_unit == "kg_to_g":
                         to_remained = from_remained * 1000
-                        to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{g}} \\)"
                     elif from_to_unit == "g_to_kg":
                         to_remained = from_remained / 1000
-                        to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{kg}} \\)"
                     elif from_to_unit == "m_to_cm":
                         to_remained = from_remained * 100
-                        to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{cm}} \\)"
                     elif from_to_unit == "cm_to_m":
                         to_remained = from_remained / 100
-                        to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{m}} \\)"
+                    elif from_to_unit == "m^2_to_cm^2":
+                        to_remained = from_remained * ((10 ** 2) ** 2)
+                    elif from_to_unit == "cm^2_to_m^2":
+                        to_remained = from_remained / ((10 ** 2) ** 2)
                     elif from_to_unit == "m^3_to_cm^3":
                         to_remained = from_remained * ((10 ** 2) ** 3)
-                        to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{{{cm}}^3}} \\)"
                     elif from_to_unit == "cm^3_to_m^3":
                         to_remained = from_remained / ((10 ** 2) ** 3)
-                        to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} \\mathrm{{m^3}} \\)"
+                    to_remained_out_of_latex_with_unit = f"\\( {self._decimal_normalize(sy.latex(to_remained))} {to_unit_in_latex} \\)"
                     latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、減らした後の{japanese_unit}は\\( {from_standard_amount_in_latex} - {from_amount_to_compare_in_latex} = {from_remained_in_latex_with_unit} \\)\n"
                     latex_answer += f"さらにこれを指定された単位になおすと、{to_remained_out_of_latex_with_unit}となる。" 
         return latex_answer, latex_problem
@@ -387,7 +409,7 @@ class RatioProblem:
             change_unit = choice([True, False])
         else:
             change_unit = False
-        selected_theme = choice(["weight", "length", "volume"])
+        selected_theme = choice(["weight", "length", "area", "volume"])
         if not(change_unit):
             if selected_theme == "weight":
                 japanese_unit = "重さ"
@@ -409,6 +431,16 @@ class RatioProblem:
                     unit_in_latex = "\\mathrm{m}"
                 elif from_to_unit == "cm_to_cm":
                     unit_in_latex = "\\mathrm{cm}"
+            elif selected_theme == "area":
+                japanese_unit = "面積"
+                from_to_unit = choice(["cm^2_to_cm^2", "m^2_to_m^2"])
+                standard_amount = 10 * self._random_integer(max_num=40)
+                amount_to_compare = standard_amount * ratio_value
+                amount_to_compare_in_latex = f"{self._decimal_normalize(sy.latex(amount_to_compare))}"
+                if from_to_unit == "cm^2_to_cm^2":
+                    unit_in_latex = "\\mathrm{{cm}^2}"
+                elif from_to_unit == "m^2_to_m^2":
+                    unit_in_latex = "\\mathrm{m^2}"
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_m^3", "cm^3_to_cm^3"])
@@ -523,6 +555,23 @@ class RatioProblem:
                     to_standard_amount = from_standard_amount / 100
                     from_amount_to_compare = from_standard_amount * ratio_value
                     to_amount_to_compare = from_amount_to_compare / 100
+            elif selected_theme == "area":
+                japanese_unit = "面積"
+                from_to_unit = choice(["m^2_to_cm^2", "cm^2_to_m^2"])
+                if from_to_unit == "m^2_to_cm^2":
+                    from_unit_in_latex = "\\mathrm{m^2}"
+                    to_unit_in_latex = "\\mathrm{cm^2}"
+                    from_standard_amount = self._random_integer(15)
+                    to_standard_amount = from_standard_amount * ((10 ** 2) ** 2)
+                    from_amount_to_compare = from_standard_amount * ratio_value
+                    to_amount_to_compare = from_amount_to_compare * ((10 ** 2) ** 2)
+                elif from_to_unit == "cm^2_to_m^2":
+                    from_unit_in_latex = "\\mathrm{cm^2}"
+                    to_unit_in_latex = "\\mathrm{m^2}"
+                    from_standard_amount = 250 * self._random_integer(15)
+                    to_standard_amount = from_standard_amount / ((10 ** 2) ** 2)
+                    from_amount_to_compare = from_standard_amount * ratio_value
+                    to_amount_to_compare = from_amount_to_compare / ((10 ** 2) ** 2)
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_cm^3", "cm^3_to_m^3"])
@@ -584,6 +633,10 @@ class RatioProblem:
                     to_remained = from_remained * 100
                 elif from_to_unit == "cm_to_m":
                     to_remained = from_remained / 100
+                elif from_to_unit == "m^2_to_cm^2":
+                    to_remained = from_remained * ((10 ** 2) ** 2)
+                elif from_to_unit == "cm^2_to_m^2":
+                    to_remained = from_remained / ((10 ** 2) ** 2)
                 elif from_to_unit == "m^3_to_cm^3":
                     to_remained = from_remained * ((10 ** 2) ** 3)
                 elif from_to_unit == "cm^3_to_m^3":
@@ -615,6 +668,10 @@ class RatioProblem:
                         to_added = from_added * 100
                     elif from_to_unit == "cm_to_m":
                         to_added = from_added / 100
+                    elif from_to_unit == "m^2_to_cm^2":
+                        to_added = from_added * ((10 ** 2) ** 2)
+                    elif from_to_unit == "cm^2_to_m^2":
+                        to_added = from_added / ((10 ** 2) ** 2)
                     elif from_to_unit == "m^3_to_cm^3":
                         to_added = from_added * ((10 ** 2) ** 3)
                     elif from_to_unit == "cm^3_to_m^3":
@@ -643,6 +700,10 @@ class RatioProblem:
                         to_remained = from_remained * 100
                     elif from_to_unit == "cm_to_m":
                         to_remained = from_remained / 100
+                    elif from_to_unit == "m^2_to_cm^2":
+                        to_remained = from_remained * ((10 ** 2) ** 2)
+                    elif from_to_unit == "cm^2_to_m^2":
+                        to_remained = from_remained / ((10 ** 2) ** 2)
                     elif from_to_unit == "m^3_to_cm^3":
                         to_remained = from_remained * ((10 ** 2) ** 3)
                     elif from_to_unit == "cm^3_to_m^3":
@@ -676,7 +737,7 @@ class RatioProblem:
             change_unit = choice([True, False])
         else:
             change_unit = False
-        selected_theme = choice(["weight", "length", "volume"])
+        selected_theme = choice(["weight", "length", "area", "volume"])
         if not(change_unit):
             standard_amount = 10 * self._random_integer(max_num=20)
             if selected_theme == "weight":
@@ -693,6 +754,13 @@ class RatioProblem:
                     unit_in_latex = "\\mathrm{m}"
                 elif from_to_unit == "cm_to_cm":
                     unit_in_latex = "\\mathrm{cm}"
+            elif selected_theme == "area":
+                japanese_unit = "面積"
+                from_to_unit = choice(["m^2_to_m^2", "cm^2_to_cm^2"])
+                if from_to_unit == "m^2_to_m^2":
+                    unit_in_latex = "\\mathrm{m^2}"
+                elif from_to_unit == "cm^2_to_cm^2":
+                    unit_in_latex = "\\mathrm{{cm}^2}"
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_m^3", "cm^3_to_cm^3"])
@@ -816,6 +884,23 @@ class RatioProblem:
                     to_standard_amount = from_standard_amount / 100
                     from_amount_to_compare = from_standard_amount * ratio_value
                     to_amount_to_compare = from_amount_to_compare / 100
+            elif selected_theme == "area":
+                japanese_unit = "面積"
+                from_to_unit = choice(["m^2_to_cm^2", "cm^2_to_m^2"])
+                if from_to_unit == "m^2_to_cm^2":
+                    from_unit_in_latex = "\\mathrm{m^2}"
+                    to_unit_in_latex = "\\mathrm{{cm}^2}"
+                    from_standard_amount = self._random_integer(max_num=20)
+                    to_standard_amount = from_standard_amount * ((10 ** 2) ** 2)
+                    from_amount_to_compare = from_standard_amount * ratio_value
+                    to_amount_to_compare = from_amount_to_compare * ((10 ** 2) ** 2)
+                elif from_to_unit == "cm^2_to_m^2":
+                    from_unit_in_latex = "\\mathrm{{cm}^2}"
+                    to_unit_in_latex = "\\mathrm{{m}^2}"
+                    from_standard_amount = 25 * self._random_integer(max_num=20)
+                    to_standard_amount = from_standard_amount / ((10 ** 2) ** 2)
+                    from_amount_to_compare = from_standard_amount * ratio_value
+                    to_amount_to_compare = from_amount_to_compare / ((10 ** 2) ** 2)
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_cm^3", "cm^3_to_m^3"])
@@ -890,6 +975,10 @@ class RatioProblem:
                     to_remained = from_remained * 100
                 elif from_to_unit == "cm_to_m":
                     to_remained = from_remained / 100
+                elif from_to_unit == "m^2_to_cm^2":
+                    to_remained = from_remained * ((10 ** 2) ** 2)
+                elif from_to_unit == "cm^2_to_m^2":
+                    to_remained = from_remained / ((10 ** 2) ** 2)
                 elif from_to_unit == "m^3_to_cm^3":
                     to_remained = from_remained * ((10 ** 2) ** 3)
                 elif from_to_unit == "cm^3_to_m^3":
@@ -944,6 +1033,10 @@ class RatioProblem:
                     to_remained = from_remained * 100
                 elif from_to_unit == "cm_to_m":
                     to_remained = from_remained / 100
+                elif from_to_unit == "m^2_to_cm^2":
+                    to_remained = from_remained * ((10 ** 2) ** 2)
+                elif from_to_unit == "cm^2_to_m^2":
+                    to_remained = from_remained / ((10 ** 2) ** 2)
                 elif from_to_unit == "m^3_to_cm^3":
                     to_remained = from_remained * ((10 ** 2) ** 3)
                 elif from_to_unit == "cm^3_to_m^3":
@@ -1068,6 +1161,10 @@ class RatioProblem:
                 "砂", "小麦粉", "米", "水",
                 "本", "紙", "アボガド",
             ]
+        elif theme == "area":
+            items = [
+                "紙", "布",
+            ]
         elif theme == "length":
             items = [
                 "ロープ", "ひも", "リボン", "テープ",
@@ -1077,11 +1174,6 @@ class RatioProblem:
             items = [
                 "水", "りんごジュース", "オレンジジュース", "牛乳",
                 "炭酸水", "お茶", "レモネード",
-            ]
-        elif theme == "quantity":
-            items = [
-                "りんご", "みかん", "おはじき", "あめ",
-                "石", "アボガド", "ビー玉",
             ]
         else:
             raise ValueError(f"'theme' is {theme}. This isn't expected.")

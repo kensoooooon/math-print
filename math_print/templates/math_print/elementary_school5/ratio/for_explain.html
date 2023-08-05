@@ -2,10 +2,6 @@
 
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<!-- Stylesheet -->
-<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
-<!-- JavaScript -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         extensions: ["tex2jax.js"],
@@ -78,8 +74,9 @@ window.addEventListener("load", (event)=>{
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#raito_without_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位は同じ)</a></li>
-        <li class="list-group-item col-md-6"><a href="#raito_with_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が異なる)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_without_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が同じ場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_with_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が異なる場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_summary" class="text-decoration-none text-reset">割合のまとめ</a></li>
         <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
@@ -94,7 +91,7 @@ window.addEventListener("load", (event)=>{
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位は同じ)</h2>
+            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が同じ場合)</h2>
             <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
             <p class="lh-1">割合とは、<span class="text-decoration-underline text-warning">ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</span>を表現した数です。</p>
             <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
@@ -162,28 +159,63 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">また、今回は関係ありませんでしたが、たとえば\( 0.405 \)や\( 0.03 \)のように小数点以下に0が入っているときは、割り当てをすることなく飛ばしましょう。</p>
             <p class="lh-1">\( 0.\color{blue}4\color{black}0\color{green}5 \)なら<span class="text-primary">4</span>割<span class="text-success">5</span>厘、
-                \( 0.0\color{orange}3 \)なら<span class="text-warning">3</span>厘です。
+                \( 0.0\color{orange}3 \)なら<span class="text-warning">3</span>分です。
             </p>
         </div>
     </div>
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる)</h2>
+            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる場合)</h2>
             <p class="lh-1">次も割合を求める問題ですが、<span class="text-decoration-underline">単位が異なる</span>場合を見ていきます。</p>
             <p class="lh-1"><span class="text-decoration-underline text-warning">単位が異なるときは、単位をそろえてから割合を求める</span>必要があります。</p>
             <p class="lh-1">そのため、単位が異なる計算が怪しいときは、一度確認するようにしておきましょう。</p>
         </div>
         <div class="m-2 p-2">
-            <p class="lh-1">例題5: \( 100 \mathrm{g} \)に対する\( 1 \mathrm{kg} \)の割合を歩合で答えなさい。</p>
+            <p class="lh-1">例題5: \( 100 \mathrm{g} \)に対する\( 1 \mathrm{kg} \)の割合を小数で答えなさい。</p>
             <br>
             <p class="lh-1">まずは\( 100 \mathrm{g} \)を\( \mathrm{kg} \)になおすか、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおすか、いずれかをやる必要があります。</p>
-            <p class="lh-1">ここでは小さくする方と大きくする方、両方で計算してみて、違いを確認してみましょう。</p>
+            <p class="lh-1">ここでは単位をかえたあとに、数が小さくする方と大きくする方、両方で計算してみて違いを確認してみましょう。</p>
             <br>
-            <p class="lh-1">まず小さくする方です。つまり、\( 100 \mathrm{g} \)を\( \mathrm{kg}\)</p>
+            <p class="lh-1">まず小さくする方です。つまり、\( 100 \mathrm{g} \)を\( \mathrm{kg}\)になおしてから計算する、という流れです。</p>
+            <p class="lh-1">\( \mathrm{g} \)を\( \mathrm{kg} \)になおすためには、1000で割ればOKです。そのため、\( 100 \mathrm{g} \)は\( 100 \div 1000 = 0.1 \mathrm{kg} \)となります。数は変える前と比べて小さくなっていますね。</p>
+            <p class="lh-1">単位がそろったので、あとは公式どおり割合を求めると、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 0.1 \div 1 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
+            <br>
+            <p class="lh-1">続いては、大きくするほうです。つまり、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおしてから計算します。</p>
+            <p class="lh-1">\( \mathrm{kg} \)を\( \mathrm{g} \)になおすためには、1000をかければよいです。そのため、\( 1 \mathrm{kg} \)は\( 1 \times 1000 = 1000 \mathrm{g} \)となります。こちらは逆に、変える前と比べて数が大きくなっていますね。</p>
+            <p class="lh-1">あとは公式どおり割合を求めると、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 100 \div 1000 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
             <br>
             <p class="lh-1">このように、どちらでも答えが出ますので、好みで選んでしまって構いません。</p>
-            <p class="lh-1">ただ、あえていうのであれば、<span class="text-decoration-underline text-warning">小数をなるべくさけたければ、数字が大きくなる方になおす</span>方がよいでしょう。</p>        </div>
+            <p class="lh-1">ただ、あえていうのであれば、<span class="text-decoration-underline text-warning">数字が大きくなる方になおすことで、小数の計算をなるべくさける</span>ことをおすすめします。</p>
+            <p class="lh-1">小数の計算は、たとえば小数点の場所など、考えることが少し多いです。特にこだわりがなければ、数が大きくなるほうに変えてあげてください。</p>
+            <p class="lh-1">小さくするほうに変えるよりも、小数の計算が必要になる可能性が低くなります。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">もう1問、少しだけひねった問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1">例題6: \( 3 \mathrm{m}^2 \)の紙のうち、\( 22500 \mathrm{cm}^2 \)を切り取って運びました。残りの紙は、初めの紙のどれくらいの割合になるか、歩合で答えなさい。</p>
+            <br>
+            <p class="lh-1">まず、先ほどと同じように単位をそろえます。\( \mathrm{m}^2 \)を\( \mathrm{cm^2} \)になおすためには、10000をかけれよいので、\( 3 \mathrm{m}^2 \)は、\( 3 \times 10000 = 30000 \mathrm{cm}^2 \)となります。</p>
+            <p class="lh-1">次に、初めの紙が\( 30000 \mathrm{cm}^2 \)、切り取って運んだ紙は\( 22500 \mathrm{cm}^2 \)なので、残った紙は、\( 30000 - 22500 = 7500 \mathrm{cm}^2 \)となります。</p>
+            <p class="lh-1">ここで、今回の問題では、「初めの紙のどれくらいの割合になるか」と聞かれているので、初めの紙がもとにする量、残った紙が比べる量になります。</p>
+            <p class="lh-1">よって、(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 22500 \div 30000 = 0.75 \)が求めたい割合です。</p>
+            <p class="lh-1">最後に\( 0.\color{blue}7 \color{orange}5 \)を歩合になおすと、<span class="text-primary">7</span>割<span class="text-warning">5</span>分となります。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="raito_summary">割合のまとめ</h2>
+            <p class="lh-1">ここで割合についてまとめておきます。</p>
+            <ol class="list-group list-group-numbered list-group-flush">
+                <li class="list-group-item">割合は、(比べる量) \( \div \) (もとにする量)で求められる</li>
+                <li class="list-group-item">割合の基本は小数で、そこから100をかけると百分率に。各位の数字を漢字に割り当てていくと、歩合が求められる</li>
+                <li class="list-group-item">単位が異なっている場合は、単位をそろえてから計算する</li>
+            </ol>
+            <p class="lh-1">以上です。</p>
+        </div>
     </div>
 
     <div class="row m-4 p-4 border-bottom">

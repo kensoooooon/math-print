@@ -368,7 +368,7 @@ class RatioProblem:
                     latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、増やした後の{japanese_unit}は\\( {from_standard_amount_in_latex} + {from_amount_to_compare_in_latex} = {from_added_in_latex_with_unit} \\)\n"
                     latex_answer += f"さらにこれを指定された単位になおすと、{to_added_out_of_latex_with_unit}となる。"                           
                 elif increase_or_decrease == "decrease":
-                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らしました。減らした後の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
+                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らしました。減らした後の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {to_unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"まずは減らした量をもとめると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):

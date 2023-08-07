@@ -91,7 +91,7 @@ window.addEventListener("load", (event)=>{
         <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 border-bottom border-primary">
         <div class="m-2 p-2">
             <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が同じ場合)</h2>
             <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
@@ -103,7 +103,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">具体的な問題を見てみましょう。</p>
             <br>
             <br>
-            <p class="lh-1">例題1: \( 10 \mathrm{cm} \)は\( 2 \mathrm{cm} \)の何倍ですか?</p>
+            <p class="lh-1 border-bottom">例題1: \( 10 \mathrm{cm} \)は\( 2 \mathrm{cm} \)の何倍ですか?</p>
             <br>
             <br>
             <p class="lh-1">これが一番シンプルな割合のたずね方です。</p>
@@ -292,7 +292,6 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">この割合を使えば、最後に引き算をする必要はありません。</p>
             <p class="lh-1">実際に計算してみると、\( 250 \times 0.6 = 150 \mathrm{cm} \)で先ほどの答えと同じになっています。</p>
             <br>
-            <br>
             <p class="lh-1">次に紹介するのは<span class="text-warning">百分率で割合をあらわしているとき、もととする量の割合は\( \color{orange}100 \)であることを利用</span>するというものです。</p>
             <p class="lh-1">今、「\( 40 \% \)を切り取りました」とあるので、残ったリボンの割合は\( 100 - 40 = 60 \% \)となります。</p>
             <p class="lh-1">これを小数になおすと、\( 60 \div 100 = 0.6 \)となります。</p>
@@ -307,13 +306,44 @@ window.addEventListener("load", (event)=>{
 
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="amount_to_compare_without_change_unit">比べる量と、その求め方(単位が異なる場合)</h2>
+            <h2 class="text-muted h5" id="amount_to_compare_with_change_unit">比べる量と、その求め方(単位が異なる場合)</h2>
             <p class="lh-1">お次も同じく比べる量を求める問題です。ただし、今回はもととする量と、比べる量の単位が異なっているパターンになります。</p>
             <p class="lh-1">このパターンでも割合のときと同じく、<span class="text-warning">両方の単位をそろえる</span>というのがポイントになってきます。</p>
             <p class="lh-1">どちらにそろえるのか、そして、どのタイミングでそろえるのかに注目しながら見て言ってください。</p>
         </div>
         <div class="m-2 p-2">
-            <p class="lh-1">例題9: \( 40 \mathrm{kg} \)の</p>
+            <p class="lh-1">例題9: \( 40 \mathrm{kg} \)の\( 0.35 \)は\( \underline{\qquad\qquad} \mathrm{g} \)です。</p>
+            <br>
+            <br>
+            <p class="lh-1">ここでは問題に使われている単位は\( \mathrmr{kg} \)ですが、答えとして求められているのは\( \mathrm{g} \)となっています。</p>
+            <p class="lh-1">そのため、計算のどこかで単位をかえてあげる必要があります。</p>
+            <p class="lh-1">ここでは、初めの段階でなおすやり方と、最後になおすやり方の2つで解いてみます。</p>
+            <br>
+            <br>
+            <p class="lh-1">まずは初めになおしてしまう解き方からです。</p>
+            <p class="lh-1">\( \mathrm{kg} \)を\( \mathrm{g} \)になおしたければ、\( 1000 \)をかければよいので、\( 40\mathrm{kg} = 40 \times 1000 = 40000 \mathrm{g} \)です。</p>
+            <p class="lh-1">あとは比べる量をもとめる公式を使うと、\( 40000 \mathrm{g} \)がもとにする量、\( 0.35 \)が割合なので、</p>
+            <p class="lh-1">\(比べる量) = (もとにする量) \( \times \) (割合) \( = 40000 \times 0.35 = 14000 \mathrm{g} \)と答えが求められます。</p>
+            <br>
+            <p class="lh-1">次はあとでなおす解き方です。</p>
+            <p class="lh-1">\( 40 \mathrm{kg} \)をもとにする量、\( 0.35 \)を割合とすると、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 40 \times 0.35 = 14 \mathmr{kg} \)となります。</p>
+            <p class="lh-1">これに\( \times 1000 \)をして単位を\( \mathrm{g} \)にかえると、</p>
+            <p class="lh-1">\( 14 \times 1000 = 14000 \mathrm{g} \)となります。当然上の解き方と同じ答えです。</p>
+            <br>
+            <br>
+            <p class="lh-1">このように、どちらの解き方でも答えを出すことは可能です。自分で理解しやすい方を使うようにしてください。</p>
+            <p class="lh-1">いずれにせよ、割合を求めていたときと同じく、単位を意識しながら解いていくようにしましょう。</p>
+        </div>
+        <div class="m-2 p-2">
+            <p class="lh-1">最後は、問題文が少しだけひねられている問題です。</p>
+            <br>
+            <br>
+            <p class="lh-1">例題10: \( 1.2 \mathrm{m^3} \)の水のうち、3割5分を減らしました。残った水は\( \underline{\qquad\qquad} \mathrm{cm^3} \)です。</p>
+            <br>
+            <br>
+            <p class="lh-1">ここまで来ると、やるべき計算も増えて大変になりますが、1つずつ確認していきましょう。</p>
+            <p class="lh-1">まずは歩合の3割5分を、決められた位置に数を当てはめて小数にもどすと、\( 0.35 \)</p>
         </div>
     </div>
 

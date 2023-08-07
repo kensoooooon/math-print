@@ -65,6 +65,11 @@ ratioまわり
 
 8/3
 多分ok。次は解説
+
+8/6
+解説進行中。()より、___で下線を使ったほうがわかりやすい？
+解説文中で問題に誘導をかける？？
+→パラメータの設定とかで若干迷う系だが、ユーザ側からするとわかりやすいかもしれない？
 """
 
 from random import choice, random, randint
@@ -164,7 +169,7 @@ class RatioProblem:
             standard_amount_out_of_latex_with_unit = f"\\( {standard_amount_in_latex} {unit_in_latex} \\)"
             problem_sentence_checker = random()
             if problem_sentence_checker < 0.25:
-                latex_problem = f"{standard_amount_out_of_latex_with_unit}の{ratio_out_of_latex}は\\(  (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                latex_problem = f"{standard_amount_out_of_latex_with_unit}の{ratio_out_of_latex}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_out_of_latex}が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -173,7 +178,7 @@ class RatioProblem:
                 latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {standard_amount_in_latex} \\times {ratio_value_in_latex} = {amount_to_compare_in_latex} {unit_in_latex} \\)"
             elif 0.25 <= problem_sentence_checker < 0.5:
                 item = self._random_item(selected_theme)
-                latex_problem = f"{standard_amount_out_of_latex_with_unit}あった{item}のうち{ratio_out_of_latex}を運びました。\n運んだ{item}の{japanese_unit}は\\( (\\, \\, \\, )  {unit_in_latex} \\)です。"
+                latex_problem = f"{standard_amount_out_of_latex_with_unit}あった{item}のうち{ratio_out_of_latex}を運びました。\n運んだ{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_out_of_latex}が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -182,7 +187,7 @@ class RatioProblem:
                 latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {standard_amount_in_latex}  \\times {ratio_value_in_latex}= {amount_to_compare_in_latex} {unit_in_latex} \\)"
             elif 0.5 <= problem_sentence_checker < 0.75:
                 item = self._random_item(selected_theme)
-                latex_problem = f"{standard_amount_out_of_latex_with_unit}あった{item}のうち、{ratio_out_of_latex}を運びました。\n残った{item}の{japanese_unit}は\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                latex_problem = f"{standard_amount_out_of_latex_with_unit}あった{item}のうち、{ratio_out_of_latex}を運びました。\n残った{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"まずは運んだ量を求めると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -194,7 +199,7 @@ class RatioProblem:
                 item = self._random_item(selected_theme)
                 increase_or_decrease = choice(["increase", "decrease"])
                 if increase_or_decrease == "increase":
-                    latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ増やしました。\n増やした後の{japanese_unit}は\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                    latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ増やしました。\n増やした後の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"まずは増やした量をもとめると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -203,7 +208,7 @@ class RatioProblem:
                     latex_answer += f"(比べる量) = (もとにする量) \\( \\times \\) (割合) \\( = {standard_amount_in_latex}  \\times {ratio_value_in_latex}= {amount_to_compare_in_latex} {unit_in_latex} \\)が増やした量となる。\n" 
                     latex_answer += f"もともとあった{item}は{standard_amount_out_of_latex_with_unit}なので、増やした後の{japanese_unit}は\\( {standard_amount_in_latex} + {amount_to_compare_in_latex} = {self._decimal_normalize(sy.latex(standard_amount + amount_to_compare))} {unit_in_latex} \\)"                           
                 elif increase_or_decrease == "decrease":
-                    latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らした。減らした後の{japanese_unit}は\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                    latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らしました。減らした後の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"まずは減らした量をもとめると、{standard_amount_out_of_latex_with_unit}がもとにする量、{ratio_value_in_latex}が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -280,7 +285,7 @@ class RatioProblem:
             to_amount_to_compare_out_of_latex_with_unit = f"\\( {to_amount_to_compare_in_latex} {to_unit_in_latex} \\)"
             problem_sentence_checker = random()
             if problem_sentence_checker < 0.25:
-                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{ratio_out_of_latex}は\\(  (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{ratio_out_of_latex}は\\( \\underline{{\\qquad\\qquad}} {to_unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -290,7 +295,7 @@ class RatioProblem:
                 latex_answer += f"さらにこれを指定された単位になおすと、{to_amount_to_compare_out_of_latex_with_unit}となる。"
             elif 0.25 <= problem_sentence_checker < 0.5:
                 item = self._random_item(selected_theme)
-                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}あった{item}のうち{ratio_out_of_latex}を運びました。\n運んだ{item}の{japanese_unit}は\\( (\\, \\, \\, )  {to_unit_in_latex} \\)です。"
+                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}あった{item}のうち{ratio_out_of_latex}を運びました。\n運んだ{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {to_unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -300,7 +305,7 @@ class RatioProblem:
                 latex_answer += f"さらにこれを指定された単位になおすと、{to_amount_to_compare_out_of_latex_with_unit}となる。"
             elif 0.5 <= problem_sentence_checker < 0.75:
                 item = self._random_item(selected_theme)
-                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}あった{item}のうち、{ratio_out_of_latex}を運びました。\n残った{item}の{japanese_unit}は\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}あった{item}のうち、{ratio_out_of_latex}を運びました。\n残った{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {to_unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"まずは運んだ量を求めると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -333,7 +338,7 @@ class RatioProblem:
                 item = self._random_item(selected_theme)
                 increase_or_decrease = choice(["increase", "decrease"])
                 if increase_or_decrease == "increase":
-                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ増やしました。\n増やした後の{japanese_unit}は\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ増やしました。\n増やした後の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {to_unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"まずは増やした量をもとめると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -363,7 +368,7 @@ class RatioProblem:
                     latex_answer += f"もともとあった{item}は{from_standard_amount_out_of_latex_with_unit}なので、増やした後の{japanese_unit}は\\( {from_standard_amount_in_latex} + {from_amount_to_compare_in_latex} = {from_added_in_latex_with_unit} \\)\n"
                     latex_answer += f"さらにこれを指定された単位になおすと、{to_added_out_of_latex_with_unit}となる。"                           
                 elif increase_or_decrease == "decrease":
-                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らした。減らした後の{japanese_unit}は\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                    latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{ratio_out_of_latex}だけ減らしました。減らした後の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"まずは減らした量をもとめると、{from_standard_amount_out_of_latex_with_unit}がもとにする量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -457,7 +462,7 @@ class RatioProblem:
             standard_amount_out_of_latex_with_unit = f"\\( {standard_amount_in_latex} {unit_in_latex} \\)"
             problem_sentence_checker = random()
             if problem_sentence_checker < 0.25:
-                latex_problem = f"ある{japanese_unit}の{ratio_out_of_latex}にあたる量が{amount_to_compare_out_of_latex_with_unit}のとき、ある{japanese_unit}は\\( (\\, \\, \\, ) {unit_in_latex} \\)"
+                latex_problem = f"ある{japanese_unit}の{ratio_out_of_latex}にあたる量が{amount_to_compare_out_of_latex_with_unit}のとき、ある{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{amount_to_compare_out_of_latex_with_unit}が比べる量、{ratio_out_of_latex}が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -466,7 +471,7 @@ class RatioProblem:
                 latex_answer += f"(もとにする量) = (比べる量) \\( \\div \\) (割合) \\( = {amount_to_compare_in_latex} \\div {ratio_value_in_latex} = {standard_amount_in_latex_with_unit} \\)"
             elif 0.25 <= problem_sentence_checker < 0.5:
                 item = self._random_item(selected_theme)
-                latex_problem = f"ある{japanese_unit}の{item}のうち{ratio_out_of_latex}を運んだとき、\nその{japanese_unit}は{amount_to_compare_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( (\\, \\, \\, )  {unit_in_latex} \\)です。"
+                latex_problem = f"ある{japanese_unit}の{item}のうち{ratio_out_of_latex}を運んだとき、\nその{japanese_unit}は{amount_to_compare_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{amount_to_compare_out_of_latex_with_unit}が比べる量、{ratio_out_of_latex}が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -482,7 +487,7 @@ class RatioProblem:
                 remained_ratio = round(1 - ratio_value, 6)
                 remained_ratio_in_latex = f"{self._decimal_normalize(sy.latex(remained_ratio))}"
                 remained_ratio_out_of_latex = f"\\( {remained_ratio_in_latex} \\)"
-                latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}運んだとき、\n残りの{item}は{remained_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( (\\, \\, \\, )  {unit_in_latex} \\)です。"
+                latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}運んだとき、\n残りの{item}は{remained_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{ratio_out_of_latex}運んだということは、残った{japanese_unit}は\\( 1 - {ratio_value_in_latex} = {remained_ratio_in_latex} \\)と等しい。\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -499,7 +504,7 @@ class RatioProblem:
                     added_ratio = round(1 + ratio_value, 6)
                     added_ratio_in_latex = f"{self._decimal_normalize(sy.latex(added_ratio))}"
                     added_ratio_out_of_latex = f"\\( {added_ratio_in_latex} \\)"
-                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}増やすと、{added_out_of_latex_with_unit}になりました。\n増やす前の{item}の{japanese_unit}は\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}増やすと、{added_out_of_latex_with_unit}になりました。\n増やす前の{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"{ratio_out_of_latex}増やしたということは、増やした{japanese_unit}は\\( 1 + {ratio_value_in_latex} = {added_ratio_in_latex} \\)と等しい。\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -513,7 +518,7 @@ class RatioProblem:
                     remained_ratio = round(1 - ratio_value, 6)
                     remained_ratio_in_latex = f"{self._decimal_normalize(sy.latex(remained_ratio))}"
                     remained_ratio_out_of_latex = f"\\( {remained_ratio_in_latex} \\)"
-                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}減らすと、{remained_out_of_latex_with_unit}になりました。\n減らす前の{item}の{japanese_unit}は\\( (\\, \\, \\, ) {unit_in_latex} \\)です。"
+                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}減らすと、{remained_out_of_latex_with_unit}になりました。\n減らす前の{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"{ratio_out_of_latex}減らしたということは、減らした{japanese_unit}は\\( 1 - {ratio_value_in_latex} = {remained_ratio_in_latex} \\)と等しい。\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -601,7 +606,7 @@ class RatioProblem:
             to_standard_amount_out_of_latex_with_unit = f"\\( {to_standard_amount_in_latex} {to_unit_in_latex}\\)"
             problem_sentence_checker = random()
             if problem_sentence_checker < 0.25:
-                latex_problem = f"ある{japanese_unit}の{ratio_out_of_latex}にあたる量が{from_amount_to_compare_out_of_latex_with_unit}のとき、ある{japanese_unit}は\\(  (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                latex_problem = f"ある{japanese_unit}の{ratio_out_of_latex}にあたる量が{from_amount_to_compare_out_of_latex_with_unit}のとき、ある{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{from_amount_to_compare_out_of_latex_with_unit}が比べる量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -611,7 +616,7 @@ class RatioProblem:
                 latex_answer += f"さらにこれを指定された単位になおすと、{to_standard_amount_out_of_latex_with_unit}となる。"
             elif 0.25 <= problem_sentence_checker < 0.5:
                 item = self._random_item(selected_theme)
-                latex_problem = f"ある{japanese_unit}の{item}のうち{ratio_out_of_latex}を運んだとき、\nその{japanese_unit}は{from_amount_to_compare_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( (\\, \\, \\, )  {to_unit_in_latex} \\)です。"
+                latex_problem = f"ある{japanese_unit}の{item}のうち{ratio_out_of_latex}を運んだとき、\nその{japanese_unit}は{from_amount_to_compare_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{from_amount_to_compare_out_of_latex_with_unit}が比べる量、\\( {ratio_value_in_latex} \\)が割合なので、\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -645,7 +650,7 @@ class RatioProblem:
                 remained_ratio = round(1 - ratio_value, 6)
                 remained_ratio_in_latex = f"{self._decimal_normalize(sy.latex(remained_ratio))}"
                 remained_ratio_out_of_latex = f"\\( {remained_ratio_in_latex} \\)"
-                latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}運んだとき、\n残りの{item}は{from_remained_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( (\\, \\, \\, )  {to_unit_in_latex} \\)です"
+                latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}運んだとき、\n残りの{item}は{from_remained_out_of_latex_with_unit}でした。\n運ぶ前にあった{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if selected_ratio == "decimal":
                     latex_answer = f"{ratio_out_of_latex}運んだということは、残った{japanese_unit}は\\( 1 - {ratio_value_in_latex} = {remained_in_latex} \\)と等しい。\n"
                 elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -680,7 +685,7 @@ class RatioProblem:
                     added_ratio = round(1 + ratio_value, 6)
                     added_ratio_in_latex = f"{self._decimal_normalize(sy.latex(added_ratio))}"
                     added_ratio_out_of_latex = f"\\( {added_ratio_in_latex} \\)"
-                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}増やすと、{from_added_out_of_latex_with_unit}になりました。\n増やす前の{item}の{japanese_unit}は\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}増やすと、{from_added_out_of_latex_with_unit}になりました。\n増やす前の{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"{ratio_out_of_latex}増やしたということは、増やした{japanese_unit}は\\( 1 + {ratio_value_in_latex} = {added_ratio_in_latex} \\)と等しい。\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -712,7 +717,7 @@ class RatioProblem:
                     remained_ratio = round(1 - ratio_value, 6)
                     remained_ratio_in_latex = f"{self._decimal_normalize(sy.latex(remained_ratio))}"
                     remained_ratio_out_of_latex = f"\\( {remained_ratio_in_latex} \\)"
-                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}減らすと、{to_remained_out_of_latex_with_unit}になりました。\n減らす前の{item}の{japanese_unit}は\\( (\\, \\, \\, ) {to_unit_in_latex} \\)です。"
+                    latex_problem = f"ある{japanese_unit}の{item}を{ratio_out_of_latex}減らすと、{to_remained_out_of_latex_with_unit}になりました。\n減らす前の{item}の{japanese_unit}は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                     if selected_ratio == "decimal":
                         latex_answer = f"{ratio_out_of_latex}減らしたということは、減らした{japanese_unit}は\\( 1 - {ratio_value_in_latex} = {remained_ratio_in_latex} \\)と等しい。\n"
                     elif (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -783,7 +788,7 @@ class RatioProblem:
             elif selected_ratio == "japanese_percentage":
                 japanese_ratio_name = "歩合"
             if problem_sentence_checker < 0.25:
-                latex_problem = f"{standard_amount_out_of_latex_with_unit}をもとにするとき、{amount_to_compare_out_of_latex_with_unit}を{japanese_ratio_name}で表した割合はいくつになりますか。"
+                latex_problem = f"{standard_amount_out_of_latex_with_unit}をもとにするとき、{amount_to_compare_out_of_latex_with_unit}を{japanese_ratio_name}で表した割合は\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 latex_answer = f"{standard_amount_out_of_latex_with_unit}がもとにする量、{amount_to_compare_out_of_latex_with_unit}が比べる量なので、\n"
                 latex_answer += f"(割合) = (比べる量) \\( \\div \\) (もとにする量) \\( = {amount_to_compare_in_latex} \\div {standard_amount_in_latex} = {ratio_value_in_latex} \\)"
                 if (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
@@ -817,7 +822,7 @@ class RatioProblem:
                         if digit != "0":
                             remained_ratio_out_of_latex += (digit + name)
                 latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{amount_to_compare_out_of_latex_with_unit}運びました。\n{standard_amount_out_of_latex_with_unit}をもとにして、\n"
-                latex_problem += f"残った{item}の割合を{japanese_ratio_name}で表すと、\\( (\\, \\, \\, ) \\)になります。"
+                latex_problem += f"残った{item}の割合を{japanese_ratio_name}で表すと、\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)になります。"
                 latex_answer = f"初めに残った量を求めると、\n\\( {standard_amount_in_latex} - {amount_to_compare_in_latex} = {remained_in_latex_with_unit} \\)となる。\n"
                 latex_answer += f"{standard_amount_out_of_latex_with_unit}をもとにする量、{remained_out_of_latex_with_unit}を比べる量とすると、\n"
                 latex_answer += f"(割合) = (比べる量) \\( \\div \\) (もとにする量) \\( = {remained_in_latex} \\div {standard_amount_in_latex} = {remained_ratio_in_latex} \\)"
@@ -843,7 +848,7 @@ class RatioProblem:
                         if digit != "0":
                             remained_ratio_out_of_latex += (digit + name)
                 latex_problem = f"{standard_amount_out_of_latex_with_unit}の{item}を{amount_to_compare_out_of_latex_with_unit}減らしました。\n{standard_amount_out_of_latex_with_unit}をもとにして、\n"
-                latex_problem += f"減らしたあとの{item}の割合を{japanese_ratio_name}で表すと、\\( (\\, \\, \\, ) \\)になります。"
+                latex_problem += f"減らしたあとの{item}の割合を{japanese_ratio_name}で表すと、\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)になります。"
                 latex_answer = f"初めに減らした後の量を求めると、\n\\( {standard_amount_in_latex} - {amount_to_compare_in_latex} = {remained_in_latex} \\)となる。\n"
                 latex_answer += f"{standard_amount_out_of_latex_with_unit}をもとにする量、{remained_out_of_latex_with_unit}を比べる量とすると、\n"
                 latex_answer += f"(割合) = (比べる量) \\( \\div \\) (もとにする量) \\( = {remained_in_latex} \\div {standard_amount_in_latex} = {remained_ratio_in_latex} \\)"
@@ -936,7 +941,7 @@ class RatioProblem:
                 japanese_ratio_name = "歩合"
             problem_sentence_checker = random()
             if problem_sentence_checker < 0.25:
-                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}をもとにしたとき、{to_amount_to_compare_out_of_latex_with_unit}の割合を{japanese_ratio_name}で表すと、\\(  (\\, \\, \\, ) \\)です。"
+                latex_problem = f"{from_standard_amount_out_of_latex_with_unit}をもとにしたとき、{to_amount_to_compare_out_of_latex_with_unit}の割合を{japanese_ratio_name}で表すと、\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)です。"
                 if from_standard_amount > to_standard_amount:
                     latex_answer = f"まず、{to_amount_to_compare_out_of_latex_with_unit}をもとにする量と同じ単位である\\( {from_unit_in_latex} \\)になおすと、{from_amount_to_compare_out_of_latex_with_unit}となる。\n"
                     latex_answer += f"{from_amount_to_compare_out_of_latex_with_unit}が比べる量、{from_standard_amount_out_of_latex_with_unit}がもとにする量なので、\n"
@@ -950,7 +955,7 @@ class RatioProblem:
             elif 0.25 <= problem_sentence_checker < 0.5:
                 item = self._random_item(selected_theme)
                 latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{japanese_unit}の{item}のうち、 {to_amount_to_compare_out_of_latex_with_unit}を運びました。\n{from_standard_amount_out_of_latex_with_unit}をもとにして、\n"
-                latex_problem += f"運んだ{item}の割合を{japanese_ratio_name}で表すと、\\( (\\, \\, \\,) \\)となります。"
+                latex_problem += f"運んだ{item}の割合を{japanese_ratio_name}で表すと、\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)となります。"
                 if from_standard_amount > to_standard_amount:
                     latex_answer = f"まず、{to_amount_to_compare_out_of_latex_with_unit}をもとにする量と同じ単位である\\( {from_unit_in_latex} \\)になおすと、{from_amount_to_compare_out_of_latex_with_unit}となる。\n"
                     latex_answer += f"{from_amount_to_compare_out_of_latex_with_unit}が比べる量、{from_standard_amount_out_of_latex_with_unit}がもとにする量なので、\n"
@@ -1000,7 +1005,7 @@ class RatioProblem:
                         if digit != "0":
                             remained_ratio_out_of_latex += (digit + name)
                 latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{to_amount_to_compare_out_of_latex_with_unit}運びました。\n{from_standard_amount_out_of_latex_with_unit}をもとにして、\n"
-                latex_problem += f"残った{item}の割合を{japanese_ratio_name}で表すと、\\( (\\, \\, \\, ) \\)になります。"
+                latex_problem += f"残った{item}の割合を{japanese_ratio_name}で表すと、\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)になります。"
                 if from_standard_amount > to_standard_amount:
                     latex_answer = f"まず、{to_amount_to_compare_out_of_latex_with_unit}をもとにする量と同じ単位である\\( {from_unit_in_latex} \\)になおすと、{from_amount_to_compare_out_of_latex_with_unit}となる。\n"
                     latex_answer += f"次に、残った量を求めると、\n\\( {from_standard_amount_in_latex} - {from_amount_to_compare_in_latex} = {from_remained_in_latex_with_unit} \\)となる。\n"
@@ -1014,12 +1019,6 @@ class RatioProblem:
                 if (selected_ratio == "percentage") or (selected_ratio == "japanese_percentage"):
                     latex_answer += f"\n これを{japanese_ratio_name}になおすと、{remained_ratio_out_of_latex}となる。"
             else:
-                """
-                ratio_value: 0.935
-                remained_ratio_value: 0.06499999999999995
-                remained_ratio_in_latex: 0.0649999999999999
-                が出る。引き算が原因？
-                """
                 item = self._random_item(selected_theme)
                 from_remained = from_standard_amount - from_amount_to_compare
                 from_remained_in_latex = f"{self._decimal_normalize(sy.latex(from_remained))}"
@@ -1059,7 +1058,7 @@ class RatioProblem:
                         if digit != "0":
                             remained_ratio_out_of_latex += (digit + name)
                 latex_problem = f"{from_standard_amount_out_of_latex_with_unit}の{item}を{to_amount_to_compare_out_of_latex_with_unit}減らしました。\n{from_standard_amount_out_of_latex_with_unit}をもとにして、\n"
-                latex_problem += f"減らしたあとの{item}の割合を{japanese_ratio_name}で表すと、\\( (\\, \\, \\, ) \\)になります。"
+                latex_problem += f"減らしたあとの{item}の割合を{japanese_ratio_name}で表すと、\\( \\underline{{\\qquad\\qquad}} {unit_in_latex} \\)になります。"
                 if from_standard_amount > to_standard_amount:
                     latex_answer = f"まず、{to_amount_to_compare_out_of_latex_with_unit}をもとにする量と同じ単位である\\( {from_unit_in_latex} \\)になおすと、{from_amount_to_compare_out_of_latex_with_unit}となる。\n"
                     latex_answer += f"次に、残った量を求めると、\n\\( {from_standard_amount_in_latex} - {from_amount_to_compare_in_latex} = {from_remained_in_latex_with_unit} \\)となる。\n"

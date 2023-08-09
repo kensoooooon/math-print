@@ -47,6 +47,9 @@ window.addEventListener("load", (event)=>{
         color: gray;
         text-decoration: none;
     }
+    mark{
+        background: linear-gradient(transparent 50%, #FAA755 80%);
+    }
 </style>
 {% endblock %}
 
@@ -79,6 +82,9 @@ window.addEventListener("load", (event)=>{
         <li class="list-group-item col-md-6"><a href="#raito_summary" class="text-decoration-none text-reset">割合のまとめ</a></li>
         <li class="list-group-item col-md-6"><a href="#amount_to_compare_without_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が同じ場合)</a></li>
         <li class="list-group-item col-md-6"><a href="#amount_to_compare_with_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が異なる場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#amount_to_compare_summary" class="text-decoration-none text-reset">比べる量のまとめ</a></li>
+        <li class="list-group-item col-md-6"><a href="#standard_amount_without_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が同じ場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#standard_amount_with_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が異なる場合)</a></li>
         <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
@@ -86,7 +92,7 @@ window.addEventListener("load", (event)=>{
     <div class="row m-4 p-4 border-bottom">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">ここでは割合の問題を解説していきます。文章問題が中心になっていて、受験でもよく出てくる分野です。</p>
-        <p class="lh-1">ポイントはずばり、<span class="text-decoration-underline text-warning">問題の文から、どの数字がどの量にあたるのかをしっかりと見抜くこと</span>です。</p>
+        <p class="lh-1">ポイントはずばり、<mark>求めたいものに応じて、正しい式を使う</mark>ことです。</p>
         <p class="lh-1">特に、あとで紹介する比べる量、もとにする量は、どちらなのかわかりづらくなりやすいです。</p>
         <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
     </div>
@@ -95,7 +101,7 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が同じ場合)</h2>
             <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
-            <p class="lh-1">割合とは、<span class="text-decoration-underline text-warning">ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</span>を表現した数です。</p>
+            <p class="lh-1">割合とは、<mark>ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</mark>を表現した数です。</p>
             <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
         </div>
 
@@ -130,9 +136,9 @@ window.addEventListener("load", (event)=>{
         <div class="m-2 p-2">
             <p class="lh-1">例題1はそれこそ日ごろの生活で自然とやっている計算です。</p>
             <p class="lh-1">ただ、なれないうちは例2のような計算、つまり小数が出る計算になると、とまどってしまう人が多いです。</p>
-            <p class="lh-1">しかし見ての通り、<span class="text-decoration-underline text-warning">やっていること自体は全く同じ</span>になっています。</p>
+            <p class="lh-1">しかし見ての通り、やっていること自体は全く同じになっています。</p>
             <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
-            <p class="lh-1">この計算を公式にすると、「<span class="text-warning">(割合) \( \color{orange}= \) (比べる量) \( \color{orange}\div \) (もとにする量)</span>」となります。</p>
+            <p class="lh-1">この計算を公式にすると、「<mark>(割合) \( = \) (比べる量) \( \div \) (もとにする量)</mark>」となります。</p>
         </div>
 
         <div class="m-2 p-2">
@@ -145,7 +151,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">初めの計算は、例題1,2と変わりません。</p>
             <p class="lh-1">\( 40 \mathrm{cm} \)がもとにする量、\( 10 \mathrm{cm} \)が比べる量なので、</p>
             <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)から、割合は\( 0.25 \)です。</p>
-            <p class="lh-1">ここで、<span class="text-decoration-underline text-warning">百分率になおすためには、小数の割合に100をかければよい</span>ので、</p>
+            <p class="lh-1">ここで、<mark>百分率になおすためには、小数の割合に100をかければよい</mark>ので、</p>
             <p class="lh-1">百分率での割合は、\( 0.25 \times 100 = 25 \)より、\( 25 \% \)となります。</p>
             <p class="lh-1">問題によっては、このように小数とは違った割合を使わなければならないこともあります。</p>
             <p class="lh-1">百分率はその代表です。しっかりと書きかえられるようにしておきましょう。</p>
@@ -161,7 +167,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">こちらもやはり、初めの計算は変わりません。</p>
             <p class="lh-1">\( 105 \mathrm{m^3} \)が比べる量、\( 500 \mathrm{m^3} \)がもとにする量なので、</p>
             <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 105 \div 500 = 0.21 \)から、割合は\( 0.21 \)です。</p>
-            <p class="lh-1">ここで、この数字を<span class="text-decoration-underline text-warning">歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</span>必要があります。</p>
+            <p class="lh-1">ここで、この数字を<mark>歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</mark>必要があります。</p>
             <p class="lh-1">漢字の方は、とりあえず大きい方から4つ、「<ruby>割<rt>わり</rt></ruby>」「<ruby>分<rt>ぶ</rt></ruby>」「<ruby>厘<rt>りん</rt></ruby>」、それから「<ruby>毛<rt>もう</rt></ruby>」を覚えておけば良いでしょう。それより小さい値は基本的に算数には登場しません。</p>           
             <p class="lh-1">今回の割合は、\( 0.\color{blue}2\color{orange}1 \)なので、歩合になおすと、
                 <span class="text-primary">2</span>割<span class="text-warning">1</span>分となります。
@@ -179,8 +185,8 @@ window.addEventListener("load", (event)=>{
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
             <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる場合)</h2>
-            <p class="lh-1">次も割合を求める問題ですが、<span class="text-decoration-underline">単位が異なる</span>場合を見ていきます。</p>
-            <p class="lh-1"><span class="text-decoration-underline text-warning">単位が異なるときは、単位をそろえてから割合を求める</span>必要があります。</p>
+            <p class="lh-1">次も割合を求める問題ですが、単位が異なる場合を見ていきます。</p>
+            <p class="lh-1"><mark>単位が異なるときは、単位をそろえてから割合を求める</mark>必要があります。</p>
             <p class="lh-1">そのため、単位が異なる計算が怪しいときは、一度確認するようにしておきましょう。</p>
         </div>
         <div class="m-2 p-2">
@@ -204,7 +210,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <br>
             <p class="lh-1">このように、どちらでも答えが出ますので、好みで選んでしまって構いません。</p>
-            <p class="lh-1">ただ、あえていうのであれば、<span class="text-decoration-underline text-warning">数字が大きくなる方になおすことで、小数の計算をなるべくさける</span>ことをおすすめします。</p>
+            <p class="lh-1">ただ、あえていうのであれば、<mark>数字が大きくなる方になおすことで、小数の計算をなるべくさける</mark>ことをおすすめします。</p>
             <p class="lh-1">小数の計算は、たとえば小数点の場所など、考えることが少し多いです。特にこだわりがなければ、数が大きくなるほうに変えてあげてください。</p>
             <p class="lh-1">小さくするほうに変えるよりも、小数の計算が必要になる可能性が低くなります。</p>
         </div>
@@ -243,7 +249,7 @@ window.addEventListener("load", (event)=>{
             <h2 class="text-muted h5" id="amount_to_compare_without_change_unit">比べる量と、その求め方(単位が同じ場合)</h2>
             <p class="lh-1">次は比べる量を求める問題の確認です。</p>
             <p class="lh-1">割合の解説で比べる量と、もとにする量との関係についてはそれなりに説明しましたので、ここでは初めに公式を紹介してしまいましょう。</p>
-            <p class="lh-1"><span class="text-warning">(比べる量) \( \color{orange}= \) (もとにする量) \( \color{orange}\times \) (割合)</span>です。</p>
+            <p class="lh-1"><mark>(比べる量) \( = \) (もとにする量) \( \times \) (割合)</mark>です。</p>
             <p class="lh-1">まずはこれが正しいことを、先ほど使った例を少しいじったもので確認しましょう。</p>
             <br>
             <br>
@@ -271,13 +277,13 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">例題8: \( 250 \mathrm{cm} \)あったリボンのうち\( 40 \% \)を切り取りました。残りの長さは\( \underline{\qquad\qquad} \mathrm{cm} \)です。</p>
             <br>
-            <p class="lh-1">ここでも百分率が登場しました。百分率のあつかいはシンプルです。<span class="text-warning">小数になおしてから計算に使う</span>ようにしましょう。</p>
+            <p class="lh-1">ここでも百分率が登場しました。百分率のあつかいはシンプルです。<mark>小数になおしてから計算に使う</mark>ようにしましょう。</p>
             <p class="lh-1">小数でかかれた割合は100をかけることで百分率になりました。</p>
-            <p class="lh-1">そのため、百分率でかかれた割合を、小数の割合になおすときはその逆です。<span class="text-warning">100で割ってあげる</span>ことでなおせます。</p>
+            <p class="lh-1">そのため、百分率でかかれた割合を、小数の割合になおすときはその逆です。<mark>100で割ってあげる</mark>ことでなおせます。</p>
             <p class="lh-1">\( 40 \div 100 = 0.4 \)なので、比べる量の計算に使う割合は\( 0.4 \)だとわかりました。</p>
             <br>
             <p class="lh-1">さて、あとは\( 250 \mathrm{cm} \)をもとにする量として計算するだけなのですが、ひとつだけ注意しなければなりません。</p>
-            <p class="lh-1">それはずばり、割合の\( 0.4 \)は、<span class="text-warning">切り取ったリボンの長さであって、残ったリボンの長さではない</span>ことです。</p>
+            <p class="lh-1">それはずばり、割合の\( 0.4 \)は、<mark>切り取ったリボンの長さであって、残ったリボンの長さではない</mark>ことです。</p>
             <p class="lh-1">「\( 40 \% \)を切り取りました」とかいてありますからね。</p>
             <p class="lh-1">なので、\( 0.4 \)を割合として計算した比べる量は、あくまで切り取ったリボンの長さです。</p>
             <p class="lh-1">それを踏まえた上で計算してみると、\( 250 \times 0.4 = 100 \mathrm{cm} \)となります。</p>
@@ -287,12 +293,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">この解き方で特に問題はないのですが、ここでは割合の理解を深めるために他の解き方を2つ解説しておきましょう。</p>
             <br>
             <br>
-            <p class="lh-1">まず紹介するのは<span class="text-warning">小数で割合をあらわしているとき、もととする量の割合は\( \color{orange}1 \)であること利用</span>するというものです。</p>
-            <p class="lh-1">もととする量の割合が\( 1 \)で、切り取ったリボンの長さの割合が\( 0.4 \)ということは残ったリボンの割合は\( 1 - 0.4 = 0.6 \)になります。</p>
+            <p class="lh-1">まず紹介するのは<mark>小数で割合をあらわしているとき、もとにする量の割合は\( 1 \)であること利用</mark>するというものです。</p>
+            <p class="lh-1">もとにする量の割合が\( 1 \)で、切り取ったリボンの長さの割合が\( 0.4 \)ということは残ったリボンの割合は\( 1 - 0.4 = 0.6 \)になります。</p>
             <p class="lh-1">この割合を使えば、最後に引き算をする必要はありません。</p>
             <p class="lh-1">実際に計算してみると、\( 250 \times 0.6 = 150 \mathrm{cm} \)で先ほどの答えと同じになっています。</p>
             <br>
-            <p class="lh-1">次に紹介するのは<span class="text-warning">百分率で割合をあらわしているとき、もととする量の割合は\( \color{orange}100 \)であることを利用</span>するというものです。</p>
+            <p class="lh-1">次に紹介するのは<mark>百分率で割合をあらわしているとき、もとにする量の割合は\( 100 \)であることを利用</mark>するというものです。</p>
             <p class="lh-1">今、「\( 40 \% \)を切り取りました」とあるので、残ったリボンの割合は\( 100 - 40 = 60 \% \)となります。</p>
             <p class="lh-1">これを小数になおすと、\( 60 \div 100 = 0.6 \)となります。</p>
             <p class="lh-1">この割合を使って残ったリボンの長さを計算すると、\( 250 \times 0.6 = 150 \mathrm{cm} \)となります。当然同じ答えです。</p>
@@ -307,8 +313,8 @@ window.addEventListener("load", (event)=>{
     <div class="row m-4 p-4 border-bottom">
         <div class="m-2 p-2">
             <h2 class="text-muted h5" id="amount_to_compare_with_change_unit">比べる量と、その求め方(単位が異なる場合)</h2>
-            <p class="lh-1">お次も同じく比べる量を求める問題です。ただし、今回はもととする量と、比べる量の単位が異なっているパターンになります。</p>
-            <p class="lh-1">このパターンでも割合のときと同じく、<span class="text-warning">両方の単位をそろえる</span>というのがポイントになってきます。</p>
+            <p class="lh-1">お次も同じく比べる量を求める問題です。ただし、今回はもとにする量と、比べる量の単位が異なっているパターンになります。</p>
+            <p class="lh-1">このパターンでも割合のときと同じく、<mark>両方の単位をそろえる</mark>というのがポイントになってきます。</p>
             <p class="lh-1">どちらにそろえるのか、そして、どのタイミングでそろえるのかに注目しながら見て言ってください。</p>
         </div>
         <div class="m-2 p-2">
@@ -343,18 +349,70 @@ window.addEventListener("load", (event)=>{
             <br>
             <br>
             <p class="lh-1">ここまで来ると、やるべき計算も増えて大変になりますが、1つずつ確認していきましょう。</p>
-            <p class="lh-1">まずは歩合の3割を、決められた位置に数を当てはめて小数にもどすと、\( 0.4 \)となります。</p>
+            <p class="lh-1">まずは歩合の4割を、決められた位置に数を当てはめて小数にもどすと、\( 0.4 \)となります。</p>
             <p class="lh-1">次に減らした量を求めると、\( 30 \mathrm{m}^3 \)がもとにする量、\( 0.4 \)が割合なので、</p>
             <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 30 \times 0.4 = 12 \mathrm{m}^3 \)となります。</p>
             <p class="lh-1">ここで、初めにあった水は\( 30 \mathrm{m}^3 \)なので、残った水は\( 30 - 12 = 18 \mathrm{m}^3 \)です。</p>
             <p class="lh-1">最後にこれを指定された\( \mathrm{cm}^3 \)になおすと、\( 18 \times 1000000 = 18000000 \mathrm{cm}^3 \)となります。</p>
             <br>
-            <p class="lh-1"></p>
+            <p class="lh-1">なお、途中で書いた、割合の合計からはじめに引いてしまうやり方でも解くことができます。</p>
+            <p class="lh-1">4割を\( 0.4 \)になおすところまでは同じですが、そこから\( 1 - 0.4 = 0.6 \)と合計から引いてあげることで、残った水の割合になります。</p>
+            <p class="lh-1">もとにする量を\( 30 \mathrm{m}^3 \)、割合を\( 0.6 \)とすると、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 30 \times 0.6 = 18 \mathrm{m}^3 \)と残った水が求められます。</p>
+            <p class="lh-1">あとは同じように単位をなおすと、\( 18 \times 1000000 = 18000000 \mathrm{m}^3 \)と答えが出ます。</p>
+            <br>
+            <p class="lh-1">また、はじめに\( 30 \mathrm{m}^3 \)を\( 30 \times 1000000 = 30000000 \mathrm{cm}^3 \)になおしてもよいでしょう。</p>
+            <p class="lh-1">そこからはいったん減らした量を求めてもよいですし、直接残った量を求めてもよいです。</p>
+            <p class="lh-1">ただし、この計算は数が大きくなりすぎています。正しく計算できれば問題なく答えがでますが、0の数にはくれぐれも注意するようにしてください。</p>
         </div>
     </div>
 
     <div class="row m-4 p-4 border-bottom">
-        <h2 cloass="text-muted h5" id="afterword">後書き</h2>
+        <div class="m-2 p-2">
+            <h2 class="text-muted h5" id="amount_to_compare_summary">比べる量のまとめ</h2>
+            <p class="lh-1">ここで割合についてまとめておきます。</p>
+            <ol class="list-group list-group-numbered list-group-flush">
+                <li class="list-group-item">比べる量は、(もとにする量) \( \times \) (割合)で求められる。ただし、この計算に使う割合は小数で表されたもの</li>
+                <li class="list-group-item">比べる量と、もとにする量の単位が違うときは、どこかでそろえることを忘れないようにする</li>
+            </ol>
+            <br>
+            <br>
+            <p class="lh-1">割合にくらべて、「残った～」や「減らした～」、あるいは「増やした～」のような表現を使った応用問題が出やすいです。確認しておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="standard_amount_without_change_unit">もとにする量と、その求め方(単位が同じ場合)</h2>
+        <p class="lh-1">最後にやるのはもとにする量を求める計算です。</p>
+        <p class="lh-1">公式は、「<mark>(もとにする量) \( = \) (比べる量) \( \div \) (割合)</mark>」です。</p>
+        <p class="lh-1">さっそく公式を確認していきましょう。</p>
+        <br>
+        <br>
+        <p class="lh-1">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を小数で表しなさい。</p>
+        <br>
+        <br>
+        <p class="lh-1">この問題の答えは、(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)でした。</p>
+        <p class="lh-1">ここで、もとにする量の公式を使ってみると、</p>
+        <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 10 \div 0.25 = 40 \)で、きちんともとにする量の\( 40 \mathrm{cm} \)と等しくなっています。</p>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <p class="lh-1">それではさっそく問題を見ていきましょう。</p>
+        <br>
+        <br>
+        <p class="lh-1">例題11: ある面積の紙のうち、\( 0.6 \)を運んだとき、その面積は\( 120 \mathrm{cm}^2 \)でした。運ぶ前の紙は、\( \underline{\\quad\\quad} \mathrm{cm}^2 \)です。</p>
+        <br>
+        <br>
+        <p class="lh-1">ここでは\( 0.6 \)が割合、\( 120 \mathrm{cm}^2 \)が比べる量なので、</p>
+        <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 120 \div 0.6 = 200 \mathmr{cm}^2 \)となります。</p>
+        <p class="lh-1">ある面積をもとにする量としているのがポイントですね。</p>
+        <br>
+        <br>
+        <p class="lh-1"></p>
+    </div>
+
+    <div class="row m-4 p-4 border-bottom">
+        <h2 class="text-muted h5" id="afterword">後書き</h2>
         <p class="lh-1">sample</p>
     </div>
 </div>

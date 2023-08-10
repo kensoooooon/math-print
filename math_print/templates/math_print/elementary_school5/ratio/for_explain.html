@@ -2,6 +2,11 @@
 
 {% block script %}
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         extensions: ["tex2jax.js"],
@@ -99,6 +104,8 @@ window.addEventListener("load", (event)=>{
         <li class="list-group-item col-md-6"><a href="#amount_to_compare_summary" class="text-decoration-none text-reset">比べる量のまとめ</a></li>
         <li class="list-group-item col-md-6"><a href="#standard_amount_without_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が同じ場合)</a></li>
         <li class="list-group-item col-md-6"><a href="#standard_amount_with_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が異なる場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#standard_summary" class="text-decoration-none text-reset">もとにする量のまとめ</a></li>
+        <li class="list-group-item col-md-6"><a href="#line_segment_diagram" class="text-decoration-none text-reset">おまけ: 線分図を使った解き方</a></li>
         <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
     </ul>
     <br>
@@ -391,9 +398,19 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">最後に公式どおり計算すると、</p>
             <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 45 \div 0.6 = 75 \mathrm{cm} \)となります。</p>
             <br>
-            <p class="lh-1"></p>
-            <p class="lh-1"></p>
+            <p class="lh-1">このように、与えられた割合を使って、すぐに公式の計算をするわけではない問題もあります。</p>
+            <p class="lh-1">目の前の割合が、いったい何を表しているのか？というのに気をつけながら公式を使うようにしましょう。</p>
         </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="standard_amount_with_change_unit">もとにする量と、その求め方(単位が異なる場合)</h2>
+            <p class="lh-1">お次はこれまでのように、単位がそろていないときの、もとにする量を求める計算を進めていきます</p>
+            <p class="lh-1">とはいっても、やることの基本はこれまでと変わらず、<mark>どこかで単位をなおしてから答えとする</mark>ことになります。</p>
+        </div>
+        <p class="lh-1"></p>
+        <p class="lh-1"></p>
     </div>
 
     <div class="row m-4 p-4 description_section">

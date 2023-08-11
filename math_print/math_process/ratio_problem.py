@@ -540,9 +540,9 @@ class RatioProblem:
                     from_unit_in_latex = "\\mathrm{g}"
                     to_unit_in_latex = "\\mathrm{kg}"
                     from_standard_amount = 250 * self._random_integer(20)
-                    to_standard_amount = from_standard_amount / 1000
+                    to_standard_amount = sy.Float(round(from_standard_amount / 1000, 6))
                     from_amount_to_compare = from_standard_amount * ratio_value
-                    to_amount_to_compare = from_amount_to_compare / 1000
+                    to_amount_to_compare = sy.Float(round(from_amount_to_compare / 1000, 6))
             elif selected_theme == "length":
                 japanese_unit = "長さ"
                 from_to_unit = choice(["m_to_cm", "cm_to_m"])
@@ -557,9 +557,9 @@ class RatioProblem:
                     from_unit_in_latex = "\\mathrm{cm}"
                     to_unit_in_latex = "\\mathrm{m}"
                     from_standard_amount = 25 * self._random_integer(max_num=20)
-                    to_standard_amount = from_standard_amount / 100
+                    to_standard_amount = sy.Float(round(from_standard_amount / 100, 6))
                     from_amount_to_compare = from_standard_amount * ratio_value
-                    to_amount_to_compare = from_amount_to_compare / 100
+                    to_amount_to_compare = sy.Float(round(from_amount_to_compare / 100, 6))
             elif selected_theme == "area":
                 japanese_unit = "面積"
                 from_to_unit = choice(["m^2_to_cm^2", "cm^2_to_m^2"])
@@ -574,9 +574,9 @@ class RatioProblem:
                     from_unit_in_latex = "\\mathrm{cm^2}"
                     to_unit_in_latex = "\\mathrm{m^2}"
                     from_standard_amount = 250 * self._random_integer(15)
-                    to_standard_amount = from_standard_amount / ((10 ** 2) ** 2)
+                    to_standard_amount = sy.Float(round(from_standard_amount / ((10 ** 2) ** 2), 6))
                     from_amount_to_compare = from_standard_amount * ratio_value
-                    to_amount_to_compare = from_amount_to_compare / ((10 ** 2) ** 2)
+                    to_amount_to_compare = sy.Float(round(from_amount_to_compare / ((10 ** 2) ** 2), 6))
             elif selected_theme == "volume":
                 japanese_unit = "体積"
                 from_to_unit = choice(["m^3_to_cm^3", "cm^3_to_m^3"])
@@ -591,9 +591,13 @@ class RatioProblem:
                     from_unit_in_latex = "\\mathrm{{cm}^3}"
                     to_unit_in_latex = "\\mathrm{m^3}"
                     from_standard_amount = 25000 * self._random_integer(20)
-                    to_standard_amount = from_standard_amount / ((10 ** 2) ** 3)
+                    to_standard_amount = sy.Float(round(from_standard_amount / ((10 ** 2) ** 3), 6))
                     from_amount_to_compare = from_standard_amount * ratio_value
-                    to_amount_to_compare = from_amount_to_compare / ((10 ** 2) ** 3)
+                    to_amount_to_compare = sy.Float(round(from_amount_to_compare / ((10 ** 2) ** 3), 6))
+            print(f"from_to_unit: {from_to_unit}")
+            print(f"from_standard_amount: {from_standard_amount}")
+            print(f"to_standard_amount: {to_standard_amount}, type: {type(to_standard_amount)}")
+            print(f"--------------------")
             from_standard_amount_in_latex = f"{self._decimal_normalize(sy.latex(from_standard_amount))}"
             from_standard_amount_in_latex_with_unit = f"{from_standard_amount_in_latex} {from_unit_in_latex}"
             from_standard_amount_out_of_latex_with_unit = f"\\( {from_standard_amount_in_latex_with_unit} \\)"

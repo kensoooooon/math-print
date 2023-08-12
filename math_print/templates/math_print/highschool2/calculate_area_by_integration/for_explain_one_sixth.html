@@ -19,19 +19,6 @@
 </script>
 
 <script>
-function showAnswer(){
-    var nodes = document.getElementsByClassName('answer');
-    for(var i = 0; i < nodes.length; i++){
-        nodes[i].style.visibility = 'visible';
-    }
-}
-function refresh() {
-    var url = location.origin;
-    var pathname = location.pathname;
-    var hash = location.hash;
-    location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
-}
-
 window.addEventListener("load", (event)=>{
     const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
 

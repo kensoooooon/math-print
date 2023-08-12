@@ -19,21 +19,26 @@
 </script>
 
 <script>
-function showAnswer(){
-    var nodes = document.getElementsByClassName('answer');
-    for(var i = 0; i < nodes.length; i++){
-        nodes[i].style.visibility = 'visible';
-    }
-}
-function refresh() {
-    var url = location.origin;
-    var pathname = location.pathname;
-    var hash = location.hash;
-    location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
-}
-
 window.addEventListener("load", (event)=>{
     const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+
+    // https://jsxgraph.uni-bayreuth.de/docs/symbols/Ticks.html#ticksDistance
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 2, 1.2, -2]});
+    jsx1.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: false,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            insertTicks: false,
+            ticksDistance: 0.1,
+            // scale: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
 });
 </script>
 {% endblock %}
@@ -438,7 +443,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">次の問題は、めずらしく量が増えているというものです。</p>
             <br>
             <p class="lh-1 problem_sentence">例題15: ある体積のオレンジジュースを2割増やしたところ、\( 300 \mathrm{m}^3 \)になりました。増やす前の体積は、\( \underline{\qquad\qquad} \mathrm{cm}^3 \)です。</p>
-            <p class="lh-1"></p>
+            <p class="lh-1">まず、2割を小数になおすと、\( 0.2 \)となります。</p>
+            <p class="lh-1">ここで、この割合は増やす前の体積を\( 1 \)としたときのものなので、増やしたあとの体積は、\( 0.2 + 1 = 1.2 \)と表せます。</p>
+            <p class="lh-1">イメージとしては、以下のような感じです。</p>
+            <br>
+            <div id="jxgbox1" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
         </div>
         <p class="lh-1"></p>
         <p class="lh-1"></p>

@@ -594,10 +594,6 @@ class RatioProblem:
                     to_standard_amount = sy.Float(round(from_standard_amount / ((10 ** 2) ** 3), 6))
                     from_amount_to_compare = from_standard_amount * ratio_value
                     to_amount_to_compare = sy.Float(round(from_amount_to_compare / ((10 ** 2) ** 3), 6))
-            print(f"from_to_unit: {from_to_unit}")
-            print(f"from_standard_amount: {from_standard_amount}")
-            print(f"to_standard_amount: {to_standard_amount}, type: {type(to_standard_amount)}")
-            print(f"--------------------")
             from_standard_amount_in_latex = f"{self._decimal_normalize(sy.latex(from_standard_amount))}"
             from_standard_amount_in_latex_with_unit = f"{from_standard_amount_in_latex} {from_unit_in_latex}"
             from_standard_amount_out_of_latex_with_unit = f"\\( {from_standard_amount_in_latex_with_unit} \\)"

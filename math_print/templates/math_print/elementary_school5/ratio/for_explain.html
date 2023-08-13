@@ -23,14 +23,14 @@ window.addEventListener("load", (event)=>{
     const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
 
     // https://jsxgraph.uni-bayreuth.de/docs/symbols/Ticks.html#ticksDistance
-    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 2, 1.2, -2]});
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.05, 0.5, 1.4, -0.1]});
     jsx1.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: false,
         lastArrow: true,
         ticks: {
             drawZero: true,
-            insertTicks: false,
+            insertTicks: true,
             ticksDistance: 0.1,
             // scale: 1,
             majorHeight: 30,
@@ -39,6 +39,14 @@ window.addEventListener("load", (event)=>{
         }
     }
     );
+    jsx1.create('segment', [[0, 0], [0, 5]], {strokeColor: "gray", dash: 2});
+    jsx1.create('segment', [[1, 0], [1, 5]], {strokeColor: "gray", dash: 2});
+    //var p = [[0.0, 2.0], [2.0, 1.0], [4.0, 6.0], [1.0, 3.0]];
+    // var pol = board.create('polygon', p, {hasInnerPoints: true});
+    let points1 = [[0, 0.05], [0, 0.07], [1, 0.07], [1, 0.05]];
+    jsx1.create('polygon', points1, {fillColor: "orange"});
+    jsx1.create('text', [0.2, 0.06, 'はじめにあったオレンジジュース'], {fontSize: 12, cssStyle: text_css});
+    jsx1.create('text', [0.5, 0.08, '1'], {fontSize: 15, cssStyle: text_css});
 });
 </script>
 {% endblock %}
@@ -94,7 +102,7 @@ window.addEventListener("load", (event)=>{
 <div class="container-fluid">
     <h1 class="h4">
         割合・百分率・歩合
-        <small class="text-muted">～文章から、割合・比べる量・もとにする量を見ぬこう～</small>
+        <small class="text-muted">～割合と公式を使い分けよう～</small>
     </h1>
     <br>
 

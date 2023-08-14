@@ -23,7 +23,8 @@ window.addEventListener("load", (event)=>{
     const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
 
     // https://jsxgraph.uni-bayreuth.de/docs/symbols/Ticks.html#ticksDistance
-    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.05, 0.5, 1.4, -0.1]});
+    // let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.05, 0.5, 1.4, -0.1]});
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 10, 1.1, -10]});
     jsx1.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: false,
@@ -43,10 +44,25 @@ window.addEventListener("load", (event)=>{
     jsx1.create('segment', [[1, 0], [1, 5]], {strokeColor: "gray", dash: 2});
     //var p = [[0.0, 2.0], [2.0, 1.0], [4.0, 6.0], [1.0, 3.0]];
     // var pol = board.create('polygon', p, {hasInnerPoints: true});
+    /*
+    var board = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-1, 10, 11, -2], axis: true});
+    var dataArr = [4,1,3,2,5,7,1.5,2];
+    function horizontalBarChart() {
+    JXG.JSXGraph.freeBoard(board);
+    board = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-1, 10, 11, -2], axis: true});
+    board.suspendUpdate();
+    var a = board.create('chart', dataArr, {chartStyle:'bar',labels:dataArr,width:0.8,dir:'horizontal'});
+    board.unsuspendUpdate();
+    };
     let points1 = [[0, 0.05], [0, 0.07], [1, 0.07], [1, 0.05]];
-    jsx1.create('polygon', points1, {fillColor: "orange"});
+    jsx1.create('polygon', points1, {fillColor: "orange", hasInnerPoints: true});
     jsx1.create('text', [0.2, 0.06, 'はじめにあったオレンジジュース'], {fontSize: 12, cssStyle: text_css});
     jsx1.create('text', [0.5, 0.08, '1'], {fontSize: 15, cssStyle: text_css});
+    */
+    let datearr1 = [1.0, 1.2];
+    let label1 = ["orange1", "orange2"];
+    jsx1.create('chart', datearr1, {chartStyle: "bar", labelArray:['Ruby', 'JavaScript'], widht: 0.5, dir: 'horizontal'});
+    jsx1.unsuspendUpdate();
 });
 </script>
 {% endblock %}

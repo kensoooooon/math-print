@@ -24,7 +24,7 @@ window.addEventListener("load", (event)=>{
 
     // https://jsxgraph.uni-bayreuth.de/docs/symbols/Ticks.html#ticksDistance
     // let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.05, 0.5, 1.4, -0.1]});
-    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.5, 10, 1.1, -10]});
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.01, 10, 1.6, -10]});
     jsx1.create('axis', [[0, 0], [1, 0]], 
     {
         firstArrow: false,
@@ -42,27 +42,31 @@ window.addEventListener("load", (event)=>{
     );
     jsx1.create('segment', [[0, 0], [0, 5]], {strokeColor: "gray", dash: 2});
     jsx1.create('segment', [[1, 0], [1, 5]], {strokeColor: "gray", dash: 2});
-    //var p = [[0.0, 2.0], [2.0, 1.0], [4.0, 6.0], [1.0, 3.0]];
-    // var pol = board.create('polygon', p, {hasInnerPoints: true});
-    /*
-    var board = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-1, 10, 11, -2], axis: true});
-    var dataArr = [4,1,3,2,5,7,1.5,2];
-    function horizontalBarChart() {
-    JXG.JSXGraph.freeBoard(board);
-    board = JXG.JSXGraph.initBoard('jxgbox', {boundingbox: [-1, 10, 11, -2], axis: true});
-    board.suspendUpdate();
-    var a = board.create('chart', dataArr, {chartStyle:'bar',labels:dataArr,width:0.8,dir:'horizontal'});
-    board.unsuspendUpdate();
-    };
-    let points1 = [[0, 0.05], [0, 0.07], [1, 0.07], [1, 0.05]];
-    jsx1.create('polygon', points1, {fillColor: "orange", hasInnerPoints: true});
-    jsx1.create('text', [0.2, 0.06, 'はじめにあったオレンジジュース'], {fontSize: 12, cssStyle: text_css});
-    jsx1.create('text', [0.5, 0.08, '1'], {fontSize: 15, cssStyle: text_css});
-    */
-    let datearr1 = [1.0, 1.2];
+    let datearr1 = [0, 1.0, 0, 1.2];
     let label1 = ["orange1", "orange2"];
-    jsx1.create('chart', datearr1, {chartStyle: "bar", labelArray:['Ruby', 'JavaScript'], widht: 0.5, dir: 'horizontal'});
-    jsx1.unsuspendUpdate();
+    jsx1.create('chart', datearr1, {chartStyle: "bar", labelArray:['Ruby', 'JavaScript'], width: 0.3, dir: 'horizontal'});
+    jsx1.create('text', [1.05, 1.6, '増やす前の'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [1.05, 1.0, 'オレンジジュース'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [1.25, 3.7, '増やした後の'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [1.2, 3.1, 'オレンジジュース'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('text', [0.45, 1.5, '$$?\\mathrm{m}^3$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.2, 2.3, 2.35, 2.4, 2.6]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 0.9, 0.8, 0.7, 0.55], [2.2, 2.3, 2.35, 2.4, 2.6]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [1.8, 1.7, 1.6, 1.4, 1.3]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [1.8, 1.7, 1.6, 1.4, 1.3]], {strokeColor: 'gray'});
+    jsx1.create('text', [0.5, 4.8, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('text', [1.075, 4.8, '$$0.2$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('text', [0.5, 3.5, '$$300\\mathrm{m}^3$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [4.2, 4.3, 4.35, 4.4, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 0.9, 0.8, 0.7, 0.55], [4.2, 4.3, 4.35, 4.4, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [3.8, 3.7, 3.6, 3.4, 3.3]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1.2, 1.1, 1.0, 0.8, 0.6], [3.8, 3.7, 3.6, 3.4, 3.3]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 1.035, 1.07], [4.2, 4.3, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1.2, 1.175, 1.15], [4.2, 4.3, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('text', [0.65, 7, '$$1.2$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('curve', [[0, 0.15, 0.3, 0.45, 0.6], [4.2, 5, 5.5, 6, 7]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1.2, 1.18, 1.0, 0.9, 0.8], [4.2, 5, 5.5, 6, 7]], {strokeColor: 'gray'});
 });
 </script>
 {% endblock %}

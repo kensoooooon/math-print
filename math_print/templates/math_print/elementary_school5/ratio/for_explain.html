@@ -119,9 +119,7 @@ window.addEventListener("load", (event)=>{
     );
     jsx3.create('segment', [[0, 0], [0, 5]], {strokeColor: 'gray', dash: 2});
     jsx3.create('segment', [[1, 0], [1, 5]], {strokeColor: 'gray', dash: 2});
-    // let datearr3 = [0, 1.0, 0, 0.6];
     jsx3.create('chart', datearr2, {chartStyle: "bar", width: 0.3, dir: 'horizontal'});
-    // let vertices_status = {visible: false};
     jsx3.create('polygon', [[0.6, 4.15], [1, 4.15], [1, 3.85], [0.6, 3.85]], {strokeColor: "gray", fillColor: "yellow", fillOpacity: 0.3, vertices: vertices_status});
     jsx3.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
     jsx3.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
@@ -137,6 +135,44 @@ window.addEventListener("load", (event)=>{
     jsx3.create('text', [0.3, 4.7, '$$0.6$$'], {fontSize: 14, strokeColor: 'orange', cssStyle: text_css, useMathJax: true});
     jsx3.create('curve', [[0, 0.1, 0.3], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
     jsx3.create('curve', [[0.6, 0.55, 0.4], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+
+    let jsx4 = JXG.JSXGraph.initBoard("jxgbox4", {boundingbox: [-0.01, 7, 1.6, -1]});
+    jsx4.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: false,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            insertTicks: true,
+            ticksDistance: 0.1,
+            // scale: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx4.create('segment', [[0, 0], [0, 5]], {strokeColor: 'gray', dash: 2});
+    jsx4.create('segment', [[1, 0], [1, 5]], {strokeColor: 'gray', dash: 2});
+    jsx4.create('chart', datearr2, {chartStyle: "bar", width: 0.3, dir: 'horizontal'});
+    jsx4.create('polygon', [[0.6, 4.15], [1, 4.15], [1, 3.85], [0.6, 3.85]], {strokeColor: "gray", fillColor: "yellow", fillOpacity: 0.3, vertices: vertices_status});
+    jsx4.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.45, 1.5, '$$250\\mathrm{cm}$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.6, 5.5, '切り取られたリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx4.create('text', [0.75, 4.7, '$$0.4$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0.6, 0.65, 0.7], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[1.0, 0.95, 0.85], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.2, 5.5, '残ったリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx4.create('text', [0.3, 4.7, '$$0.6$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.3], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[0.6, 0.55, 0.4], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.25, 3.5, '$$100\\mathrm{cm}^2$$'], {fontSize: 14, strokeColor: 'orange', cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.2], [3.8, 3.55, 3.5]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[0.6, 0.55, 0.45], [3.8, 3.55, 3.5]], {strokeColor: 'gray'});
 });
 </script>
 {% endblock %}
@@ -576,7 +612,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">ここまでで基本的な割合の解説は終わりなのですが、最後におまけとして線分図を使った解き方についても確認しておきます。</p>
             <p class="lh-1">線分図はちょうど少し上で使った、文字通り線分(始まりと終わりがある線)を使った図のことを指します。</p>
             <p class="lh-1">この線分図は、特に複雑な割合の問題で非常に便利な図です。</p>
-            <p class="lh-1">というのも、<mark>割合と数字を一度にまとめやすく、問題を解くときの手がかりになる</mark>ことができるからです。</p>
+            <p class="lh-1">というのも、<mark>割合と数字を一度にまとめやすく、どのような問題かがわかりやすくなる</mark>からです。</p>
         </div>
         <div class="m-2 p-2 problem_section">
             <p class="lh-1">これまでに解いた問題もまじえつつ、具体的な使い方を確認してみましょう。</p>
@@ -594,12 +630,20 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">公式を使って計算すると、</p>
             <p class="lh-1">(比べる量) \( = \) (もとにする量) \( \times \) (割合) \( = 250 \times 0.4 = 100 \mathrm{cm} \)が答えです。</p>
             <br>
+            <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
             <p class="lh-1">このように、線分図を使って割合と量を整理することで、どういう問題なのかがわかりやすくなります。</p>
+            <p class="lh-1">問題がわかりづらく感じたら、線分図を使ってみるとわかりやすくなるでしょう。</p>
         </div>
     </div>
     <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="afterword">後書き</h2>
-        <p class="lh-1">sample</p>
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="afterword">後書き</h2>
+            <p class="lh-1">以上で割合の問題の解説を終わります。</p>
+            <p class="lh-1">まずは公式を覚えること。そして、与えられた数字が何の量なのかを考えること。単位に気をつけること。</p>
+            <p class="lh-1">さらに、割合を計算に使うときには、きちんと小数になおすこと。</p>
+            <p class="lh-1">以上に気をつけながら、問題を解いていきましょう。</p>
+        </div>
     </div>
 </div>
 {% endblock %}

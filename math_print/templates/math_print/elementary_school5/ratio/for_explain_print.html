@@ -209,6 +209,27 @@ window.addEventListener("load", (event)=>{
         border-bottom-width: 0.2px;
     }
 </style>
+<style type="text/css" media="print">
+    .print_pages{
+        /*A4縦 172,251*/
+        width: 210mm;
+        height: 260mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav{
+        display: none;
+    }
+
+    p.number_of_problem {
+        text-align: right;
+    }
+</style>
 {% endblock %}
 
 {% block title %}
@@ -226,111 +247,133 @@ window.addEventListener("load", (event)=>{
 
 {% block body %}
 <div class="container-fluid">
-    <h1 class="h4">
-        割合・百分率・歩合
-        <small class="text-muted">～割合と公式を使い分けよう～</small>
-    </h1>
-    <br>
-    <a class="btn btn-primary" href="{% url 'ratio_explain_print' %}">A4印刷用ページ表示</a>
-
-    <ul class="list-group row m-4 p-4">
-        <h2 class="h5">目次</h2>
-        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#raito_without_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が同じ場合)</a></li>
-        <li class="list-group-item col-md-6"><a href="#raito_with_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が異なる場合)</a></li>
-        <li class="list-group-item col-md-6"><a href="#raito_summary" class="text-decoration-none text-reset">割合のまとめ</a></li>
-        <li class="list-group-item col-md-6"><a href="#amount_to_compare_without_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が同じ場合)</a></li>
-        <li class="list-group-item col-md-6"><a href="#amount_to_compare_with_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が異なる場合)</a></li>
-        <li class="list-group-item col-md-6"><a href="#amount_to_compare_summary" class="text-decoration-none text-reset">比べる量のまとめ</a></li>
-        <li class="list-group-item col-md-6"><a href="#standard_amount_without_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が同じ場合)</a></li>
-        <li class="list-group-item col-md-6"><a href="#standard_amount_with_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が異なる場合)</a></li>
-        <li class="list-group-item col-md-6"><a href="#standard_amount_summary" class="text-decoration-none text-reset">もとにする量のまとめ</a></li>
-        <li class="list-group-item col-md-6"><a href="#line_segment_diagram" class="text-decoration-none text-reset">おまけ: 線分図を使った解き方</a></li>
-        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
-    </ul>
-    <br>
-
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="foreword">前書き</h2>
-        <p class="lh-1">ここでは割合の問題を解説していきます。文章問題が中心になっていて、受験でもよく出てくる分野です。</p>
-        <p class="lh-1">ポイントはずばり、<mark>求めたいものに応じて、正しい式を使う</mark>ことです。</p>
-        <p class="lh-1">特に、あとで紹介する比べる量、もとにする量は、どちらなのかわかりづらくなりやすいです。</p>
-        <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
-    </div>
-
-    <div class="row m-4 p-4 description_section">
-        <div class="m-2 p-2 problem_section">
-            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が同じ場合)</h2>
-            <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
-            <p class="lh-1">割合とは、<mark>ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</mark>を表現した数です。</p>
-            <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
+    <section class="print_pages">
+        <h1 class="h4">
+            割合・百分率・歩合
+            <small class="text-muted">～割合と公式を使い分けよう～</small>
+        </h1>
+        <br>
+        <div class="container button_container">
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <form>
+                        <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+                    </form>
+                </div>
+            </div>
+            <br>
         </div>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">具体的な問題を見てみましょう。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題1: \( 10 \mathrm{cm} \)は\( 2 \mathrm{cm} \)の何倍ですか?</p>
-            <br>
-            <p class="lh-1">これが一番シンプルな割合のたずね方です。</p>
-            <p class="lh-1">まず、「\( 2 \mathrm{cm} \)の何倍」と聞かれているので、\( 2 \mathrm{cm} \)がもとにする量になります。</p>
-            <p class="lh-1">そして、\( 10 \mathrm{cm} \)が割合を知りたい量、つまり比べる量になります。</p>
-            <p class="lh-1">そのため、この時の割合は\( 10 \div 2 = 5 \)で5倍となります。</p>
-            <p class="lh-1">実際に、\( 2 \mathrm{cm} \)を\( 5 \)倍にすれば、\( 2 \times 5 = 10 \)できちんと\( 10 \mathrm{cm} \)となっています。</p>
-            <p class="lh-1">この流れが割合を計算するときの基本です。何がもとにする量で、何が比べる量なのかが重要です。</p>
-        </div>
-        
-        <div class="m-2 p-2 problem_section problem_section">
-            <p class="lh-1">そしてこれは、割合が小数になったとしても変わりません。次の例を見てみましょう。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題2: \( 6 \mathrm{kg} \)は\( 10 \mathrm{kg} \)の何倍ですか?</p>
-            <br>
-            <p class="lh-1">まず、「\( 10 \mathrm{kg} \)の何倍」と聞かれているので、\( 10 \mathrm{kg} \)がもとにする量となります。</p>
-            <p class="lh-1">次に、\( 6 \mathrm{kg} \)が比べる量になります。</p>
-            <p class="lh-1">よって、この時の割合は\( 6 \div 10 = 0.6 \)で\( 0.6倍 \)となります。</p>
-            <p class="lh-1">例1と同じように、\( 10 \mathrm{kg} \)を\( 0.6 \)倍すれば、\( 10 \times 0.6 = 6 \)できちんと\( 6 \mathrm{kg} \)となっていることもわかります。</p>
-        </div>
+        <ul class="list-group row m-4 p-4">
+            <h2 class="h5">目次</h2>
+            <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+            <li class="list-group-item col-md-6"><a href="#raito_without_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が同じ場合)</a></li>
+            <li class="list-group-item col-md-6"><a href="#raito_with_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が異なる場合)</a></li>
+            <li class="list-group-item col-md-6"><a href="#raito_summary" class="text-decoration-none text-reset">割合のまとめ</a></li>
+            <li class="list-group-item col-md-6"><a href="#amount_to_compare_without_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が同じ場合)</a></li>
+            <li class="list-group-item col-md-6"><a href="#amount_to_compare_with_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が異なる場合)</a></li>
+            <li class="list-group-item col-md-6"><a href="#amount_to_compare_summary" class="text-decoration-none text-reset">比べる量のまとめ</a></li>
+            <li class="list-group-item col-md-6"><a href="#standard_amount_without_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が同じ場合)</a></li>
+            <li class="list-group-item col-md-6"><a href="#standard_amount_with_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が異なる場合)</a></li>
+            <li class="list-group-item col-md-6"><a href="#standard_amount_summary" class="text-decoration-none text-reset">もとにする量のまとめ</a></li>
+            <li class="list-group-item col-md-6"><a href="#line_segment_diagram" class="text-decoration-none text-reset">おまけ: 線分図を使った解き方</a></li>
+            <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+        </ul>
+        <br>
 
-        <div class="m-2 p-2 problem_section problem_section">
-            <p class="lh-1">例題1はそれこそ日ごろの生活で自然とやっている計算です。</p>
-            <p class="lh-1">ただ、なれないうちは例2のような計算、つまり小数が出る計算になると、とまどってしまう人が多いです。</p>
-            <p class="lh-1">しかし見ての通り、やっていること自体は全く同じになっています。</p>
-            <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
-            <p class="lh-1">この計算を公式にすると、「<mark>(割合) \( = \) (比べる量) \( \div \) (もとにする量)</mark>」となります。</p>
-        </div>
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="foreword">前書き</h2>
+            <p class="lh-1">ここでは割合の問題を解説していきます。文章問題が中心になっていて、受験でもよく出てくる分野です。</p>
+            <p class="lh-1">ポイントはずばり、<mark>求めたいものに応じて、正しい式を使う</mark>ことです。</p>
+            <p class="lh-1">特に、あとで紹介する比べる量、もとにする量は、どちらなのかわかりづらくなりやすいです。</p>
+            <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
+        </div> 
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">それでは次の問題を見てみましょう。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を百分率で表しなさい。</p>
-            <p class="lh-1">初めの計算は、例題1,2と変わりません。</p>
-            <p class="lh-1">\( 40 \mathrm{cm} \)がもとにする量、\( 10 \mathrm{cm} \)が比べる量なので、</p>
-            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)から、割合は\( 0.25 \)です。</p>
-            <p class="lh-1">ここで、<mark>百分率になおすためには、小数の割合に100をかければよい</mark>ので、</p>
-            <p class="lh-1">百分率での割合は、\( 0.25 \times 100 = 25 \)より、\( 25 \% \)となります。</p>
-            <p class="lh-1">問題によっては、このように小数とは違った割合を使わなければならないこともあります。</p>
-            <p class="lh-1">百分率はその代表です。しっかりと書きかえられるようにしておきましょう。</p>
-        </div>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が同じ場合)</h2>
+                <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
+                <p class="lh-1">割合とは、<mark>ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</mark>を表現した数です。</p>
+                <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
+            </div>
 
-        <div class="m-2 p-2 problem_section problem_section">
-            <p class="lh-1">違う割合の表現として、もう1問見てみましょう。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題4: \(  105 \mathrm{m^3} \)の、\( 500 \mathrm{m^3} \)に対する割合を歩合で表しなさい。</p>
-            <p class="lh-1">こちらもやはり、初めの計算は変わりません。</p>
-            <p class="lh-1">\( 105 \mathrm{m^3} \)が比べる量、\( 500 \mathrm{m^3} \)がもとにする量なので、</p>
-            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 105 \div 500 = 0.21 \)から、割合は\( 0.21 \)です。</p>
-            <p class="lh-1">ここで、この数字を<mark>歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</mark>必要があります。</p>
-            <p class="lh-1">漢字の方は、とりあえず大きい方から4つ、「<ruby>割<rt>わり</rt></ruby>」「<ruby>分<rt>ぶ</rt></ruby>」「<ruby>厘<rt>りん</rt></ruby>」、それから「<ruby>毛<rt>もう</rt></ruby>」を覚えておけば良いでしょう。それより小さい値は基本的に算数には登場しません。</p>           
-            <p class="lh-1">今回の割合は、\( 0.\color{blue}2\color{orange}1 \)なので、歩合になおすと、
-                \( \color{blue}2 \)割\( \color{orange}1 \)分となります。
-            </p>
-            <p class="lh-1">数字に割り当てる漢字さえ覚えておけば、あとは順番に当てはめるだけになっています。</p>
-            <br>
-            <p class="lh-1">また、今回は関係ありませんでしたが、たとえば\( 0.405 \)や\( 0.03 \)のように小数点以下に0が入っているときは、割り当てをすることなく飛ばしましょう。</p>
-            <p class="lh-1">\( 0.\color{blue}4\color{black}0\color{green}5 \)なら\( \color{blue}4 \)割\( \color{green}5 \)厘、
-                \( 0.0\color{orange}3 \)なら\( \color{orange}3 \)分です。
-            </p>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">具体的な問題を見てみましょう。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題1: \( 10 \mathrm{cm} \)は\( 2 \mathrm{cm} \)の何倍ですか?</p>
+                <br>
+                <p class="lh-1">これが一番シンプルな割合のたずね方です。</p>
+                <p class="lh-1">まず、「\( 2 \mathrm{cm} \)の何倍」と聞かれているので、\( 2 \mathrm{cm} \)がもとにする量になります。</p>
+                <p class="lh-1">そして、\( 10 \mathrm{cm} \)が割合を知りたい量、つまり比べる量になります。</p>
+                <p class="lh-1">そのため、この時の割合は\( 10 \div 2 = 5 \)で5倍となります。</p>
+                <p class="lh-1">実際に、\( 2 \mathrm{cm} \)を\( 5 \)倍にすれば、\( 2 \times 5 = 10 \)できちんと\( 10 \mathrm{cm} \)となっています。</p>
+                <p class="lh-1">この流れが割合を計算するときの基本です。何がもとにする量で、何が比べる量なのかが重要です。</p>
+            </div>
+            
+            <div class="m-2 p-2 problem_section problem_section">
+                <p class="lh-1">そしてこれは、割合が小数になったとしても変わりません。次の例を見てみましょう。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題2: \( 6 \mathrm{kg} \)は\( 10 \mathrm{kg} \)の何倍ですか?</p>
+                <br>
+                <p class="lh-1">まず、「\( 10 \mathrm{kg} \)の何倍」と聞かれているので、\( 10 \mathrm{kg} \)がもとにする量となります。</p>
+                <p class="lh-1">次に、\( 6 \mathrm{kg} \)が比べる量になります。</p>
+                <p class="lh-1">よって、この時の割合は\( 6 \div 10 = 0.6 \)で\( 0.6倍 \)となります。</p>
+                <p class="lh-1">例1と同じように、\( 10 \mathrm{kg} \)を\( 0.6 \)倍すれば、\( 10 \times 0.6 = 6 \)できちんと\( 6 \mathrm{kg} \)となっていることもわかります。</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <sectoin class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section problem_section">
+                <p class="lh-1">例題1はそれこそ日ごろの生活で自然とやっている計算です。</p>
+                <p class="lh-1">ただ、なれないうちは例2のような計算、つまり小数が出る計算になると、とまどってしまう人が多いです。</p>
+                <p class="lh-1">しかし見ての通り、やっていること自体は全く同じになっています。</p>
+                <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
+                <p class="lh-1">この計算を公式にすると、「<mark>(割合) \( = \) (比べる量) \( \div \) (もとにする量)</mark>」となります。</p>
+            </div>
+
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">それでは次の問題を見てみましょう。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を百分率で表しなさい。</p>
+                <p class="lh-1">初めの計算は、例題1,2と変わりません。</p>
+                <p class="lh-1">\( 40 \mathrm{cm} \)がもとにする量、\( 10 \mathrm{cm} \)が比べる量なので、</p>
+                <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)から、割合は\( 0.25 \)です。</p>
+                <p class="lh-1">ここで、<mark>百分率になおすためには、小数の割合に100をかければよい</mark>ので、</p>
+                <p class="lh-1">百分率での割合は、\( 0.25 \times 100 = 25 \)より、\( 25 \% \)となります。</p>
+                <p class="lh-1">問題によっては、このように小数とは違った割合を使わなければならないこともあります。</p>
+                <p class="lh-1">百分率はその代表です。しっかりと書きかえられるようにしておきましょう。</p>
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <sectoin class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">違う割合の表現として、もう1問見てみましょう。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題4: \(  105 \mathrm{m^3} \)の、\( 500 \mathrm{m^3} \)に対する割合を歩合で表しなさい。</p>
+                <p class="lh-1">こちらもやはり、初めの計算は変わりません。</p>
+                <p class="lh-1">\( 105 \mathrm{m^3} \)が比べる量、\( 500 \mathrm{m^3} \)がもとにする量なので、</p>
+                <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 105 \div 500 = 0.21 \)から、割合は\( 0.21 \)です。</p>
+                <p class="lh-1">ここで、この数字を<mark>歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</mark>必要があります。</p>
+                <p class="lh-1">漢字の方は、とりあえず大きい方から4つ、「<ruby>割<rt>わり</rt></ruby>」「<ruby>分<rt>ぶ</rt></ruby>」「<ruby>厘<rt>りん</rt></ruby>」、それから「<ruby>毛<rt>もう</rt></ruby>」を覚えておけば良いでしょう。それより小さい値は基本的に算数には登場しません。</p>           
+                <p class="lh-1">今回の割合は、\( 0.\color{blue}2\color{orange}1 \)なので、歩合になおすと、
+                    \( \color{blue}2 \)割\( \color{orange}1 \)分となります。
+                </p>
+                <p class="lh-1">数字に割り当てる漢字さえ覚えておけば、あとは順番に当てはめるだけになっています。</p>
+                <br>
+                <p class="lh-1">また、今回は関係ありませんでしたが、たとえば\( 0.405 \)や\( 0.03 \)のように小数点以下に0が入っているときは、割り当てをすることなく飛ばしましょう。</p>
+                <p class="lh-1">\( 0.\color{blue}4\color{black}0\color{green}5 \)なら\( \color{blue}4 \)割\( \color{green}5 \)厘、
+                    \( 0.0\color{orange}3 \)なら\( \color{orange}3 \)分です。
+                </p>
+            </div>
+        </div>
+    </section>
 
     <div class="row m-4 p-4 description_section">
         <div class="m-2 p-2 problem_section">

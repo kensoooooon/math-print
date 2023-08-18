@@ -44,6 +44,7 @@ urlpatterns = [
     path('ratio/print', views.print_ratio, name='ratio_print'),
     path('ratio/display', views.display_ratio, name='ratio_display'),
     path('ratio/explanation/', views.explain_ratio, name='ratio_explain'),
+    path('ratio/explanation_print/', views.explain_ratio_print, name='ratio_explain_print'),
     ##########################################
     ### 小6 ###
     path('elementary_school6/', views.show_elementary_school6, name='elementary_school6'),

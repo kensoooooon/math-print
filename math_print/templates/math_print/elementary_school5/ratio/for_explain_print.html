@@ -192,7 +192,7 @@ window.addEventListener("load", (event)=>{
         text-decoration: none;
     }
     mark{
-        background: linear-gradient(transparent 50%, #FAA755 80%);
+        background-color: #FAA755;
     }
     .description_section{
         border-style: double;
@@ -210,6 +210,9 @@ window.addEventListener("load", (event)=>{
     }
 </style>
 <style type="text/css" media="print">
+    body {
+        -webkit-print-color-adjust: exact;
+    }
     .print_pages{
         /*A4縦 172,251*/
         width: 210mm;
@@ -225,7 +228,6 @@ window.addEventListener("load", (event)=>{
     .hero_unit, .base_footer, .button_container, .nav{
         display: none;
     }
-
     p.number_of_problem {
         text-align: right;
     }
@@ -323,6 +325,7 @@ window.addEventListener("load", (event)=>{
                 <p class="lh-1">例1と同じように、\( 10 \mathrm{kg} \)を\( 0.6 \)倍すれば、\( 10 \times 0.6 = 6 \)できちんと\( 6 \mathrm{kg} \)となっていることもわかります。</p>
             </div>
         </div>
+        <br>
     </section>
 
     <sectoin class="print_pages">
@@ -334,7 +337,6 @@ window.addEventListener("load", (event)=>{
                 <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
                 <p class="lh-1">この計算を公式にすると、「<mark>(割合) \( = \) (比べる量) \( \div \) (もとにする量)</mark>」となります。</p>
             </div>
-
             <div class="m-2 p-2 problem_section">
                 <p class="lh-1">それでは次の問題を見てみましょう。</p>
                 <br>
@@ -349,6 +351,7 @@ window.addEventListener("load", (event)=>{
                 <br>
             </div>
         </div>
+        <br>
     </section>
 
     <sectoin class="print_pages">
@@ -373,119 +376,150 @@ window.addEventListener("load", (event)=>{
                 </p>
             </div>
         </div>
+        <br>
     </section>
 
-    <div class="row m-4 p-4 description_section">
-        <div class="m-2 p-2 problem_section">
-            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる場合)</h2>
-            <p class="lh-1">次も割合を求める問題ですが、単位が異なる場合を見ていきます。</p>
-            <p class="lh-1">たとえば、\( 1 \mathrm{kg} \)をもとにしたときの、\( 1000 \mathrm{g} \)の割合は\( 1 \)、つまり\( 1 \)倍であるべきです。同じ大きさなのですから、当然ですね。</p>
-            <p class="lh-1">しかし、単位をかえずに計算すると、\( 1000 \div 1 = 1000 \)という大変な値が出てきます。</p>
-            <p class="lh-1"><mark>単位が異なるときは、単位をそろえてから割合を求める</mark>必要があります。これを意識しながら、例題を見ていきましょう。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる場合)</h2>
+                <p class="lh-1">次も割合を求める問題ですが、単位が異なる場合を見ていきます。</p>
+                <p class="lh-1">たとえば、\( 1 \mathrm{kg} \)をもとにしたときの、\( 1000 \mathrm{g} \)の割合は\( 1 \)、つまり\( 1 \)倍であるべきです。同じ大きさなのですから、当然ですね。</p>
+                <p class="lh-1">しかし、単位をかえずに計算すると、\( 1000 \div 1 = 1000 \)という大変な値が出てきます。</p>
+                <p class="lh-1"><mark>単位が異なるときは、単位をそろえてから割合を求める</mark>必要があります。これを意識しながら、例題を見ていきましょう。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1 problem_sentence">例題5: \( 100 \mathrm{g} \)に対する\( 1 \mathrm{kg} \)の割合を小数で答えなさい。</p>
+                <br>
+                <p class="lh-1">まずは\( 100 \mathrm{g} \)を\( \mathrm{kg} \)になおすか、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおすか、いずれかをやる必要があります。</p>
+                <p class="lh-1">ここでは単位をかえたあとに、数が小さくなる方と大きくなる方、両方で計算してみて違いを確認してみましょう。</p>
+                <br>
+                <p class="lh-1">まず小さくする方です。つまり、\( 100 \mathrm{g} \)を\( \mathrm{kg}\)になおしてから計算する、という流れです。</p>
+                <p class="lh-1">\( \mathrm{g} \)を\( \mathrm{kg} \)になおすためには、1000で割ればOKです。そのため、\( 100 \mathrm{g} \)は\( 100 \div 1000 = 0.1 \mathrm{kg} \)となります。数は変える前と比べて小さくなっていますね。</p>
+                <p class="lh-1">単位がそろったので、あとは公式どおり割合を求めると、</p>
+                <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 0.1 \div 1 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
+            </div>
         </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1 problem_sentence">例題5: \( 100 \mathrm{g} \)に対する\( 1 \mathrm{kg} \)の割合を小数で答えなさい。</p>
-            <br>
-            <p class="lh-1">まずは\( 100 \mathrm{g} \)を\( \mathrm{kg} \)になおすか、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおすか、いずれかをやる必要があります。</p>
-            <p class="lh-1">ここでは単位をかえたあとに、数が小さくなる方と大きくなる方、両方で計算してみて違いを確認してみましょう。</p>
-            <br>
-            <p class="lh-1">まず小さくする方です。つまり、\( 100 \mathrm{g} \)を\( \mathrm{kg}\)になおしてから計算する、という流れです。</p>
-            <p class="lh-1">\( \mathrm{g} \)を\( \mathrm{kg} \)になおすためには、1000で割ればOKです。そのため、\( 100 \mathrm{g} \)は\( 100 \div 1000 = 0.1 \mathrm{kg} \)となります。数は変える前と比べて小さくなっていますね。</p>
-            <p class="lh-1">単位がそろったので、あとは公式どおり割合を求めると、</p>
-            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 0.1 \div 1 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
-            <br>
-            <p class="lh-1">続いては、大きくするほうです。つまり、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおしてから計算します。</p>
-            <p class="lh-1">\( \mathrm{kg} \)を\( \mathrm{g} \)になおすためには、1000をかければよいです。そのため、\( 1 \mathrm{kg} \)は\( 1 \times 1000 = 1000 \mathrm{g} \)となります。こちらは逆に、変える前と比べて数が大きくなっていますね。</p>
-            <p class="lh-1">あとは公式どおり割合を求めると、</p>
-            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 100 \div 1000 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
-            <br>
-            <p class="lh-1">このように、どちらでも答えが出ますので、好みで選んでしまって構いません。</p>
-            <p class="lh-1">ただ、あえていうのであれば、<mark>数字が大きくなる方になおすことで、小数の計算をなるべくさける</mark>ことをおすすめします。</p>
-            <p class="lh-1">小数の計算は、たとえば小数点の場所など、考えることが少し多いです。特にこだわりがなければ、数が大きくなるほうに変えてあげてください。</p>
-            <p class="lh-1">小さくするほうに変えるよりも、小数の計算が必要になる可能性が低くなります。</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">もう1問、少しだけひねった問題を見てみましょう。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題6: \( 3 \mathrm{m}^2 \)の紙のうち、\( 22500 \mathrm{cm}^2 \)を切り取って運びました。残りの紙は、初めの紙のどれくらいの割合になるか、歩合で答えなさい。</p>
-            <p class="lh-1">まず、先ほどと同じように単位をそろえます。\( \mathrm{m}^2 \)を\( \mathrm{cm^2} \)になおすためには、10000をかけれよいので、\( 3 \mathrm{m}^2 \)は、\( 3 \times 10000 = 30000 \mathrm{cm}^2 \)となります。</p>
-            <p class="lh-1">次に、初めの紙が\( 30000 \mathrm{cm}^2 \)、切り取って運んだ紙は\( 22500 \mathrm{cm}^2 \)なので、残った紙は、\( 30000 - 22500 = 7500 \mathrm{cm}^2 \)となります。</p>
-            <p class="lh-1">ここで、今回の問題では、「初めの紙のどれくらいの割合になるか」と聞かれているので、初めの紙がもとにする量、残った紙が比べる量になります。</p>
-            <p class="lh-1">よって、(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 22500 \div 30000 = 0.75 \)が求めたい割合です。</p>
-            <p class="lh-1">最後に\( 0.\color{blue}7 \color{orange}5 \)を歩合になおすと、\( \color{blue}7 \)割\( \color{orange}5 \)分となります。</p>
-        </div>
-    </div>
+        <br>
+    </section>
 
-    <div class="row m-4 p-4 description_section">
-        <div class="m-2 p-2 problem_section">
-            <h2 class="text-muted h5" id="raito_summary">割合のまとめ</h2>
-            <p class="lh-1">ここで割合についてまとめておきます。</p>
-            <ol class="list-group list-group-numbered list-group-flush">
-                <li class="list-group-item"><mark>割合は、(比べる量) \( \div \) (もとにする量)で求められる</mark></li>
-                <li class="list-group-item"><mark>割合の基本は小数で、そこから100をかけると百分率に。各位の数字を漢字に割り当てていくと、歩合が求められる</mark></li>
-                <li class="list-group-item"><mark>単位が異なっている場合は、単位をそろえてから計算する</mark></li>
-            </ol>
-            <br>
-            <p class="lh-1">割合を求める計算は、その名前の通り割合の中でもっとも基本的で、重要な考え方です。しっかりと理解しておきたいところです。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">続いては、大きくするほうです。つまり、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおしてから計算します。</p>
+                <p class="lh-1">\( \mathrm{kg} \)を\( \mathrm{g} \)になおすためには、1000をかければよいです。そのため、\( 1 \mathrm{kg} \)は\( 1 \times 1000 = 1000 \mathrm{g} \)となります。こちらは逆に、変える前と比べて数が大きくなっていますね。</p>
+                <p class="lh-1">あとは公式どおり割合を求めると、</p>
+                <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 100 \div 1000 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
+                <br>
+                <p class="lh-1">このように、どちらでも答えが出ますので、好みで選んでしまって構いません。</p>
+                <p class="lh-1">ただ、あえていうのであれば、<mark>数字が大きくなる方になおすことで、小数の計算をなるべくさける</mark>ことをおすすめします。</p>
+                <p class="lh-1">小数の計算は、たとえば小数点の場所など、考えることが少し多いです。特にこだわりがなければ、数が大きくなるほうに変えてあげてください。</p>
+                <p class="lh-1">小さくするほうに変えるよりも、小数の計算が必要になる可能性が低くなります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">もう1問、少しだけひねった問題を見てみましょう。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題6: \( 3 \mathrm{m}^2 \)の紙のうち、\( 22500 \mathrm{cm}^2 \)を切り取って運びました。残りの紙は、初めの紙のどれくらいの割合になるか、歩合で答えなさい。</p>
+                <p class="lh-1">まず、先ほどと同じように単位をそろえます。\( \mathrm{m}^2 \)を\( \mathrm{cm^2} \)になおすためには、10000をかけれよいので、\( 3 \mathrm{m}^2 \)は、\( 3 \times 10000 = 30000 \mathrm{cm}^2 \)となります。</p>
+                <p class="lh-1">次に、初めの紙が\( 30000 \mathrm{cm}^2 \)、切り取って運んだ紙は\( 22500 \mathrm{cm}^2 \)なので、残った紙は、\( 30000 - 22500 = 7500 \mathrm{cm}^2 \)となります。</p>
+                <p class="lh-1">ここで、今回の問題では、「初めの紙のどれくらいの割合になるか」と聞かれているので、初めの紙がもとにする量、残った紙が比べる量になります。</p>
+                <p class="lh-1">よって、(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 22500 \div 30000 = 0.75 \)が求めたい割合です。</p>
+                <p class="lh-1">最後に\( 0.\color{blue}7 \color{orange}5 \)を歩合になおすと、\( \color{blue}7 \)割\( \color{orange}5 \)分となります。</p>
+            </div>
         </div>
-    </div>
+        <br>
+    </section>
 
-    <div class="row m-4 p-4 description_section">
-        <div class="m-2 p-2 problem_section">
-            <h2 class="text-muted h5" id="amount_to_compare_without_change_unit">比べる量と、その求め方(単位が同じ場合)</h2>
-            <p class="lh-1">次は比べる量を求める問題の確認です。</p>
-            <p class="lh-1">割合の解説で比べる量と、もとにする量との関係についてはそれなりに説明しましたので、ここでは初めに公式を紹介してしまいましょう。</p>
-            <p class="lh-1"><mark>(比べる量) \( = \) (もとにする量) \( \times \) (割合)</mark>です。</p>
-            <p class="lh-1">まずはこれが正しいことを、先ほど使った例を少しいじったもので確認しましょう。</p>
-            <br>
-            <p class="lh-1">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を小数で表しなさい。</p>
-            <p class="lh-1">もとにする量が\( 40 \mathrm{cm} \)で、\( 10 \mathrm{cm} \)が比べる量。</p>
-            <p class="lh-1">割合は、(比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)でした。</p>
-            <p class="lh-1">ここで、比べる量の公式を使ってみると、</p>
-            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 40 \times 0.25 = 10 \)で、きちんと比べる量の\( 10 \mathrm{cm} \)と等しくなっていることがわかります。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <h2 class="text-muted h5" id="raito_summary">割合のまとめ</h2>
+                <p class="lh-1">ここで割合についてまとめておきます。</p>
+                <ol class="list-group list-group-numbered list-group-flush">
+                    <li class="list-group-item"><mark>割合は、(比べる量) \( \div \) (もとにする量)で求められる</mark></li>
+                    <li class="list-group-item"><mark>割合の基本は小数で、そこから100をかけると百分率に。各位の数字を漢字に割り当てていくと、歩合が求められる</mark></li>
+                    <li class="list-group-item"><mark>単位が異なっている場合は、単位をそろえてから計算する</mark></li>
+                </ol>
+                <br>
+                <p class="lh-1">割合を求める計算は、その名前の通り割合の中でもっとも基本的で、重要な考え方です。しっかりと理解しておきたいところです。</p>
+            </div>
         </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">さて、公式が正しいということが確認できたところで、あらためて比べる量を求める問題に取り組んでいきましょう。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題7: \( 3 \mathrm{m}^2 \)の\( 0.3 \)は何\( \mathrm{m}^2 \)ですか。</p>
-            <p class="lh-1">ここでは\( 3 \mathrm{m}^2 \)がもとにする量、\( 0.3 \)が割合なので、</p>
-            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 3 \times 0.3 = 0.9 \mathrm{m}^2 \)となります。</p>
-            <p class="lh-1">だいたいの問題では「～の」の～にあたる部分がもとにする量になっていることが多いので、知っておくとお得かもしれませんね。</p>
+        <br>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <h2 class="text-muted h5" id="amount_to_compare_without_change_unit">比べる量と、その求め方(単位が同じ場合)</h2>
+                <p class="lh-1">次は比べる量を求める問題の確認です。</p>
+                <p class="lh-1">割合の解説で比べる量と、もとにする量との関係についてはそれなりに説明しましたので、ここでは初めに公式を紹介してしまいましょう。</p>
+                <p class="lh-1"><mark>(比べる量) \( = \) (もとにする量) \( \times \) (割合)</mark>です。</p>
+                <p class="lh-1">まずはこれが正しいことを、先ほど使った例を少しいじったもので確認しましょう。</p>
+                <br>
+                <p class="lh-1">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を小数で表しなさい。</p>
+                <p class="lh-1">もとにする量が\( 40 \mathrm{cm} \)で、\( 10 \mathrm{cm} \)が比べる量。</p>
+                <p class="lh-1">割合は、(比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)でした。</p>
+                <p class="lh-1">ここで、比べる量の公式を使ってみると、</p>
+                <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 40 \times 0.25 = 10 \)で、きちんと比べる量の\( 10 \mathrm{cm} \)と等しくなっていることがわかります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">さて、公式が正しいということが確認できたところで、あらためて比べる量を求める問題に取り組んでいきましょう。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題7: \( 3 \mathrm{m}^2 \)の\( 0.3 \)は何\( \mathrm{m}^2 \)ですか。</p>
+                <p class="lh-1">ここでは\( 3 \mathrm{m}^2 \)がもとにする量、\( 0.3 \)が割合なので、</p>
+                <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 3 \times 0.3 = 0.9 \mathrm{m}^2 \)となります。</p>
+                <p class="lh-1">だいたいの問題では「～の」の～にあたる部分がもとにする量になっていることが多いので、知っておくとお得かもしれませんね。</p>
+            </div>
         </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">次も比べる量を求める問題ですが、少し表現が変わっています。</p>
-            <br>
-            <p class="lh-1 problem_sentence">例題8: \( 250 \mathrm{cm} \)あったリボンのうち\( 40 \% \)を切り取りました。残りの長さは\( \underline{\qquad\qquad} \mathrm{cm} \)です。</p>
-            <br>
-            <p class="lh-1">ここでも百分率が登場しました。百分率のあつかいはシンプルです。<mark>小数になおしてから計算に使う</mark>ようにしましょう。</p>
-            <p class="lh-1">小数でかかれた割合は100をかけることで百分率になりました。</p>
-            <p class="lh-1">そのため、百分率でかかれた割合を、小数の割合になおすときはその逆です。<mark>100で割ってあげる</mark>ことでなおせます。</p>
-            <p class="lh-1">\( 40 \div 100 = 0.4 \)なので、比べる量の計算に使う割合は\( 0.4 \)だとわかりました。</p>
-            <br>
-            <p class="lh-1">さて、あとは\( 250 \mathrm{cm} \)をもとにする量として計算するだけなのですが、ひとつだけ注意しなければなりません。</p>
-            <p class="lh-1">それはずばり、割合の\( 0.4 \)は、<mark>切り取ったリボンの長さであって、残ったリボンの長さではない</mark>ことです。</p>
-            <p class="lh-1">「\( 40 \% \)を切り取りました」とかいてありますからね。</p>
-            <p class="lh-1">なので、\( 0.4 \)を割合として計算した比べる量は、あくまで切り取ったリボンの長さです。</p>
-            <p class="lh-1">それを踏まえた上で計算してみると、\( 250 \times 0.4 = 100 \mathrm{cm} \)となります。</p>
-            <p class="lh-1">初めにあったリボンは\( 250 \mathrm{cm} \)なので、残ったリボンはここから切り取ったリボンの長さを引いて、\( 250 - 100 = 150 \mathrm{cm} \)となります。</p>
-            <br>
-            <p class="lh-1">この解き方で特に問題はないのですが、ここでは割合の理解を深めるために他の解き方を2つ解説しておきましょう。</p>
-            <br>
-            <p class="lh-1">まず紹介するのは<mark>小数で割合をあらわしているとき、もとにする量の割合は\( 1 \)であること利用</mark>するというものです。</p>
-            <p class="lh-1">もとにする量の割合が\( 1 \)で、切り取ったリボンの長さの割合が\( 0.4 \)ということは残ったリボンの割合は\( 1 - 0.4 = 0.6 \)になります。</p>
-            <p class="lh-1">この割合を使えば、最後に引き算をする必要はありません。</p>
-            <p class="lh-1">実際に計算してみると、\( 250 \times 0.6 = 150 \mathrm{cm} \)で先ほどの答えと同じになっています。</p>
-            <br>
-            <p class="lh-1">次に紹介するのは<mark>百分率で割合をあらわしているとき、もとにする量の割合は\( 100 \)であることを利用</mark>するというものです。</p>
-            <p class="lh-1">今、「\( 40 \% \)を切り取りました」とあるので、残ったリボンの割合は\( 100 - 40 = 60 \% \)となります。</p>
-            <p class="lh-1">これを小数になおすと、\( 60 \div 100 = 0.6 \)となります。</p>
-            <p class="lh-1">この割合を使って残ったリボンの長さを計算すると、\( 250 \times 0.6 = 150 \mathrm{cm} \)となります。当然同じ答えです。</p>
-            <br>
-            <p class="lh-1">他の解き方の紹介は以上です。</p>
-            <p class="lh-1">ポイントは、もととなる量からの引き算ですね。小数のときは1、百分率のときは100から引けば、残りの量が出てきます。</p>
-            <p class="lh-1">どの解き方でも正しい答えが出るので、自分がわかりやすいと感じる解き方で解けるようになればとりあえずOKです。</p>
+        <br>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">次も比べる量を求める問題ですが、少し表現が変わっています。</p>
+                <br>
+                <p class="lh-1 problem_sentence">例題8: \( 250 \mathrm{cm} \)あったリボンのうち\( 40 \% \)を切り取りました。残りの長さは\( \underline{\qquad\qquad} \mathrm{cm} \)です。</p>
+                <br>
+                <p class="lh-1">ここでも百分率が登場しました。百分率のあつかいはシンプルです。<mark>小数になおしてから計算に使う</mark>ようにしましょう。</p>
+                <p class="lh-1">小数でかかれた割合は100をかけることで百分率になりました。</p>
+                <p class="lh-1">そのため、百分率でかかれた割合を、小数の割合になおすときはその逆です。<mark>100で割ってあげる</mark>ことでなおせます。</p>
+                <p class="lh-1">\( 40 \div 100 = 0.4 \)なので、比べる量の計算に使う割合は\( 0.4 \)だとわかりました。</p>
+                <br>
+                <p class="lh-1">さて、あとは\( 250 \mathrm{cm} \)をもとにする量として計算するだけなのですが、ひとつだけ注意しなければなりません。</p>
+                <p class="lh-1">それはずばり、割合の\( 0.4 \)は、<mark>切り取ったリボンの長さであって、残ったリボンの長さではない</mark>ことです。</p>
+                <p class="lh-1">「\( 40 \% \)を切り取りました」とかいてありますからね。</p>
+                <p class="lh-1">なので、\( 0.4 \)を割合として計算した比べる量は、あくまで切り取ったリボンの長さです。</p>
+                <p class="lh-1">それを踏まえた上で計算してみると、\( 250 \times 0.4 = 100 \mathrm{cm} \)となります。</p>
+                <p class="lh-1">初めにあったリボンは\( 250 \mathrm{cm} \)なので、残ったリボンはここから切り取ったリボンの長さを引いて、\( 250 - 100 = 150 \mathrm{cm} \)となります。</p>
+            </div>
         </div>
-    </div>
+        <br>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">この解き方で特に問題はないのですが、ここでは割合の理解を深めるために他の解き方を2つ解説しておきましょう。</p>
+                <br>
+                <p class="lh-1">まず紹介するのは<mark>小数で割合をあらわしているとき、もとにする量の割合は\( 1 \)であること利用</mark>するというものです。</p>
+                <p class="lh-1">もとにする量の割合が\( 1 \)で、切り取ったリボンの長さの割合が\( 0.4 \)ということは残ったリボンの割合は\( 1 - 0.4 = 0.6 \)になります。</p>
+                <p class="lh-1">この割合を使えば、最後に引き算をする必要はありません。</p>
+                <p class="lh-1">実際に計算してみると、\( 250 \times 0.6 = 150 \mathrm{cm} \)で先ほどの答えと同じになっています。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">次に紹介するのは<mark>百分率で割合をあらわしているとき、もとにする量の割合は\( 100 \)であることを利用</mark>するというものです。</p>
+                <p class="lh-1">今、「\( 40 \% \)を切り取りました」とあるので、残ったリボンの割合は\( 100 - 40 = 60 \% \)となります。</p>
+                <p class="lh-1">これを小数になおすと、\( 60 \div 100 = 0.6 \)となります。</p>
+                <p class="lh-1">この割合を使って残ったリボンの長さを計算すると、\( 250 \times 0.6 = 150 \mathrm{cm} \)となります。当然同じ答えです。</p>
+                <br>
+                <p class="lh-1">他の解き方の紹介は以上です。</p>
+                <p class="lh-1">ポイントは、もととなる量からの引き算ですね。小数のときは1、百分率のときは100から引けば、残りの量が出てきます。</p>
+                <p class="lh-1">どの解き方でも正しい答えが出るので、自分がわかりやすいと感じる解き方で解けるようになればとりあえずOKです。</p>
+            </div>
+        </div>
+        <br>
+    </section>
 
     <div class="row m-4 p-4 description_section">
         <div class="m-2 p-2 problem_section">

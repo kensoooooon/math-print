@@ -95,6 +95,33 @@ window.addEventListener("load", (event)=>{
 {% endblock %}
 
 {% block css %}
+<style type="text/css">
+.fa-solid{
+    color: gray;
+    text-decoration: none;
+}
+.fa-pen-to-square{
+    color: gray;
+    text-decoration: none;
+}
+mark{
+    background: linear-gradient(transparent 50%, #FAA755 80%);
+}
+.description_section{
+    border-style: double;
+}
+.problem_section{
+    display: inline-block;
+    border-bottom: solid 2px blue;
+    border-style: none none dotted;
+    border-bottom-width: 0.5px;
+}
+.problem_sentence{
+    display: inline-block;
+    border-style: none none solid;
+    border-bottom-width: 0.2px;
+}
+</style>
 {% endblock %}
 
 {% block title %}
@@ -116,8 +143,9 @@ window.addEventListener("load", (event)=>{
         定積分で面積を求める
         <small class="text-muted">～\( \dfrac{1}{6} \)公式を上手く活用して、時間と労力を節約しよう～</small>
     </h1>
-
     <br>
+    <a class="btn btn-primary" href="{% url 'calculate_area_by_integration_explain_one_sixth_print' %}">A4印刷用ページ表示</a>
+
     <ul class="list-group row m-4 p-4">
         <h2 class="h5">目次</h2>
         <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
@@ -130,11 +158,11 @@ window.addEventListener("load", (event)=>{
     <br>
 
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">積分は共通テスト、2次試験ともに頻出の分野です。特に定積分を用いて面積を求める問題は非常によく出題されています。</p>
         <p class="lh-1">この面積を求めるための計算、これ自体はさして複雑な仕組みの計算ではありません。計算部分だけを見れば、中学生でも十分やれるレベルになっています。</p>
-        <p class="lh-1">ですが、実際の数学のテスト(これは学校の定期テストから入試の本番までを含みます)では、<span class="text-decoration-underline">時間の不足</span>がしばしば皆さんの足を引っ張ります。</p>
+        <p class="lh-1">ですが、実際の数学のテスト(これは学校の定期テストから入試の本番までを含みます)では、<mark>時間の不足</mark>がしばしば皆さんの足を引っ張ります。</p>
         <p class="lh-1">そもそも、前準備に時間がかかります。「この2次関数はこんな関数で、そして与えられた接点における接線は……」のようなお馴染みのやつですね。</p>
         <p class="lh-1">
             ただ、実際にはこれで終わらず、そこから更に定積分の計算が必要になります。
@@ -144,7 +172,7 @@ window.addEventListener("load", (event)=>{
     </div>
 
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="confirmation_of_integration_formula">定積分の定義の確認</h2>
         <p class="lh-1">まず、ここで一度定義を確認しておきましょう。</p>
         <div class="border border-primary col-md-5">
@@ -152,13 +180,13 @@ window.addEventListener("load", (event)=>{
             <p>\( \int_{a}^{b} f(x) dx = \lbrack F(x) \rbrack_{a}^{b} = F(b) - F(a) \)</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">と、これだけの内容です。原始関数さえ求められれば順当に計算可能です。</p>
             <p class="lh-1">試しに、具体的な例を用いて計算を見てみましょう。</p>
             <p class="lh-1">なお、「普通の計算はできるよ」という方は飛ばして構いません。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">まずは項が一つのときの計算です。</p>
             <p class="lh-1">積分したい関数が◯次関数のときは、以下の公式を利用します。</p>
             <div class="border border-primary col-md-5">
@@ -173,7 +201,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( = \dfrac{35}{3} \)</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">次は多項式の計算です。</p>
             <p class="lh-1">といっても、先程の公式を項ごとに適用して、そこに代入するだけです。</p>
             <br>
@@ -186,17 +214,17 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( = \dfrac{50}{3} \)</p>
         </div>
 
-        <div class="m-2 p-2">
-            <p class="lh-1">さて、定積分の計算の確認は以上ですが、この時点で<span class="text-decoration-underline">わりと複雑な計算になっている</span>ことが伝わるでしょうか。</p>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">さて、定積分の計算の確認は以上ですが、この時点で<mark>わりと複雑な計算になっている</mark>ことが伝わるでしょうか。</p>
             <p class="lh-1">眉をひそめるほどの難しさではないですが、時間自体は割りとかかってしまいます。</p>
-            <p class="lh-1">落ち着いて計算できる練習の段階であればさして問題にならないかもしれませんが、<span class="text-decoration-underline">本番の限られた時間中で行えばミスが増える</span>のも納得できる複雑さです。</p>
+            <p class="lh-1">落ち着いて計算できる練習の段階であればさして問題にならないかもしれませんが、<mark>本番の限られた時間中で行えばミスが増える</mark>のも納得できる複雑さです。</p>
         </div>
     </div>
 
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="calculate_area_by_integration_without_formula">\( \dfrac{1}{6} \)公式を用いない面積の計算</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">さてお次は、定積分を用いた面積の計算になります。</p>
             <p class="lh-1">先程と同じく、まずは公式の確認からいってみましょう。</p>
         </div>
@@ -208,17 +236,17 @@ window.addEventListener("load", (event)=>{
             <p>と計算できる。</p>
         </div>
 
-        <div class="m-2 p-2">
-            <p class="lh-1">ここで注目してほしいのは、<span class="text-decoration-underline">上下関係に言及している</span>ことです。</p>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">ここで注目してほしいのは、<mark>上下関係に言及している</mark>ことです。</p>
             <p class="lh-1">これは定積分を用いた面積の計算では常に確認しておかなければならない事項になります。</p>
             <p class="lh-1">3次関数や2次関数、直線など様々な関数が登場する中で、みなさんは的確にそれらの上下関係を考える必要があるわけです。</p>
             <p class="lh-1">このあたりに微分と絡めて出題される理由があると言えるでしょう。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">それでは早速、面積を計算してみましょう。</p>
             <br>
-            <p class="lh-1 fst-italic border-bottom col-md-5">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 problem_sentence">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">まずは\( y = x^2 -5x + 6 \)と\( x \)軸の関係をチェックしましょう。</p>
             <p class="lh-1">今回の2次関数は、2次の係数が正なので下に凸。さらに\( x \)軸、つまり\( y=0 \)との交点は、例のごとく連立して、</p>
@@ -242,7 +270,7 @@ window.addEventListener("load", (event)=>{
             <br>
             <!--Graph-->
             <p class="lh-1">このようにグラフが描ければ、あとは先程の公式に当てはめるだけ……</p>
-            <p class="lh-1">なのですが、この上下関係、<span class=="text-decoration-underline">グラフを描かなければ求められないということはない</span>です。</p>
+            <p class="lh-1">なのですが、この上下関係、<span class=="text-decoration-underline">グラフを描かなければ求められないということはない</mark>です。</p>
             <p class="lh-1">具体的には以下のように不等式を作って解くことで、ある程度の上下関係を求めることが可能です。</p>
             <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
             <p class="lh-1">\( (x - 2)(x - 3) \geqq 0 \)</p>
@@ -273,7 +301,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( = \dfrac{1}{6} \)</p>
             <br>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">……といった流れで、答えは結局\( \dfrac{1}{6} \)になります。</p>
             <p class="lh-1">少々刻んだところもありますが、とにかく計算の手間が凄いことがわかってもらえるでしょうか。</p>
             <p class="lh-1">定積分の公式の形からして、分数が出ることが当たり前のようなところがあります。</p>
@@ -283,9 +311,9 @@ window.addEventListener("load", (event)=>{
     </div>
 
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="calculate_area_by_integration_with_formula">\( \dfrac{1}{6} \)公式を用いた面積の計算</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">さて、次はいよいよ、公式を用いた面積の計算になります。</p>
             <p class="lh-1">ここで、使う公式は以下になります。</p>
         </div>
@@ -294,13 +322,13 @@ window.addEventListener("load", (event)=>{
             <p>\( \int_{\alpha}^{\beta}  (x - \alpha)(x - \beta) dx  = -\dfrac{1}{6} (\beta - \alpha)^3 \) (\( \alpha, \beta \); 定数)</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">なお、なぜこの公式が成り立つのか？については、今回の本筋ではありませんので、下に折りたたんでおきます。</p>
             <p class="lh-1">特にひねらずに、そのまま計算していっても証明は可能ですが、せっかくなので数Ⅲの公式を利用したより発展的な証明をおいておきます。</p>
             <p class="lh-1">なかなか難易度は高いですが、その分得られるものも多いので、余力があれば追いかけてみて下さい。</p>
             <details>
                 <summary><small class="text-muted">\( \dfrac{1}{6} \)公式の導出</small></summary>
-                    <div class="m-2 p-2">
+                    <div class="m-2 p-2 problem_section">
                         <p class="lh-1">まず、この公式を確認しておきましょう。</p>
                         <br>
                         <div class="border border-primary col-md-5">
@@ -318,7 +346,7 @@ window.addEventListener("load", (event)=>{
                         <br>
                         <p class="lh-1">いかがでしょう。あまり正確ではありませんが、感覚としては「\(x^n\)が\((x-\alpha)^n\)になっても、同じように取り扱える」と考えてもらえれば大丈夫です。</p>
                     </div>
-                    <div class="m-2 p-2">
+                    <div class="m-2 p-2 problem_section">
                         <p class="lh-1">それでは、この公式を利用して\( \dfrac{1}{6} \)公式の証明をしていきましょう。</p>
                         <br>
                         <p class="lh-1">\( \int_{\alpha}^{\beta}  (x - \alpha)(x - \beta) dx \)</p>
@@ -362,8 +390,8 @@ window.addEventListener("load", (event)=>{
                             \( = \dfrac{1}{3} (\beta - \alpha)^3 + \dfrac{1}{2} (\alpha - \beta) (\beta - \alpha)^2 \)
                         </p>
                         <br>
-                        <p class="lh-1">この計算最大のポイントがここです。多少無理やりにでも\( (x - \alpha) \)を残していたおかげで、<span class="text-decoration-underline">\( \alpha \)を代入したときに0がでてきて、引き算をやる必要がなくなっています</span>。</p>
-                        <p class="lh-1"><span class="text-decoration-underline">実質的に計算量が半分になっている</span>といってもよいでしょう。</p>
+                        <p class="lh-1">この計算最大のポイントがここです。多少無理やりにでも\( (x - \alpha) \)を残していたおかげで、<mark>\( \alpha \)を代入したときに0がでてきて、引き算をやる必要がなくなっています</mark>。</p>
+                        <p class="lh-1"><mark>実質的に計算量が半分になっている</mark>といってもよいでしょう。</p>
                         <p class="lh-1">ここまでくれば、あとは残りを計算していくだけです。</p>
                         <br>
                         <p class="lh-1">\( = \dfrac{1}{3} (\beta - \alpha)^3 + \dfrac{1}{2} \left\lbrace - (\beta - \alpha) \right\rbrace (\beta - \alpha)^2 \)</p>
@@ -401,11 +429,11 @@ window.addEventListener("load", (event)=>{
                         <br>
                         <p class="lh-1">以上になります。この計算は後に登場する他の公式にも活用できるので、習得しておいて損はないと思います。</p>
                     </div>
-                ----------------------折りたたみここまで----------------------
+                <p class="lh-1">----------------------折りたたみここまで----------------------</p>
             </details>
         </div>
-        <div class="m-2 p-2">
-            <p class="lh-1">この公式で重要なのは、<span class="text-decoration-underline">積分範囲と因数分解に使われた定数が一致している</span>ことです。</p>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">この公式で重要なのは、<mark>積分範囲と因数分解に使われた定数が一致している</mark>ことです。</p>
             <p class="lh-1">つまり、\( \int_{\color{green}1\color{black}}^{\color{magenta}3} \color{black} (x - \color{green}1\color{black}) (x - \color{magenta}3\color{black}) dx \)には公式が使えますが、</p>
             <p class="lh-1">\( \int_{\color{green}1\color{black}}^{\color{magenta}3} \color{black} (x - \color{green}1\color{black}) (x - \color{orange}5\color{black}) dx \)や、</p>
             <p class="lh-1">\( \int_{\color{green}-5\color{black}}^{\color{magenta}-3\color{black}} (x - \color{skyblue}1\color{black}) \left\lbrace x - (\color{magenta}-3\color{black}) \right\rbrace dx = \int_{\color{green}-5\color{black}}^{\color{magenta}-3\color{black}} (x - \color{skyblue}1\color{black}) ( x + \color{magenta}3\color{black} ) dx \)には公式が使えない、ということです。</p>
@@ -413,10 +441,10 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">あくまで両方が一致していないとダメです。注意しましょう。</p>
             <br>
             <p class="lh-1">これを見て、まだあまり公式に慣れていない方は「因数分解できて、さらに積分範囲が一致するような都合が良いことが度々あるのか？」と感じるかもしれません。</p>
-            <p class="lh-1">結論から言いますと、<span class="text-decoration-underline">あります。何なら頻繁に出てきます。</span></p>
+            <p class="lh-1">結論から言いますと、<mark>あります。何なら頻繁に出てきます。</mark></p>
             <p class="lh-1">たとえば、上で例としたあげた問題を見てみましょう。</p>
             <br>
-            <p class="lh-1 fst-italic border-bottom col-md-5">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 problem_sentence">例題3: \( y = x^2 -5x + 6\)と\( x \)軸で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">先ほど、この2つの上下関係を確認するために、以下のような不等式を解きました。</p>
             <p class="lh-1">\( x^2 - 5x + 6 \geqq 0 \)</p>
@@ -430,12 +458,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">式をよくよく見てみると、\( \dfrac{1}{6} \)公式を使える形が登場していますね。よって、このまま一気に面積を求められます。</p>
             <p class="lh-1">\( = - \left\lbrace - \dfrac{1}{6} (\color{green}3\color{black} - \color{magenta}2\color{black})^3 \right\rbrace \)</p>
             <p class="lh-1">\( = \dfrac{1}{6} \)</p>
-            <p class="lh-1">以上のように、囲まれた面積を求めるためには交点と上下関係が必要になりますが、そもそも<span class="text-decoration-underline">この作業に自然と因数分解の形が登場</span>します。<span class="text-decoration-underline">積分される関数も同様</span>です。</p>
-            <p class="lh-1">また、交点間の面積を求めるので、積分範囲にもこれまた<span class="text-decoration-underline">交点と同じ値が登場</span>します。</p>
-            <p class="lh-1">つまり、多少大げさに言うのであれば、<span class="text-decoration-underline">この公式は必然的に登場する</span>ことになるとも言えるでしょう。偶然ではないわけですね。</p>
+            <p class="lh-1">以上のように、囲まれた面積を求めるためには交点と上下関係が必要になりますが、そもそも<mark>この作業に自然と因数分解の形が登場</mark>します。<mark>積分される関数も同様</mark>です。</p>
+            <p class="lh-1">また、交点間の面積を求めるので、積分範囲にもこれまた<mark>交点と同じ値が登場</mark>します。</p>
+            <p class="lh-1">つまり、多少大げさに言うのであれば、<mark>この公式は必然的に登場する</mark>ことになるとも言えるでしょう。偶然ではないわけですね。</p>
             <p class="lh-1">他の例も確認してみましょう。</p>
             <br>
-            <p class="lh-1 fst-italic border-bottom col-md-5">例題4: \( y = x^2 \)と\( y = x \)で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 problem_sentence">例題4: \( y = x^2 \)と\( y = x \)で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">今回はx軸、つまり\( y = 0 \)が相方ではありませんが、やることは同じです。</p>
             <p class="lh-1">まず、上下関係を求めるために、\( x^2 \geqq x \)を解きます。</p>
@@ -461,9 +489,9 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">このように、\( \dfrac{1}{6} \)公式は自然と登場するものであり、機会を逃さずに使うことで計算を大幅に楽にできる優れた公式なのです。</p>
         </div>
     </div>
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="others_type_with_formula">公式を用いて計算できるその他の面積</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">ここで一度、ここまで説明してきたことをまとめておきましょう。</p>
         </div>
 
@@ -482,7 +510,7 @@ window.addEventListener("load", (event)=>{
             <p>と計算できる。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">以上になります。実際の計算においては、</p>
             <ol class="list-group list-group-numbered" style="max-width: 400px;">
                 <li class="list-group-item">1.) 上下関係と交点のチェックを兼ねて、不等式を解く</li>
@@ -492,10 +520,10 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">という流れで解いていくことになります。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">最後に、2次関数とx軸、2次関数と直線以外のパターンも確認してみましょう。</p>
             <br>
-            <p class="lh-1 fst-italic border-bottom col-md-5">例題5: \( y = x^2 \)と\( y = -x^2 + 2 \)で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 problem_sentence">例題5: \( y = x^2 \)と\( y = -x^2 + 2 \)で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">まずは\( y = x^2 \)と\( y = -x^2 + 2 \)の上下関係を確認するために、以下の不等式を解きます。</p>
             <p class="lh-1">\( x^2 \geqq -x^2 + 2 \)</p>
@@ -516,12 +544,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">となります。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">ここまで2次関数とx軸、2次関数と直線、2次関数同士で囲まれた面積を見てきましたが、実は3次の係数が等しい場合に限り、3次関数同士でも公式を利用可能です。</p>
             <p class="lh-1">3次の係数が等しいことで、差を取ったときに3次の部分が消えます。あとは\( (x - \alpha)(x - \beta) \)の形に因数分解さえできればOKです。</p>
             <p class="lh-1">ということで早速見てみましょう。</p>
             <br>
-            <p class="lh-1 fst-italic border-bottom col-md-5">例題6: \( y = x^3 + x + 1 \)と\( y = x^3 + x^2 + x \)で囲まれた部分の面積を求めよ。</p>
+            <p class="lh-1 problem_sentence">例題6: \( y = x^3 + x + 1 \)と\( y = x^3 + x^2 + x \)で囲まれた部分の面積を求めよ。</p>
             <br>
             <p class="lh-1">まずは上下関係と交点の確認を兼ねて、不等式を解きます。</p>
             <p class="lh-1">\( x^3 + x + 1 \geqq x^3 + x^2 + x \)</p>
@@ -545,12 +573,13 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">となります。</p>
         </div>
     </div>
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="afterword">後書き</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
             <p class="lh-1">途中でも書いた通り、\( \dfrac{1}{6} \)公式は慣れるまでは中々難儀しますが、使いこなせるようになれば非常に頼もしい公式です。</p>
-            <p class="lh-1">慣れるための一番のコツは、常に「この問題には適用できるだろうか？」と考えることです。</p>
+            <p class="lh-1">慣れるための一番のコツは、<mark>練習の時から、常に「この問題には適用できるだろうか？」と考えておく</mark>ことです。</p>
+            <p class="lh-1">確信を持っていないと、いざ公式が使えそうなときにも適用することができません。このあたりは練習量がものを言いますね。</p>
             <p class="lh-1">その他の面積のところでふれたように、ざっくり2つの交点を持つ関数で囲まれた面積であれば、\( \dfrac{1}{6} \)公式が利用できます。</p>
             <p class="lh-1">たくさん練習して、マスターしていきましょう。</p>
         </div>

@@ -2914,8 +2914,20 @@ def explain_one_sixth_calculate_area_by_integration(request):
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth.html', {})
     return returned_render
 
+def explain_one_sixth_calculate_area_by_integration_print(request):
+    """平面上の面積を、1/6公式を使って求める問題の解き方の解説プリントの出力を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth_print.html', {})
+    return returned_render
+
 def explain_one_third_calculate_area_by_integration(request):
-    """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
+    """平面上の面積を、1/3公式を使って求める問題の解き方の解説を担当。
     
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -2926,6 +2938,17 @@ def explain_one_third_calculate_area_by_integration(request):
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third.html', {})
     return returned_render
 
+def explain_one_third_calculate_area_by_integration_print(request):
+    """平面上の面積を、1/3公式を使って求める問題の解き方の解説を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third_print.html', {})
+    return returned_render
 
 def explain_number_without_bracket(request):
     """カッコなしの正負の計算の解き方の解説を担当。

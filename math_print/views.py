@@ -2939,7 +2939,7 @@ def explain_one_third_calculate_area_by_integration(request):
     return returned_render
 
 def explain_one_third_calculate_area_by_integration_print(request):
-    """平面上の面積を、1/3公式を使って求める問題の解き方の解説を担当。
+    """平面上の面積を、1/3公式を使って求める問題の解き方の解説プリントの出力を担当。
     
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト

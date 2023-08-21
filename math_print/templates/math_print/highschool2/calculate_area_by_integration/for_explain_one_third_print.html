@@ -248,177 +248,257 @@ mark{
         </div>
     </section>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="calculate_area_by_integration_with_formula">\( \dfrac{1}{3}公式を用いた面積の計算 \)</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">さっそく、公式を用いた面積の計算を確認していきましょう。</p>
-            <p class="lh-1">今回使う公式は以下になります。</p>
-        </div>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="calculate_area_by_integration_with_formula">\( \dfrac{1}{3}公式を用いた面積の計算 \)</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">さっそく、公式を用いた面積の計算を確認していきましょう。</p>
+                <p class="lh-1">今回使う公式は以下になります。</p>
+            </div>
 
-        <div class="border border-primary col-md-5">
-            <p>
-                \( \int (x - \alpha)^2 dx = \dfrac{1}{3} (x - \alpha)^3 + C \) (\( C; \)積分定数)
-            </p>
-        </div>
+            <div class="border border-primary col-md-5">
+                <p>
+                    \( \int (x - \alpha)^2 dx = \dfrac{1}{3} (x - \alpha)^3 + C \) (\( C; \)積分定数)
+                </p>
+            </div>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">この公式は、\( \dfrac{1}{6} \)公式の方の証明でも利用していましたね。今回は証明に利用するのではなく、そのまま利用していきます。</p>
-            <p class="lh-1">重要なのはずばり、<mark>積分対象の関数が2乗にまとまっている</mark>ことになります。</p>
-            <p class="lh-1">\( \dfrac{1}{6} \)公式では、関数同士が2つの交点を持っていることが使用の第一条件でした。</p>
-            <p class="lh-1">それにあやかって考えると、今回は関数同士が<mark>1つの重解、すなわち接点</mark>を持っている必要があります。</p>
-            <p class="lh-1">積分範囲は特に指定されていませんので、その点では\( \dfrac{1}{6} \)公式よりゆるいといえるでしょう。</p>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">この公式は、\( \dfrac{1}{6} \)公式の方の証明でも利用していましたね。今回は証明に利用するのではなく、そのまま利用していきます。</p>
+                <p class="lh-1">重要なのはずばり、<mark>積分対象の関数が2乗にまとまっている</mark>ことになります。</p>
+                <p class="lh-1">\( \dfrac{1}{6} \)公式では、関数同士が2つの交点を持っていることが使用の第一条件でした。</p>
+                <p class="lh-1">それにあやかって考えると、今回は関数同士が<mark>1つの重解、すなわち接点</mark>を持っている必要があります。</p>
+                <p class="lh-1">積分範囲は特に指定されていませんので、その点では\( \dfrac{1}{6} \)公式よりゆるいといえるでしょう。</p>
+            </div>
         </div>
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">これだけ聞くと、今一つ使い道がぴんと来ない方もいると思いますので、ここでは具体的な例を示していきます。</p>
-            <p class="lh-1">シンプルにわかりやすいのは、以下のような<mark>接線が登場する</mark>パターンですね。</p>
-        </div>
-        <br>
-        <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_function_and_tangent">例題1: \( y = x^2 \)と、その上の点\( (2, 4) \)における接線、および\( y \)軸で囲まれた部分の面積を求めよ。</p>
-        <br>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">まずは接線を求めてみましょう。</p>
-            <p class="lh-1">\( y' = 2x \)より、\( x = 2 \)における接線の傾きは\( 2 \cdot 2 = 4 \)となります。</p>
-            <p class="lh-1">そのため、点\( (2, 4) \)における接線は、</p>
-            <p class="lh-1">\( y - 4 = 4 (x - 2) \)</p>
-            <p class="lh-1">\( y = 4x - 4 \)</p>
-            <p class="lh-1">また、\( y = x^2 \)が下に凸であることからなんとなくわかりますが、念のために不等式を使って上下関係も把握しておきましょう。</p>
-            <p class="lh-1">\( x^2 \geqq 4x - 4\)</p>
-            <p class="lh-1">\( x^2 - 4x + 4 \geqq 0 \)</p>
-            <p class="lh-1">\( (x - 2)^2 \geqq 0 \)</p>
-            <p class="lh-1">この流れから、すべての\( x \)で\( y = \color{red}x^2 \)が上、\( y = \color{blue} 4x - 4 \)が下であることがわかります。</p>
-            <p class="lh-1">現時点で面積も含めたグラフを描くと、以下のようになりますので、これは正しいです。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">これだけ聞くと、今一つ使い道がぴんと来ない方もいると思いますので、ここでは具体的な例を示していきます。</p>
+                <p class="lh-1">シンプルにわかりやすいのは、以下のような<mark>接線が登場する</mark>パターンですね。</p>
+            </div>
             <br>
+            <p class="problem_sentence" id="quadratic_function_and_tangent">例題1: \( y = x^2 \)と、その上の点\( (2, 4) \)における接線、および\( y \)軸で囲まれた部分の面積を求めよ。</p>
+            <br>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">まずは接線を求めてみましょう。</p>
+                <p class="lh-1">\( y' = 2x \)より、\( x = 2 \)における接線の傾きは\( 2 \cdot 2 = 4 \)となります。</p>
+                <p class="lh-1">そのため、点\( (2, 4) \)における接線は、</p>
+                <p class="lh-1">\( y - 4 = 4 (x - 2) \)</p>
+                <p class="lh-1">\( y = 4x - 4 \)</p>
+                <p class="lh-1">また、\( y = x^2 \)が下に凸であることからなんとなくわかりますが、念のために不等式を使って上下関係も把握しておきましょう。</p>
+                <p class="lh-1">\( x^2 \geqq 4x - 4\)</p>
+                <p class="lh-1">\( x^2 - 4x + 4 \geqq 0 \)</p>
+                <p class="lh-1">\( (x - 2)^2 \geqq 0 \)</p>
+                <p class="lh-1">この流れから、すべての\( x \)で\( y = \color{red}x^2 \)が上、\( y = \color{blue} 4x - 4 \)が下であることがわかります。</p>
+                <p class="lh-1">現時点で面積も含めたグラフを描くと、以下のようになりますので、これは正しいです。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
             <div id="jxgbox1" class="jxgbox" style="width:500px; height:500px;"></div>
-            <br>
-            <p class="lh-1">上に\( y = \color{red} x^2 \color{black} \)、下に\( y = \color{blue} 4x - 4 \)があり、</p>
-            <p class="lh-1">さらに\( 0 \leqq x \leqq 2 \)の間で囲まれているので、求めたい面積をSとすると以下のように求められます。</p>
-            <p class="lh-1">\( S = \int_{0}^{2} \left\lbrace \color{red} x^2 \color{black} - \left( \color{blue} 4x - 4 \color{black} \right)\right\rbrace dx \)</p>
-            <p class="lh-1">\( = \int_{0}^{2} (x^2 - 4x + 4) dx \)</p>
-            <p class="lh-1">定義通り定積分をこなしていっても答えは求められますが、ここではさらに因数分解してみましょう。</p>
-            <p class="lh-1">\( = \int_{0}^{2} (x - 2)^2 dx \)</p>
-            <p class="lh-1"><mark>全体が2乗にまとまっている</mark>ので、公式を使って以下のように一気に計算可能です。あとはそのまま計算を進めれば</p>
-            <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} (x - 2)^3 \right\rbrack_{0}^{2} \)</p>
-            <p class="lh-1">\( =  \dfrac{1}{3} \left\lbrack (x - 2)^3 \right\rbrack_{0}^{2} \)</p>
-            <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (2 - 2)^3 - (0 - 2)^3 \right\rbrace \)</p>
-            <p class="lh-1">\( = \dfrac{8}{3} \)</p>
-            <p class="lh-1">というのが答えとなります。</p>
-            <br>
-            <p class="lh-1">いかがでしょうか？なお、公式を全く利用しない計算ですと、以下のような流れになります。計算量を比較してみてください。</p>
-            <p class="lh-1">\( S = \int_{0}^{2} (x^2 - 4x + 4) dx \)</p>
-            <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} x^3 - 2x^2 + 4x \right\rbrack_{0}^{2} \)</p>
-            <p class="lh-1">\( = \left( \dfrac{1}{3} \cdot 2^3 - 2 \cdot 2^2 + 4 \cdot 2 \right) - \left( \dfrac{1}{3} \cdot 0^3 - 2 \cdot 0^2 + 4 \cdot 0 \right) \)</p>
-            <p class="lh-1">\( = \left( \dfrac{8}{3} - 8 + 8 \right) - 0 \)</p>
-            <p class="lh-1">\( = \dfrac{8}{3} \)</p>
-            <p class="lh-1">幸いにして0が用いられているので、そこまで複雑な計算にはなっていませんが、やはり少々重たい計算と言わざるをえません。</p>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">上に\( y = \color{red} x^2 \color{black} \)、下に\( y = \color{blue} 4x - 4 \)があり、</p>
+                <p class="lh-1">さらに\( 0 \leqq x \leqq 2 \)の間で囲まれているので、求めたい面積をSとすると以下のように求められます。</p>
+                <p class="lh-1">\( S = \int_{0}^{2} \left\lbrace \color{red} x^2 \color{black} - \left( \color{blue} 4x - 4 \color{black} \right)\right\rbrace dx \)</p>
+                <p class="lh-1">\( = \int_{0}^{2} (x^2 - 4x + 4) dx \)</p>
+            </div>
         </div>
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">ちなみに、1点で接しているものであれば、接線以外でも構いません。別の例も見てみましょう。</p>
-            <br>
-            <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_functions">例題2: \( y =  -x^2 + 3x + 1 \)と、\( y = x^2 - x + 3 \)と\( x = -1 \)で囲まれた部分の面積を求めよ。</p>
-            <br>
-            <p class="lh-1">さて、例のごとく、上下関係と交点を確認するために不等式を解いていきましょう。</p>
-            <p class="lh-1">\( -x^2 + 3x + 1 \geqq x^2 - x + 3 \)</p>
-            <p class="lh-1">\( -2x^2 + 4x - 2 \geqq 0 \)</p>
-            <p class="lh-1">\( -2(x^2 - 2x + 1) \geqq 0 \)</p>
-            <p class="lh-1">\( 2(x - 1)^2 \leqq 0 \)</p>
-            <p class="lh-1">この不等式が成り立つのは、\( x = 1 \)という一点に限られます。</p>
-            <p class="lh-1">つまり、\( x = 1 \)以外では、常に\( y = \color{red}x^2 - x + 3\)が上、\( y = \color{blue} -x^2 + 3x + 1 \)が下にあるということです。</p>
-            <p class="lh-1">実際に上下関係と、その間にできる面積を示したグラフは以下のようになっていますので、これは正しいです。</p>
-            <br>
-            <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 500px;"></div>
-            <br>
-            <p class="lh-1">これらを踏まえて、求めたい面積を\( S \)とすると、</p>
-            <p class="lh-1">\( S = \int_{-1}^{1} \left\lbrace \left( \color{red}x^2 - x + 3 \color{black} \right) - \left( \color{blue} -x^2 + 3x + 1 \color{black} \right) \right\rbrace dx \)</p>
-            <p class="lh-1">\( = \int_{-1}^{1} \left( 2x^2 - 4x + 2 \right) dx \)</p>
-            <p class="lh-1">\( = \int_{-1}^{1} 2(x - 1)^2 dx \)</p>
-            <p class="lh-1">\( =  2 \left\lbrack \dfrac{(x - 1)^3}{3} \right\rbrack_{-1}^{1} \)</p>
-            <p class="lh-1">\( = 2 \left\lbrace \dfrac{(1 -1)^3}{3} - \dfrac{(-1 - 1)^3}{3} \right\rbrace \)</p>
-            <p class="lh-1">\( = 2 \cdot \dfrac{8}{3} \)</p>
-            <p class="lh-1">\( = \dfrac{16}{3} \)</p>
-            <p class="lh-1">となります。これが答えです。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">上に\( y = \color{red} x^2 \color{black} \)、下に\( y = \color{blue} 4x - 4 \)があり、</p>
+                <p class="lh-1">さらに\( 0 \leqq x \leqq 2 \)の間で囲まれているので、求めたい面積をSとすると以下のように求められます。</p>
+                <p class="lh-1">\( S = \int_{0}^{2} \left\lbrace \color{red} x^2 \color{black} - \left( \color{blue} 4x - 4 \color{black} \right)\right\rbrace dx \)</p>
+                <p class="lh-1">\( = \int_{0}^{2} (x^2 - 4x + 4) dx \)</p>
+                <p class="lh-1">定義通り定積分をこなしていっても答えは求められますが、ここではさらに因数分解してみましょう。</p>
+                <p class="lh-1">\( = \int_{0}^{2} (x - 2)^2 dx \)</p>
+                <p class="lh-1"><mark>全体が2乗にまとまっている</mark>ので、公式を使って以下のように一気に計算可能です。あとはそのまま計算を進めれば</p>
+                <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} (x - 2)^3 \right\rbrack_{0}^{2} \)</p>
+                <p class="lh-1">\( =  \dfrac{1}{3} \left\lbrack (x - 2)^3 \right\rbrack_{0}^{2} \)</p>
+                <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (2 - 2)^3 - (0 - 2)^3 \right\rbrace \)</p>
+                <p class="lh-1">\( = \dfrac{8}{3} \)</p>
+                <p class="lh-1">というのが答えとなります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">いかがでしょうか？なお、公式を全く利用しない計算ですと、以下のような流れになります。計算量を比較してみてください。</p>
+                <p class="lh-1">\( S = \int_{0}^{2} (x^2 - 4x + 4) dx \)</p>
+                <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} x^3 - 2x^2 + 4x \right\rbrack_{0}^{2} \)</p>
+                <p class="lh-1">\( = \left( \dfrac{1}{3} \cdot 2^3 - 2 \cdot 2^2 + 4 \cdot 2 \right) - \left( \dfrac{1}{3} \cdot 0^3 - 2 \cdot 0^2 + 4 \cdot 0 \right) \)</p>
+                <p class="lh-1">\( = \left( \dfrac{8}{3} - 8 + 8 \right) - 0 \)</p>
+                <p class="lh-1">\( = \dfrac{8}{3} \)</p>
+                <p class="lh-1">幸いにして0が用いられているので、そこまで複雑な計算にはなっていませんが、やはり少々重たい計算と言わざるをえません。</p>
+            </div>
         </div>
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">さらにさらに接線が2つある場合にも有効です。</p>
-            <br>
-            <p class="lh-1 fst-italic border_bottom col-md-7" id="quadratic_function_and_two_tangents">例題3: \( y = x^2 \)と、2つの接点\( x = -1, 3 \)における接線で囲まれた部分の面積を求めよ。</p>
-            <br>
-            <p class="lh-1">まずは接線を求めていきましょう。</p>
-            <p class="lh-1">\( x = -1 \)を\( y = x^2 \)に代入すると、\( y = (-1)^2 = 1 \)となるので、接点は\( (-1, 1) \)であることがわかります。</p>
-            <p class="lh-1">また、\( y' = 2x \)より、\( x = -1 \)における接線の傾きは、\( y' = 2 \cdot (-1) = -2 \)です。</p>
-            <p class="lh-1">そのため、\( x = -1 \)における接線は、</p>
-            <p class="lh-1">\( y = -2 \left\lbrace x - (-1) \right\rbrace + 1 = -2x -1 \)であることがわかります。</p>
-            <p class="lh-1">同じように、\( x = 3 \)を\( y = x^2 \)に代入すると接点は\( (3, 9) \)、</p>
-            <p class="lh-1">接線の傾きは\( y' = 2 \cdot 3 = 6 \)となるので、\( x = 3 \)における接線は、</p>
-            <p class="lh-1">\( y = 6 (x - 3) + 9 = 6x - 9 \)となります。</p>
-            <br>
-            <p class="lh-1">次に面積を求めていくのですが、ご存知の通り面積では上下関係が重要です。</p>
-            <p class="lh-1">下に凸の2次関数で、2本の接線が使われているので、なんとなく予想はできるのですが、念のためこれまでのように不等式を解いてみましょう。</p>
-            <p class="lh-1">まずは\( y = x^2 \)と\( y = -2x - 1 \)の上下関係です。</p>
-            <p class="lh-1">\( x^2 \geqq -2x - 1 \)</p>
-            <p class="lh-1">\( x^2 + 2x + 1 \geqq 0 \)</p>
-            <p class="lh-1">\( (x + 1)^2 \geqq 0 \)</p>
-            <p class="lh-1">これは全ての\( x \)で成り立ちます。よって、\( y = \color{red}x^2\color{black} \)が常に上、\( y = \color{blue}-2x - 1\color{black} \)が常に下です。</p>
-            <br>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">ちなみに、1点で接しているものであれば、接線以外でも構いません。別の例も見てみましょう。</p>
+                <br>
+                <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_functions">例題2: \( y =  -x^2 + 3x + 1 \)と、\( y = x^2 - x + 3 \)と\( x = -1 \)で囲まれた部分の面積を求めよ。</p>
+                <br>
+                <p class="lh-1">さて、例のごとく、上下関係と交点を確認するために不等式を解いていきましょう。</p>
+                <p class="lh-1">\( -x^2 + 3x + 1 \geqq x^2 - x + 3 \)</p>
+                <p class="lh-1">\( -2x^2 + 4x - 2 \geqq 0 \)</p>
+                <p class="lh-1">\( -2(x^2 - 2x + 1) \geqq 0 \)</p>
+                <p class="lh-1">\( 2(x - 1)^2 \leqq 0 \)</p>
+                <p class="lh-1">この不等式が成り立つのは、\( x = 1 \)という一点に限られます。</p>
+                <p class="lh-1">つまり、\( x = 1 \)以外では、常に\( y = \color{red}x^2 - x + 3\)が上、\( y = \color{blue} -x^2 + 3x + 1 \)が下にあるということです。</p>
+                <p class="lh-1">実際に上下関係と、その間にできる面積を示したグラフは以下のようになっていますので、これは正しいです。</p>
+                <br>
+                <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 500px;"></div>
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">これらを踏まえて、求めたい面積を\( S \)とすると、</p>
+                <p class="lh-1">\( S = \int_{-1}^{1} \left\lbrace \left( \color{red}x^2 - x + 3 \color{black} \right) - \left( \color{blue} -x^2 + 3x + 1 \color{black} \right) \right\rbrace dx \)</p>
+                <p class="lh-1">\( = \int_{-1}^{1} \left( 2x^2 - 4x + 2 \right) dx \)</p>
+                <p class="lh-1">\( = \int_{-1}^{1} 2(x - 1)^2 dx \)</p>
+                <p class="lh-1">\( =  2 \left\lbrack \dfrac{(x - 1)^3}{3} \right\rbrack_{-1}^{1} \)</p>
+                <p class="lh-1">\( = 2 \left\lbrace \dfrac{(1 -1)^3}{3} - \dfrac{(-1 - 1)^3}{3} \right\rbrace \)</p>
+                <p class="lh-1">\( = 2 \cdot \dfrac{8}{3} \)</p>
+                <p class="lh-1">\( = \dfrac{16}{3} \)</p>
+                <p class="lh-1">となります。これが答えです。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">さらにさらに接線が2つある場合にも有効です。</p>
+                <br>
+                <p class="lh-1 problem_sentence" id="quadratic_function_and_two_tangents">例題3: \( y = x^2 \)と、2つの接点\( x = -1, 3 \)における接線で囲まれた部分の面積を求めよ。</p>
+                <br>
+                <p class="lh-1">まずは接線を求めていきましょう。</p>
+                <p class="lh-1">\( x = -1 \)を\( y = x^2 \)に代入すると、\( y = (-1)^2 = 1 \)となるので、接点は\( (-1, 1) \)であることがわかります。</p>
+                <p class="lh-1">また、\( y' = 2x \)より、\( x = -1 \)における接線の傾きは、\( y' = 2 \cdot (-1) = -2 \)です。</p>
+                <p class="lh-1">そのため、\( x = -1 \)における接線は、</p>
+                <p class="lh-1">\( y = -2 \left\lbrace x - (-1) \right\rbrace + 1 = -2x -1 \)であることがわかります。</p>
+                <p class="lh-1">同じように、\( x = 3 \)を\( y = x^2 \)に代入すると接点は\( (3, 9) \)、</p>
+                <p class="lh-1">接線の傾きは\( y' = 2 \cdot 3 = 6 \)となるので、\( x = 3 \)における接線は、</p>
+                <p class="lh-1">\( y = 6 (x - 3) + 9 = 6x - 9 \)となります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">次に面積を求めていくのですが、ご存知の通り面積では上下関係が重要です。</p>
+                <p class="lh-1">下に凸の2次関数で、2本の接線が使われているので、なんとなく予想はできるのですが、念のためこれまでのように不等式を解いてみましょう。</p>
+                <p class="lh-1">まずは\( y = x^2 \)と\( y = -2x - 1 \)の上下関係です。</p>
+                <p class="lh-1">\( x^2 \geqq -2x - 1 \)</p>
+                <p class="lh-1">\( x^2 + 2x + 1 \geqq 0 \)</p>
+                <p class="lh-1">\( (x + 1)^2 \geqq 0 \)</p>
+                <p class="lh-1">これは全ての\( x \)で成り立ちます。よって、\( y = \color{red}x^2\color{black} \)が常に上、\( y = \color{blue}-2x - 1\color{black} \)が常に下です。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">これをグラフに表現すると、以下のようになります。</p>
             <div id="jxgbox3" class="jxgbox" style="width:500px; height:500px;"></div>
-            <br>
-            <p class="lh-1">同じように、\( y = x^2 \)と\( y = 6x - 9 \)の上下関係を確認します。</p>
-            <p class="lh-1">\( x^2 \geqq 6x - 9 \)</p>
-            <p class="lh-1">\( x^2 - 6x + 9 \geqq 0 \)</p>
-            <p class="lh-1">\( (x - 3)^2 \geqq 0 \)</p>
-            <p class="lh-1">これも同様に、全ての\( x \)で成り立ち、\( y = \color{red}x^2\color{black} \)が常に上、\( y = \color{orange}6x - 9\color{black} \)が常に下です。</p>
-            <br>
-            <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 500px;"></div>
-            <br>
-            <p class="lh-1">以上のように、接線が使われていることから、上下関係はわかりやすいものになっています。</p>
-            <p class="lh-1">ただ、面積を求める際には少し注意が必要です。</p>
-            <p class="lh-1">というのも、以下のグラフのように<mark>接線の交点である点\( \color{purple} A \)を境目に上下関係、正確には下に来るものが入れ替わる</mark>からです。</p>
-            <br>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">同じように、\( y = x^2 \)と\( y = 6x - 9 \)の上下関係を確認します。</p>
+                <p class="lh-1">\( x^2 \geqq 6x - 9 \)</p>
+                <p class="lh-1">\( x^2 - 6x + 9 \geqq 0 \)</p>
+                <p class="lh-1">\( (x - 3)^2 \geqq 0 \)</p>
+                <p class="lh-1">これも同様に、全ての\( x \)で成り立ち、\( y = \color{red}x^2\color{black} \)が常に上、\( y = \color{orange}6x - 9\color{black} \)が常に下です。</p>
+            </div>
+            <div class="m-2 p-2 description_section">
+                <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">以上のように、接線が使われているときは、上下関係はわかりやすいものになることが多いです。</p>
+                <p class="lh-1">ただ、面積を求める際には少し注意が必要です。</p>
+                <p class="lh-1">というのも、以下のグラフのように<mark>接線の交点である点\( \color{purple} A \)を境目に上下関係、より正確には下に来るものが入れ替わる</mark>からです。</p>
+            </div>
             <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 500px;"></div>
-            <br>
-            <p class="lh-1">そのため、実際はここからさらに<mark>接線同士の交点を求めて、そこを境目に左と右で分割して面積を求める</mark>必要があります。</p>
-            <p class="lh-1">接線の交点は、</p>
-            <p class="lh-1">\( -2x - 1 = 6x - 9 \)</p>
-            <p class="lh-1">\( x = 1 \)となり、</p>
-            <p class="lh-1">また、その\( y \)座標は、\( x \)座標を大入試、</p>
-            <p class="lh-1">\( y = 6 \cdot 1 - 9 = -3\)となります。</p>
-            <br>
-            <p class="lh-1">これでようやく準備が整いました。接点の左側の面積を\( S_1 \)、右側の面積を\( S_2 \)としてそれぞれ求めていきましょう。</p>
-            <br>
-            <div id="jxgbox6" class="jxgbox" style="width: 500px; height: 500px;"></div>
-            <br>
-            <p class="lh-1">\( S_1 \)は上が\( y = \color{red} x^2 \color{black} \)、下が\( y = \color{blue} -2x - 1 \color{black} \)で、\( -1 \leqq x \leqq 1 \)の範囲にできる面積なので、</p>
-            <p class="lh-1">\( S_1 = \int_{-1}^{1} \left\lbrace \left( \color{red} x^2 \color{black} \right) - \left( \color{blue} -2x - 1 \color{black} \right)\right\rbrace dx \)</p>
-            <p class="lh-1">\( = \int_{-1}^{1} \left( x^2 + 2x + 1 \right) dx \)</p>
-            <p class="lh-1">\( = \int_{-1}^{1} (x + 1)^2 dx \)</p>
-            <p class="lh-1">\( = \left\lbrack \dfrac{(x + 1)^3}{3} \right\rbrack_{-1}^{1} \)</p>
-            <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (1 + 1)^3 - (-1 + 1)^3 \right\rbrace \)</p>
-            <p class="lh-1">\( = \dfrac{8}{3} \)</p>
-            <br>
-            <p class="lh-1">\( S_2 \)は上が\( y = \color{red} x^2 \color{black} \)、下が\( y = \color{orange} 6x - 9 \color{black} \)で、\( 1 \leqq x \leqq 3 \)の範囲にできる面積なので、</p>
-            <p class="lh-1">\( S_2 = \int_{1}^{3} \left\lbrace \left( \color{red} x^2 \color{black} \right) - \left( \color{orange} 6x - 9 \color{black} \right)\right\rbrace dx \)</p>
-            <p class="lh-1">\( = \int_{1}^{3} \left( x^2 - 6x + 9 \right) dx \)</p>
-            <p class="lh-1">\( = \int_{1}^{3} (x - 3)^2 dx \)</p>
-            <p class="lh-1">\( = \left\lbrack \dfrac{(x - 3)^3}{3} \right\rbrack_{1}^{3} \)</p>
-            <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (3 - 3)^3 - (1 - 3)^3 \right\rbrace \)</p>
-            <p class="lh-1">\( = \dfrac{8}{3} \)</p>
-            <br>
-            <p class="lh-1">よって求めるべき面積\( S \)は、</p>
-            <p class="lh-1">\( S = S_1 + S_2 \)</p>
-            <p class="lh-1">\( = \dfrac{8}{3} + \dfrac{8}{3} \)</p>
-            <p class="lh-1">\( = \dfrac{16}{3} \)</p>
-            <p class="lh-1">となり、これが答えです。</p>
-            <br>
-            <p class="lh-1">ちなみに、実はこの2次関数と2本の接線が作る面積の問題には、いくつか共通した性質があります。</p>
-            <p class="lh-1">一つ目の性質は、<mark>接線同士の交点の\( x \)座標は、それぞれのx座標の中点になる</mark>というものです。</p>
-            <p class="lh-1">今回の問題でいえば、左側の接点が\( x = -1 \)、右側の接点が\( x = 3 \)なので、その中点は\( \dfrac{-1 + 3}{2} = 1\)です。これは交点の\( x \)座標と一致していますね。</p>
-            <p class="lh-1">二つ目の性質は、<mark>交点の左側にできる面積と、右側にできる面積は等しくなる</mark>というものです。</p>
-            <p class="lh-1">実際、今回の問題でも\( S_1, S_2 \)ともに\( \dfrac{8}{3} \)となっています。</p>
-            <p class="lh-1">これらの性質は、記述問題で証明なしに使用することこそ危険なものの、マーク式の問題であれば問題なく使えます。</p>
-            <p class="lh-1">また、記述問題であっても検算で使えたりと、知っておくと多少は便利なものです。頭の片隅に収納しておきましょう。</p>
-            <p class="lh-1">なお、証明については以下になります。</p>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">そのため、実際はここからさらに<mark>接線同士の交点を求めて、そこを境目に左と右で分割して面積を求める</mark>必要があります。</p>
+                <p class="lh-1">接線の交点は、</p>
+                <p class="lh-1">\( -2x - 1 = 6x - 9 \)</p>
+                <p class="lh-1">\( x = 1 \)となり、</p>
+                <p class="lh-1">また、その\( y \)座標は、\( x \)座標を大入試、</p>
+                <p class="lh-1">\( y = 6 \cdot 1 - 9 = -3\)となります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">これでようやく準備が整いました。接点の左側の面積を\( S_1 \)、右側の面積を\( S_2 \)としてそれぞれ求めていきましょう。</p>
+                <br>
+                <div id="jxgbox6" class="jxgbox" style="width: 500px; height: 500px;"></div>
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">\( S_1 \)は上が\( y = \color{red} x^2 \color{black} \)、下が\( y = \color{blue} -2x - 1 \color{black} \)で、\( -1 \leqq x \leqq 1 \)の範囲にできる面積なので、</p>
+                <p class="lh-1">\( S_1 = \int_{-1}^{1} \left\lbrace \left( \color{red} x^2 \color{black} \right) - \left( \color{blue} -2x - 1 \color{black} \right)\right\rbrace dx \)</p>
+                <p class="lh-1">\( = \int_{-1}^{1} \left( x^2 + 2x + 1 \right) dx \)</p>
+                <p class="lh-1">\( = \int_{-1}^{1} (x + 1)^2 dx \)</p>
+                <p class="lh-1">\( = \left\lbrack \dfrac{(x + 1)^3}{3} \right\rbrack_{-1}^{1} \)</p>
+                <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (1 + 1)^3 - (-1 + 1)^3 \right\rbrace \)</p>
+                <p class="lh-1">\( = \dfrac{8}{3} \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">\( S_2 \)は上が\( y = \color{red} x^2 \color{black} \)、下が\( y = \color{orange} 6x - 9 \color{black} \)で、\( 1 \leqq x \leqq 3 \)の範囲にできる面積なので、</p>
+                <p class="lh-1">\( S_2 = \int_{1}^{3} \left\lbrace \left( \color{red} x^2 \color{black} \right) - \left( \color{orange} 6x - 9 \color{black} \right)\right\rbrace dx \)</p>
+                <p class="lh-1">\( = \int_{1}^{3} \left( x^2 - 6x + 9 \right) dx \)</p>
+                <p class="lh-1">\( = \int_{1}^{3} (x - 3)^2 dx \)</p>
+                <p class="lh-1">\( = \left\lbrack \dfrac{(x - 3)^3}{3} \right\rbrack_{1}^{3} \)</p>
+                <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (3 - 3)^3 - (1 - 3)^3 \right\rbrace \)</p>
+                <p class="lh-1">\( = \dfrac{8}{3} \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">よって求めるべき面積\( S \)は、</p>
+                <p class="lh-1">\( S = S_1 + S_2 \)</p>
+                <p class="lh-1">\( = \dfrac{8}{3} + \dfrac{8}{3} \)</p>
+                <p class="lh-1">\( = \dfrac{16}{3} \)</p>
+                <p class="lh-1">となり、これが答えです。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">ちなみに、実はこの2次関数と2本の接線が作る面積の問題には、いくつか共通した性質があります。</p>
+                <p class="lh-1">一つ目の性質は、<mark>接線同士の交点の\( x \)座標は、それぞれのx座標の中点になる</mark>というものです。</p>
+                <p class="lh-1">今回の問題でいえば、左側の接点が\( x = -1 \)、右側の接点が\( x = 3 \)なので、その中点は\( \dfrac{-1 + 3}{2} = 1\)です。これは交点の\( x \)座標と一致していますね。</p>
+                <p class="lh-1">二つ目の性質は、<mark>交点の左側にできる面積と、右側にできる面積は等しくなる</mark>というものです。</p>
+                <p class="lh-1">実際、今回の問題でも\( S_1, S_2 \)ともに\( \dfrac{8}{3} \)となっています。</p>
+                <p class="lh-1">これらの性質は、記述問題で証明なしに使用することこそ危険なものの、マーク式の問題であれば問題なく使えます。</p>
+                <p class="lh-1">また、記述問題であっても検算で使えたりと、知っておくと多少は便利なものです。頭の片隅に収納しておきましょう。</p>
+                <p class="lh-1">以下に証明を記しておきますので、確認しておきましょう。</p>
+            </div>
             <div class="m-2 p-2 problem_section">
                 <p class="lh-1">まずは交点が中点となることから示していきましょう。</p>
                 <p class="lh-1">2次関数を\( y = ax^2 + bx + c \)とし、接点を\( x = \alpha, \beta (\alpha < \beta )\)とします。</p>
@@ -426,6 +506,13 @@ mark{
                 <p class="lh-1">これらの接線は、当然ながら2次関数と接していますので、</p>
                 <p class="lh-1">\( (ax^2 + bx + c) - (m_1 x + n_1) = a (x - \alpha)^2, (ax^2 + bx + c) - (m_2 x + n_2) = a (x - \beta)^2\)と因数分解可能です。</p>
                 <p class="lh-1">さらにこれらを\( m_1 x + n_1 = (ax^2 + bx + c) - a (x - \alpha)^2, m_2 x + n_2 = (ax^2 + bx + c) - a (x - \beta)^2 \)と式変形します。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
                 <p class="lh-1">ここで、接線同士の交点を求めるために、直線同士を連立してあげると、以下のような流れになります。</p>
                 <p class="lh-1">\( m_1 x + n_1 = m_2 x + n_2\)</p>
                 <p class="lh-1">\( (ax^2 + bx + c) - a (x - \alpha)^2 = (ax^2 + bx + c) - a (x - \beta)^2 \)</p>
@@ -438,7 +525,8 @@ mark{
                 <p class="lh-1">\( x = \dfrac{\alpha + \beta}{2} \)</p>
                 <p class="lh-1">となり、これは中点と等しいことがわかります。</p>
                 <p class="lh-1">接点も個別に文字でおくことで、煩雑な計算を防いでいるのがポイントとなります。</p>
-                <br>
+            </div>
+            <div class="m-2 p-2 problem_section">
                 <p class="lh-1">次は面積です。まずは左側の面積\( S_1 \)を、2次関数が下に凸である条件のもとで求めてみましょう。</p>
                 <p class="lh-1">2次関数が上、接線が下。範囲は\( \alpha \leqq x \leqq \dfrac{\alpha + \beta}{2} \)なので、</p>
                 <p class="lh-1">\( S_1 = \int_{\alpha}^{\frac{\alpha + \beta}{2}} \left\lbrace (ax^2 + bx + c) - (m_1 x + n_1) \right\rbrace dx \)</p>
@@ -447,7 +535,13 @@ mark{
                 <p class="lh-1">\( = \dfrac{a}{3} \left\lbrace \left( \dfrac{\alpha + \beta}{2} - \alpha \right)^3 - (\alpha - \alpha)^3 \right\rbrace \)</p>
                 <p class="lh-1">\( = \dfrac{a}{3} \left( \dfrac{\beta - \alpha}{2} \right)^3 \)</p>
                 <p class="lh-1">\( = \dfrac{a}{24} \left( \beta^3 - 3 \beta^2 \alpha + 3 \beta \alpha^2 - \alpha^3 \right) \)</p>
-                <br>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
                 <p class="lh-1">次は右側の面積\( S_2 \)です。同じく2次関数が上、接線が下。範囲は\( \dfrac{\alpha + \beta}{2} \leqq x \leqq \beta \)ですので、</p>
                 <p class="lh-1">\( S_2 = \int_{\frac{\alpha + \beta}{2}}^{\beta} \left\lbrace (ax^2 + bx + c) - (m_2 x + n_2) \right\rbrace dx \)</p>
                 <p class="lh-1">\( = \int_{\frac{\alpha + \beta}{2}}^{\beta} \left\lbrace a(x - \beta)^2 \right\rbrace dx \)</p>
@@ -456,6 +550,8 @@ mark{
                 <p class="lh-1">\( = -\dfrac{a}{3} \left( \dfrac{\alpha - \beta}{2} \right)^3 \)</p>
                 <p class="lh-1">\( = -\dfrac{a}{24} \left( \alpha^3 - 3 \alpha^2 \beta + 3 \alpha \beta^2 - \beta^3 \right) \)</p>
                 <p class="lh-1">\( = \dfrac{a}{24} \left( \beta^3 - 3 \beta^2 \alpha + 3 \beta \alpha^2 - \alpha^3 \right) \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
                 <p class="lh-1">以上より、2次関数が下に凸であるとき、\( S_1 = S_2 \)が成り立つことが示されました。</p>
                 <p class="lh-1">上に凸の場合も似たような計算で示すことができます。2次関数と接線の順番こそ入れ替わるものの、結局2乗の形に因数分解できることは変わりません。</p>
                 <p class="lh-1">練習がてら、証明してみてください。</p>
@@ -463,15 +559,15 @@ mark{
                 <p class="lh-1">興味がある方はチェックしてみてください。</p>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="afterword">あとがき</h2>
-        <div class="m-2 p-2 problem_section">
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="afterword">あとがき</h2>
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
             <p class="lh-1">例題で触れたように、接点が登場する面積であれば、\( \dfrac{1}{3} \)公式が利用できる可能性があります。</p>
             <p class="lh-1">使い所を見逃さないようにしつつ、たくさん練習してマスターしていきましょう。</p>
         </div>
-    </div>
+    </section>
 </div>
 {% endblock %}

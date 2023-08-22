@@ -61,6 +61,7 @@ urlpatterns = [
     path('number_without_bracket/print/', views.print_number_without_bracket_problem, name='number_without_bracket_print'),
     path('number_without_bracket/display/', views.display_number_without_bracket_problem, name='number_without_bracket_display'),
     path('number_without_bracket/explanation/', views.explain_number_without_bracket, name='number_without_bracket_explain'),
+    path('number_without_bracket/explanation_print/', views.explain_number_without_bracket_print, name='number_without_bracket_explain_print'),
     # 文字の計算
     path('character/print/', views.print_character_problem, name="character_print"),
     path('character/display', views.display_character_problem, name="character_display"),

@@ -364,7 +364,7 @@ window.addEventListener("load", (event)=>{
     text-decoration: none;
 }
 mark{
-    background: linear-gradient(transparent 50%, #FAA755 80%);
+    background-color: #FAA755;
 }
 .description_section{
     border-style: double;
@@ -381,168 +381,226 @@ mark{
     border-bottom-width: 0.2px;
 }
 </style>
+<style type="text/css" media="print">
+    body {
+        -webkit-print-color-adjust: exact;
+    }
+    .print_pages{
+        /*A4縦 172,251*/
+        width: 210mm;
+        height: 260mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+    }
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav{
+        display: none;
+    }
+    p.number_of_problem {
+        text-align: right;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
-    <h1 class="h4">
-        カッコがつかない正負の足し算引き算
-        <small class="text-muted">～全ての基本をマスターしよう～</small>
-    </h1>
-    <a class="btn btn-primary" href="{% url 'number_without_bracket_explain_print' %}">A4印刷用ページ表示</a>
-
-    <br>
-    <ul class="list-group row m-4 p-4">
-        <h2 class="h5">目次</h2>
-        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#confirmation_of_basic_knowledge_in_elementary_school" class="text-decoration-none text-reset">小学校範囲の基本知識確認</a></li>
-        <li class="list-group-item col-md-6"><a href="#confirmation_of_basic_knowledge_in_junior_highschool" class="text-decoration-none text-reset">中学校範囲の基本知識確認</a></li>
-        <li class="list-group-item col-md-6"><a href="#how_to_solve_frac_xor_decimal" class="text-decoration-none text-reset">分数か小数が使われている計算の解き方</a></li>
-        <li class="list-group-item col-md-6"><a href="#how_to_solve_frac_and_decimal" class="text-decoration-none text-reset">分数と小数が使われている計算の解き方</a></li>
-        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
-    </ul>
-    <br>
-
-
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="foreword">前書き</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">正負の数の計算は全ての基本です。このあと中学、さらには高校と数学の学習は続いていきますが、<mark>その根底にはいつも正負の計算があります。</mark></p>
-            <p class="lh-1">ここではその中でも特に基本となる、カッコがついていない足し算引き算の解説を行います。</p>
-            <p class="lh-1">とりわけ、小数や分数が入ってくる場合を主として解説していくことになります。</p>
-            <p class="lh-1">基本を身に着けたい方、そしてある程度は計算できるものの、複雑な計算にはまだ慣れていない方は参考にしてみてください。</p>
-        </div>
-    </div>
-
-
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">まずは基本の確認からやっていきましょう。</p>
-            <p class="lh-1">足し算・引き算の基本は、<mark>数直線上の移動</mark>です。</p>
-            <p class="lh-1">たとえば、\( 4 \color{blue}- 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
+    <section class="print_pages">
+        <h1 class="h4">
+            カッコがつかない正負の足し算引き算
+            <small class="text-muted">～全ての基本をマスターしよう～</small>
+        </h1>
+        <div class="container button_container">
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <form>
+                        <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+                    </form>
+                </div>
+            </div>
             <br>
-            <div id="jxgbox1" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">点\( A(4) \)がスタートで、そこから\( \color{blue} -2 \color{black} \)、つまり左に2だけ動きます。結果として、答えは点\( B(2) \)となるわけです。</p>
         </div>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">足し算も同じです。次は\( 1 \color{red}+ 4 \color{black}\)を見てみましょう。</p>
-            <br>
-            <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">点\( A(1) \)がスタートで、そこから\( \color{red} + 4 \color{black} \)、つまり右に4だけ動きます。答えは点\( B(5) \)となります。</p>
-        </div>
+        <br>
+        <ul class="list-group row m-4 p-4">
+            <h2 class="h5">目次</h2>
+            <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+            <li class="list-group-item col-md-6"><a href="#confirmation_of_basic_knowledge_in_elementary_school" class="text-decoration-none text-reset">小学校範囲の基本知識確認</a></li>
+            <li class="list-group-item col-md-6"><a href="#confirmation_of_basic_knowledge_in_junior_highschool" class="text-decoration-none text-reset">中学校範囲の基本知識確認</a></li>
+            <li class="list-group-item col-md-6"><a href="#how_to_solve_frac_xor_decimal" class="text-decoration-none text-reset">分数か小数が使われている計算の解き方</a></li>
+            <li class="list-group-item col-md-6"><a href="#how_to_solve_frac_and_decimal" class="text-decoration-none text-reset">分数と小数が使われている計算の解き方</a></li>
+            <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+        </ul>
+        <br>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">ここで確認しておいてほしいのは、足し算だと<span style="color:red;">右</span>、引き算だと<span style="color:blue;">左</mark></mark>に動くということです。</p>
-            <p class="lh-1">一般的に右は<span style="color: red;">正の方向</span>、左は<span style="color: blue;">負の方向</span>とよばれます。ここでも、今後はこの呼び方に統一していきましょう。</p>
-        </div>
-    </div>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">小学校範囲の足し算・引き算の基本知識確認は終わりました。次は中学校範囲に進んでいきます。</p>
-            <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線の原点より左、つまり<mark>負の数が登場する</mark>だけで、足し算・引き算の考え方自体はそのままです。</p>
-            <p class="lh-1">たとえば、\( -3 \color{red}+ 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
-            <br>
-            <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタートが点\( A(-3) \)で、そこから\( \color{red}+2  \color{black}\)、つまり正の方向に2だけ動き、答えが点\( B(-1) \)になります。</p>
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="foreword">前書き</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">正負の数の計算は全ての基本です。このあと中学、さらには高校と数学の学習は続いていきますが、<mark>その根底にはいつも正負の計算があります。</mark></p>
+                <p class="lh-1">ここではその中でも特に基本となる、カッコがついていない足し算引き算の解説を行います。</p>
+                <p class="lh-1">とりわけ、小数や分数が入ってくる場合を主として解説していくことになります。</p>
+                <p class="lh-1">基本を身に着けたい方、そしてある程度は計算できるものの、複雑な計算にはまだ慣れていない方は参考にしてみてください。</p>
+            </div>
         </div>
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">これは3つ以上の数の足し引きでも同じです。\( -5 \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を見てみましょう。</p>
-            <br>
-            <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタートが点\( A(-5) \)で、そこから\( \color{blue}-2 \)、つまり負の方向に2だけ動き、点\( B(-7) \)になります。</p>
-            <p class="lh-1">そこからさらに\( \color{red}+1 \)、正の方向に1だけ動き、点\( C(-6) \)が答えとなります。</p>
-        </div>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">まずは基本の確認からやっていきましょう。</p>
+                <p class="lh-1">足し算・引き算の基本は、<mark>数直線上の移動</mark>です。</p>
+                <p class="lh-1">たとえば、\( 4 \color{blue}- 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
+                <br>
+                <div id="jxgbox1" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">点\( A(4) \)がスタートで、そこから\( \color{blue} -2 \color{black} \)、つまり左に2だけ動きます。結果として、答えは点\( B(2) \)となるわけです。</p>
+            </div>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">もう一つ確認してみます。\( -3 \color{red}+ 4 \color{black} \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を計算しましょう。</p>
-            <br>
-            <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタート地点であるのは点\( A(-3) \)で、ここから\( \color{red} + 4 \)だけ動き、点\( B(1) \)につきます。 </p>
-            <p class="lh-1">次に、そこから\( \color{blue} -2 \)だけ動き、点\( C(-1) \)へ。</p>
-            <p class="lh-1">最後に\( \color{red} +1 \)動くと、点\( D(0) \)に到着します。ここが答えです。</p>
-            <br>
-            <p class="lh-1">以上のように計算すれば解けますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてまとめてから計算してもよいでしょう。</p>
-            <p class="lh-1">\( -3 \color{red} + 4 \color{black} \color{blue}- 2 \color{black} \color{red} + 1 \color{black} \)</p>
-            <p class="lh-1">\( = -3 \color{blue} - 2 \color{black} \color{red} + 4 \color{black}  \color{red} + 1 \color{black} \)</p>
-            <br>
-            <div id="jxgbox6" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタートが点\( A(-3) \)なのは変わりませんが、そこから\( \color{blue} -2 \)、つまり負の方向に\( 2 \)だけ動き、あとは正の方向にしか動いていません。</p>
-            <p class="lh-1">結局答えは同じになりますので、自分がとっつきやすいやり方で解いていきましょう。</p>
-        </div>
-    </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">足し算も同じです。次は\( 1 \color{red}+ 4 \color{black}\)を見てみましょう。</p>
+                <br>
+                <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">点\( A(1) \)がスタートで、そこから\( \color{red} + 4 \color{black} \)、つまり右に4だけ動きます。答えは点\( B(5) \)となります。</p>
+            </div>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="how_to_solve_frac_xor_decimal">分数か小数が使われている計算</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">次は分数や小数が使われているときの計算をみてみましょう。</p>
-            <p class="lh-1">とはいっても、小数だけ、分数だけであれば、これまでとさして違いはありません。</p>
-            <p class="lh-1">たとえば分数だけのとき、\( \dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)を確認してみます。</p>
-            <br>
-            <div id="jxgbox7" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタートが点\( A\left(\dfrac{1}{2}\right) \)で、そこから\( \color{blue} -\dfrac{5}{3} \)、つまり負の方向に\( \dfrac{5}{3} \)だけ動きます。</p>
-            <p class="lh-1">結果として答えが点\( B\left(-\dfrac{7}{6}\right) \)になる、といった流れです。やっていること自体は先程までと同じですね。</p>
-            <br>
-            <p class="lh-1">ただ、実際に計算するときに、これをいきなり頭のなかでやるのはなかなか大変です。</p>
-            <p class="lh-1">そんなときは、まず通分してから考えましょう。\( 2 \)と\( 3 \)の最小公倍数である\( 6 \)で通分してみます。</p>
-            <p class="lh-1">\(\dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)</p>
-            <p class="lh-1">\( = \dfrac{1 \times 3}{2 \times 3} \color{blue} - \dfrac{5 \times 2}{3 \times 2} \)</p>
-            <p class="lh-1">\( = \dfrac{3 - \color{blue} 10 \color{black}}{6} \)</p>
-            <p class="lh-1">こうすることで、分子部分の\( 3 - \color{blue} 10 \color{black} \)だけ計算すればよくなります。</p>
-            <br>
-            <div id="jxgbox8" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタート地点が点\( A(3) \)で、そこから\( \color{blue} -10 \)、つまり負の方向に\( 10 \)だけ動き、\( -7 \)に到着します。</p>
-            <p class="lh-1">分子部分が\( -7 \)なので、答えは\( -\dfrac{7}{6} \)です。これなら先程までの整数の計算と同じですね。</p>
-            <br>
-            <p class="lh-1">もちろん3つ以上の数の計算でも同じです。\( \dfrac{2}{3} \color{red} + \dfrac{3}{4} \color{black} \color{blue} - \dfrac{1}{2} \color{black} \)を計算してみましょう。通分のときの分母は\( 2, 3, 4 \)の最小公倍数である\( 12 \)です。</p>
-            <p class="lh-1">\( \dfrac{2}{3} \color{red} + \dfrac{3}{4} \color{black} \color{blue} - \dfrac{1}{2} \color{black} \)</p>
-            <p class="lh-1">\( = \dfrac{2 \times 4}{3 \times 4} \color{red} + \dfrac{3 \times 3}{4 \times 3} \color{black} \color{blue} - \dfrac{1 \times 6}{2 \times 6} \color{black} \)</p>
-            <p class="lh-1">\( = \dfrac{8}{12} \color{red} + \dfrac{9}{12} \color{blue} - \dfrac{6}{12} \)</p>
-            <p class="lh-1">\( = \dfrac{8 \color{red} + 9 \color{black} \color{blue} - 6}{12} \)</p>
-            <br>
-            <div id="jxgbox9" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">分子部分の計算は点\( A(8) \)からスタートして、\( \color{red} +9 \)、つまり正の方向に9動き、点\( B(17) \)につきます。</p>
-            <p class="lh-1">そこからさらに\( \color{blue} -6 \)、つまり負の方向に6動き、点\( C(11) \)につきます。</p>
-            <p class="lh-1">分子が\( 11 \)なので、答えは\( \dfrac{11}{12} \)となります。</p>
-            <br>
-            <p class="lh-1">このように、分数であっても、通分を行えば、大体整数と同じように計算できます。</p>
-            <p class="lh-1">通分は最小公倍数で行うのが一般的です。計算で数が大きくなって嬉しいことはあまりないですからね。</p>
-            <p class="lh-1">
-                公倍数や公約数の練習問題を解きたい方は、以下にアクセスしてみてください。
-                <a href="{% url 'elementary_school5' %}#lcm_and_gcd_title" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">公倍数と公約数</small></a>
-            </p>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">ここで確認しておいてほしいのは、<mark>足し算だと<span style="color:red;">右</mark>、引き算だと<span style="color:blue;">左</mark></mark>に動くということです。</p>
+                <p class="lh-1">一般的に右は<span style="color: red;">正の方向</mark>、左は<span style="color: blue;">負の方向</mark>とよばれます。ここでも、今後はこの呼び方に統一していきましょう。</p>
+            </div>
         </div>
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">次は小数です。\( -0.8 \color{red} + 0.3 \color{black} \)を見てみましょう。</p>
-            <br>
-            <div id="jxgbox10" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタートは点\( A(-0.8) \)で、そこから\( \color{red} + 0.3 \)、つまり正の方向に\( 0.3 \)だけ動きます。結果として、答えは点\( B(-0.5) \)となります。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">小学校範囲の足し算・引き算の基本知識確認は終わりました。次は中学校範囲に進んでいきます。</p>
+                <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線の原点より左、つまり<mark>負の数が登場する</mark>だけで、足し算・引き算の考え方自体はそのままです。</p>
+                <p class="lh-1">たとえば、\( -3 \color{red}+ 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
+                <br>
+                <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタートが点\( A(-3) \)で、そこから\( \color{red}+2  \color{black}\)、つまり正の方向に2だけ動き、答えが点\( B(-1) \)になります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">これは3つ以上の数の足し引きでも同じです。\( -5 \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を見てみましょう。</p>
+                <br>
+                <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタートが点\( A(-5) \)で、そこから\( \color{blue}-2 \)、つまり負の方向に2だけ動き、点\( B(-7) \)になります。</p>
+                <p class="lh-1">そこからさらに\( \color{red}+1 \)、正の方向に1だけ動き、点\( C(-6) \)が答えとなります。</p>
+            </div>
         </div>
+    </section>
 
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">3つ以上の場合も同じです。\( 0.05 \color{blue} - 0.3  \color{red} + 0.1\)を見てみましょう。</p>
-            <br>
-            <div id="jxgbox11" class="jxgbox" style="width: 500px; height: 200px;"></div>
-            <br>
-            <p class="lh-1">スタートは点\( A(0.05) \)で、そこから\( \color{blue} -0.3 \)、つまり負の方向に\( 0.3 \)だけ動き、点\( B(-0.25) \)につきます。</p>
-            <p class="lh-1">次に、そこから\( \color{red} + 0.1 \)、つまり正の方向に\( 0.1 \)だけ動き、点\( C(-0.25) \)にたどりつきます。これが答えです。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">もう一つ確認してみます。\( -3 \color{red}+ 4 \color{black} \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を計算しましょう。</p>
+                <br>
+                <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタート地点であるのは点\( A(-3) \)で、ここから\( \color{red} + 4 \)だけ動き、点\( B(1) \)につきます。 </p>
+                <p class="lh-1">次に、そこから\( \color{blue} -2 \)だけ動き、点\( C(-1) \)へ。</p>
+                <p class="lh-1">最後に\( \color{red} +1 \)動くと、点\( D(0) \)に到着します。ここが答えです。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">以上のように計算すれば解けますが、右に左に移動するのが面倒に感じるようであれば、負の移動は負の移動、正の移動は正の移動と、順番を入れ替えてまとめてから計算してもよいでしょう。</p>
+                <p class="lh-1">\( -3 \color{red} + 4 \color{black} \color{blue}- 2 \color{black} \color{red} + 1 \color{black} \)</p>
+                <p class="lh-1">\( = -3 \color{blue} - 2 \color{black} \color{red} + 4 \color{black}  \color{red} + 1 \color{black} \)</p>
+                <br>
+                <div id="jxgbox6" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタートが点\( A(-3) \)なのは変わりませんが、そこから\( \color{blue} -2 \)、つまり負の方向に\( 2 \)だけ動き、あとは正の方向にしか動いていません。</p>
+                <p class="lh-1">結局答えは同じになりますので、自分がとっつきやすいやり方で解いていきましょう。</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="how_to_solve_frac_xor_decimal">分数か小数が使われている計算</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">次は分数や小数が使われているときの計算をみてみましょう。</p>
+                <p class="lh-1">とはいっても、小数だけ、分数だけであれば、これまでとさして違いはありません。</p>
+                <p class="lh-1">たとえば分数だけのとき、\( \dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)を確認してみます。</p>
+                <br>
+                <div id="jxgbox7" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタートが点\( A\left(\dfrac{1}{2}\right) \)で、そこから\( \color{blue} -\dfrac{5}{3} \)、つまり負の方向に\( \dfrac{5}{3} \)だけ動きます。</p>
+                <p class="lh-1">結果として答えが点\( B\left(-\dfrac{7}{6}\right) \)になる、といった流れです。やっていること自体は先程までと同じですね。</p>
+                <br>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">ただ、実際に計算するときに、これをいきなり頭のなかでやるのはなかなか大変です。</p>
+                <p class="lh-1">そんなときは、まず通分してから考えましょう。\( 2 \)と\( 3 \)の最小公倍数である\( 6 \)で通分してみます。</p>
+                <p class="lh-1">\(\dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)</p>
+                <p class="lh-1">\( = \dfrac{1 \times 3}{2 \times 3} \color{blue} - \dfrac{5 \times 2}{3 \times 2} \)</p>
+                <p class="lh-1">\( = \dfrac{3 - \color{blue} 10 \color{black}}{6} \)</p>
+                <p class="lh-1">こうすることで、分子部分の\( 3 - \color{blue} 10 \color{black} \)だけ計算すればよくなります。</p>
+                <br>
+                <div id="jxgbox8" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタート地点が点\( A(3) \)で、そこから\( \color{blue} -10 \)、つまり負の方向に\( 10 \)だけ動き、\( -7 \)に到着します。</p>
+                <p class="lh-1">分子部分が\( -7 \)なので、答えは\( -\dfrac{7}{6} \)です。これなら先程までの整数の計算と同じですね。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">もちろん3つ以上の数の計算でも同じです。\( \dfrac{2}{3} \color{red} + \dfrac{3}{4} \color{black} \color{blue} - \dfrac{1}{2} \color{black} \)を計算してみましょう。通分のときの分母は\( 2, 3, 4 \)の最小公倍数である\( 12 \)です。</p>
+                <p class="lh-1">\( \dfrac{2}{3} \color{red} + \dfrac{3}{4} \color{black} \color{blue} - \dfrac{1}{2} \color{black} \)</p>
+                <p class="lh-1">\( = \dfrac{2 \times 4}{3 \times 4} \color{red} + \dfrac{3 \times 3}{4 \times 3} \color{black} \color{blue} - \dfrac{1 \times 6}{2 \times 6} \color{black} \)</p>
+                <p class="lh-1">\( = \dfrac{8}{12} \color{red} + \dfrac{9}{12} \color{blue} - \dfrac{6}{12} \)</p>
+                <p class="lh-1">\( = \dfrac{8 \color{red} + 9 \color{black} \color{blue} - 6}{12} \)</p>
+                <br>
+                <div id="jxgbox9" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">分子部分の計算は点\( A(8) \)からスタートして、\( \color{red} +9 \)、つまり正の方向に9動き、点\( B(17) \)につきます。</p>
+                <p class="lh-1">そこからさらに\( \color{blue} -6 \)、つまり負の方向に6動き、点\( C(11) \)につきます。</p>
+                <p class="lh-1">分子が\( 11 \)なので、答えは\( \dfrac{11}{12} \)となります。</p>
+                <br>
+                <p class="lh-1">このように、分数であっても、通分を行えば、大体整数と同じように計算できます。</p>
+                <p class="lh-1">通分は最小公倍数で行うのが一般的です。計算で数が大きくなって嬉しいことはあまりないですからね。</p>
+                <p class="lh-1">
+                    公倍数や公約数の練習問題を解きたい方は、以下にアクセスしてみてください。
+                    <a href="{% url 'elementary_school5' %}#lcm_and_gcd_title" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">公倍数と公約数</small></a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">次は小数です。\( -0.8 \color{red} + 0.3 \color{black} \)を見てみましょう。</p>
+                <br>
+                <div id="jxgbox10" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタートは点\( A(-0.8) \)で、そこから\( \color{red} + 0.3 \)、つまり正の方向に\( 0.3 \)だけ動きます。結果として、答えは点\( B(-0.5) \)となります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">3つ以上の場合も同じです。\( 0.05 \color{blue} - 0.3  \color{red} + 0.1\)を見てみましょう。</p>
+                <br>
+                <div id="jxgbox11" class="jxgbox" style="width: 500px; height: 200px;"></div>
+                <br>
+                <p class="lh-1">スタートは点\( A(0.05) \)で、そこから\( \color{blue} -0.3 \)、つまり負の方向に\( 0.3 \)だけ動き、点\( B(-0.25) \)につきます。</p>
+                <p class="lh-1">次に、そこから\( \color{red} + 0.1 \)、つまり正の方向に\( 0.1 \)だけ動き、点\( C(-0.25) \)にたどりつきます。これが答えです。</p>
+            </div>
+        </div>
+    </section>
 
     <div class="row m-4 p-4 description_section">
         <div class="m-2 p-2 problem_section">

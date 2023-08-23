@@ -72,6 +72,7 @@ urlpatterns = [
     path('specific_linear_equation/print/',views.print_specific_linear_equation, name='specific_linear_equation_print'),
     path('specific_linear_equation/display/',views.display_specific_linear_equation, name='specific_linear_equation_display'),
     path('specific_linear_equation/explanation', views.explain_specific_linear_equation, name='specific_linear_equation_explain'),
+    path('specific_linear_equation/explanation_print', views.explain_specific_linear_equation_print, name='specific_linear_equation_explain_print'),
     # 比例
     path('proportional_expression/print/', views.print_proportional_expression, name='proportional_expression_print'),
     path('proportional_expression/display/', views.display_proportional_expression, name='proportional_expression_display'),

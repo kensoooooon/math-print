@@ -2989,6 +2989,19 @@ def explain_specific_linear_equation(request):
     return returned_render
 
 
+def explain_specific_linear_equation_print(request):
+    """特定の形の1次方程式の解き方の解説プリントを担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/junior_highschool1/specific_linear_equation/for_explain_print.html', {})
+    return returned_render
+
+
 def explain_logarithmic_equation(request):
     """対数方程式の解き方の解説を担当
     

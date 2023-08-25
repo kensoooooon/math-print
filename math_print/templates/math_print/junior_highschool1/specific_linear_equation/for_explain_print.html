@@ -90,280 +90,321 @@ mark{
 {% block body %}
 <div class="container-fluid">
     <section class="print_pages">
-    <h1 class="h4">
-        形が決まった1次方程式
-        <small class="text-muted">～いろいろな形の1次方程式に対応できるようにしていこう～</small>
-    </h1>
-
-    <br>
-    <ul class="list-group row m-4 p-4">
-        <h2 class="h5">目次</h2>
-        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
-        <li class="list-group-item col-md-6"><a href="#rule_of_equation" class="text-decoration-none text-reset">等式の性質</a></li>
-        <li class="list-group-item col-md-6"><a href="#ax=b" class="text-decoration-none text-reset">\( ax = b \)型の方程式</a></li>
-        <li class="list-group-item col-md-6"><a href="#ax+b=c" class="text-decoration-none text-reset">\( ax + b = c \)型の方程式</a></li>
-        <li class="list-group-item col-md-6"><a href="#ax+b=cx+d" class="text-decoration-none text-reset">\( ax + b = cx + d \)型の方程式</a></li>
-        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
-    </ul>
-    <br>
-
-
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="foreword">前書き</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">1次方程式は皆さんが数学に入って初めて出会う方程式であり、今後たくさん出てくる◯◯方程式(連立方程式, 2次方程式など)の先駆けです。</p>
-            <p class="lh-1">また、本格的に文章問題が登場してくるのもこの辺りです。</p>
-            <p class="lh-1">総じて1次方程式は<mark>中学1年生範囲の数学の前半の山場</mark>と言えるでしょう。</p>
-            <p class="lh-1">そういうわけで、1次方程式がしっかりと解けるというのは非常に重要です。複雑な計算も、難解な文章問題も、まずは基本となる1次方程式が解けないと始まりません。</p>
-            <p class="lh-1">まずは決まった形の1次方程式が解けるように理解して、練習を重ねていきましょう。</p>
-        </div>
-    </div>
-
-    
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="rule_of_equation">等式の性質</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">実際に方程式の解き方を解説していく前に、まずはそれら全ての根っこにある等式の性質を確認しておきましょう。</p>
-            <p class="lh-1">まずは等式とは？という話ですが、これはシンプルです。<mark>イコールでつながった式は全部等式</mark>という認識でOKです。</p>
-            <p class="lh-1">そして、肝心の等式の性質ですが、一言でいうと<mark>等式の両辺に同じことをしても、イコールは崩れない</mark>というものになります。</p>
-        </div>
-
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">具体的な例として、\( 1 + 2 = 3 \)を考えてみましょう。</p>
-            <p class="lh-1">たとえばこの両辺から1を引すと、</p>
-            <p class="lh-1">\( 1 + 2 \color{red} + 1 \color{black} = 3 \color{red} + 1\)から</p>
-            <p class="lh-1">\( 4 = 4 \)となり、イコールは崩れていません。</p>
-            <p class="lh-1">また、同じように3を引いてみると、</p>
-            <p class="lh-1">\( 1 + 2 \color{red} - 3 \color{black} = 3 \color{red} - 3\)から</p>
-            <p class="lh-1">\( 0 = 0 \)となり、やはりイコールは崩れていません。</p>
-            <p class="lh-1">以上のように、等式の両辺に同じ数を足したり引いたりしても、イコールはイコールのままです。</p>
-        </div>
-        
-        <div class="m-2 p-2 problem_section">  
-            <p class="lh-1">次にかけ算とわり算を見てみますが、こちらは少し注意が必要です。</p>
-            <p class="lh-1">というのも、<mark>きちんと全体に計算してあげないと、イコールが崩れる</mark>からです。</p>
-            <p class="lh-1">例として、\( 2 + 4 = 6 \)を使って考えていきます。</p>
-            <p class="lh-1">両辺に2をかけるときに、\( 2 \times 2 + 4 = 6 \times 2 \)と一部にだけ2をかけると、</p>
-            <p class="lh-1">\( 8 \neq 12 \)とイコールが崩れてしまいます。</p>
-            <p class="lh-1">正しくは、\( \color{red} 2 \times ( \color{black} 2 + 4 \color{red}) \color{black} = 6 \times 2  \)とすべきです。</p>
-            <p class="lh-1">こうしてあげれば\( 12 = 12 \)で等しいままです。</p>
-            <p class="lh-1">これはわり算でも同じです。両辺を2で割るときに\( 2 + 4 \div 2 = 2 \div 2 \)とすると、\( 4 \neq 1 \)となり、イコールが崩れます。</p>
-            <p class="lh-1">\( \color{red}( \color{black}2 + 4 \color{red}) \div 2 \color{black} = 6 \div 2 \)と全体を割ってあげることで、\( 3 = 3 \)とイコールが保たれます。</p>
-        </div>
-        
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">以上が等式の性質です。このあと学んでいく1次方程式では、このルールにもとづいて話が進んでいきます。しっかりと確認しておきましょう。</p>
-        </div>
-    </div>
-
-
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="ax=b">\( ax = b \)型の方程式</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">さて、それではさっそく方程式の解き方を確認していきましょう。初めに紹介するのは\( ax = b\)型の方程式。一番シンプルな形です。具体的には\( 2x = 4 \)のような形です。</p>
-            <p class="lh-1">このタイプの方程式は、両辺を\( x \)の手前についている\( {a} \)で割れば解くことができます。</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">\( 2x = 4 \)</p>
-            <p class="lh-1">\( x \)の手前についているのは\( 2 \)なので、これで両辺を割ると、</p>
-            <p class="lh-1">\( 2x \color{red} \div 2 \color{black} = 4 \color{red} \div 2 \)</p>
-            <p class="lh-1">\( 2x \times \dfrac{1}{2} = 4 \times \dfrac{1}{2} \)</p>
-            <p class="lh-1">\( x = 2 \)となります。これが答えです。実際、\( x = 2 \)を代入すると\( 2 \times 2 = 4 \)となるため、正しいことがわかります。</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">……と、これが等式の性質に則った解き方なのですが、毎度毎度割り算→分数の流れをやるのも手間です。</p>
-            <p class="lh-1">実際には、いきなり<mark>右辺の分母にxの手前の係数を持ってくる</mark>という感じで解いていくことが多いです。</p>
-            <p class="lh-1">たとえば\( 3x = 5 \)であれば、\( 5 \)の分母に\( 3 \)を持ってきて、</p>
-            <p class="lh-1">\( x = \dfrac{5}{3} \)とした方がスムーズです。</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">手前についている数が分数でも同じように解けます。</p>
-            <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
-            <p class="lh-1">\( \dfrac{2}{3}x \color{red} \div \dfrac{2}{3} \color{black} = 8 \color{red} \div \dfrac{2}{3} \color{black} \)</p>
-            <p class="lh-1">\( \dfrac{2}{3}x \times \dfrac{3}{2} = 8 \times \dfrac{3}{2} \)</p>
-            <p class="lh-1">\( x = 12 \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">というのがルールに則った解き方ですが、これも分母に持ってきて考えます。\( \dfrac{a}{b} = a \div b \)であることを使いましょう。</p>
-            <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
-            <p class="lh-1">\( x = \dfrac{8}{\cfrac{2}{3}} \)</p>
-            <p class="lh-1">\( x = 8 \div \dfrac{2}{3} = 8 \times \dfrac{3}{2} = 12\)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">小数の場合も同じように解けますが……</p>
-            <p class="lh-1">\( 0.5 x = 3 \)</p>
-            <p class="lh-1">\( 0.5x \color{red} \div 0.5 \color{black} = 3 \color{red} \div 0.5 \)</p>
-            <p class="lh-1">\( x = 6 \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">これもさっさと分母に持ってきた方が早いです。</p>
-            <p class="lh-1">\( 0.5x = 3 \)</p>
-            <p class="lh-1">\( x = \dfrac{3}{0.5} = 3 \div 0.5 = 6\)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">ただ、ちゃぶ台を返すようで申し訳ないのですが、このあとにやるもっと複雑な計算のことも想定すると、<mark>そもそも分数や小数は初めに消してから取り組む</mark>方が楽です。</p>
-            <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
-            <p class="lh-1">ここで両辺に3をかけると、</p>
-            <p class="lh-1">\( \dfrac{2}{3}x \color{red} \times 3 \color{black} = 8 \color{red} \times 3\)から、</p>
-            <p class="lh-1">\( 2x = 24 \)と例題1のときのように、整数だけの形になります。
-            <p class="lh-1">あとは分母に持ってくれば、\( x = \dfrac{24}{12} = 2 \)となります。</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">同じように\( 0.5 x = 3 \)についても、小数点をずらすために10をかけてから取り組んでみると、</p>
-            <p class="lh-1">\( 0.5 x \times 10 = 3 \times 10 \)から、</p>
-            <p class="lh-1">\( 5x = 30 \)となります。</p>
-            <p class="lh-1">あとは\( x = \dfrac{30}{5} = 6 \)で解けます。</p>
+        <h1 class="h4">
+            形が決まった1次方程式
+            <small class="text-muted">～いろいろな形の1次方程式に対応できるようにしていこう～</small>
+        </h1>
+        <div class="container button_container">
+            <div class="row justify-content-start">
+                <div class="col-6">
+                    <form>
+                        <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+                    </form>
+                </div>
+            </div>
             <br>
-            <p class="lh-1">一見、余計な手間がかかっているように見えるかもしれませんが、問題が面倒になればなるほど、小数や分数を初めに消しておいた方がトータルでは楽です。</p>
         </div>
-    </div>
+        <br>
+        <ul class="list-group row m-4 p-4">
+            <h2 class="h5">目次</h2>
+            <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+            <li class="list-group-item col-md-6"><a href="#rule_of_equation" class="text-decoration-none text-reset">等式の性質</a></li>
+            <li class="list-group-item col-md-6"><a href="#ax=b" class="text-decoration-none text-reset">\( ax = b \)型の方程式</a></li>
+            <li class="list-group-item col-md-6"><a href="#ax+b=c" class="text-decoration-none text-reset">\( ax + b = c \)型の方程式</a></li>
+            <li class="list-group-item col-md-6"><a href="#ax+b=cx+d" class="text-decoration-none text-reset">\( ax + b = cx + d \)型の方程式</a></li>
+            <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+        </ul>
+        <br>
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="foreword">前書き</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">1次方程式は皆さんが数学に入って初めて出会う方程式であり、今後たくさん出てくる◯◯方程式(連立方程式, 2次方程式など)の先駆けです。</p>
+                <p class="lh-1">また、本格的に文章問題が登場してくるのもこの辺りです。</p>
+                <p class="lh-1">総じて1次方程式は<mark>中学1年生範囲の数学の前半の山場</mark>と言えるでしょう。</p>
+                <p class="lh-1">そういうわけで、1次方程式がしっかりと解けるというのは非常に重要です。複雑な計算も、難解な文章問題も、まずは基本となる1次方程式が解けないと始まりません。</p>
+                <p class="lh-1">まずは決まった形の1次方程式が解けるように理解して、練習を重ねていきましょう。</p>
+            </div>
+        </div>
+    </section>
     
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="rule_of_equation">等式の性質</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">実際に方程式の解き方を解説していく前に、まずはそれら全ての根っこにある等式の性質を確認しておきましょう。</p>
+                <p class="lh-1">まずは等式とは？という話ですが、これはシンプルです。<mark>イコールでつながった式は全部等式</mark>という認識でOKです。</p>
+                <p class="lh-1">そして、肝心の等式の性質ですが、一言でいうと<mark>等式の両辺に同じことをしても、イコールは崩れない</mark>というものになります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">具体的な例として、\( 1 + 2 = 3 \)を考えてみましょう。</p>
+                <p class="lh-1">たとえばこの両辺から1を引すと、</p>
+                <p class="lh-1">\( 1 + 2 \color{red} + 1 \color{black} = 3 \color{red} + 1\)から</p>
+                <p class="lh-1">\( 4 = 4 \)となり、イコールは崩れていません。</p>
+                <p class="lh-1">また、同じように3を引いてみると、</p>
+                <p class="lh-1">\( 1 + 2 \color{red} - 3 \color{black} = 3 \color{red} - 3\)から</p>
+                <p class="lh-1">\( 0 = 0 \)となり、やはりイコールは崩れていません。</p>
+                <p class="lh-1">以上のように、等式の両辺に同じ数を足したり引いたりしても、イコールはイコールのままです。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">  
+                <p class="lh-1">次にかけ算とわり算を見てみますが、こちらは少し注意が必要です。</p>
+                <p class="lh-1">というのも、<mark>きちんと全体に計算してあげないと、イコールが崩れる</mark>からです。</p>
+                <p class="lh-1">例として、\( 2 + 4 = 6 \)を使って考えていきます。</p>
+                <p class="lh-1">両辺に2をかけるときに、\( 2 \times 2 + 4 = 6 \times 2 \)と一部にだけ2をかけると、</p>
+                <p class="lh-1">\( 8 \neq 12 \)とイコールが崩れてしまいます。</p>
+                <p class="lh-1">正しくは、\( \color{red} 2 \times ( \color{black} 2 + 4 \color{red}) \color{black} = 6 \times 2  \)とすべきです。</p>
+                <p class="lh-1">こうしてあげれば\( 12 = 12 \)で等しいままです。</p>
+                <p class="lh-1">これはわり算でも同じです。両辺を2で割るときに\( 2 + 4 \div 2 = 2 \div 2 \)とすると、\( 4 \neq 1 \)となり、イコールが崩れます。</p>
+                <p class="lh-1">\( \color{red}( \color{black}2 + 4 \color{red}) \div 2 \color{black} = 6 \div 2 \)と全体を割ってあげることで、\( 3 = 3 \)とイコールが保たれます。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">以上が等式の性質です。このあと学んでいく1次方程式では、このルールにもとづいて話が進んでいきます。しっかりと確認しておきましょう。</p>
+            </div>
+        </div>
+    </section>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="ax+b=c">\( ax + b = c \)型の方程式</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">次に紹介するのは、\( ax + b = c \)型の方程式です。具体的には\( 2x + 3 = 7 \)のような、左辺に新しく数が追加されているものになります。</p>
-            <p class="lh-1">\( 2x = \circ \)の形にすれば上と同じように解けるので、\( + 3 \)を消すのが重要になってきます。</p>
-            <p class="lh-1">ここで利用するのは、一番初めに確認した等式の性質です。\( +3 \)を消すために、両辺から\( -3 \)をしてみましょう。</p>
-            <p class="lh-1">\( 2x + 3 \color{red} - 3 \color{black} = 7 \color{red} - 3 \)</p>
-            <p class="lh-1">\( 2x = 4 \)</p>
-            <p class="lh-1">これで\( ax = b \)の形になりましたので、</p>
-            <p class="lh-1">\( x = \dfrac{4}{2} = 4 \times \dfrac{1}{2} = 2\)</p>
-            <p class="lh-1">解けましたね。もう1問見てみましょう。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="ax=b">\( ax = b \)型の方程式</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">さて、それではさっそく方程式の解き方を確認していきましょう。初めに紹介するのは\( ax = b\)型の方程式。一番シンプルな形です。具体的には\( 2x = 4 \)のような形です。</p>
+                <p class="lh-1">このタイプの方程式は、両辺を\( x \)の手前についている\( {a} \)で割れば解くことができます。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">\( 2x = 4 \)</p>
+                <p class="lh-1">\( x \)の手前についているのは\( 2 \)なので、これで両辺を割ると、</p>
+                <p class="lh-1">\( 2x \color{red} \div 2 \color{black} = 4 \color{red} \div 2 \)</p>
+                <p class="lh-1">\( 2x \times \dfrac{1}{2} = 4 \times \dfrac{1}{2} \)</p>
+                <p class="lh-1">\( x = 2 \)となります。これが答えです。実際、\( x = 2 \)を代入すると\( 2 \times 2 = 4 \)となるため、正しいことがわかります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">……と、これが等式の性質に則った解き方なのですが、毎度毎度割り算→分数の流れをやるのも手間です。</p>
+                <p class="lh-1">実際には、いきなり<mark>右辺の分母にxの手前の係数を持ってくる</mark>という感じで解いていくことが多いです。</p>
+                <p class="lh-1">たとえば\( 3x = 5 \)であれば、\( 5 \)の分母に\( 3 \)を持ってきて、</p>
+                <p class="lh-1">\( x = \dfrac{5}{3} \)とした方がスムーズです。</p>
+            </div>
         </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">\( -3x + 5 = 9 \)</p>
-            <p class="lh-1">\( 9 \)が邪魔なので、両辺から引いて消します。</p>
-            <p class="lh-1">\( -3x + 5 \color{red} - 5 \color{black} = 9 \color{red} - 5\)</p>
-            <p class="lh-1">\( -3x = 4 \)</p>
-            <p class="lh-1">ここまで来れば、あとは\( x = \cdots \)の形に変形するために、両辺を\( 3 \)で割るだけです。</p>
-            <p class="lh-1">\( x = \dfrac{4}{-3} = -\dfrac{4}{3} \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">このように、\( ax + b = c \)タイプの方程式は解くことが可能ですが、これをもう少し見てみると、<mark>数字を消すと、結局逆側の辺に符号が反転したものだけが残っている</mark>ことがわかります。</p>
-            <p class="lh-1">\( 3x - 5 = 6 \)</p>
-            <p class="lh-1">\( 3x - 5 \color{red} + 5 \color{black} = 6 + \color{red} 5\)</p>
-            <p class="lh-1">\( 3x = 6 + \color{red} 5\)</p>
-            <p class="lh-1">もともと左辺にあった数字を消すための数を足し引きしているので、当たり前といえば当たり前なのですが、左辺の数の部分は必ず0になります。</p>
-            <p class="lh-1">そのため、その部分の計算は省かれるのが一般的です。教科書や問題集などでは<mark>移項</mark>などと呼ばれるものですね。別の問題も見てみましょう。</p>
-            <p class="lh-1">\( -2x + 1 = 5 \)</p>
-            <p class="lh-1">ここから移項、つまり\( +1 \)の符号を反転させて、\( -1 \)として右辺に移します。</p>
-            <p class="lh-1">\( -2x = 5 \color{red} - 1 \)</p>
-            <p class="lh-1">\( -2x = 4 \)</p>
-            <p class="lh-1">\( x = \dfrac{4}{-2} = -2 \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">なお、分数が含まれている場合は、そちらを消すほうを優先してください。</p>
-            <p class="lh-1">\( \dfrac{2}{5} x - \dfrac{1}{2} = 2 \)</p>
-            <p class="lh-1">複数の分数があるときは、<mark>分母の最小公倍数をかけてあげる</mark>と、スムーズに解くことができます。この問題ならば、\( 5, 2 \)の最小公倍数\( 10 \)をかけるとよいです。</p>
-            <p class="lh-1">\( 10 \times \left(\dfrac{2}{5}x - \dfrac{1}{2}\right) = 10 \times 2 \)</p>
-            <p class="lh-1">\( 4x \color{red}- 5 \color{black} = 20 \)</p>
-            <p class="lh-1">\( -5 \)を\( +5 \)として右辺に移項すると、</p>
-            <p class="lh-1">\( 4x = 20 \color{red} + 5 \)</p>
-            <p class="lh-1">\( 4x = 25 \)</p>
-            <p class="lh-1">\( x = \dfrac{25}{4} \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">小数も同じく最優先で消す対象になります。</p>
-            <p class="lh-1">\( 0.35x + 0.2 = 0.1 \)</p>
-            <p class="lh-1"><mark>小数点以下の桁数が一番多いものが消えるように、10や100などをかけていく</mark>ようにしましょう。今回は\( 0.35x \)が一番桁数が多いので、こちらが整数になるように\( \times 100 \)をしていきましょう。</p>
-            <p class="lh-1">\( 100 \times (0.35x + 0.2) = 100 \times 0.1 \)</p>
-            <p class="lh-1">\( 35x \color{red} + 20 \color{black} = 10\)</p>
-            <p class="lh-1">\( +20 \)を\( -20 \)として右辺に移項すると、</p>
-            <p class="lh-1">\( 35x = 10 \color{red} -20 \)</p>
-            <p class="lh-1">\( 35x = -10 \)</p>
-            <p class="lh-1">\( x = \dfrac{-10}{35} = -\dfrac{2}{7}\)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">小数と分数が混ざっているときは、小数を分数にしてから計算しましょう。</p>
-            <p class="lh-1">\( 0.5x + \dfrac{5}{6} = 2\)</p>
-            <p class="lh-1">\( 0.5 = \dfrac{1}{10} = \dfrac{1}{2} \)なので、</p>
-            <p class="lh-1">\( \dfrac{1}{2}x + \dfrac{5}{6} = 2 \)</p>
-            <p class="lh-1">両辺に分母の最小公倍数である12をかけると、</p>
-            <p class="lh-1">\( 12 \times \left( \dfrac{1}{2}x + \dfrac{5}{6} \right) = 12 \times 2 \)</p>
-            <p class="lh-1">\( 6x + 10 = 24 \)</p>
-            <p class="lh-1">\( 6x = 14 \)</p>
-            <p class="lh-1">\( x = \dfrac{14}{6} = \dfrac{7}{3} \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">以上のような流れで\( ax + b = c \)型の方程式を解くことができます。</p>
-            <p class="lh-1">小数や分数はさっさと消しつつ、移項して\( ax = b \)の形を目指すのがポイントです。</p>
-        </div>
-    </div>
+    </section>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="ax+b=cx+d">\( ax + b = cx + d \)型の方程式</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">最後に紹介するのは\( ax + b = cx + d \)型の方程式です。これまでの集大成ですね。</p>
-            <p class="lh-1">具体的には\( 3x - 5 = 4x + 2\)のような方程式です。</p>
-            <p class="lh-1">ここでも目指すのは\( ax = b \)の形になります。そのために<mark>文字は左に、数字は右に移項</mark>していきます。</p>
-            <p class="lh-1">\( 3x \color{red} - 5 \color{black} = \color{blue} 4x \color{black} + 2 \)</p>
-            <p class="lh-1">\( 3x \color{blue} - 4x \color{black} = 2 \color{red} + 5 \)</p>
-            <p class="lh-1">\( -x = 7 \)</p>
-            <p class="lh-1">\( -x \)は\( -1 \times x \)と同じなので、</p>
-            <p class="lh-1">\( x = \dfrac{7}{-1} = -7\)</p>
-            <p class="lh-1">これが一連の流れです。移項の際に符号を変え忘れないように注意しましょう。</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">手前についている数が分数でも同じように解けます。</p>
+                <p class="lh-1">たとえば、\( \dfrac{2}{3}x = 8 \)であれば、</p>
+                <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
+                <p class="lh-1">\( \dfrac{2}{3}x \color{red} \div \dfrac{2}{3} \color{black} = 8 \color{red} \div \dfrac{2}{3} \color{black} \)</p>
+                <p class="lh-1">\( \dfrac{2}{3}x \times \dfrac{3}{2} = 8 \times \dfrac{3}{2} \)</p>
+                <p class="lh-1">\( x = 12 \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">というのがルールに則った解き方ですが、これも分母に持ってきて考えます。\( \dfrac{a}{b} = a \div b \)であることを使いましょう。</p>
+                <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
+                <p class="lh-1">\( x = \dfrac{8}{\cfrac{2}{3}} \)</p>
+                <p class="lh-1">\( x = 8 \div \dfrac{2}{3} = 8 \times \dfrac{3}{2} = 12\)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">小数の場合も同じように解けますが……</p>
+                <p class="lh-1">\( 0.5 x = 3 \)</p>
+                <p class="lh-1">\( 0.5x \color{red} \div 0.5 \color{black} = 3 \color{red} \div 0.5 \)</p>
+                <p class="lh-1">\( x = 6 \)</p>
+                <p class="lh-1">これもさっさと分母に持ってきた方が早いです。</p>
+                <p class="lh-1">\( 0.5x = 3 \)</p>
+                <p class="lh-1">\( x = \dfrac{3}{0.5} = 3 \div 0.5 = 6\)</p>
+            </div>
         </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">先程までと同じく、分数が入っているときは、そちらを消すことを優先します。</p>
-            <p class="lh-1">\( 3x - \dfrac{1}{2} = \dfrac{5}{4}x + 2 \)</p>
-            <p class="lh-1">分母の最小公倍数である4を両辺にかけると、</p>
-            <p class="lh-1">\( 4 \times \left(3x - \dfrac{1}{2}\right) = 4 \times \left( \dfrac{5}{4}x + 2 \right) \)</p>
-            <p class="lh-1">\( 12x - 2 = 5x + 8 \)</p>
-            <p class="lh-1">これで分数が消えましたので、あとは同じように移項していきます。</p>
-            <p class="lh-1">\( 12x \color{red} - 2 \color{black} = \color{blue} 5x \color{black} + 8 \)</p>
-            <p class="lh-1">\( 12x \color{blue} - 5x \color{black} = 8 \color{red} + 2 \)</p>
-            <p class="lh-1">\( 7x = 10 \)</p>
-            <p class="lh-1">\( x = \dfrac{10}{7}\)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">小数が使われているときも同じく小数を初めに消してしまいましょう。</p>
-            <p class="lh-1">\( 0.3x - 2 = -1.5x + 0.4 \)</p>
-            <p class="lh-1">今回はどの小数も小数第一位までしか数が続いていないので、10をかけていきます。</p>
-            <p class="lh-1">\( 10 \times (0.3x - 2) = 10 \times (-1.5x + 0.4) \)</p>
-            <p class="lh-1">\( 3x - 20 = -15x + 4 \)</p>
-            <p class="lh-1">小数が消えたので、例のごとく移項していきましょう。</p>
-            <p class="lh-1">\( 3x \color{red} - 20 \color{black} = \color{blue} -15x \color{black} + 4 \)</p>
-            <p class="lh-1">\( 3x \color{blue} +15x \color{black} = 4 \color{red} + 20 \)</p>
-            <p class="lh-1">\( 18x = 24 \)</p>
-            <p class="lh-1">\( x = \dfrac{24}{18} = \dfrac{4}{3} \)</p>
-        </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">分数と小数が一緒にあるときの対処法も同じです。</p>
-            <p class="lh-1">\( 0.5x + \dfrac{2}{5} = \dfrac{1}{6}x - 0.3\)</p>
-            <p class="lh-1">\( 0.5 = \dfrac{5}{10} = \dfrac{1}{2}, 0.3 = \dfrac{3}{10} \)なので、</p>
-            <p class="lh-1">\( \dfrac{1}{2}x + \dfrac{2}{5} = \dfrac{1}{6}x - \dfrac{3}{10} \)</p>
-            <p class="lh-1">\( 2,5, 6, 10\)の最小公倍数である\( 30 \)をかけて整理します。</p>
-            <p class="lh-1">\( 30 \times \left( \dfrac{1}{2}x + \dfrac{2}{5} \right) = 30 \times \left( \dfrac{1}{6}x - \dfrac{3}{10} \right) \)</p>
-            <p class="lh-1">\( 15x \color{red} + 12 \color{black} = \color{blue} 5x \color{black} - 9\)</p>
-            <p class="lh-1">\( 15x \color{blue} - 5x \color{black} = -9 \color{red} -12 \)</p>
-            <p class="lh-1">\( 10x = -21 \)</p>
-            <p class="lh-1">\( x = \dfrac{-21}{10} = -\dfrac{21}{10} \)</p>            
-        </div>
-    </div>
+    </section>
 
-    <div class="row m-4 p-4 description_section">
-        <h2 class="text-muted h5" id="afterword">後書き</h2>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">繰り返しになりますが、<mark>まず何はともあれ小数や分数を消して、次に左側が文字、右側が数字になるように移行して答えを求める</mark>というのが一連の流れです。</p>
-            <p class="lh-1">以上です。\( ax + b = cx + d \)まで解けるようになれば、ここに登場していないタイプであっても、同じ考え方で大抵の1次方程式は問題なく答えられるようになります。</p>
-            <p class="lh-1">たとえば、以下のようにカッコがある場合は展開してから解けば良いです。</p>
-            <p class="lh-1">\( 2(3x + 5) = 4x \)</p>
-            <p class="lh-1">\( 6x + 10 = 4x \)</p>
-            <p class="lh-1">\( 6x - 4x = -10 \)</p>
-            <p class="lh-1">\( 2x = -10 \)</p>
-            <p class="lh-1">\( x = \dfrac{-10}{2} = -5 \)</p>
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">ただ、ちゃぶ台を返すようで申し訳ないのですが、このあとにやるもっと複雑な計算のことも想定すると、<mark>そもそも分数や小数は初めに消してから取り組む</mark>方が楽です。</p>
+                <p class="lh-1">\( \dfrac{2}{3}x = 8 \)</p>
+                <p class="lh-1">ここで両辺に3をかけると、</p>
+                <p class="lh-1">\( \dfrac{2}{3}x \color{red} \times 3 \color{black} = 8 \color{red} \times 3\)から、</p>
+                <p class="lh-1">\( 2x = 24 \)と例題1のときのように、整数だけの形になります。
+                <p class="lh-1">あとは分母に持ってくれば、\( x = \dfrac{24}{12} = 2 \)となります。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">同じように\( 0.5 x = 3 \)についても、小数点をずらすために10をかけてから取り組んでみると、</p>
+                <p class="lh-1">\( 0.5 x \times 10 = 3 \times 10 \)から、</p>
+                <p class="lh-1">\( 5x = 30 \)となります。</p>
+                <p class="lh-1">あとは\( x = \dfrac{30}{5} = 6 \)で解けます。</p>
+                <br>
+                <p class="lh-1">一見、余計な手間がかかっているように見えるかもしれませんが、問題が面倒になればなるほど、小数や分数を初めに消しておいた方がトータルでは楽です。</p>
+            </div>
         </div>
-        <div class="m-2 p-2 problem_section">
-            <p class="lh-1">また、二重にカッコがある場合は、まずは小さいカッコを外してから、大きなカッコに取り組みます。この辺りは数の計算と同じですね。</p>
-            <p class="lh-1">\( 2 \left\lbrace 3 \left( x - \dfrac{5}{3} \right) + 4 \right\rbrace = 5x + 12 \)</p>
-            <p class="lh-1">\( 2 ( 3x - 5 + 4 ) = 5x + 12\)</p>
-            <p class="lh-1">\( 2 ( 3x - 1 ) = 5x + 12 \)</p>
-            <p class="lh-1">\( 6x - 2 = 5x + 12 \)</p>
-            <p class="lh-1">\( 6x - 5x = 12 + 2 \)</p>
-            <p class="lh-1">\( x = 14 \)</p>
-            <p class="lh-1">しっかりと練習しておきましょう。</p>
+    </section>
+    
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="ax+b=c">\( ax + b = c \)型の方程式</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">次に紹介するのは、\( ax + b = c \)型の方程式です。具体的には\( 2x + 3 = 7 \)のような、左辺に新しく数が追加されているものになります。</p>
+                <p class="lh-1">\( 2x = \circ \)の形にすれば上と同じように解けるので、\( + 3 \)を消すのが重要になってきます。</p>
+                <p class="lh-1">ここで利用するのは、一番初めに確認した等式の性質です。\( +3 \)を消すために、両辺から\( -3 \)をしてみましょう。</p>
+                <p class="lh-1">\( 2x + 3 \color{red} - 3 \color{black} = 7 \color{red} - 3 \)</p>
+                <p class="lh-1">\( 2x = 4 \)</p>
+                <p class="lh-1">これで\( ax = b \)の形になりましたので、</p>
+                <p class="lh-1">\( x = \dfrac{4}{2} = 4 \times \dfrac{1}{2} = 2\)</p>
+                <p class="lh-1">解けましたね。もう1問見てみましょう。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">\( -3x + 5 = 9 \)</p>
+                <p class="lh-1">\( 9 \)が邪魔なので、両辺から引いて消します。</p>
+                <p class="lh-1">\( -3x + 5 \color{red} - 5 \color{black} = 9 \color{red} - 5\)</p>
+                <p class="lh-1">\( -3x = 4 \)</p>
+                <p class="lh-1">ここまで来れば、あとは\( x = \cdots \)の形に変形するために、両辺を\( 3 \)で割るだけです。</p>
+                <p class="lh-1">\( x = \dfrac{4}{-3} = -\dfrac{4}{3} \)</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">このように、\( ax + b = c \)タイプの方程式は解くことが可能ですが、これをもう少し見てみると、<mark>数字を消すと、結局逆側の辺に符号が反転したものだけが残っている</mark>ことがわかります。</p>
+                <p class="lh-1">\( 3x - 5 = 6 \)</p>
+                <p class="lh-1">\( 3x - 5 \color{red} + 5 \color{black} = 6 + \color{red} 5\)</p>
+                <p class="lh-1">\( 3x = 6 + \color{red} 5\)</p>
+                <p class="lh-1">もともと左辺にあった数字を消すための数を足し引きしているので、当たり前といえば当たり前なのですが、左辺の数の部分は必ず0になります。</p>
+                <p class="lh-1">そのため、その部分の計算は省かれるのが一般的です。教科書や問題集などでは<mark>移項</mark>などと呼ばれるものですね。別の問題も見てみましょう。</p>
+                <p class="lh-1">\( -2x + 1 = 5 \)</p>
+                <p class="lh-1">ここから移項、つまり\( +1 \)の符号を反転させて、\( -1 \)として右辺に移します。</p>
+                <p class="lh-1">\( -2x = 5 \color{red} - 1 \)</p>
+                <p class="lh-1">\( -2x = 4 \)</p>
+                <p class="lh-1">\( x = \dfrac{4}{-2} = -2 \)</p>
+            </div>
+        </div>
+    </sectoin>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">なお、分数が含まれている場合は、そちらを消すほうを優先してください。</p>
+                <p class="lh-1">\( \dfrac{2}{5} x - \dfrac{1}{2} = 2 \)</p>
+                <p class="lh-1">複数の分数があるときは、<mark>分母の最小公倍数をかけてあげる</mark>と、スムーズに解くことができます。この問題ならば、\( 5, 2 \)の最小公倍数\( 10 \)をかけるとよいです。</p>
+                <p class="lh-1">\( 10 \times \left(\dfrac{2}{5}x - \dfrac{1}{2}\right) = 10 \times 2 \)</p>
+                <p class="lh-1">\( 4x \color{red}- 5 \color{black} = 20 \)</p>
+                <p class="lh-1">\( -5 \)を\( +5 \)として右辺に移項すると、</p>
+                <p class="lh-1">\( 4x = 20 \color{red} + 5 \)</p>
+                <p class="lh-1">\( 4x = 25 \)</p>
+                <p class="lh-1">\( x = \dfrac{25}{4} \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">小数も同じく最優先で消す対象になります。</p>
+                <p class="lh-1">\( 0.35x + 0.2 = 0.1 \)</p>
+                <p class="lh-1"><mark>小数点以下の桁数が一番多いものが消えるように、10や100などをかけていく</mark>ようにしましょう。今回は\( 0.35x \)が一番桁数が多いので、こちらが整数になるように\( \times 100 \)をしていきましょう。</p>
+                <p class="lh-1">\( 100 \times (0.35x + 0.2) = 100 \times 0.1 \)</p>
+                <p class="lh-1">\( 35x \color{red} + 20 \color{black} = 10\)</p>
+                <p class="lh-1">\( +20 \)を\( -20 \)として右辺に移項すると、</p>
+                <p class="lh-1">\( 35x = 10 \color{red} -20 \)</p>
+                <p class="lh-1">\( 35x = -10 \)</p>
+                <p class="lh-1">\( x = \dfrac{-10}{35} = -\dfrac{2}{7}\)</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">小数と分数が混ざっているときは、小数を分数にしてから計算しましょう。</p>
+                <p class="lh-1">\( 0.5x + \dfrac{5}{6} = 2\)</p>
+                <p class="lh-1">\( 0.5 = \dfrac{1}{10} = \dfrac{1}{2} \)なので、</p>
+                <p class="lh-1">\( \dfrac{1}{2}x + \dfrac{5}{6} = 2 \)</p>
+                <p class="lh-1">両辺に分母の最小公倍数である12をかけると、</p>
+                <p class="lh-1">\( 12 \times \left( \dfrac{1}{2}x + \dfrac{5}{6} \right) = 12 \times 2 \)</p>
+                <p class="lh-1">\( 6x + 10 = 24 \)</p>
+                <p class="lh-1">\( 6x = 14 \)</p>
+                <p class="lh-1">\( x = \dfrac{14}{6} = \dfrac{7}{3} \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">以上のような流れで\( ax + b = c \)型の方程式を解くことができます。</p>
+                <p class="lh-1">小数や分数はさっさと消しつつ、移項して\( ax = b \)の形を目指すのがポイントです。</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="ax+b=cx+d">\( ax + b = cx + d \)型の方程式</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">最後に紹介するのは\( ax + b = cx + d \)型の方程式です。これまでの集大成ですね。</p>
+                <p class="lh-1">具体的には\( 3x - 5 = 4x + 2\)のような方程式です。</p>
+                <p class="lh-1">ここでも目指すのは\( ax = b \)の形になります。そのために<mark>文字は左に、数字は右に移項</mark>していきます。</p>
+                <p class="lh-1">\( 3x \color{red} - 5 \color{black} = \color{blue} 4x \color{black} + 2 \)</p>
+                <p class="lh-1">\( 3x \color{blue} - 4x \color{black} = 2 \color{red} + 5 \)</p>
+                <p class="lh-1">\( -x = 7 \)</p>
+                <p class="lh-1">\( -x \)は\( -1 \times x \)と同じなので、</p>
+                <p class="lh-1">\( x = \dfrac{7}{-1} = -7\)</p>
+                <p class="lh-1">これが一連の流れです。移項の際に符号を変え忘れないように注意しましょう。</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">先程までと同じく、分数が入っているときは、そちらを消すことを優先します。</p>
+                <p class="lh-1">\( 3x - \dfrac{1}{2} = \dfrac{5}{4}x + 2 \)</p>
+                <p class="lh-1">分母の最小公倍数である4を両辺にかけると、</p>
+                <p class="lh-1">\( 4 \times \left(3x - \dfrac{1}{2}\right) = 4 \times \left( \dfrac{5}{4}x + 2 \right) \)</p>
+                <p class="lh-1">\( 12x - 2 = 5x + 8 \)</p>
+                <p class="lh-1">これで分数が消えましたので、あとは同じように移項していきます。</p>
+                <p class="lh-1">\( 12x \color{red} - 2 \color{black} = \color{blue} 5x \color{black} + 8 \)</p>
+                <p class="lh-1">\( 12x \color{blue} - 5x \color{black} = 8 \color{red} + 2 \)</p>
+                <p class="lh-1">\( 7x = 10 \)</p>
+                <p class="lh-1">\( x = \dfrac{10}{7}\)</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">小数が使われているときも同じく小数を初めに消してしまいましょう。</p>
+                <p class="lh-1">\( 0.3x - 2 = -1.5x + 0.4 \)</p>
+                <p class="lh-1">今回はどの小数も小数第一位までしか数が続いていないので、10をかけていきます。</p>
+                <p class="lh-1">\( 10 \times (0.3x - 2) = 10 \times (-1.5x + 0.4) \)</p>
+                <p class="lh-1">\( 3x - 20 = -15x + 4 \)</p>
+                <p class="lh-1">小数が消えたので、例のごとく移項していきましょう。</p>
+                <p class="lh-1">\( 3x \color{red} - 20 \color{black} = \color{blue} -15x \color{black} + 4 \)</p>
+                <p class="lh-1">\( 3x \color{blue} +15x \color{black} = 4 \color{red} + 20 \)</p>
+                <p class="lh-1">\( 18x = 24 \)</p>
+                <p class="lh-1">\( x = \dfrac{24}{18} = \dfrac{4}{3} \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">分数と小数が一緒にあるときの対処法も同じです。</p>
+                <p class="lh-1">\( 0.5x + \dfrac{2}{5} = \dfrac{1}{6}x - 0.3\)</p>
+                <p class="lh-1">\( 0.5 = \dfrac{5}{10} = \dfrac{1}{2}, 0.3 = \dfrac{3}{10} \)なので、</p>
+                <p class="lh-1">\( \dfrac{1}{2}x + \dfrac{2}{5} = \dfrac{1}{6}x - \dfrac{3}{10} \)</p>
+                <p class="lh-1">\( 2,5, 6, 10\)の最小公倍数である\( 30 \)をかけて整理します。</p>
+                <p class="lh-1">\( 30 \times \left( \dfrac{1}{2}x + \dfrac{2}{5} \right) = 30 \times \left( \dfrac{1}{6}x - \dfrac{3}{10} \right) \)</p>
+                <p class="lh-1">\( 15x \color{red} + 12 \color{black} = \color{blue} 5x \color{black} - 9\)</p>
+                <p class="lh-1">\( 15x \color{blue} - 5x \color{black} = -9 \color{red} -12 \)</p>
+                <p class="lh-1">\( 10x = -21 \)</p>
+                <p class="lh-1">\( x = \dfrac{-21}{10} = -\dfrac{21}{10} \)</p>            
+            </div>
+        </div>
+    </section>
+
+    <section class="print_pages">
+        <div class="row m-4 p-4 description_section">
+            <h2 class="text-muted h5" id="afterword">後書き</h2>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">繰り返しになりますが、<mark>まず何はともあれ小数や分数を消して、次に左側が文字、右側が数字になるように移行して答えを求める</mark>というのが一連の流れです。</p>
+                <p class="lh-1">以上です。\( ax + b = cx + d \)まで解けるようになれば、ここに登場していないタイプであっても、同じ考え方で大抵の1次方程式は問題なく答えられるようになります。</p>
+                <p class="lh-1">たとえば、以下のようにカッコがある場合は展開してから解けば良いです。</p>
+                <p class="lh-1">\( 2(3x + 5) = 4x \)</p>
+                <p class="lh-1">\( 6x + 10 = 4x \)</p>
+                <p class="lh-1">\( 6x - 4x = -10 \)</p>
+                <p class="lh-1">\( 2x = -10 \)</p>
+                <p class="lh-1">\( x = \dfrac{-10}{2} = -5 \)</p>
+            </div>
+            <div class="m-2 p-2 problem_section">
+                <p class="lh-1">また、二重にカッコがある場合は、まずは小さいカッコを外してから、大きなカッコに取り組みます。この辺りは数の計算と同じですね。</p>
+                <p class="lh-1">\( 2 \left\lbrace 3 \left( x - \dfrac{5}{3} \right) + 4 \right\rbrace = 5x + 12 \)</p>
+                <p class="lh-1">\( 2 ( 3x - 5 + 4 ) = 5x + 12\)</p>
+                <p class="lh-1">\( 2 ( 3x - 1 ) = 5x + 12 \)</p>
+                <p class="lh-1">\( 6x - 2 = 5x + 12 \)</p>
+                <p class="lh-1">\( 6x - 5x = 12 + 2 \)</p>
+                <p class="lh-1">\( x = 14 \)</p>
+                <p class="lh-1">しっかりと練習しておきましょう。</p>
+            </div>
+        </div>
+    </section>
 </div>
 {% endblock %}

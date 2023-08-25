@@ -52,7 +52,24 @@ window.addEventListener("load", (event)=>{
         color: gray;
         text-decoration: none;
     }
-</style>
+    mark{
+        background: linear-gradient(transparent 50%, #FAA755 80%);
+    }
+    .description_section{
+        border-style: double;
+    }
+    .problem_section{
+        display: inline-block;
+        border-bottom: solid 2px blue;
+        border-style: none none dotted;
+        border-bottom-width: 0.5px;
+    }
+    .problem_sentence{
+        display: inline-block;
+        border-style: none none solid;
+        border-bottom-width: 0.2px;
+    }
+    </style>
 {% endblock %}
 
 {% block title %}

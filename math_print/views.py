@@ -3015,6 +3015,19 @@ def explain_logarithmic_equation(request):
     return returned_render
 
 
+def explain_logarithmic_equation_print(request):
+    """対数方程式の解き方の解説プリント出力を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/logarithmic_equation/for_explain_print.html', {})
+    return returned_render
+
+
 def explain_quadratic_equation(request):
     """2次方程式の解き方の解説を担当
     

@@ -71,6 +71,8 @@ mark{
         形が決まった1次方程式
         <small class="text-muted">～いろいろな形の1次方程式に対応できるようにしていこう～</small>
     </h1>
+    <a class="btn btn-primary" href="{% url 'number_without_bracket_explain_print' %}">A4印刷用ページ表示</a>
+
 
     <br>
     <ul class="list-group row m-4 p-4">
@@ -91,7 +93,7 @@ mark{
             <p class="lh-1">1次方程式は皆さんが数学に入って初めて出会う方程式であり、今後たくさん出てくる◯◯方程式(連立方程式, 2次方程式など)の先駆けです。</p>
             <p class="lh-1">また、本格的に文章問題が登場してくるのもこの辺りです。</p>
             <p class="lh-1">総じて1次方程式は<mark>中学1年生範囲の数学の前半の山場</mark>と言えるでしょう。</p>
-            <p class="lh-1">そういうわけで、1次方程式がしっかりと解けるというのは非常に重要です。複雑な計算も、難解な文章問題も、まずは1次方程式が解けないと始まりません。</p>
+            <p class="lh-1">そういうわけで、1次方程式がしっかりと解けるというのは非常に重要です。複雑な計算も、難解な文章問題も、まずは基本となる1次方程式が解けないと始まりません。</p>
             <p class="lh-1">まずは決まった形の1次方程式が解けるように理解して、練習を重ねていきましょう。</p>
         </div>
     </div>
@@ -210,19 +212,21 @@ mark{
         </div>
         <div class="m-2 p-2 problem_section">
             <p class="lh-1">\( -3x + 5 = 9 \)</p>
+            <p class="lh-1">\( 9 \)が邪魔なので、両辺から引いて消します。</p>
             <p class="lh-1">\( -3x + 5 \color{red} - 5 \color{black} = 9 \color{red} - 5\)</p>
             <p class="lh-1">\( -3x = 4 \)</p>
+            <p class="lh-1">ここまで来れば、あとは\( x = \cdots \)の形に変形するために、両辺を\( 3 \)で割るだけです。</p>
             <p class="lh-1">\( x = \dfrac{4}{-3} = -\dfrac{4}{3} \)</p>
         </div>
         <div class="m-2 p-2 problem_section">
-            <p class="lh-1">以上の流れで解くことが可能ですが、これをもう少し見てみると、<mark>数字を消すと、結局逆側の辺に符号が反転したものだけが残っている</mark>ことがわかります。</p>
+            <p class="lh-1">このように、\( ax + b = c \)タイプの方程式は解くことが可能ですが、これをもう少し見てみると、<mark>数字を消すと、結局逆側の辺に符号が反転したものだけが残っている</mark>ことがわかります。</p>
             <p class="lh-1">\( 3x - 5 = 6 \)</p>
             <p class="lh-1">\( 3x - 5 \color{red} + 5 \color{black} = 6 + \color{red} 5\)</p>
             <p class="lh-1">\( 3x = 6 + \color{red} 5\)</p>
             <p class="lh-1">もともと左辺にあった数字を消すための数を足し引きしているので、当たり前といえば当たり前なのですが、左辺の数の部分は必ず0になります。</p>
-            <p class="lh-1">そのため、その部分の計算は省かれるのが一般的です。移項などと呼ばれるものですね。別の問題も見てみましょう。</p>
+            <p class="lh-1">そのため、その部分の計算は省かれるのが一般的です。教科書や問題集などでは<mark>移項</mark>などと呼ばれるものですね。別の問題も見てみましょう。</p>
             <p class="lh-1">\( -2x + 1 = 5 \)</p>
-            <p class="lh-1">ここから移項、つまり\( +1 \)を符号を反転させて、\( -1 \)として右辺に移します。</p>
+            <p class="lh-1">ここから移項、つまり\( +1 \)の符号を反転させて、\( -1 \)として右辺に移します。</p>
             <p class="lh-1">\( -2x = 5 \color{red} - 1 \)</p>
             <p class="lh-1">\( -2x = 4 \)</p>
             <p class="lh-1">\( x = \dfrac{4}{-2} = -2 \)</p>
@@ -313,7 +317,7 @@ mark{
             <p class="lh-1">\( 15x \color{red} + 12 \color{black} = \color{blue} 5x \color{black} - 9\)</p>
             <p class="lh-1">\( 15x \color{blue} - 5x \color{black} = -9 \color{red} -12 \)</p>
             <p class="lh-1">\( 10x = -21 \)</p>
-            <p class="lh-1">\( x = \dfrac{-21}{10} = -dfrac{21}{10} \)</p>            
+            <p class="lh-1">\( x = \dfrac{-21}{10} = -\dfrac{21}{10} \)</p>            
         </div>
     </div>
 
@@ -328,7 +332,9 @@ mark{
             <p class="lh-1">\( 6x - 4x = -10 \)</p>
             <p class="lh-1">\( 2x = -10 \)</p>
             <p class="lh-1">\( x = \dfrac{-10}{2} = -5 \)</p>
-            <p class="lh-1">二重にカッコがある場合は、まずは小さいカッコを外してから、大きなカッコに取り組みます。この辺りは数の計算と同じですね。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">また、二重にカッコがある場合は、まずは小さいカッコを外してから、大きなカッコに取り組みます。この辺りは数の計算と同じですね。</p>
             <p class="lh-1">\( 2 \left\lbrace 3 \left( x - \dfrac{5}{3} \right) + 4 \right\rbrace = 5x + 12 \)</p>
             <p class="lh-1">\( 2 ( 3x - 5 + 4 ) = 5x + 12\)</p>
             <p class="lh-1">\( 2 ( 3x - 1 ) = 5x + 12 \)</p>

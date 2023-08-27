@@ -1,4 +1,3 @@
-
 {% extends 'math_print/base.html' %}
 
 {% block script %}
@@ -44,32 +43,32 @@ window.addEventListener("load", (event)=>{
 
 {% block css %}
 <style type="text/css">
-    .fa-solid{
-        color: gray;
-        text-decoration: none;
-    }
-    .fa-pen-to-square{
-        color: gray;
-        text-decoration: none;
-    }
-    mark{
-        background: linear-gradient(transparent 50%, #FAA755 80%);
-    }
-    .description_section{
-        border-style: double;
-    }
-    .problem_section{
-        display: inline-block;
-        border-bottom: solid 2px blue;
-        border-style: none none dotted;
-        border-bottom-width: 0.5px;
-    }
-    .problem_sentence{
-        display: inline-block;
-        border-style: none none solid;
-        border-bottom-width: 0.2px;
-    }
-    </style>
+.fa-solid{
+    color: gray;
+    text-decoration: none;
+}
+.fa-pen-to-square{
+    color: gray;
+    text-decoration: none;
+}
+mark{
+    background: linear-gradient(transparent 50%, #FAA755 80%);
+}
+.description_section{
+    border-style: double;
+}
+.problem_section{
+    display: inline-block;
+    border-bottom: solid 2px blue;
+    border-style: none none dotted;
+    border-bottom-width: 0.5px;
+}
+.problem_sentence{
+    display: inline-block;
+    border-style: none none solid;
+    border-bottom-width: 0.2px;
+}
+</style>
 {% endblock %}
 
 {% block title %}
@@ -91,6 +90,7 @@ window.addEventListener("load", (event)=>{
         対数方程式を解く
         <small class="text-muted">～対数+方程式～</small>
     </h1>
+    <a class="btn btn-primary" href="{% url 'logarithmic_equation_explain_print' %}">A4印刷用ページ表示</a>
 
     <br>
     <ul class="list-group row m-4 p-4">
@@ -106,7 +106,7 @@ window.addEventListener("load", (event)=>{
     </ul>
     <br>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">ここでは対数方程式を確認していきます。対数と方程式の知識の両方が要求される応用問題ですね。</p>
         <p class="lh-1">やり方としては決まった手順を守っておけば解けるようになっていますが、特に真数条件には要注意です。</p>
@@ -114,17 +114,17 @@ window.addEventListener("load", (event)=>{
         <p class="lh-1">解き初めの段階で確認する癖をつけておきましょう。</p>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="log_{a}(x + b) = c">\( \log_{a}(x + b) = c \)型</h2>
             <br>
             <p class="lh-1">対数方程式を解く上で目指すべき形は、\( \log_{a}f(x) = \log_{a}g(x) \)です。</p>
             <p class="lh-1">具体的には、\( \log_{2}(x + 3) = \log_{2}3 \)や\( \log_{3}(x + 1) = \log_{3}(2x - 8) \)のような形ですね。</p>
-            <p class="lh-1">このように<span class="text-decoration-underline">底が同じ状態であれば、真数同士の比較を行うことで答えが出せます。</span></p>
+            <p class="lh-1">このように<mark>底が同じ状態であれば、真数同士の比較を行うことで答えが出せます。</mark></p>
             <p class="lh-1">逆に\( \log_{2}(x + 3) = \log_{3}3 \)や\( \log_{5}(x + 1) = \log_{3}(2x - 8) \)のように底が異なると比較が行えず、答えが出せません。</p>
-            <p class="lh-1">この底が同じ状態を目指して、対数の様々な計算法則を利用していくことになります。底の真数条件も忘れないようにしてください。</p>
+            <p class="lh-1">この<mark>底が同じ状態を目指して、対数の様々な計算法則を利用していくことになります。底の真数条件も忘れないようにしてください</mark>。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">では、さっそく問題を見てみましょう。</p>
             <br>
             <p class="lh-1">例題1: \( \log_{2}(x - 1) = 3\)を満たす\( x \)を求めよ。</p>
@@ -141,17 +141,17 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( x = 9 \)</p>
             <p class="lh-1">これは\( x > 1 \)を満たすので、答えとなります。</p>
             <br>
-            <p class="lh-1">以上が対数方程式の基本の流れです。<span class="text-decoration-underline">両辺を底が同じ対数にしてからの、真数同士の比較</span>ですね。しっかりと確認しておきましょう。</p>
+            <p class="lh-1">以上が対数方程式の基本の流れです。<mark>両辺を底が同じ対数にしてからの、真数同士の比較</mark>ですね。しっかりと確認しておきましょう。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="log_{a}(x + b)(x + c) = d">\( \log_{a}(x + b)(x + c) = d \)型</h2>
             <br>
             <p class="lh-1">上の解き方は真数部分が2次式になっても、真数条件の確認がやや煩雑になるくらいで、あまり変わりません。具体的に問題を見てみましょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題2: \( \log_{2}(x - 2)(x - 5) = 2 \)を満たす\( x \)を求めよ。</p>
             <br>
             <p class="lh-1">繰り返しになりますが、まずは何につけ真数条件を確認してください。今回は真数部分が2次式なので、2次不等式を解くことになります。</p>
@@ -169,17 +169,16 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="log_{a}(x + b) + log_{a}(x + c) = d">\( \log_{a}(x + b) + \log_{a}(x + c) = d \)型</h2>
             <br>
-            <p class="lh-1">今度は対数の計算法則のうち、和を使ってまとめるタイプの計算になります。</p>
+            <p class="lh-1">今度は対数の計算法則のうち、<mark>和を使ってまとめる</mark>タイプの計算になります。</p>
             <p class="lh-1">対数の和の計算法則、すなわち\( \log_{a}M + \log_{a}N = \log_{a}MN \)のことですね。</p>
             <p class="lh-1">まとめた後の見かけは\( \log_{a}(x + b)(x + c) = d \)型と変わりませんが、まとめる前にはそれぞれ独立した対数になっていることにはきちんと意味があります。</p>
-            <p class="lh-1">具体的には、<span class="text-decoration-underline">まとめる前に真数条件を確認</span>しなければなりません。</p>
+            <p class="lh-1">具体的には、<mark>まとめる前に真数条件を確認</mark>しなければなりません。</p>
         </div>
-
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題3: \( \log_{2}(x - 2) + \log_{2}(x - 5) = 2 \)</p>
             <br>
             <p class="lh-1">まず真数条件から、\( x - 2 > 0 \)かつ\( x - 5 > 0\)が成り立たなければなりません。これは\( x > 2 \)かつ\( x > 5 \)という条件であり、結局のところ\( x > 5 \)という条件にまとめられます。</p>
@@ -194,19 +193,19 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">\( \log_{2}(x - 2)(x - 5) = 2 \)のときには\( x = 1, 6 \)の両方が解でしたが、</p>
             <p class="lh-1">\( \log_{2}(x - 2) + \log_{2}(x - 5) = 2 \)のときには\( x = 6 \)だけが解となります。\( x = 1 \)は\( \log_{2}(x - 2) \)に代入すると対数が破綻するからです。</p>
-            <p class="lh-1">繰り返しになりますが。真数条件は初めに確認するようにしておきましょう。</p>
+            <p class="lh-1">繰り返しになりますが、<mark>真数条件は初めに確認する</mark>ようにしておきましょう。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-r border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="log_{x}a = b">\( \log_{x}a = b \)型</h2>
             <br>
             <p class="lh-1">次は少し趣向を変えて、真数ではなく底の部分に\( x \)があるパターンを見てみましょう。</p>
             <p class="lh-1">一般的に対数\( \log_{a}b \)では、底\( a \)は、\( a > 0, a \neq 1 \)を満たさなければなりません。</p>
-            <p class="lh-1">底に\( x \)が含まれる対数方程式では、<span class="text-decoration-underline">真数条件だけでなく、底の条件も確認しておく</span>必要があります。</p>
+            <p class="lh-1">底に\( x \)が含まれる対数方程式では、<mark>真数条件だけでなく、底の条件も確認しておく</mark>必要があります。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <br>
             <p class="lh-1">例題4: \( \log_{x}4 = -2 \)を満たす\( x \)を求めよ。</p>
             <br>
@@ -216,29 +215,28 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">ここで、\( x > 0, x \neq 1 \)より、答えは\( x = \dfrac{1}{2} \)となります。</p>
             <br>
             <p class="lh-1">これまでは底は自動的に条件を満たしていて、真数条件に主に注目していました。</p>
-            <p class="lh-1">それに対して今回の問題は、<span class="text-decoration-underline">真数は自動的に条件を満たしている代わりに、底の条件に着目</span>しなければなりません。</p>
+            <p class="lh-1">それに対して今回の問題は、<mark>真数は自動的に条件を満たしている代わりに、底の条件に着目</mark>しなければなりません。</p>
             <p class="lh-1">やや珍しいケースですが、念のために確認しておきましょう。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-r border-bottom">
-        <div class="m-2 p-2">
-            <h2 class="text-muted h5" id="log_{a}(x + b) + log_{c}(x + d) = e">\( \log_{a}(x + b) + log_{c}(x + d) = e \)型</h2>
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="log_{a}(x + b) + log_{c}(x + d) = e">\( \log_{a}(x + b) + \log_{c}(x + d) = e \)型</h2>
             <br>
             <p class="lh-1">次は底が異なるタイプの対数方程式です。具体的には、\( \log_{2}(x - 2) + \log_{4}(x + 3) = 5 \)のような形です。</p>
-            <p class="lh-1">ここで思い出してほしいのは、<span class="text-decoration-underline">対数の計算法則は、基本的に底が共通であることを前提としている</span>という点です。</p>
+            <p class="lh-1">ここで思い出してほしいのは、<mark>対数の計算法則は、基本的に底が共通であることを前提としている</mark>という点です。</p>
             <p class="lh-1">\( \log_{a}M + \log_{a}N = \log_{a}MN, \log_{a}M - \log_{a}N = \log_{a}\dfrac{M}{N} \)は、いずれも底が\( a \)になっていますよね。</p>
             <p class="lh-1">対数方程式として目指すべき形はこれまでと同じ、\( \log_{a}f(x) = \log_{a}g(x) \)なのですが、底が揃っていないと、そもそもこれらの法則を使うことができず、まとめることができません。</p>
-            <p class="lh-1">そのため、<span class="text-decoration-underline">底が揃っていないときは、底の変換公式を使って揃えてから計算に入る</span>ようにしましょう。</p>
+            <p class="lh-1">そのため、<mark>底が揃っていないときは、底の変換公式を使って揃えてから計算に入る</mark>ようにしましょう。</p>
             <p class="lh-1">なお、底の変換公式は、以下の式になります。聞き覚えが無い方は確認しておいてください。</p>
             <p class="lh-1">\( \log_{a}b = \dfrac{\log_{c}a}{\log_{c}b} \)</p>
         </div>
-
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題5: \( \log_{3}x - \log_{\frac{1}{3}}(x - 2) = 1 \)を満たす\( x \)を求めよ。</p>
             <br>
             <p class="lh-1">まずは例のごとく真数条件の確認から。\( x > 0 \)かつ\( x - 2 > 0\)、すなわち\( x > 2 \)になります。</p>
-            <p class="lh-1">次に底の統一です。底をまとめるときは、<span class="text-decoration-underline">それらの数を表せる整数の底のうち、なるべく小さな値</span>にするのが好ましいです。</p>
+            <p class="lh-1">次に底の統一です。底をまとめるときは、<mark>それらの数を表せる整数の底のうち、なるべく小さな値</mark>にするのが好ましいです。</p>
             <p class="lh-1">\( 2, 4 \)なら\( 4 \)は\( 2^2 \)と表せるので\( 2 \)。\( 3, \dfrac{1}{9} \)なら\( \dfrac{1}{9} = 3^{-2} \)と表せるので\( 3 \)といった具合です。もちろん、これらとは違う底でも計算を進めることは可能ですが、基本的に複雑な式が出てきて、手間が増えてしまいます。</p>
             <p class="lh-1">今回の例ですと、底は\( 3, \dfrac{1}{3} \)で、\( \dfrac{1}{3} = 3^{-1} \)と表せるので、\( 3 \)にまとめていくことになります。</p>
             <p class="lh-1">底の変換公式を使うと、\( \log_{\frac{1}{3}}(x - 2) = \dfrac{\log_{3}(x - 2)}{\log_{3}\dfrac{1}{3}} = \dfrac{\log_{3}(x - 2)}{\log_{3}3^{-1}} = \dfrac{\log_{3}(x - 2)}{-1} = -\log_{3}(x - 2) \)となります。</p>
@@ -253,8 +251,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">最後に、\( x > 2 \)より、答えは\( x = 3 \)となります。</p>
             <br>
         </div>
-
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">もう一問見てみましょう。</p>
             <br>
             <p class="lh-1">例題6: \( \log_{4}x + \log_{\frac{1}{2}}(x - 1) = 1 \)</p>
@@ -294,33 +291,31 @@ window.addEventListener("load", (event)=>{
                 <p class="lh-1">----------折りたたみここまで----------</p>
             </details>
         </div>
-
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">以上のように、底さえ揃えられれば、これまでと同じように計算可能です。</p>
             <p class="lh-1">ただし、対数の計算、底の変換、そして方程式と、要求される計算量も増えていますので、慣れていないと時間がかかったり、間違ったりしてしまう可能性があります。</p>
             <p class="lh-1">スムーズに行えるように、練習をしておきましょう。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-r border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="replacement">置換型</h2>
             <br>
             <p class="lh-1">最後に置換型の対数方程式もご紹介しておきます。具体的には、\( (\log_{2}x)^2 + \log_{2}x^3 + 2 = 0 \)のような形です。</p>
-            <p class="lh-1">このタイプでは、これまでのように底を統一する方向ではなく、対数を置換する方向で話が進みます。</p>
+            <p class="lh-1">このタイプでは、<mark>これまでのように底を統一する方向ではなく、対数を置換する方向で話が進みます</mark>。</p>
             <p class="lh-1">すなわち、底と真数が共通の対数と、定数だけで式全体を表してから、置換を行うことになります。</p>
-            <p class="lh-1">たとえば、\( (\log_{5}x)^2 + log_{5}x - 6 = 0\)であれば、\( log_{5}x = t \)とすることで、\( t^2 + t - 6 = 0 \)という2次方程式に置き換えが可能です。</p>
+            <p class="lh-1">たとえば、\( (\log_{5}x)^2 + \log_{5}x - 6 = 0\)であれば、\( \log_{5}x = t \)とすることで、\( t^2 + t - 6 = 0 \)という2次方程式に置き換えが可能です。</p>
             <p class="lh-1">置き換えさえできてしまえば、あとは2次方程式を解いて、その後あらためて\( x \)を求められるようになります。</p>
             <p class="lh-1">それでは早速例を見てみましょう。</p>
         </div>
-
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題7: \( (\log_{2}x)^2 + \log_{2}x^3 + 2 = 0 \)</p>
             <br>
             <p class="lh-1">まずは真数条件から、\( x > 0 \)かつ\( x^3 > 0 \)、すなわち\( x > 0 \)となります。</p>
-            <p class="lh-1">次に置換に入りたいところですが、\( \log_{2}x^3 \neq (log_{2}x)^3 \)なので、このままでは\( \log_{2}x = t \)と置換しても、式全体を\( t \)で表すことができません。</p>
+            <p class="lh-1">次に置換に入りたいところですが、\( \log_{2}x^3 \neq (\log_{2}x)^3 \)なので、このままでは\( \log_{2}x = t \)と置換しても、式全体を\( t \)で表すことができません。</p>
             <p class="lh-1">そのため、置換する前に\( \log_{2}x^3 = 3 \log_{2}x \)としてあげましょう。</p>
-            <p class="lh-1">こうすれば与えられた対数方程式は\( (\log_{2}x)^2 + 3 \log_{2}x + 2 = 0 \)となり、\( log_{2}x = t \)とすると、</p>
+            <p class="lh-1">こうすれば与えられた対数方程式は\( (\log_{2}x)^2 + 3 \log_{2}x + 2 = 0 \)となり、\( \log_{2}x = t \)とすると、</p>
             <p class="lh-1">\( t^2 + 3t + 2 = 0 \)と置換が完了します。あとはこれを解いていくだけです。</p>
             <p class="lh-1">\( (t + 1)(t + 2) = 0 \)と因数分解できるので、</p>
             <p class="lh-1">\( t = -1, -2 \)となります。</p>
@@ -330,12 +325,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">これらはいずれも\( x > 0 \)を満たすので、最終的な解は\( x = \dfrac{1}{2}, \dfrac{1}{4} \)となります。</p>
         </div>
 
-        <div class="m-2 p-2">
-            <p class="lh-1">これが置換型の対数方程式です。\( log_{2}x^3 = t^3 \)のような誤った置換に気をつけましょう。</p>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">これが置換型の対数方程式です。\( \log_{2}x^3 = t^3 \)のような誤った置換に気をつけましょう。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="afterword">後書き</h2>
         <p class="lh-1">今回の解説は以上になります。</p>
         <p class="lh-1">初めに述べた通り、要求される計算が多様なのが対数方程式です。</p>
@@ -345,7 +340,7 @@ window.addEventListener("load", (event)=>{
 </div>
 
 <div class="d-grid gap-3 col-6 mx-auto">
-    <a href="{% url 'highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'highschool2' %}#logarithmic_equation_title" class="btn btn-primary" type="button">問題選択へ戻る</a>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
 

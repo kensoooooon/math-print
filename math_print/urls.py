@@ -128,6 +128,7 @@ urlpatterns = [
     path('quadratic_equation/print/', views.print_quadratic_equation, name='quadratic_equation_print'),
     path('quadratic_equation/display/', views.display_quadratic_equation, name='quadratic_equation_display'),
     path('quadratic_equation/explain', views.explain_quadratic_equation, name='quadratic_equation_explain'),
+    path('quadratic_equation/explain_print', views.explain_quadratic_equation_print, name='quadratic_equation_explain_print'),
     # 平方根を求める
     path('square_root/print/', views.print_square_root_problem, name='square_root_print'),
     path('square_root/display/', views.display_square_root_problem, name='square_root_display'),
@@ -190,5 +191,5 @@ urlpatterns = [
     path('logarithmic_equation/print', views.print_logarithmic_equation, name='logarithmic_equation_print'),
     path('logarithmic_equation/display', views.display_logarithmic_equation, name='logarithmic_equation_display'),
     path('logarithmic_equation/explain', views.explain_logarithmic_equation, name='logarithmic_equation_explain'),
-    path('logarithmic_equation/explain', views.explain_logarithmic_equation_print, name='logarithmic_equation_explain_print'),
+    path('logarithmic_equation/explain_print', views.explain_logarithmic_equation_print, name='logarithmic_equation_explain_print'),
 ]

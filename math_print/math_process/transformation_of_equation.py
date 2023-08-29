@@ -160,17 +160,12 @@ class TransformationOfEquationProblem:
                 right_numerator += self._make_random_number()
         
         left = left_numerator / left_denominator
-        # print(f"left: {left}")
         right = right_numerator / right_denominator
-        # print(f"right: {right}")    
         # the phase of selecting character for answer.
         remained_characters_set = set(shuffled_characters_for_left) & set(shuffled_characters_for_right)
-        # print(f"remained_characters_set: {remained_characters_set}, type:{type(remained_characters_set)}")
         characters_set = set(characters)
-        # print(f"characters_set: {characters_set}")
         characters_for_answer = set(characters) - remained_characters_set
         character_for_answer = choice(list(characters_for_answer))
-        # print(f"character_for_answer: {character_for_answer}")
         # check whether answer exists or not
         answer_before_selecting = sy.solve(left-right, character_for_answer)
         if not(answer_before_selecting):
@@ -180,13 +175,8 @@ class TransformationOfEquationProblem:
                 right += self._make_random_number() * character_for_answer
         latex_problem = f"{sy.latex(left)} = {sy.latex(right)} \\quad [{sy.latex(character_for_answer)}]" 
         answer = sy.solve(left-right, character_for_answer)[0]
-        # print(f"answer: {answer}")
-        ## expanded_answer = sy.expand(answer)
-        ## print(f"expanded_answer: {expanded_answer}")
         simplified_answer = sy.simplify(answer)
         latex_answer = f"{sy.latex(character_for_answer)} = {sy.latex(simplified_answer)}"
-        # print("----------------------------------")
-        
         return latex_answer, latex_problem
 
     def _make_random_number(self, positive_or_negative=None):

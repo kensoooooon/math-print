@@ -46,20 +46,13 @@ class UnitConversionProblem:
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
         larger_value = larger_unit_coefficient
-        # print(f"larger_value: {larger_value}{larger_unit.unit}")
         smaller_value = int(larger_value * (smaller_unit.ratio_to_kilometer / larger_unit.ratio_to_kilometer))
-        # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
-        
         if random() > 0.5:
             latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
             latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
             latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
-            latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
-        
-        # print(f"latex_answer: {latex_problem}")
-        # print(f"latex_problem: {latex_problem}")
-        
+            latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"        
         return latex_answer, latex_problem
 
     def _make_weight_problem(self):
@@ -82,20 +75,13 @@ class UnitConversionProblem:
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
         larger_value = larger_unit_coefficient
-        # print(f"larger_value: {larger_value}{larger_unit.unit}")
         smaller_value = int(larger_value * (smaller_unit.ratio_to_ton / larger_unit.ratio_to_ton))
-        # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
-        
         if random() > 0.5:
             latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
             latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
             latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
             latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
-        
-        # print(f"latex_answer: {latex_problem}")
-        # print(f"latex_problem: {latex_problem}")
-        
         return latex_answer, latex_problem
 
     def _make_area_problem(self):
@@ -113,7 +99,6 @@ class UnitConversionProblem:
         unit_list = [square_kilometer_unit, hectare_unit, are_unit, 
                      square_meter_unit, square_centimeter_unit, square_millimeter_unit,
                      ]
-        # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
         larger_index = randint(0, len(unit_list) - 2)
         smaller_index = larger_index + randint(1, 2)
         if smaller_index > (len(unit_list) - 1):
@@ -122,20 +107,13 @@ class UnitConversionProblem:
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
         larger_value = larger_unit_coefficient
-        # print(f"larger_value: {larger_value}{larger_unit.unit}")
         smaller_value = int(larger_value * (smaller_unit.ratio_to_square_kilometer / larger_unit.ratio_to_square_kilometer))
-        # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
-        
         if random() > 0.5:
             latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
             latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
             latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
             latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
-        
-        # print(f"latex_answer: {latex_problem}")
-        # print(f"latex_problem: {latex_problem}")
-        
         return latex_answer, latex_problem
     
     def _make_volume_problem(self):
@@ -155,7 +133,6 @@ class UnitConversionProblem:
                      liter_unit, deciliter_unit,
                      cubic_centimeter_unit, milliliter_unit,
                      cubic_millimeter_unit]
-        # larger_index, smaller_index = sorted(sample(range(len(unit_list)), k=2))
         larger_index = randint(0, len(unit_list) - 2)
         smaller_index = larger_index + 1
         if smaller_index > (len(unit_list) - 1):
@@ -164,20 +141,13 @@ class UnitConversionProblem:
         smaller_unit = unit_list[smaller_index]
         larger_unit_coefficient = randint(1, 15)
         larger_value = larger_unit_coefficient
-        # print(f"larger_value: {larger_value}{larger_unit.unit}")
         smaller_value = int(larger_value * (smaller_unit.ratio_to_cubic_kilometer / larger_unit.ratio_to_cubic_kilometer))
-        # print(f"smaller_value: {smaller_value}{smaller_unit.unit}")
-        
         if random() > 0.5:
             latex_problem = f"{sy.latex(larger_value)} \mathrm{{{larger_unit.unit}}} = \square \mathrm{{{smaller_unit.unit}}}"
             latex_answer = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}}"
         else:
             latex_problem = f"{sy.latex(smaller_value)} \mathrm{{{smaller_unit.unit}}} = \square \mathrm{{{larger_unit.unit}}}"
             latex_answer = f"{sy.latex(larger_value)}  \mathrm{{{larger_unit.unit}}}"
-        
-        # print(f"latex_answer: {latex_problem}")
-        # print(f"latex_problem: {latex_problem}")
-        
         return latex_answer, latex_problem
     
     def _make_time_problem(self):

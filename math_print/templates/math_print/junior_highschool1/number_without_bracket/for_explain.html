@@ -355,14 +355,31 @@ window.addEventListener("load", (event)=>{
 
 {% block css %}
 <style type="text/css">
-    .fa-solid{
-        color: gray;
-        text-decoration: none;
-    }
-    .fa-pen-to-square{
-        color: gray;
-        text-decoration: none;
-    }
+.fa-solid{
+    color: gray;
+    text-decoration: none;
+}
+.fa-pen-to-square{
+    color: gray;
+    text-decoration: none;
+}
+mark{
+    background: linear-gradient(transparent 50%, #FAA755 80%);
+}
+.description_section{
+    border-style: double;
+}
+.problem_section{
+    display: inline-block;
+    border-bottom: solid 2px blue;
+    border-style: none none dotted;
+    border-bottom-width: 0.5px;
+}
+.problem_sentence{
+    display: inline-block;
+    border-style: none none solid;
+    border-bottom-width: 0.2px;
+}
 </style>
 {% endblock %}
 
@@ -372,6 +389,7 @@ window.addEventListener("load", (event)=>{
         カッコがつかない正負の足し算引き算
         <small class="text-muted">～全ての基本をマスターしよう～</small>
     </h1>
+    <a class="btn btn-primary" href="{% url 'number_without_bracket_explain_print' %}">A4印刷用ページ表示</a>
 
     <br>
     <ul class="list-group row m-4 p-4">
@@ -386,10 +404,10 @@ window.addEventListener("load", (event)=>{
     <br>
 
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
-        <div class="m-2 p-2">
-            <p class="lh-1">正負の数の計算は全ての基本です。このあと中学、さらには高校と数学の学習は続いていきますが、<span class="text-decoration-underline">その根底にはいつも正負の計算があります。</span></p>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">正負の数の計算は全ての基本です。このあと中学、さらには高校と数学の学習は続いていきますが、<mark>その根底にはいつも正負の計算があります。</mark></p>
             <p class="lh-1">ここではその中でも特に基本となる、カッコがついていない足し算引き算の解説を行います。</p>
             <p class="lh-1">とりわけ、小数や分数が入ってくる場合を主として解説していくことになります。</p>
             <p class="lh-1">基本を身に着けたい方、そしてある程度は計算できるものの、複雑な計算にはまだ慣れていない方は参考にしてみてください。</p>
@@ -397,11 +415,11 @@ window.addEventListener("load", (event)=>{
     </div>
 
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_elementary_school">小学校範囲の基本知識確認</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">まずは基本の確認からやっていきましょう。</p>
-            <p class="lh-1">足し算・引き算の基本は、<span class="text-decoration-underline">数直線上の移動</span>です。</p>
+            <p class="lh-1">足し算・引き算の基本は、<mark>数直線上の移動</mark>です。</p>
             <p class="lh-1">たとえば、\( 4 \color{blue}- 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
             <br>
             <div id="jxgbox1" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -409,7 +427,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">点\( A(4) \)がスタートで、そこから\( \color{blue} -2 \color{black} \)、つまり左に2だけ動きます。結果として、答えは点\( B(2) \)となるわけです。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">足し算も同じです。次は\( 1 \color{red}+ 4 \color{black}\)を見てみましょう。</p>
             <br>
             <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -417,17 +435,17 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">点\( A(1) \)がスタートで、そこから\( \color{red} + 4 \color{black} \)、つまり右に4だけ動きます。答えは点\( B(5) \)となります。</p>
         </div>
 
-        <div class="m-2 p-2">
-            <p class="lh-1">ここで確認しておいてほしいのは、<span class="text-decoration-underline">足し算だと<span style="color:red;">右</span>、引き算だと<span style="color:blue;">左</span></span>に動くということです。</p>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">ここで確認しておいてほしいのは、足し算だと<span style="color:red;">右</span>、引き算だと<span style="color:blue;">左</span>に動くということです。</p>
             <p class="lh-1">一般的に右は<span style="color: red;">正の方向</span>、左は<span style="color: blue;">負の方向</span>とよばれます。ここでも、今後はこの呼び方に統一していきましょう。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="confirmation_of_basic_knowledge_in_junior_highschool">中学校範囲の基本知識確認</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">小学校範囲の足し算・引き算の基本知識確認は終わりました。次は中学校範囲に進んでいきます。</p>
-            <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線の原点より左、つまり<span class="text-decoration-underline">負の数が登場する</span>だけで、足し算・引き算の考え方自体はそのままです。</p>
+            <p class="lh-1">とはいえ、そこまで大きな変化はありません。数直線の原点より左、つまり<mark>負の数が登場する</mark>だけで、足し算・引き算の考え方自体はそのままです。</p>
             <p class="lh-1">たとえば、\( -3 \color{red}+ 2 \color{black} \)を数直線上で表現すると、以下のようになります。</p>
             <br>
             <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -435,7 +453,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">スタートが点\( A(-3) \)で、そこから\( \color{red}+2  \color{black}\)、つまり正の方向に2だけ動き、答えが点\( B(-1) \)になります。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">これは3つ以上の数の足し引きでも同じです。\( -5 \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を見てみましょう。</p>
             <br>
             <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -444,7 +462,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">そこからさらに\( \color{red}+1 \)、正の方向に1だけ動き、点\( C(-6) \)が答えとなります。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">もう一つ確認してみます。\( -3 \color{red}+ 4 \color{black} \color{blue}-2 \color{black} \color{red}+ 1 \color{black}\)を計算しましょう。</p>
             <br>
             <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -464,9 +482,9 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="how_to_solve_frac_xor_decimal">分数か小数が使われている計算</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">次は分数や小数が使われているときの計算をみてみましょう。</p>
             <p class="lh-1">とはいっても、小数だけ、分数だけであれば、これまでとさして違いはありません。</p>
             <p class="lh-1">たとえば分数だけのとき、\( \dfrac{1}{2} \color{blue} - \dfrac{5}{3} \color{black} \)を確認してみます。</p>
@@ -508,7 +526,7 @@ window.addEventListener("load", (event)=>{
             </p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">次は小数です。\( -0.8 \color{red} + 0.3 \color{black} \)を見てみましょう。</p>
             <br>
             <div id="jxgbox10" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -516,7 +534,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">スタートは点\( A(-0.8) \)で、そこから\( \color{red} + 0.3 \)、つまり正の方向に\( 0.3 \)だけ動きます。結果として、答えは点\( B(-0.5) \)となります。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">3つ以上の場合も同じです。\( 0.05 \color{blue} - 0.3  \color{red} + 0.1\)を見てみましょう。</p>
             <br>
             <div id="jxgbox11" class="jxgbox" style="width: 500px; height: 200px;"></div>
@@ -526,22 +544,22 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border_bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="how_to_solve_frac_and_decimal">分数と小数が使われている計算の解き方</h2>
-            <p class="lh-1">最後に確認するのは、<span class="text-decoration-underline">分数と小数が同時に使われている</span>ときの計算方法です。</p>
-            <p class="lh-1">初めに結論からいってしまうと、<span class="text-decoration-underline">小数を分数に直してから計算する</span>というのがポイントとなります。</p>
-            <p class="lh-1">というのも、\( \dfrac{1}{3} = 0.3333.... \)のように小数では表せない分数は無数にありますが、<span class="text-decoration-underline">分数で表せない小数は存在しない</span>からです。</p>
+            <p class="lh-1">最後に確認するのは、<mark>分数と小数が同時に使われている</mark>ときの計算方法です。</p>
+            <p class="lh-1">初めに結論からいってしまうと、<mark>小数を分数に直してから計算する</mark>というのがポイントとなります。</p>
+            <p class="lh-1">というのも、\( \dfrac{1}{3} = 0.3333.... \)のように小数では表せない分数は無数にありますが、<mark>分数で表せない小数は存在しない</mark>からです。</p>
             <p class="lh-1">小数を分数に直す方法については以下に折りたたんでおきますので、理解が怪しい方は確認してみてください。</p>
             <details>
                 <summary><small class="text-muted">小数を分数に直す方法</small></summary>
-                <div class="m-2 p-2">
+                <div class="m-2 p-2 problem_section">
                     <p class="lh-1">小数を分数に直すときには、\( 0.1 \)や\( 0.01 \)などが何個あるのか？というふうに考えていきます。</p>
                     <p class="lh-1">たとえば\( 0.4 \)は\( 0.4 = 0.1 \times 4 \)と書き換えられます。つまり、\( 0.1 \)が\( 4 \)個あるということです。</p>
                     <p class="lh-1">\( 0.1 = \dfrac{1}{10} \)なので、\( 0.4 = 0.1 \times 4 = \dfrac{1}{10} \times 4 = \dfrac{4}{10} = \dfrac{2}{5} \)となります。</p>
                     <p class="lh-1">このように、小数第一位まで続いている数であれば、\( 0.\bigcirc = 0.1 \times \bigcirc = \dfrac{1}{10} \times \bigcirc \)と計算することで分数に直せます。</p>
                 </div>
-                <div class="m-2 p-2">
+                <div class="m-2 p-2 problem_section">
                     <p class="lh-1">では、小数第二位、第三位のように、より多くの数字が続いている場合はどうするのでしょうか。こちらも合わせてみてみましょう。</p>
                     <p class="lh-1">小数第二位まで続く数の例として、\( 0.25 \)を見てみます。こちらは\( 0.01 \times 25 \)と書き換えられます。</p>
                     <p class="lh-1">\( 0.01 = \dfrac{1}{100} \)なので、\( 0.25 = 0.01 \times 25 = \dfrac{1}{100} = \dfrac{25}{100} = \dfrac{1}{4} \)となります。</p>
@@ -552,18 +570,18 @@ window.addEventListener("load", (event)=>{
                     <p class="lh-1">\( 0.238 = 0.001 \times 238 = \dfrac{1}{1000} \times 238 = \dfrac{238}{1000} = \dfrac{119}{500} \)となります。</p>
                     <p class="lh-1">つまり、小数第三位まで続く数は、\( 0.\bigcirc\triangle\square = 0.01 \times \bigcirc\triangle\square = \dfrac{1}{1000} \times \bigcirc\triangle\square \)と計算すれば分数になります。</p>
                 </div>
-                <div class="m-2 p-2">
+                <div class="m-2 p-2 problem_section">
                     <p class="lh-1">以降の流れもだいたい同じですね。小数第四位まで続くなら\( 0.0001 = \dfrac{1}{10000} \)を使いますし、小数第五位まで続くなら\( 0.00001 = \dfrac{1}{100000} \)を使います。</p>
                     <p class="lh-1">
                         この計算をもう少し練習したいという方は、以下にリンクを張っておきますので、そちらにアクセスしてみてください。
                         <a href="{% url 'elementary_school5' %}#conversion_between_frac_and_decimal" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">小数と分数の相互変換</small></a>
                     </p>
+                    <p class="lh-1">----------------------折りたたみここまで----------------------</p>
                 </div>
-                ----------------------折りたたみここまで----------------------
             </details>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">さて、それではいよいよ計算にはいっていきます。例として、\( -\dfrac{1}{3} \color{red} + 0.4 \)を見てみましょう。</p>
             <p class="lh-1">\( 0.4 \)を分数に直すと、\( 0.4 = 0.1 \times 4 = \dfrac{1}{10} \times 4 = \dfrac{4}{10} = \dfrac{2}{5} \)となります。</p>
             <p class="lh-1">これを\( 0.4 \)と入れ替えて計算を進めていきます。</p>
@@ -579,7 +597,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">小数を分数にさえ直してあげれば、あとは分数同士の計算と同じであることがわかってもらえるでしょうか？</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">次にもう少し複雑な計算を見てみましょう。\(  \dfrac{3}{5} \color{blue} -0.45 \color{red} + 1.8 \)を計算してみます。</p>
             <p class="lh-1">まず\( 0.45 \)を分数に直します。</p>
             <p class="lh-1">\( 0.45 \)</p>
@@ -609,11 +627,11 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="afterword">後書き</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
-            <p class="lh-1">ここまでいくつかの例を交えて正負の計算を解説してきましたが、ここで紹介したやり方は<span class="text-decoration-underline">あくまで例の一つに過ぎない</span>ことに注意してください。</p>
+            <p class="lh-1">ここまでいくつかの例を交えて正負の計算を解説してきましたが、ここで紹介したやり方は<mark>あくまで例の一つに過ぎない</mark>ことに注意してください。</p>
             <p class="lh-1">たとえばある程度計算に慣れてくれば、数直線ではなく頭の中で考えることもできるでしょう。</p>
             <p class="lh-1">また、小数と分数が一緒に使われている計算であれば、以下のように、分数部分だけ、小数部分だけでいったん計算してから、あらためて計算してもよいでしょう。</p>
             <p class="lh-1">\( -0.3 + 0.5 - \dfrac{5}{3} + \dfrac{1}{2} \)</p>
@@ -628,7 +646,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">極論すると、正しく素早く計算できればどのような計算方法であってもOKです。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">ただ、頭の中で多くの計算をやればやるほど、計算ミスをしやすくなってしまいます。</p>
             <p class="lh-1">また、毎度毎度異なったやり方を使っていると、これまた間違いの原因になりやすいです。</p>
             <p class="lh-1">まずは正確に計算できるように、決まったやり方で解いていくことを心がけましょう。</p>
@@ -637,7 +655,7 @@ window.addEventListener("load", (event)=>{
 </div>
 
 <div class="d-grid gap-3 col-6 mx-auto">
-    <a href="{% url 'junior_highschool1' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'junior_highschool1' %}#number_without_bracket_title" class="btn btn-primary" type="button">問題選択へ戻る</a>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
 

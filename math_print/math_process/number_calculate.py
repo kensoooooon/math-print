@@ -148,11 +148,8 @@ class NumberMathProblem:
         return integer, integer_with_number_latex
     
     def _is_finite_decimal(self, number):
-        print("------------------")
-        print(f"number is {number}")
         denominator_list = list(sy.factorint(number.denominator).keys())
         denominator_set = set(denominator_list)
-        print(f"denominator_set:{denominator_set}")
         if denominator_set == set():
             return True
         elif denominator_set == {2}:

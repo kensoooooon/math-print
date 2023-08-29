@@ -13,6 +13,23 @@
     </div>
 {% endblock %}
 
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
 {% block script %}
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
@@ -536,6 +553,124 @@
             </form>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p id="ratio_title">割合・百分率・歩合</p>
+            <a href="{% url 'ratio_explain' %}" class="fa-solid fa-pen-to-square" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">問われるもの</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="amount_to_compare" name="problem_type" id="ratio_amount_to_compare" checked>
+                        <label class="form-check-label" for="ratio_amount_to_compare">
+                            比べる量
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="standard_amount" name="problem_type" id="ratio_standard_amount" checked>
+                        <label class="form-check-label" for="ratio_standard_amount">
+                            元にする量
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="ratio" name="problem_type" id="ratio_ratio" checked>
+                        <label class="form-check-label" for="ratio_ratio">
+                            割合
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">割合に利用される数の表示形式</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="decimal" name="used_number_for_ratio" id="ratio_decimal" checked>
+                        <label class="form-check-label" for="ratio_decimal">
+                            小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="percentage" name="used_number_for_ratio" id="ratio_percentage" checked>
+                        <label class="form-check-label" for="ratio_percentage">
+                            百分率
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="japanese_percentage" name="used_number_for_ratio" id="ratio_japanese_percentage">
+                        <label class="form-check-label" for="ratio_japanese_percentage">
+                            歩合(割,分,厘)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_number_for_ratio')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_number_for_ratio')" value="全部はずし">
+                </div>
+                <small class="text-muted">割合に利用される数の小数点以下の桁数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="digit_under_the_decimal_point" id="ratio_1" checked>
+                        <label class="form-check-label" for="ratio_1">
+                            1桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="digit_under_the_decimal_point" id="ratio_2">
+                        <label class="form-check-label" for="ratio_2">
+                            2桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="digit_under_the_decimal_point" id="ratio_3">
+                        <label class="form-check-label" for="ratio_3">
+                            3桁
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('digit_under_the_decimal_point')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('digit_under_the_decimal_point')" value="全部はずし">
+                </div>
+                <small class="text-muted">長さや重さ、面積の問題で単位の変換を必要とすることがあるか</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="yes" name="unit_change" id="ratio_unit_change_yes" checked>
+                        <label class="form-check-label" for="ratio_unit_change_yes">
+                            ある
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="no" name="unit_change" id="ratio_unit_change_no">
+                        <label class="form-check-label" for="ratio_unit_change_no">
+                            ない
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="RatioFivePaperRadio" checked>
+                        <label class="form-check-label" for="RatioFivePaperRadio">
+                            8問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="RatioTenPaperRadio">
+                        <label class="form-check-label" for="RatioTenPaperRadio">
+                            8問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="RatioFifteenPaperRadio">
+                        <label class="form-check-label" for="RatioFifteenPaperRadio">
+                            8問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'ratio_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(8問)" formaction="{% url 'ratio_display' %}">   
+            </form>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col border-end border-bottom">
             <p>約分</p>

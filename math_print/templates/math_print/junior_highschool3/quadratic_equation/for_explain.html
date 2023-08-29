@@ -1,4 +1,3 @@
-
 {% extends 'math_print/base.html' %}
 
 {% block script %}
@@ -44,14 +43,31 @@ window.addEventListener("load", (event)=>{
 
 {% block css %}
 <style type="text/css">
-    .fa-solid{
-        color: gray;
-        text-decoration: none;
-    }
-    .fa-pen-to-square{
-        color: gray;
-        text-decoration: none;
-    }
+.fa-solid{
+    color: gray;
+    text-decoration: none;
+}
+.fa-pen-to-square{
+    color: gray;
+    text-decoration: none;
+}
+mark{
+    background: linear-gradient(transparent 50%, #FAA755 80%);
+}
+.description_section{
+    border-style: double;
+}
+.problem_section{
+    display: inline-block;
+    border-bottom: solid 2px blue;
+    border-style: none none dotted;
+    border-bottom-width: 0.5px;
+}
+.problem_sentence{
+    display: inline-block;
+    border-style: none none solid;
+    border-bottom-width: 0.2px;
+}
 </style>
 {% endblock %}
 
@@ -74,6 +90,8 @@ window.addEventListener("load", (event)=>{
         2次方程式を解く
         <small class="text-muted">～使うべき公式を見極める～</small>
     </h1>
+    <a class="btn btn-primary" href="{% url 'quadratic_equation_explain_print' %}">A4印刷用ページ表示</a>
+
 
     <br>
     <ul class="list-group row m-4 p-4">
@@ -88,38 +106,38 @@ window.addEventListener("load", (event)=>{
     </ul>
     <br>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">今回は2次方程式を解説していきます。\( x \)の次数が2、つまり\( x^2 \)が含まれている方程式ですね。</p>
         <p class="lh-1">この2次方程式、1次方程式と比べて解き方のパターンが非常に多いのが特徴となります。</p>
         <p class="lh-1">1次方程式は、ざっくり文字を左、数字を右に移項して、最後に\( x = \cdots \)の形にすれば解けるようになっていました。</p>
-        <p class="lh-1">これに対して2次方程式は、<span class="text-decoration-underline">式ごとに異なる公式を当てはめる</span>必要があります。</p>
+        <p class="lh-1">これに対して2次方程式は、<mark>式ごとに異なる公式を当てはめる</mark>必要があります。</p>
         <p class="lh-1">解説の方も、用いる公式ごとに分けながら行っていきます。</p>
         <p class="lh-1">まずは決まった形の方程式をそれぞれ解けるようにして、それから色々なタイプが混在している問題を解いて練習していくと良いでしょう。</p>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="x^2=k">\( x^2 = k \)</h2>
             <br>
             <p class="lh-1">まずは一番シンプルな\( x^2 = k \)の2次方程式からです。\( x^2 = 4 \)や\( \dfrac{1}{2}x^2 = 5 \)のような2次方程式ですね。</p>
-            <p class="lh-1">このタイプの2次方程式は、<span class="text-decoration-underline">平方根の定義に従って解く</span>ことになります。</p>
+            <p class="lh-1">このタイプの2次方程式は、<mark>平方根の定義に従って解く</mark>ことになります。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">では、さっそく問題を見てみましょう。</p>
             <br>
             <p class="lh-1">例題1: \( x^2 = 3 \)</p>
             <br>
-            <p class="lh-1">平方根とはそもそも、<span class="text-decoration-underline">2乗するとその数になる値のこと</span>です。</p>
+            <p class="lh-1">平方根とはそもそも、<mark>2乗するとその数になる値のこと</mark>です。</p>
             <p class="lh-1">たとえば\( \sqrt{5} \)は2乗すると5になる数なので、当然ながら\( (\sqrt{5})^2 = 5 \)が成り立ちます。</p>
             <p class="lh-1">そして例題1は「2乗すると3になる\( x \)はいくつ？」と聞かれているのと同じことです。</p>
-            <p class="lh-1">そのため、特に計算することもなく\( \sqrt{3} \)と求められる……かと思いきや、実は追加で<span class="text-decoration-underline">負の数も入ってくる</span>点には要注意です。</p>
+            <p class="lh-1">そのため、特に計算することもなく\( \sqrt{3} \)と求められる……かと思いきや、実は追加で<mark>負の数も入ってくる</mark>点には要注意です。</p>
             <p class="lh-1">負の数の2乗、つまり負の数と負の数の積も、正の数の2乗と同じく正の数になるからです。</p>
             <p class="lh-1">そのため、正しい答えは\( x = \pm \sqrt{3} \)になります。</p>
             <br>
             <p class="lh-1">以上が\( x^2 = k \)の2次方程式の基本的な解き方です。\( \pm \)を忘れないようにして、ルートをつけるだけですね。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">同じタイプの問題でも、中にはルートをつける前に少し操作が必要なものもあります。次の例題を見てみましょう。</p>
             <br>
             <p class="lh-1">例題2: \( \dfrac{2}{3}x^2 = 8 \)</p>
@@ -134,15 +152,15 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="x^2+2ax+a^2=(x+a)^2">\( x^2 + 2ax + a^2 = (x + a)^2 \)</h2>
             <br>
             <p class="lh-1">次に解説するのは2乗の公式を用いたものになります。ここでいう2乗の公式とは、\( x^2 + 2ax + a^2 = (x + a)^2 \)のことを指します。</p>
             <p class="lh-1">使い方自体は単純なのですが、使えるかどうかを判定するのがやや難しくなっています。</p>
-            <p class="lh-1">\( a \)に値を代入したときに、<span class="text-decoration-underline">出てくる式がきちんと問題の式と一致するかどうか</span>を判断して公式を使うようにしましょう。</p>
+            <p class="lh-1">\( a \)に値を代入したときに、<mark>出てくる式がきちんと問題の式と一致するかどうか</mark>を判断して公式を使うようにしましょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題3: \( x^2 + 6x + 9 = 0 \)</p>
             <br>
             <p class="lh-1">まず定数項は\( + 9 \)、つまり\( + 3^2 \)になっています。</p>
@@ -151,7 +169,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">そのため、\( x^2 + 6x + 9 = (x + 3)^2 \)となり、与えられた方程式は、\( (x + 3)^2 = 0 \)となります。</p>
             <p class="lh-1">2乗して0になるためには中身が0でなければなりません。よって、\( x = -3 \)が答えです。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">もう一つ、今度は公式使えない例を見てみましょう。</p>
             <br>
             <p class="lh-1">例題4: \( x^2 + 5x + 4 = 0 \)</p>
@@ -163,14 +181,14 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="x^2-2ax+a^2=(x-a)^2">\( x^2 - 2ax + a^2 = (x - a)^2 \)</h2>
             <br>
             <p class="lh-1">次は上の1次の項が負になって\( x^2 - 2ax + a^2 = (x - a)^2 \)となっているパターンです。</p>
             <p class="lh-1">負になっていること以外はほぼ同じなので、注意すべき点も変わりません。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題5: \( x^2 - 10x + 25 = 0 \)</p>
             <br>
             <p class="lh-1">まず定数項は\( + 25 \)、つまり\( + 5^2 \)になっています。</p>
@@ -178,7 +196,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">そのため、\( x^2 - 10x + 25 = (x - 5)^2 \)となり、与えられた方程式は、\( (x - 5)^2 = 0 \)となります。</p>
             <p class="lh-1">2乗して0になるためには中身が0でなければならないため、\( x = -5 \)が答えです。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">次は公式が使えないケースです。</p>
             <br>
             <p class="lh-1">例題6: \( x^2 -13x + 36 = 0 \)</p>
@@ -189,17 +207,17 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="x^2+(a+b)x+ab=(x+a)(x+b)">\( x^2 + (a + b)x + ab = (x + a)(x + b) \)</h2>
             <br>
-            <p class="lh-1">次はここまで紹介してきた中で、適用可能範囲が広い公式になります。</p>
+            <p class="lh-1">次はここまで紹介してきた中で、適用可能範囲が一番広い公式になります。</p>
             <p class="lh-1">これまでの公式を使う問題は、実は全てこの公式一つで解くことができます。</p>
             <p class="lh-1">(もちろん、それぞれに適した公式を使うのが一番早く解けるので、これだけ覚えておけば他の公式は全く覚えておかなくて良い、ということではありませんが。)</p>
-            <p class="lh-1">その万能さと引き換えに、やや使い方が複雑になっています。具体的には<span class="text-decoration-underline">特定の和と積を満たす2つの整数を探す</span>ことになります。</p>
+            <p class="lh-1">その万能さと引き換えに、やや使い方が複雑になっています。具体的には<mark>特定の和と積を満たす2つの整数を探す</mark>ことになります。</p>
             <p class="lh-1">具体的な問題を通して確認していきましょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">例題7: \( x^2 + 5x + 6 = 0 \)</p>
             <br>
             <p class="lh-1">ここで探すのは、\( a + b = 5 \)と\( ab = 6 \)を同時に満たす整数\( a, b \)です。</p>
@@ -211,12 +229,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">この公式の使い方がやや複雑だと書いていた理由をわかってもらえたでしょうか？</p>
             <p class="lh-1">たとえば2乗の公式は、定数部分を見ればすぐに\( a \)がいくつかわかりました。あとはそれを公式に当てはめて、一致するかしないかをチェックすれば問題なく使えましたね。</p>
             <p class="lh-1">それに対してこちらの公式は、2つの条件を満たす2つの整数を探す必要があります。手間がかかるわけですね。</p>
-            <p class="lh-1">これらの数を探すときのコツとしては、<span class="text-decoration-underline">積の方から考える</span>というやり方をおすすめします。</p>
+            <p class="lh-1">これらの数を探すときのコツとしては、<mark>積の方から考える</mark>というやり方をおすすめします。</p>
             <p class="lh-1">というのも、特定の値になる2つの整数は、入れ替えを無視しても無限に存在します。例えば5であれば、\( 5 = 0 + 5,\, 1 + 4,\, 2 + 3,\, 6 + (-1),\, 7 + (-2) \cdots \)といくらでも作れます。</p>
             <p class="lh-1">一方で、特定の値になる2つの整数は数が限られています。例えば6であれば、\( 6 = 1 \times 6,\, 2 \times 3,\, (-1) \times (-6),\, (-2) \times (-3) \)で打ち止めです。</p>
             <p class="lh-1">そのため、当てはまる2つの数を探すときは、積の方を先に考えてあげましょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">このコツを踏まえた上で、もう一問確認しておきましょう。</p>
             <br>
             <p class="lh-1">例題8: \( x^2 - 4x + 4 = 0 \)</p>
@@ -225,12 +243,12 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">積が\( 4 \)になる2つの整数は、\( 4 = 1 \times 4,\, 2 \times 2,\, (-1) \times (-4),\, (-2) \times (-2) \)の4つです。</p>
             <p class="lh-1">この中で和が\( -4 \)になるのは、\( -2 \)と\( -2 \)の組み合わせです。公式の左辺に当てはめてみると、\( x^2 + \lbrace(-2) + (-2) \rbrace + (-2) \times (-2) = x^2 - 4x + 4 \)と一致します。</p>
             <p class="lh-1">そのため、与えられた2次方程式の左辺は、\( x^2 - 4x + 4 = (x - 2)(x - 2) = (x - 2)^2 \)と因数分解され、与えられた2次方程式は\( (x - 2)^2 = 0 \)となります。</p>
-            <p class="lh-1">2乗して0になるためには、中身が0になるしかありません。よって答えは、\( x - 2 = 0\ )、つまり\( x = 2 \)</p>
+            <p class="lh-1">2乗して0になるためには、中身が0になるしかありません。よって答えは、\( x - 2 = 0 \)、つまり\( x = 2 \)</p>
             <br>
             <p class="lh-1">このように、2乗の公式を使う問題も解くことが可能です。</p>
-            <p class="lh-1">ただし、見ての通り面倒で時間がかかります。<span class="text-decoration-underline">定数項が2乗になっているものを見つけたら、2乗の公式が使えるかを先に検討する</span>方が良いでしょう。</p>
+            <p class="lh-1">ただし、見ての通り面倒で時間がかかります。<mark>定数項が2乗になっているものを見つけたら、2乗の公式が使えるかを先に検討する</mark>方が良いでしょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">最後に公式がうまく使えないケースを確認しておきます。</p>
             <br>
             <p class="lh-1">例題9: \( x^2 - 3x - 2 = 0\)</p>
@@ -241,19 +259,19 @@ window.addEventListener("load", (event)=>{
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
-        <div class="m-2 p-2">
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
             <h2 class="text-muted h5" id="quadratic_formula">解の公式</h2>
             <br>
             <p class="lh-1">最後に紹介するのは解の公式になります。これは、</p>
             <p class="lh-1">\( ax^2 + bx + c = 0 \Leftrightarrow x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a} \)</p>
             <p class="lh-1">という公式です。</p>
-            <p class="lh-1">この公式、<span class="text-decoration-underline">2次方程式を解く上では最強</span>といえるものになっています。</p>
-            <p class="lh-1">というのも、中学と高校の数学で登場する2次方程式において、解の公式を使って解けない問題は存在しないからです。</p>
+            <p class="lh-1">この公式、<mark>2次方程式を解く上では最強</mark>といえるものになっています。</p>
+            <p class="lh-1">というのも、中学の数学で登場する2次方程式において、解の公式を使って解けない問題は存在しないからです。</p>
             <p class="lh-1">これを聞くと、2次方程式では解の公式だけ使っておけば良いと感じるかもしれませんが、主に計算の複雑さからオススメできません。</p>
             <p class="lh-1">あくまで、これまで紹介した公式のいずれも対処できない場合の最終手段として用いるようにしましょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">先ほど、和と積を探す公式では解けなかった例題を解いていきましょう。</p>
             <br>
             <p class="lh-1">例題9: \( x^2 - 3x - 2 = 0 \)</p>
@@ -267,7 +285,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">見ての通り、計算が結構面倒なものになっています。</p>
             <p class="lh-1">解の公式を使う際には、あまり一度に多くの計算をやりすぎないように心がけましょう。</p>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">次は使う公式が特定できていない、実際の問題に近い状況で解いてみましょう。</p>
             <br>
             <p class="lh-1">例題10: \( x^2 - 2x - 4 = 0 \)</p>
@@ -311,7 +329,7 @@ window.addEventListener("load", (event)=>{
                 <p class="lh-1">----------折りたたみここまで----------</p>
             </details>
         </div>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">最後に、解の公式ですら解が求められないパターンを見ておきましょう。</p>
             <br>
             <p class="lh-1">例題11: \( x^2 + x + 1 = 0 \)</p>
@@ -325,14 +343,14 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">これは実際は高校1年生で学ぶもので、中学の範囲で出題される単純な計算問題ではこのパターンが出てくることはありません。</p>
             <p class="lh-1">ただ、たとえば文章問題で自分で立てた2次方程式を解いた結果、こうなることはたまにあります。</p>
-            <p class="lh-1">このようなときは、間違いなく立てた式か、解の公式での計算のいずれか、あるいは両方が間違っています。</p>
+            <p class="lh-1">このようなときは間違いなく、<mark>立てた式か解の公式での計算のいずれか、あるいは両方が間違っています</mark>。</p>
             <p class="lh-1">そのままふわっと答えにするのではなく、問題文と計算をチェックしなおすようにしましょう。</p>
             <p class="lh-1">ちなみに完全に余談なので忘れてもらって構わないのですが、高校生になればルートの中の負の数すら扱えるようになります。</p>
             <p class="lh-1">なので、「2乗して負になる数は存在しない」というのは厳密には間違いになります。通常の進度であれば、高校2年生で学ぶことになりますので楽しみにしておいてください。</p>
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="afterword">後書き</h2>
         <p class="lh-1">今回の解説は以上になります。</p>
         <p class="lh-1">初めに述べた通り、1次方程式に比べてパターンが非常に多いですね。</p>

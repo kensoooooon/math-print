@@ -145,14 +145,31 @@ window.addEventListener("load", (event)=>{
 
 {% block css %}
 <style type="text/css">
-    .fa-solid{
-        color: gray;
-        text-decoration: none;
-    }
-    .fa-pen-to-square{
-        color: gray;
-        text-decoration: none;
-    }
+.fa-solid{
+    color: gray;
+    text-decoration: none;
+}
+.fa-pen-to-square{
+    color: gray;
+    text-decoration: none;
+}
+mark{
+    background: linear-gradient(transparent 50%, #FAA755 80%);
+}
+.description_section{
+    border-style: double;
+}
+.problem_section{
+    display: inline-block;
+    border-bottom: solid 2px blue;
+    border-style: none none dotted;
+    border-bottom-width: 0.5px;
+}
+.problem_sentence{
+    display: inline-block;
+    border-style: none none solid;
+    border-bottom-width: 0.2px;
+}
 </style>
 {% endblock %}
 
@@ -175,6 +192,7 @@ window.addEventListener("load", (event)=>{
         定積分で面積を求める
         <small class="text-muted">～\( \dfrac{1}{3} \)公式を上手く活用して、時間と労力を節約しよう～</small>
     </h1>
+    <a class="btn btn-primary" href="{% url 'calculate_area_by_integration_explain_one_third_print' %}">A4印刷用ページ表示</a>
 
     <br>
     <ul class="list-group row m-4 p-4">
@@ -188,19 +206,19 @@ window.addEventListener("load", (event)=>{
     </ul>
     <br>
 
-    <div class="row m-4 p-4 border-bottom" id="foreword">
+    <div class="row m-4 p-4 description_section" id="foreword">
         <h2 class="text-muted h5" id="foreword">前書き</h2>
         <p class="lh-1">今回は\( \dfrac{1}{3} \)公式を確認していきます。</p>
-        <p class="lh-1">お話の内容としては\( \dfrac{1}{6} \)公式と同じく、「<span class="text-decoration-underline">いかに公式が使える場面を見つけて、それを適用していくか</span>」というものになります。</p>
+        <p class="lh-1">お話の内容としては\( \dfrac{1}{6} \)公式と同じく、「<mark>いかに公式が使える場面を見つけて、それを適用していくか</mark>」というものになります。</p>
         <p class="lh-1">なお、\( \dfrac{1}{3} \)公式が\( \dfrac{1}{6} \)公式と比べて応用的なものであることを踏まえて、\( \dfrac{1}{6} \)公式の序盤で説明したような基礎的な部分は省いていきます。</p>
         <p class="lh-1">もし、定積分の基本的な考え方や、\( \dfrac{1}{6} \)公式の使い方などに不安がある場合は、まずは以下のリンクから解説を確認してみてください。こちらは基礎から解説しています。
             (<a href="{% url 'calculate_area_by_integration_explain_one_sixth' %}" class="fa-solid fa-link" target="_blank" rel="noopener noreferrer"><small class="text-muted">解説を見る</small></a>)
         </p>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="calculate_area_by_integration_with_formula">\( \dfrac{1}{3}公式を用いた面積の計算 \)</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">さっそく、公式を用いた面積の計算を確認していきましょう。</p>
             <p class="lh-1">今回使う公式は以下になります。</p>
         </div>
@@ -211,22 +229,22 @@ window.addEventListener("load", (event)=>{
             </p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">この公式は、\( \dfrac{1}{6} \)公式の方の証明でも利用していましたね。今回は証明に利用するのではなく、そのまま利用していきます。</p>
-            <p class="lh-1">重要なのはずばり、<span class="text-decoration-underline">積分対象の関数が2乗にまとまっている</span>ことになります。</p>
+            <p class="lh-1">重要なのはずばり、<mark>積分対象の関数が2乗にまとまっている</mark>ことになります。</p>
             <p class="lh-1">\( \dfrac{1}{6} \)公式では、関数同士が2つの交点を持っていることが使用の第一条件でした。</p>
-            <p class="lh-1">それにあやかって考えると、今回は関数同士が<span class="text-decoration-underline">1つの重解、すなわち接点</span>を持っている必要があります。</p>
+            <p class="lh-1">それにあやかって考えると、今回は関数同士が<mark>1つの重解、すなわち接点</mark>を持っている必要があります。</p>
             <p class="lh-1">積分範囲は特に指定されていませんので、その点では\( \dfrac{1}{6} \)公式よりゆるいといえるでしょう。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">これだけ聞くと、今一つ使い道がぴんと来ない方もいると思いますので、ここでは具体的な例を示していきます。</p>
-            <p class="lh-1">シンプルにわかりやすいのは、以下のような<span class="text-decoration-underline">接線が登場する</span>パターンですね。</p>
+            <p class="lh-1">シンプルにわかりやすいのは、以下のような<mark>接線が登場する</mark>パターンですね。</p>
         </div>
         <br>
         <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_function_and_tangent">例題1: \( y = x^2 \)と、その上の点\( (2, 4) \)における接線、および\( y \)軸で囲まれた部分の面積を求めよ。</p>
         <br>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">まずは接線を求めてみましょう。</p>
             <p class="lh-1">\( y' = 2x \)より、\( x = 2 \)における接線の傾きは\( 2 \cdot 2 = 4 \)となります。</p>
             <p class="lh-1">そのため、点\( (2, 4) \)における接線は、</p>
@@ -247,7 +265,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">\( = \int_{0}^{2} (x^2 - 4x + 4) dx \)</p>
             <p class="lh-1">定義通り定積分をこなしていっても答えは求められますが、ここではさらに因数分解してみましょう。</p>
             <p class="lh-1">\( = \int_{0}^{2} (x - 2)^2 dx \)</p>
-            <p class="lh-1"><span class="text-decoration-underline">全体が2乗にまとまっている</span>ので、公式を使って以下のように一気に計算可能です。あとはそのまま計算を進めれば</p>
+            <p class="lh-1"><mark>全体が2乗にまとまっている</mark>ので、公式を使って以下のように一気に計算可能です。あとはそのまま計算を進めれば</p>
             <p class="lh-1">\( = \left\lbrack \dfrac{1}{3} (x - 2)^3 \right\rbrack_{0}^{2} \)</p>
             <p class="lh-1">\( =  \dfrac{1}{3} \left\lbrack (x - 2)^3 \right\rbrack_{0}^{2} \)</p>
             <p class="lh-1">\( = \dfrac{1}{3} \left\lbrace (2 - 2)^3 - (0 - 2)^3 \right\rbrace \)</p>
@@ -263,7 +281,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">幸いにして0が用いられているので、そこまで複雑な計算にはなっていませんが、やはり少々重たい計算と言わざるをえません。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">ちなみに、1点で接しているものであれば、接線以外でも構いません。別の例も見てみましょう。</p>
             <br>
             <p class="lh-1 fst-italic border-bottom col-md-7" id="quadratic_functions">例題2: \( y =  -x^2 + 3x + 1 \)と、\( y = x^2 - x + 3 \)と\( x = -1 \)で囲まれた部分の面積を求めよ。</p>
@@ -290,7 +308,7 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">となります。これが答えです。</p>
         </div>
 
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">さらにさらに接線が2つある場合にも有効です。</p>
             <br>
             <p class="lh-1 fst-italic border_bottom col-md-7" id="quadratic_function_and_two_tangents">例題3: \( y = x^2 \)と、2つの接点\( x = -1, 3 \)における接線で囲まれた部分の面積を求めよ。</p>
@@ -324,11 +342,11 @@ window.addEventListener("load", (event)=>{
             <br>
             <p class="lh-1">以上のように、接線が使われていることから、上下関係はわかりやすいものになっています。</p>
             <p class="lh-1">ただ、面積を求める際には少し注意が必要です。</p>
-            <p class="lh-1">というのも、以下のグラフのように<span class="text-decoration-underline">接線の交点である点\( \color{purple} A \)を境目に上下関係、正確には下に来るものが入れ替わる</span>からです。</p>
+            <p class="lh-1">というのも、以下のグラフのように<mark>接線の交点である点\( \color{purple} A \)を境目に上下関係、正確には下に来るものが入れ替わる</mark>からです。</p>
             <br>
             <div id="jxgbox5" class="jxgbox" style="width: 500px; height: 500px;"></div>
             <br>
-            <p class="lh-1">そのため、実際はここからさらに<span class="text-decoration-underline">接線同士の交点を求めて、そこを境目に左と右で分割して面積を求める</span>必要があります。</p>
+            <p class="lh-1">そのため、実際はここからさらに<mark>接線同士の交点を求めて、そこを境目に左と右で分割して面積を求める</mark>必要があります。</p>
             <p class="lh-1">接線の交点は、</p>
             <p class="lh-1">\( -2x - 1 = 6x - 9 \)</p>
             <p class="lh-1">\( x = 1 \)となり、</p>
@@ -362,16 +380,16 @@ window.addEventListener("load", (event)=>{
             <p class="lh-1">となり、これが答えです。</p>
             <br>
             <p class="lh-1">ちなみに、実はこの2次関数と2本の接線が作る面積の問題には、いくつか共通した性質があります。</p>
-            <p class="lh-1">一つ目の性質は、<span class="text-decoration-underline">接線同士の交点の\( x \)座標は、それぞれのx座標の中点になる</span>というものです。</p>
+            <p class="lh-1">一つ目の性質は、<mark>接線同士の交点の\( x \)座標は、それぞれのx座標の中点になる</mark>というものです。</p>
             <p class="lh-1">今回の問題でいえば、左側の接点が\( x = -1 \)、右側の接点が\( x = 3 \)なので、その中点は\( \dfrac{-1 + 3}{2} = 1\)です。これは交点の\( x \)座標と一致していますね。</p>
-            <p class="lh-1">二つ目の性質は、<span class="text-decoration-underline">交点の左側にできる面積と、右側にできる面積は等しくなる</span>というものです。</p>
+            <p class="lh-1">二つ目の性質は、<mark>交点の左側にできる面積と、右側にできる面積は等しくなる</mark>というものです。</p>
             <p class="lh-1">実際、今回の問題でも\( S_1, S_2 \)ともに\( \dfrac{8}{3} \)となっています。</p>
             <p class="lh-1">これらの性質は、記述問題で証明なしに使用することこそ危険なものの、マーク式の問題であれば問題なく使えます。</p>
             <p class="lh-1">また、記述問題であっても検算で使えたりと、知っておくと多少は便利なものです。頭の片隅に収納しておきましょう。</p>
             <p class="lh-1">なお、証明については以下に折りたたんでおきます。余力があるかたはご確認ください。</p>
             <details>
                 <summary>交点が中点であることと、左右の面積がそれぞれ等しくなることの証明</summary>
-                <div class="m-2 p-2">
+                <div class="m-2 p-2 problem_section">
                     <p class="lh-1">まずは交点が中点となることから示していきましょう。</p>
                     <p class="lh-1">2次関数を\( y = ax^2 + bx + c \)とし、接点を\( x = \alpha, \beta (\alpha < \beta )\)とします。</p>
                     <p class="lh-1">また、それぞれにおける接線を\( y_1 = m_1 x + n_1 \)、\( y_2 = m_2 x + n_2\)とします。</p>
@@ -414,14 +432,13 @@ window.addEventListener("load", (event)=>{
                     <p class="lh-1">なお、これらをまとめて、\( \dfrac{1}{12} \)公式として取り扱われることもあります。</p>
                     <p class="lh-1">興味がある方はチェックしてみてください。</p>
                 </div>
-                ----------------------折りたたみここまで----------------------
             </details>
         </div>
     </div>
 
-    <div class="row m-4 p-4 border-bottom">
+    <div class="row m-4 p-4 description_section">
         <h2 class="text-muted h5" id="afterword">あとがき</h2>
-        <div class="m-2 p-2">
+        <div class="m-2 p-2 problem_section">
             <p class="lh-1">解説は以上になります。いかがでしたか。</p>
             <p class="lh-1">例題で触れたように、接点が登場する面積であれば、\( \dfrac{1}{3} \)公式が利用できる可能性があります。</p>
             <p class="lh-1">使い所を見逃さないようにしつつ、たくさん練習してマスターしていきましょう。</p>
@@ -430,7 +447,7 @@ window.addEventListener("load", (event)=>{
 </div>
 
 <div class="d-grid gap-3 col-6 mx-auto">
-    <a href="{% url 'highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'highschool2' %}#calculate_are_by_integration_title" class="btn btn-primary" type="button">問題選択へ戻る</a>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
 </div>
 

@@ -52,6 +52,7 @@ from .math_process.same_denominator_calculate import SameDenominatorCalculate
 from .math_process.line_and_flat_positional_relationship import LineAndFlatPositionalRelationship
 from .math_process.calculate_area_by_integration import CalculateAreaByIntegration
 from .math_process.logarithmic_equation import LogarithmicEquation
+from .math_process.ratio_problem import RatioProblem
 
 
 def index(request):
@@ -1565,6 +1566,55 @@ def print_logarithmic_equation(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/highschool2/logarithmic_equation/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
+
+def print_ratio(request):
+    """分数の倍や割合の問題のリクエスト受信と問題出力を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 8
+    paper_number = int(request.POST["paper_number"])
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("amount_to_compare")
+        problem_types.append("standard_amount")
+        problem_types.append("ratio")
+    used_numbers_for_ratio = request.POST.getlist("used_number_for_ratio")
+    if not(used_numbers_for_ratio):
+        used_numbers_for_ratio.append("decimal")
+        used_numbers_for_ratio.append("percentage")
+        used_numbers_for_ratio.append("japanese_percentage")
+    unit_change = request.POST["unit_change"]
+    if unit_change == "yes":
+        used_unit_change = True
+    elif unit_change == "no":
+        used_unit_change = False
+    digit_under_the_decimal_point = [int(num_str) for num_str in request.POST.getlist("digit_under_the_decimal_point")]
+    if not(digit_under_the_decimal_point):
+        digit_under_the_decimal_point.append(1)
+        digit_under_the_decimal_point.append(2)
+        digit_under_the_decimal_point.append(3)
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER//2)):
+            problem1 = RatioProblem(
+                problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio,
+                used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+            )
+            problem2 = RatioProblem(
+                problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio,
+                used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+            )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school5/ratio/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
+
+
 # display section
 
 def display_number_problem(request):
@@ -2808,6 +2858,49 @@ def display_logarithmic_equation(request):
     return render(request, 'math_print/highschool2/logarithmic_equation/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
+def display_ratio(request):
+    """分数の倍や割合を求める問題のリクエスト受信と問題出力を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 8
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("amount_to_compare")
+        problem_types.append("standard_amount")
+        problem_types.append("ratio")
+    used_numbers_for_ratio = request.POST.getlist("used_number_for_ratio")
+    if not(used_numbers_for_ratio):
+        used_numbers_for_ratio.append("decimal")
+        used_numbers_for_ratio.append("percentage")
+        used_numbers_for_ratio.append("japanese_percentage")
+    unit_change = request.POST["unit_change"]
+    if unit_change == "yes":
+        used_unit_change = True
+    elif unit_change == "no":
+        used_unit_change = False
+    digit_under_the_decimal_point = [int(num_str) for num_str in request.POST.getlist("digit_under_the_decimal_point")]
+    if not(digit_under_the_decimal_point):
+        digit_under_the_decimal_point.append(1)
+        digit_under_the_decimal_point.append(2)
+        digit_under_the_decimal_point.append(3)
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = RatioProblem(
+            problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio,
+            used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+        )
+        problem2 = RatioProblem(
+            problem_types=problem_types, used_numbers_for_ratio=used_numbers_for_ratio,
+            used_unit_change=used_unit_change, digit_under_the_decimal_point=digit_under_the_decimal_point
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school5/ratio/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+
 # explain part
 def explain_one_sixth_calculate_area_by_integration(request):
     """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
@@ -2821,8 +2914,20 @@ def explain_one_sixth_calculate_area_by_integration(request):
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth.html', {})
     return returned_render
 
+def explain_one_sixth_calculate_area_by_integration_print(request):
+    """平面上の面積を、1/6公式を使って求める問題の解き方の解説プリントの出力を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth_print.html', {})
+    return returned_render
+
 def explain_one_third_calculate_area_by_integration(request):
-    """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
+    """平面上の面積を、1/3公式を使って求める問題の解き方の解説を担当。
     
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -2833,6 +2938,17 @@ def explain_one_third_calculate_area_by_integration(request):
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third.html', {})
     return returned_render
 
+def explain_one_third_calculate_area_by_integration_print(request):
+    """平面上の面積を、1/3公式を使って求める問題の解き方の解説プリントの出力を担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_third_print.html', {})
+    return returned_render
 
 def explain_number_without_bracket(request):
     """カッコなしの正負の計算の解き方の解説を担当。
@@ -2844,6 +2960,19 @@ def explain_number_without_bracket(request):
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
     returned_render = render(request, 'math_print/junior_highschool1/number_without_bracket/for_explain.html', {})
+    return returned_render
+
+
+def explain_number_without_bracket_print(request):
+    """カッコなしの正負の計算の解き方の解説プリントを担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/junior_highschool1/number_without_bracket/for_explain_print.html', {})
     return returned_render
 
 
@@ -2860,6 +2989,19 @@ def explain_specific_linear_equation(request):
     return returned_render
 
 
+def explain_specific_linear_equation_print(request):
+    """特定の形の1次方程式の解き方の解説プリントを担当。
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/junior_highschool1/specific_linear_equation/for_explain_print.html', {})
+    return returned_render
+
+
 def explain_logarithmic_equation(request):
     """対数方程式の解き方の解説を担当
     
@@ -2873,6 +3015,19 @@ def explain_logarithmic_equation(request):
     return returned_render
 
 
+def explain_logarithmic_equation_print(request):
+    """対数方程式の解き方の解説プリント出力を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/highschool2/logarithmic_equation/for_explain_print.html', {})
+    return returned_render
+
+
 def explain_quadratic_equation(request):
     """2次方程式の解き方の解説を担当
     
@@ -2883,4 +3038,42 @@ def explain_quadratic_equation(request):
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
     returned_render = render(request, 'math_print/junior_highschool3/quadratic_equation/for_explain.html', {})
+    return returned_render
+
+
+def explain_quadratic_equation_print(request):
+    """2次方程式の解き方の解説プリント出力を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ
+    """
+    returned_render = render(request, 'math_print/junior_highschool3/quadratic_equation/for_explain_print.html', {})
+    return returned_render
+
+
+def explain_ratio(request):
+    """割合・百分率・歩合の問題の解き方の表示を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ    
+    """
+    returned_render = render(request, 'math_print/elementary_school5/ratio/for_explain.html', {})
+    return returned_render
+
+def explain_ratio_print(request):
+    """割合・百分率・歩合の問題の解き方の印刷用表示を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+    
+    Returns:
+        returned_render (django.http.response.HttpResponse): 描画のもろもろ    
+    """
+    returned_render = render(request, 'math_print/elementary_school5/ratio/for_explain_print.html', {})
     return returned_render

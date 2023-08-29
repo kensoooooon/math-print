@@ -40,6 +40,11 @@ urlpatterns = [
     ### 通分 ###
     path('common_denominator/print/', views.print_common_denominator_problem, name='common_denominator_print'),
     path('common_denominator/display/', views.display_common_denominator_problem, name='common_denominator_display'),
+    ### 分数の倍, 割合 ###
+    path('ratio/print', views.print_ratio, name='ratio_print'),
+    path('ratio/display', views.display_ratio, name='ratio_display'),
+    path('ratio/explanation/', views.explain_ratio, name='ratio_explain'),
+    path('ratio/explanation_print/', views.explain_ratio_print, name='ratio_explain_print'),
     ##########################################
     ### 小6 ###
     path('elementary_school6/', views.show_elementary_school6, name='elementary_school6'),
@@ -56,6 +61,7 @@ urlpatterns = [
     path('number_without_bracket/print/', views.print_number_without_bracket_problem, name='number_without_bracket_print'),
     path('number_without_bracket/display/', views.display_number_without_bracket_problem, name='number_without_bracket_display'),
     path('number_without_bracket/explanation/', views.explain_number_without_bracket, name='number_without_bracket_explain'),
+    path('number_without_bracket/explanation_print/', views.explain_number_without_bracket_print, name='number_without_bracket_explain_print'),
     # 文字の計算
     path('character/print/', views.print_character_problem, name="character_print"),
     path('character/display', views.display_character_problem, name="character_display"),
@@ -66,6 +72,7 @@ urlpatterns = [
     path('specific_linear_equation/print/',views.print_specific_linear_equation, name='specific_linear_equation_print'),
     path('specific_linear_equation/display/',views.display_specific_linear_equation, name='specific_linear_equation_display'),
     path('specific_linear_equation/explanation', views.explain_specific_linear_equation, name='specific_linear_equation_explain'),
+    path('specific_linear_equation/explanation_print', views.explain_specific_linear_equation_print, name='specific_linear_equation_explain_print'),
     # 比例
     path('proportional_expression/print/', views.print_proportional_expression, name='proportional_expression_print'),
     path('proportional_expression/display/', views.display_proportional_expression, name='proportional_expression_display'),
@@ -121,6 +128,7 @@ urlpatterns = [
     path('quadratic_equation/print/', views.print_quadratic_equation, name='quadratic_equation_print'),
     path('quadratic_equation/display/', views.display_quadratic_equation, name='quadratic_equation_display'),
     path('quadratic_equation/explain', views.explain_quadratic_equation, name='quadratic_equation_explain'),
+    path('quadratic_equation/explain_print', views.explain_quadratic_equation_print, name='quadratic_equation_explain_print'),
     # 平方根を求める
     path('square_root/print/', views.print_square_root_problem, name='square_root_print'),
     path('square_root/display/', views.display_square_root_problem, name='square_root_display'),
@@ -177,8 +185,11 @@ urlpatterns = [
     path('calculate_area_by_integration/display', views.display_calculate_area_by_integration, name='calculate_area_by_integration_display'),
     path('calculate_area_by_integration/explanation_one_sixth', views.explain_one_sixth_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_sixth'),
     path('calculate_area_by_integration/explanation_one_third', views.explain_one_third_calculate_area_by_integration, name='calculate_area_by_integration_explain_one_third'),
+    path('calculate_area_by_integration/explanation_one_sixth_print', views.explain_one_sixth_calculate_area_by_integration_print, name='calculate_area_by_integration_explain_one_sixth_print'),
+    path('calculate_area_by_integration/explanation_one_third_print', views.explain_one_third_calculate_area_by_integration_print, name='calculate_area_by_integration_explain_one_third_print'),
     # 対数方程式・不等式
     path('logarithmic_equation/print', views.print_logarithmic_equation, name='logarithmic_equation_print'),
     path('logarithmic_equation/display', views.display_logarithmic_equation, name='logarithmic_equation_display'),
     path('logarithmic_equation/explain', views.explain_logarithmic_equation, name='logarithmic_equation_explain'),
+    path('logarithmic_equation/explain_print', views.explain_logarithmic_equation_print, name='logarithmic_equation_explain_print'),
 ]

@@ -1,0 +1,651 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<!-- Stylesheet -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraph.min.css" rel="stylesheet">
+<!-- JavaScript -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsxgraph/1.4.5/jsxgraphcore.js"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+window.addEventListener("load", (event)=>{
+    const text_css = 'font-family: "Times New Roman", Times, "serif"; font-style: italic';
+
+    // https://jsxgraph.uni-bayreuth.de/docs/symbols/Ticks.html#ticksDistance
+    // let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.05, 0.5, 1.4, -0.1]});
+    let jsx1 = JXG.JSXGraph.initBoard("jxgbox1", {boundingbox: [-0.01, 10, 1.6, -1]});
+    jsx1.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: false,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            insertTicks: true,
+            ticksDistance: 0.1,
+            // scale: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx1.create('segment', [[0, 0], [0, 5]], {strokeColor: "gray", dash: 2});
+    jsx1.create('segment', [[1, 0], [1, 5]], {strokeColor: "gray", dash: 2});
+    let datearr1 = [0, 1.0, 0, 1.2];
+    jsx1.create('chart', datearr1, {chartStyle: "bar", width: 0.3, dir: 'horizontal'});
+    jsx1.create('text', [1.05, 1.6, '増やす前の'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [1.05, 1.0, 'オレンジジュース'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [1.25, 3.7, '増やした後の'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [1.2, 3.1, 'オレンジジュース'], {fontSize: 14, cssStyle: text_css});
+    jsx1.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('text', [0.45, 1.5, '$$?\\mathrm{m}^3$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.2, 2.3, 2.35, 2.4, 2.6]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 0.9, 0.8, 0.7, 0.55], [2.2, 2.3, 2.35, 2.4, 2.6]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [1.8, 1.7, 1.6, 1.4, 1.3]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [1.8, 1.7, 1.6, 1.4, 1.3]], {strokeColor: 'gray'});
+    jsx1.create('text', [0.5, 4.8, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('text', [1.075, 4.8, '$$0.2$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('text', [0.4, 3.5, '$$300\\mathrm{m}^3$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [4.2, 4.3, 4.35, 4.4, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 0.9, 0.8, 0.7, 0.55], [4.2, 4.3, 4.35, 4.4, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [3.8, 3.7, 3.6, 3.4, 3.3]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1.2, 1.1, 1.0, 0.8, 0.6], [3.8, 3.7, 3.6, 3.4, 3.3]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1, 1.035, 1.07], [4.2, 4.3, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1.2, 1.175, 1.15], [4.2, 4.3, 4.8]], {strokeColor: 'gray'});
+    jsx1.create('text', [0.65, 7, '$$1.2$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx1.create('curve', [[0, 0.15, 0.3, 0.45, 0.6], [4.2, 5, 5.5, 6, 7]], {strokeColor: 'gray'});
+    jsx1.create('curve', [[1.2, 1.18, 1.0, 0.9, 0.8], [4.2, 5, 5.5, 6, 7]], {strokeColor: 'gray'});
+
+    let jsx2 = JXG.JSXGraph.initBoard("jxgbox2", {boundingbox: [-0.01, 7, 1.6, -1]});
+    jsx2.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: false,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            insertTicks: true,
+            ticksDistance: 0.1,
+            // scale: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx2.create('segment', [[0, 0], [0, 5]], {strokeColor: 'gray', dash: 2});
+    jsx2.create('segment', [[1, 0], [1, 5]], {strokeColor: 'gray', dash: 2});
+    let datearr2 = [0, 1.0, 0, 0.6];
+    jsx2.create('chart', datearr2, {chartStyle: "bar", width: 0.3, dir: 'horizontal'});
+    let vertices_status = {visible: false};
+    jsx2.create('polygon', [[0.6, 4.15], [1, 4.15], [1, 3.85], [0.6, 3.85]], {strokeColor: "gray", fillColor: "yellow", fillOpacity: 0.3, vertices: vertices_status});
+    jsx2.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx2.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx2.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx2.create('text', [0.45, 1.5, '$$250\\mathrm{cm}$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx2.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx2.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx2.create('text', [0.6, 5.5, '切り取られたリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx2.create('text', [0.75, 4.7, '$$0.4$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx2.create('curve', [[0.6, 0.65, 0.7], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx2.create('curve', [[1.0, 0.95, 0.85], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx2.create('text', [0.2, 5.5, '残ったリボン'], {fontSize: 14, cssStyle: text_css});
+
+    let jsx3 = JXG.JSXGraph.initBoard("jxgbox3", {boundingbox: [-0.01, 7, 1.6, -1]});
+    jsx3.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: false,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            insertTicks: true,
+            ticksDistance: 0.1,
+            // scale: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx3.create('segment', [[0, 0], [0, 5]], {strokeColor: 'gray', dash: 2});
+    jsx3.create('segment', [[1, 0], [1, 5]], {strokeColor: 'gray', dash: 2});
+    jsx3.create('chart', datearr2, {chartStyle: "bar", width: 0.3, dir: 'horizontal'});
+    jsx3.create('polygon', [[0.6, 4.15], [1, 4.15], [1, 3.85], [0.6, 3.85]], {strokeColor: "gray", fillColor: "yellow", fillOpacity: 0.3, vertices: vertices_status});
+    jsx3.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx3.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx3.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx3.create('text', [0.45, 1.5, '$$250\\mathrm{cm}$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx3.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx3.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx3.create('text', [0.6, 5.5, '切り取られたリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx3.create('text', [0.75, 4.7, '$$0.4$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx3.create('curve', [[0.6, 0.65, 0.7], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx3.create('curve', [[1.0, 0.95, 0.85], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx3.create('text', [0.2, 5.5, '残ったリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx3.create('text', [0.3, 4.7, '$$0.6$$'], {fontSize: 14, strokeColor: 'orange', cssStyle: text_css, useMathJax: true});
+    jsx3.create('curve', [[0, 0.1, 0.3], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx3.create('curve', [[0.6, 0.55, 0.4], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+
+    let jsx4 = JXG.JSXGraph.initBoard("jxgbox4", {boundingbox: [-0.01, 7, 1.6, -1]});
+    jsx4.create('axis', [[0, 0], [1, 0]], 
+    {
+        firstArrow: false,
+        lastArrow: true,
+        ticks: {
+            drawZero: true,
+            insertTicks: true,
+            ticksDistance: 0.1,
+            // scale: 1,
+            majorHeight: 30,
+            tickEndings: [1, 1],
+            minorTicks: 0
+        }
+    }
+    );
+    jsx4.create('segment', [[0, 0], [0, 5]], {strokeColor: 'gray', dash: 2});
+    jsx4.create('segment', [[1, 0], [1, 5]], {strokeColor: 'gray', dash: 2});
+    jsx4.create('chart', datearr2, {chartStyle: "bar", width: 0.3, dir: 'horizontal'});
+    jsx4.create('polygon', [[0.6, 4.15], [1, 4.15], [1, 3.85], [0.6, 3.85]], {strokeColor: "gray", fillColor: "yellow", fillOpacity: 0.3, vertices: vertices_status});
+    jsx4.create('text', [0.5, 2.5, '$$1$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.2, 0.3, 0.45], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [2.1, 2.25, 2.3, 2.45, 2.5]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.45, 1.5, '$$250\\mathrm{cm}$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.2, 0.3, 0.4], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[1, 0.9, 0.8, 0.7, 0.6], [1.8, 1.75, 1.7, 1.65, 1.5]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.6, 5.5, '切り取られたリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx4.create('text', [0.75, 4.7, '$$0.4$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0.6, 0.65, 0.7], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[1.0, 0.95, 0.85], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.2, 5.5, '残ったリボン'], {fontSize: 14, cssStyle: text_css});
+    jsx4.create('text', [0.3, 4.7, '$$0.6$$'], {fontSize: 14, cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.3], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[0.6, 0.55, 0.4], [4.2, 4.55, 4.7]], {strokeColor: 'gray'});
+    jsx4.create('text', [0.25, 3.5, '$$100\\mathrm{cm}^2$$'], {fontSize: 14, strokeColor: 'orange', cssStyle: text_css, useMathJax: true});
+    jsx4.create('curve', [[0, 0.1, 0.2], [3.8, 3.55, 3.5]], {strokeColor: 'gray'});
+    jsx4.create('curve', [[0.6, 0.55, 0.45], [3.8, 3.55, 3.5]], {strokeColor: 'gray'});
+});
+</script>
+{% endblock %}
+
+{% block added_cdn %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .fa-solid{
+        color: gray;
+        text-decoration: none;
+    }
+    .fa-pen-to-square{
+        color: gray;
+        text-decoration: none;
+    }
+    mark{
+        background: linear-gradient(transparent 50%, #FAA755 80%);
+    }
+    .description_section{
+        border-style: double;
+    }
+    .problem_section{
+        display: inline-block;
+        border-bottom: solid 2px blue;
+        border-style: none none dotted;
+        border-bottom-width: 0.5px;
+    }
+    .problem_sentence{
+        display: inline-block;
+        border-style: none none solid;
+        border-bottom-width: 0.2px;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+割合・百分率・歩合(解説)
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">割合・百分率・歩合(解説)</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h4">
+        割合・百分率・歩合
+        <small class="text-muted">～割合と公式を使い分けよう～</small>
+    </h1>
+    <br>
+    <a class="btn btn-primary" href="{% url 'ratio_explain_print' %}">A4印刷用ページ表示</a>
+
+    <ul class="list-group row m-4 p-4">
+        <h2 class="h5">目次</h2>
+        <li class="list-group-item col-md-6"><a href="#foreword" class="text-decoration-none text-reset">前書き</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_without_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が同じ場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_with_change_unit" class="text-decoration-none text-reset">割合と、その求め方(単位が異なる場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#raito_summary" class="text-decoration-none text-reset">割合のまとめ</a></li>
+        <li class="list-group-item col-md-6"><a href="#amount_to_compare_without_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が同じ場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#amount_to_compare_with_change_unit" class="text-decoration-none text-reset">比べる量と、その求め方(単位が異なる場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#amount_to_compare_summary" class="text-decoration-none text-reset">比べる量のまとめ</a></li>
+        <li class="list-group-item col-md-6"><a href="#standard_amount_without_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が同じ場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#standard_amount_with_change_unit" class="text-decoration-none text-reset">もとにする量と、その求め方(単位が異なる場合)</a></li>
+        <li class="list-group-item col-md-6"><a href="#standard_amount_summary" class="text-decoration-none text-reset">もとにする量のまとめ</a></li>
+        <li class="list-group-item col-md-6"><a href="#line_segment_diagram" class="text-decoration-none text-reset">おまけ: 線分図を使った解き方</a></li>
+        <li class="list-group-item col-md-6"><a href="#afterword" class="text-decoration-none text-reset">後書き</a></li>
+    </ul>
+    <br>
+
+    <div class="row m-4 p-4 description_section">
+        <h2 class="text-muted h5" id="foreword">前書き</h2>
+        <p class="lh-1">ここでは割合の問題を解説していきます。文章問題が中心になっていて、受験でもよく出てくる分野です。</p>
+        <p class="lh-1">ポイントはずばり、<mark>求めたいものに応じて、正しい式を使う</mark>ことです。</p>
+        <p class="lh-1">特に、あとで紹介する比べる量、もとにする量は、どちらなのかわかりづらくなりやすいです。</p>
+        <p class="lh-1">いろいろな問題を解きながら、文章問題になれていきましょう。</p>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が同じ場合)</h2>
+            <p class="lh-1">まずはそもそも、割合が何なのかについて確認しておきましょう。</p>
+            <p class="lh-1">割合とは、<mark>ある量をもとにしたとき、比べたい量がその量の何倍になっているのか?</mark>を表現した数です。</p>
+            <p class="lh-1">そのため、同じ数字でも、基準、つまりもとにする量次第で割合は変わってきます。</p>
+        </div>
+
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">具体的な問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題1: \( 10 \mathrm{cm} \)は\( 2 \mathrm{cm} \)の何倍ですか?</p>
+            <br>
+            <p class="lh-1">これが一番シンプルな割合のたずね方です。</p>
+            <p class="lh-1">まず、「\( 2 \mathrm{cm} \)の何倍」と聞かれているので、\( 2 \mathrm{cm} \)がもとにする量になります。</p>
+            <p class="lh-1">そして、\( 10 \mathrm{cm} \)が割合を知りたい量、つまり比べる量になります。</p>
+            <p class="lh-1">そのため、この時の割合は\( 10 \div 2 = 5 \)で5倍となります。</p>
+            <p class="lh-1">実際に、\( 2 \mathrm{cm} \)を\( 5 \)倍にすれば、\( 2 \times 5 = 10 \)できちんと\( 10 \mathrm{cm} \)となっています。</p>
+            <p class="lh-1">この流れが割合を計算するときの基本です。何がもとにする量で、何が比べる量なのかが重要です。</p>
+        </div>
+        
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">そしてこれは、割合が小数になったとしても変わりません。次の例を見てみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題2: \( 6 \mathrm{kg} \)は\( 10 \mathrm{kg} \)の何倍ですか?</p>
+            <br>
+            <p class="lh-1">まず、「\( 10 \mathrm{kg} \)の何倍」と聞かれているので、\( 10 \mathrm{kg} \)がもとにする量となります。</p>
+            <p class="lh-1">次に、\( 6 \mathrm{kg} \)が比べる量になります。</p>
+            <p class="lh-1">よって、この時の割合は\( 6 \div 10 = 0.6 \)で\( 0.6倍 \)となります。</p>
+            <p class="lh-1">例1と同じように、\( 10 \mathrm{kg} \)を\( 0.6 \)倍すれば、\( 10 \times 0.6 = 6 \)できちんと\( 6 \mathrm{kg} \)となっていることもわかります。</p>
+        </div>
+
+        <div class="m-2 p-2 problem_section problem_section">
+            <p class="lh-1">例題1はそれこそ日ごろの生活で自然とやっている計算です。</p>
+            <p class="lh-1">ただ、なれないうちは例2のような計算、つまり小数が出る計算になると、とまどってしまう人が多いです。</p>
+            <p class="lh-1">しかし見ての通り、やっていること自体は全く同じになっています。</p>
+            <p class="lh-1">まずはもとにする量を考えて、その数字で比べたい量を割る。割合はこれだけで求められます。小数かそうでないかは関係ありません。</p>
+            <p class="lh-1">この計算を公式にすると、「<mark>(割合) \( = \) (比べる量) \( \div \) (もとにする量)</mark>」となります。</p>
+        </div>
+
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">それでは次の問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を百分率で表しなさい。</p>
+            <p class="lh-1">初めの計算は、例題1,2と変わりません。</p>
+            <p class="lh-1">\( 40 \mathrm{cm} \)がもとにする量、\( 10 \mathrm{cm} \)が比べる量なので、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)から、割合は\( 0.25 \)です。</p>
+            <p class="lh-1">ここで、<mark>百分率になおすためには、小数の割合に100をかければよい</mark>ので、</p>
+            <p class="lh-1">百分率での割合は、\( 0.25 \times 100 = 25 \)より、\( 25 \% \)となります。</p>
+            <p class="lh-1">問題によっては、このように小数とは違った割合を使わなければならないこともあります。</p>
+            <p class="lh-1">百分率はその代表です。しっかりと書きかえられるようにしておきましょう。</p>
+        </div>
+
+        <div class="m-2 p-2 problem_section problem_section">
+            <p class="lh-1">違う割合の表現として、もう1問見てみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題4: \(  105 \mathrm{m^3} \)の、\( 500 \mathrm{m^3} \)に対する割合を歩合で表しなさい。</p>
+            <p class="lh-1">こちらもやはり、初めの計算は変わりません。</p>
+            <p class="lh-1">\( 105 \mathrm{m^3} \)が比べる量、\( 500 \mathrm{m^3} \)がもとにする量なので、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 105 \div 500 = 0.21 \)から、割合は\( 0.21 \)です。</p>
+            <p class="lh-1">ここで、この数字を<mark>歩合になおすためには、小数点以下の数字を、漢字に1つずつ割り当てていく</mark>必要があります。</p>
+            <p class="lh-1">漢字の方は、とりあえず大きい方から4つ、「<ruby>割<rt>わり</rt></ruby>」「<ruby>分<rt>ぶ</rt></ruby>」「<ruby>厘<rt>りん</rt></ruby>」、それから「<ruby>毛<rt>もう</rt></ruby>」を覚えておけば良いでしょう。それより小さい値は基本的に算数には登場しません。</p>           
+            <p class="lh-1">今回の割合は、\( 0.\color{blue}2\color{orange}1 \)なので、歩合になおすと、
+                \( \color{blue}2 \)割\( \color{orange}1 \)分となります。
+            </p>
+            <p class="lh-1">数字に割り当てる漢字さえ覚えておけば、あとは順番に当てはめるだけになっています。</p>
+            <br>
+            <p class="lh-1">また、今回は関係ありませんでしたが、たとえば\( 0.405 \)や\( 0.03 \)のように小数点以下に0が入っているときは、割り当てをすることなく飛ばしましょう。</p>
+            <p class="lh-1">\( 0.\color{blue}4\color{black}0\color{green}5 \)なら\( \color{blue}4 \)割\( \color{green}5 \)厘、
+                \( 0.0\color{orange}3 \)なら\( \color{orange}3 \)分です。
+            </p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="raito_without_change_unit">割合と、その求め方(単位が異なる場合)</h2>
+            <p class="lh-1">次も割合を求める問題ですが、単位が異なる場合を見ていきます。</p>
+            <p class="lh-1">たとえば、\( 1 \mathrm{kg} \)をもとにしたときの、\( 1000 \mathrm{g} \)の割合は\( 1 \)、つまり\( 1 \)倍であるべきです。同じ大きさなのですから、当然ですね。</p>
+            <p class="lh-1">しかし、単位をかえずに計算すると、\( 1000 \div 1 = 1000 \)という大変な値が出てきます。</p>
+            <p class="lh-1"><mark>単位が異なるときは、単位をそろえてから割合を求める</mark>必要があります。これを意識しながら、例題を見ていきましょう。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1 problem_sentence">例題5: \( 100 \mathrm{g} \)に対する\( 1 \mathrm{kg} \)の割合を小数で答えなさい。</p>
+            <br>
+            <p class="lh-1">まずは\( 100 \mathrm{g} \)を\( \mathrm{kg} \)になおすか、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおすか、いずれかをやる必要があります。</p>
+            <p class="lh-1">ここでは単位をかえたあとに、数が小さくなる方と大きくなる方、両方で計算してみて違いを確認してみましょう。</p>
+            <br>
+            <p class="lh-1">まず小さくする方です。つまり、\( 100 \mathrm{g} \)を\( \mathrm{kg}\)になおしてから計算する、という流れです。</p>
+            <p class="lh-1">\( \mathrm{g} \)を\( \mathrm{kg} \)になおすためには、1000で割ればOKです。そのため、\( 100 \mathrm{g} \)は\( 100 \div 1000 = 0.1 \mathrm{kg} \)となります。数は変える前と比べて小さくなっていますね。</p>
+            <p class="lh-1">単位がそろったので、あとは公式どおり割合を求めると、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 0.1 \div 1 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
+            <br>
+            <p class="lh-1">続いては、大きくするほうです。つまり、\( 1 \mathrm{kg} \)を\( \mathrm{g} \)になおしてから計算します。</p>
+            <p class="lh-1">\( \mathrm{kg} \)を\( \mathrm{g} \)になおすためには、1000をかければよいです。そのため、\( 1 \mathrm{kg} \)は\( 1 \times 1000 = 1000 \mathrm{g} \)となります。こちらは逆に、変える前と比べて数が大きくなっていますね。</p>
+            <p class="lh-1">あとは公式どおり割合を求めると、</p>
+            <p class="lh-1">(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 100 \div 1000 = 0.1 \)となり、割合が\( 0.1 \)であることがわかりました。</p>
+            <br>
+            <p class="lh-1">このように、どちらでも答えが出ますので、好みで選んでしまって構いません。</p>
+            <p class="lh-1">ただ、あえていうのであれば、<mark>数字が大きくなる方になおすことで、小数の計算をなるべくさける</mark>ことをおすすめします。</p>
+            <p class="lh-1">小数の計算は、たとえば小数点の場所など、考えることが少し多いです。特にこだわりがなければ、数が大きくなるほうに変えてあげてください。</p>
+            <p class="lh-1">小さくするほうに変えるよりも、小数の計算が必要になる可能性が低くなります。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">もう1問、少しだけひねった問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題6: \( 3 \mathrm{m}^2 \)の紙のうち、\( 22500 \mathrm{cm}^2 \)を切り取って運びました。残りの紙は、初めの紙のどれくらいの割合になるか、歩合で答えなさい。</p>
+            <p class="lh-1">まず、先ほどと同じように単位をそろえます。\( \mathrm{m}^2 \)を\( \mathrm{cm^2} \)になおすためには、10000をかけれよいので、\( 3 \mathrm{m}^2 \)は、\( 3 \times 10000 = 30000 \mathrm{cm}^2 \)となります。</p>
+            <p class="lh-1">次に、初めの紙が\( 30000 \mathrm{cm}^2 \)、切り取って運んだ紙は\( 22500 \mathrm{cm}^2 \)なので、残った紙は、\( 30000 - 22500 = 7500 \mathrm{cm}^2 \)となります。</p>
+            <p class="lh-1">ここで、今回の問題では、「初めの紙のどれくらいの割合になるか」と聞かれているので、初めの紙がもとにする量、残った紙が比べる量になります。</p>
+            <p class="lh-1">よって、(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 22500 \div 30000 = 0.75 \)が求めたい割合です。</p>
+            <p class="lh-1">最後に\( 0.\color{blue}7 \color{orange}5 \)を歩合になおすと、\( \color{blue}7 \)割\( \color{orange}5 \)分となります。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="raito_summary">割合のまとめ</h2>
+            <p class="lh-1">ここで割合についてまとめておきます。</p>
+            <ol class="list-group list-group-numbered list-group-flush">
+                <li class="list-group-item"><mark>割合は、(比べる量) \( \div \) (もとにする量)で求められる</mark></li>
+                <li class="list-group-item"><mark>割合の基本は小数で、そこから100をかけると百分率に。各位の数字を漢字に割り当てていくと、歩合が求められる</mark></li>
+                <li class="list-group-item"><mark>単位が異なっている場合は、単位をそろえてから計算する</mark></li>
+            </ol>
+            <br>
+            <p class="lh-1">割合を求める計算は、その名前の通り割合の中でもっとも基本的で、重要な考え方です。しっかりと理解しておきたいところです。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="amount_to_compare_without_change_unit">比べる量と、その求め方(単位が同じ場合)</h2>
+            <p class="lh-1">次は比べる量を求める問題の確認です。</p>
+            <p class="lh-1">割合の解説で比べる量と、もとにする量との関係についてはそれなりに説明しましたので、ここでは初めに公式を紹介してしまいましょう。</p>
+            <p class="lh-1"><mark>(比べる量) \( = \) (もとにする量) \( \times \) (割合)</mark>です。</p>
+            <p class="lh-1">まずはこれが正しいことを、先ほど使った例を少しいじったもので確認しましょう。</p>
+            <br>
+            <p class="lh-1">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を小数で表しなさい。</p>
+            <p class="lh-1">もとにする量が\( 40 \mathrm{cm} \)で、\( 10 \mathrm{cm} \)が比べる量。</p>
+            <p class="lh-1">割合は、(比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)でした。</p>
+            <p class="lh-1">ここで、比べる量の公式を使ってみると、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 40 \times 0.25 = 10 \)で、きちんと比べる量の\( 10 \mathrm{cm} \)と等しくなっていることがわかります。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">さて、公式が正しいということが確認できたところで、あらためて比べる量を求める問題に取り組んでいきましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題7: \( 3 \mathrm{m}^2 \)の\( 0.3 \)は何\( \mathrm{m}^2 \)ですか。</p>
+            <p class="lh-1">ここでは\( 3 \mathrm{m}^2 \)がもとにする量、\( 0.3 \)が割合なので、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 3 \times 0.3 = 0.9 \mathrm{m}^2 \)となります。</p>
+            <p class="lh-1">だいたいの問題では「～の」の～にあたる部分がもとにする量になっていることが多いので、知っておくとお得かもしれませんね。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">次も比べる量を求める問題ですが、少し表現が変わっています。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題8: \( 250 \mathrm{cm} \)あったリボンのうち\( 40 \% \)を切り取りました。残りの長さは\( \underline{\qquad\qquad} \mathrm{cm} \)です。</p>
+            <br>
+            <p class="lh-1">ここでも百分率が登場しました。百分率のあつかいはシンプルです。<mark>小数になおしてから計算に使う</mark>ようにしましょう。</p>
+            <p class="lh-1">小数でかかれた割合は100をかけることで百分率になりました。</p>
+            <p class="lh-1">そのため、百分率でかかれた割合を、小数の割合になおすときはその逆です。<mark>100で割ってあげる</mark>ことでなおせます。</p>
+            <p class="lh-1">\( 40 \div 100 = 0.4 \)なので、比べる量の計算に使う割合は\( 0.4 \)だとわかりました。</p>
+            <br>
+            <p class="lh-1">さて、あとは\( 250 \mathrm{cm} \)をもとにする量として計算するだけなのですが、ひとつだけ注意しなければなりません。</p>
+            <p class="lh-1">それはずばり、割合の\( 0.4 \)は、<mark>切り取ったリボンの長さであって、残ったリボンの長さではない</mark>ことです。</p>
+            <p class="lh-1">「\( 40 \% \)を切り取りました」とかいてありますからね。</p>
+            <p class="lh-1">なので、\( 0.4 \)を割合として計算した比べる量は、あくまで切り取ったリボンの長さです。</p>
+            <p class="lh-1">それを踏まえた上で計算してみると、\( 250 \times 0.4 = 100 \mathrm{cm} \)となります。</p>
+            <p class="lh-1">初めにあったリボンは\( 250 \mathrm{cm} \)なので、残ったリボンはここから切り取ったリボンの長さを引いて、\( 250 - 100 = 150 \mathrm{cm} \)となります。</p>
+            <br>
+            <p class="lh-1">この解き方で特に問題はないのですが、ここでは割合の理解を深めるために他の解き方を2つ解説しておきましょう。</p>
+            <br>
+            <p class="lh-1">まず紹介するのは<mark>小数で割合をあらわしているとき、もとにする量の割合は\( 1 \)であること利用</mark>するというものです。</p>
+            <p class="lh-1">もとにする量の割合が\( 1 \)で、切り取ったリボンの長さの割合が\( 0.4 \)ということは残ったリボンの割合は\( 1 - 0.4 = 0.6 \)になります。</p>
+            <p class="lh-1">この割合を使えば、最後に引き算をする必要はありません。</p>
+            <p class="lh-1">実際に計算してみると、\( 250 \times 0.6 = 150 \mathrm{cm} \)で先ほどの答えと同じになっています。</p>
+            <br>
+            <p class="lh-1">次に紹介するのは<mark>百分率で割合をあらわしているとき、もとにする量の割合は\( 100 \)であることを利用</mark>するというものです。</p>
+            <p class="lh-1">今、「\( 40 \% \)を切り取りました」とあるので、残ったリボンの割合は\( 100 - 40 = 60 \% \)となります。</p>
+            <p class="lh-1">これを小数になおすと、\( 60 \div 100 = 0.6 \)となります。</p>
+            <p class="lh-1">この割合を使って残ったリボンの長さを計算すると、\( 250 \times 0.6 = 150 \mathrm{cm} \)となります。当然同じ答えです。</p>
+            <br>
+            <p class="lh-1">他の解き方の紹介は以上です。</p>
+            <p class="lh-1">ポイントは、もととなる量からの引き算ですね。小数のときは1、百分率のときは100から引けば、残りの量が出てきます。</p>
+            <p class="lh-1">どの解き方でも正しい答えが出るので、自分がわかりやすいと感じる解き方で解けるようになればとりあえずOKです。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="amount_to_compare_with_change_unit">比べる量と、その求め方(単位が異なる場合)</h2>
+            <p class="lh-1">お次も同じく比べる量を求める問題です。ただし、今回はもとにする量と、比べる量の単位が異なっているパターンになります。</p>
+            <p class="lh-1">このパターンでも割合のときと同じく、<mark>両方の単位をそろえる</mark>というのがポイントになってきます。</p>
+            <p class="lh-1">どちらにそろえるのか、そして、どのタイミングでそろえるのかに注目しながら見て言ってください。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1 problem_sentence">例題9: \( 40 \mathrm{kg} \)の\( 0.35 \)は\( \underline{\qquad\qquad} \mathrm{g} \)です。</p>
+            <p class="lh-1">ここでは問題に使われている単位は\( \mathrm{kg} \)ですが、答えとして求められているのは\( \mathrm{g} \)となっています。</p>
+            <p class="lh-1">そのため、計算のどこかで単位をかえてあげる必要があります。</p>
+            <p class="lh-1">ここでは、初めの段階でなおすやり方と、最後になおすやり方の2つで解いてみます。</p>
+            <br>
+            <p class="lh-1">まずは初めになおしてしまう解き方からです。</p>
+            <p class="lh-1">\( \mathrm{kg} \)を\( \mathrm{g} \)になおしたければ、\( 1000 \)をかければよいので、\( 40\mathrm{kg} = 40 \times 1000 = 40000 \mathrm{g} \)です。</p>
+            <p class="lh-1">あとは比べる量をもとめる公式を使うと、\( 40000 \mathrm{g} \)がもとにする量、\( 0.35 \)が割合なので、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 40000 \times 0.35 = 14000 \mathrm{g} \)と答えが求められます。</p>
+            <br>
+            <p class="lh-1">次はあとでなおす解き方です。</p>
+            <p class="lh-1">\( 40 \mathrm{kg} \)をもとにする量、\( 0.35 \)を割合とすると、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 40 \times 0.35 = 14 \mathrm{kg} \)となります。</p>
+            <p class="lh-1">これに\( \times 1000 \)をして単位を\( \mathrm{g} \)にかえると、</p>
+            <p class="lh-1">\( 14 \times 1000 = 14000 \mathrm{g} \)となります。当然上の解き方と同じ答えです。</p>
+            <br>
+            <p class="lh-1">このように、どちらの解き方でも答えを出すことは可能です。自分で理解しやすい方を使うようにしてください。</p>
+            <p class="lh-1">いずれにせよ、割合を求めていたときと同じく、単位を意識しながら解いていくようにしましょう。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">最後は、問題文が少しだけひねられている問題です。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題10: \( 30 \mathrm{m}^3 \)の水のうち、4割を減らしました。残った水は\( \underline{\qquad\qquad} \mathrm{cm^3} \)です。</p>
+            <br>
+            <p class="lh-1">ここまで来ると、やるべき計算も増えて大変になりますが、1つずつ確認していきましょう。</p>
+            <p class="lh-1">まずは歩合の4割を、決められた位置に数を当てはめて小数にもどすと、\( 0.4 \)となります。</p>
+            <p class="lh-1">次に減らした量を求めると、\( 30 \mathrm{m}^3 \)がもとにする量、\( 0.4 \)が割合なので、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 30 \times 0.4 = 12 \mathrm{m}^3 \)となります。</p>
+            <p class="lh-1">ここで、初めにあった水は\( 30 \mathrm{m}^3 \)なので、残った水は\( 30 - 12 = 18 \mathrm{m}^3 \)です。</p>
+            <p class="lh-1">最後にこれを指定された\( \mathrm{cm}^3 \)になおすと、\( 18 \times 1000000 = 18000000 \mathrm{cm}^3 \)となります。</p>
+            <br>
+            <p class="lh-1">なお、途中で書いた、割合の合計からはじめに引いてしまうやり方でも解くことができます。</p>
+            <p class="lh-1">4割を\( 0.4 \)になおすところまでは同じですが、そこから\( 1 - 0.4 = 0.6 \)と合計から引いてあげることで、残った水の割合になります。</p>
+            <p class="lh-1">もとにする量を\( 30 \mathrm{m}^3 \)、割合を\( 0.6 \)とすると、</p>
+            <p class="lh-1">(比べる量) = (もとにする量) \( \times \) (割合) \( = 30 \times 0.6 = 18 \mathrm{m}^3 \)と残った水が求められます。</p>
+            <p class="lh-1">あとは同じように単位をなおすと、\( 18 \times 1000000 = 18000000 \mathrm{m}^3 \)と答えが出ます。</p>
+            <br>
+            <p class="lh-1">また、はじめに\( 30 \mathrm{m}^3 \)を\( 30 \times 1000000 = 30000000 \mathrm{cm}^3 \)になおしてもよいでしょう。</p>
+            <p class="lh-1">そこからはいったん減らした量を求めてもよいですし、直接残った量を求めてもよいです。</p>
+            <p class="lh-1">ただし、この計算は数が大きくなりすぎています。正しく計算できれば問題なく答えがでますが、0の数にはくれぐれも注意するようにしてください。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="amount_to_compare_summary">比べる量のまとめ</h2>
+            <p class="lh-1">ここで割合についてまとめておきます。</p>
+            <ol class="list-group list-group-numbered list-group-flush">
+                <li class="list-group-item"><mark>比べる量は、(もとにする量) \( \times \) (割合)で求められる。ただし、この計算に使う割合は小数で表されたもの</mark></li>
+                <li class="list-group-item"><mark>比べる量と、もとにする量の単位が違うときは、どこかでそろえることを忘れないようにする</mark></li>
+            </ol>
+            <br>
+            <p class="lh-1">割合にくらべて、「残った～」や「減らした～」、あるいは「増やした～」のような表現を使った応用問題が出やすいです。確認しておきましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="standard_amount_without_change_unit">もとにする量と、その求め方(単位が同じ場合)</h2>
+            <p class="lh-1">最後にやるのはもとにする量を求める計算です。</p>
+            <p class="lh-1">公式は、「<mark>(もとにする量) \( = \) (比べる量) \( \div \) (割合)</mark>」です。</p>
+            <p class="lh-1">さっそく公式を確認していきましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題3: \( 40 \mathrm{cm} \)をもとにするとき、\( 10 \mathrm{cm} \)の割合を小数で表しなさい。</p>
+            <p class="lh-1">この問題の答えは、(割合) \( = \) (比べる量) \( \div \) (もとにする量) \( = 10 \div 40 = 0.25 \)でした。</p>
+            <p class="lh-1">ここで、もとにする量の公式を使ってみると、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 10 \div 0.25 = 40 \)で、きちんともとにする量の\( 40 \mathrm{cm} \)と等しくなっています。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">それではさっそく問題を見ていきましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題11: ある面積の紙のうち、\( 0.6 \)を運んだとき、その面積は\( 120 \mathrm{cm}^2 \)でした。運ぶ前の紙は、\( \underline{\qquad\qquad} \mathrm{cm}^2 \)です。</p>
+            <p class="lh-1">ここでは\( 0.6 \)が割合、\( 120 \mathrm{cm}^2 \)が比べる量なので、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 120 \div 0.6 = 200 \mathrm{cm}^2 \)となります。</p>
+            <p class="lh-1">ある面積をもとにする量としているのがポイントですね。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">さて、お次は少し表現が変わっている問題です。</p>
+            <p class="lh-1">くりかえしになりますが、<mark>百分率は小数になおしてからもとにする量の計算をする</mark>ようにしましょう。</p>
+            <p class="lh-1">また、与えられた割合は、<mark>あくまで残ったものの割合であることにも注意してください。</mark></p>
+            <br>
+            <p class="lh-1 problem_sentence">例題12: ある長さのリボンを\( 40 \% \)運んだところ、残りのリボンは\( 45 \mathrm{cm} \)でした。もとの長さは\( \underline{\qquad\qquad} \mathrm{cm} \)です。</p>
+            <p class="lh-1">まず、\( 40 \% \)を小数になおすと、\( 40 \div 100 = 0.4 \)となります。</p>
+            <p class="lh-1">小数の割合の合計は\( 1 \)なので、残ったリボンの割合は\( 1 - 0.4 = 0.6 \)となります。</p>
+            <p class="lh-1">最後に公式どおり計算すると、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 45 \div 0.6 = 75 \mathrm{cm} \)となります。</p>
+            <br>
+            <p class="lh-1">このように、与えられた割合を使って、すぐに公式の計算をするわけではない問題もあります。</p>
+            <p class="lh-1">目の前の割合が、いったい何を表しているのか？というのに気をつけながら公式を使うようにしましょう。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="standard_amount_with_change_unit">もとにする量と、その求め方(単位が異なる場合)</h2>
+            <p class="lh-1">お次はこれまでのように、単位がそろていないときの、もとにする量を求める計算を進めていきます</p>
+            <p class="lh-1">とはいっても、やることの基本はこれまでと変わらず、<mark>どこかで単位をなおしてから答えとする</mark>ことになります。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1 problem_sentence">例題13: ある重さの水の\( 0.7 \)にあたる量が\( 1.4 \mathrm{kg} \)でした。ある重さは\( \underline{\qquad\qquad} \mathrm{g} \)です。</p>
+            <p class="lh-1">今回の問題では、割合が\( 0.7 \)、比べる量が\( 1.4 \mathrm{kg} \)なので、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 1.4 \div 0.7 = 2 \mathrm{kg} \)となります。</p>
+            <p class="lh-1">あとは、指定された単位になおすと、\( 2 \times 1000 = 2000 \mathrm{g} \)です。</p>
+            <br>
+            <p class="lh-1">もちろん、初めに単位をなおしても問題なく答えが出ます。</p>
+            <p class="lh-1">\( 1.4 \mathrm{kg} \)を\( \mathrm{g} \)になおすと、\( 1.4 \times 1000 = 1400 \mathrm{g} \)となります。</p>
+            <p class="lh-1">\( 1400 \mathrm{g} \)が比べる量、\( 0.7 \)が割合なので、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 1400 \div 0.7 = 2000 \mathrm{g} \)が答えとなります。</p>
+            <br>
+            <p class="lh-1">これまでと同じく、どこかで単位をなおせば解けるようになっていますね。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">お次は少し、聞かれ方が変わった問題を見てみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題14: ある長さのテープの\( 25 \% \)を切り取って運ぶと、残りが\( 120 \mathrm{m} \)でした。もとのテープの長さは\( \underline{\qquad\qquad}  \mathrm{cm} \)です。</p>
+            <p class="lh-1">まずは例のごとく、百分率を小数の割合になおすと、\( 25 \div 100 = 0.25 \)となります。</p>
+            <p class="lh-1">次に、残ったテープの割合をもとめると、\( 1 - 0.25 = 0.75 \)となります。公式を使って計算すると、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 120 \div 0.75 = 160 \mathrm{m} \)となります。</p>
+            <p class="lh-1">最後に指定された単位になおすと、\( 160 \times 100 = 16000 \mathrm{cm} \)となります。これが答えです。</p>
+            <br>
+            <p class="lh-1">なお、初めに\( 100 - 25 = 75 \% \)で百分率で残りを求めて、そこから\( 75 \div 100 = 0.75 \)としても解けます。</p>
+            <p class="lh-1">いずれにしろ、与えられている長さは運んだ長さではなく、残りの長さなので、\( 25 \% \)のままでは計算できないことに注意しましょう。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">次の問題は、めずらしく量が増えているというものです。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題15: ある体積のオレンジジュースを2割増やしたところ、\( 300 \mathrm{m}^3 \)になりました。増やす前の体積は、\( \underline{\qquad\qquad} \mathrm{cm}^3 \)です。</p>
+            <p class="lh-1">まず、2割を小数になおすと、\( 0.2 \)となります。</p>
+            <p class="lh-1">ここで、この割合は増やす前の体積を\( 1 \)としたときのものなので、増やしたあとの体積は、\( 0.2 + 1 = 1.2 \)と表せます。</p>
+            <p class="lh-1">イメージとしては、以下のような感じです。</p>
+            <br>
+            <div id="jxgbox1" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
+            <p class="lh-1">\( 1.2 \)が\( 300 \mathrm{m}^3 \)と等しいので、公式を使うと、</p>
+            <p class="lh-1">(もとにする量) \( = \) (比べる量) \( \div \) (割合) \( = 300 \div 1.2 = 250 \mathrm{m}^3 \)となります。</p>
+            <p class="lh-1">最後に指定された単位になおすと、\( 250 \times 1000000 = 250000000 \mathrm{cm}^3 \)が答えとなります。</p>
+        </div>
+        
+        
+        <p class="lh-1"></p>
+        <p class="lh-1"></p>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="standard_amount_summary">もとにする量のまとめ</h2>
+            <p class="lh-1">もとにする量についてまとめておきます。</p>
+            <ol class="list-group list-group-numbered list-group-flush">
+                <li class="list-group-item"><mark>もとにする量は、(比べる量) \( \div \) (割合)で求められる。このときの割合は小数を使う</mark></li>
+                <li class="list-group-item"><mark>単位が異なっている場合は、単位をそろえてから計算する</mark></li>
+            </ol>
+            <p class="lh-1">どこが比べる量なのか？その割合が何なのか？に注意しながら解いていきましょう。</p>
+            <p class="lh-1">与えられた数字をそのまま使うだけでは解けないことがあります。</p>
+        </div>
+    </div>
+
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="line_segment_diagram">おまけ: 線分図を使った解き方</h2>
+            <p class="lh-1">ここまでで基本的な割合の解説は終わりなのですが、最後におまけとして線分図を使った解き方についても確認しておきます。</p>
+            <p class="lh-1">線分図はちょうど少し上で使った、文字通り線分(始まりと終わりがある線)を使った図のことを指します。</p>
+            <p class="lh-1">この線分図は、特に複雑な割合の問題で非常に便利な図です。</p>
+            <p class="lh-1">というのも、<mark>割合と数字を一度にまとめやすく、どのような問題かがわかりやすくなる</mark>からです。</p>
+        </div>
+        <div class="m-2 p-2 problem_section">
+            <p class="lh-1">これまでに解いた問題もまじえつつ、具体的な使い方を確認してみましょう。</p>
+            <br>
+            <p class="lh-1 problem_sentence">例題8: \( 250 \mathrm{cm} \)あったリボンのうち\( 40 \% \)を切り取りました。残りの長さは\( \underline{\qquad\qquad} \mathrm{cm} \)です。</p>
+            <p class="lh-1">この問題では、\( 250 \mathrm{cm} \)のリボンをもとの量、つまり1としています。</p>
+            <p class="lh-1">また、その\( 40 \% \)、つまり\( 40 \div 100 = 0.4 \)を切りとっているので、切り取る前とあわせて線分図に表すと、以下のようになります。</p>
+            <br>
+            <div id="jxgbox2" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
+            <p class="lh-1">もともとの長さが\( 1 \)なので、\( 0.4 \)切り取られたとき、残りの長さは\( 0.6 \)になります。</p>
+            <br>
+            <div id="jxgbox3" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
+            <p class="lh-1">公式を使って計算すると、</p>
+            <p class="lh-1">(比べる量) \( = \) (もとにする量) \( \times \) (割合) \( = 250 \times 0.4 = 100 \mathrm{cm} \)が答えです。</p>
+            <br>
+            <div id="jxgbox4" class="jxgbox" style="width: 500px; height: 500px;"></div>
+            <br>
+            <p class="lh-1">このように、線分図を使って割合と量を整理することで、どういう問題なのかがわかりやすくなります。</p>
+            <p class="lh-1">問題がわかりづらく感じたら、線分図を使ってみるとわかりやすくなるでしょう。</p>
+        </div>
+    </div>
+    <div class="row m-4 p-4 description_section">
+        <div class="m-2 p-2 problem_section">
+            <h2 class="text-muted h5" id="afterword">後書き</h2>
+            <p class="lh-1">以上で割合の問題の解説を終わります。</p>
+            <p class="lh-1">まずは公式を覚えること。そして、与えられた数字が何の量なのかを考えること。単位に気をつけること。</p>
+            <p class="lh-1">さらに、割合を計算に使うときには、きちんと小数になおすこと。</p>
+            <p class="lh-1">以上に気をつけながら、問題を解いていきましょう。</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

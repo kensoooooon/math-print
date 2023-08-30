@@ -19,6 +19,9 @@ urlpatterns = [
     ### 分母が同じ分数の計算 ###
     path('same_denominator_calculate/print', views.print_same_denominator_calculate_problem, name='same_denominator_calculate_print'),
     path('same_denominator_calculate/display', views.display_same_denominator_calculate_problem, name='same_denominator_calculate_display'),
+    ### 割り算 ###
+    path('division_for_elementary_school3/print', views.print_division_for_elementary_school3, name='division_for_elementary_school3_print'),
+    path('division_for_elementary_school3/display', views.display_division_for_elementary_school3, name='division_for_elementary_school3_display'),
     ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),

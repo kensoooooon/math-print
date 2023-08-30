@@ -41,6 +41,68 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col border-end border-bottom">
+            <p>割り算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">余りの有無</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="without_remainder" name="remainder_type" id="remainder_type_without_remainder" checked>
+                        <label class="form-check-label" for="remainder_type_without_remainder">
+                            余り無し
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="with_remainder" name="remainder_type" id="remainder_type_with_remainder" checked>
+                        <label class="form-check-label" for="remainder_type_with_remainder">
+                            余り有り
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">割られる数の桁数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="digit_of_divided_number" id="digit_of_divided_number_1" checked>
+                        <label class="form-check-label" for="digit_of_divided_number_1">
+                            1桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="digit_of_divided_number" id="digit_of_divided_number_2" checked>
+                        <label class="form-check-label" for="digit_of_divided_number_2">
+                            2桁
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SameDenominatorFractionCalculateFivePaperRadio" checked>
+                        <label class="form-check-label" for="SameDenominatorCalculateFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SameDenominatorFractionCalculateTenPaperRadio">
+                        <label class="form-check-label" for="SameDenominatorFractionCalculateTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SameDenominatorFractionCalculateFifteenPaperRadio">
+                        <label class="form-check-label" for="SameDenominatorFractionCalculateFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_for_elementary_school3_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'division_for_elementary_school3_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p>単位の変換</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

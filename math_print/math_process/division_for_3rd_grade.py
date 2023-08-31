@@ -1,8 +1,11 @@
 """
 8/30
 側作成
+
+8/31
+余りが制御できていない問題
 """
-from random import choice
+from random import choice, randint, random
 from typing import Dict, Tuple, Union
 
 import sympy as sy
@@ -25,38 +28,19 @@ class DivisionFor3rdGrade:
         Returns:
             latex_answer (str): latex形式で表記された割り算の答え
             latex_problem (str): latex形式で表示された割り算の問題の式
-        
-        Developing:
-            a = bq + r <=> a ÷ b = q 余り r
-                割られる数aは1or2桁(0含む)
-                割る数bは常に1桁
-                余りrはある場合とない場合がある
-                商qは上記を満たすもの
-                
-                割られる数ありきだと、余りが出る可能性がある？気がする
-                ->割られる数からその約数を生成して、余りがある場合はそこに+or-?
-                -->約数を出す方法は？<--sy.divisors(数)でリストが返ってくる
-                
-        from random import choice, randint, random
-        import sympy as sy
-
-        for _ in range(10):
-            digit_of_divided_number = choice([1, 2])
-            remainder_type = choice(["with_remainder", "without_remainder"])
-            print(remainder_type)
-            if digit_of_divided_number == 1:
-                a = randint(0, 9)
-            elif digit_of_divided_number == 2:
-                a = randint(10, 99)
-            b = randint(1, 9)
-            q, r = divmod(a, b)
-            if remainder_type == "without_remainder":
-                a = a - r
-                q, r = divmod(a, b)
-            print(f"{a} ÷ {b} = {q} ... {r}")
-            print("---------------------")
         """
-        latex_answer = "dummy answer"
-        latex_problem = "dummy problem"
+        if selected_digit_of_divided_number == 1:
+            divided_number = randint(0, 9)
+        elif selected_digit_of_divided_number == 2:
+            divided_number = randint(10, 99)
+        dividing_number = randint(1, 9)
+        quotient, remainder = divmod(divided_number, dividing_number)
+        if selected_remainder_type == "without_remainder":
+            divided_number = divided_number - remainder
+            quotient, remainder = divmod(divided_number, dividing_number)
+            latex_answer = f"\\( {sy.latex(quotient)} \\)"
+        elif selected_remainder_type == "with_remainder":
+            latex_answer = f"\\( {sy.latex(quotient)} \\) あまり \\( {sy.latex(remainder)} \\)"
+        latex_problem = f"\\( {sy.latex(divided_number)} \\div {sy.latex(dividing_number)} \\)"
         return latex_answer, latex_problem
     

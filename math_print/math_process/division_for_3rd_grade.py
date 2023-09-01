@@ -1,10 +1,3 @@
-"""
-8/30
-側作成
-
-8/31
-余りが制御できていない問題
-"""
 from random import choice, randint, random
 from typing import Dict, Tuple, Union
 

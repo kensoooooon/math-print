@@ -53,6 +53,7 @@ from .math_process.line_and_flat_positional_relationship import LineAndFlatPosit
 from .math_process.calculate_area_by_integration import CalculateAreaByIntegration
 from .math_process.logarithmic_equation import LogarithmicEquation
 from .math_process.ratio_problem import RatioProblem
+from .math_process.division_for_3rd_grade import DivisionFor3rdGrade
 
 
 def index(request):
@@ -1568,7 +1569,7 @@ def print_logarithmic_equation(request):
 
 
 def print_ratio(request):
-    """分数の倍や割合の問題のリクエスト受信と問題出力を担当
+    """割合の問題のリクエスト受信と問題出力を担当
 
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -1615,6 +1616,36 @@ def print_ratio(request):
     return render(request, 'math_print/elementary_school5/ratio/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
 
+def print_division_for_elementary_school3(request):
+    """小学3年生用の割り算のプリントの出力を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    remainder_types = request.POST.getlist("remainder_type")
+    if not(remainder_types):
+        remainder_types.append("without_remainder")
+        remainder_types.append("with_remainder")
+    digit_of_divided_numbers = request.POST.getlist("digit_of_divided_number")
+    if not(digit_of_divided_numbers):
+        digit_of_divided_numbers.append("1")
+        digit_of_divided_numbers.append("2")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(int(PROBLEM_NUMBER // 2)):
+            problem1 = DivisionFor3rdGrade(remainder_types=remainder_types, digit_of_divided_numbers=digit_of_divided_numbers)
+            problem2 = DivisionFor3rdGrade(remainder_types=remainder_types, digit_of_divided_numbers=digit_of_divided_numbers)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school3/division/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
+    
+    
 # display section
 
 def display_number_problem(request):
@@ -2900,6 +2931,32 @@ def display_ratio(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school5/ratio/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+
+def display_division_for_elementary_school3(request):
+    """小学3年生用の割り算の問題の表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    remainder_types = request.POST.getlist("remainder_type")
+    if not(remainder_types):
+        remainder_types.append("without_remainder")
+        remainder_types.append("with_remainder")
+    digit_of_divided_numbers = request.POST.getlist("digit_of_divided_number")
+    if not(digit_of_divided_numbers):
+        digit_of_divided_numbers.append("1")
+        digit_of_divided_numbers.append("2")
+    math_problem_tuple_list = []
+    for _ in range(int(PROBLEM_NUMBER // 2)):
+        problem1 = DivisionFor3rdGrade(remainder_types=remainder_types, digit_of_divided_numbers=digit_of_divided_numbers)
+        problem2 = DivisionFor3rdGrade(remainder_types=remainder_types, digit_of_divided_numbers=digit_of_divided_numbers)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school3/division/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+
 
 # explain part
 def explain_one_sixth_calculate_area_by_integration(request):

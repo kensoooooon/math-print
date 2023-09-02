@@ -33,14 +33,14 @@ function refresh() {
 {% endblock %}
 
 {% block title %}
-割り算
+たし算と引き算
 {% endblock %}
 
 {% block hero_unit %}
 <div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
     <div class="container">
         <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">割り算</p>
+        <p class="text-dark">たし算と引き算</p>
     </div>
 </div>
 {% endblock %}
@@ -48,17 +48,17 @@ function refresh() {
 {% block body %}
 <ol>
     <div class="container-fluid">
-        <p class="lh-1">次の計算をしましょう。わり切れないものは、あまりも出しましょう。</p>
+        <p class="lh-1">次の計算をしましょう。</p>
     {% for math_problem_tuple in math_problem_tuple_list %}
         <div class="row">
             <div class="col-md-6">
                 <li>
                     <p>
                         \( \quad \)
-                        {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
+                        \( {{ math_problem_tuple.0.latex_problem }} \)
                     </p>
                     <p class="answer" style="visibility:hidden;">
-                        {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
+                        \( {{ math_problem_tuple.0.latex_answer }} \)
                     </p>
                 </li>
             </div>
@@ -66,10 +66,10 @@ function refresh() {
                 <li>
                     <p>
                         \( \quad \)
-                        {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
+                        \( {{ math_problem_tuple.1.latex_problem }} \)
                     </p>
                     <p class="answer" style="visibility:hidden;">
-                        {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
+                        \( {{ math_problem_tuple.1.latex_answer }} \)
                     </p>
                 </li>
             </div>
@@ -81,7 +81,7 @@ function refresh() {
 <div class="d-grid gap-3 col-6 mx-auto">
     <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えをみる</button>
     <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もういちどとく</button>
-    <a href="{% url 'elementary_school3' %}#division_title" class="btn btn-primary" type="button">問題にもどる</a>
+    <a href="{% url 'elementary_school3' %}#addition_and_subrtraction_title" class="btn btn-primary" type="button">問題にもどる</a>
     <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップにもどる</a>
 </div>
 

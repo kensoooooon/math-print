@@ -41,6 +41,74 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col border-end border-bottom">
+            <p id="addition_and_subtraction_title">足し算・引き算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">出題される計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition" name="used_calculation" id="addition_used_calculation" checked>
+                        <label class="form-check-label" for="addition_used_calculation">
+                            足し算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="subtraction" name="used_calculation" id="subtraction_used_calculation" checked>
+                        <label class="form-check-label" for="subtraction_used_calculation">
+                            引き算
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">計算に使用される数の桁数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="digit_of_number" id="3_digit_of_number" checked>
+                        <label class="form-check-label" for="3_digit_of_number">
+                            3桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="4" name="digit_of_number" id="4_digit_of_number" checked>
+                        <label class="form-check-label" for="4_digit_of_number">
+                            4桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="5" name="digit_of_number" id="5_digit_of_number">
+                        <label class="form-check-label" for="5_digit_of_number">
+                            5桁
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="AdditionAndSubtractionFor3rdGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="AdditionAndSubtractionFor3rdGradeFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="AdditionAndSubtractionFor3rdGradeTenPaperRadio">
+                        <label class="form-check-label" for="AdditionAndSubtractionFor3rdGradeTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="AdditionAndSubtractionFor3rdGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="AdditionAndSubtractionFor3rdGradeFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'addition_and_subtraction_for_elementary_school3_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'addition_and_subtraction_for_elementary_school3_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p id="division_title">割り算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -77,20 +145,20 @@
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="SameDenominatorFractionCalculateFivePaperRadio" checked>
-                        <label class="form-check-label" for="SameDenominatorCalculateFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="DivisionFor3rdGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="DivisionFor3rdGradeFivePaperRadio">
                             20問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="SameDenominatorFractionCalculateTenPaperRadio">
-                        <label class="form-check-label" for="SameDenominatorFractionCalculateTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="DivisionFor3rdGradeTenPaperRadio">
+                        <label class="form-check-label" for="DivisionFor3rdGradeTenPaperRadio">
                             20問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="SameDenominatorFractionCalculateFifteenPaperRadio">
-                        <label class="form-check-label" for="SameDenominatorFractionCalculateFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="DivisionFor3rdGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="DivisionFor3rdGradeFifteenPaperRadio">
                             20問×15枚
                         </label>
                     </div>

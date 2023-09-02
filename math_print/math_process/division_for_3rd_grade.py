@@ -5,7 +5,18 @@ import sympy as sy
 
 
 class DivisionFor3rdGrade:
+    """指定された桁数や余りの有無などの条件に応じて、問題と解答を作成
+    
+    Attributes:
+        latex_answer (str): latex形式と文字列が混在した形で記述された解答
+        latex_problem (str): latex形式で記述された問題
+    """
     def __init__(self, **settings: Dict) -> None:
+        """初期設定
+        
+        Args:
+            settings (dict): 問題の設定を格納
+        """
         sy.init_printing(order="grevlex")
         selected_remainder_type = choice(settings["remainder_types"])
         if selected_remainder_type == "with_remainder":

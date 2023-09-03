@@ -22,6 +22,9 @@ urlpatterns = [
     ### 割り算 ###
     path('division_for_elementary_school3/print', views.print_division_for_elementary_school3, name='division_for_elementary_school3_print'),
     path('division_for_elementary_school3/display', views.display_division_for_elementary_school3, name='division_for_elementary_school3_display'),
+    ### 足し算 ###
+    path('addition_and_subtraction_for_elementary_school3/print', views.print_addition_and_subtraction_for_elementary_school3, name='addition_and_subtraction_for_elementary_school3_print'),
+    path('addition_and_subtraction_for_elementary_school3/display', views.display_addition_and_subtraction_for_elementary_school3, name='addition_and_subtraction_for_elementary_school3_display'),
     ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),

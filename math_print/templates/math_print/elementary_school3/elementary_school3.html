@@ -138,33 +138,38 @@
                             5桁
                         </label>
                     </div>
-                    <small class="text-muted">掛ける数の桁数</small>
-                    <div class="form-group">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="2" name="digit_of_multiplying_number" id="digit_of_multiplying_number_2" checked>
-                            <label class="form-check-label" for="digit_of_multiplying_number_2">
-                                2桁
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="3" name="digit_of_multiplying_number" id="digit_of_multiplying_number_3" checked>
-                            <label class="form-check-label" for="digit_of_multiplying_number_3">
-                                3桁
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="4" name="digit_of_multiplying_number" id="digit_of_multiplying_number_4">
-                            <label class="form-check-label" for="digit_of_multiplying_number_4">
-                                4桁
-                            </label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" value="5" name="digit_of_multiplying_number" id="digit_of_multiplying_number_5">
-                            <label class="form-check-label" for="digit_of_multiplying_number_5">
-                                5桁
-                            </label>
-                        </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('digit_of_multiplied_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('digit_of_multiplied_number')" value="全部はずし">
+                </div>
+                <small class="text-muted">掛ける数の桁数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="digit_of_multiplying_number" id="digit_of_multiplying_number_2" checked>
+                        <label class="form-check-label" for="digit_of_multiplying_number_2">
+                            2桁
+                        </label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="digit_of_multiplying_number" id="digit_of_multiplying_number_3" checked>
+                        <label class="form-check-label" for="digit_of_multiplying_number_3">
+                            3桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="4" name="digit_of_multiplying_number" id="digit_of_multiplying_number_4">
+                        <label class="form-check-label" for="digit_of_multiplying_number_4">
+                            4桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="5" name="digit_of_multiplying_number" id="digit_of_multiplying_number_5">
+                        <label class="form-check-label" for="digit_of_multiplying_number_5">
+                            5桁
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('digit_of_multiplying_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('digit_of_multiplying_number')" value="全部はずし">
+                </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
@@ -186,10 +191,11 @@
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_for_elementary_school3_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'division_for_elementary_school3_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'multiplication_for_elementary_school3_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'multiplication_for_elementary_school3_display' %}">      
             </form>
         </div>
+
         <div class="col border-end border-bottom">
             <p id="division_title">割り算</p>
             <form action="?" method="post" enctype="multipart/form-data">

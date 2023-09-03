@@ -55,6 +55,7 @@ from .math_process.logarithmic_equation import LogarithmicEquation
 from .math_process.ratio_problem import RatioProblem
 from .math_process.division_for_3rd_grade import DivisionFor3rdGrade
 from .math_process.addition_and_subtraction_for_3rd_grade import AdditionAndSubtractionFor3rdGrade
+from .math_process.multiplication import MultiplicationFor3rdGrade
 
 
 def index(request):
@@ -1648,7 +1649,7 @@ def print_division_for_elementary_school3(request):
 
 
 def print_addition_and_subtraction_for_elementary_school3(request):
-    """小学3年生用の割り算の問題のプリント表示を担当
+    """小学3年生用の足し算引き算の問題のプリント表示を担当
 
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -1677,6 +1678,39 @@ def print_addition_and_subtraction_for_elementary_school3(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school3/addition_and_subtraction/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
+
+def print_multiplication_for_elementary_school3(request):
+    """小学3年生用の掛け算の問題のプリント表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    digits_of_multiplied_number = request.POST.getlist("digit_of_multiplied_number")
+    if not(digits_of_multiplied_number):
+        digits_of_multiplied_number.append("2")
+        digits_of_multiplied_number.append("3")
+        digits_of_multiplied_number.append("4")
+        digits_of_multiplied_number.append("5")
+    digits_of_multiplying_number = request.POST.getlist("digit_of_multiplying_number")
+    if not(digits_of_multiplying_number):
+        digits_of_multiplying_number.append("2")
+        digits_of_multiplying_number.append("3")
+        digits_of_multiplying_number.append("4")
+        digits_of_multiplying_number.append("5")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = MultiplicationFor3rdGrade(digits_of_multiplied_number=digits_of_multiplied_number, digits_of_multiplying_number=digits_of_multiplying_number)
+            problem2 = MultiplicationFor3rdGrade(digits_of_multiplied_number=digits_of_multiplied_number, digits_of_multiplying_number=digits_of_multiplying_number)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school3/multiplication/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
 # display section
 
@@ -2991,7 +3025,7 @@ def display_division_for_elementary_school3(request):
 
 
 def display_addition_and_subtraction_for_elementary_school3(request):
-    """小学3年生用の割り算の問題の表示を担当
+    """小学3年生用の足し算引き算の問題の表示を担当
 
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -3015,6 +3049,36 @@ def display_addition_and_subtraction_for_elementary_school3(request):
         problem2 = AdditionAndSubtractionFor3rdGrade(used_calculations=used_calculations, digits_of_number=digits_of_number)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school3/addition_and_subtraction/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+
+def display_multiplication_for_elementary_school3(request):
+    """小学生用の掛け算の問題の表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素 
+    """
+    PROBLEM_NUMBER = 20
+    digits_of_multiplied_number = request.POST.getlist("digit_of_multiplied_number")
+    if not(digits_of_multiplied_number):
+        digits_of_multiplied_number.append("2")
+        digits_of_multiplied_number.append("3")
+        digits_of_multiplied_number.append("4")
+        digits_of_multiplied_number.append("5")
+    digits_of_multiplying_number = request.POST.getlist("digit_of_multiplying_number")
+    if not(digits_of_multiplying_number):
+        digits_of_multiplying_number.append("2")
+        digits_of_multiplying_number.append("3")
+        digits_of_multiplying_number.append("4")
+        digits_of_multiplying_number.append("5")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = MultiplicationFor3rdGrade(digits_of_multiplied_number=digits_of_multiplied_number, digits_of_multiplying_number=digits_of_multiplying_number)
+        problem2 = MultiplicationFor3rdGrade(digits_of_multiplied_number=digits_of_multiplied_number, digits_of_multiplying_number=digits_of_multiplying_number)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school3/multiplication/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+
 
 # explain part
 def explain_one_sixth_calculate_area_by_integration(request):

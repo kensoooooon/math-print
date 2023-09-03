@@ -109,6 +109,88 @@
 
     <div class="row">
         <div class="col border-end border-bottom">
+            <p id="multiplication_title">掛け算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">掛けられる数の桁数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="digit_of_multiplied_number" id="digit_of_multiplied_number_2" checked>
+                        <label class="form-check-label" for="digit_of_multiplied_number_2">
+                            2桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="digit_of_multiplied_number" id="digit_of_multiplied_number_3" checked>
+                        <label class="form-check-label" for="digit_of_multiplied_number_3">
+                            3桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="4" name="digit_of_multiplied_number" id="digit_of_multiplied_number_4">
+                        <label class="form-check-label" for="digit_of_multiplied_number_4">
+                            4桁
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="5" name="digit_of_multiplied_number" id="digit_of_multiplied_number_5">
+                        <label class="form-check-label" for="digit_of_multiplied_number_5">
+                            5桁
+                        </label>
+                    </div>
+                    <small class="text-muted">掛ける数の桁数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="2" name="digit_of_multiplying_number" id="digit_of_multiplying_number_2" checked>
+                            <label class="form-check-label" for="digit_of_multiplying_number_2">
+                                2桁
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="3" name="digit_of_multiplying_number" id="digit_of_multiplying_number_3" checked>
+                            <label class="form-check-label" for="digit_of_multiplying_number_3">
+                                3桁
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="4" name="digit_of_multiplying_number" id="digit_of_multiplying_number_4">
+                            <label class="form-check-label" for="digit_of_multiplying_number_4">
+                                4桁
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="5" name="digit_of_multiplying_number" id="digit_of_multiplying_number_5">
+                            <label class="form-check-label" for="digit_of_multiplying_number_5">
+                                5桁
+                            </label>
+                        </div>
+                    </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="DivisionFor3rdGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="DivisionFor3rdGradeFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="DivisionFor3rdGradeTenPaperRadio">
+                        <label class="form-check-label" for="DivisionFor3rdGradeTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="DivisionFor3rdGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="DivisionFor3rdGradeFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_for_elementary_school3_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'division_for_elementary_school3_display' %}">      
+            </form>
+        </div>
+        <div class="col border-end border-bottom">
             <p id="division_title">割り算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

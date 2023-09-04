@@ -29,6 +29,12 @@ urlpatterns = [
     path('multiplication_for_elementary_school3/print', views.print_multiplication_for_elementary_school3, name='multiplication_for_elementary_school3_print'),
     path('multiplication_for_elementary_school3/display', views.display_multiplication_for_elementary_school3, name='multiplication_for_elementary_school3_display'),
     ##########################################
+    ### 小4 ###
+    path('elementary_school4/', views.show_elementary_school4, name='elementary_school4'),
+    ### 1億を超える数の計算 ###
+    path('calculation_of_big_number/print', views.print_calculation_of_big_number, name='calculation_of_big_number_print'),
+    path('calculation_of_big_number/display', views.display_calculation_of_big_number, name='calculation_of_big_number_display'),
+    ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),
     ### 約分 ###

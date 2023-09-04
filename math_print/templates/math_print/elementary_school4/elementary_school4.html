@@ -1,0 +1,116 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+計算練習(小4)
+{% endblock %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+<script>
+function checkAllStatus(target){
+    let statuses = document.getElementsByName(target);
+
+    for (let i =0; i < statuses.length; i++){
+        if (!(statuses[i].checked)){
+            statuses[i].checked = true;
+        }
+    }
+}
+
+function uncheckAllStatus(target){
+    let statuses = document.getElementsByName(target);
+
+    for (let i =0; i < statuses.length; i++){
+        if (statuses[i].checked){
+            statuses[i].checked = false;
+        }
+    }
+}
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p id="calculation_of_big_number_title">1億を超える数の計算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">利用する数の大きさ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="billion" name="unit_of_used_number" id="billion_check" checked>
+                        <label class="form-check-label" for="billion_check">
+                            億
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="trillion" name="unit_of_used_number" id="trillion_check" checked>
+                        <label class="form-check-label" for="trillion_check">
+                            兆
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">登場する問題</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_chinese_numerical_to_alphanumeric" name="problem_type" id="from_chinese_numerical_to_alphanumeric_check" checked>
+                        <label class="form-check-label" for="from_chinese_numerical_to_alphanumeric_check">
+                            漢数字→算用数字
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_alphanumeric_to_chinese_numerical" name="problem_type" id="from_alphanumeric_to_chinese_numerical_check">
+                        <label class="form-check-label" for="from_alphanumeric_to_chinese_numerical_check">
+                            算用数字→漢数字
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FillInTheSquareFivePaperRadio" checked>
+                        <label class="form-check-label" for="FillInTheSquareFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FillInTheSquareTenPaperRadio">
+                        <label class="form-check-label" for="FillInTheSquareTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FillInTheSquareFifteenPaperRadio">
+                        <label class="form-check-label" for="FillInTheSquareFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'calculation_of_big_number_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'calculation_of_big_number_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <br>
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2023 有明学習振興</a></small>
+    </footer>
+</div>
+{% endblock %}

@@ -1,18 +1,50 @@
 """
-eg. 1023->千二十三
-eg2. 23584 ->二万三千五百八十四
-eg3. 12345678 -> 千二百三十四万 五千六百七十八
-eg4. 1234567891234 -> 1 2345 6789 1234 --> 一 兆 二千三百四十五 億 六千七百八十九 万 千二百三十四
+from random import randint
 
-4桁ずつ区切って、そこから何もなし→万→億→兆に切り替える？
--> 一の有りなし
--> 区切りの付け方
+def list_reversed_splitter(split_to_list, chunk_size):
+    for i in range(len(split_to_list), 0, -chunk_size):
+        right = i
+        if right - 4 < 0:
+            left = 0
+        else:
+            left = right - 4
+        yield split_to_list[left: right]
 
-# 4桁区切り
-str_num = "12"
-print(str_num[-4:])
-str_num2 = "1234567891234"
-print(str_num2[-4:])
+chinese_numerical_dict = {
+    "1": "一", "2": "二", "3": "三", "4": "四",
+    "5": "五", "6": "六", "7": "七", "8": "八", "9": "九"
+}
+
+num = randint(1, 10 ** 15)
+num_str = str(num)
+if len(num_str) % 4 == 0:
+    pass
+else:
+    empty = 4 - (len(num_str) % 4)
+    num_str = num_str.zfill(len(num_str) + empty)
+num_list = list(num_str)
+print(f"num_list: {num_list}")
+
+outer_replaced_nums = []
+for four_num, outer_japanese_unit in zip(list_reversed_splitter(num_list, 4), ["", "万", "億", "兆", "京"]):
+    replaced_num_str = ""
+    for num_str, japanese_unit in zip(four_num, ["千", "百", "十", ""]):
+        if num_str == "0":
+            continue
+        elif num_str == "1":
+            if japanese_unit == "":
+                replaced_num_str += chinese_numerical_dict[num_str]
+            else:
+                replaced_num_str += japanese_unit
+        else:
+            replaced_num_str += (chinese_numerical_dict[num_str] + japanese_unit)
+    if replaced_num_str == "千":
+        replaced_num_str = "一" + replaced_num_str
+    if replaced_num_str != "":
+        outer_replaced_nums.append(replaced_num_str + outer_japanese_unit)
+outer_replaced_nums.reverse()
+chinese_numerical_number = "".join(outer_replaced_nums)
+print(chinese_numerical_number)
 """
 
 from random import choice, randint

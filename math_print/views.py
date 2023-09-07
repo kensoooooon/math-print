@@ -1732,6 +1732,7 @@ def print_calculation_of_big_number(request):
     if not(units_of_used_number):
         units_of_used_number.append("billion")
         units_of_used_number.append("trillion")
+        units_of_used_number.append("ten_quadrillion")
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("from_chinese_numerical_to_alphanumeric")
@@ -3126,8 +3127,9 @@ def display_calculation_of_big_number(request):
     PROBLEM_NUMBER = 20
     units_of_used_number = request.POST.getlist("unit_of_used_number")
     if not(units_of_used_number):
-        units_of_used_number.append("billion")
+        units_of_used_number.append("hundred_million")
         units_of_used_number.append("trillion")
+        units_of_used_number.append("ten_quadrillion")
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("from_chinese_numerical_to_alphanumeric")

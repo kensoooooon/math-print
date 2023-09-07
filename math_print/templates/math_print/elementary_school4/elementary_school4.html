@@ -66,19 +66,27 @@ function uncheckAllStatus(target){
                             京
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('unit_of_used_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('unit_of_used_number')" value="全部はずし">
                 </div>
                 <small class="text-muted">登場する問題</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="from_chinese_numerical_to_alphanumeric" name="problem_type" id="from_chinese_numerical_to_alphanumeric_check" checked>
+                        <input class="form-check-input" type="checkbox" value="conversion_from_chinese_numerical_to_alphanumeric" name="problem_type" id="from_chinese_numerical_to_alphanumeric_check" checked>
                         <label class="form-check-label" for="from_chinese_numerical_to_alphanumeric_check">
-                            漢数字→算用数字
+                            漢数字→算用数字の変換
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="from_alphanumeric_to_chinese_numerical" name="problem_type" id="from_alphanumeric_to_chinese_numerical_check">
+                        <input class="form-check-input" type="checkbox" value="conversion_from_alphanumeric_to_chinese_numerical" name="problem_type" id="from_alphanumeric_to_chinese_numerical_check">
                         <label class="form-check-label" for="from_alphanumeric_to_chinese_numerical_check">
-                            算用数字→漢数字
+                            算用数字→漢数字の変換
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="unite_numbers" name="problem_type" id="unite_numbers_check">
+                        <label class="form-check-label" for="unite_numbers_check">
+                            あわせた数
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">

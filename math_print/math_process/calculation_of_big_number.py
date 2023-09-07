@@ -69,12 +69,14 @@ class CalculationOfBigNumber:
         """
         self._units_of_used_number = settings["units_of_used_number"]
         selected_problem_type = choice(settings["problem_types"])
-        if selected_problem_type == "from_chinese_numerical_to_alphanumeric":
-            self.latex_answer, self.latex_problem = self._make_from_chinese_numerical_to_alphanumeric_problem()
-        elif selected_problem_type == "from_alphanumeric_to_chinese_numerical":
-            self.latex_answer, self.latex_problem = self._make_from_alphanumeric_to_chinese_numerical_problem()
+        if selected_problem_type == "conversion_from_chinese_numerical_to_alphanumeric":
+            self.latex_answer, self.latex_problem = self._make_conversion_from_chinese_numerical_to_alphanumeric_problem()
+        elif selected_problem_type == "conversion_from_alphanumeric_to_chinese_numerical":
+            self.latex_answer, self.latex_problem = self._make_conversion_from_alphanumeric_to_chinese_numerical_problem()
+        elif selected_problem_type == "unite_numbers":
+            self.latex_answer, self.latex_problem = self._make_unite_numbers_problem()
     
-    def _make_from_chinese_numerical_to_alphanumeric_problem(self) -> Tuple[str, str]:
+    def _make_conversion_from_chinese_numerical_to_alphanumeric_problem(self) -> Tuple[str, str]:
         """漢数字からアラビア数字に直す問題と解答を作成
 
         Returns:
@@ -83,17 +85,17 @@ class CalculationOfBigNumber:
         """
         selected_unit = choice(self._units_of_used_number)
         if selected_unit == "hundred_million":
-            number = randint(1, 10 ** 12 - 1)
+            number = randint(1, 10 ** 5 - 1) * (10 ** 7)
         elif selected_unit == "trillion":
-            number = randint(1, 10 ** 16 - 1)
+            number = randint(1, 10 ** 5 - 1) * (10 ** 11)
         elif selected_unit == "ten_quadrillion":
-            number = randint(1, 10 ** 20 - 1)
+            number = randint(1, 10 ** 5 - 1) * (10 ** 15)
         chinese_numerical = self._convert_alphanumeric_into_chinese_numerical(number)
         latex_problem = f"{chinese_numerical}を数字に直しなさい。"
         latex_answer = f"\\( {sy.latex(number)} \\)"
         return latex_answer, latex_problem
     
-    def _make_from_alphanumeric_to_chinese_numerical_problem(self) -> Tuple[str, str]:
+    def _make_conversion_from_alphanumeric_to_chinese_numerical_problem(self) -> Tuple[str, str]:
         """アラビア数字から漢数字に直す問題と解答を作成
 
         Returns:
@@ -102,14 +104,45 @@ class CalculationOfBigNumber:
         """
         selected_unit = choice(self._units_of_used_number)
         if selected_unit == "hundred_million":
-            number = randint(1, 10 ** 12 - 1)
+            number = randint(1, 10 ** 5 - 1) * (10 ** 7)
         elif selected_unit == "trillion":
-            number = randint(1, 10 ** 16 - 1)
+            number = randint(1, 10 ** 5 - 1) * (10 ** 11)
         elif selected_unit == "ten_quadrillion":
-            number = randint(1, 10 ** 20 - 1)
+            number = randint(1, 10 ** 5 - 1) * (10 ** 15)
         chinese_numerical = self._convert_alphanumeric_into_chinese_numerical(number)
         latex_problem = f"\\( {sy.latex(number)} \\)を漢数字に直しなさい。"
         latex_answer = f"{chinese_numerical}"
+        return latex_answer, latex_problem
+    
+    def _make_unite_numbers_problem(self) -> Tuple[str, str]:
+        """「あわせた数」という形式で大きい数の計算を行う問題
+        
+        Returns:
+            latex_answer (str): latex形式の解答
+            latex_problem (str): latexと通常の文字列が混在した解答
+        """
+        latex_problem = ""
+        answer_number = 0
+        reversed_list = reversed(self._units_of_used_number)
+        for selected_unit in reversed_list:
+            # 10 ** 16
+            if selected_unit == "ten_quadrillion":
+                coeff = randint(1, 99) * 100
+                answer_number += coeff * (10 ** 16)
+                latex_problem += f"\\( 1 \\)京を\\( {sy.latex(coeff)} \\)こ、"
+            # 10 ** 12
+            elif selected_unit == "trillion":
+                coeff = randint(1, 99) * 100
+                answer_number += coeff * (10 ** 12)
+                latex_problem += f"\\( 1 \\)兆を\\( {sy.latex(coeff)} \\)こ、"
+            # 10 ** 8
+            elif selected_unit == "hundred_million":
+                coeff = randint(1, 99) * 100
+                answer_number += coeff * (10 ** 8)
+                latex_problem += f"\\( 1 \\)億を\\( {sy.latex(coeff)} \\)こ、"
+        latex_problem.rstrip("、")
+        latex_problem += "あわせた数を、数字で書きなさい。"
+        latex_answer = f"\\( {sy.latex(answer_number)} \\)"
         return latex_answer, latex_problem
     
     def _convert_alphanumeric_into_chinese_numerical(self, number: int) -> str:
@@ -122,7 +155,7 @@ class CalculationOfBigNumber:
             chinese_numerical (str): 変換された漢数字
         """
         def list_reserved_splitter_in_four_chunk(split_to_list: list) -> Generator:
-            """リストを逆順で、4つずつ分割して出力し、数に利用してもらう
+            """リストを逆順で、4つずつ分割して出力し、数の変換に利用してもらう
 
             Args:
                 split_to_list (list): 分割したいリスト

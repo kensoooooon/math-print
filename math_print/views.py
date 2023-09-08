@@ -1738,6 +1738,8 @@ def print_calculation_of_big_number(request):
         problem_types.append("conversion_from_chinese_numerical_to_alphanumeric")
         problem_types.append("conversion_from_alphanumeric_to_chinese_numerical")
         problem_types.append("unite_numbers")
+        problem_types.append("addition")
+        problem_types.append("subtraction")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -3136,6 +3138,8 @@ def display_calculation_of_big_number(request):
         problem_types.append("conversion_from_chinese_numerical_to_alphanumeric")
         problem_types.append("conversion_from_alphanumeric_to_chinese_numerical")
         problem_types.append("unite_numbers")
+        problem_types.append("addition")
+        problem_types.append("subtraction")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = CalculationOfBigNumber(units_of_used_number=units_of_used_number, problem_types=problem_types)

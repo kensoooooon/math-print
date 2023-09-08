@@ -180,8 +180,67 @@ class CalculationOfBigNumber:
         selected_unit = choice(self._units_of_used_number)
         if selected_unit == "hundred_million":
 
+
     def _convert_alphanumeric_into_chinese_numerical(self, number: int) -> str:
         """アラビア数字を漢数字に変換して出力する
+
+        Args:
+            number (int): 変換したいアラビア数字
+        
+        Returns:
+            chinese_numerical (str): 変換された漢数字
+        """
+        def list_reserved_splitter_in_four_chunk(split_to_list: list) -> Generator:
+            """リストを逆順で、4つずつ分割して出力し、数の変換に利用してもらう
+
+            Args:
+                split_to_list (list): 分割したいリスト
+
+            Yields:
+                Generator: 分割したリストを順次出してくれる
+            """
+            for i in range(len(split_to_list), 0, -4):
+                right = i
+                if right - 4 < 0:
+                    left = 0
+                else:
+                    left = right - 4
+                yield split_to_list[left: right]
+        
+        if number >= 10 ** 20:
+            raise ValueError(f"The number must be less than 10 ** 20.")
+        chinese_numerical_dict = {
+            "1": "一", "2": "二", "3": "三", "4": "四",
+            "5": "五", "6": "六", "7": "七", "8": "八", "9": "九"
+        }
+        number_str = str(number)
+        if len(number_str) % 4 == 0:
+            pass
+        else:
+            empty = 4 - (len(number_str) % 4)
+            number_str = number_str.zfill(len(number_str) + empty)
+        number_list = list(number_str)
+        replaced_numbers_with_outer_japanese_unit = []
+        for four_number_str, outer_japanese_unit in zip(list_reserved_splitter_in_four_chunk(number_list), ["", "万", "億", "兆", "京"]):
+            replaced_numbers_with_inner_japanese_unit = ""
+            for single_number_str, inner_japanese_unit in zip(four_number_str, ["千", "百", "十", ""]):
+                if single_number_str == "0":
+                    continue
+                elif single_number_str == "1":
+                    if inner_japanese_unit == "":
+                        replaced_numbers_with_inner_japanese_unit += chinese_numerical_dict[single_number_str]
+                    else:
+                        replaced_numbers_with_inner_japanese_unit += inner_japanese_unit
+                else:
+                    replaced_numbers_with_inner_japanese_unit += (chinese_numerical_dict[single_number_str] + inner_japanese_unit)
+            if replaced_numbers_with_inner_japanese_unit != "":
+                replaced_numbers_with_outer_japanese_unit.append(replaced_numbers_with_inner_japanese_unit + outer_japanese_unit)
+        replaced_numbers_with_outer_japanese_unit.reverse()
+        chinese_numerical = "".join(replaced_numbers_with_outer_japanese_unit)
+        return chinese_numerical
+
+    def _convert_alphanumeric_into_mixed(self, number: int) -> str:
+        """アラビア数字をに変換して出力する
 
         Args:
             number (int): 変換したいアラビア数字

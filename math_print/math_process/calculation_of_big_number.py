@@ -211,18 +211,24 @@ class CalculationOfBigNumber:
             --->安定はするだろうが、組み直しになる。また、計算と単位周りが正しく動くかは怪しい
         """
         selected_unit = choice(self._units_of_used_number)
-        coeff = randint(10 ** 2, 10 **  - 1) 
         # 10 ** 8 ~ 10 ** 12 - 1
         if selected_unit == "hundred_million":
+            coeff = randint(10 ** 2, 10 ** 6 - 1)
             multiplied_number = coeff * 10 ** 6
         # 10 ** 12 ~ 10 ** 16 - 1
         elif selected_unit == "trillion":
+            coeff = randint(10 ** 2, 10 ** 6 - 1)
             multiplied_number = coeff * 10 ** 10
-        # 10 ** 16 ~ 10 ** 20 - 1
+        # 10 ** 16 ~ 10 ** 20 - 1(less than 10 ** 2 if max)
         elif selected_unit == "ten_quadrillion":
+            coeff = randint(1, 10 ** 3 - 1)
+            print(f"coff: {coeff}")
             multiplied_number = coeff * 10 ** 14
+            print(f"multiplied_number: {multiplied_number}")
         mixed_multiplied_number = self._convert_alphanumeric_into_mixed_style(multiplied_number)
         multiplying_number = choice([10, 100, 1000])
+        if selected_unit == "ten_quadrillion":
+            print(f"multiplying_number: {multiplied_number}")
         latex_problem = f"{mixed_multiplied_number} \\( \\times {sy.latex(multiplying_number)} \\)"
         answer_number = multiplied_number * multiplying_number
         mixed_answer_number = self._convert_alphanumeric_into_mixed_style(answer_number)
@@ -315,7 +321,7 @@ class CalculationOfBigNumber:
                 else:
                     left = right - 4
                 yield number_str[left: right]
-        
+        print(f"number: {number}")
         if number >= 10 ** 20:
             raise ValueError(f"The number must be less than 10 ** 20.")
         number_str = str(number)
@@ -324,7 +330,7 @@ class CalculationOfBigNumber:
         for four_numbers_str, japanese_unit in zip(reverser_with_four_chunk(number_str), ["", "万", "億", "兆", "京"]):
             if four_numbers_str != "0000":
                 zero_removed_four_numbers_str = re.sub("^0+", "", four_numbers_str)
-                replaced_numbers_with_unit.append(zero_removed_four_numbers_str + japanese_unit)
+                replaced_numbers_with_unit.append(f"\\( {zero_removed_four_numbers_str} \\)" + japanese_unit)
         replaced_numbers_with_unit.reverse()
         mixed_number_str = "".join(replaced_numbers_with_unit)
         return mixed_number_str

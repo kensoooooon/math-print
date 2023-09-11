@@ -1,29 +1,5 @@
-"""
-import re
-
-def convert_alphanumeric_into_mixed_style(number):
-    def reverser_with_four_chunk(number_str):
-        for i in range(len(number_str), 0, -4):
-            right = i
-            if right - 4 < 0:
-                left = 0
-            else:
-                left = right - 4
-            yield number_str[left: right]
-    number_str = str(number)
-    replaced_numbers_with_unit = []
-    for four_numbers_str, japanese_unit in zip(reverser_with_four_chunk(number_str), ["", "万", "億", "兆", "京"]):
-        if four_numbers_str != "0000":
-            zero_removed_four_numbers_str = re.sub("^0+", "", four_numbers_str)
-            replaced_numbers_with_unit.append(zero_removed_four_numbers_str + japanese_unit)
-    replaced_numbers_with_unit.reverse()
-    replaced_numbers = "".join(replaced_numbers_with_unit)
-    return replaced_numbers
-
-sample_number = 703123001200989
-print(convert_alphanumeric_into_mixed_style(sample_number))
-"""
 from collections.abc import Generator
+from math import floor
 from random import choice, randint, random
 import re
 from typing import Dict, Tuple
@@ -202,13 +178,6 @@ class CalculationOfBigNumber:
         Returns:
             latex_answer (str): latex形式と通常の文字列が混在した解答
             latex_problem (str): latex形式と通常の文字列が混在した問題
-        
-        Developing:
-            ・eの表現を処理できていない
-            ->小数がきれいに計算できていない？、数が大きすぎる
-            
-            -->根本的には、万、億あたりで100000万のように計算させることもできなくはない
-            --->安定はするだろうが、組み直しになる。また、計算と単位周りが正しく動くかは怪しい
         """
         selected_unit = choice(self._units_of_used_number)
         # 10 ** 8 ~ 10 ** 12 - 1
@@ -222,22 +191,41 @@ class CalculationOfBigNumber:
         # 10 ** 16 ~ 10 ** 20 - 1(less than 10 ** 2 if max)
         elif selected_unit == "ten_quadrillion":
             coeff = randint(1, 10 ** 3 - 1)
-            print(f"coff: {coeff}")
             multiplied_number = coeff * 10 ** 14
-            print(f"multiplied_number: {multiplied_number}")
         mixed_multiplied_number = self._convert_alphanumeric_into_mixed_style(multiplied_number)
         multiplying_number = choice([10, 100, 1000])
-        if selected_unit == "ten_quadrillion":
-            print(f"multiplying_number: {multiplied_number}")
         latex_problem = f"{mixed_multiplied_number} \\( \\times {sy.latex(multiplying_number)} \\)"
         answer_number = multiplied_number * multiplying_number
         mixed_answer_number = self._convert_alphanumeric_into_mixed_style(answer_number)
         latex_answer = mixed_answer_number
         return latex_answer, latex_problem
     
-    def _make_division_problemk(self):
-        latex_answer = "dummy answer of division"
-        latex_problem = "dummy problem of diision"
+    def _make_division_problem(self):
+        """大きい数のわり算の問題と解答を出力
+        
+        Returns:
+            latex_answer (str): latex形式と通常の文字列が混在した解答
+            latex_problem (str): latex形式と通常の文字列が混在した問題
+        """
+        selected_unit = choice(self._units_of_used_number)
+        # 10 ** 8 ~ 10 ** 12 - 1
+        if selected_unit == "hundred_million":
+            coeff = randint(10 ** 2, 10 ** 6 - 1)
+            divided_number = coeff * 10 ** 6
+        # 10 ** 12 ~ 10 ** 16 - 1
+        elif selected_unit == "trillion":
+            coeff = randint(10 ** 2, 10 ** 6 - 1)
+            divided_number = coeff * 10 ** 10
+        # 10 ** 16 ~ 10 ** 20 - 1(less than 10 ** 2 if max)
+        elif selected_unit == "ten_quadrillion":
+            coeff = randint(10 ** 2, 10 ** 6 - 1)
+            divided_number = coeff * 10 ** 14
+        mixed_divided_number = self._convert_alphanumeric_into_mixed_style(divided_number)
+        dividing_number = choice([10, 100, 1000])
+        latex_problem = f"{mixed_divided_number} \\( \\div {sy.latex(dividing_number)} \\)"
+        answer_number = floor(divided_number / dividing_number)
+        mixed_answer_number = self._convert_alphanumeric_into_mixed_style(answer_number)
+        latex_answer = mixed_answer_number
         return latex_answer, latex_problem
 
     def _convert_alphanumeric_into_chinese_numerical(self, number: int) -> str:
@@ -321,11 +309,9 @@ class CalculationOfBigNumber:
                 else:
                     left = right - 4
                 yield number_str[left: right]
-        print(f"number: {number}")
         if number >= 10 ** 20:
             raise ValueError(f"The number must be less than 10 ** 20.")
         number_str = str(number)
-        print(f"number_str: {number_str}")
         replaced_numbers_with_unit = []
         for four_numbers_str, japanese_unit in zip(reverser_with_four_chunk(number_str), ["", "万", "億", "兆", "京"]):
             if four_numbers_str != "0000":

@@ -56,7 +56,7 @@ class CalculationOfBigNumber:
             # 10 ** 20
             number = randint(1, 10 ** 8 - 1) * (10 ** 12)
         chinese_numerical = self._convert_alphanumeric_into_chinese_numerical(number)
-        latex_problem = f"{chinese_numerical}を数字に直しなさい。"
+        latex_problem = f"{chinese_numerical}\nを数字に直しなさい。"
         latex_answer = f"\\( {sy.latex(number)} \\)"
         return latex_answer, latex_problem
     
@@ -78,7 +78,7 @@ class CalculationOfBigNumber:
             # 10 ** 20
             number = randint(1, 10 ** 8 - 1) * (10 ** 12)
         chinese_numerical = self._convert_alphanumeric_into_chinese_numerical(number)
-        latex_problem = f"\\( {sy.latex(number)} \\)を漢数字に直しなさい。"
+        latex_problem = f"\\( {sy.latex(number)} \\)\nを漢数字に直しなさい。"
         latex_answer = f"{chinese_numerical}"
         return latex_answer, latex_problem
     
@@ -110,10 +110,10 @@ class CalculationOfBigNumber:
                 latex_problem += f"\\( 1 \\)億を\\( {sy.latex(coeff)} \\)こ、"
         latex_problem = latex_problem.rstrip("、")
         if random() > 0.5:
-            latex_problem += "あわせた数を、数字で書きなさい。"
+            latex_problem += "\nあわせた数を、数字で書きなさい。"
             latex_answer = f"\\( {sy.latex(answer_number)} \\)"
         else:
-            latex_problem += "あわせた数を、漢数字で書きなさい。"
+            latex_problem += "\nあわせた数を、漢数字で書きなさい。"
             chinese_numerical = self._convert_alphanumeric_into_chinese_numerical(answer_number)
             latex_answer = chinese_numerical
         return latex_answer, latex_problem
@@ -141,7 +141,7 @@ class CalculationOfBigNumber:
             chinese_numerical1 = f"\\( {sy.latex(coeff1)} \\)兆"
             chinese_numerical2 = f"\\( {sy.latex(coeff2)} \\)兆"
             latex_answer = f"\\( {sy.latex(answer_number)} \\)兆"
-        latex_problem = f"{chinese_numerical1} + {chinese_numerical2}"
+        latex_problem = f"{chinese_numerical1} + {chinese_numerical2}\nを計算しなさい。"
         return latex_answer, latex_problem
     
     def _make_subtraction_problem(self) -> Tuple[str, str]:
@@ -169,7 +169,7 @@ class CalculationOfBigNumber:
             larger_chinese_numerical = f"\\( {sy.latex(larger_coeff)} \\)兆"
             smaller_chinese_numerical = f"\\( {sy.latex(smaller_coeff)} \\)兆"
             latex_answer = f"\\( {sy.latex(answer_number)} \\)兆"
-        latex_problem = f"{larger_chinese_numerical} - {smaller_chinese_numerical}"
+        latex_problem = f"{larger_chinese_numerical} - {smaller_chinese_numerical}\nを計算しなさい。"
         return latex_answer, latex_problem
     
     def _make_multiplication_problem(self) -> Tuple[str, str]:
@@ -194,7 +194,7 @@ class CalculationOfBigNumber:
             multiplied_number = coeff * 10 ** 14
         mixed_multiplied_number = self._convert_alphanumeric_into_mixed_style(multiplied_number)
         multiplying_number = choice([10, 100, 1000])
-        latex_problem = f"{mixed_multiplied_number} \\( \\times {sy.latex(multiplying_number)} \\)"
+        latex_problem = f"{mixed_multiplied_number} \\( \\times {sy.latex(multiplying_number)} \\)\nを計算しなさい。"
         answer_number = multiplied_number * multiplying_number
         mixed_answer_number = self._convert_alphanumeric_into_mixed_style(answer_number)
         latex_answer = mixed_answer_number
@@ -222,7 +222,7 @@ class CalculationOfBigNumber:
             divided_number = coeff * 10 ** 14
         mixed_divided_number = self._convert_alphanumeric_into_mixed_style(divided_number)
         dividing_number = choice([10, 100, 1000])
-        latex_problem = f"{mixed_divided_number} \\( \\div {sy.latex(dividing_number)} \\)"
+        latex_problem = f"{mixed_divided_number} \\( \\div {sy.latex(dividing_number)} \\)\nを計算しなさい。"
         answer_number = floor(divided_number / dividing_number)
         mixed_answer_number = self._convert_alphanumeric_into_mixed_style(answer_number)
         latex_answer = mixed_answer_number

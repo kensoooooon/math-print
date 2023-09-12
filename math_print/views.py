@@ -55,7 +55,8 @@ from .math_process.logarithmic_equation import LogarithmicEquation
 from .math_process.ratio_problem import RatioProblem
 from .math_process.division_for_3rd_grade import DivisionFor3rdGrade
 from .math_process.addition_and_subtraction_for_3rd_grade import AdditionAndSubtractionFor3rdGrade
-from .math_process.multiplication import MultiplicationFor3rdGrade
+from .math_process.multiplication_for_3rd_grade import MultiplicationFor3rdGrade
+from .math_process.calculation_of_big_number import CalculationOfBigNumber
 
 
 def index(request):
@@ -74,6 +75,9 @@ def about_me(request):
 # index
 def show_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
+
+def show_elementary_school4(request):
+    return render(request, 'math_print/elementary_school4/elementary_school4.html', {})
 
 def show_elementary_school5(request):
     return render(request, 'math_print/elementary_school5/elementary_school5.html', {})
@@ -1712,6 +1716,42 @@ def print_multiplication_for_elementary_school3(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school3/multiplication/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
 
+
+def print_calculation_of_big_number(request):
+    """1億を超える数を用いた計算問題のプリント表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    units_of_used_number = request.POST.getlist("unit_of_used_number")
+    if not(units_of_used_number):
+        units_of_used_number.append("billion")
+        units_of_used_number.append("trillion")
+        units_of_used_number.append("ten_quadrillion")
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("conversion_from_chinese_numerical_to_alphanumeric")
+        problem_types.append("conversion_from_alphanumeric_to_chinese_numerical")
+        problem_types.append("unite_numbers")
+        problem_types.append("addition")
+        problem_types.append("subtraction")
+        problem_types.append("multiplication")
+        problem_types.append("division")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = CalculationOfBigNumber(units_of_used_number=units_of_used_number, problem_types=problem_types)
+            problem2 = CalculationOfBigNumber(units_of_used_number=units_of_used_number, problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school4/calculation_of_big_number/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    
 # display section
 
 def display_number_problem(request):
@@ -3080,6 +3120,37 @@ def display_multiplication_for_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/multiplication/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
 
 
+def display_calculation_of_big_number(request):
+    """1億を超える数を用いた計算問題の表示を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素 
+    """
+    PROBLEM_NUMBER = 20
+    units_of_used_number = request.POST.getlist("unit_of_used_number")
+    if not(units_of_used_number):
+        units_of_used_number.append("hundred_million")
+        units_of_used_number.append("trillion")
+        units_of_used_number.append("ten_quadrillion")
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("conversion_from_chinese_numerical_to_alphanumeric")
+        problem_types.append("conversion_from_alphanumeric_to_chinese_numerical")
+        problem_types.append("unite_numbers")
+        problem_types.append("addition")
+        problem_types.append("subtraction")
+        problem_types.append("multiplication")
+        problem_types.append("division")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = CalculationOfBigNumber(units_of_used_number=units_of_used_number, problem_types=problem_types)
+        problem2 = CalculationOfBigNumber(units_of_used_number=units_of_used_number, problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school4/calculation_of_big_number/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+        
 # explain part
 def explain_one_sixth_calculate_area_by_integration(request):
     """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。

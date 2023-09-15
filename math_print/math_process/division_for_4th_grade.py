@@ -48,21 +48,45 @@ class DivisionFor4thGrade:
                 "digit of divided number must be digit of dividing number or more."
                 )
         min_of_divided_number = 10 ** (selected_digit_of_divided_number - 1)
+        print(f"min_of_divided_number: {min_of_divided_number}")
         max_of_divided_number = 10 ** selected_digit_of_divided_number - 1
+        print(f"max_of_divided_number: {max_of_divided_number}")
         divided_number = randint(min_of_divided_number, max_of_divided_number)
+        print(f"divided_number: {divided_number}")
+        min_of_dividing_number = 10 ** (selected_digit_of_dividing_number - 1)
+        max_of_dividing_number = 10 ** selected_digit_of_dividing_number - 1
+        """
+        divisors = []
+        for divisor in sy.divisors(divided_number):
+            if min_of_dividing_number <= divisor:
+                divisors.append(divisor)
+        """
+        divisors_set = set(sy.divisors(divided_number)) - set(range(1, min_of_dividing_number))
         if with_remainder:
-            min_of_dividing_number = 10 ** (selected_digit_of_dividing_number - 1)
-            max_of_dividing_number = 10 ** selected_digit_of_dividing_number - 1
-            divisors = [divisor for divisor in sy.divisors(divided_number) if min_of_dividing_number < divisor < max_of_dividing_number]
-            dividing_numbers = [dividing_number for dividing_number in range(min_of_dividing_number, max_of_dividing_number + 1) if dividing_number not in divisors]
-            dividing_number = choice(dividing_numbers)
+            print("with_remainder")
+            print(f"divisors_set: {divisors_set}")
+            # dividing_numbers = [dividing_number for dividing_number in range(min_of_dividing_number, divided_number + 1) if dividing_number not in divisors]
+            dividing_numbers_without_divisors = set(range(min_of_dividing_number, divided_number + 1)) - divisors_set
+            print(f"dividing_numbers_without_divisors: {dividing_numbers_without_divisors}")
+            if not(dividing_numbers_without_divisors):
+                dividing_number = 1
+            else:
+                dividing_number = choice(list(dividing_numbers_without_divisors))
+            print(f"dividing_number: {dividing_number}")
             quotient, remainder = divmod(divided_number, dividing_number)
+            print(f"quotient: {quotient}, remainder: {remainder}")
             if remainder == 0:
-                raise ValueError(f"remainder is {remainder}. It must not be 0.")
-            latex_answer = f"\\( {quotient} \\) あまり \\( {remainder} \\)"
+                latex_answer = f"\\( {quotient} \\)"
+            else:
+                latex_answer = f"\\( {quotient} \\) あまり \\( {remainder} \\)"
         else:
-            min_of_dividing_number = 10 ** (selected_digit_of_dividing_number - 1)
-            # here
-        latex_answer = "dummy answer in division."
-        latex_problem = "dummy problem in division."
+            print("without_remainder")
+            print(f"divisors_set: {divisors_set}")
+            dividing_number = choice(list(divisors_set))
+            print(f"dividing_number: {dividing_number}")
+            quotient, remainder = divmod(divided_number, dividing_number)
+            print(f"quotient: {quotient}, remainder: {remainder}")
+            latex_answer = f"\\( {quotient} \\)"
+        print("--------------------------------")
+        latex_problem = f"\\( {divided_number} \\div {dividing_number} \\)"
         return latex_answer, latex_problem

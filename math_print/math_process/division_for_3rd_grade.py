@@ -48,7 +48,7 @@ class DivisionFor3rdGrade:
             quotient, remainder = divmod(divided_number, dividing_number)
             if remainder == 0:
                 raise ValueError(f"remainder is {remainder}. It must not be 0.")
-            latex_answer = f"\\( {quotient} \\) あまり\\( {remainder} \\)"
+            latex_answer = f"\\( {quotient} \\) あまり \\( {remainder} \\)"
         else:
             if selected_digit_of_divided_number == 1:
                 divided_number = randint(0, 9)

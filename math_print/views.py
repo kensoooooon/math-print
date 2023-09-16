@@ -58,6 +58,7 @@ from .math_process.addition_and_subtraction_for_3rd_grade import AdditionAndSubt
 from .math_process.multiplication_for_3rd_grade import MultiplicationFor3rdGrade
 from .math_process.calculation_of_big_number import CalculationOfBigNumber
 from .math_process.division_for_4th_grade import DivisionFor4thGrade
+from .math_process.addition_and_subtraciton_of_decimal_for_4thgrade import AdditionAndSubtractionOfDecimalFor4thGrade
 
 
 def index(request):
@@ -1791,6 +1792,38 @@ def print_division_for_elementary_school4(request):
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school4/division/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
+
+
+def print_addition_and_subtraction_of_decimal_for_elementary_school4(request):
+    """小学4年生用の小数の足し算と引き算の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    calculation_types = request.POST.getlist("calculation_type")
+    if not(calculation_types):
+        calculation_types.append("addition")
+        calculation_types.append("subtraction")
+    numbers_of_decimal_places = request.POST.getlist("number_of_decimal_places")
+    if not(numbers_of_decimal_places):
+        numbers_of_decimal_places.append("1")
+        numbers_of_decimal_places.append("2")
+        numbers_of_decimal_places.append("3")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = AdditionAndSubtractionOfDecimalFor4thGrade(calculation_types=calculation_types, numbers_of_decimal_places=numbers_of_decimal_places)
+            problem2 = AdditionAndSubtractionOfDecimalFor4thGrade(calculation_types=calculation_types, numbers_of_decimal_places=numbers_of_decimal_places)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 # display section
 
 def display_number_problem(request):
@@ -3224,8 +3257,36 @@ def display_division_for_elementary_school4(request):
             digits_of_divided_number=digits_of_divided_number, digits_of_dividing_number=digits_of_dividing_number)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school4/division/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
-        
-# explain part
+
+def display_addition_and_subtraction_of_decimal_for_elementary_school4(request):
+    """小学4年生用の小数の足し算と引き算の問題の表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    calculation_types = request.POST.getlist("calculation_type")
+    if not(calculation_types):
+        calculation_types.append("addition")
+        calculation_types.append("subtraction")
+    numbers_of_decimal_places = request.POST.getlist("number_of_decimal_places")
+    if not(numbers_of_decimal_places):
+        numbers_of_decimal_places.append("1")
+        numbers_of_decimal_places.append("2")
+        numbers_of_decimal_places.append("3")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = AdditionAndSubtractionOfDecimalFor4thGrade(calculation_types=calculation_types, numbers_of_decimal_places=numbers_of_decimal_places)
+        problem2 = AdditionAndSubtractionOfDecimalFor4thGrade(calculation_types=calculation_types, numbers_of_decimal_places=numbers_of_decimal_places)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_decimal/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    
+
+
+# explain section
 def explain_one_sixth_calculate_area_by_integration(request):
     """平面上の面積を、1/6公式を使って求める問題の解き方の解説を担当。
     

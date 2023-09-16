@@ -185,6 +185,8 @@ function uncheckAllStatus(target){
                             3桁
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('digit_of_divided_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('digit_of_divided_number')" value="全部はずし">
                 </div>
                 <small class="text-muted">割る数の桁数</small>
                 <div class="form-group">
@@ -206,6 +208,8 @@ function uncheckAllStatus(target){
                             3桁
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('digit_of_dividing_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('digit_of_dividing_number')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
@@ -231,7 +235,77 @@ function uncheckAllStatus(target){
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_for_elementary_school4_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'division_for_elementary_school4_display' %}">      
             </form>
-        </div>a
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p id="addition_and_subtraction_of_decimal_title">小数の足し算・引き算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">出題される計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition" name="calculation_type" id="calculation_type_addition" checked>
+                        <label class="form-check-label" for="calculation_type_addition">
+                            足し算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="subtraction" name="calculation_type" id="calculation_type_subtraciton" checked>
+                        <label class="form-check-label" for="calculation_type_subtraciton">
+                            引き算
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">使われる小数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="number_of_decimal_places" id="number_of_decimal_places_1">
+                        <label class="form-check-label" for="number_of_decimal_places_1">
+                            小数第一位
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="number_of_decimal_places" id="number_of_decimal_places_2" checked>
+                        <label class="form-check-label" for="number_of_decimal_places_2">
+                            小数第二位
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="number_of_decimal_places" id="number_of_decimal_places_3">
+                        <label class="form-check-label" for="number_of_decimal_places_3">
+                            小数第三位
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('number_of_decimal_places')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('number_of_decimal_places')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="AdditionAndSubtractionOfDecimalFor4thGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="AdditionAndSubtractionOfDecimalFor4thGradeFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="AdditionAndSubtractionOfDecimalFor4thGradeTenPaperRadio">
+                        <label class="form-check-label" for="AdditionAndSubtractionOfDecimalFor4thGradeTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="AdditionAndSubtractionOfDecimalFor4thGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="AdditionAndSubtractionOfDecimalFor4thGradeFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'addition_and_subtraction_of_decimal_for_elementary_school4_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'addition_and_subtraction_of_decimal_for_elementary_school4_display' %}">      
+            </form>
+        </div>
     </div>
 
     <br>

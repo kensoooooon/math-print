@@ -1,16 +1,6 @@
-"""
-概形はおおむね
-
-0.2 - 0.2 = 0.0
-や
-0.30000000
-に要対処
-
-下は正規表現でアレしたが、いっそ全てsy.Floatですればうまくいく？←要検証
-"""
 from random import randint, choice
-import re
 from typing import Dict, Tuple
+
 
 import sympy as sy
 
@@ -28,6 +18,7 @@ class AdditionAndSubtractionOfDecimalFor4thGrade:
         Args:
             settings (dict): 問題の設定を格納
         """
+        sy.init_printing(order="grevlex")
         numbers_of_decimal_places = settings["numbers_of_decimal_places"]
         selected_calculation_type = choice(settings["calculation_types"])
         if selected_calculation_type == "addition":
@@ -49,11 +40,7 @@ class AdditionAndSubtractionOfDecimalFor4thGrade:
         number1 = self._random_decimal_maker(number_of_decimal_places1)
         number_of_decimal_places2 = int(choice(numbers_of_decimal_places))
         number2 = self._random_decimal_maker(number_of_decimal_places2)
-        if number_of_decimal_places1 >= number_of_decimal_places2:
-            answer = round(number1 + number2, number_of_decimal_places1)
-        else:
-            answer = round(number1 + number2, number_of_decimal_places2)
-        answer_str = re.sub("0+$", "", sy.latex(answer))
+        answer = (number1 + number2).round(6)
         latex_answer = f"= {sy.latex(answer)}"
         latex_problem = f"{sy.latex(number1)} + {sy.latex(number2)}"
         return latex_answer, latex_problem
@@ -76,11 +63,7 @@ class AdditionAndSubtractionOfDecimalFor4thGrade:
             bigger_number, smaller_number = number1, number2
         else:
             bigger_number, smaller_number = number2, number1
-        if number_of_decimal_places1 >= number_of_decimal_places2:
-            answer = round(bigger_number - smaller_number, number_of_decimal_places1)
-        else:
-            answer = round(bigger_number - smaller_number, number_of_decimal_places2)
-        answer_str = re.sub("0+$", "", sy.latex(answer))
+        answer = (bigger_number - smaller_number).round(6)
         latex_answer = f"= {sy.latex(answer)}"
         latex_problem = f"{sy.latex(bigger_number)} - {sy.latex(smaller_number)}"
         return latex_answer, latex_problem
@@ -98,11 +81,11 @@ class AdditionAndSubtractionOfDecimalFor4thGrade:
             ValueError: 1,2,3以外の実装されていない桁数が指定されたときに挙上
         """
         if number_of_decimal_places == 1:
-            decimal_number = round(randint(1, 9) * 0.1, 1)
+            decimal_number = sy.Float(randint(1, 9) * 0.1)
         elif number_of_decimal_places == 2:
-            decimal_number = round(randint(0, 9) * 0.1 + randint(1, 9) * 0.01, 2)
+            decimal_number = sy.Float(randint(0, 9) * 0.1 + randint(1, 9) * 0.01)
         elif number_of_decimal_places == 3:
-            decimal_number = round(randint(0, 9) * 0.1 + randint(0, 9) * 0.01 + randint(1, 9) * 0.001, 3)
+            decimal_number = sy.Float(randint(0, 9) * 0.1 + randint(0, 9) * 0.01 + randint(1, 9) * 0.001)
         else:
             raise ValueError(f"'number_of_decimal_places' is {number_of_decimal_places}. It must be 1, 2 or 3.")
         return decimal_number

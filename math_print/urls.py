@@ -37,6 +37,9 @@ urlpatterns = [
     ### 割り算 ###
     path('division_for_elementary_school4/print', views.print_division_for_elementary_school4, name='division_for_elementary_school4_print'),
     path('division_for_elementary_school4/display', views.display_division_for_elementary_school4, name='division_for_elementary_school4_display'),
+    ### 足し算・引き算 ###
+    path('addition_and_subtraction_of_decimal_for_elementary_school4/print', views.print_addition_and_subtraction_of_decimal_for_elementary_school4, name='addition_and_subtraction_of_decimal_for_elementary_school4_print'),
+    path('addition_and_subtraction_of_decimal_for_elementary_school4/display', views.display_addition_and_subtraction_of_decimal_for_elementary_school4, name='addition_and_subtraction_of_decimal_for_elementary_school4_display'),
     ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),

@@ -1,4 +1,5 @@
 from random import randint, choice
+import re
 from typing import Dict, Tuple, Union
 
 
@@ -18,6 +19,7 @@ class MultiplicationOfDecimalFor4thGrade:
         Args:
             settings (dict): 問題の設定を格納
         """
+        sy.init_printing(order="grevlex")
         selected_multiplied_number_of_decimal_places = int(choice(settings["multiplied_numbers_of_decimal_places"]))
         selected_multiplying_number_of_decimal_places = int(choice(settings["multiplying_numbers_of_decimal_places"]))
         self.latex_answer, self.latex_problem = self._make_problem(selected_multiplied_number_of_decimal_places, selected_multiplying_number_of_decimal_places)
@@ -36,7 +38,8 @@ class MultiplicationOfDecimalFor4thGrade:
         multiplied_number = self._make_random_number(multiplied_number_of_decimal_places)
         multiplying_number = self._make_random_number(multiplying_number_of_decimal_places)
         answer = multiplied_number * multiplying_number
-        latex_answer = f"= {sy.latex(answer)}"
+        answer_str = re.sub(".0+$", "", sy.latex(answer))
+        latex_answer = f"= {answer_str}"
         latex_problem = f"{sy.latex(multiplied_number)} \\times {sy.latex(multiplying_number)}"
         return latex_answer, latex_problem
 

@@ -263,19 +263,19 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="1" name="number_of_decimal_places" id="number_of_decimal_places_1">
                         <label class="form-check-label" for="number_of_decimal_places_1">
-                            小数第一位
+                            小数第1位まで続く小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="2" name="number_of_decimal_places" id="number_of_decimal_places_2" checked>
                         <label class="form-check-label" for="number_of_decimal_places_2">
-                            小数第二位
+                            小数第2位まで続く小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="3" name="number_of_decimal_places" id="number_of_decimal_places_3">
                         <label class="form-check-label" for="number_of_decimal_places_3">
-                            小数第三位
+                            小数第3位まで続く小数
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('number_of_decimal_places')" value="全部のせ">
@@ -304,6 +304,93 @@ function uncheckAllStatus(target){
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'addition_and_subtraction_of_decimal_for_elementary_school4_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'addition_and_subtraction_of_decimal_for_elementary_school4_display' %}">      
+            </form>
+        </div>
+        <div class="col border-end border-bottom">
+            <p id="multiplication_of_decimal_title">小数のかけ算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">かけられる数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="0" name="multiplied_number_of_decimal_places" id="multiplied_number_of_decimal_places_0">
+                        <label class="form-check-label" for="multiplied_number_of_decimal_places_0">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="multiplied_number_of_decimal_places" id="multiplied_number_of_decimal_places_1" checked>
+                        <label class="form-check-label" for="multiplied_number_of_decimal_places_1">
+                            小数第1位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="multiplied_number_of_decimal_places" id="multiplied_number_of_decimal_places_2" checked>
+                        <label class="form-check-label" for="multiplied_number_of_decimal_places_2">
+                            小数第2位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="multiplied_number_of_decimal_places" id="multiplied_number_of_decimal_places_3">
+                        <label class="form-check-label" for="multiplied_number_of_decimal_places_3">
+                            小数第3位まで続く小数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('multiplied_number_of_decimal_places')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('multiplied_number_of_decimal_places')" value="全部はずし">
+                </div>
+                <small class="text-muted">かける数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="0" name="multiplying_number_of_decimal_places" id="multiplying_number_of_decimal_places_0" checked>
+                        <label class="form-check-label" for="multiplying_number_of_decimal_places_0">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="multiplying_number_of_decimal_places" id="multiplying_number_of_decimal_places_1">
+                        <label class="form-check-label" for="multiplying_number_of_decimal_places_1">
+                            小数第1位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="multiplying_number_of_decimal_places" id="multiplying_number_of_decimal_places_2">
+                        <label class="form-check-label" for="multiplying_number_of_decimal_places_2">
+                            小数第2位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="multiplying_number_of_decimal_places" id="multiplying_number_of_decimal_places_3">
+                        <label class="form-check-label" for="multiplying_number_of_decimal_places_3">
+                            小数第3位まで続く小数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('multiplying_number_of_decimal_places')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('multiplying_number_of_decimal_places')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="MultiplicationOfDecimalFor4thGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="MultiplicationOfDecimalFor4thGradeFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="MultiplicationOfDecimalFor4thGradeTenPaperRadio">
+                        <label class="form-check-label" for="MultiplicationOfDecimalFor4thGradeTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="MultiplicationOfDecimalFor4thGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="MultiplicationOfDecimalFor4thGradeFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'multiplication_of_decimal_for_elementary_school4_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'multiplication_of_decimal_for_elementary_school4_display' %}">      
             </form>
         </div>
     </div>

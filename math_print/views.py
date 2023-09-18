@@ -58,7 +58,9 @@ from .math_process.addition_and_subtraction_for_3rd_grade import AdditionAndSubt
 from .math_process.multiplication_for_3rd_grade import MultiplicationFor3rdGrade
 from .math_process.calculation_of_big_number import CalculationOfBigNumber
 from .math_process.division_for_4th_grade import DivisionFor4thGrade
-from .math_process.addition_and_subtraciton_of_decimal_for_4thgrade import AdditionAndSubtractionOfDecimalFor4thGrade
+from .math_process.addition_and_subtraction_of_decimal_for_4th_grade import AdditionAndSubtractionOfDecimalFor4thGrade
+from .math_process.multiplication_of_decimal_for_4th_grade import MultiplicationOfDecimalFor4thGrade
+
 
 
 def index(request):
@@ -1824,6 +1826,40 @@ def print_addition_and_subtraction_of_decimal_for_elementary_school4(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+
+def print_multiplication_of_decimal_for_elementary_school4(request):
+    """小学4年生用の小数の足し算と引き算の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    multiplied_numbers_of_decimal_places = request.POST.getlist("multiplied_number_of_decimal_places")
+    if not(multiplied_numbers_of_decimal_places):
+        multiplied_numbers_of_decimal_places.append("0")
+        multiplied_numbers_of_decimal_places.append("1")
+        multiplied_numbers_of_decimal_places.append("2")
+        multiplied_numbers_of_decimal_places.append("3")
+    multiplying_numbers_of_decimal_places = request.POST.getlist("multiplying_number_of_decimal_places")
+    if not(multiplying_numbers_of_decimal_places):
+        multiplying_numbers_of_decimal_places.append("0")
+        multiplying_numbers_of_decimal_places.append("1")
+        multiplying_numbers_of_decimal_places.append("2")
+        multiplying_numbers_of_decimal_places.append("3")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = MultiplicationOfDecimalFor4thGrade(multiplied_numbers_of_decimal_places=multiplied_numbers_of_decimal_places, multiplying_numbers_of_decimal_places=multiplying_numbers_of_decimal_places)
+            problem2 = MultiplicationOfDecimalFor4thGrade(multiplied_numbers_of_decimal_places=multiplied_numbers_of_decimal_places, multiplying_numbers_of_decimal_places=multiplying_numbers_of_decimal_places)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school4/multiplication_of_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 # display section
 
 def display_number_problem(request):
@@ -3285,6 +3321,34 @@ def display_addition_and_subtraction_of_decimal_for_elementary_school4(request):
     return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_decimal/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     
 
+def display_multiplication_of_decimal_for_elementary_school4(request):
+    """小学4年生用の小数のかけ算の問題の表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    multiplied_numbers_of_decimal_places = request.POST.getlist("multiplied_number_of_decimal_places")
+    if not(multiplied_numbers_of_decimal_places):
+        multiplied_numbers_of_decimal_places.append("0")
+        multiplied_numbers_of_decimal_places.append("1")
+        multiplied_numbers_of_decimal_places.append("2")
+        multiplied_numbers_of_decimal_places.append("3")
+    multiplying_numbers_of_decimal_places = request.POST.getlist("multiplying_number_of_decimal_places")
+    if not(multiplying_numbers_of_decimal_places):
+        multiplying_numbers_of_decimal_places.append("0")
+        multiplying_numbers_of_decimal_places.append("1")
+        multiplying_numbers_of_decimal_places.append("2")
+        multiplying_numbers_of_decimal_places.append("3")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = MultiplicationOfDecimalFor4thGrade(multiplied_numbers_of_decimal_places=multiplied_numbers_of_decimal_places, multiplying_numbers_of_decimal_places=multiplying_numbers_of_decimal_places)
+        problem2 = MultiplicationOfDecimalFor4thGrade(multiplied_numbers_of_decimal_places=multiplied_numbers_of_decimal_places, multiplying_numbers_of_decimal_places=multiplying_numbers_of_decimal_places)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school4/multiplication_of_decimal/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

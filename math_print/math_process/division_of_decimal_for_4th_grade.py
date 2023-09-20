@@ -9,6 +9,33 @@ number = truncate_decimal(0.12345, 2)
 print(number)
 print(f"float_number: {sy.Float(number)}")
 print(f"latex_number: {sy.latex(sy.Float(number))}")
+
+from random import randint
+import sympy as sy
+
+
+def random_decimal(number_of_decimal_places):
+    integer_part = randint(1, 50)
+    if number_of_decimal_places == 0:
+        number = sy.Integer(integer_part)
+    elif number_of_decimal_places == 1:
+        decimal_part = randint(1, 9) * sy.Float(0.1)
+        number = integer_part + decimal_part
+    elif number_of_decimal_places == 2:
+        decimal_part = randint(0, 9) * sy.Float(0.1) + randint(1, 9) * sy.Float(0.01)
+        number = integer_part + decimal_part
+    elif number_of_decimal_places == 3:
+        decimal_part = randint(0, 9) * sy.Float(0.1) + randint(0, 9) * sy.Float(0.01) + randint(1, 9) * sy.Float(0.001)
+        number = integer_part + decimal_part
+    return number
+
+for _ in range(10):
+    number_of_decimal_places = randint(0, 3)
+    print(f"number_of_decimal_places: {number_of_decimal_places}")
+    random_number = random_decimal(number_of_decimal_places)
+    print(f"random_number: {random_number}")
+    print(f"latex_number: {sy.latex(random_number)}")
+    print("----------------------------------")
 """
 from random import randint, choice
 from typing import Dict, Tuple, Union
@@ -54,6 +81,7 @@ class DivisionOfDecimalFor4thGrade:
         Returns:
             tuple: 解答と問題(latex_answer, latex_problem)
         """
+        # 6.8, 
         divided_number, divided_number_latex = self._random_number(divided_number_of_decimal_places)
         dividing_number, dividing_number_latex = self._random_number(dividing_number_of_decimal_places)
         latex_problem = f"\\( {divided_number_latex} \\div {dividing_number_latex} \\)"

@@ -1,3 +1,15 @@
+"""
+from random import randint
+import sympy as sy
+
+def truncate_decimal(number, decimal_places):
+    return sy.floor(number * 10 ** decimal_places) / 10 ** decimal_places
+
+number = truncate_decimal(0.12345, 2)
+print(number)
+print(f"float_number: {sy.Float(number)}")
+print(f"latex_number: {sy.latex(sy.Float(number))}")
+"""
 from random import randint, choice
 from typing import Dict, Tuple, Union
 
@@ -42,8 +54,12 @@ class DivisionOfDecimalFor4thGrade:
         Returns:
             tuple: 解答と問題(latex_answer, latex_problem)
         """
-        divided_number = self._random_number(divided_number_of_decimal_places)
-        dividing_number = self._random_number(divi)
+        divided_number, divided_number_latex = self._random_number(divided_number_of_decimal_places)
+        dividing_number, dividing_number_latex = self._random_number(dividing_number_of_decimal_places)
+        latex_problem = f"\\( {divided_number_latex} \\div {dividing_number_latex} \\)"
+        answer = divided_number / dividing_number
+        truncated_answer, truncated_answer_latex = self._truncate_decimal(answer, 2)
+        remainder = 
         return latex_answer, latex_problem
 
     def _random_number(self, number_of_decimal_places: int) -> Union[sy.Integer, sy.Float]:
@@ -56,11 +72,26 @@ class DivisionOfDecimalFor4thGrade:
             Union[sy.Integer, sy.Float]: 整数のときはsy.Integer, 小数のときはsy.Floatをそれぞれ返す
         """
         if number_of_decimal_places == 0:
-            integer_number = sy.Integer(randint(1, 9))
-            return integer_number
+            number = sy.Rational(randint(1, 9), 1)
+            number_latex = sy.latex(sy.Float(number))
         else:
             numerator = randint(10 ** (number_of_decimal_places - 1), 10 ** number_of_decimal_places - 1)
             denominator = 10 ** number_of_decimal_places
-            rational = sy.Rational(numerator, denominator)
-            float_number = sy.Float(rational)
-            return float_number
+            number = sy.Rational(numerator, denominator)
+            number_latex = sy.latex(sy.Float(number))
+        return number, number_latex
+
+    def _truncate_decimal(self, number: sy.Rational, number_of_decimal_places: int) -> str:
+        """指定された桁数より下を切り捨てた小数の文字列を出力
+
+        Args:
+            number (sy.Rational): _description_
+            number_of_decimal_places (int): _description_
+
+        Returns:
+            tuple: 計算用の数と文字列(floored_number, str_number)
+        """
+        float_number = sy.Float(number)
+        floored_number = sy.floor(float_number * 10 ** number_of_decimal_places) / 10 ** number_of_decimal_places
+        str_number = sy.latex(sy.Float(floored_number))
+        return floored_number, str_number

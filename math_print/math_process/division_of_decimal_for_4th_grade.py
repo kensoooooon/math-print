@@ -49,6 +49,41 @@ for _ in range(3):
     print(f"remainder: {remainder}")
     print(f"latex_remainder: {sy.latex(remainder)}")
     print("----------------------------------")
+    
+
+# conversion
+from random import randint, uniform
+import sympy as sy
+
+
+def truncate_decimal(number, decimal_places):
+    return sy.floor(number * 10 ** decimal_places) / 10 ** decimal_places
+
+def random_decimal(number_of_decimal_places):
+    integer_part = randint(1, 50)
+    if number_of_decimal_places == 0:
+        number = sy.Integer(integer_part)
+    elif number_of_decimal_places == 1:
+        decimal_part = randint(1, 9) * sy.Float(0.1)
+        number = integer_part + decimal_part
+    elif number_of_decimal_places == 2:
+        decimal_part = randint(0, 9) * sy.Float(0.1) + randint(1, 9) * sy.Float(0.01)
+        number = integer_part + decimal_part
+    elif number_of_decimal_places == 3:
+        decimal_part = randint(0, 9) * sy.Float(0.1) + randint(0, 9) * sy.Float(0.01) + randint(1, 9) * sy.Float(0.001)
+        number = integer_part + decimal_part
+    return number
+
+
+# a = bq + r <=> a ÷ b = q ... r
+b = random_decimal(0)
+print(f"b: {b}")
+q = random_decimal(1)
+print(f"q: {q}")
+r = uniform(0, 0.1 * q)
+print(f"r: {r}")
+truncated_r = truncate_decimal(r, 1)
+print(f"truncated_r: {truncated_r}")
 """
 from random import randint, choice
 from typing import Dict, Tuple, Union

@@ -5,15 +5,6 @@ import sympy as sy
 def truncate_decimal(number, decimal_places):
     return sy.floor(number * 10 ** decimal_places) / 10 ** decimal_places
 
-number = truncate_decimal(0.12345, 2)
-print(number)
-print(f"float_number: {sy.Float(number)}")
-print(f"latex_number: {sy.latex(sy.Float(number))}")
-
-from random import randint
-import sympy as sy
-
-
 def random_decimal(number_of_decimal_places):
     integer_part = randint(1, 50)
     if number_of_decimal_places == 0:
@@ -29,12 +20,34 @@ def random_decimal(number_of_decimal_places):
         number = integer_part + decimal_part
     return number
 
-for _ in range(10):
-    number_of_decimal_places = randint(0, 3)
-    print(f"number_of_decimal_places: {number_of_decimal_places}")
-    random_number = random_decimal(number_of_decimal_places)
-    print(f"random_number: {random_number}")
-    print(f"latex_number: {sy.latex(random_number)}")
+for _ in range(3):
+    dividing_number_of_decimal_places = randint(0, 3)
+    print(f"dividing_number_of_decimal_places: {dividing_number_of_decimal_places}")
+    dividing_number = random_decimal(dividing_number_of_decimal_places)
+    print(f"dividing_number: {dividing_number}")
+    print(f"dividing_latex_number: {sy.latex(dividing_number)}")
+    print("-----------")
+    divided_number_of_decimal_places = randint(0, 3)
+    print(f"divided_number_of_decimal_places: {divided_number_of_decimal_places}")
+    divided_number = random_decimal(divided_number_of_decimal_places)
+    print(f"divided_number: {divided_number}")
+    print(f"divided_latex_number: {sy.latex(divided_number)}")
+    print("-----------")
+    answer = divided_number / dividing_number
+    print(f"answer: {answer}")
+    truncated_answer = truncate_decimal(answer, 2)
+    print(f"truncated_answer: {truncated_answer}")
+    floated_truncated_answer = sy.Float(truncated_answer)
+    print(f"floated_truncated_answer: {floated_truncated_answer}")
+    floated_truncated_latex_answer = sy.latex(floated_truncated_answer)
+    print(f"floated_truncated_latex_answer: {floated_truncated_latex_answer}")
+    print("-----------")
+    # a ÷ b = q ... r
+    # a = bq + r
+    # r = a - bq
+    remainder = divided_number - dividing_number * floated_truncated_answer
+    print(f"remainder: {remainder}")
+    print(f"latex_remainder: {sy.latex(remainder)}")
     print("----------------------------------")
 """
 from random import randint, choice

@@ -125,6 +125,22 @@ print(f"remainder_with_rounded3_answer: {remainder_with_rounded3_answer}")
 remainder_with_rounded4_answer = divided_number - dividing_number * rounded4_answer
 print(f"remainder_with_rounded4_answer: {remainder_with_rounded4_answer}")
 print("------------------------")
+
+import sympy as sy
+
+num1 = sy.N(sy.Float(58.1), 4)
+print(f"num1: {num1}")
+print(f"latex_num1: {sy.latex(num1)}")
+num2 = sy.Integer(27)
+print(f"num2: {num2}")
+print(f"latex_num2: {sy.latex(num2)}")
+print("--------")
+answer = num1 / num2
+print(f"answer: {answer}")
+print(f"num2 * answer: {num2 * answer}")
+remainder = num1 - num2 * answer
+print(f"remainder: {remainder}")
+print("--------------------")
 """
 from random import randint, choice
 from typing import Dict, Tuple, Union

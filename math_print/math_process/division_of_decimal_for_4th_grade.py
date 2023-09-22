@@ -84,6 +84,47 @@ r = uniform(0, 0.1 * q)
 print(f"r: {r}")
 truncated_r = truncate_decimal(r, 1)
 print(f"truncated_r: {truncated_r}")
+
+
+
+import sympy as sy
+
+# divided_number = sy.N(sy.Float(9.3), 2)
+divided_number = sy.Float(9.3)
+print(f"divided_number: {divided_number}")
+dividing_number = sy.Integer(38)
+print(f"dividing_number: {dividing_number}")
+answer = (divided_number / dividing_number).round(2)
+print(f"answer: {answer}")
+remainder = divided_number - dividing_number * answer
+print(f"remainder: {remainder}")
+print("------------------------")
+
+divided_number = sy.Float(9.3)
+print(f"divided_number: {divided_number}")
+dividing_number = sy.Integer(38)
+print(f"dividing_number: {dividing_number}")
+answer = divided_number / dividing_number
+print(f"answer: {answer}")
+rounded1_answer = answer.round(1)
+print(f"rounded1_answer: {rounded1_answer}")
+rounded2_answer = answer.round(2)
+print(f"rounded2_answer: {rounded2_answer}")
+rounded3_answer = answer.round(3)
+print(f"rounded3_answer: {rounded3_answer}")
+rounded4_answer = answer.round(4)
+print(f"rounded4_answer: {rounded4_answer}")
+remainder_with_answer = divided_number - dividing_number * answer
+print(f"remainder_with_answer: {remainder_with_answer}")
+remainder_with_rounded1_answer = divided_number - dividing_number * rounded1_answer
+print(f"remainder_with_rounded1_answer: {remainder_with_rounded1_answer}")
+remainder_with_rounded2_answer = divided_number - dividing_number * rounded2_answer
+print(f"remainder_with_rounded2_answer: {remainder_with_rounded2_answer}")
+remainder_with_rounded3_answer = divided_number - dividing_number * rounded3_answer
+print(f"remainder_with_rounded3_answer: {remainder_with_rounded3_answer}")
+remainder_with_rounded4_answer = divided_number - dividing_number * rounded4_answer
+print(f"remainder_with_rounded4_answer: {remainder_with_rounded4_answer}")
+print("------------------------")
 """
 from random import randint, choice
 from typing import Dict, Tuple, Union
@@ -133,10 +174,17 @@ class DivisionOfDecimalFor4thGrade:
         dividing_number, dividing_number_latex = self._random_number(dividing_number_of_decimal_places)
         latex_problem = f"\\( {divided_number_latex} \\div {dividing_number_latex} \\)"
         answer = divided_number / dividing_number
-        truncated_answer, truncated_answer_latex = self._truncate_decimal(answer, 2)
-        remainder = divided_number - truncated_answer * dividing_number
-        truncated_remainder, truncated_remainder_latex = self._truncate_decimal(remainder, 3)
-        latex_answer = f"\\( {truncated_answer_latex} \\) あまり \\( {truncated_remainder_latex} \\)"
+        # truncated_answer, truncated_answer_latex = self._truncate_decimal(answer, 2)
+        rounded_answer = sy.N(answer, 3)
+        print(f"rounded_answer: {rounded_answer}, type: {type(rounded_answer)}")
+        rounded_answer_latex = sy.latex(rounded_answer)
+        remainder = divided_number - rounded_answer * dividing_number
+        # truncated_remainder, truncated_remainder_latex = self._truncate_decimal(remainder, 3)
+        rounded_remainder = sy.N(remainder, 3)
+        print(f"rounded_remainder: {rounded_remainder}, type: {type(rounded_remainder)}")
+        print("----------------------------")
+        rounded_remainder_latex = sy.latex(rounded_remainder)
+        latex_answer = f"\\( {rounded_answer_latex} \\) あまり \\( {rounded_remainder_latex} \\)"
         return latex_answer, latex_problem
 
     def _random_number(self, number_of_decimal_places: int) -> Tuple[Union[sy.Integer, sy.Float], str]:
@@ -172,3 +220,6 @@ class DivisionOfDecimalFor4thGrade:
         floored_number = sy.floor(float_number * 10 ** number_of_decimal_places) / 10 ** number_of_decimal_places
         str_number = sy.latex(sy.Float(floored_number))
         return floored_number, str_number
+    
+    def _round_decimal(self, number, number_of_decimal_places):
+        pass

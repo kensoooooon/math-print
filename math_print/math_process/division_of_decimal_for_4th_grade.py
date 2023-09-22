@@ -128,17 +128,18 @@ class DivisionOfDecimalFor4thGrade:
 
         Returns:
             tuple: 解答と問題(latex_answer, latex_problem)
-        """
-        # 6.8, 
+        """ 
         divided_number, divided_number_latex = self._random_number(divided_number_of_decimal_places)
         dividing_number, dividing_number_latex = self._random_number(dividing_number_of_decimal_places)
         latex_problem = f"\\( {divided_number_latex} \\div {dividing_number_latex} \\)"
         answer = divided_number / dividing_number
         truncated_answer, truncated_answer_latex = self._truncate_decimal(answer, 2)
-        remainder = 
+        remainder = divided_number - truncated_answer * dividing_number
+        truncated_remainder, truncated_remainder_latex = self._truncate_decimal(remainder, 3)
+        latex_answer = f"\\( {truncated_answer_latex} \\) あまり \\( {truncated_remainder_latex} \\)"
         return latex_answer, latex_problem
 
-    def _random_number(self, number_of_decimal_places: int) -> Union[sy.Integer, sy.Float]:
+    def _random_number(self, number_of_decimal_places: int) -> Tuple[Union[sy.Integer, sy.Float], str]:
         """指定された小数点以下の桁数が保証された小数(整数含む)を出力
 
         Args:
@@ -148,8 +149,8 @@ class DivisionOfDecimalFor4thGrade:
             Union[sy.Integer, sy.Float]: 整数のときはsy.Integer, 小数のときはsy.Floatをそれぞれ返す
         """
         if number_of_decimal_places == 0:
-            number = sy.Rational(randint(1, 9), 1)
-            number_latex = sy.latex(sy.Float(number))
+            number = sy.Integer(randint(1, 20))
+            number_latex = sy.latex(number)
         else:
             numerator = randint(10 ** (number_of_decimal_places - 1), 10 ** number_of_decimal_places - 1)
             denominator = 10 ** number_of_decimal_places
@@ -157,7 +158,7 @@ class DivisionOfDecimalFor4thGrade:
             number_latex = sy.latex(sy.Float(number))
         return number, number_latex
 
-    def _truncate_decimal(self, number: sy.Rational, number_of_decimal_places: int) -> str:
+    def _truncate_decimal(self, number: sy.Rational, number_of_decimal_places: int) -> Tuple[sy.Rational, str]:
         """指定された桁数より下を切り捨てた小数の文字列を出力
 
         Args:

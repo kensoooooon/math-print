@@ -1877,30 +1877,39 @@ def print_division_of_decimal_for_elementary_school4(request):
     if not(remainder_types):
         remainder_types.append("without_remainder")
         remainder_types.append("with_remainder")
-    divided_numbers_of_decimal_places = request.POST.getlist("divided_number_of_decimal_places")
-    if not(divided_numbers_of_decimal_places):
-        divided_numbers_of_decimal_places.append("0")
-        divided_numbers_of_decimal_places.append("1")
-        divided_numbers_of_decimal_places.append("2")
-        divided_numbers_of_decimal_places.append("3")
-    dividing_numbers_of_decimal_places = request.POST.getlist("dividing_number_of_decimal_places")
-    if not(dividing_numbers_of_decimal_places):
-        dividing_numbers_of_decimal_places.append("0")
-        dividing_numbers_of_decimal_places.append("1")
-        dividing_numbers_of_decimal_places.append("2")
-        dividing_numbers_of_decimal_places.append("3")
+    decimal_places_of_divided_number = request.POST.getlist("decimal_places_of_divided_number")
+    if not(decimal_places_of_divided_number):
+        decimal_places_of_divided_number.append("0")
+        decimal_places_of_divided_number.append("1")
+        decimal_places_of_divided_number.append("2")
+        decimal_places_of_divided_number.append("3")
+    decimal_places_of_dividing_number = request.POST.getlist("decimal_places_of_dividing_number")
+    if not(decimal_places_of_dividing_number):
+        decimal_places_of_dividing_number.append("0")
+        decimal_places_of_dividing_number.append("1")
+        decimal_places_of_dividing_number.append("2")
+        decimal_places_of_dividing_number.append("3")
+    decimal_places_of_quotient = request.POST.getlist("decimal_places_of_quotient")
+    if not(decimal_places_of_quotient):
+        decimal_places_of_quotient.append("1")
+        decimal_places_of_quotient.append("2")
+        decimal_places_of_quotient.append("3")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
             problem1 = DivisionOfDecimalFor4thGrade(
                 remainder_types=remainder_types,
-                divided_numbers_of_decimal_places=divided_numbers_of_decimal_places,
-                dividing_numbers_of_decimal_places=dividing_numbers_of_decimal_places)
+                decimal_places_of_divided_number=decimal_places_of_divided_number,
+                decimal_places_of_dividing_number=decimal_places_of_dividing_number,
+                decimal_places_of_quotient=decimal_places_of_quotient
+                )
             problem2 = DivisionOfDecimalFor4thGrade(
                 remainder_types=remainder_types,
-                divided_numbers_of_decimal_places=divided_numbers_of_decimal_places,
-                dividing_numbers_of_decimal_places=dividing_numbers_of_decimal_places)            
+                decimal_places_of_divided_number=decimal_places_of_divided_number,
+                decimal_places_of_dividing_number=decimal_places_of_dividing_number,
+                decimal_places_of_quotient=decimal_places_of_quotient
+                )          
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school4/division_of_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
@@ -3410,28 +3419,37 @@ def display_division_of_decimal_for_elementary_school4(request):
     if not(remainder_types):
         remainder_types.append("without_remainder")
         remainder_types.append("with_remainder")
-    divided_numbers_of_decimal_places = request.POST.getlist("divided_number_of_decimal_places")
-    if not(divided_numbers_of_decimal_places):
-        divided_numbers_of_decimal_places.append("0")
-        divided_numbers_of_decimal_places.append("1")
-        divided_numbers_of_decimal_places.append("2")
-        divided_numbers_of_decimal_places.append("3")
-    dividing_numbers_of_decimal_places = request.POST.getlist("dividing_number_of_decimal_places")
-    if not(dividing_numbers_of_decimal_places):
-        dividing_numbers_of_decimal_places.append("0")
-        dividing_numbers_of_decimal_places.append("1")
-        dividing_numbers_of_decimal_places.append("2")
-        dividing_numbers_of_decimal_places.append("3")
+    decimal_places_of_divided_number = request.POST.getlist("decimal_places_of_divided_number")
+    if not(decimal_places_of_divided_number):
+        decimal_places_of_divided_number.append("0")
+        decimal_places_of_divided_number.append("1")
+        decimal_places_of_divided_number.append("2")
+        decimal_places_of_divided_number.append("3")
+    decimal_places_of_dividing_number = request.POST.getlist("decimal_places_of_dividing_number")
+    if not(decimal_places_of_dividing_number):
+        decimal_places_of_dividing_number.append("0")
+        decimal_places_of_dividing_number.append("1")
+        decimal_places_of_dividing_number.append("2")
+        decimal_places_of_dividing_number.append("3")
+    decimal_places_of_quotient = request.POST.getlist("decimal_places_of_quotient")
+    if not(decimal_places_of_quotient):
+        decimal_places_of_quotient.append("1")
+        decimal_places_of_quotient.append("2")
+        decimal_places_of_quotient.append("3")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = DivisionOfDecimalFor4thGrade(
             remainder_types=remainder_types,
-            divided_numbers_of_decimal_places=divided_numbers_of_decimal_places,
-            dividing_numbers_of_decimal_places=dividing_numbers_of_decimal_places)
+            decimal_places_of_divided_number=decimal_places_of_divided_number,
+            decimal_places_of_dividing_number=decimal_places_of_dividing_number,
+            decimal_places_of_quotient=decimal_places_of_quotient
+            )
         problem2 = DivisionOfDecimalFor4thGrade(
             remainder_types=remainder_types,
-            divided_numbers_of_decimal_places=divided_numbers_of_decimal_places,
-            dividing_numbers_of_decimal_places=dividing_numbers_of_decimal_places)
+            decimal_places_of_divided_number=decimal_places_of_divided_number,
+            decimal_places_of_dividing_number=decimal_places_of_dividing_number,
+            decimal_places_of_quotient=decimal_places_of_quotient
+            )
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school4/division_of_decimal/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 

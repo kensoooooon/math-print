@@ -49,8 +49,9 @@ class DivisionOfDecimalFor4thGrade:
             settings (dict): 初期設定が格納された辞書
         """
         sy.init_printing(order="grevlex")
-        selected_divided_number_of_decimal_places = int(choice(settings["divided_numbers_of_decimal_places"]))
-        selected_dividing_number_of_decimal_places = int(choice(settings["dividing_numbers_of_decimal_places"]))
+        selected_decimal_places_of_divided_number = int(choice(settings["decimal_places_of_divided_number"]))
+        selected_decimal_places_of_dividing_number = int(choice(settings["decimal_places_of_dividing_number"]))
+        selected_decimal_places_of_quotient = int(choice(settings["decimal_places_of_quotient"]))
         selected_remainder = choice(settings["remainder_types"])
         if selected_remainder == "with_remainder":
             with_remainder = True
@@ -58,24 +59,27 @@ class DivisionOfDecimalFor4thGrade:
             with_remainder = False
         self.latex_answer, self.latex_problem = self._make_problem(
             with_remainder,
-            selected_divided_number_of_decimal_places,
-            selected_dividing_number_of_decimal_places)
+            selected_decimal_places_of_divided_number,
+            selected_decimal_places_of_dividing_number,
+            selected_decimal_places_of_quotient
+        )
     
-    def _make_problem(self, with_remainder: bool, divided_number_of_decimal_places: int, dividing_number_of_decimal_places: int) -> Tuple[str, str]:
+    def _make_problem(self, with_remainder: bool, decimal_places_of_divided_number: int, decimal_places_of_dividing_number: int, decimal_places_of_quotient: int) -> Tuple[str, str]:
         """問題の作成
 
         Args:
             with_remainder (bool): 余りの有無
-            divided_number_of_decimal_places (int): 割られる数の桁数
-            dividing_number_of_decimal_places (int): 割る数の桁数
+            decimal_places_of_divided_number (int): 割られる数の小数点以下桁数
+            decimal_places_of_dividing_number (int): 割る数の小数点以下の桁数
+            decimal_places_of_quotient (int): 計算する商
 
         Returns:
             tuple: 解答と問題(latex_answer, latex_problem)
         """ 
         if with_remainder:
-            divided_number, divided_number_latex = self._random_number(divided_number_of_decimal_places)
+            divided_number, divided_number_latex = self._random_number(decimal_places_of_divided_number)
             print(f"divided_number: {divided_number}, divided_number_latex: {divided_number_latex}")
-            dividing_number, dividing_number_latex = self._random_number(dividing_number_of_decimal_places)
+            dividing_number, dividing_number_latex = self._random_number(decimal_places_of_dividing_number)
             print(f"dividing_number: {dividing_number}, dividing_number_latex: {dividing_number_latex}")
             latex_problem = "次の割り算の商を小数第二位まで求めましょう。"
             latex_problem += "\n また、あまりがあるときは、それもだしなさい。"

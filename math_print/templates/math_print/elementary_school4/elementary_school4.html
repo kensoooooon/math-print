@@ -402,39 +402,39 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="without_remainder" name="remainder_type" id="division_of_decimal_remainder_type_without_remainder" checked>
                         <label class="form-check-label" for="division_of_decimal_remainder_type_without_remainder">
-                            余り無し
+                            無し
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="with_remainder" name="remainder_type" id="division_of_decimal_remainder_type_with_remainder" checked>
                         <label class="form-check-label" for="division_of_decimal_remainder_type_with_remainder">
-                            余り有り
+                            有り
                         </label>
                     </div>
                 </div>
                 <small class="text-muted">割られる数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="0" name="divided_number_of_decimal_places" id="divided_number_of_decimal_places_0">
-                        <label class="form-check-label" for="divided_number_of_decimal_places_0">
+                        <input class="form-check-input" type="checkbox" value="0" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_0">
+                        <label class="form-check-label" for="decimal_places_of_divided_number_0">
                             整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="1" name="divided_number_of_decimal_places" id="divided_number_of_decimal_places_1" checked>
-                        <label class="form-check-label" for="divided_number_of_decimal_places_1">
+                        <input class="form-check-input" type="checkbox" value="1" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_1" checked>
+                        <label class="form-check-label" for="decimal_places_of_divided_number_1">
                             小数第1位まで続く小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="2" name="divided_number_of_decimal_places" id="divided_number_of_decimal_places_2" checked>
-                        <label class="form-check-label" for="divided_number_of_decimal_places_2">
+                        <input class="form-check-input" type="checkbox" value="2" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_2" checked>
+                        <label class="form-check-label" for="decimal_places_of_divided_number_2">
                             小数第2位まで続く小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="3" name="divided_number_of_decimal_places" id="divided_number_of_decimal_places_3">
-                        <label class="form-check-label" for="divided_number_of_decimal_places_3">
+                        <input class="form-check-input" type="checkbox" value="3" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_3">
+                        <label class="form-check-label" for="decimal_places_of_divided_number_3">
                             小数第3位まで続く小数
                         </label>
                     </div>
@@ -444,31 +444,54 @@ function uncheckAllStatus(target){
                 <small class="text-muted">割る数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="0" name="dividing_number_of_decimal_places" id="dividing_number_of_decimal_places_0" checked>
-                        <label class="form-check-label" for="dividing_number_of_decimal_places_0">
+                        <input class="form-check-input" type="checkbox" value="0" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_0" checked>
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_0">
                             整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="1" name="dividing_number_of_decimal_places" id="dividing_number_of_decimal_places_1">
-                        <label class="form-check-label" for="dividing_number_of_decimal_places_1">
+                        <input class="form-check-input" type="checkbox" value="1" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_1">
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_1">
                             小数第1位まで続く小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="2" name="dividing_number_of_decimal_places" id="dividing_number_of_decimal_places_2">
-                        <label class="form-check-label" for="dividing_number_of_decimal_places_2">
+                        <input class="form-check-input" type="checkbox" value="2" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_2">
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_2">
                             小数第2位まで続く小数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="3" name="dividing_number_of_decimal_places" id="dividing_number_of_decimal_places_3">
-                        <label class="form-check-label" for="dividing_number_of_decimal_places_3">
+                        <input class="form-check-input" type="checkbox" value="3" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_3">
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_3">
                             小数第3位まで続く小数
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('dividing_number_of_decimal_places')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('dividing_number_of_decimal_places')" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('decimal_places_of_dividing_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('decimal_places_of_dividing_number')" value="全部はずし">
+                </div>
+                <small class="text-muted">求める商の小数位</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="decimal_places_of_quotient" id="decimal_places_of_quotient_1">
+                        <label class="form-check-label" for="decimal_places_of_quotient_1">
+                            小数第1位まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="decimal_places_of_quotient" id="decimal_places_of_quotient_2">
+                        <label class="form-check-label" for="decimal_places_of_quotient_2">
+                            小数第2位まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="decimal_places_of_quotient" id="decimal_places_of_quotient_3">
+                        <label class="form-check-label" for="decimal_places_of_quotient_3">
+                            小数第3位まで
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('decimal_places_of_quotient')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('decimal_places_of_quotient')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

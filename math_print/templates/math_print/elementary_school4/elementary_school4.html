@@ -397,7 +397,7 @@ function uncheckAllStatus(target){
             <p id="division_of_decimal_title">小数のわり算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">余りの有無</small>
+                <small class="text-muted">余りの算出の有無</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="without_remainder" name="remainder_type" id="division_of_decimal_remainder_type_without_remainder" checked>
@@ -467,8 +467,8 @@ function uncheckAllStatus(target){
                             小数第3位まで続く小数
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('multiplying_number_of_decimal_places')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('multiplying_number_of_decimal_places')" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('dividing_number_of_decimal_places')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('dividing_number_of_decimal_places')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

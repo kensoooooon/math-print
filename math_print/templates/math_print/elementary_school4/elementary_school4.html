@@ -393,6 +393,131 @@ function uncheckAllStatus(target){
                 <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'multiplication_of_decimal_for_elementary_school4_display' %}">      
             </form>
         </div>
+        <div class="col border-end border-bottom">
+            <p id="division_of_decimal_title">小数のわり算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">余りの算出の有無</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="without_remainder" name="remainder_type" id="division_of_decimal_remainder_type_without_remainder" checked>
+                        <label class="form-check-label" for="division_of_decimal_remainder_type_without_remainder">
+                            無し
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="with_remainder" name="remainder_type" id="division_of_decimal_remainder_type_with_remainder" checked>
+                        <label class="form-check-label" for="division_of_decimal_remainder_type_with_remainder">
+                            有り
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">割られる数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="0" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_0">
+                        <label class="form-check-label" for="decimal_places_of_divided_number_0">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_1" checked>
+                        <label class="form-check-label" for="decimal_places_of_divided_number_1">
+                            小数第1位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_2" checked>
+                        <label class="form-check-label" for="decimal_places_of_divided_number_2">
+                            小数第2位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="decimal_places_of_divided_number" id="decimal_places_of_divided_number_3">
+                        <label class="form-check-label" for="decimal_places_of_divided_number_3">
+                            小数第3位まで続く小数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('decimal_places_of_divided_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('decimal_places_of_divided_number')" value="全部はずし">
+                </div>
+                <small class="text-muted">割る数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="0" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_0" checked>
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_0">
+                            整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_1">
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_1">
+                            小数第1位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_2">
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_2">
+                            小数第2位まで続く小数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="decimal_places_of_dividing_number" id="decimal_places_of_dividing_number_3">
+                        <label class="form-check-label" for="decimal_places_of_dividing_number_3">
+                            小数第3位まで続く小数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('decimal_places_of_dividing_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('decimal_places_of_dividing_number')" value="全部はずし">
+                </div>
+                <small class="text-muted">求める商の小数位</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1" name="decimal_places_of_quotient" id="decimal_places_of_quotient_1">
+                        <label class="form-check-label" for="decimal_places_of_quotient_1">
+                            小数第1位まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="2" name="decimal_places_of_quotient" id="decimal_places_of_quotient_2">
+                        <label class="form-check-label" for="decimal_places_of_quotient_2">
+                            小数第2位まで
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="3" name="decimal_places_of_quotient" id="decimal_places_of_quotient_3">
+                        <label class="form-check-label" for="decimal_places_of_quotient_3">
+                            小数第3位まで
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('decimal_places_of_quotient')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('decimal_places_of_quotient')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="DivisionOfDecimalFor4thGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="DivisionOfDecimalFor4thGradeFivePaperRadio">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="DivisionOfDecimalFor4thGradeTenPaperRadio">
+                        <label class="form-check-label" for="DivisionOfDecimalFor4thGradeTenPaperRadio">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="DivisionOfDecimalFor4thGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="DivisionOfDecimalFor4thGradeFifteenPaperRadio">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_of_decimal_for_elementary_school4_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'division_of_decimal_for_elementary_school4_display' %}">      
+            </form>
+        </div>
     </div>
 
     <br>

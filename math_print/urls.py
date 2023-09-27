@@ -43,6 +43,9 @@ urlpatterns = [
     ### 小数のかけ算 ###
     path('multiplication_of_decimal_for_elementary_school4/print', views.print_multiplication_of_decimal_for_elementary_school4, name='multiplication_of_decimal_for_elementary_school4_print'),
     path('multiplication_of_decimal_for_elementary_school4/display', views.display_multiplication_of_decimal_for_elementary_school4, name='multiplication_of_decimal_for_elementary_school4_display'),
+    ### 小数のわり算 ###
+    path('division_of_decimal_for_elementary_school4/print', views.print_division_of_decimal_for_elementary_school4, name='division_of_decimal_for_elementary_school4_print'),
+    path('division_of_decimal_for_elementary_school4/display', views.display_division_of_decimal_for_elementary_school4, name='division_of_decimal_for_elementary_school4_display'),
     ##########################################
     ### 小5 ###
     path('elementary_school5/', views.show_elementary_school5, name='elementary_school5'),

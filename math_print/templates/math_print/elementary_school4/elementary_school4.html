@@ -438,8 +438,8 @@ function uncheckAllStatus(target){
                             小数第3位まで続く小数
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('divided_number_of_decimal_places')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('divided_number_of_decimal_places')" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('decimal_places_of_divided_number')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('decimal_places_of_divided_number')" value="全部はずし">
                 </div>
                 <small class="text-muted">割る数</small>
                 <div class="form-group">
@@ -498,24 +498,24 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="DivisionOfDecimalFor4thGradeFivePaperRadio" checked>
                         <label class="form-check-label" for="DivisionOfDecimalFor4thGradeFivePaperRadio">
-                            20問×5枚
+                            10問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="DivisionOfDecimalFor4thGradeTenPaperRadio">
                         <label class="form-check-label" for="DivisionOfDecimalFor4thGradeTenPaperRadio">
-                            20問×10枚
+                            10問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="DivisionOfDecimalFor4thGradeFifteenPaperRadio">
                         <label class="form-check-label" for="DivisionOfDecimalFor4thGradeFifteenPaperRadio">
-                            20問×15枚
+                            10問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_of_decimal_for_elementary_school4_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'division_of_decimal_for_elementary_school4_display' %}">      
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'division_of_decimal_for_elementary_school4_display' %}">      
             </form>
         </div>
     </div>

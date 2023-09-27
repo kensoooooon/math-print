@@ -83,8 +83,6 @@ function showAnswer(){
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
-        <p class="lh-1">次のわり算の商を小数第二位まで求めましょう。</p>
-        <p class="lh-1">わりきれなかった場合は、商は小数第三位を四捨五入して、残りはあまりとして出しましょう。</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -107,10 +105,6 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
-        <br>
-        <br>
-        <br>
-        <br>
         <br>
         <br>
         <br>
@@ -151,6 +145,16 @@ function showAnswer(){
                 </div>
             {% endfor %}
         </ol>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <br>
         <br>
         <br>

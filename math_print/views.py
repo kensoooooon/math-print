@@ -1871,7 +1871,7 @@ def print_division_of_decimal_for_elementary_school4(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 10
     paper_number = int(request.POST["paper_number"])
     remainder_types = request.POST.getlist("remainder_type")
     if not(remainder_types):
@@ -3414,7 +3414,7 @@ def display_division_of_decimal_for_elementary_school4(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 10
     remainder_types = request.POST.getlist("remainder_type")
     if not(remainder_types):
         remainder_types.append("without_remainder")

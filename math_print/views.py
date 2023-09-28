@@ -1916,7 +1916,7 @@ def print_division_of_decimal_for_elementary_school4(request):
     return render(request, 'math_print/elementary_school4/division_of_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
-def print_addition_and_subtraction_of_fraction_or_elementary_school4(request):
+def print_addition_and_subtraction_of_fraction_for_elementary_school4(request):
     """小学4年生用の分数の足し算と引き算の問題のプリント用表示を担当
 
     Args:
@@ -1929,8 +1929,11 @@ def print_addition_and_subtraction_of_fraction_or_elementary_school4(request):
     paper_number = int(request.POST["paper_number"])
     used_calculations = request.POST.getlist("used_calculation")
     if not(used_calculations):
+        used_calculations.append("from_improper_fraction_to_mixed_number_or_integer")
+        used_calculations.append("from_mixed_number_to_improper_fraction")
         used_calculations.append("addition")
         used_calculations.append("subtraction")
+        used_calculations.append("fill_in_the_square")
     integer_part = request.POST.getlist("integer_part")
     if not(integer_part):
         integer_part.append("with_integer_part")
@@ -3499,6 +3502,8 @@ def display_addition_and_subtraction_of_fraction_for_elementary_school4(request)
     PROBLEM_NUMBER = 20
     used_calculations = request.POST.getlist("used_calculation")
     if not(used_calculations):
+        used_calculations.append("from_improper_fraction_to_mixed_number_or_integer")
+        used_calculations.append("from_mixed_number_to_improper_fraction")
         used_calculations.append("addition")
         used_calculations.append("subtraction")
         used_calculations.append("fill_in_the_square")

@@ -61,6 +61,7 @@ from .math_process.division_for_4th_grade import DivisionFor4thGrade
 from .math_process.addition_and_subtraction_of_decimal_for_4th_grade import AdditionAndSubtractionOfDecimalFor4thGrade
 from .math_process.multiplication_of_decimal_for_4th_grade import MultiplicationOfDecimalFor4thGrade
 from .math_process.division_of_decimal_for_4th_grade import DivisionOfDecimalFor4thGrade
+from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import AdditionAndSubtractionOfFraction
 
 
 
@@ -1914,7 +1915,39 @@ def print_division_of_decimal_for_elementary_school4(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school4/division_of_decimal/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+
+def print_addition_and_subtraction_of_fraction_or_elementary_school4(request):
+    """小学4年生用の分数の足し算と引き算の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    used_calculations = request.POST.getlist("used_calculation")
+    if not(used_calculations):
+        used_calculations.append("addition")
+        used_calculations.append("subtraction")
+    integer_part = request.POST.getlist("integer_part")
+    if not(integer_part):
+        integer_part.append("with_integer_part")
+        integer_part.append("without_integer_part")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
+            problem2 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_fraction/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
 # display section
+
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20
@@ -3452,6 +3485,33 @@ def display_division_of_decimal_for_elementary_school4(request):
             )
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school4/division_of_decimal/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_addition_and_subtraction_of_fraction_for_elementary_school4(request):
+    """小学4年生用の分数の足し算と引き算の問題の表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    used_calculations = request.POST.getlist("used_calculation")
+    if not(used_calculations):
+        used_calculations.append("addition")
+        used_calculations.append("subtraction")
+        used_calculations.append("fill_in_the_square")
+    integer_part = request.POST.getlist("integer_part")
+    if not(integer_part):
+        integer_part.append("with_integer_part")
+        integer_part.append("without_integer_part")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
+        problem2 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_fraction/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

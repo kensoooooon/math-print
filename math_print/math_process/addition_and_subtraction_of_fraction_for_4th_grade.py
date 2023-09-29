@@ -1,8 +1,4 @@
-"""
-約分なし。
-gcd=1で通るが、計算するともとに戻る
-"""
-from random import choice, randint
+from random import choice, randint, random
 from typing import Dict, Tuple, Union
 
 import sympy as sy
@@ -87,56 +83,124 @@ class AdditionAndSubtractionOfFraction:
             Tuple[str, str]: 問題の解答と作成
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-        import sympy as sy
-        from random import randint
-
-        for _ in range(100):
-            common_denominator = randint(2, 15)
-            print(f"common_denominator: {common_denominator}")
-            # without integer part
-            answer_numerator = randint(2, common_denominator)
-            print(f"answer_numerator: {answer_numerator}")
-            numerator1 = randint(1, answer_numerator - 1)
-            print(f"numerator1: {numerator1}")
-            numerator2 = answer_numerator - numerator1
-            print(f"numerator2: {numerator2}")
-            print("------------")
+        
+        Notes:
+            - 小学4年生を対象としているため、約分は敢えて実行していない
         """
         common_denominator = randint(2, 15)
         if with_integer_part:
             answer_numerator = randint(2, 2 * common_denominator)
-            numerator1 = randint(1, answer_numerator - 1)
-            numerator2 = answer_numerator - numerator1
-            latex_problem = f"次の計算をしましょう。\n \\( \\dfrac{{{numerator1}}}{{{common_denominator}}} + \\dfrac{{{numerator2}}}{{{common_denominator}}} \\)"
-            integer_part, numerator_part = divmod(answer_numerator, common_denominator)
-            if numerator_part == 0:
-                latex_answer = f"\\( {integer_part} \\)"
+            if answer_numerator % common_denominator == 0:
+                answer_integer = self._frac_latex(answer_numerator, common_denominator)
+                latex_answer = f"\\( = {answer_integer} \\)"
+            elif answer_numerator > common_denominator:
+                answer_frac_latex_without_integer = self._frac_latex(answer_numerator, common_denominator, frac_type="without_integer")
+                answer_frac_latex_with_integer = self._frac_latex(answer_numerator, common_denominator, frac_type="with_integer")
+                latex_answer = f"\\( = {answer_frac_latex_without_integer}  \\left( {answer_frac_latex_with_integer} \\right) \\)"
             else:
-                if integer_part == 0:
-                    latex_answer = f"\\( = \\dfrac{{{answer_numerator}}}{{{common_denominator}}} \\)"
-                else:
-                    latex_answer = f"\\( = \\dfrac{{{answer_numerator}}}{{{common_denominator}}} \\left( {integer_part} \\dfrac{{{numerator_part}}}{{{common_denominator}}} \\right) \\)"
+                answer_frac_latex = self._frac_latex(answer_numerator, common_denominator)
+                latex_answer = f"\\( = {answer_frac_latex} \\)"
+            numerator1 = randint(1, answer_numerator - 1)
+            frac1_latex = self._frac_latex(numerator1, common_denominator)
+            numerator2 = answer_numerator - numerator1
+            frac2_latex = self._frac_latex(numerator2, common_denominator)
+            latex_problem = f"次の計算をしましょう。\n \\( {frac1_latex} + {frac2_latex} \\)"
         else:
             answer_numerator = randint(2, common_denominator)
+            answer_frac_latex = self._frac_latex(answer_numerator, common_denominator)
+            latex_answer = f"\\( = {answer_frac_latex} \\)"
             numerator1 = randint(1, answer_numerator - 1)
+            frac1_latex = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
             numerator2 = answer_numerator - numerator1
-            latex_problem = f"次の計算をしましょう。\n \\( \\dfrac{{{numerator1}}}{{{common_denominator}}} + \\dfrac{{{numerator2}}}{{{common_denominator}}} \\)"
-            integer_part, numerator_part = divmod(answer_numerator, common_denominator)
-            if integer_part == 0:
-                latex_answer = f"\\( = \\dfrac{{{numerator_part}}}{{{common_denominator}}} \\)"
-            else:
-                latex_answer = f"\\( = {integer_part} \\)"
+            frac2_latex = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+            latex_problem = f"次の計算をしましょう。\n \\( {frac1_latex} + {frac2_latex} \\)"
         return latex_answer, latex_problem
     
-    def _make_subtraction_problem(self, with_integer_part):
-        latex_answer = "dummy answer in subtraction problem"
-        latex_problem = "dummy problem in subtraction problem"
+    def _make_subtraction_problem(self, with_integer_part: bool) -> Tuple[str, str]:
+        """条件を満たした引き算の問題の作成
+
+        Args:
+            with_integer_part (bool): 整数、すなわち帯分数が出力されるか否か
+
+        Returns:
+            Tuple[str, str]: 問題の解答と作成
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        
+        Notes:
+            - 小学4年生を対象としているため、約分は敢えて実行していない。また、負になる計算結果も同様の理由で登場しない
+        """
+        common_denominator = randint(3, 15)
+        if with_integer_part:
+            answer_numerator = randint(1, 2 * common_denominator)
+            if answer_numerator % common_denominator == 0:
+                answer_integer = self._frac_latex(answer_numerator, common_denominator)
+                latex_answer = f"\\( = {answer_integer} \\)"
+            elif answer_numerator > common_denominator:
+                answer_frac_latex_without_integer = self._frac_latex(answer_numerator, common_denominator, frac_type="without_integer")
+                answer_frac_latex_with_integer = self._frac_latex(answer_numerator, common_denominator, frac_type="with_integer")
+                latex_answer = f"\\( = {answer_frac_latex_without_integer}  \\left( {answer_frac_latex_with_integer} \\right) \\)"
+            else:
+                answer_frac_latex = self._frac_latex(answer_numerator, common_denominator)
+                latex_answer = f"\\( = {answer_frac_latex} \\)"
+            numerator1 = randint(answer_numerator + 1, 3 * common_denominator)
+            frac1_latex = self._frac_latex(numerator1, common_denominator)
+            numerator2 = numerator1 - answer_numerator
+            frac2_latex = self._frac_latex(numerator2, common_denominator)
+            latex_problem = f"次の計算をしましょう。\n \\( {frac1_latex} - {frac2_latex} \\)"
+        else:
+            answer_numerator = randint(1, common_denominator - 2)
+            answer_frac_latex = self._frac_latex(answer_numerator, common_denominator)
+            latex_answer = f"\\( = {answer_frac_latex} \\)"
+            numerator1 = randint(answer_numerator + 1, common_denominator - 1)
+            frac1_latex = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
+            numerator2 = numerator1 - answer_numerator
+            frac2_latex = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+            latex_problem = f"次の計算をしましょう。\n \\( {frac1_latex} - {frac2_latex} \\)"
         return latex_answer, latex_problem
     
     def _make_fill_in_the_square_problem(self, with_integer_part):
         latex_answer = "dummy answer in fill_in_the_square problem"
         latex_problem = "dummy problem in fill_in_the_square problem"
         return latex_answer, latex_problem
+    
+    def _frac_latex(self, numerator: int, denominator: int, frac_type: Union[None, str] = None) -> str:
+        """与えられた分子と分母、および帯分数を許容するかどうかを見て、latex形式の分数を作成する
+
+        Args:
+            numerator (int): 分子
+            denominator (int): 分母
+            with_integer (Union[None, str], optional): 要求される分数のタイプ
+
+        Returns:
+            number_latex(str): latex形式で表現された数。分数の場合と整数の場合がある。
+        
+        Note:
+            以下のlatexが出力される
+            - 整数にできるときは最優先で整数
+            - 指定された条件によって、以下に変化
+                - with_integer: 帯分数
+                - without_integer: 真分数か仮分数
+                - None: 帯分数にできないときは真分数か仮分数。できるときはランダムにいずれか
+        """
+        integer_part, numerator_part = divmod(numerator, denominator)
+        if numerator_part == 0:
+            number_latex = sy.latex(integer_part)
+        elif frac_type == "with_integer":
+            if numerator < denominator:
+                raise ValueError(f"numerator is {numerator}, and denominator is {denominator}. numerator must be more than denominator for mixed fraction.")
+            number_latex = f"{integer_part} \\dfrac{{{numerator_part}}}{{{denominator}}}"
+        elif frac_type == "without_integer":
+            number_latex = f"\\dfrac{{{numerator}}}{{{denominator}}}"
+        elif frac_type is None:
+            if numerator < denominator:
+                number_latex = f"\\dfrac{{{numerator}}}{{{denominator}}}"
+            else:
+                if random() > 0.5:
+                    number_latex = f"{integer_part} \\dfrac{{{numerator_part}}}{{{denominator}}}"
+                else:
+                    number_latex = f"\\dfrac{{{numerator}}}{{{denominator}}}"
+        return number_latex
     
     def _random_frac(self, fraction_type: Union[None, str] = None) -> Tuple[sy.Rational, str]:
         """指定されたタイプのランダムな分数と、そのlatexを返す関数

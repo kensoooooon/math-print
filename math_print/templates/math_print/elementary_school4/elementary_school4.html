@@ -528,13 +528,13 @@ function uncheckAllStatus(target){
                 <small class="text-muted">登場する計算</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="from_improper_fraction_to_mixed_number_or_integer" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_improper_fraction_to_mixed_number_or_integer" checked>
+                        <input class="form-check-input" type="checkbox" value="from_improper_fraction_to_mixed_number_or_integer" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_improper_fraction_to_mixed_number_or_integer">
                         <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_improper_fraction_to_mixed_number_or_integer">
                             仮分数→帯分数・整数
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="from_mixed_number_to_improper_fraction" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_mixed_number_to_improper_fraction" checked>
+                        <input class="form-check-input" type="checkbox" value="from_mixed_number_to_improper_fraction" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_mixed_number_to_improper_fraction">
                         <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_mixed_number_to_improper_fraction">
                             帯分数→仮分数
                         </label>
@@ -557,8 +557,10 @@ function uncheckAllStatus(target){
                             穴埋め算
                         </label>
                     </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_calculation')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_calculation')" value="全部はずし">
                 </div>
-                <small class="text-muted">帯分数の有無</small>
+                <small class="text-muted">計算に用いる数の帯分数の有無</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="with_integer_part" name="integer_part" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_with_integer_part" checked>

@@ -39,11 +39,11 @@ class AdditionAndSubtractionOfFraction:
         else:
             raise ValueError(f"'selected_calculation' is {selected_calculation}. It must be 'addition', 'subtraction' or 'fill_in_the_square'.")
     
-    def _make_from_improper_fraction_to_mixed_number_or_integer_problem(self):
+    def _make_from_improper_fraction_to_mixed_number_or_integer_problem(self) -> Tuple[str, str]:
         """仮分数から帯分数への変換
 
         Returns:
-            Tuple[str, str]: 問題の解答と作成
+            Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
@@ -57,11 +57,11 @@ class AdditionAndSubtractionOfFraction:
             latex_answer = f"\\( {integer_part} \\dfrac{{{numerator_part}}}{{{denominator}}} \\)"
         return latex_answer, latex_problem
     
-    def _make_from_mixed_number_to_improper_fraction_problem(self):
+    def _make_from_mixed_number_to_improper_fraction_problem(self) -> Tuple[str, str]:
         """帯分数から仮分数への変換
 
         Returns:
-            Tuple[str, str]: 問題の解答と作成
+            Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
@@ -125,7 +125,7 @@ class AdditionAndSubtractionOfFraction:
             with_integer_part (bool): 整数、すなわち帯分数が出力されるか否か
 
         Returns:
-            Tuple[str, str]: 問題の解答と作成
+            Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         
@@ -169,12 +169,11 @@ class AdditionAndSubtractionOfFraction:
             with_integer_part (bool): 計算式に帯分数が利用されるか否か
 
         Returns:
-            Tuple[str, str]:
+            Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
-        # selected_calculation = choice(["addition", "subtraction"])
-        selected_calculation = "subtraction"
+        selected_calculation = choice(["addition", "subtraction"])
         if selected_calculation == "addition":
             common_denominator = randint(2, 15)
             numerator1 = randint(1, 2 * common_denominator)

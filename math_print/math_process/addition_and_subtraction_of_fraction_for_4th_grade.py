@@ -173,7 +173,8 @@ class AdditionAndSubtractionOfFraction:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
-        selected_calculation = choice(["addition", "subtraction"])
+        # selected_calculation = choice(["addition", "subtraction"])
+        selected_calculation = "subtraction"
         if selected_calculation == "addition":
             common_denominator = randint(2, 15)
             numerator1 = randint(1, 2 * common_denominator)
@@ -189,6 +190,7 @@ class AdditionAndSubtractionOfFraction:
                 if with_integer_part:
                     if numerator1 % common_denominator == 0:
                         square_integer = self._frac_latex(numerator1, common_denominator)
+                        latex_answer = f"\\( \\square = {square_integer} \\)"
                     elif numerator1 > common_denominator:
                         square_frac_with_integer = self._frac_latex(numerator1, common_denominator, frac_type="with_integer")
                         square_frac_without_integer = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
@@ -198,17 +200,86 @@ class AdditionAndSubtractionOfFraction:
                         latex_answer = f"\\( \\square = {square_frac} \\)"
                     frac2 = self._frac_latex(numerator2, common_denominator)
                     answer_frac = self._frac_latex(answer_numerator, common_denominator)
-                    latex_problem = "次の\\( \\square \\)にあてはまる数を答えなさい。"
-                    # next
-                    latex_problem += f"\\( \\)"
                 else:
                     square_frac = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
                     latex_answer = f"\\( \\square = {square_frac} \\)"
-                
+                    frac2 = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator, frac_type="without_integer")
+                latex_problem = "次の\\( \\square \\)にあてはまる数を答えなさい。"
+                latex_problem += f"\\( \\square + {frac2} = {answer_frac} \\)"
+            elif selected_replace_side == "right":
+                if with_integer_part:
+                    if numerator2 % common_denominator == 0:
+                        square_integer = self._frac_latex(numerator2, common_denominator)
+                        latex_answer = f"\\( \\square = {square_integer} \\)"
+                    elif numerator2 > common_denominator:
+                        square_frac_with_integer = self._frac_latex(numerator2, common_denominator, frac_type="with_integer")
+                        square_frac_without_integer = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                        latex_answer = f"\\( \\square = {square_frac_without_integer} \\left( {square_frac_with_integer} \\right) \\)"
+                    else:
+                        square_frac = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                        latex_answer = f"\\( \\square = {square_frac} \\)"
+                    frac1 = self._frac_latex(numerator1, common_denominator)
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator)
+                else:
+                    square_frac = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                    latex_answer = f"\\( \\square = {square_frac} \\)"
+                    frac1 = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator, frac_type="without_integer")
+                latex_problem = "次の\\( \\square \\)にあてはまる数を答えなさい。"
+                latex_problem += f"\\( {frac1} + \\square = {answer_frac} \\)"
         elif selected_calculation == "subtraction":
-            pass
-        latex_answer = "dummy answer in fill_in_the_square"
-        latex_problem = "dummy problem in fill_in_the_square"
+            common_denominator = randint(3, 15)
+            numerator1 = randint(1, 2 * common_denominator)
+            numerator2 = randint(1, 2 * common_denominator)
+            if numerator1 < numerator2:
+                numerator1, numerator2 = numerator2, numerator1
+            if (numerator1 % common_denominator == 0) and (numerator2 % common_denominator == 0):
+                numerator1 += randint(1, common_denominator - 1)
+            answer_numerator = numerator1 - numerator2
+            selected_replace_side = choice(["left", "right"])
+            if selected_replace_side == "left":
+                if with_integer_part:
+                    if numerator1 % common_denominator == 0:
+                        square_integer = self._frac_latex(numerator1, common_denominator)
+                        latex_answer = f"\\( \\square = {square_integer} \\)"
+                    elif numerator1 > common_denominator:
+                        square_frac_with_integer = self._frac_latex(numerator1, common_denominator, frac_type="with_integer")
+                        square_frac_without_integer = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
+                        latex_answer = f"\\( \\square = {square_frac_without_integer} \\left( {square_frac_with_integer} \\right) \\)"
+                    else:
+                        square_frac = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
+                        latex_answer = f"\\( \\square = {square_frac} \\)"
+                    frac2 = self._frac_latex(numerator2, common_denominator)
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator)
+                else:
+                    square_frac = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
+                    latex_answer = f"\\( \\square = {square_frac} \\)"
+                    frac2 = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator, frac_type="without_integer")
+                latex_problem = "次の\\( \\square \\)にあてはまる数を答えなさい。"
+                latex_problem += f"\\( \\square - {frac2} = {answer_frac} \\)"
+            elif selected_replace_side == "right":
+                if with_integer_part:
+                    if numerator2 % common_denominator == 0:
+                        square_integer = self._frac_latex(numerator2, common_denominator)
+                        latex_answer = f"\\( \\square = {square_integer} \\)"
+                    elif numerator2 > common_denominator:
+                        square_frac_with_integer = self._frac_latex(numerator2, common_denominator, frac_type="with_integer")
+                        square_frac_without_integer = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                        latex_answer = f"\\( \\square = {square_frac_without_integer} \\left( {square_frac_with_integer} \\right) \\)"
+                    else:
+                        square_frac = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                        latex_answer = f"\\( \\square = {square_frac} \\)"
+                    frac1 = self._frac_latex(numerator1, common_denominator)
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator)
+                else:
+                    square_frac = self._frac_latex(numerator2, common_denominator, frac_type="without_integer")
+                    latex_answer = f"\\( \\square = {square_frac} \\)"
+                    frac1 = self._frac_latex(numerator1, common_denominator, frac_type="without_integer")
+                    answer_frac = self._frac_latex(answer_numerator, common_denominator, frac_type="without_integer")
+                latex_problem = "次の\\( \\square \\)にあてはまる数を答えなさい。"
+                latex_problem += f"\\( {frac1} - \\square = {answer_frac} \\)"
         return latex_answer, latex_problem
     
     def _frac_latex(self, numerator: int, denominator: int, frac_type: Union[None, str] = None) -> str:

@@ -121,20 +121,20 @@ function uncheckAllStatus(target){
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FillInTheSquareFivePaperRadio" checked>
-                        <label class="form-check-label" for="FillInTheSquareFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="CalculationOfBigNumberFivePaperRadio" checked>
+                        <label class="form-check-label" for="CalculationOfBigNumberFivePaperRadio">
                             20問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FillInTheSquareTenPaperRadio">
-                        <label class="form-check-label" for="FillInTheSquareTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="CalculationOfBigNumberTenPaperRadio">
+                        <label class="form-check-label" for="CalculationOfBigNumberTenPaperRadio">
                             20問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FillInTheSquareFifteenPaperRadio">
-                        <label class="form-check-label" for="FillInTheSquareFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="CalculationOfBigNumberFifteenPaperRadio">
+                        <label class="form-check-label" for="CalculationOfBigNumberFifteenPaperRadio">
                             20問×15枚
                         </label>
                     </div>
@@ -147,7 +147,7 @@ function uncheckAllStatus(target){
 
     <div class="row">
         <div class="col border-end border-bottom">
-            <p id="division_title">割り算</p>
+            <p id="division_title">整数の割り算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">余りの有無</small>
@@ -516,6 +516,88 @@ function uncheckAllStatus(target){
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'division_of_decimal_for_elementary_school4_print' %}">
                 <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'division_of_decimal_for_elementary_school4_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p id="addition_and_subtraction_of_fraction_title">分母が同じ分数の足し算と引き算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_improper_fraction_to_mixed_number_or_integer" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_improper_fraction_to_mixed_number_or_integer">
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_improper_fraction_to_mixed_number_or_integer">
+                            仮分数→帯分数・整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_mixed_number_to_improper_fraction" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_mixed_number_to_improper_fraction">
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_from_mixed_number_to_improper_fraction">
+                            帯分数→仮分数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="addition" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_addition" checked>
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_addition">
+                            足し算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="subtraction" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_subtraction" checked>
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_subtraction">
+                            引き算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="fill_in_the_square" name="used_calculation" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_fill_in_the_square">
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_fill_in_the_square">
+                            穴埋め算
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_calculation')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_calculation')" value="全部はずし">
+                </div>
+                <small class="text-muted">計算に用いる数の帯分数の有無</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="with_integer_part" name="integer_part" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_with_integer_part" checked>
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_with_integer_part">
+                            あり
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="without_integer_part" name="integer_part" id="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_without_integer_part" checked>
+                        <label class="form-check-label" for="addition_and_subtraction_of_fraction_for_4th_grade_used_calculation_without_integer_part">
+                            無し
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="AdditionAndSubtractionOfFractionFor4thGradeFivePaperRadio" checked>
+                        <label class="form-check-label" for="AdditionAndSubtractionOfFractionFor4thGradeFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="AdditionAndSubtractionOfFractionFor4thGradeTenPaperRadio">
+                        <label class="form-check-label" for="AdditionAndSubtractionOfFractionFor4thGradeTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="AdditionAndSubtractionOfFractionFor4thGradeFifteenPaperRadio">
+                        <label class="form-check-label" for="AdditionAndSubtractionOfFractionFor4thGradeFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'addition_and_subtraction_of_fraction_or_elementary_school4_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'addition_and_subtraction_of_fraction_or_elementary_school4_display' %}">      
             </form>
         </div>
     </div>

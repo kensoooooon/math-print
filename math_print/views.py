@@ -1949,6 +1949,9 @@ def print_addition_and_subtraction_of_fraction_for_elementary_school4(request):
     return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_fraction/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+def print_multiplication_and_division_of_decimal_and_integer(request):
+    return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_print.html', {})
+
 # display section
 
 
@@ -3517,6 +3520,11 @@ def display_addition_and_subtraction_of_fraction_for_elementary_school4(request)
         problem2 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_fraction/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_multiplication_and_division_of_decimal_and_integer(request):
+    return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_display.html', {})
+
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

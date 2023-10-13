@@ -81,6 +81,9 @@ urlpatterns = [
     ### 穴埋め算 ###
     path('fill_in_the_square/print', views.print_fill_in_the_square_problem, name='fill_in_the_square_print'),
     path('fill_in_the_square/display', views.display_fill_in_the_square_problem, name='fill_in_the_square_display'),
+    ### 分数と整数のかけ算・割り算 ###
+    path('multiplication_and_division_of_decimal_and_integer/print', views.print_multiplication_and_division_of_decimal_and_integer, name='multiplication_and_division_of_decimal_and_integer_print'),
+    path('multiplication_and_division_of_decimal_and_integer/display', views.display_multiplication_and_division_of_decimal_and_integer, name='multiplication_and_division_of_decimal_and_integer_display'),
     ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),

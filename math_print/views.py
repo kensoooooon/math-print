@@ -61,7 +61,8 @@ from .math_process.division_for_4th_grade import DivisionFor4thGrade
 from .math_process.addition_and_subtraction_of_decimal_for_4th_grade import AdditionAndSubtractionOfDecimalFor4thGrade
 from .math_process.multiplication_of_decimal_for_4th_grade import MultiplicationOfDecimalFor4thGrade
 from .math_process.division_of_decimal_for_4th_grade import DivisionOfDecimalFor4thGrade
-from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import AdditionAndSubtractionOfFraction
+from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import AdditionAndSubtractionOfFractionFor4thGrade
+from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
 
 
 
@@ -1942,15 +1943,42 @@ def print_addition_and_subtraction_of_fraction_for_elementary_school4(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
-            problem1 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
-            problem2 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
+            problem1 = AdditionAndSubtractionOfFractionFor4thGrade(used_calculations=used_calculations, integer_part=integer_part)
+            problem2 = AdditionAndSubtractionOfFractionFor4thGrade(used_calculations=used_calculations, integer_part=integer_part)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_fraction/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
-def print_multiplication_and_division_of_decimal_and_integer(request):
-    return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_print.html', {})
+def print_multiplication_and_division_of_fraction_and_integer(request):
+    """小学6年生用の分数の足し算と引き算の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    paper_number = int(request.POST["paper_number"])
+    fraction_calculation_types = request.POST.getlist("fraction_calculation_type")
+    if not(fraction_calculation_types):
+        fraction_calculation_types.append("fraction_multiplied_by_integer")
+        fraction_calculation_types.append("fraction_divided_by_integer")
+        fraction_calculation_types.append("integer_multiplied_by_fraction")
+        fraction_calculation_types.append("integer_divided_by_fraction")
+        fraction_calculation_types.append("fraction_multiplied_by_fraction")
+        fraction_calculation_types.append("fraction_divided_by_fraction")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = MultiplicationAndDivisionOfFractionFor6thGrade(fraction_calculation_types=fraction_calculation_types)
+            problem2 = MultiplicationAndDivisionOfFractionFor6thGrade(fraction_calculation_types=fraction_calculation_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 
 # display section
 
@@ -3516,14 +3544,36 @@ def display_addition_and_subtraction_of_fraction_for_elementary_school4(request)
         integer_part.append("without_integer_part")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
-        problem1 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
-        problem2 = AdditionAndSubtractionOfFraction(used_calculations=used_calculations, integer_part=integer_part)
+        problem1 = AdditionAndSubtractionOfFractionFor4thGrade(used_calculations=used_calculations, integer_part=integer_part)
+        problem2 = AdditionAndSubtractionOfFractionFor4thGrade(used_calculations=used_calculations, integer_part=integer_part)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school4/addition_and_subtraction_of_fraction/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
-def display_multiplication_and_division_of_decimal_and_integer(request):
-    return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_display.html', {})
+def display_multiplication_and_division_of_fraction_and_integer(request):
+    """小学6年生用の分数かけ算と割り算の問題の表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 20
+    fraction_calculation_types = request.POST.getlist("fraction_calculation_type")
+    if not(fraction_calculation_types):
+        fraction_calculation_types.append("fraction_multiplied_by_integer")
+        fraction_calculation_types.append("fraction_divided_by_integer")
+        fraction_calculation_types.append("integer_multiplied_by_fraction")
+        fraction_calculation_types.append("integer_divided_by_fraction")
+        fraction_calculation_types.append("fraction_multiplied_by_fraction")
+        fraction_calculation_types.append("fraction_divided_by_fraction")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = MultiplicationAndDivisionOfFractionFor6thGrade(fraction_calculation_types=fraction_calculation_types)
+        problem2 = MultiplicationAndDivisionOfFractionFor6thGrade(fraction_calculation_types=fraction_calculation_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
 # explain section

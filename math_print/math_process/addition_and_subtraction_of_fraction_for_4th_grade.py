@@ -3,7 +3,7 @@ from typing import Dict, Tuple, Union
 
 import sympy as sy
 
-class AdditionAndSubtractionOfFraction:
+class AdditionAndSubtractionOfFractionFor4thGrade:
     """小学4年生を対象とした分数の足し算と引き算の問題・解答を出力
     
     Attributes:

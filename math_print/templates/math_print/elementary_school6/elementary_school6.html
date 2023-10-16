@@ -43,6 +43,79 @@ function uncheckAllStatus(target){
 <div class="container-fluid">
     <div class="row">
         <div class="col border-end border-bottom">
+            <p id="multiplication_and_division_of_integer_and_frac_title">分数や整数のかけ算・わり算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">登場する計算</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="fraction_multiplied_by_integer" name="fraction_calculation_type" id="fraction_calculation_type_fraction_multiplied_by_integer" checked>
+                        <label class="form-check-label" for="fraction_calculation_type_fraction_multiplied_by_integer">
+                            分数×整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="fraction_divided_by_integer" name="fraction_calculation_type" id="fraction_calculation_type_fraction_divided_by_integer" checked>
+                        <label class="form-check-label" for="fraction_calculation_type_fraction_divided_by_integer">
+                            分数÷整数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer_multiplied_by_fraction" name="fraction_calculation_type" id="fraction_calculation_type_integer_multiplied_by_fraction" checked>
+                        <label class="form-check-label" for="fraction_calculation_type_integer_multiplied_by_fraction">
+                            整数×分数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="integer_divided_by_fraction" name="fraction_calculation_type" id="fraction_calculation_type_integer_divided_by_fraction" checked>
+                        <label class="form-check-label" for="fraction_calculation_type_integer_divided_by_fraction">
+                            整数÷分数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="fraction_multiplied_by_fraction" name="fraction_calculation_type" id="fraction_calculation_type_fraction_multiplied_by_fraction">
+                        <label class="form-check-label" for="fraction_calculation_type_fraction_multiplied_by_fraction">
+                            分数×分数
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="fraction_divided_by_fraction" name="fraction_calculation_type" id="fraction_calculation_type_fraction_divided_by_fraction">
+                        <label class="form-check-label" for="fraction_calculation_type_fraction_divided_by_fraction">
+                            分数÷分数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('fraction_calculation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('fraction_calculation_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="MultiplicationAndDivisionOfDFractionAndIntegerFivePaperRadio" checked>
+                        <label class="form-check-label" for="MultiplicationAndDivisionOfDFractionAndIntegerFivePaperRadio">
+                            20問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="MultiplicationAndDivisionOfDFractionAndIntegerTenPaperRadio">
+                        <label class="form-check-label" for="MultiplicationAndDivisionOfDFractionAndIntegerTenPaperRadio">
+                            20問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="MultiplicationAndDivisionOfDFractionAndIntegerFifteenPaperRadio">
+                        <label class="form-check-label" for="MultiplicationAndDivisionOfDFractionAndIntegerFifteenPaperRadio">
+                            20問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'multiplication_and_division_of_fraction_and_integer_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'multiplication_and_division_of_fraction_and_integer_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col border-end border-bottom">
             <p>穴埋め算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

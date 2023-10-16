@@ -104,8 +104,8 @@ class MultiplicationAndDivisionOfFractionFor6thGrade:
             - latex_answer (str): latex形式であることを前提とした解答
             - latex_problem (str): latex形式であることを前提とした問題
         """
-        num1 = self._random_frac()
-        num2 = self._random_frac()
+        num1 = self._random_frac(max_num=15)
+        num2 = self._random_frac(max_num=15)
         latex_problem = f"{sy.latex(num1)} \\times {sy.latex(num2)}"
         answer = num1 * num2
         latex_answer = f" = {sy.latex(answer)}"
@@ -119,15 +119,18 @@ class MultiplicationAndDivisionOfFractionFor6thGrade:
             - latex_answer (str): latex形式であることを前提とした解答
             - latex_problem (str): latex形式であることを前提とした問題
         """
-        num1 = self._random_frac()
-        num2 = self._random_frac()
+        num1 = self._random_frac(max_num=15)
+        num2 = self._random_frac(max_num=15)
         latex_problem = f"{sy.latex(num1)} \\div {sy.latex(num2)}"
         answer = num1 / num2
         latex_answer = f" = {sy.latex(answer)}"
         return latex_answer, latex_problem
 
-    def _random_frac(self) -> sy.Rational:
+    def _random_frac(self, max_num: int=20) -> sy.Rational:
         """ランダムな分数を作成
+        
+        Args:
+            max_num (int): 生成に利用される最大値。指定されていないときは20
         
         Returns:
             frac (sy.Rational): 分数
@@ -140,8 +143,8 @@ class MultiplicationAndDivisionOfFractionFor6thGrade:
             ->仮分数になるので、そこから整数に派生することがある。
             -->%==0の判定?setで倍数を含めて消去?
         """
-        denominator = randint(2, 25)
-        numerators_without_divisors = set(range(1, 25)) - set(sy.divisors(denominator))
+        denominator = randint(2, max_num)
+        numerators_without_divisors = set(range(1, max_num)) - set(sy.divisors(denominator))
         numerators = [num for num in numerators_without_divisors if num % denominator != 0]
         numerator = choice(numerators)
         frac = sy.Rational(numerator, denominator)
@@ -152,11 +155,14 @@ class MultiplicationAndDivisionOfFractionFor6thGrade:
             raise ValueError(f"frac is {frac}. This shouldn't be integer.")
         return frac
     
-    def _random_integer(self) -> sy.Integer:
+    def _random_integer(self, max_num: int=10) -> sy.Integer:
         """ランダムな整数を作成
+
+        Args:
+            max_num (int): 生成に利用される最大値。指定されていないときは10
 
         Returns:
             integer (sy.Integer): 整数
         """
-        integer = sy.Integer(randint(2, 10))
+        integer = sy.Integer(randint(2, max_num))
         return integer

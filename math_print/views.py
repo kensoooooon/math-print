@@ -63,6 +63,7 @@ from .math_process.multiplication_of_decimal_for_4th_grade import Multiplication
 from .math_process.division_of_decimal_for_4th_grade import DivisionOfDecimalFor4thGrade
 from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import AdditionAndSubtractionOfFractionFor4thGrade
 from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
+from .math_process.series import Series
 
 
 
@@ -1980,6 +1981,34 @@ def print_multiplication_and_division_of_fraction_and_integer(request):
     return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 
+def print_series(request):
+    """高校2年生用の種々の数列の和の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 6
+    paper_number = int(request.POST["paper_number"])
+    series_types = request.POST.getlist("series_type")
+    if not(series_types):
+        series_types.append("sum_from_linear_to_cubic")
+        series_types.append("sum_of_geometric")
+        series_types.append("sum_of_arithmetic_times_geometric")
+        series_types.append("sum_of_sum")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = Series(series_types=series_types)
+            problem2 = Series(series_types=series_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/highschool2/series/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
+
 # display section
 
 
@@ -2000,6 +2029,7 @@ def display_number_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
 
     return render(request, 'math_print/junior_highschool1/number/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
 
 def display_character_problem(request):
     PROBLEM_NUMBER = 20
@@ -2030,6 +2060,7 @@ def display_character_problem(request):
         math_problem_tuple_list.append((problem1, problem2))
     
     return render(request, 'math_print/junior_highschool1/character/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
 
 def display_linear_equation_problem(request):
     PROBLEM_NUMBER = 20
@@ -2864,7 +2895,7 @@ def display_lcm_and_gcd_problem(request):
     return render(request, 'math_print/elementary_school5/lcm_and_gcd/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_vector_cross_point(request):
-    PROBLEM_NUMBER = 6
+    PROBLEM_NUMBER = 2
 
     problem_type_list = request.POST.getlist("problem_type")
     if not(problem_type_list):
@@ -2957,7 +2988,7 @@ def display_common_denominator_problem(request):
     return render(request, 'math_print/elementary_school5/common_denominator/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 def display_recurrence_relation(request):
-    PROBLEM_NUMBER = 20
+    PROBLEM_NUMBER = 4
     
     problem_type_list = request.POST.getlist("recurrence_relation_type")
     if not(problem_type_list):
@@ -3574,6 +3605,30 @@ def display_multiplication_and_division_of_fraction_and_integer(request):
         problem2 = MultiplicationAndDivisionOfFractionFor6thGrade(fraction_calculation_types=fraction_calculation_types)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school6/multiplication_and_division_of_decimal_and_integer/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_series(request):
+    """高校2年生用の種々の数列の和の問題のブラウザ表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    PROBLEM_NUMBER = 6
+    series_types = request.POST.getlist("series_type")
+    if not(series_types):
+        series_types.append("sum_from_linear_to_cubic")
+        series_types.append("sum_of_geometric")
+        series_types.append("sum_of_arithmetic_times_geometric")
+        series_types.append("sum_of_sum")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = Series(series_types=series_types)
+        problem2 = Series(series_types=series_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/highschool2/series/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
 # explain section

@@ -225,4 +225,7 @@ urlpatterns = [
     path('logarithmic_equation/display', views.display_logarithmic_equation, name='logarithmic_equation_display'),
     path('logarithmic_equation/explain', views.explain_logarithmic_equation, name='logarithmic_equation_explain'),
     path('logarithmic_equation/explain_print', views.explain_logarithmic_equation_print, name='logarithmic_equation_explain_print'),
+    # 種々の数列の和
+    path('series/print', views.print_series, name='series_print'),
+    path('series/display', views.display_series, name='series_display'),
 ]

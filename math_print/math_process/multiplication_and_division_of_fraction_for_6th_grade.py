@@ -1,5 +1,5 @@
-from random import choice, randint, random, sample
-from typing import Dict, Tuple, Union
+from random import choice, randint
+from typing import Dict, Tuple
 
 import sympy as sy
 

@@ -44,10 +44,10 @@ class Series:
         """
         k = sy.Symbol("k")
         n = sy.Symbol("n")
-        constant = sy.Integer(randint(-5, 5))
-        linear_coeff = sy.Integer(randint(-5, 5))
-        quadratic_coeff = sy.Integer(randint(-5, 5))
-        cubic_coeff = sy.Integer(randint(-5, 5))
+        constant = sy.Integer(randint(-3, 3))
+        linear_coeff = sy.Integer(randint(-3, 3))
+        quadratic_coeff = sy.Integer(randint(-3, 3))
+        cubic_coeff = sy.Integer(randint(-3, 3))
         function = cubic_coeff * k ** 3 + quadratic_coeff * k ** 2 + linear_coeff * k + constant
         if random() > 0.3:
             problem_mode = "character"
@@ -58,7 +58,7 @@ class Series:
             start = 1
             end = sy.Integer(randint(2, 10))
         series = sy.Sum(function, (k, start, end))
-        latex_problem = sy.latex(series, mode='equation')
+        latex_problem = f"\\displaystyle {sy.latex(series)}"
         if problem_mode == "character":
             answer = sy.factor(series.doit())
         elif problem_mode == "number":

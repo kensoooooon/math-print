@@ -21,6 +21,7 @@ class Series:
         Raises:
             ValueError: 想定されていないタイプの問題が指定されたときに挙上
         """
+        sy.init_printing(order='grevlex')
         selected_series_type = choice(settings["series_types"])
         if selected_series_type == "sum_from_linear_to_cubic":
             self.latex_answer, self.latex_problem = self._make_sum_from_linear_to_cubic_problem()
@@ -41,8 +42,28 @@ class Series:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
-        latex_answer = "dummy answer in _make_sum_from_linear_to_cubic_problem"
-        latex_problem = "dummy problem in _make_sum_from_linear_to_cubic_problem"
+        k = sy.Symbol("k")
+        n = sy.Symbol("n")
+        constant = sy.Integer(randint(-5, 5))
+        linear_coeff = sy.Integer(randint(-5, 5))
+        quadratic_coeff = sy.Integer(randint(-5, 5))
+        cubic_coeff = sy.Integer(randint(-5, 5))
+        function = cubic_coeff * k ** 3 + quadratic_coeff * k ** 2 + linear_coeff * k + constant
+        if random() > 0.3:
+            problem_mode = "character"
+            start = 1
+            end = choice([n, n-1])
+        else:
+            problem_mode = "number"
+            start = 1
+            end = sy.Integer(randint(2, 10))
+        series = sy.Sum(function, (k, start, end))
+        latex_problem = sy.latex(series, mode='equation')
+        if problem_mode == "character":
+            answer = sy.factor(series.doit())
+        elif problem_mode == "number":
+            answer = series.doit()
+        latex_answer = f"= {sy.latex(answer)}"
         return latex_answer, latex_problem
     
     def _make_sum_of_geometric_problem(self):

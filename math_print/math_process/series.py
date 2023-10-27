@@ -44,11 +44,23 @@ class Series:
         """
         k = sy.Symbol("k")
         n = sy.Symbol("n")
-        constant = sy.Integer(randint(-3, 3))
-        linear_coeff = sy.Integer(randint(-3, 3))
-        quadratic_coeff = sy.Integer(randint(-3, 3))
-        cubic_coeff = sy.Integer(randint(-3, 3))
-        function = cubic_coeff * k ** 3 + quadratic_coeff * k ** 2 + linear_coeff * k + constant
+        if random() > 0.4:
+            constant = sy.Integer(randint(-3, 3))
+            linear_coeff = sy.Integer(randint(-3, 3))
+            quadratic_coeff = sy.Integer(randint(-3, 3))
+            cubic_coeff = sy.Integer(randint(-3, 3))
+            function = cubic_coeff * k ** 3 + quadratic_coeff * k ** 2 + linear_coeff * k + constant
+        else:
+            dimension = choice([2, 3])
+            if dimension == 2:
+                alpha = sy.Integer(randint(-3, 3))
+                beta = sy.Integer(randint(-3, 3))
+                function = (k - alpha) * (k - beta)
+            elif dimension == 3:
+                alpha = sy.Integer(randint(-3, 3))
+                beta = sy.Integer(randint(-3, 3))
+                gamma = sy.Integer(randint(-3, 3))
+                function = (k - alpha) * (k - beta) * (k - gamma)
         if random() > 0.3:
             problem_mode = "character"
             start = 1
@@ -58,12 +70,12 @@ class Series:
             start = sy.Integer(randint(1, 3))
             end = sy.Integer(randint(start + 2, 10))
         series = sy.Sum(function, (k, start, end))
-        latex_problem = f"\\displaystyle {sy.latex(series)}"
+        latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
         if problem_mode == "character":
             answer = sy.factor(series.doit())
         elif problem_mode == "number":
             answer = series.doit()
-        latex_answer = f"= {sy.latex(answer)}"
+        latex_answer = f"\\( = {sy.latex(answer)} \\)"
         return latex_answer, latex_problem
     
     def _make_sum_of_geometric_problem(self):
@@ -97,12 +109,12 @@ class Series:
             start = sy.Integer(randint(1, 3))
             end = sy.Integer(randint(start + 2, 7))
         series = sy.Sum(function, (k, start, end))
-        latex_problem = f"\\displaystyle {sy.latex(series)}"
+        latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
         if problem_mode == "character":
             answer = sy.factor(series.doit())
         elif problem_mode == "number":
             answer = series.doit()
-        latex_answer = f"= {sy.latex(answer)}"
+        latex_answer = f"\\( = {sy.latex(answer)} \\)"
         return latex_answer, latex_problem
 
     def _make_sum_of_arithmetic_times_geometric_problem(self):
@@ -115,13 +127,27 @@ class Series:
         """
         n = sy.Symbol("n")
         k = sy.Symbol("k")
-        first_term_of_arithmetic = sy.Integer(randint(-5, 5))
-        common_difference = choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
+        first_term_of_arithmetic = sy.Integer(randint(1, 3))
+        common_difference = sy.Integer(randint(1, 3))
         arithmetic_sequence = first_term_of_arithmetic + (k - 1) * common_difference
-        first_term_of_geometric = choice([-4, -3, -2, -1, 1, 2, 3, 4])
-        common_ratio = choice([2, 3, 4])
+        first_term_of_geometric = sy.Integer(randint(1, 4))
+        common_ratio = sy.Integer(randint(2, 4))
         geometric_sequence = first_term_of_geometric * (common_ratio ** (k - 1))
-        
+        a1 = arithmetic_sequence.subs(k, 1)
+        g1 = geometric_sequence.subs(k, 1)
+        a2 = arithmetic_sequence.subs(k, 2)
+        g2 = geometric_sequence.subs(k, 2)
+        a3 = arithmetic_sequence.subs(k, 3)
+        g3 = geometric_sequence.subs(k, 3)
+        an = arithmetic_sequence.subs(k, n)
+        gn = geometric_sequence.subs(k, n)
+        latex_problem = f"和\\( S = {a1} \\cdot {g1} + {a2} \\cdot {g2} + {a3} + \\cdot {g3} \\cdots + {sy.latex(an)} \\cdot {sy.latex(gn)} \\)を求めよ。"
+        latex_answer = f"両辺に \\( {sy.latex(common_ratio)} \\)を掛けると、\n"
+        an_minus1 = arithmetic_sequence.subs(k, n-1)
+        gn_minus1 = geometric_sequence.subs(k, n-1)
+        an_plus1 = arithmetic_sequence.subs(k, n+1)
+        gn_plus1 = geometric_sequence.subs(k, n+1)
+        latex_answer += f"\\( {sy.latex(common_ratio)} S = \\qquad {a1} \\cdot {g2} + {a2} \\cdot {g3} + \\cdots + {sy.latex(an_minus1)} \\cdot {sy.latex(gn)} + {sy.latex(an)} \\cdot {sy.latex(gn_plus1)} \\)"
         return latex_answer, latex_problem
     
     def _make_sum_of_sum_problem(self):

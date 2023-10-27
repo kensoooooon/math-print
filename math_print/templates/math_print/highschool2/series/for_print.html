@@ -83,7 +83,6 @@ function showAnswer(){
 {% for inner_list in math_problem_list_of_list %}
     <section class="print_pages">
         <p class="number_of_problem">問題: No. {{ forloop.counter }}</p>
-        <p>以下の和を求めましょう。</p>
         <ol>
             {% for math_problem_tuple in inner_list %}
                 <div class="problem">
@@ -91,7 +90,7 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                \( {{ math_problem_tuple.0.latex_problem | linebreaksbr }} \)
+                                {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                             </p>
                         </li>
                     </div>
@@ -99,7 +98,7 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                \( {{ math_problem_tuple.1.latex_problem | linebreaksbr }} \)
+                                {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                             </p>
                         </li>
                     </div>

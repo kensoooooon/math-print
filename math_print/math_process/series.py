@@ -55,8 +55,8 @@ class Series:
             end = choice([n, n-1])
         else:
             problem_mode = "number"
-            start = 1
-            end = sy.Integer(randint(2, 10))
+            start = sy.Integer(randint(1, 3))
+            end = sy.Integer(randint(start + 2, 10))
         series = sy.Sum(function, (k, start, end))
         latex_problem = f"\\displaystyle {sy.latex(series)}"
         if problem_mode == "character":
@@ -74,8 +74,35 @@ class Series:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
-        latex_answer = "dummy answer in _make_sum_of_geometric_problem"
-        latex_problem = "dummy problem in _make_sum_of_geometric_problem"
+        n = sy.Symbol("n")
+        k = sy.Symbol("k")
+        if random() > 0.3:
+            base = sy.Integer(randint(2, 5))
+        else:
+            numerator = sy.Integer(randint(1, 5))
+            denominator = sy.Integer(randint(2, 5))
+            base = sy.Rational(numerator, denominator)
+        if base == 1:
+            base = sy.Integer(randint(2, 5))
+        if random() > 0.3:
+            function = base ** k
+        else:
+            function = base ** (k - 1)
+        if random() > 0.3:
+            problem_mode = "character"
+            start = 1
+            end = choice([n, n-1])
+        else:
+            problem_mode = "number"
+            start = sy.Integer(randint(1, 3))
+            end = sy.Integer(randint(start + 2, 7))
+        series = sy.Sum(function, (k, start, end))
+        latex_problem = f"\\displaystyle {sy.latex(series)}"
+        if problem_mode == "character":
+            answer = sy.factor(series.doit())
+        elif problem_mode == "number":
+            answer = series.doit()
+        latex_answer = f"= {sy.latex(answer)}"
         return latex_answer, latex_problem
 
     def _make_sum_of_arithmetic_times_geometric_problem(self):
@@ -86,8 +113,15 @@ class Series:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
-        latex_answer = "dummy answer in _make_sum_of_arithmetic_times_geometric_problem"
-        latex_problem = "dummy problem in _make_sum_of_arithmetic_times_geometric_problem"
+        n = sy.Symbol("n")
+        k = sy.Symbol("k")
+        first_term_of_arithmetic = sy.Integer(randint(-5, 5))
+        common_difference = choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5])
+        arithmetic_sequence = first_term_of_arithmetic + (k - 1) * common_difference
+        first_term_of_geometric = choice([-4, -3, -2, -1, 1, 2, 3, 4])
+        common_ratio = choice([2, 3, 4])
+        geometric_sequence = first_term_of_geometric * (common_ratio ** (k - 1))
+        
         return latex_answer, latex_problem
     
     def _make_sum_of_sum_problem(self):

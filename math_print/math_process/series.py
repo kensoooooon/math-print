@@ -162,23 +162,16 @@ class Series:
             S_latex = "-S"
         else:
             S_latex = f"{S_coeff}S"
-        # sum_of_geometric_part = sy.powsimp(sy.Sum(g2 * common_ratio ** (k - 1), (k, 1, n-2)).doit())
-        # sum_of_geometric_part = sy.geometry.sequence.GeometricSum(g2, common_ratio, n-2)
-        """
-        geometric_sum_formula = a*(1 - r**n)/(1 - r)
-        
-        if common_ratio > 1:
-            sum_of_geometric_part = g2 * (common_ratio ** (n - 2) - 1) / (common_ratio - 1)
-        else:
-            sum_of_geometric_part = g2 * (1 - common_ratio ** (n - 2)) / (1 - common_ratio)
-        """
-        sum_of_geometric_part_latex = f"\\dfrac{{{g2}({common_ratio}^{{n-2}} - 1)}}{{{common_ratio} - 1}}"
+        sum_of_geometric_part_latex = f"\\dfrac{{{g2}({common_ratio}^{{n-1}} - 1)}}{{{common_ratio} - 1}}"
         if common_difference == 1:
             latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + ({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
-            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + \\left({sum_of_geometric_part_latex}\\right) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)"
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + \\left\\lbrace{sum_of_geometric_part_latex}\\right\\rbrace - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
         else:
             latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
-            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}\\left({sum_of_geometric_part_latex}\\right) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)"
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}\\left\\lbrace{sum_of_geometric_part_latex}\\right\\rbrace - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
+        latex_answer += f"これを整理すると、\n"
+        sum = sy.collect(sy.Sum(arithmetic_sequence * geometric_sequence, (k, 1, n)).doit(), common_ratio ** n)
+        latex_answer += f"\\( S = {sy.latex(sum)} \\)"
         return latex_answer, latex_problem
     
     def _make_sum_of_sum_problem(self):

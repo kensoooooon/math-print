@@ -130,9 +130,9 @@ class Series:
         first_term_of_arithmetic = sy.Integer(randint(1, 3))
         common_difference = sy.Integer(randint(1, 3))
         arithmetic_sequence = first_term_of_arithmetic + (k - 1) * common_difference
-        first_term_of_geometric = sy.Integer(randint(1, 4))
-        common_ratio = sy.Integer(randint(2, 4))
-        geometric_sequence = first_term_of_geometric * (common_ratio ** (k - 1))
+        common_ratio = sy.Integer(choice([2, 3, 5]))
+        first_term_of_geometric = common_ratio ** sy.Integer(randint(0, 2))
+        geometric_sequence = sy.powsimp(first_term_of_geometric * (common_ratio ** (k - 1)))
         a1 = arithmetic_sequence.subs(k, 1)
         g1 = geometric_sequence.subs(k, 1)
         a2 = arithmetic_sequence.subs(k, 2)
@@ -140,14 +140,45 @@ class Series:
         a3 = arithmetic_sequence.subs(k, 3)
         g3 = geometric_sequence.subs(k, 3)
         an = arithmetic_sequence.subs(k, n)
+        if an.subs(n, 0) == 0:
+            an_latex = sy.latex(an)
+        else:
+            an_latex = f"({sy.latex(an)})"
         gn = geometric_sequence.subs(k, n)
-        latex_problem = f"和\\( S = {a1} \\cdot {g1} + {a2} \\cdot {g2} + {a3} + \\cdot {g3} \\cdots + {sy.latex(an)} \\cdot {sy.latex(gn)} \\)を求めよ。"
-        latex_answer = f"両辺に \\( {sy.latex(common_ratio)} \\)を掛けると、\n"
+        latex_problem = f"和\\( S = {a1} \\cdot {g1} + {a2} \\cdot {g2} + {a3} \\cdot {g3} + \\cdots + {an_latex} \\cdot {sy.latex(gn)} \\)を求めよ。"
+        latex_answer = f"両辺に \\( {common_ratio} \\)を掛けると、\n"
         an_minus1 = arithmetic_sequence.subs(k, n-1)
+        if an_minus1.subs(n, 0) == 0:
+            an_minus_latex = sy.latex(an_minus1)
+        else:
+            an_minus_latex = f"({sy.latex(an_minus1)})"
         gn_minus1 = geometric_sequence.subs(k, n-1)
         an_plus1 = arithmetic_sequence.subs(k, n+1)
         gn_plus1 = geometric_sequence.subs(k, n+1)
-        latex_answer += f"\\( {sy.latex(common_ratio)} S = \\qquad {a1} \\cdot {g2} + {a2} \\cdot {g3} + \\cdots + {sy.latex(an_minus1)} \\cdot {sy.latex(gn)} + {sy.latex(an)} \\cdot {sy.latex(gn_plus1)} \\)"
+        latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3} + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
+        latex_answer += f"ここで元の式からこの式を引くと、\n"
+        S_coeff = 1 - common_ratio
+        if S_coeff == -1:
+            S_latex = "-S"
+        else:
+            S_latex = f"{S_coeff}S"
+        # sum_of_geometric_part = sy.powsimp(sy.Sum(g2 * common_ratio ** (k - 1), (k, 1, n-2)).doit())
+        # sum_of_geometric_part = sy.geometry.sequence.GeometricSum(g2, common_ratio, n-2)
+        """
+        geometric_sum_formula = a*(1 - r**n)/(1 - r)
+        
+        if common_ratio > 1:
+            sum_of_geometric_part = g2 * (common_ratio ** (n - 2) - 1) / (common_ratio - 1)
+        else:
+            sum_of_geometric_part = g2 * (1 - common_ratio ** (n - 2)) / (1 - common_ratio)
+        """
+        sum_of_geometric_part_latex = f"\\dfrac{{{g2}({common_ratio}^{{n-2}} - 1)}}{{{common_ratio} - 1}}"
+        if common_difference == 1:
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + ({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + \\left({sum_of_geometric_part_latex}\\right) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)"
+        else:
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}\\left({sum_of_geometric_part_latex}\\right) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)"
         return latex_answer, latex_problem
     
     def _make_sum_of_sum_problem(self):

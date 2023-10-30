@@ -145,8 +145,10 @@ class Series:
         else:
             an_latex = f"({sy.latex(an)})"
         gn = geometric_sequence.subs(k, n)
-        latex_problem = f"和\\( S = {a1} \\cdot {g1} + {a2} \\cdot {g2} + {a3} \\cdot {g3} + \\cdots + {an_latex} \\cdot {sy.latex(gn)} \\)を求めよ。"
-        latex_answer = f"両辺に \\( {common_ratio} \\)を掛けると、\n"
+        latex_problem = f"数列\\( {a1} \\cdot {g1}, {a2} \\cdot {g2}, {a3} \\cdot {g3}, \\cdots , {an_latex} \\cdot {sy.latex(gn)} \\)の和を求めよ。"
+        latex_answer = "求める和を\\( S \\)とすると、"
+        latex_answer += f"\\( S = {a1} \\cdot {g1} + {a2} \\cdot {g2} + {a3} \\cdot {g3} + \\cdots + {an_latex} \\cdot {sy.latex(gn)} \\)と表される。\n"
+        latex_answer += f"両辺に \\( {common_ratio} \\)を掛けると、\n"
         an_minus1 = arithmetic_sequence.subs(k, n-1)
         if an_minus1.subs(n, 0) == 0:
             an_minus_latex = sy.latex(an_minus1)
@@ -155,8 +157,8 @@ class Series:
         gn_minus1 = geometric_sequence.subs(k, n-1)
         an_plus1 = arithmetic_sequence.subs(k, n+1)
         gn_plus1 = geometric_sequence.subs(k, n+1)
-        latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3} + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
-        latex_answer += f"ここで元の式からこの式を引くと、\n"
+        latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3} + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
+        latex_answer += f"ここで\\( S \\)から\\( {common_ratio} S \\)を引くと、\n"
         S_coeff = 1 - common_ratio
         if S_coeff == -1:
             S_latex = "-S"
@@ -164,10 +166,12 @@ class Series:
             S_latex = f"{S_coeff}S"
         sum_of_geometric_part_latex = f"\\dfrac{{{g2}({common_ratio}^{{n-1}} - 1)}}{{{common_ratio} - 1}}"
         if common_difference == 1:
-            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + ({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + ({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
+            latex_answer += "等比数列の和の公式を使って一部を置き換えると、\n"
             latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + \\left\\lbrace{sum_of_geometric_part_latex}\\right\\rbrace - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
         else:
-            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
+            latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}({g2} + {g3} + \\cdots + {sy.latex(gn)}) - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
+            latex_answer += "等比数列の和の公式を使って一部を置き換えると、\n"
             latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}\\left\\lbrace{sum_of_geometric_part_latex}\\right\\rbrace - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
         latex_answer += f"これを整理すると、\n"
         sum = sy.collect(sy.Sum(arithmetic_sequence * geometric_sequence, (k, 1, n)).doit(), common_ratio ** n)
@@ -182,6 +186,60 @@ class Series:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
-        latex_answer = "dummy answer in _make_sum_of_sum_problem"
-        latex_problem = "dummy problem in _make_sum_of_sum_problem"
+        k = sy.Symbol("k")
+        n = sy.Symbol("n")
+        sequence = choice(["arithmetic", "geometric"])
+        if sequence == "arithmetic":
+            first_term = sy.Integer(randint(-3, 3))
+            common_difference = sy.Integer(randint(1, 3))
+            ak = first_term + (k - 1) * common_difference
+        elif sequence == "geometric":
+            common_ratio = sy.Integer(choice([2, 3, 5]))
+            first_term = common_ratio ** sy.Integer(randint(0, 3))
+            ak = first_term * common_ratio ** (k - 1)
+        a1 = ak.subs(k, 1)
+        if a1 < 0:
+            a1_latex = f"({sy.latex(a1)})"
+        else:
+            a1_latex = sy.latex(a1)
+        a2 = ak.subs(k, 2)
+        if a2 < 0:
+            a2_latex = f"({sy.latex(a2)})"
+        else:
+            a2_latex = sy.latex(a2)
+        a3 = ak.subs(k, 3)
+        if a3 < 0:
+            a3_latex = f"({sy.latex(a3)})"
+        else:
+            a3_latex = sy.latex(a3)
+        an_minus1 = ak.subs(k, n-1)
+        if (sequence == "arithmetic") and (an_minus1.subs(n, 0) != 0):
+            an_minus1_latex = f"({sy.latex(an_minus1)})"
+        else:
+            an_minus1_latex = sy.latex(an_minus1)
+        an = ak.subs(k, n)
+        if (sequence == "arithmetic") and (an.subs(n, 0) != 0):
+            an_latex = f"({sy.latex(an)})"
+        else:
+            an_latex = sy.latex(an)
+        latex_problem = f"数列\\( {a1_latex}, {a1_latex} + {a2_latex}, {a1_latex} + {a2_latex} + {a3_latex}, \\cdots \\)の初項から第\\( n \\)項までの和を求めよ。"
+        m = sy.Symbol("m")
+        sum = sy.Sum(ak, (k, 1, m))
+        sum_value = sum.doit()
+        latex_answer = f"この数列の第m項は、\n"
+        am_minus1 = ak.subs(k, m-1)
+        if (sequence == "arithmetic") and (am_minus1.subs(m, 0) != 0):
+            am_minus1_latex = f"({sy.latex(am_minus1)})"
+        else:
+            am_minus1_latex = sy.latex(am_minus1)
+        am = ak.subs(k, m)
+        if (sequence == "arithmetic") and (am.subs(m, 0) != 0):
+            am_latex = f"({sy.latex(am)})"
+        else:
+            am_latex = sy.latex(am)
+        latex_answer += f"\\( {a1_latex} + {a2_latex} + \\cdots + {am_minus1_latex} + {am_latex} = \\displaystyle {sy.latex(sum)} = {sy.latex(sum_value)} \\)である。\n"
+        latex_answer += "よって求める和は、\n"
+        sum_of_sum = sy.Sum(sum_value, (m, 1, n))
+        sum_of_sum_value = sum_of_sum.doit()
+        latex_answer += f"\\( \\displaystyle {sy.latex(sum_of_sum)} = {sy.latex(sum_of_sum_value)} \\)"
         return latex_answer, latex_problem

@@ -31,6 +31,8 @@ class Series:
             self.latex_answer, self.latex_problem = self._make_sum_of_arithmetic_times_geometric_problem()
         elif selected_series_type == "sum_of_sum":
             self.latex_answer, self.latex_problem = self._make_sum_of_sum_problem()
+        elif selected_series_type == "difference_sequence":
+            self.latex_answer, self.latex_problem = self._make_difference_sequence_problem()
         else:
             raise ValueError(f"'selected_series_type is {selected_series_type}. This isn't expected value.")
     
@@ -242,4 +244,16 @@ class Series:
         sum_of_sum = sy.Sum(sum_value, (m, 1, n))
         sum_of_sum_value = sum_of_sum.doit()
         latex_answer += f"\\( \\displaystyle {sy.latex(sum_of_sum)} = {sy.latex(sum_of_sum_value)} \\)"
+        return latex_answer, latex_problem
+    
+    def _make_difference_sequence_problem(self):
+        """階差数列の一般項を求める
+        
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
+        """
+        latex_answer = "dummy answer in difference sequence."
+        latex_problem = "dummy problem in difference sequence."
         return latex_answer, latex_problem

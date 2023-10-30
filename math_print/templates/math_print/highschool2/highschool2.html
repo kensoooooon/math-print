@@ -479,10 +479,10 @@
     
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>種々の数列の和</p>
+            <p>種々の数列の和とその利用</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">出題される和</small>
+                <small class="text-muted">出題される問題</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="sum_from_linear_to_cubic" name="series_type" id="series_sum_from_linear_to_cubic" checked>
@@ -506,6 +506,12 @@
                         <input class="form-check-input" type="checkbox" value="sum_of_sum" name="series_type" id="series_sum_of_sum" checked>
                         <label class="form-check-label" for="series_sum_of_sum">
                             数列の和の和
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="difference_sequence" name="series_type" id="series_difference_sequence" checked>
+                        <label class="form-check-label" for="series_difference_sequence">
+                            階差数列の一般項
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`series_type`)" value="全部のせ">

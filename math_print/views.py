@@ -1998,6 +1998,7 @@ def print_series(request):
         series_types.append("sum_of_geometric")
         series_types.append("sum_of_arithmetic_times_geometric")
         series_types.append("sum_of_sum")
+        series_types.append("difference_sequence")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -3623,6 +3624,7 @@ def display_series(request):
         series_types.append("sum_of_geometric")
         series_types.append("sum_of_arithmetic_times_geometric")
         series_types.append("sum_of_sum")
+        series_types.append("difference_sequence")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = Series(series_types=series_types)

@@ -239,7 +239,7 @@ class Series:
             am_latex = f"({sy.latex(am)})"
         else:
             am_latex = sy.latex(am)
-        latex_answer += f"\\( {a1_latex} + {a2_latex} + \\cdots + {am_minus1_latex} + {am_latex} = \\displaystyle {sy.latex(sum)} = {sy.latex(sum_value)} \\)である。\n"
+        latex_answer += f"\\( {a1_latex} + {a2_latex} + \\cdots + {am_minus1_latex} + {am_latex} \n = \\displaystyle {sy.latex(sum)} = {sy.latex(sum_value)} \\)である。\n"
         latex_answer += "よって求める和は、\n"
         sum_of_sum = sy.Sum(sum_value, (m, 1, n))
         sum_of_sum_value = sum_of_sum.doit()

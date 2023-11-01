@@ -1990,7 +1990,7 @@ def print_series(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    PROBLEM_NUMBER = 8
+    PROBLEM_NUMBER = 6
     paper_number = int(request.POST["paper_number"])
     series_types = request.POST.getlist("series_type")
     if not(series_types):
@@ -3617,7 +3617,7 @@ def display_series(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    PROBLEM_NUMBER = 8
+    PROBLEM_NUMBER = 6
     series_types = request.POST.getlist("series_type")
     if not(series_types):
         series_types.append("sum_from_linear_to_cubic")

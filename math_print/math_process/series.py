@@ -147,7 +147,7 @@ class Series:
         else:
             an_latex = f"({sy.latex(an)})"
         gn = geometric_sequence.subs(k, n)
-        latex_problem = f"数列\\( {a1} \\cdot {g1}, {a2} \\cdot {g2}, {a3} \\cdot {g3}, \\cdots , {an_latex} \\cdot {sy.latex(gn)} \\)の和を求めよ。"
+        latex_problem = f"数列\\( {a1} \\cdot {g1}, {a2} \\cdot {g2}, {a3} \\cdot {g3}, \\cdots , {an_latex} \\cdot {sy.latex(gn)} \\)の\n和を求めよ。"
         latex_answer = "求める和を\\( S \\)とすると、"
         latex_answer += f"\\( S = {a1} \\cdot {g1} + {a2} \\cdot {g2} + {a3} \\cdot {g3} + \\cdots + {an_latex} \\cdot {sy.latex(gn)} \\)と表される。\n"
         latex_answer += f"両辺に \\( {common_ratio} \\)を掛けると、\n"
@@ -224,7 +224,7 @@ class Series:
             an_latex = f"({sy.latex(an)})"
         else:
             an_latex = sy.latex(an)
-        latex_problem = f"数列\\( {a1_latex}, {a1_latex} + {a2_latex}, {a1_latex} + {a2_latex} + {a3_latex}, \\cdots \\)の初項から第\\( n \\)項までの和を求めよ。"
+        latex_problem = f"数列\\( {a1_latex}, {a1_latex} + {a2_latex}, {a1_latex} + {a2_latex} + {a3_latex}, \\cdots \\)の\n初項から第\\( n \\)項までの和を求めよ。"
         m = sy.Symbol("m")
         sum = sy.Sum(ak, (k, 1, m))
         sum_value = sum.doit()
@@ -274,7 +274,7 @@ class Series:
         a5 = an.subs(n, 5)
         a6 = an.subs(n, 6)
         an_minus1 = an.subs(n, n-1)
-        latex_problem = f"数列\\( {{a_n}}: {a1}, {a2}, {a3}, {a4}, {a5}, {a6}, \\cdots \\)の一般項を求めよ。"
+        latex_problem = f"数列\\( {{a_n}}: {a1}, {a2}, {a3}, {a4}, {a5}, {a6}, \\cdots \\)\nの一般項を求めよ。"
         b1 = bk.subs(k, 1)
         b2 = bk.subs(k, 2)
         b3 = bk.subs(k, 3)

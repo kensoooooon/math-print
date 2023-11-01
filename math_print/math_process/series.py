@@ -254,6 +254,44 @@ class Series:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
-        latex_answer = "dummy answer in difference sequence."
-        latex_problem = "dummy problem in difference sequence."
+        k = sy.Symbol("k")
+        n = sy.Symbol("n")
+        selected_sequence = choice(["arithmetic", "geometric"])
+        if selected_sequence == "arithmetic":
+            first_term = sy.Integer(randint(-3, 3))
+            common_difference = sy.Integer(choice([-3, -2, -1, 1, 2, 3]))
+            bk = first_term + (k - 1) * common_difference
+        elif selected_sequence == "geometric":
+            common_ratio = sy.Integer(choice([2, 3, 5]))
+            first_term = common_ratio ** randint(0, 2)
+            bk = first_term * common_ratio ** (k - 1)
+        a1 = sy.Integer(randint(-3, 3))
+        an = a1 + sy.Sum(bk, (k, 1, n-1)).doit()
+        a1 = an.subs(n, 1)
+        a2 = an.subs(n, 2)
+        a3 = an.subs(n, 3)
+        a4 = an.subs(n, 4)
+        a5 = an.subs(n, 5)
+        a6 = an.subs(n, 6)
+        an_minus1 = an.subs(n, n-1)
+        latex_problem = f"数列\\( {{a_n}}: {a1}, {a2}, {a3}, {a4}, {a5}, {a6}, \\cdots \\)の一般項を求めよ。"
+        b1 = bk.subs(k, 1)
+        b2 = bk.subs(k, 2)
+        b3 = bk.subs(k, 3)
+        b4 = bk.subs(k, 4)
+        bn_minus1 = bk.subs(k, n-1)
+        bn = bk.subs(k, n)
+        latex_answer = f"数列\\( {{a_n}} \\)階差数列を\\( {{b_n}} \\)とすると、数列\\( {{b_n}} \\)は\\(  {b1}, {b2}, {b3}, {b4} \\cdots \\)となっている。\n"
+        if selected_sequence == "arithmetic":
+            latex_answer += f"これは初項\\( {first_term} \\)、公差\\( {common_difference} \\)の等差数列なので、\n"
+        elif selected_sequence == "geometric":
+            latex_answer += f"これは初項\\( {first_term} \\)、公比\\( {common_ratio} \\)の等比数列なので、\\( b_n = {sy.latex(bn)} \\)と表せる。\n"
+        latex_answer += f"よって\\( n \\geqq 2 \\)のとき、\n"
+        bk_sum = sy.Sum(bk, (k, 1, n-1))
+        latex_answer += f"\\( a_n = a_1 + \\displaystyle \\sum_{{k=1}}^{{n-1}} b_k = {a1} + {sy.latex(bk_sum)} \\)\n"
+        bk_sum_value = bk_sum.doit()
+        an_value = an.doit()
+        latex_answer += f"\\( = {a1} + \\left( {sy.latex(bk_sum_value)} \\right) = {sy.latex(an_value)} \\)となる。\n"
+        latex_answer += f"この式に\\( n = 1 \\)を代入すると、\\( a_1 = {a1} \\)であり、これは実際の初項と一致する。\n"
+        latex_answer += f"したがって、一般項は\\( a_n = {sy.latex(an_value)} \\)である。"
         return latex_answer, latex_problem

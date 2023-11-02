@@ -1,5 +1,7 @@
 import unicodedata
 import pprint
+# time estimate
+import cProfile
 
 from django.http import HttpResponse
 from django.shortcuts import render

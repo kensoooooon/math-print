@@ -1,3 +1,28 @@
+"""
+import cProfile
+import pstats
+
+class MyClass:
+    def method_to_profile(self):
+        # 何らかの処理
+        print("Method is running...")
+        for _ in range(1000000):
+            pass
+
+# インスタンスを作成
+my_instance = MyClass()
+
+# プロファイラを作成してメソッドを実行
+profiler = cProfile.Profile()
+profiler.enable()  # プロファイリングを開始
+
+my_instance.method_to_profile()  # プロファイルしたいメソッドを実行
+
+profiler.disable()  # プロファイリングを終了
+stats = pstats.Stats(profiler).sort_stats('cumulative')
+stats.print_stats()  # プロファイル結果を表示
+
+"""
 from random import choice, randint, random
 from typing import Dict, Tuple
 
@@ -159,7 +184,7 @@ class Series:
         gn_minus1 = geometric_sequence.subs(k, n-1)
         an_plus1 = arithmetic_sequence.subs(k, n+1)
         gn_plus1 = geometric_sequence.subs(k, n+1)
-        latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3} + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
+        latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3}\\) \n \\( + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
         latex_answer += f"ここで\\( S \\)から\\( {common_ratio} S \\)を引くと、\n"
         S_coeff = 1 - common_ratio
         if S_coeff == -1:

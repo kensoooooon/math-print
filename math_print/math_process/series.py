@@ -26,6 +26,9 @@ stats.print_stats()  # プロファイル結果を表示
 from random import choice, randint, random
 from typing import Dict, Tuple
 
+import cProfile
+import pstats
+
 import sympy as sy
 
 
@@ -48,6 +51,10 @@ class Series:
         """
         sy.init_printing(order='grevlex')
         selected_series_type = choice(settings["series_types"])
+        
+        profiler = cProfile.Profile()
+        profiler.enable()
+        
         if selected_series_type == "sum_from_linear_to_cubic":
             self.latex_answer, self.latex_problem = self._make_sum_from_linear_to_cubic_problem()
         elif selected_series_type == "sum_of_geometric":
@@ -60,6 +67,11 @@ class Series:
             self.latex_answer, self.latex_problem = self._make_difference_sequence_problem()
         else:
             raise ValueError(f"'selected_series_type is {selected_series_type}. This isn't expected value.")
+        
+        profiler.disable()
+        stats = pstats.Stats(profiler).sort_stats('cumulative')
+        stats.print_stats()
+        print("-----------------------")
     
     def _make_sum_from_linear_to_cubic_problem(self) -> Tuple[str, str]:
         """1~3次式の和の問題と解答を作成

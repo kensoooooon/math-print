@@ -2,6 +2,7 @@ import unicodedata
 import pprint
 # time estimate
 import cProfile
+import pstats
 
 from django.http import HttpResponse
 from django.shortcuts import render

@@ -1,33 +1,5 @@
-"""
-import cProfile
-import pstats
-
-class MyClass:
-    def method_to_profile(self):
-        # 何らかの処理
-        print("Method is running...")
-        for _ in range(1000000):
-            pass
-
-# インスタンスを作成
-my_instance = MyClass()
-
-# プロファイラを作成してメソッドを実行
-profiler = cProfile.Profile()
-profiler.enable()  # プロファイリングを開始
-
-my_instance.method_to_profile()  # プロファイルしたいメソッドを実行
-
-profiler.disable()  # プロファイリングを終了
-stats = pstats.Stats(profiler).sort_stats('cumulative')
-stats.print_stats()  # プロファイル結果を表示
-
-"""
 from random import choice, randint, random
 from typing import Dict, Tuple
-
-import cProfile
-import pstats
 
 import sympy as sy
 
@@ -51,10 +23,6 @@ class Series:
         """
         sy.init_printing(order='grevlex')
         selected_series_type = choice(settings["series_types"])
-        
-        profiler = cProfile.Profile()
-        profiler.enable()
-        
         if selected_series_type == "sum_from_linear_to_cubic":
             self.latex_answer, self.latex_problem = self._make_sum_from_linear_to_cubic_problem()
         elif selected_series_type == "sum_of_geometric":
@@ -67,11 +35,6 @@ class Series:
             self.latex_answer, self.latex_problem = self._make_difference_sequence_problem()
         else:
             raise ValueError(f"'selected_series_type is {selected_series_type}. This isn't expected value.")
-        
-        profiler.disable()
-        stats = pstats.Stats(profiler).sort_stats('cumulative')
-        stats.print_stats()
-        print("-----------------------")
     
     def _make_sum_from_linear_to_cubic_problem(self) -> Tuple[str, str]:
         """1~3次式の和の問題と解答を作成
@@ -193,8 +156,8 @@ class Series:
             an_minus_latex = sy.latex(an_minus1)
         else:
             an_minus_latex = f"({sy.latex(an_minus1)})"
-        gn_minus1 = geometric_sequence.subs(k, n-1)
-        an_plus1 = arithmetic_sequence.subs(k, n+1)
+        # gn_minus1 = geometric_sequence.subs(k, n-1)
+        # an_plus1 = arithmetic_sequence.subs(k, n+1)
         gn_plus1 = geometric_sequence.subs(k, n+1)
         latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3}\\) \n \\( + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
         latex_answer += f"ここで\\( S \\)から\\( {common_ratio} S \\)を引くと、\n"
@@ -251,6 +214,7 @@ class Series:
             a3_latex = f"({sy.latex(a3)})"
         else:
             a3_latex = sy.latex(a3)
+        """
         an_minus1 = ak.subs(k, n-1)
         if (sequence == "arithmetic") and (an_minus1.subs(n, 0) != 0):
             an_minus1_latex = f"({sy.latex(an_minus1)})"
@@ -261,6 +225,7 @@ class Series:
             an_latex = f"({sy.latex(an)})"
         else:
             an_latex = sy.latex(an)
+        """
         latex_problem = f"数列\\( {a1_latex}, {a1_latex} + {a2_latex}, {a1_latex} + {a2_latex} + {a3_latex}, \\cdots \\)の\n初項から第\\( n \\)項までの和を求めよ。"
         m = sy.Symbol("m")
         sum = sy.Sum(ak, (k, 1, m))
@@ -310,13 +275,13 @@ class Series:
         a4 = an.subs(n, 4)
         a5 = an.subs(n, 5)
         a6 = an.subs(n, 6)
-        an_minus1 = an.subs(n, n-1)
+        # an_minus1 = an.subs(n, n-1)
         latex_problem = f"数列\\( {{a_n}}: {a1}, {a2}, {a3}, {a4}, {a5}, {a6}, \\cdots \\)\nの一般項を求めよ。"
         b1 = bk.subs(k, 1)
         b2 = bk.subs(k, 2)
         b3 = bk.subs(k, 3)
         b4 = bk.subs(k, 4)
-        bn_minus1 = bk.subs(k, n-1)
+        # bn_minus1 = bk.subs(k, n-1)
         bn = bk.subs(k, n)
         latex_answer = f"数列\\( {{a_n}} \\)階差数列を\\( {{b_n}} \\)とすると、数列\\( {{b_n}} \\)は\\(  {b1}, {b2}, {b3}, {b4} \\cdots \\)となっている。\n"
         if selected_sequence == "arithmetic":

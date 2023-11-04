@@ -297,3 +297,14 @@ class Series:
         latex_answer += f"この式に\\( n = 1 \\)を代入すると、\\( a_1 = {a1} \\)であり、これは実際の初項と一致する。\n"
         latex_answer += f"したがって、一般項は\\( a_n = {sy.latex(an_value)} \\)である。"
         return latex_answer, latex_problem
+    
+    def _random_series_maker(self, series_type: str) -> Tuple[sy.Add, sy.Mul]:
+        """数列の一般項と和をランダムに作成して返す
+        
+        Args:
+            series_type (str): 作成する数列のタイプ
+            - arithmetic(等差数列), geometric(等比数列), polynomial(2次以上の多項式)の3種
+        
+        Raises:
+            ValueError: 指定されていないタイプの数列が指定されたときに挙上
+        """

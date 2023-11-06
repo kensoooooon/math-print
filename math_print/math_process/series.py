@@ -1,5 +1,5 @@
 from random import choice, randint, random
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 
 import sympy as sy
 
@@ -74,9 +74,9 @@ class Series:
         series = sy.Sum(function, (k, start, end))
         latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
         if problem_mode == "character":
-            answer = sy.factor(series.doit())
+            answer = sy.factor(sy.simplify(series).doit())
         elif problem_mode == "number":
-            answer = series.doit()
+            answer = sy.simplify(series).doit()
         latex_answer = f"\\( = {sy.latex(answer)} \\)"
         return latex_answer, latex_problem
     
@@ -156,8 +156,6 @@ class Series:
             an_minus_latex = sy.latex(an_minus1)
         else:
             an_minus_latex = f"({sy.latex(an_minus1)})"
-        # gn_minus1 = geometric_sequence.subs(k, n-1)
-        # an_plus1 = arithmetic_sequence.subs(k, n+1)
         gn_plus1 = geometric_sequence.subs(k, n+1)
         latex_answer += f"\\( {common_ratio} S = {a1} \\cdot {g2} + {a2} \\cdot {g3}\\) \n \\( + \\cdots + {an_minus_latex} \\cdot {sy.latex(gn)} + {an_latex} \\cdot {sy.latex(gn_plus1)} \\)となる。\n"
         latex_answer += f"ここで\\( S \\)から\\( {common_ratio} S \\)を引くと、\n"
@@ -214,18 +212,6 @@ class Series:
             a3_latex = f"({sy.latex(a3)})"
         else:
             a3_latex = sy.latex(a3)
-        """
-        an_minus1 = ak.subs(k, n-1)
-        if (sequence == "arithmetic") and (an_minus1.subs(n, 0) != 0):
-            an_minus1_latex = f"({sy.latex(an_minus1)})"
-        else:
-            an_minus1_latex = sy.latex(an_minus1)
-        an = ak.subs(k, n)
-        if (sequence == "arithmetic") and (an.subs(n, 0) != 0):
-            an_latex = f"({sy.latex(an)})"
-        else:
-            an_latex = sy.latex(an)
-        """
         latex_problem = f"数列\\( {a1_latex}, {a1_latex} + {a2_latex}, {a1_latex} + {a2_latex} + {a3_latex}, \\cdots \\)の\n初項から第\\( n \\)項までの和を求めよ。"
         m = sy.Symbol("m")
         sum = sy.Sum(ak, (k, 1, m))
@@ -275,13 +261,11 @@ class Series:
         a4 = an.subs(n, 4)
         a5 = an.subs(n, 5)
         a6 = an.subs(n, 6)
-        # an_minus1 = an.subs(n, n-1)
         latex_problem = f"数列\\( {{a_n}}: {a1}, {a2}, {a3}, {a4}, {a5}, {a6}, \\cdots \\)\nの一般項を求めよ。"
         b1 = bk.subs(k, 1)
         b2 = bk.subs(k, 2)
         b3 = bk.subs(k, 3)
         b4 = bk.subs(k, 4)
-        # bn_minus1 = bk.subs(k, n-1)
         bn = bk.subs(k, n)
         latex_answer = f"数列\\( {{a_n}} \\)階差数列を\\( {{b_n}} \\)とすると、数列\\( {{b_n}} \\)は\\(  {b1}, {b2}, {b3}, {b4} \\cdots \\)となっている。\n"
         if selected_sequence == "arithmetic":
@@ -297,14 +281,28 @@ class Series:
         latex_answer += f"この式に\\( n = 1 \\)を代入すると、\\( a_1 = {a1} \\)であり、これは実際の初項と一致する。\n"
         latex_answer += f"したがって、一般項は\\( a_n = {sy.latex(an_value)} \\)である。"
         return latex_answer, latex_problem
-    
-    def _random_series_maker(self, series_type: str) -> Tuple[sy.Add, sy.Mul]:
-        """数列の一般項と和をランダムに作成して返す
+
+    def _random_series(self, series_mode: Optional[str] = None):
+        """ランダムな数列の一般項と、その和を返して計算時間の短縮を図る
         
         Args:
-            series_type (str): 作成する数列のタイプ
-            - arithmetic(等差数列), geometric(等比数列), polynomial(2次以上の多項式)の3種
+            series_mode (optional, str): 生成する数列のタイプ。デフォルトはNoneで、その場合はランダムに出力される
+            - 生成されるタイプは、arithmetic(等差数列), geometric(等比数列), polynomial(1次~3次の多項式), 
         
-        Raises:
-            ValueError: 指定されていないタイプの数列が指定されたときに挙上
+        Returns:
+            Tuple[Union[sy.Add, sy.Mul], sy.Add]: 一般項と和
+            - general_term (Union[sy.Add, sy.Mul]): 数列の一般項
+            - sum_of_series (sy.Add): 数列の和を求めるための一般項
         """
+        k = sy.Symbol("k")
+        n = sy.Symbol("n")
+        if series_mode is None:
+            selected_series_mode = choice(["polynomial"])
+        else:
+            selected_series_mode = series_mode
+        if selected_series_mode == "polynomial":
+            constant = sy.Integer(randint(-3, 3))
+            linear_coeff = sy.Integer(randint(-3, 3))
+            quadratic_coeff = sy.Integer(randint(-3, 3))
+            cubic_coeff = sy.Integer(randint(-3, 3))
+            ak = cubic_coeff * (k ** 3) + 

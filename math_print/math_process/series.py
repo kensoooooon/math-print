@@ -1,3 +1,21 @@
+"""
+import sympy as sy
+
+k = sy.Symbol("k")
+n = sy.Symbol("n")
+
+ak = 2 * k - 1
+
+sum_value = sy.Sum(ak, (k, 1, n)).doit()
+expanded_sum_value = sy.expand(sum_value)
+
+manual = 2 * (sy.Rational(1, 2) * n * (n + 1)) - n
+expanded_manual = sy.expand(manual)
+
+print(expanded_sum_value)
+print(expanded_manual)
+"""
+
 from random import choice, randint, random
 from typing import Dict, Tuple, Optional
 
@@ -35,7 +53,7 @@ class Series:
             self.latex_answer, self.latex_problem = self._make_difference_sequence_problem()
         else:
             raise ValueError(f"'selected_series_type is {selected_series_type}. This isn't expected value.")
-    
+
     def _make_sum_from_linear_to_cubic_problem(self) -> Tuple[str, str]:
         """1~3次式の和の問題と解答を作成
         
@@ -73,10 +91,14 @@ class Series:
             end = sy.Integer(randint(start + 2, 10))
         series = sy.Sum(function, (k, start, end))
         latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
+        """
         if problem_mode == "character":
             answer = sy.factor(sy.simplify(series).doit())
         elif problem_mode == "number":
             answer = sy.simplify(series).doit()
+        """
+        if problem_mode == "character":
+            series_value = 
         latex_answer = f"\\( = {sy.latex(answer)} \\)"
         return latex_answer, latex_problem
     
@@ -292,17 +314,34 @@ class Series:
         Returns:
             Tuple[Union[sy.Add, sy.Mul], sy.Add]: 一般項と和
             - general_term (Union[sy.Add, sy.Mul]): 数列の一般項
-            - sum_of_series (sy.Add): 数列の和を求めるための一般項
+            - sum_of_series (sy.Add): 初項からn項までの和
         """
         k = sy.Symbol("k")
         n = sy.Symbol("n")
         if series_mode is None:
-            selected_series_mode = choice(["polynomial"])
+            selected_series_mode = choice(["arithmetic", "geometric", "polynomial"])
         else:
             selected_series_mode = series_mode
-        if selected_series_mode == "polynomial":
-            constant = sy.Integer(randint(-3, 3))
-            linear_coeff = sy.Integer(randint(-3, 3))
-            quadratic_coeff = sy.Integer(randint(-3, 3))
-            cubic_coeff = sy.Integer(randint(-3, 3))
-            ak = cubic_coeff * (k ** 3) + 
+        if selected_series_mode == "arithmetic":
+            first_term = sy.Integer(randint(-3, 3))
+            common_difference = sy.Integer(choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]))
+            general_term = first_term + (n - 1) * common_difference
+            series_of_sum = sy.Rational(1, 2) * n * (first_term + general_term)
+        elif selected_series_mode == "geometric":
+            common_ratio = sy.Integer(choice([2, 3, 4]))
+            first_term = common_ratio ** (randint(0, 1))
+            general_term = first_term * common_ratio ** (n - 1)
+            series_of_sum = (first_term * (common_ratio ** n - 1)) / (common_ratio - 1)
+        elif selected_series_mode == "polynomial":
+            if random() > 0.4:
+                constant = sy.Integer(randint(-3, 3))
+                linear_coeff = sy.Integer(randint(-3, 3))
+                quadratic_coeff = sy.Integer(randint(-3, 3))
+                cubic_coeff = sy.Integer(randint(-3, 3))
+                general_term = cubic_coeff * (n ** 3) + quadratic_coeff * (n ** 2) + linear_coeff * n + constant
+                series_of_sum = cubic_coeff * (sy.Rational(1, 2) * n * (n + 1)) ** 2 + quadratic_coeff * (sy.Rational(1, 6) * n * (n + 1) * (2 * n + 1)) + linear_coeff * (sy.Rational(1, 2) * n * (n + 1)) + constant * n
+            else:
+                dimension = choice([2, 3])
+                if dimension == 2:
+                    alpha = sy.Integer(randint(-3, 3))
+                    beta = sy.Integer(randint(-3, 3))

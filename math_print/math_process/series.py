@@ -81,6 +81,9 @@ class Series:
                 beta = sy.Integer(randint(-3, 3))
                 gamma = sy.Integer(randint(-3, 3))
                 function = (k - alpha) * (k - beta) * (k - gamma)
+            # added to calculate sum
+            expanded_function = sy.expand(function)
+            cubic_coeff = expanded_function
         if random() > 0.3:
             problem_mode = "character"
             start = 1

@@ -97,8 +97,16 @@ class Series:
         elif problem_mode == "number":
             answer = sy.simplify(series).doit()
         """
+        series_formula = cubic_coeff * ((sy.Rational(1, 2) * n * (n + 1)) ** 2) + quadratic_coeff * (sy.Rational(1, 6) * n * (n + 1) * (2 * n + 1)) + linear_coeff * (sy.Rational(1, 2) * n * (n + 1)) + constant * n
         if problem_mode == "character":
-            series_value = 
+            answer = series_formula.subs(n, end)
+        elif problem_mode == "number":
+            if start == 1:
+                answer = series_formula.subs(n, end)
+            else:
+                end_value = series_formula.subs(n, end)
+                from_start_to_before_end_value = series_formula.subs(n, start - 1)
+                answer = end_value - from_start_to_before_end_value            
         latex_answer = f"\\( = {sy.latex(answer)} \\)"
         return latex_answer, latex_problem
     

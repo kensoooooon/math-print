@@ -83,7 +83,10 @@ class Series:
                 function = (k - alpha) * (k - beta) * (k - gamma)
             # added to calculate sum
             expanded_function = sy.expand(function)
-            cubic_coeff = expanded_function
+            cubic_coeff = expanded_function.coeff(k, 3)
+            quadratic_coeff = expanded_function.coeff(k, 2)
+            linear_coeff = expanded_function.coeff(k, 1)
+            constant = expanded_function.coeff(k, 0)
         if random() > 0.3:
             problem_mode = "character"
             start = 1
@@ -110,7 +113,7 @@ class Series:
                 end_value = series_formula.subs(n, end)
                 from_start_to_before_end_value = series_formula.subs(n, start - 1)
                 answer = end_value - from_start_to_before_end_value            
-        latex_answer = f"\\( = {sy.latex(answer)} \\)"
+        latex_answer = f"\\( = {sy.latex(sy.factor(answer))} \\)"
         return latex_answer, latex_problem
     
     def _make_sum_of_geometric_problem(self):
@@ -141,14 +144,28 @@ class Series:
             end = choice([n, n-1])
         else:
             problem_mode = "number"
-            start = sy.Integer(randint(1, 3))
-            end = sy.Integer(randint(start + 2, 7))
+            start = sy.Integer(randint(1, 2))
+            end = sy.Integer(randint(start + 2, 5))
         series = sy.Sum(function, (k, start, end))
         latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
+        """
         if problem_mode == "character":
             answer = sy.factor(series.doit())
         elif problem_mode == "number":
             answer = series.doit()
+        """
+        first_term = function.subs(k, 1)
+        common_ratio = base
+        if common_ratio > 1:
+            series_formula = (first_term * (common_ratio ** n - 1)) / (common_ratio - 1)
+        elif common_ratio < 1:
+            series_formula = (first_term * (1 - common_ratio ** n)) / (1 - common_ratio)
+        if problem_mode == "character":
+            answer = sy.factor(series_formula.subs(n, end))
+        elif problem_mode == "number":
+            end_value = series_formula.subs(n, end)
+            from_start_to_before_end_value = series_formula.subs(n, end - 1)
+            answer = end_value - from_start_to_before_end_value
         latex_answer = f"\\( = {sy.latex(answer)} \\)"
         return latex_answer, latex_problem
 

@@ -177,8 +177,8 @@ class Series:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
-        n = sy.Symbol("n")
-        k = sy.Symbol("k")
+        n = sy.Symbol("n", positive=True ,integer=True)
+        k = sy.Symbol("k", positive=True, integer=True)
         first_term_of_arithmetic = sy.Integer(randint(1, 3))
         common_difference = sy.Integer(randint(1, 3))
         arithmetic_sequence = first_term_of_arithmetic + (k - 1) * common_difference
@@ -224,8 +224,25 @@ class Series:
             latex_answer += "等比数列の和の公式を使って一部を置き換えると、\n"
             latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}\\left\\lbrace{sum_of_geometric_part_latex}\\right\\rbrace - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
         latex_answer += f"これを整理すると、\n"
-        sum = sy.collect(sy.Sum(arithmetic_sequence * geometric_sequence, (k, 1, n)).doit(), common_ratio ** n)
-        latex_answer += f"\\( S = {sy.latex(sum)} \\)"
+        """
+        # sum_value = sy.collect(sy.Sum(arithmetic_sequence * geometric_sequence, (k, 1, n)).doit(), common_ratio ** n)
+        simplified_sequence = sy.simplify(arithmetic_sequence * geometric_sequence)
+        sum_value = sy.collect(sy.Sum(simplified_sequence, (k, 1, n)).doit(), common_ratio ** n)
+        """
+        first_term = first_term_of_arithmetic * first_term_of_geometric
+        print(f"first_term: {first_term}")
+        last_term = an * gn_plus1
+        print(f"last_term: {last_term}")
+        # common_ratio > 1
+        sum_of_middle_geometric = (g2 * (common_ratio ** (n - 1) - 1)) / (common_ratio - 1)
+        print(f"sum_of_middle_geometric: {sum_of_middle_geometric}")
+        sum_with_one_minus_r = first_term + common_difference * sum_of_middle_geometric - last_term
+        print(f"sum_with_one_minus_r: {sum_with_one_minus_r}")
+        sum_value = sum_with_one_minus_r / (1 - common_ratio)
+        print(f"sum_value: {sum_value}")
+        print("-------------------------")
+        collected_sum_value = sy.collect(sum_value, common_ratio ** n)
+        latex_answer += f"\\( S = {sy.latex(collected_sum_value)} \\)"
         return latex_answer, latex_problem
     
     def _make_sum_of_sum_problem(self):

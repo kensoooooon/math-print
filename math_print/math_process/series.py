@@ -97,12 +97,6 @@ class Series:
             end = sy.Integer(randint(start + 2, 10))
         series = sy.Sum(function, (k, start, end))
         latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
-        """
-        if problem_mode == "character":
-            answer = sy.factor(sy.simplify(series).doit())
-        elif problem_mode == "number":
-            answer = sy.simplify(series).doit()
-        """
         series_formula = cubic_coeff * ((sy.Rational(1, 2) * n * (n + 1)) ** 2) + quadratic_coeff * (sy.Rational(1, 6) * n * (n + 1) * (2 * n + 1)) + linear_coeff * (sy.Rational(1, 2) * n * (n + 1)) + constant * n
         if problem_mode == "character":
             answer = series_formula.subs(n, end)
@@ -148,12 +142,6 @@ class Series:
             end = sy.Integer(randint(start + 2, 5))
         series = sy.Sum(function, (k, start, end))
         latex_problem = f"\\( \\displaystyle {sy.latex(series)} \\)"
-        """
-        if problem_mode == "character":
-            answer = sy.factor(series.doit())
-        elif problem_mode == "number":
-            answer = series.doit()
-        """
         first_term = function.subs(k, 1)
         common_ratio = base
         if common_ratio > 1:
@@ -224,23 +212,12 @@ class Series:
             latex_answer += "等比数列の和の公式を使って一部を置き換えると、\n"
             latex_answer += f"\\( {S_latex} = {a1} \\cdot {g1} + {common_difference}\\left\\lbrace{sum_of_geometric_part_latex}\\right\\rbrace - {an_latex} \\cdot {sy.latex(gn_plus1)} \\)\n"
         latex_answer += f"これを整理すると、\n"
-        """
-        # sum_value = sy.collect(sy.Sum(arithmetic_sequence * geometric_sequence, (k, 1, n)).doit(), common_ratio ** n)
-        simplified_sequence = sy.simplify(arithmetic_sequence * geometric_sequence)
-        sum_value = sy.collect(sy.Sum(simplified_sequence, (k, 1, n)).doit(), common_ratio ** n)
-        """
         first_term = first_term_of_arithmetic * first_term_of_geometric
-        print(f"first_term: {first_term}")
         last_term = an * gn_plus1
-        print(f"last_term: {last_term}")
         # common_ratio > 1
         sum_of_middle_geometric = (g2 * (common_ratio ** (n - 1) - 1)) / (common_ratio - 1)
-        print(f"sum_of_middle_geometric: {sum_of_middle_geometric}")
         sum_with_one_minus_r = first_term + common_difference * sum_of_middle_geometric - last_term
-        print(f"sum_with_one_minus_r: {sum_with_one_minus_r}")
         sum_value = sum_with_one_minus_r / (1 - common_ratio)
-        print(f"sum_value: {sum_value}")
-        print("-------------------------")
         collected_sum_value = sy.collect(sum_value, common_ratio ** n)
         latex_answer += f"\\( S = {sy.latex(collected_sum_value)} \\)"
         return latex_answer, latex_problem
@@ -348,45 +325,3 @@ class Series:
         latex_answer += f"この式に\\( n = 1 \\)を代入すると、\\( a_1 = {a1} \\)であり、これは実際の初項と一致する。\n"
         latex_answer += f"したがって、一般項は\\( a_n = {sy.latex(an_value)} \\)である。"
         return latex_answer, latex_problem
-
-    def _random_series(self, series_mode: Optional[str] = None):
-        """ランダムな数列の一般項と、その和を返して計算時間の短縮を図る
-        
-        Args:
-            series_mode (optional, str): 生成する数列のタイプ。デフォルトはNoneで、その場合はランダムに出力される
-            - 生成されるタイプは、arithmetic(等差数列), geometric(等比数列), polynomial(1次~3次の多項式), 
-        
-        Returns:
-            Tuple[Union[sy.Add, sy.Mul], sy.Add]: 一般項と和
-            - general_term (Union[sy.Add, sy.Mul]): 数列の一般項
-            - sum_of_series (sy.Add): 初項からn項までの和
-        """
-        k = sy.Symbol("k")
-        n = sy.Symbol("n")
-        if series_mode is None:
-            selected_series_mode = choice(["arithmetic", "geometric", "polynomial"])
-        else:
-            selected_series_mode = series_mode
-        if selected_series_mode == "arithmetic":
-            first_term = sy.Integer(randint(-3, 3))
-            common_difference = sy.Integer(choice([-5, -4, -3, -2, -1, 1, 2, 3, 4, 5]))
-            general_term = first_term + (n - 1) * common_difference
-            series_of_sum = sy.Rational(1, 2) * n * (first_term + general_term)
-        elif selected_series_mode == "geometric":
-            common_ratio = sy.Integer(choice([2, 3, 4]))
-            first_term = common_ratio ** (randint(0, 1))
-            general_term = first_term * common_ratio ** (n - 1)
-            series_of_sum = (first_term * (common_ratio ** n - 1)) / (common_ratio - 1)
-        elif selected_series_mode == "polynomial":
-            if random() > 0.4:
-                constant = sy.Integer(randint(-3, 3))
-                linear_coeff = sy.Integer(randint(-3, 3))
-                quadratic_coeff = sy.Integer(randint(-3, 3))
-                cubic_coeff = sy.Integer(randint(-3, 3))
-                general_term = cubic_coeff * (n ** 3) + quadratic_coeff * (n ** 2) + linear_coeff * n + constant
-                series_of_sum = cubic_coeff * (sy.Rational(1, 2) * n * (n + 1)) ** 2 + quadratic_coeff * (sy.Rational(1, 6) * n * (n + 1) * (2 * n + 1)) + linear_coeff * (sy.Rational(1, 2) * n * (n + 1)) + constant * n
-            else:
-                dimension = choice([2, 3])
-                if dimension == 2:
-                    alpha = sy.Integer(randint(-3, 3))
-                    beta = sy.Integer(randint(-3, 3))

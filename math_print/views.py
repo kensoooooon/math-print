@@ -1992,7 +1992,6 @@ def print_series(request):
     Returns:
         render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    start_time = perf_counter()
     PROBLEM_NUMBER = 6
     paper_number = int(request.POST["paper_number"])
     series_types = request.POST.getlist("series_type")
@@ -2010,8 +2009,6 @@ def print_series(request):
             problem2 = Series(series_types=series_types)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
-    end_time = perf_counter()
-    print(f"time: {end_time - start_time}")
     return render(request, 'math_print/highschool2/series/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 

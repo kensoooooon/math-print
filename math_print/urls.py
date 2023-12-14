@@ -84,6 +84,9 @@ urlpatterns = [
     ### 分数と整数のかけ算・割り算 ###
     path('multiplication_and_division_of_fraction_and_integer/print', views.print_multiplication_and_division_of_fraction_and_integer, name='multiplication_and_division_of_fraction_and_integer_print'),
     path('multiplication_and_division_of_fraction_and_integer/display', views.display_multiplication_and_division_of_fraction_and_integer, name='multiplication_and_division_of_fraction_and_integer_display'),
+    ### 文字を使った式 ###
+    path('formula_with_symbol/print', views.print_formula_with_symbol, name='formula_with_symbol_print'),
+    path('formula_with_symbol/display', views.display_formula_with_symbol, name='formula_with_symbol_display'),
     ##########################################
     ### 中1 ###
     path('junior_highschool1/', views.show_junior_highschool1, name='junior_highschool1'),

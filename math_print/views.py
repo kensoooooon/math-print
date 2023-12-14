@@ -2011,6 +2011,16 @@ def print_series(request):
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/highschool2/series/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
+def print_formula_with_symbol(request):
+    """小学6年生用の文字を使った式の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    return render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {})
 
 # display section
 
@@ -3633,6 +3643,18 @@ def display_series(request):
         problem2 = Series(series_types=series_types)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool2/series/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
+
+def display_formula_with_symbol(request):
+    """小学6年生用の文字を使った式の問題のブラウザ表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+    """
+    return render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {})
 
 
 # explain section

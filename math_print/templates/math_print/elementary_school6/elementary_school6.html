@@ -239,46 +239,31 @@ function uncheckAllStatus(target){
                 <small class="text-muted">出題される問題</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="addition_only" name="calculation_type" id="addition_onlyCheck" checked>
-                        <label class="form-check-label" for="addition_onlyCheck">
-                            足し算のみ
+                        <input class="form-check-input" type="checkbox" value="price_and_number" name="problem_type" id="price_and_numberCheck" checked>
+                        <label class="form-check-label" for="price_and_numberCheck">
+                            個数と値段
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
-                </div>
-                <small class="text-muted">使用する記号</small>
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="square" name="used_symbol" id="FillInTheSquareSquareRadio" checked>
-                        <label class="form-check-label" for="FillInTheSquareSquareRadio">
-                            □
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="x" name="used_symbol" id="FillInTheSquareXRadio">
-                        <label class="form-check-label" for="FillInTheSquareXRadio">
-                            x
-                        </label>
-                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FillInTheSquareFivePaperRadio" checked>
-                        <label class="form-check-label" for="FillInTheSquareFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="FormulaWithSymbolFivePaperRadio" checked>
+                        <label class="form-check-label" for="FormulaWithSymbolFivePaperRadio">
                             20問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FillInTheSquareTenPaperRadio">
-                        <label class="form-check-label" for="FillInTheSquareTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="FormulaWithSymbolTenPaperRadio">
+                        <label class="form-check-label" for="FormulaWithSymbolTenPaperRadio">
                             20問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FillInTheSquareFifteenPaperRadio">
-                        <label class="form-check-label" for="FillInTheSquareFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="FormulaWithSymbolFifteenPaperRadio">
+                        <label class="form-check-label" for="FormulaWithSymbolFifteenPaperRadio">
                             20問×15枚
                         </label>
                     </div>

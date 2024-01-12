@@ -1,21 +1,3 @@
-"""
-import sympy as sy
-
-k = sy.Symbol("k")
-n = sy.Symbol("n")
-
-ak = 2 * k - 1
-
-sum_value = sy.Sum(ak, (k, 1, n)).doit()
-expanded_sum_value = sy.expand(sum_value)
-
-manual = 2 * (sy.Rational(1, 2) * n * (n + 1)) - n
-expanded_manual = sy.expand(manual)
-
-print(expanded_sum_value)
-print(expanded_manual)
-"""
-
 from random import choice, randint, random
 from typing import Dict, Tuple, Optional
 

@@ -239,9 +239,21 @@ function uncheckAllStatus(target){
                 <small class="text-muted">出題される問題</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="price_and_number" name="problem_type" id="price_and_numberCheck" checked>
-                        <label class="form-check-label" for="price_and_numberCheck">
-                            個数と値段
+                        <input class="form-check-input" type="checkbox" value="expression_with_formula" name="problem_type" id="expression_with_formulaCheck" checked>
+                        <label class="form-check-label" for="expression_with_formulaCheck">
+                            式での表現
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="expression_with_formula_and_calculate" name="problem_type" id="expression_with_formula_and_calculateCheck" checked>
+                        <label class="form-check-label" for="expression_with_formula_and_calculateCheck">
+                            式での表現と値の計算
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="from_formula_to_condition" name="problem_type" id="from_formula_to_conditionCheck" checked>
+                        <label class="form-check-label" for="from_formula_to_conditionCheck">
+                            式から当てはまる条件を選ぶ
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">

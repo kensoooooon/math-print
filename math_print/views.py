@@ -66,6 +66,7 @@ from .math_process.division_of_decimal_for_4th_grade import DivisionOfDecimalFor
 from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import AdditionAndSubtractionOfFractionFor4thGrade
 from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
 from .math_process.series import Series
+from .math_process.formula_with_symbol import FormulaWithSymbol
 
 
 
@@ -2018,9 +2019,25 @@ def print_formula_with_symbol(request):
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
 
     Returns:
-        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
-    return render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {})
+    PROBLEM_NUMBER = 6
+    paper_number = int(request.POST["paper_number"])
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("expression_with_formula")
+        problem_types.append("expression_with_formula_and_calculate")
+        problem_types.append("from_formula_to_condition")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = FormulaWithSymbol(problem_types=problem_types)
+            problem2 = FormulaWithSymbol(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {})
+    return render_to_return
 
 # display section
 
@@ -3652,9 +3669,21 @@ def display_formula_with_symbol(request):
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
 
     Returns:
-        render (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    return render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {})
+    PROBLEM_NUMBER = 6
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("expression_with_formula")
+        problem_types.append("expression_with_formula_and_calculate")
+        problem_types.append("from_formula_to_condition")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = FormulaWithSymbol(problem_types=problem_types)
+        problem2 = FormulaWithSymbol(problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+    return render_to_return
 
 
 # explain section
@@ -3667,6 +3696,7 @@ def explain_one_sixth_calculate_area_by_integration(request):
     Returns:
         returned_render (django.http.response.HttpResponse): 描画のもろもろ
     """
+    
     returned_render = render(request, 'math_print/highschool2/calculate_area_by_integration/for_explain_one_sixth.html', {})
     return returned_render
 

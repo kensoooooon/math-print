@@ -72,7 +72,9 @@ class FormulaWithSymbol:
             item = choice(["ジュース", "お茶"])
             increase_or_decrease = choice(["increase", "decrease"])
             if increase_or_decrease == "increase":
-                start = randint(1, 15)
+                start_number = randint(1, 15)
+                increased_number = randint(2, 4)
+                end_number = start_number + increased_number
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_calculate_problem(self):

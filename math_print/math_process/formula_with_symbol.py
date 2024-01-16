@@ -1,4 +1,4 @@
-from random import choice, randint, random
+from random import choice, randint, random, shuffle
 from typing import Dict, Union
 
 
@@ -72,9 +72,41 @@ class FormulaWithSymbol:
             item = choice(["ジュース", "お茶"])
             increase_or_decrease = choice(["increase", "decrease"])
             if increase_or_decrease == "increase":
-                start_number = randint(1, 15)
-                increased_number = randint(2, 4)
-                end_number = start_number + increased_number
+                from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
+                if from_to_unit == "l_to_l":
+                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
+                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
+                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
+                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
+                    latex_problem += f"{increment_latex}増やした後の体積\\( (L) \\)を、\\( x \\)を使った式で表しなさい。"
+                    end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\mathrm{{L}}\\)"
+                    latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
+                    latex_answer += f"この2つを足すと、{end_amount_latex}"
+                elif from_to_unit == "dl_to_dl":
+                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
+                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
+                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{dL}} \\)"
+                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
+                    latex_problem += f"{increment_latex}増やした後の体積\\( (dL) \\)を、\\( x \\)を使った式で表しなさい。"
+                    end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\mathrm{{L}}\\)"
+                    latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
+                    latex_answer += f"この2つを足すと、{end_amount_latex}"
+                elif from_to_unit == "dl_to_l":
+                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
+                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
+                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
+                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
+                    if random() > 0.5:
+                        latex_problem += f"{increment_latex}増やした後の体積\\( (dL) \\)を、\\( x \\)を使った式で表しなさい。"
+                        
+                        end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\mathrm{{dL}}\\)"
+                        latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
+                        latex_answer += f"この2つを足すと、{end_amount_latex}"
+                    else:
+                        latex_problem += f"{increment_latex}増やした後の体積\\( (L) \\)を、\\( x \\)を使った式で表しなさい。"
+                        end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\mathrm{{L}}\\)"
+                        latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
+                        latex_answer += f"この2つを足すと、{end_amount_latex}"
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_calculate_problem(self):

@@ -42,7 +42,7 @@ class FormulaWithSymbol:
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
         """
         # selected_genre = choice(["area", "volume", "weight", "price"])
-        selected_genre = "area"
+        selected_genre = "volume"
         if selected_genre == "area":
             # selected_shape = choice(["triangle", "parallelogram", ])
             selected_shape = "parallelogram"
@@ -69,8 +69,9 @@ class FormulaWithSymbol:
                 latex_answer = "平行四辺形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2\\)なので、\n"
                 latex_answer += f"\\( {base} \\times {height} \\div 2 \\)"                
         elif selected_genre == "volume":
-            item = choice(["ジュース", "お茶"])
-            increase_or_decrease = choice(["increase", "decrease"])
+            item = choice(["ジュース", "お茶", "コーヒー"])
+            # increase_or_decrease = choice(["increase", "decrease"])
+            increase_or_decrease = "increase"
             if increase_or_decrease == "increase":
                 from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
                 if from_to_unit == "l_to_l":
@@ -96,16 +97,38 @@ class FormulaWithSymbol:
                     start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
                     increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
                     latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
+                    # answered by dL
                     if random() > 0.5:
                         latex_problem += f"{increment_latex}増やした後の体積\\( (dL) \\)を、\\( x \\)を使った式で表しなさい。"
-                        
-                        end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\mathrm{{dL}}\\)"
-                        latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
+                        end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment * 10)} \\mathrm{{dL}}\\)"
+                        latex_answer = f"初めの量が、{start_amount_latex}で、"
+                        latex_answer += f"\\( {sy.latex(increment)} \\mathrm{{L}} = {sy.latex(increment)} \\times 10 \\mathrm{{dL}} \\)が増やした量なので、\n"
                         latex_answer += f"この2つを足すと、{end_amount_latex}"
+                    # answered by L
                     else:
                         latex_problem += f"{increment_latex}増やした後の体積\\( (L) \\)を、\\( x \\)を使った式で表しなさい。"
-                        end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\mathrm{{L}}\\)"
-                        latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
+                        end_amount_latex = f"\\( {sy.latex(start_amount * sy.Rational(1, 10))} + {sy.latex(increment)} \\mathrm{{L}}\\)"
+                        latex_answer = f"初めの量が、\\( {sy.latex(start_amount)} \\mathrm{{L}} = {sy.latex(start_amount * sy.Rational(1, 10))} \\)で、"
+                        latex_answer += f"{increment_latex}が増やした量なので、\n"
+                        latex_answer += f"この2つを足すと、{end_amount_latex}"
+                elif from_to_unit == "l_to_dl":
+                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
+                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
+                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{dL}} \\)"
+                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
+                    # answered by dL
+                    if random() > 0.5:
+                        latex_problem += f"{increment_latex}増やした後の体積\\( (dL) \\)を、\\( x \\)を使った式で表しなさい。"
+                        end_amount_latex = f"\\( {sy.latex(start_amount * 10)} + {sy.latex(increment)} \\mathrm{{dL}}\\)"
+                        latex_answer = f"初めの量が、\\( {sy.latex(start_amount)} \\mathrm{{L}} = {sy.latex(increment * 10)} \\mathrm{{dL}} \\)で、"
+                        latex_answer += f"{increment_latex}が増やした量なので、\n"
+                        latex_answer += f"この2つを足すと、{end_amount_latex}"
+                    # answered by L
+                    else:
+                        latex_problem += f"{increment_latex}増やした後の体積\\( (L) \\)を、\\( x \\)を使った式で表しなさい。"
+                        end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment * sy.Rational(1, 10))} \\mathrm{{L}}\\)"
+                        latex_answer = f"初めの量が、{start_amount_latex}で、"
+                        latex_answer += f"\\( {sy.latex(increment)} \\mathrm{{dL}} = {sy.} \\)が増やした量なので、\n"
                         latex_answer += f"この2つを足すと、{end_amount_latex}"
         return latex_answer, latex_problem
     

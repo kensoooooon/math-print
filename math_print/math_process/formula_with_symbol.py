@@ -73,9 +73,11 @@ class FormulaWithSymbol:
             # increase_or_decrease = choice(["increase", "decrease"])
             increase_or_decrease = "increase"
             if increase_or_decrease == "increase":
+                list_to_shuffle = [randint(1, 10), sy.Symbol("x")]
+                shuffle(list_to_shuffle)
+                start_amount, increment = list_to_shuffle
                 from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
                 if from_to_unit == "l_to_l":
-                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
                     start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
                     increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
                     latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
@@ -84,7 +86,6 @@ class FormulaWithSymbol:
                     latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
                     latex_answer += f"この2つを足すと、{end_amount_latex}"
                 elif from_to_unit == "dl_to_dl":
-                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
                     start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
                     increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{dL}} \\)"
                     latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
@@ -93,7 +94,6 @@ class FormulaWithSymbol:
                     latex_answer = f"初めの量が、{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
                     latex_answer += f"この2つを足すと、{end_amount_latex}"
                 elif from_to_unit == "dl_to_l":
-                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
                     start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
                     increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
                     latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
@@ -112,7 +112,6 @@ class FormulaWithSymbol:
                         latex_answer += f"{increment_latex}が増やした量なので、\n"
                         latex_answer += f"この2つを足すと、{end_amount_latex}"
                 elif from_to_unit == "l_to_dl":
-                    start_amount, increment = shuffle([randint(1, 10), sy.Symbol("x")])
                     start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
                     increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{dL}} \\)"
                     latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
@@ -128,7 +127,7 @@ class FormulaWithSymbol:
                         latex_problem += f"{increment_latex}増やした後の体積\\( (L) \\)を、\\( x \\)を使った式で表しなさい。"
                         end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment * sy.Rational(1, 10))} \\mathrm{{L}}\\)"
                         latex_answer = f"初めの量が、{start_amount_latex}で、"
-                        latex_answer += f"\\( {sy.latex(increment)} \\mathrm{{dL}} = {sy.} \\)が増やした量なので、\n"
+                        latex_answer += f"\\( {sy.latex(increment)} \\mathrm{{dL}} = {sy.latex(increment * 10)} \\)が増やした量なので、\n"
                         latex_answer += f"この2つを足すと、{end_amount_latex}"
         return latex_answer, latex_problem
     

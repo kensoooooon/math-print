@@ -208,15 +208,78 @@ class FormulaWithSymbol:
                         latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
                     # answered by L
                     else:
-                        latex_problem += f"{decrement_latex}増やした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
+                        latex_problem += f"{decrement_latex}減らした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
                         latex_answer = f"初めの量が{start_amount_latex}で、"
                         if decrement == x:
                             latex_answer += f"減らした量が、\\( {sy.latex(decrement)} (\\mathrm{{dL}}) = {sy.latex(decrement)} \\div 10 (\\mathrm{{L}}) \\)なので、\n"
                             end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement)} \\div 10 (\\mathrm{{L}}) \\)"
                         else:
-                            latex_answer += f"増やした量が、\\( {sy.latex(decrement)} (\\mathrm{{dL}}) = {sy.latex(decrement * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)なので、\n"
+                            latex_answer += f"減らした量が、\\( {sy.latex(decrement)} (\\mathrm{{dL}}) = {sy.latex(decrement * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)なので、\n"
                             end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)"
-                        latex_answer += f"この2つを足すと、{end_amount_latex}"
+                        latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
+        elif selected_genre == "weight":
+            item = choice(["米", "小麦粉", "みそ"])
+            increase_or_decrease = choice(["increase", "decrease"])
+            if increase_or_decrease == "increase":
+                action = "増やした"
+            elif increase_or_decrease == "decrease":
+                action = "減らした"
+            list_to_shuffle = [randint(1, 10), x]
+            shuffle(list_to_shuffle)
+            start_amount, delta = list_to_shuffle
+            start_and_delta_unit = choice(["g_and_g", "kg_and_kg", "kg_and_g", "g_and_kg"])
+            if (start_and_delta_unit == "g_and_g") or (start_and_delta_unit == "kg_and_kg"):
+                if start_and_delta_unit == "g_and_g":
+                    start_unit = "\\mathrm{g}"
+                    delta_unit = "\\mathrm{g}"
+                    answered_unit = "\\mathrm{g}"
+                if start_and_delta_unit == "kg_and_kg":
+                    start_unit = "\\mathrm{kg}"
+                    delta_unit = "\\mathrm{kg}"
+                    answered_unit = "\\mathrm{kg}"
+                start_amount_latex_in_problem = f"\\( {sy.latex(start_amount)}  {start_unit}\\)"
+                delta_latex_in_problem = f"\\( {sy.latex(delta)} {delta_unit} \\)"
+                start_amount_latex_in_answer = start_amount_latex_in_problem
+                delta_latex_in_answer = delta_latex_in_problem
+                if increase_or_decrease == "increase":
+                    action_in_answer = "この2つを足すと"
+                    end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} ({answered_unit}) \\)"
+                elif increase_or_decrease == "decrease":
+                    action_in_answer = "初めの量から減らした量を引くと"
+                    end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} ({answered_unit}) \\)"
+            elif start_and_delta_unit == "kg_and_g":
+                start_unit = "\\mathrm{kg}"
+                delta_unit = "\\mathrm{g}"
+                answered_unit = choice(["\\mathrm{g}", "\\mathrm{kg}"])
+                start_amount_latex_in_problem = f"\\( {sy.latex(start_amount)}  {start_unit}\\)"
+                delta_latex_in_problem = f"\\( {sy.latex(delta)} {delta_unit} \\)"
+                if answered_unit == "\\mathrm{g}":
+                    if start_amount == x:
+                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount)} \\times 1000 ({answered_unit}) \\)"
+                        delta_latex_in_answer = delta_latex_in_problem
+                        if increase_or_decrease == "increase":
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\times 1000 + {sy.latex(delta)} ({answered_unit})\\)"
+                        elif increase_or_decrease == "decrease":
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\times 1000 - {sy.latex(delta)} ({answered_unit})\\)"
+                    else:
+                        start_amount_latex_in_answer = f"\\(  \\)"
+                        # next
+                elif answered_unit == "\\mathrm{kg}":
+                    change_rate = 1000
+            elif start_and_delta_unit == "g_and_kg":
+                start_unit = "\\mathrm{g}"
+                delta_unit = "\\mathrm{kg}"
+                answered_unit = choice(["\\mathrm{g}", "\\mathrm{kg}"])
+                if answered_unit == "\\mathrm{g}":
+                    pass
+                elif answered_unit == "\\mathrm{{kg}}":
+                    pass
+            start_amount_latex = f"\\( {sy.latex(start_amount)} {start_unit} \\)"
+            delta_latex = f"\\( {sy.latex(delta)} {delta_unit} \\)"
+            latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
+            latex_problem += f"{delta_latex}{action}した後の重さ{answered_unit}を、\\( x \\)を使った式で表しなさい。"
+            latex_answer = f"初めの量が{start_amount_latex_in_answer}で、{delta_latex_in_answer}が{action}量なので、\n"
+            latex_answer += f"{action_in_answer}、{end_amount_latex_in_answer}"
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_calculate_problem(self):

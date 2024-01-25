@@ -2021,7 +2021,7 @@ def print_formula_with_symbol(request):
     Returns:
         render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素
     """
-    PROBLEM_NUMBER = 6
+    PROBLEM_NUMBER = 10
     paper_number = int(request.POST["paper_number"])
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
@@ -3671,7 +3671,7 @@ def display_formula_with_symbol(request):
     Returns:
         render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素    
     """
-    PROBLEM_NUMBER = 6
+    PROBLEM_NUMBER = 10
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("expression_with_formula")

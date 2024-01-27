@@ -227,8 +227,8 @@ class FormulaWithSymbol:
             list_to_shuffle = [randint(1, 10), x]
             shuffle(list_to_shuffle)
             start_amount, delta = list_to_shuffle
-            # start_and_delta_unit = choice(["g_and_g", "kg_and_kg", "kg_and_g", "g_and_kg"])
-            start_and_delta_unit = "kg_and_kg"
+            start_and_delta_unit = choice(["g_and_g", "kg_and_kg", "kg_and_g", "g_and_kg"])
+            # start_and_delta_unit = "g_and_kg"
             if (start_and_delta_unit == "g_and_g") or (start_and_delta_unit == "kg_and_kg"):
                 if start_and_delta_unit == "g_and_g":
                     start_unit = "\\mathrm{g}"
@@ -275,15 +275,15 @@ class FormulaWithSymbol:
                 elif answered_unit == "\\mathrm{kg}":
                     start_amount_latex_in_answer = start_amount_latex_in_problem
                     if delta == x:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta)} \\div 1000 {answered_unit} \\)"
+                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta)} \\div 1000 ({answered_unit}) \\)"
                         if increase_or_decrease == "increase":
                             action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} \\div 1000 {answered_unit}\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} \\div 1000 ({answered_unit}) \\)"
                         elif increase_or_decrease == "decrease":
                             action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} \\div 1000 {answered_unit} \\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} \\div 1000 ({answered_unit}) \\)"
                     else:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta * sy.Rational(1, 1000))} {answered_unit} \\)"
+                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta * sy.Rational(1, 1000))} ({answered_unit}) \\)"
                         if increase_or_decrease == "increase":
                             action_in_answer = "この2つを足すと"
                             end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)}  + {sy.latex(delta * sy.Rational(1, 1000))} ({answered_unit})\\)"
@@ -299,43 +299,43 @@ class FormulaWithSymbol:
                 if answered_unit == "\\mathrm{g}":
                     start_amount_latex_in_answer = start_amount_latex_in_problem
                     if delta == x:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta)} \\div 1000 {answered_unit} \\)"
+                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta)} \\times 1000 ({answered_unit}) \\)"
                         if increase_or_decrease == "increase":
                             action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} \\div 1000 {answered_unit}\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} \\times 1000 ({answered_unit}) \\)"
                         elif increase_or_decrease == "decrease":
                             action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} \\div 1000 {answered_unit} \\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} \\times 1000 ({answered_unit}) \\)"
                     else:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta * sy.Rational(1, 1000))} {answered_unit} \\)"
+                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta * 1000)} {answered_unit} \\)"
                         if increase_or_decrease == "increase":
                             action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)}  + {sy.latex(delta * sy.Rational(1, 1000))} ({answered_unit})\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)}  + {sy.latex(delta * 1000)} ({answered_unit})\\)"
                         elif increase_or_decrease == "decrease":
                             action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta * sy.Rational(1, 1000))}({answered_unit})\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta * 1000)} ({answered_unit})\\)"
                 elif answered_unit == "\\mathrm{kg}":
                     delta_latex_in_answer = delta_latex_in_problem
                     if start_amount == x:
-                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount)} \\times 1000 ({answered_unit}) \\)"
+                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount)} \\div 1000 ({answered_unit}) \\)"
                         if increase_or_decrease == "increase":
                             action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\times 1000 + {sy.latex(delta)} ({answered_unit})\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\div 1000 + {sy.latex(delta)} ({answered_unit})\\)"
                         elif increase_or_decrease == "decrease":
                             action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\times 1000 - {sy.latex(delta)} ({answered_unit})\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\div 1000 - {sy.latex(delta)} ({answered_unit})\\)"
                     else:
-                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount * 1000)} ({answered_unit}) \\)"
+                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount * sy.Rational(1, 1000))} ({answered_unit}) \\)"
                         if increase_or_decrease == "increase":
                             action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * 1000)}  + {sy.latex(delta)} ({answered_unit})\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * sy.Rational(1, 1000))}  + {sy.latex(delta)} ({answered_unit})\\)"
                         elif increase_or_decrease == "decrease":
                             action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * 1000)} - {sy.latex(delta)} ({answered_unit})\\)"
+                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * sy.Rational(1, 1000))} - {sy.latex(delta)} ({answered_unit})\\)"
             start_amount_latex = f"\\( {sy.latex(start_amount)} {start_unit} \\)"
             delta_latex = f"\\( {sy.latex(delta)} {delta_unit} \\)"
             latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-            latex_problem += f"{delta_latex}{action}した後の重さ{answered_unit}を、\\( x \\)を使った式で表しなさい。"
+            latex_problem += f"{delta_latex}{action}した後の重さ\\( ({answered_unit}) \\)を、\\( x \\)を使った式で表しなさい。"
             latex_answer = f"初めの量が{start_amount_latex_in_answer}で、{delta_latex_in_answer}が{action}量なので、\n"
             latex_answer += f"{action_in_answer}、{end_amount_latex_in_answer}"
         return latex_answer, latex_problem

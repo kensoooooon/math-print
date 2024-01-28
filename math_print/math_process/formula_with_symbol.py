@@ -39,7 +39,18 @@ class FormulaWithSymbol:
         Returns:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
-            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        
+        Developing:
+            共通処理を関数として引っこ抜いて、多少見やすくする
+            \\( \\)で返すべきか否か？
+            →\\( \\)つきで返せば、problem, answer側の表現はシンプルになる一方で、式の中身は触りづらくなる
+            →\\( \\)なしで返せば、多少はノイジーになるが、一方で式同士の足し合わせ等にも利用できる
+            →→とりあえずなしで返す方向で
+            
+            関数に与える方の単位はどのようにすべきか？
+            \\型で与えれば、中での処理は軽減できるが、それを外側で処理でしておかなければならなくなる
+            →→メイン側のノイジーな感じを軽減したいので、関数側で処理する形で
         """
         # selected_genre = choice(["area", "volume", "weight", "price"])
         selected_genre = "weight"
@@ -393,3 +404,54 @@ class FormulaWithSymbol:
         else:
             raise ValueError(f"selected_mode is {selected_mode}. This isn't expected value.")
         return number
+
+    def _make_latex(self, amount, unit):
+        """与えられた量と単位をlatex形式で返すための関数
+
+        Args:
+            amount (Union[sy.Integer, sy.Float, sy.Rational]): 量
+            unit (str): 単位
+        
+        Returns:
+            amount_with_unit_latex (str): 量と単位を合わせたもの
+        """
+        amount_with_unit_latex = f"{sy.latex(amount)} \\mathrm{{{unit}}}"
+        return amount_with_unit_latex
+
+    def _unit_convert(self, from_amount, from_unit, to_unit):
+        """指定された単位へと与えられた量を変換した上で、latex形式で返す関数
+
+        Args:
+            from_amount (Union[sy.Integer, sy.Rational]): 元となる量
+            from_unit (str): 元となる単位
+            to_unit (str): 変換先となる単位
+
+        Returns:
+            converted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
+        
+        Developing:
+            \\( \\)なしでとりあえず使う。\\(\\)を与えてしまうと、残りで中を触りづらくなる
+            変換レートはどちらでも良さそうだけど、unitのconvertと考えると、こちらで担当すべき内容かと思われる
+            文字の扱いまでこちらに一任できると良さげ
+                ==xだと、そもそも扱えるのか？他に判定できるならそちらのほうが良さげ?
+                    expr.free_symbolsで式内に含まれているsymbolの集合を返してくれるらしいので、こちらを利用してみる(単純なexist, not exist型で判定)
+            条件判定はl_to_dlのように、一括で与えるべき？あるいは、l, dlのように別引数で与えるべき？
+                後々たとえば、g_to_tのように追加の単位変換が発生する場合、全てを別でやっていると作業量が跳ね上がりそう
+                増える可能性はそこそこあるため、レートを任せられるようにしたいので、l, dl, klのように単位の追加だけで与えるようにしておきたい
+            この関数は中に置いておくべきか？あるいは外に置いてくべきか？
+                これはシンプルに、今後も使う可能性があるかどうか？で分かれる
+                式での表現と値の計算、式から当てはまる条件を選ぶの2タイプが今のところあるが、似たようなことはやりそう
+                    外に置く
+            具体的な単位の処理はどのように行う？(l, dl)や(kg, g)のように独立した単位が与えられていることは前提として
+                area, weight, volumeのように扱う題材ごとに分けるのか、分けないのか？
+                    分けた方が扱いやすい。分けないほうが横断的に扱いやすい
+                        そもそも分野をまたいで使う（kg, dl）ことは想定しづらいので、分けておく
+            
+            変換される可能性がある単位
+            : l_to_dl, dl_to_l, kg_to_g, g_to_kg
+        """
+        # volume (standard is dl)
+        if (from_amount == "l") or (from_amount == "dl"):
+            
+        # weight
+        elif from_amount == ""

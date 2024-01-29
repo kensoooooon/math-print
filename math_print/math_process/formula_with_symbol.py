@@ -25,6 +25,10 @@ class FormulaWithSymbol:
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
         if selected_problem_type == "expression_with_formula":
+            # selected_theme = choice(["area", "volume", "weight", "price"])
+            selected_theme = "area"
+            if selected_theme == "area":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
             self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
         elif selected_problem_type == "expression_with_formula_and_calculate":
             self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_problem()
@@ -59,22 +63,22 @@ class FormulaWithSymbol:
             selected_shape = choice(["triangle", "parallelogram"])
             if selected_shape == "triangle":
                 if random() > 0.5:
-                    base = randint(1, 10)
+                    base = sy.Integer(randint(1, 10))
                     height = x
                 else:
                     base = x
-                    height = randint(1, 10)
+                    height = sy.Integer(randint(1, 10))
                 latex_problem = f"底辺が \\( {base} \\mathrm{{cm}} \\)、高さが\\( {height} \\mathrm{{cm}} \\)の三角形があります。\n"
                 latex_problem += f"三角形の面積を、\\( x \\)を使った式で表しなさい。"
                 latex_answer = "三角形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2\\)なので、\n"
                 latex_answer += f"\\( {base} \\times {height} \\div 2 \\)"
             elif selected_shape == "parallelogram":
                 if random() > 0.5:
-                    base = randint(1, 10)
+                    base = sy.Integer(randint(1, 10))
                     height = x
                 else:
                     base = x
-                    height = randint(1, 10)
+                    height = sy.Integer(randint(1, 10))
                 latex_problem = f"底辺が \\( {base} \\mathrm{{cm}} \\)、高さが\\( {height} \\mathrm{{cm}} \\)の平行四辺形があります。\n"
                 latex_problem += f"平行四辺形の面積を、\\( x \\)を使った式で表しなさい。"
                 latex_answer = "平行四辺形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2\\)なので、\n"
@@ -83,7 +87,7 @@ class FormulaWithSymbol:
             item = choice(["ジュース", "お茶", "コーヒー"])
             increase_or_decrease = choice(["increase", "decrease"])
             if increase_or_decrease == "increase":
-                list_to_shuffle = [randint(1, 10), x]
+                list_to_shuffle = [sy.Integer(randint(1, 10)), x]
                 shuffle(list_to_shuffle)
                 start_amount, increment = list_to_shuffle
                 from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
@@ -156,7 +160,7 @@ class FormulaWithSymbol:
                             end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)"
                         latex_answer += f"この2つを足すと、{end_amount_latex}"
             elif increase_or_decrease == "decrease":
-                list_to_shuffle = [randint(1, 10), x]
+                list_to_shuffle = [sy.Integer(randint(1, 10)), x]
                 shuffle(list_to_shuffle)
                 start_amount, decrement = list_to_shuffle
                 from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
@@ -235,7 +239,7 @@ class FormulaWithSymbol:
                 action = "増やした"
             elif increase_or_decrease == "decrease":
                 action = "減らした"
-            list_to_shuffle = [randint(1, 10), x]
+            list_to_shuffle = [sy.Integer(randint(1, 10)), x]
             shuffle(list_to_shuffle)
             start_amount, delta = list_to_shuffle
             start_and_delta_unit = choice(["g_and_g", "kg_and_kg", "kg_and_g", "g_and_kg"])
@@ -351,6 +355,18 @@ class FormulaWithSymbol:
             latex_answer += f"{action_in_answer}、{end_amount_latex_in_answer}"
         return latex_answer, latex_problem
     
+    def _make_expression_with_formula_area_problem(self):
+        """面積をテーマとした式の表現のみを問う問題の作成
+        
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        """
+        x = sy.Symbol("x")
+        selected_shape = choice(["triangle", "parallelogram"])
+        if selected_shape == "triangle":
+    
     def _make_expression_with_formula_and_calculate_problem(self):
         """文字を用いた式の表現と、数の計算をあわせて問う問題の作成
         
@@ -405,7 +421,7 @@ class FormulaWithSymbol:
             raise ValueError(f"selected_mode is {selected_mode}. This isn't expected value.")
         return number
 
-    def _make_latex(self, amount, unit):
+    def _make_latex_with_unit(self, amount, unit):
         """与えられた量と単位をlatex形式で返すための関数
 
         Args:
@@ -415,19 +431,22 @@ class FormulaWithSymbol:
         Returns:
             amount_with_unit_latex (str): 量と単位を合わせたもの
         """
-        amount_with_unit_latex = f"{sy.latex(amount)} \\mathrm{{{unit}}}"
+        if isinstance(amount, str):
+            amount_with_unit_latex = f"{amount} (\\mathrm{{{unit}}})"
+        else:
+            amount_with_unit_latex = f"{sy.latex(amount)} (\\mathrm{{{unit}}})"
         return amount_with_unit_latex
 
-    def _unit_convert(self, from_amount, from_unit, to_unit):
+    def _unit_adjuster(self, from_amount, from_unit, to_unit):
         """指定された単位へと与えられた量を変換した上で、latex形式で返す関数
 
         Args:
-            from_amount (Union[sy.Integer, sy.Rational]): 元となる量
+            from_amount (Union[sy.Symbol, sy.Integer, sy.Rational]): 元となる量
             from_unit (str): 元となる単位
             to_unit (str): 変換先となる単位
 
         Returns:
-            converted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
+            adjusted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
         
         Developing:
             \\( \\)なしでとりあえず使う。\\(\\)を与えてしまうと、残りで中を触りづらくなる
@@ -449,9 +468,60 @@ class FormulaWithSymbol:
             
             変換される可能性がある単位
             : l_to_dl, dl_to_l, kg_to_g, g_to_kg
+            
+            import sympy as sy
+
+            x = sy.Symbol("x")
+            expr1 = x ** 2 + 3 * x
+            print(bool(expr1.free_symbols))
+            expr2 = sy.Integer(3)
+            print(bool(expr2.free_symbols))
         """
         # volume (standard is dl)
-        if (from_amount == "l") or (from_amount == "dl"):
-            
+        # no change
+        if ((from_unit == "L") and (to_unit == "L")):
+            amount = from_amount
+            to_unit = "L"
+        # no change
+        elif ((from_unit == "dL") and (to_unit == "dL")):
+            amount = from_amount
+            to_unit = "dL"
+        # * 10
+        elif (from_unit == "L") and (to_unit == "dL"):
+            if from_amount.free_symbols:
+                amount = f"{from_amount} \\times 10"
+            else:
+                amount = from_amount * sy.Integer(10)
+            to_unit = "dL"
+        # / 10
+        elif (from_unit == "dL") and (to_unit == "L"):
+            if from_amount.free_symbols:
+                amount = f"{from_amount} \\div 10"
+            else:
+                amount = from_amount * sy.Rational(1, 10)
+            to_unit = "L"
         # weight
-        elif from_amount == ""
+        # no change
+        elif (from_unit == "kg") and (to_unit == "kg"):
+            amount = from_amount
+            to_unit = "kg"
+        # no change
+        elif (from_unit == "g") and (to_unit == "g"):
+            amount = from_amount
+            to_unit = "g"
+        # * 1000
+        elif (from_unit == "kg") and (to_unit == "g"):
+            if from_amount.free_symbols:
+                amount = f"{from_amount} \\times 1000"
+            else:
+                amount = from_amount * 1000
+            to_unit = "g"
+        # / 1000
+        elif (from_unit == "g") and (to_unit == "kg"):
+            if from_amount.free_symbols:
+                amount = f"{from_amount} \\div 1000"
+            else:
+                amount = from_amount * sy.Rational(1, 1000)
+            to_unit = "kg"
+        adjusted_amount_with_unit = self._make_latex_with_unit(amount, to_unit)
+        return adjusted_amount_with_unit

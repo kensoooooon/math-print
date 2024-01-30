@@ -1,4 +1,4 @@
-from random import choice, randint, random, shuffle
+from random import choice, randint, random, sample, shuffle
 from typing import Dict, Union
 
 
@@ -29,7 +29,9 @@ class FormulaWithSymbol:
             selected_theme = "area"
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
-            self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
+            elif selected_theme == "voluem":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_volume_problem()
+            # self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
         elif selected_problem_type == "expression_with_formula_and_calculate":
             self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_problem()
         elif selected_problem_type == "from_formula_to_condition":
@@ -365,7 +367,54 @@ class FormulaWithSymbol:
         """
         x = sy.Symbol("x")
         selected_shape = choice(["triangle", "parallelogram"])
+        base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
+        unit = "\\mathrm{{cm}}"
+        answer_unit = "\\mathrm{{cm^2}}"
+        base_latex_with_unit = self._make_latex_with_unit(base, unit, with_parentheses=False)
+        height_latex_with_unit = self._make_latex_with_unit(height, unit, with_parentheses=False)
         if selected_shape == "triangle":
+            area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)} \\div 2", answer_unit, with_parentheses=True)
+            latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の三角形があります。\n"
+            latex_problem += "三角形の面積を\\( x \\)を使った式で表しなさい。"
+            latex_answer = "三角形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)なので、\n"
+            latex_answer += f"\\( {area_latex_with_unit} \\)"
+        elif selected_shape == "parallelogram":
+            area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
+            latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の平行四辺形があります。\n"
+            latex_problem += "平行四辺形の面積を\\( x \\)を使った式で表しなさい。"
+            latex_answer = "平行四辺形の面積は、(底辺) \\( \\times \\) (高さ)なので、\n"
+            latex_answer += f"\\( {area_latex_with_unit} \\)"
+        return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_volume_problem(self):
+        """
+        Developings:
+            なるべく見やすいようにしたい。（分岐減らす。使うにしても階層を浅く）
+                考慮すべきなのは、「増加or減少」と「単位変換ありorなし」になる？
+                全部分けて作ってみて、(2*2)で、そこから考えるのが手を付けるのは早そう
+                あるいはもう少し構造を考える
+                    増加or減少の方は必須くさい？（～減らすと、～増やすとの分岐。さらに+-の分岐）
+                        別に分けても良さそうだが、そうするとincrease, decreaseの分岐が2回発生する。if elif, if elif
+                        コードの中自体は分けたほうが少なく済むが、どちらがよい？
+                            cpさんいわく、まとめた方がよいらしい（ifをまとめることで管理しやすくなる）
+                    単位変換の方は、ある程度関数に丸投げできる
+                        その他の変化（増加減少とは根本的に独立）としては、変換の過程を挟むか挟まないかということ。
+                        ここにだけ分岐を設けて、素早く本流に戻した方が見やすくなる？なりそう？
+        """
+        x = sy.Symbol("x")
+        item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
+        increase_or_decrease = choice(["increase", "decrease"])
+        start_amount, delta = sample([x, sy.Integer(randint(1, 10))], k=2)
+        start_unit, delta_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
+        answered_unit = choice([start_unit, delta_unit])
+        start_amount_latex = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
+        delta_latex = self._make_latex_with_unit(delta, delta_unit, with_parentheses=False)
+        latex_problem = f"初めに{item}が\\( {start_amount_latex} \\)ありました。\n"
+        if increase_or_decrease == "increase":
+            latex_problem += f"\\( {delta_latex} \\)増やした後の体積を"
+        elif increase_or_decrease == "decrease":
+            
+        
     
     def _make_expression_with_formula_and_calculate_problem(self):
         """文字を用いた式の表現と、数の計算をあわせて問う問題の作成
@@ -421,29 +470,37 @@ class FormulaWithSymbol:
             raise ValueError(f"selected_mode is {selected_mode}. This isn't expected value.")
         return number
 
-    def _make_latex_with_unit(self, amount, unit):
+    def _make_latex_with_unit(self, amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational, str], unit: str, *, with_parentheses: bool) -> str:
         """与えられた量と単位をlatex形式で返すための関数
 
         Args:
-            amount (Union[sy.Integer, sy.Float, sy.Rational]): 量
+            amount (Union[sy.Integer, sy.Float, sy.Rational, str]): 量
             unit (str): 単位
+            with_parentheses (bool): 単位にカッコを付けるか否か
         
         Returns:
             amount_with_unit_latex (str): 量と単位を合わせたもの
         """
         if isinstance(amount, str):
-            amount_with_unit_latex = f"{amount} (\\mathrm{{{unit}}})"
+            if with_parentheses:
+                amount_with_unit_latex = f"{amount} (\\mathrm{{{unit}}})"
+            else:
+                amount_with_unit_latex = f"{amount} \\mathrm{{{unit}}}"
         else:
-            amount_with_unit_latex = f"{sy.latex(amount)} (\\mathrm{{{unit}}})"
+            if with_parentheses:
+                amount_with_unit_latex = f"{sy.latex(amount)} (\\mathrm{{{unit}}})"
+            else:
+                amount_with_unit_latex = f"{sy.latex(amount)} \\mathrm{{{unit}}}"
         return amount_with_unit_latex
 
-    def _unit_adjuster(self, from_amount, from_unit, to_unit):
+    def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], from_unit: str, *, with_parentheses: bool) -> str:
         """指定された単位へと与えられた量を変換した上で、latex形式で返す関数
 
         Args:
             from_amount (Union[sy.Symbol, sy.Integer, sy.Rational]): 元となる量
             from_unit (str): 元となる単位
             to_unit (str): 変換先となる単位
+            with_parentheses (bool): 単位にカッコを付けるか否か
 
         Returns:
             adjusted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
@@ -523,5 +580,5 @@ class FormulaWithSymbol:
             else:
                 amount = from_amount * sy.Rational(1, 1000)
             to_unit = "kg"
-        adjusted_amount_with_unit = self._make_latex_with_unit(amount, to_unit)
+        adjusted_amount_with_unit = self._make_latex_with_unit(amount, to_unit, with_parentheses=with_parentheses)
         return adjusted_amount_with_unit

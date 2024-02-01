@@ -409,10 +409,19 @@ class FormulaWithSymbol:
         answered_unit = choice([start_unit, delta_unit])
         start_amount_latex = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
         delta_latex = self._make_latex_with_unit(delta, delta_unit, with_parentheses=False)
+        if start_unit == answered_unit:
+            start_amount_latex_in_answer = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+        else:
+            non_adjusted_start_amount = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+            adjusted_start_amount = self._unit_adjuster(start_amount, start_unit, answered_unit, with_parentheses=True)
+            
+            
         latex_problem = f"初めに{item}が\\( {start_amount_latex} \\)ありました。\n"
         if increase_or_decrease == "increase":
-            latex_problem += f"\\( {delta_latex} \\)増やした後の体積を"
+            latex_problem += f"\\( {delta_latex} \\)増やした後の体積(\\( \\mathrm{{{answered_unit}}} \\))を、\\( x \\)を使った式で表しなさい。"
+            latex_answer = f""
         elif increase_or_decrease == "decrease":
+            latex_problem += f"\\( {delta_latex} \\)減らした後の体積を(\\( \\mathrm{{{answered_unit}}} \\))、\\( x \\)を使った式で表しなさい。"
             
         
     
@@ -493,7 +502,7 @@ class FormulaWithSymbol:
                 amount_with_unit_latex = f"{sy.latex(amount)} \\mathrm{{{unit}}}"
         return amount_with_unit_latex
 
-    def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], from_unit: str, *, with_parentheses: bool) -> str:
+    def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], from_unit: str, to_unit: str, *, with_parentheses: bool) -> str:
         """指定された単位へと与えられた量を変換した上で、latex形式で返す関数
 
         Args:

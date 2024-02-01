@@ -414,12 +414,17 @@ class FormulaWithSymbol:
         else:
             non_adjusted_start_amount = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
             adjusted_start_amount = self._unit_adjuster(start_amount, start_unit, answered_unit, with_parentheses=True)
-            
-            
+            start_amount_latex_in_answer = f"{non_adjusted_start_amount} = {adjusted_start_amount}"
+        if delta_unit == answered_unit:
+            delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
+        else:
+            non_adjusted_delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
+            adjusted_delta_latex_in_answer = self._unit_adjuster(delta, delta_unit, answered_unit, with_parentheses=True)
+            delta_latex_in_answer= f"{non_adjusted_delta_latex_in_answer} = {adjusted_delta_latex_in_answer}"
         latex_problem = f"初めに{item}が\\( {start_amount_latex} \\)ありました。\n"
         if increase_or_decrease == "increase":
             latex_problem += f"\\( {delta_latex} \\)増やした後の体積(\\( \\mathrm{{{answered_unit}}} \\))を、\\( x \\)を使った式で表しなさい。"
-            latex_answer = f""
+            latex_answer = f"初めの量が\\( {} \\)"
         elif increase_or_decrease == "decrease":
             latex_problem += f"\\( {delta_latex} \\)減らした後の体積を(\\( \\mathrm{{{answered_unit}}} \\))、\\( x \\)を使った式で表しなさい。"
             
@@ -591,3 +596,30 @@ class FormulaWithSymbol:
             to_unit = "kg"
         adjusted_amount_with_unit = self._make_latex_with_unit(amount, to_unit, with_parentheses=with_parentheses)
         return adjusted_amount_with_unit
+
+    def _add_amount(self, start_amount: Union[sy.Symbol, sy.Integer], start_unit: str, delta_amount: str, delta_unit: str, answered_unit: str) -> str:
+        """与えられた量を、答えとなる単位に調整しながら和を求める
+
+        Args:
+            start_amount (Union[sy.Symbol, sy.Integer]): _description_
+            start_unit (str): _description_
+            delta_amount (str): _description_
+            delta_unit (str): _description_
+            answered_unit (str): _description_
+
+        Returns:
+            str: _description_
+        
+        Developings:
+            和もいろいろと気にするところが多いから、別関数に分ける
+            気になるのは、unit_adjusterとのかぶりの部分
+                さらに基礎的なパーツに分けるか、何かしらやらないと重複が多くなる
+                機能としては、「変換する」「単位を付ける」「和をとる」の3つ
+                _make_latex_with_unit: 単位を付ける
+                _unit_adjuster: 変換する＋単位を付ける
+                和をとる：変換する＋和をとる＋単にを付ける
+                →_unit_adjusterに変換だけやらせるべき？
+                ほかのところはまだそこまで利用していないから、修正自体は容易
+                差をとるのも同じ流れで行けそう
+                with_unitでの代用？と
+        """

@@ -26,10 +26,10 @@ class FormulaWithSymbol:
         selected_problem_type = choice(settings["problem_types"])
         if selected_problem_type == "expression_with_formula":
             # selected_theme = choice(["area", "volume", "weight", "price"])
-            selected_theme = "area"
+            selected_theme = "volume"
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
-            elif selected_theme == "voluem":
+            elif selected_theme == "volume":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_volume_problem()
             # self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
         elif selected_problem_type == "expression_with_formula_and_calculate":
@@ -403,33 +403,41 @@ class FormulaWithSymbol:
         """
         x = sy.Symbol("x")
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
-        increase_or_decrease = choice(["increase", "decrease"])
         start_amount, delta = sample([x, sy.Integer(randint(1, 10))], k=2)
         start_unit, delta_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
         answered_unit = choice([start_unit, delta_unit])
-        start_amount_latex = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
-        delta_latex = self._make_latex_with_unit(delta, delta_unit, with_parentheses=False)
+        start_amount_latex_in_problem = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
+        delta_latex_in_problem = self._make_latex_with_unit(delta, delta_unit, with_parentheses=False)
         if start_unit == answered_unit:
             start_amount_latex_in_answer = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
         else:
             non_adjusted_start_amount = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
-            adjusted_start_amount = self._unit_adjuster(start_amount, start_unit, answered_unit, with_parentheses=True)
+            adjusted_start_amount = self._unit_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit, with_parentheses=True)
             start_amount_latex_in_answer = f"{non_adjusted_start_amount} = {adjusted_start_amount}"
         if delta_unit == answered_unit:
             delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
         else:
             non_adjusted_delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
-            adjusted_delta_latex_in_answer = self._unit_adjuster(delta, delta_unit, answered_unit, with_parentheses=True)
+            adjusted_delta_latex_in_answer = self._unit_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit, with_parentheses=True)
             delta_latex_in_answer= f"{non_adjusted_delta_latex_in_answer} = {adjusted_delta_latex_in_answer}"
-        latex_problem = f"初めに{item}が\\( {start_amount_latex} \\)ありました。\n"
+        start_amount_in_answer = self._amount_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit)
+        delta_amount_in_answer = self._amount_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit)
+        increase_or_decrease = choice(["increase", "decrease"])
         if increase_or_decrease == "increase":
-            latex_problem += f"\\( {delta_latex} \\)増やした後の体積(\\( \\mathrm{{{answered_unit}}} \\))を、\\( x \\)を使った式で表しなさい。"
-            latex_answer = f"初めの量が\\( {} \\)"
+            action = "増やした"
+            added_amount = f"{start_amount_in_answer} + {delta_amount_in_answer}"
+            answer = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
         elif increase_or_decrease == "decrease":
-            latex_problem += f"\\( {delta_latex} \\)減らした後の体積を(\\( \\mathrm{{{answered_unit}}} \\))、\\( x \\)を使った式で表しなさい。"
-            
+            action = "減らした"
+            subtracted_amount = f"{start_amount_in_answer} - {delta_amount_in_answer}"
+            answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+        latex_problem = f"初めに{item}が\\( {start_amount_latex_in_problem} \\)ありました。\n"
+        latex_problem += f"\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
+        latex_answer = f"初めの量が\\( {start_amount_latex_in_answer} \\)で、"
+        latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
+        latex_answer += f"答えは、\\( {answer} \\)となる。"
+        return latex_answer, latex_problem
         
-    
     def _make_expression_with_formula_and_calculate_problem(self):
         """文字を用いた式の表現と、数の計算をあわせて問う問題の作成
         
@@ -506,8 +514,61 @@ class FormulaWithSymbol:
             else:
                 amount_with_unit_latex = f"{sy.latex(amount)} \\mathrm{{{unit}}}"
         return amount_with_unit_latex
+    
+    def _amount_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str) -> str:
+        """量の変換のみの対応を行う関数
 
-    def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], from_unit: str, to_unit: str, *, with_parentheses: bool) -> str:
+        Args:
+            from_amount (Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]): 基準となる量
+            from_unit (str): 変換元の単位
+            to_unit (str): 変換先の単位
+
+        Returns:
+            adjusted_amount (str): 指定された単位に合わせた量 
+        """
+        # volume (standard is dl)
+        # no change
+        if ((from_unit == "L") and (to_unit == "L")):
+            adjusted_amount = from_amount
+        # no change
+        elif ((from_unit == "dL") and (to_unit == "dL")):
+            adjusted_amount = from_amount
+        # * 10
+        elif (from_unit == "L") and (to_unit == "dL"):
+            if from_amount.free_symbols:
+                adjusted_amount = f"{from_amount} \\times 10"
+            else:
+                adjusted_amount = sy.latex(from_amount * sy.Integer(10))
+        # / 10
+        elif (from_unit == "dL") and (to_unit == "L"):
+            if from_amount.free_symbols:
+                adjusted_amount = f"{from_amount} \\div 10"
+            else:
+                adjusted_amount = sy.latex(from_amount * sy.Rational(1, 10))
+        # weight
+        # no change
+        elif (from_unit == "kg") and (to_unit == "kg"):
+            adjusted_amount = from_amount
+        # no change
+        elif (from_unit == "g") and (to_unit == "g"):
+            adjusted_amount = from_amount
+        # * 1000
+        elif (from_unit == "kg") and (to_unit == "g"):
+            if from_amount.free_symbols:
+                adjusted_amount = f"{from_amount} \\times 1000"
+            else:
+                adjusted_amount = sy.latex(from_amount * 1000)
+        # / 1000
+        elif (from_unit == "g") and (to_unit == "kg"):
+            if from_amount.free_symbols:
+                adjusted_amount = f"{from_amount} \\div 1000"
+            else:
+                adjusted_amount = sy.latex(from_amount * sy.Rational(1, 1000))
+        else:
+            raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
+        return adjusted_amount
+
+    def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str, with_parentheses: bool) -> str:
         """指定された単位へと与えられた量を変換した上で、latex形式で返す関数
 
         Args:
@@ -518,83 +579,9 @@ class FormulaWithSymbol:
 
         Returns:
             adjusted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
-        
-        Developing:
-            \\( \\)なしでとりあえず使う。\\(\\)を与えてしまうと、残りで中を触りづらくなる
-            変換レートはどちらでも良さそうだけど、unitのconvertと考えると、こちらで担当すべき内容かと思われる
-            文字の扱いまでこちらに一任できると良さげ
-                ==xだと、そもそも扱えるのか？他に判定できるならそちらのほうが良さげ?
-                    expr.free_symbolsで式内に含まれているsymbolの集合を返してくれるらしいので、こちらを利用してみる(単純なexist, not exist型で判定)
-            条件判定はl_to_dlのように、一括で与えるべき？あるいは、l, dlのように別引数で与えるべき？
-                後々たとえば、g_to_tのように追加の単位変換が発生する場合、全てを別でやっていると作業量が跳ね上がりそう
-                増える可能性はそこそこあるため、レートを任せられるようにしたいので、l, dl, klのように単位の追加だけで与えるようにしておきたい
-            この関数は中に置いておくべきか？あるいは外に置いてくべきか？
-                これはシンプルに、今後も使う可能性があるかどうか？で分かれる
-                式での表現と値の計算、式から当てはまる条件を選ぶの2タイプが今のところあるが、似たようなことはやりそう
-                    外に置く
-            具体的な単位の処理はどのように行う？(l, dl)や(kg, g)のように独立した単位が与えられていることは前提として
-                area, weight, volumeのように扱う題材ごとに分けるのか、分けないのか？
-                    分けた方が扱いやすい。分けないほうが横断的に扱いやすい
-                        そもそも分野をまたいで使う（kg, dl）ことは想定しづらいので、分けておく
-            
-            変換される可能性がある単位
-            : l_to_dl, dl_to_l, kg_to_g, g_to_kg
-            
-            import sympy as sy
-
-            x = sy.Symbol("x")
-            expr1 = x ** 2 + 3 * x
-            print(bool(expr1.free_symbols))
-            expr2 = sy.Integer(3)
-            print(bool(expr2.free_symbols))
         """
-        # volume (standard is dl)
-        # no change
-        if ((from_unit == "L") and (to_unit == "L")):
-            amount = from_amount
-            to_unit = "L"
-        # no change
-        elif ((from_unit == "dL") and (to_unit == "dL")):
-            amount = from_amount
-            to_unit = "dL"
-        # * 10
-        elif (from_unit == "L") and (to_unit == "dL"):
-            if from_amount.free_symbols:
-                amount = f"{from_amount} \\times 10"
-            else:
-                amount = from_amount * sy.Integer(10)
-            to_unit = "dL"
-        # / 10
-        elif (from_unit == "dL") and (to_unit == "L"):
-            if from_amount.free_symbols:
-                amount = f"{from_amount} \\div 10"
-            else:
-                amount = from_amount * sy.Rational(1, 10)
-            to_unit = "L"
-        # weight
-        # no change
-        elif (from_unit == "kg") and (to_unit == "kg"):
-            amount = from_amount
-            to_unit = "kg"
-        # no change
-        elif (from_unit == "g") and (to_unit == "g"):
-            amount = from_amount
-            to_unit = "g"
-        # * 1000
-        elif (from_unit == "kg") and (to_unit == "g"):
-            if from_amount.free_symbols:
-                amount = f"{from_amount} \\times 1000"
-            else:
-                amount = from_amount * 1000
-            to_unit = "g"
-        # / 1000
-        elif (from_unit == "g") and (to_unit == "kg"):
-            if from_amount.free_symbols:
-                amount = f"{from_amount} \\div 1000"
-            else:
-                amount = from_amount * sy.Rational(1, 1000)
-            to_unit = "kg"
-        adjusted_amount_with_unit = self._make_latex_with_unit(amount, to_unit, with_parentheses=with_parentheses)
+        adjusted_amount = self._amount_adjuster(from_amount, from_unit=from_unit, to_unit=to_unit)
+        adjusted_amount_with_unit = self._make_latex_with_unit(adjusted_amount, to_unit, with_parentheses=with_parentheses)
         return adjusted_amount_with_unit
 
     def _add_amount(self, start_amount: Union[sy.Symbol, sy.Integer], start_unit: str, delta_amount: str, delta_unit: str, answered_unit: str) -> str:
@@ -623,3 +610,4 @@ class FormulaWithSymbol:
                 差をとるのも同じ流れで行けそう
                 with_unitでの代用？と
         """
+        pass

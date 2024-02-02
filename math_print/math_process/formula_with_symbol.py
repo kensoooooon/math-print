@@ -1,5 +1,5 @@
 from random import choice, randint, random, sample, shuffle
-from typing import Dict, Union
+from typing import Dict, Union, Tuple
 
 
 import sympy as sy
@@ -26,11 +26,13 @@ class FormulaWithSymbol:
         selected_problem_type = choice(settings["problem_types"])
         if selected_problem_type == "expression_with_formula":
             # selected_theme = choice(["area", "volume", "weight", "price"])
-            selected_theme = "volume"
+            selected_theme = "weight"
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
             elif selected_theme == "volume":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_volume_problem()
+            elif selected_theme == "weight":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_weight_problem()
             # self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
         elif selected_problem_type == "expression_with_formula_and_calculate":
             self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_problem()
@@ -357,7 +359,7 @@ class FormulaWithSymbol:
             latex_answer += f"{action_in_answer}、{end_amount_latex_in_answer}"
         return latex_answer, latex_problem
     
-    def _make_expression_with_formula_area_problem(self):
+    def _make_expression_with_formula_area_problem(self) -> Tuple[str, str]:
         """面積をテーマとした式の表現のみを問う問題の作成
         
         Returns:
@@ -386,20 +388,13 @@ class FormulaWithSymbol:
             latex_answer += f"\\( {area_latex_with_unit} \\)"
         return latex_answer, latex_problem
     
-    def _make_expression_with_formula_volume_problem(self):
-        """
-        Developings:
-            なるべく見やすいようにしたい。（分岐減らす。使うにしても階層を浅く）
-                考慮すべきなのは、「増加or減少」と「単位変換ありorなし」になる？
-                全部分けて作ってみて、(2*2)で、そこから考えるのが手を付けるのは早そう
-                あるいはもう少し構造を考える
-                    増加or減少の方は必須くさい？（～減らすと、～増やすとの分岐。さらに+-の分岐）
-                        別に分けても良さそうだが、そうするとincrease, decreaseの分岐が2回発生する。if elif, if elif
-                        コードの中自体は分けたほうが少なく済むが、どちらがよい？
-                            cpさんいわく、まとめた方がよいらしい（ifをまとめることで管理しやすくなる）
-                    単位変換の方は、ある程度関数に丸投げできる
-                        その他の変化（増加減少とは根本的に独立）としては、変換の過程を挟むか挟まないかということ。
-                        ここにだけ分岐を設けて、素早く本流に戻した方が見やすくなる？なりそう？
+    def _make_expression_with_formula_volume_problem(self) -> Tuple[str, str]:
+        """文字を使った体積の問題と解答を作成
+        
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
         x = sy.Symbol("x")
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
@@ -437,6 +432,51 @@ class FormulaWithSymbol:
         latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
         latex_answer += f"答えは、\\( {answer} \\)となる。"
         return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_weight_problem(self) -> Tuple[str, str]:
+        """文字を用いた質量の問題と解答を出力
+        
+        Returns:
+            Tuple [str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        """
+        x = sy.Symbol("x")
+        item = choice(["米", "小麦粉", "水", "塩"])
+        start_amount, delta_amount = sample([x, sy.Integer(randint(1, 10) * 10)], k=2)
+        start_unit, delta_unit = choice([("kg", "kg"), ("g", "g"), ("kg", "g"), ("g", "kg")])
+        answered_unit = choice([start_unit, delta_unit])
+        start_amount_in_problem = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
+        delta_amount_in_problem = self._make_latex_with_unit(delta_amount, delta_unit, with_parentheses=False)
+        if start_unit == answered_unit:
+            start_amount_in_answer = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+        else:
+            not_adjusted_start_amount = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+            adjusted_start_amount = self._unit_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit, with_parentheses=True)
+            start_amount_in_answer = f"{not_adjusted_start_amount} = {adjusted_start_amount}"
+        if delta_unit == answered_unit:
+            delta_amount_in_answer = self._make_latex_with_unit(delta_amount, delta_unit, with_parentheses=True)
+        else:
+            not_adjusted_delta_amount = self._make_latex_with_unit(delta_amount, delta_unit, with_parentheses=True)
+            adjusted_delta_amount = self._unit_adjuster(delta_amount, from_unit=delta_unit, to_unit=answered_unit, with_parentheses=True)
+            delta_amount_in_answer = f"{not_adjusted_delta_amount} = {adjusted_delta_amount}"
+        start_amount_for_calculation = self._amount_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit)
+        delta_amount_for_calculation = self._amount_adjuster(delta_amount, from_unit=delta_unit, to_unit=answered_unit)
+        increase_or_decrease = choice(["increase", "decrease"])
+        if increase_or_decrease == "increase":
+            action = "増やした"
+            added_amount = f"{start_amount_for_calculation} + {delta_amount_for_calculation}"
+            answer = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
+        elif increase_or_decrease == "decrease":
+            action = "減らした"
+            subtracted_amount = f"{start_amount_for_calculation} - {delta_amount_for_calculation}"
+            answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+        latex_problem = f"初めに{item}が\\( {start_amount_in_problem} \\)ありました。\n"
+        latex_problem += f"\\( {delta_amount_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
+        latex_answer = f"初めの量が\\( {start_amount_in_answer} \\)で、"
+        latex_answer += f"{action}量が、\\( {delta_amount_in_answer} \\)なので、\n"
+        latex_answer += f"答えは、\\( {answer} \\)となる。"
+        return latex_answer, latex_problem  
         
     def _make_expression_with_formula_and_calculate_problem(self):
         """文字を用いた式の表現と、数の計算をあわせて問う問題の作成

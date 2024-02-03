@@ -33,6 +33,8 @@ class FormulaWithSymbol:
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_volume_problem()
             elif selected_theme == "weight":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_weight_problem()
+            elif selected_theme == "price":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_price_problem()
             # self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
         elif selected_problem_type == "expression_with_formula_and_calculate":
             self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_problem()
@@ -472,11 +474,41 @@ class FormulaWithSymbol:
             subtracted_amount = f"{start_amount_for_calculation} - {delta_amount_for_calculation}"
             answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
         latex_problem = f"初めに{item}が\\( {start_amount_in_problem} \\)ありました。\n"
-        latex_problem += f"\\( {delta_amount_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
+        latex_problem += f"\\( {delta_amount_in_problem} \\){action}後の重さ\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
         latex_answer = f"初めの量が\\( {start_amount_in_answer} \\)で、"
         latex_answer += f"{action}量が、\\( {delta_amount_in_answer} \\)なので、\n"
         latex_answer += f"答えは、\\( {answer} \\)となる。"
         return latex_answer, latex_problem  
+    
+    def _make_expression_with_formula_price_problem(self) -> Tuple[str, str]:
+        """文字を用いた価格の問題と解答を出力
+
+        Returns:
+            Tuple[str, str]: 解答と問題
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        
+        Developing:
+            円の足し引きだけで考えるならば、単位の変換は特に必要ない
+            一方で、個数の増減、割増割引まで考えると計算は必須
+            単位を付けるにしても、\\mathrm{{円}}はおそらく対応していないと思われる
+            
+            使えそうな関数は、特になし
+                _make_latex_with_unitは円に対応していない
+                _amount_adjusterはそもそも単位の変換が不要
+                _unit_adjusterも同上
+            関数内関数で対応する？
+                そもそもどのような機能が必要になるか
+                足し引き、割増割引
+                    足し引きは同じ手法で行けそうだが、割増割引は計算としては単位の変換と同じような処理が必要になる（文字なら…数字なら…）
+                    個数の増減も同様に、1000円が2個と、x円が2個では扱いが異なる
+                    一応分けておく？それとも関数内関数にする？
+                        とりあえず分けておく形で。あとで結局つかなければ中に入れておく。
+                            
+        """
+        latex_answer = "dummy answer."
+        latex_problem = "dummy problem."
+        return latex_answer, latex_problem
         
     def _make_expression_with_formula_and_calculate_problem(self):
         """文字を用いた式の表現と、数の計算をあわせて問う問題の作成
@@ -623,31 +655,34 @@ class FormulaWithSymbol:
         adjusted_amount = self._amount_adjuster(from_amount, from_unit=from_unit, to_unit=to_unit)
         adjusted_amount_with_unit = self._make_latex_with_unit(adjusted_amount, to_unit, with_parentheses=with_parentheses)
         return adjusted_amount_with_unit
-
-    def _add_amount(self, start_amount: Union[sy.Symbol, sy.Integer], start_unit: str, delta_amount: str, delta_unit: str, answered_unit: str) -> str:
-        """与えられた量を、答えとなる単位に調整しながら和を求める
+    
+    def _multiply_or_divide(self, first_amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational], second_amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational], *, multiply_or_divide: str) -> str:
+        """2つの量のかけ算や割り算を行う
 
         Args:
-            start_amount (Union[sy.Symbol, sy.Integer]): _description_
-            start_unit (str): _description_
-            delta_amount (str): _description_
-            delta_unit (str): _description_
-            answered_unit (str): _description_
+            first_amount (Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational]): 1つ目の量
+            second_amount (Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational]): 2つ目の量
+            multiply_or_divide (str): かけ算か割り算かの指定
 
         Returns:
-            str: _description_
+            calculated_amount (str) : 計算した式
         
-        Developings:
-            和もいろいろと気にするところが多いから、別関数に分ける
-            気になるのは、unit_adjusterとのかぶりの部分
-                さらに基礎的なパーツに分けるか、何かしらやらないと重複が多くなる
-                機能としては、「変換する」「単位を付ける」「和をとる」の3つ
-                _make_latex_with_unit: 単位を付ける
-                _unit_adjuster: 変換する＋単位を付ける
-                和をとる：変換する＋和をとる＋単にを付ける
-                →_unit_adjusterに変換だけやらせるべき？
-                ほかのところはまだそこまで利用していないから、修正自体は容易
-                差をとるのも同じ流れで行けそう
-                with_unitでの代用？と
+        Developing:
+            first_amountに違いは存在する？しない？
+            多分しない。xだろうが1000だろうが同じ
+                何を受け取るか？には検討の余地がある？問題がふわふわしてる？
+                一応strでもそれ以外でも受け取れる形にしておく??
+                    数やかけ算の対応が難しくなるのでは？？
+                    数か文字しか入れないように押さえておく
+            
+            考えられるパターンは、
+            数×数, 数÷数←特に操作必要なし
+            文字×数, 数×文字, 文字÷数, 数÷文字←いずれも文字をそのままキープしておく
         """
-        pass
+        # latex済想定
+        if isinstance(first_amount, str):
+            raise ValueError(f"'first_amount' must not be str.{first_amount} is wrong.")
+        else:
+            first_value = first_amount
+        
+        

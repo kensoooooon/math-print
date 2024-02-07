@@ -647,9 +647,9 @@ class FormulaWithSymbol:
             remained_ratio_str = decimal_normalize(remained_ratio_value)
             price_after_discount = self._multiply_or_divide(price_before_discount, remained_ratio_value, multiply_or_divide="multiply")
             latex_problem = f"初めに\\( {sy.latex(x)} \\)円の{item}がありました。"
-            latex_problem += f"{discount_ratio_out_of_latex}だけ値引きしたときの金額を、\\( x \\)を用いて表しなさい。"
-            latex_answer = f"{discount_ratio_out_of_latex}だけ値引きしたということは、"
-            latex_answer += f"値引きした後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
+            latex_problem += f"{discount_ratio_out_of_latex}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。"
+            latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
             latex_answer += f"よって答えは、\\( {price_after_discount} \\)円。"
         elif problem_theme == "multiple_items_without_discount":
             first_item, second_item = sample(items, k=2)
@@ -663,19 +663,24 @@ class FormulaWithSymbol:
             latex_answer += f"\\( {first_price_in_answer} + {second_price_in_answer} \\)円となる。"
         elif problem_theme == "multiple_items_with_discount":
             first_item, second_item = sample(items, k=2)
-            first_price, second_price = sample([x, sy.Integer(randint(1, 10) * 50)], k=2)
-            """
-            1つ目か2つ目、あるいは両方を値引きする
-                素直に場合分けしておいたほうが良さそう？
-                あるいは、何かしらの共通項を見出して、まとめられる分だけまとめるか。
-                あるいは、処理の方と本文の方と、いずれかに共通化を行い、残ったものを扱う
-                「◯円のアイテム1と、△円のアイテム2がありました。
-                (アイテム1/アイテム2)....」
-                処理の面倒さに噛み合っていない気もする。せいぜい3パターンなら書いたほうが見通しよくなるって感じでとりあえず。
-                もし、書いていてまとめられそうな点があったら検討する形で。
-                    item1だけ、item2だけであれば良さそう
-            """
-            discount_type = choice(["item1", ""])
+            first_price, second_price = sample([x, sy.Integer(randint(1, 10) * 100)], k=2)
+            # discount_type = choice(["first_item", "second_item", "both"])
+            discount_type = "first_item"
+            if discount_type == "first_item":
+                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), randint(1, 2))
+                remained_ratio_value = 1 - discount_ratio_value
+                remained_ratio_str = decimal_normalize(remained_ratio_value)
+                first_price_after_discount = self._multiply_or_divide(first_price, remained_ratio_value, multiply_or_divide="multiply")
+                latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
+                latex_problem += f"{first_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
+                latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、\n"
+                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)、"
+                latex_answer += f"金額は\\( {first_price_after_discount} \\)円となる。\n"
+                latex_answer += f"{second_item}の金額と合わせると、\\( {first_price_after_discount} + {second_price} \\)円となる。"
+            elif discount_type == "second_item":
+                pass
+            elif discount_type == "both":
+                pass
         return latex_answer, latex_problem
         
     def _make_expression_with_formula_and_calculate_problem(self):
@@ -852,6 +857,8 @@ class FormulaWithSymbol:
                 2 * 300 = 600
                 保留で良い？
                 あるいは、数々のパターンの時には、さっさと計算する。いずれかが文字であれば、そのまま置いて、計算記号を挟む
+            
+            計算は小数が出ないことを前提とするべき
         """
         # latex済想定
         if isinstance(first_amount, str):

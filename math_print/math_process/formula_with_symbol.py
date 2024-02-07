@@ -577,23 +577,6 @@ class FormulaWithSymbol:
             それでも主に桁絡みで何かしらの修正は必要そう
             あとは割合の表示の方では、\\( \\)のありなしで多少の齟齬がある可能性
         """
-        def decimal_normalize(number: Union[str, sy.Integer, sy.Float]) -> str:
-            """
-            小数点以下で末尾まで続いている連続した0を消去した文字列を返す。(eg. 100.00->100, 31.0010->31.001)
-
-            Args:
-                number (Union[str, sy.Integer, sy.Float]): 処理したい数
-
-            Returns:
-                number_str (str): 0が消去された文字列 
-            """
-            number_str = str(number)
-            while True:
-                if ("." in number_str and number_str[-1] == "0") or (number_str[-1] == "."):
-                    number_str = number_str[:-1]
-                    continue
-                break
-            return number_str
         
         def random_ratio(selected_ratio: str, digit_under_decimal_point: int = 1) -> Tuple[sy.Float, str]:
             """ランダムな割合と、その日本語表示をあわせて出力する
@@ -621,7 +604,7 @@ class FormulaWithSymbol:
                 raise ValueError(f"'digit_under_the_decimal_point' is {digit_under_decimal_point}. This must be 1 or 2.")
             ratio_value = round(ratio_value, 6)
             if selected_ratio == "percentage":
-                normalized_percentage = decimal_normalize(sy.latex(ratio_value * 100))
+                normalized_percentage = self._decimal_normalize(sy.latex(ratio_value * 100))
                 ratio_out_of_latex = f"\\( {normalized_percentage} \\% \\)"
             elif selected_ratio == "japanese_percentage":
                 digit_list = sy.latex(ratio_value)[2:]
@@ -642,9 +625,9 @@ class FormulaWithSymbol:
         if problem_theme == "discount":
             item = choice(items)
             price_before_discount = x
-            discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), randint(1, 2))
+            discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
             remained_ratio_value = 1 - discount_ratio_value
-            remained_ratio_str = decimal_normalize(remained_ratio_value)
+            remained_ratio_str = self._decimal_normalize(remained_ratio_value)
             price_after_discount = self._multiply_or_divide(price_before_discount, remained_ratio_value, multiply_or_divide="multiply")
             latex_problem = f"初めに\\( {sy.latex(x)} \\)円の{item}がありました。"
             latex_problem += f"{discount_ratio_out_of_latex}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。"
@@ -664,23 +647,48 @@ class FormulaWithSymbol:
         elif problem_theme == "multiple_items_with_discount":
             first_item, second_item = sample(items, k=2)
             first_price, second_price = sample([x, sy.Integer(randint(1, 10) * 100)], k=2)
-            # discount_type = choice(["first_item", "second_item", "both"])
-            discount_type = "first_item"
+            discount_type = choice(["first_item", "second_item", "both"])
             if discount_type == "first_item":
-                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), randint(1, 2))
+                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
                 remained_ratio_value = 1 - discount_ratio_value
-                remained_ratio_str = decimal_normalize(remained_ratio_value)
+                remained_ratio_str = self._decimal_normalize(remained_ratio_value)
                 first_price_after_discount = self._multiply_or_divide(first_price, remained_ratio_value, multiply_or_divide="multiply")
                 latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
                 latex_problem += f"{first_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
                 latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、\n"
-                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)、"
+                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、"
                 latex_answer += f"金額は\\( {first_price_after_discount} \\)円となる。\n"
                 latex_answer += f"{second_item}の金額と合わせると、\\( {first_price_after_discount} + {second_price} \\)円となる。"
             elif discount_type == "second_item":
-                pass
+                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                remained_ratio_value = 1 - discount_ratio_value
+                remained_ratio_str = self._decimal_normalize(remained_ratio_value)
+                second_price_after_discount = self._multiply_or_divide(second_price, remained_ratio_value, multiply_or_divide="multiply")
+                latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
+                latex_problem += f"{second_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
+                latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、\n"
+                latex_answer += f"値引きされた後の{second_item}の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、"
+                latex_answer += f"金額は\\( {second_price_after_discount} \\)円となる。\n"
+                latex_answer += f"{first_item}の金額と合わせると、\\( {first_price} + {second_price_after_discount} \\)円となる。"
             elif discount_type == "both":
-                pass
+                discount_ratio_value1, discount_ratio_out_of_latex1 = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                remained_ratio_value1 = 1 - discount_ratio_value1
+                remained_ratio_str1 = self._decimal_normalize(remained_ratio_value1)
+                first_price_after_discount = self._multiply_or_divide(first_price, remained_ratio_value1, multiply_or_divide="multiply")
+                discount_ratio_value2, discount_ratio_out_of_latex2 = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                remained_ratio_value2 = 1 - discount_ratio_value2
+                remained_ratio_str2 = self._decimal_normalize(remained_ratio_value1)
+                second_price_after_discount = self._multiply_or_divide(second_price, remained_ratio_value2, multiply_or_divide="multiply")
+                latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
+                latex_problem += f"{first_item}が{discount_ratio_out_of_latex1}、"
+                latex_problem += f"{second_item}が{discount_ratio_out_of_latex2}だけそれぞれ値引きされた後に、\n"
+                latex_problem += f"2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
+                latex_answer = f"{discount_ratio_out_of_latex1}だけ値引きされたということは、\n"
+                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと\\( {remained_ratio_str1} \\)、"
+                latex_answer += f"金額は\\( {first_price_after_discount} \\)円となる。\n"
+                latex_answer += f"また、同じように値引きされた後の{second_item}の金額を小数の割合で示すと\\( {remained_ratio_str2} \\)、"
+                latex_answer += f"金額は\\( {second_price_after_discount} \\)円となる。\n"
+                latex_answer += f"2つの金額と合わせると、\\( {first_price_after_discount} + {second_price_after_discount} \\)円となる。"
         return latex_answer, latex_problem
         
     def _make_expression_with_formula_and_calculate_problem(self):
@@ -858,7 +866,7 @@ class FormulaWithSymbol:
                 保留で良い？
                 あるいは、数々のパターンの時には、さっさと計算する。いずれかが文字であれば、そのまま置いて、計算記号を挟む
             
-            計算は小数が出ないことを前提とするべき
+            計算は小数が出ないことを前提とするべき?
         """
         # latex済想定
         if isinstance(first_amount, str):
@@ -866,7 +874,7 @@ class FormulaWithSymbol:
         if isinstance(second_amount, str):
             raise ValueError(f"'first_amount' must not be str.{second_amount} is wrong.")
         if not(isinstance(first_amount, sy.Symbol)) and not(isinstance(second_amount, sy.Symbol)):
-            calculated_amount = sy.latex(first_amount * second_amount)
+            calculated_amount = self._decimal_normalize(sy.latex(first_amount * second_amount))
         else:
             if multiply_or_divide == "multiply":
                 calculated_amount = f"{sy.latex(first_amount)} \\times {sy.latex(second_amount)}"
@@ -875,3 +883,21 @@ class FormulaWithSymbol:
             else:
                 raise ValueError(f"'multiply_or_divide' must be 'multiply' or 'divide'. {multiply_or_divide} is wrong.")
         return calculated_amount
+
+    def _decimal_normalize(self, number: Union[str, sy.Integer, sy.Float]) -> str:
+        """
+        小数点以下で末尾まで続いている連続した0を消去した文字列を返す。(eg. 100.00->100, 31.0010->31.001)
+
+        Args:
+            number (Union[str, sy.Integer, sy.Float]): 処理したい数
+
+        Returns:
+            number_str (str): 0が消去された文字列 
+        """
+        number_str = str(number)
+        while True:
+            if ("." in number_str and number_str[-1] == "0") or (number_str[-1] == "."):
+                number_str = number_str[:-1]
+                continue
+            break
+        return number_str

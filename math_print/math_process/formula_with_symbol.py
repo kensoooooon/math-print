@@ -24,9 +24,9 @@ class FormulaWithSymbol:
         """
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
+        # selected_theme = choice(["area", "volume", "weight", "price"])
+        selected_theme = "area"
         if selected_problem_type == "expression_with_formula":
-            # selected_theme = choice(["area", "volume", "weight", "price"])
-            selected_theme = "price"
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
             elif selected_theme == "volume":
@@ -35,331 +35,20 @@ class FormulaWithSymbol:
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_weight_problem()
             elif selected_theme == "price":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_price_problem()
-            # self.latex_answer, self.latex_problem = self._make_expression_with_formula_problem()
         elif selected_problem_type == "expression_with_formula_and_calculate":
-            self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_problem()
+            # self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_problem()
+            if selected_theme == "area":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_area_problem()
+            elif selected_theme == "volume":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_volume_problem()
+            elif selected_theme == "weight":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_weight_problem()
+            elif selected_theme == "price":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_price_problem()
         elif selected_problem_type == "from_formula_to_condition":
             self.latex_answer, self.latex_problem = self._make_from_formula_to_condition_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}. This isn't concerned value.")
-    
-    def _make_expression_with_formula_problem(self):
-        """文字を用いた式の表現のみを問う問題の作成
-        
-        Returns:
-            Tuple[str, str]: 問題と解答
-            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
-            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-        
-        Developing:
-            共通処理を関数として引っこ抜いて、多少見やすくする
-            \\( \\)で返すべきか否か？
-            →\\( \\)つきで返せば、problem, answer側の表現はシンプルになる一方で、式の中身は触りづらくなる
-            →\\( \\)なしで返せば、多少はノイジーになるが、一方で式同士の足し合わせ等にも利用できる
-            →→とりあえずなしで返す方向で
-            
-            関数に与える方の単位はどのようにすべきか？
-            \\型で与えれば、中での処理は軽減できるが、それを外側で処理でしておかなければならなくなる
-            →→メイン側のノイジーな感じを軽減したいので、関数側で処理する形で
-        """
-        # selected_genre = choice(["area", "volume", "weight", "price"])
-        selected_genre = "weight"
-        x = sy.Symbol("x")
-        if selected_genre == "area":
-            selected_shape = choice(["triangle", "parallelogram"])
-            if selected_shape == "triangle":
-                if random() > 0.5:
-                    base = sy.Integer(randint(1, 10))
-                    height = x
-                else:
-                    base = x
-                    height = sy.Integer(randint(1, 10))
-                latex_problem = f"底辺が \\( {base} \\mathrm{{cm}} \\)、高さが\\( {height} \\mathrm{{cm}} \\)の三角形があります。\n"
-                latex_problem += f"三角形の面積を、\\( x \\)を使った式で表しなさい。"
-                latex_answer = "三角形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2\\)なので、\n"
-                latex_answer += f"\\( {base} \\times {height} \\div 2 \\)"
-            elif selected_shape == "parallelogram":
-                if random() > 0.5:
-                    base = sy.Integer(randint(1, 10))
-                    height = x
-                else:
-                    base = x
-                    height = sy.Integer(randint(1, 10))
-                latex_problem = f"底辺が \\( {base} \\mathrm{{cm}} \\)、高さが\\( {height} \\mathrm{{cm}} \\)の平行四辺形があります。\n"
-                latex_problem += f"平行四辺形の面積を、\\( x \\)を使った式で表しなさい。"
-                latex_answer = "平行四辺形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2\\)なので、\n"
-                latex_answer += f"\\( {base} \\times {height} \\div 2 \\)"                
-        elif selected_genre == "volume":
-            item = choice(["ジュース", "お茶", "コーヒー"])
-            increase_or_decrease = choice(["increase", "decrease"])
-            if increase_or_decrease == "increase":
-                list_to_shuffle = [sy.Integer(randint(1, 10)), x]
-                shuffle(list_to_shuffle)
-                start_amount, increment = list_to_shuffle
-                from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
-                if from_to_unit == "l_to_l":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
-                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    latex_problem += f"{increment_latex}増やした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                    end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} (\\mathrm{{L}})\\)"
-                    latex_answer = f"初めの量が{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
-                    latex_answer += f"この2つを足すと、{end_amount_latex}"
-                elif from_to_unit == "dl_to_dl":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
-                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{dL}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    latex_problem += f"{increment_latex}増やした後の体積\\( (\\mathrm{{dL}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                    end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} (\\mathrm{{dL}}) \\)"
-                    latex_answer = f"初めの量が{start_amount_latex}で、{increment_latex}が増やした量なので、\n"
-                    latex_answer += f"この2つを足すと、{end_amount_latex}"
-                elif from_to_unit == "dl_to_l":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
-                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{L}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    # answered by dL
-                    if random() > 0.5:
-                        latex_problem += f"{increment_latex}増やした後の体積\\( \\mathrm{{(dL)}} \\)を、\\( x \\)を使った式で表しなさい。"
-                        latex_answer = f"初めの量が{start_amount_latex}で、"
-                        if increment == x:
-                            latex_answer += f"\\( {sy.latex(increment)} \\mathrm{{L}} = {sy.latex(increment)} \\times 10 \\mathrm{{dL}} \\)が増やした量なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\times 10 (\\mathrm{{dL}}) \\)"
-                        else:
-                            latex_answer += f"\\( {sy.latex(increment)} \\mathrm{{L}} = {sy.latex(increment * 10)} \\mathrm{{dL}} \\)が増やした量なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment * 10)} (\\mathrm{{dL}}) \\)"
-                        latex_answer += f"この2つを足すと、{end_amount_latex}"
-                    # answered by L
-                    else:
-                        latex_problem += f"{increment_latex}増やした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                        if start_amount == x:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{dL}}) = {sy.latex(start_amount)} \\div 10 (\\mathrm{{L}})  \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} \\div 10 + {sy.latex(increment)} (\\mathrm{{L}}) \\)"
-                        else:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{dL}}) = {sy.latex(start_amount * sy.Rational(1, 10))} (\\mathrm{{L}})  \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount * sy.Rational(1, 10))} + {sy.latex(increment)}  (\\mathrm{{L}}) \\)"
-                        latex_answer += f"{increment_latex}が増やした量なので、\n"
-                        latex_answer += f"この2つを足すと、{end_amount_latex}"
-                elif from_to_unit == "l_to_dl":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
-                    increment_latex = f"\\( {sy.latex(increment)} \\mathrm{{dL}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    # answered by dL
-                    if random() > 0.5:
-                        latex_problem += f"{increment_latex}増やした後の体積\\( (\\mathrm{{dL}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                        if start_amount == x:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{L}}) = {sy.latex(start_amount)} \\times 10 (\\mathrm{{dL}}) \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} \\times 10 + {sy.latex(increment)} (\\mathrm{{dL}}) \\)"
-                        else:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{L}}) = {sy.latex(start_amount * 10)} (\\mathrm{{dL}}) \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount * 10)} + {sy.latex(increment)} (\\mathrm{{dL}}) \\)"
-                        latex_answer += f"{increment_latex}が増やした量なので、\n"
-                        latex_answer += f"この2つを足すと、{end_amount_latex}"
-                    # answered by L
-                    else:
-                        latex_problem += f"{increment_latex}増やした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                        latex_answer = f"初めの量が{start_amount_latex}で、"
-                        if increment == x:
-                            latex_answer += f"増やした量が、\\( {sy.latex(increment)} (\\mathrm{{dL}}) = {sy.latex(increment)} \\div 10 (\\mathrm{{L}}) \\)なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment)} \\div 10 (\\mathrm{{L}}) \\)"
-                        else:
-                            latex_answer += f"増やした量が、\\( {sy.latex(increment)} (\\mathrm{{dL}}) = {sy.latex(increment * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} + {sy.latex(increment * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)"
-                        latex_answer += f"この2つを足すと、{end_amount_latex}"
-            elif increase_or_decrease == "decrease":
-                list_to_shuffle = [sy.Integer(randint(1, 10)), x]
-                shuffle(list_to_shuffle)
-                start_amount, decrement = list_to_shuffle
-                from_to_unit = choice(["l_to_l", "dl_to_dl", "dl_to_l", "l_to_dl"])
-                if from_to_unit == "l_to_l":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
-                    decrement_latex = f"\\( {sy.latex(decrement)} \\mathrm{{L}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    latex_problem += f"{decrement_latex}減らした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                    end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement)} (\\mathrm{{L}})\\)"
-                    latex_answer = f"初めの量が{start_amount_latex}で、{decrement_latex}が減らした量なので、\n"
-                    latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
-                elif from_to_unit == "dl_to_dl":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
-                    decrement_latex = f"\\( {sy.latex(decrement)} \\mathrm{{dL}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    latex_problem += f"{decrement_latex}減らした後の体積\\( (\\mathrm{{dL}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                    end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement)} (\\mathrm{{dL}}) \\)"
-                    latex_answer = f"初めの量が{start_amount_latex}で、{decrement_latex}が減らした量なので、\n"
-                    latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
-                elif from_to_unit == "dl_to_l":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{dL}} \\)"
-                    decrement_latex = f"\\( {sy.latex(decrement)} \\mathrm{{L}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    # answered by dL
-                    if random() > 0.5:
-                        latex_problem += f"{decrement_latex}減らした後の体積\\( \\mathrm{{(dL)}} \\)を、\\( x \\)を使った式で表しなさい。"
-                        latex_answer = f"初めの量が{start_amount_latex}で、"
-                        if decrement == x:
-                            latex_answer += f"\\( {sy.latex(decrement)} \\mathrm{{L}} = {sy.latex(decrement)} \\times 10 \\mathrm{{dL}} \\)が減らした量なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement)} \\times 10 (\\mathrm{{dL}}) \\)"
-                        else:
-                            latex_answer += f"\\( {sy.latex(decrement)} \\mathrm{{L}} = {sy.latex(decrement * 10)} \\mathrm{{dL}} \\)が減らした量なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement * 10)} (\\mathrm{{dL}}) \\)"
-                        latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
-                    # answered by L
-                    else:
-                        latex_problem += f"{decrement_latex}減らした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                        if start_amount == x:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{dL}}) = {sy.latex(start_amount)} \\div 10 (\\mathrm{{L}})  \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} \\div 10 - {sy.latex(decrement)} (\\mathrm{{L}}) \\)"
-                        else:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{dL}}) = {sy.latex(start_amount * sy.Rational(1, 10))} (\\mathrm{{L}})  \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount * sy.Rational(1, 10))} - {sy.latex(decrement)}  (\\mathrm{{L}}) \\)"
-                        latex_answer += f"{decrement_latex}が減らした量なので、\n"
-                        latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
-                elif from_to_unit == "l_to_dl":
-                    start_amount_latex = f"\\( {sy.latex(start_amount)} \\mathrm{{L}} \\)"
-                    decrement_latex = f"\\( {sy.latex(decrement)} \\mathrm{{dL}} \\)"
-                    latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-                    # answered by dL
-                    if random() > 0.5:
-                        latex_problem += f"{decrement_latex}減らした後の体積\\( (\\mathrm{{dL}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                        if start_amount == x:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{L}}) = {sy.latex(start_amount)} \\times 10 (\\mathrm{{dL}}) \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} \\times 10 - {sy.latex(decrement)} (\\mathrm{{dL}}) \\)"
-                        else:
-                            latex_answer = f"初めの量が\\( {sy.latex(start_amount)} (\\mathrm{{L}}) = {sy.latex(start_amount * 10)} (\\mathrm{{dL}}) \\)で、"
-                            end_amount_latex = f"\\( {sy.latex(start_amount * 10)} - {sy.latex(decrement)} (\\mathrm{{dL}}) \\)"
-                        latex_answer += f"{decrement_latex}が減らした量なので、\n"
-                        latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
-                    # answered by L
-                    else:
-                        latex_problem += f"{decrement_latex}減らした後の体積\\( (\\mathrm{{L}}) \\)を、\\( x \\)を使った式で表しなさい。"
-                        latex_answer = f"初めの量が{start_amount_latex}で、"
-                        if decrement == x:
-                            latex_answer += f"減らした量が、\\( {sy.latex(decrement)} (\\mathrm{{dL}}) = {sy.latex(decrement)} \\div 10 (\\mathrm{{L}}) \\)なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement)} \\div 10 (\\mathrm{{L}}) \\)"
-                        else:
-                            latex_answer += f"減らした量が、\\( {sy.latex(decrement)} (\\mathrm{{dL}}) = {sy.latex(decrement * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)なので、\n"
-                            end_amount_latex = f"\\( {sy.latex(start_amount)} - {sy.latex(decrement * sy.Rational(1, 10))} (\\mathrm{{L}}) \\)"
-                        latex_answer += f"初めの量から減らした量を引くと、{end_amount_latex}"
-        elif selected_genre == "weight":
-            item = choice(["米", "小麦粉", "みそ"])
-            increase_or_decrease = choice(["increase", "decrease"])
-            if increase_or_decrease == "increase":
-                action = "増やした"
-            elif increase_or_decrease == "decrease":
-                action = "減らした"
-            list_to_shuffle = [sy.Integer(randint(1, 10)), x]
-            shuffle(list_to_shuffle)
-            start_amount, delta = list_to_shuffle
-            start_and_delta_unit = choice(["g_and_g", "kg_and_kg", "kg_and_g", "g_and_kg"])
-            # start_and_delta_unit = "g_and_kg"
-            if (start_and_delta_unit == "g_and_g") or (start_and_delta_unit == "kg_and_kg"):
-                if start_and_delta_unit == "g_and_g":
-                    start_unit = "\\mathrm{g}"
-                    delta_unit = "\\mathrm{g}"
-                    answered_unit = "\\mathrm{g}"
-                if start_and_delta_unit == "kg_and_kg":
-                    start_unit = "\\mathrm{{kg}}"
-                    delta_unit = "\\mathrm{{kg}}"
-                    answered_unit = "\\mathrm{{kg}}"
-                start_amount_latex_in_problem = f"\\( {sy.latex(start_amount)}  {start_unit}\\)"
-                delta_latex_in_problem = f"\\( {sy.latex(delta)} {delta_unit} \\)"
-                start_amount_latex_in_answer = start_amount_latex_in_problem
-                delta_latex_in_answer = delta_latex_in_problem
-                if increase_or_decrease == "increase":
-                    action_in_answer = "この2つを足すと"
-                    end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} ({answered_unit}) \\)"
-                elif increase_or_decrease == "decrease":
-                    action_in_answer = "初めの量から減らした量を引くと"
-                    end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} ({answered_unit}) \\)"
-            elif start_and_delta_unit == "kg_and_g":
-                start_unit = "\\mathrm{kg}"
-                delta_unit = "\\mathrm{g}"
-                answered_unit = choice(["\\mathrm{g}", "\\mathrm{kg}"])
-                start_amount_latex_in_problem = f"\\( {sy.latex(start_amount)}  {start_unit}\\)"
-                delta_latex_in_problem = f"\\( {sy.latex(delta)} {delta_unit} \\)"
-                if answered_unit == "\\mathrm{g}":
-                    delta_latex_in_answer = delta_latex_in_problem
-                    if start_amount == x:
-                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount)} \\times 1000 ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\times 1000 + {sy.latex(delta)} ({answered_unit})\\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\times 1000 - {sy.latex(delta)} ({answered_unit})\\)"
-                    else:
-                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount * 1000)} ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * 1000)}  + {sy.latex(delta)} ({answered_unit})\\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * 1000)} - {sy.latex(delta)} ({answered_unit})\\)"
-                elif answered_unit == "\\mathrm{kg}":
-                    start_amount_latex_in_answer = start_amount_latex_in_problem
-                    if delta == x:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta)} \\div 1000 ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} \\div 1000 ({answered_unit}) \\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} \\div 1000 ({answered_unit}) \\)"
-                    else:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta * sy.Rational(1, 1000))} ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)}  + {sy.latex(delta * sy.Rational(1, 1000))} ({answered_unit})\\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta * sy.Rational(1, 1000))}({answered_unit})\\)"
-            elif start_and_delta_unit == "g_and_kg":
-                start_unit = "\\mathrm{g}"
-                delta_unit = "\\mathrm{kg}"
-                answered_unit = choice(["\\mathrm{g}", "\\mathrm{kg}"])
-                start_amount_latex_in_problem = f"\\( {sy.latex(start_amount)}  {start_unit}\\)"
-                delta_latex_in_problem = f"\\( {sy.latex(delta)} {delta_unit} \\)"
-                if answered_unit == "\\mathrm{g}":
-                    start_amount_latex_in_answer = start_amount_latex_in_problem
-                    if delta == x:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta)} \\times 1000 ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} + {sy.latex(delta)} \\times 1000 ({answered_unit}) \\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta)} \\times 1000 ({answered_unit}) \\)"
-                    else:
-                        delta_latex_in_answer = f"\\( {sy.latex(delta)} ({delta_unit}) = {sy.latex(delta * 1000)} {answered_unit} \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)}  + {sy.latex(delta * 1000)} ({answered_unit})\\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} - {sy.latex(delta * 1000)} ({answered_unit})\\)"
-                elif answered_unit == "\\mathrm{kg}":
-                    delta_latex_in_answer = delta_latex_in_problem
-                    if start_amount == x:
-                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount)} \\div 1000 ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\div 1000 + {sy.latex(delta)} ({answered_unit})\\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} \\div 1000 - {sy.latex(delta)} ({answered_unit})\\)"
-                    else:
-                        start_amount_latex_in_answer = f"\\( {sy.latex(start_amount)} ({start_unit}) = {sy.latex(start_amount * sy.Rational(1, 1000))} ({answered_unit}) \\)"
-                        if increase_or_decrease == "increase":
-                            action_in_answer = "この2つを足すと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * sy.Rational(1, 1000))}  + {sy.latex(delta)} ({answered_unit})\\)"
-                        elif increase_or_decrease == "decrease":
-                            action_in_answer = "初めの量から減らした量を引くと"
-                            end_amount_latex_in_answer = f"\\( {sy.latex(start_amount * sy.Rational(1, 1000))} - {sy.latex(delta)} ({answered_unit})\\)"
-            start_amount_latex = f"\\( {sy.latex(start_amount)} {start_unit} \\)"
-            delta_latex = f"\\( {sy.latex(delta)} {delta_unit} \\)"
-            latex_problem = f"初めに{item}が{start_amount_latex}ありました。\n"
-            latex_problem += f"{delta_latex}{action}した後の重さ\\( ({answered_unit}) \\)を、\\( x \\)を使った式で表しなさい。"
-            latex_answer = f"初めの量が{start_amount_latex_in_answer}で、{delta_latex_in_answer}が{action}量なので、\n"
-            latex_answer += f"{action_in_answer}、{end_amount_latex_in_answer}"
-        return latex_answer, latex_problem
     
     def _make_expression_with_formula_area_problem(self) -> Tuple[str, str]:
         """面積をテーマとした式の表現のみを問う問題の作成
@@ -487,98 +176,9 @@ class FormulaWithSymbol:
             Tuple[str, str]: 解答と問題
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-        
-        Developing:
-            円の足し引きだけで考えるならば、単位の変換は特に必要ない
-            一方で、個数の増減、割増割引まで考えると計算は必須
-            単位を付けるにしても、\\mathrm{{円}}はおそらく対応していないと思われる
-            
-            使えそうな関数は、特になし
-                _make_latex_with_unitは円に対応していない
-                _amount_adjusterはそもそも単位の変換が不要
-                _unit_adjusterも同上
-            関数内関数で対応する？
-                そもそもどのような機能が必要になるか
-                足し引き、割増割引
-                    足し引きは同じ手法で行けそうだが、割増割引は計算としては単位の変換と同じような処理が必要になる（文字なら…数字なら…）
-                    個数の増減も同様に、1000円が2個と、x円が2個では扱いが異なる
-                    一応分けておく？それとも関数内関数にする？
-                        とりあえず分けておく形で。あとで結局つかなければ中に入れておく。
-            
-            問題のパターンとしては、単純な商品の加算、個数の増減と加算、割引あたりが考えられる
-            シンプルな順番だと、割引パターンが考えられる。また、個数も同じく掛け算のみで処理可能。
-            複数の商品のパタンは、単純な加算なら細かい処理はいらない（これまでの量とかと同じ）だが、割増割引や個数との兼ね合わせになると少し複雑になる
-            まずは割引、個数から実装していく
-            
-            商品名も、複数のパターンと一つだけのパターンがある。
-            いったん、候補を並べておいて、そこからsampleで必要個数だけ抜き出す？
-            
-            割引率をどのように動作させるか？ratio_problemでは、以下のように
-            ・割引率を一旦小数で与えて、そこから同時に計算まで行う関数？を用意していた
-        def _random_ratio(self, selected_ratio, digit_under_decimal_point: int = 1):   
-            # ratio_value = (10 ** -digit_under_decimal_point) * randint(1, 10 ** digit_under_decimal_point - 1)
-            if digit_under_decimal_point == 1:
-                ratio_value = 0.1 * randint(1, 9)
-            elif digit_under_decimal_point == 2:
-                ratio_value = 0.01 * randint(1, 99)
-            elif digit_under_decimal_point == 3:
-                ratio_value = 0.001 * randint(1, 999)
-            elif digit_under_decimal_point == 4:
-                ratio_value = 0.0001 * randint(1, 9999)
-            else:
-                raise ValueError(f"'digit_under_the_decimal_point' is {digit_under_decimal_point}. This must be 4 or less.")
-            ratio_value = round(ratio_value, 6)
-            if selected_ratio == "decimal":
-                ratio_out_of_latex = f"\\( {sy.latex(ratio_value)} \\)"
-            elif selected_ratio == "percentage":
-                normalized_percentage = self._decimal_normalize(sy.latex(ratio_value * 100))
-                ratio_out_of_latex = f"\\( {normalized_percentage} \\% \\)"
-            elif selected_ratio == "japanese_percentage":
-                digit_list = sy.latex(ratio_value)[2:]
-                japanese_percentage_names = ["割", "分", "厘", "毛"]
-                japanese_percentage_str = ""
-                for digit, name in zip(digit_list, japanese_percentage_names):
-                    if digit != "0":
-                        japanese_percentage_str += (digit + name)
-                ratio_out_of_latex = japanese_percentage_str
-            return ratio_value, ratio_out_of_latex
-            
-            採用するかどうかは、どこまで割合を複雑に取りたいかで変わってくる感じ
-            シンプルに◯割引だけを採用するのであれば、
-                discount_rate = sy.Integer(randint(1, 9)) * sy.Float(0.1)
-                discount_ratio_in_japanese = f"{discount_rate * 10}割"でイケる。ただ、0の表示がどうなるか
-                    0の表示がやばい
-                    そのままは使えない。関数を桁を減らして使い回す？
-                    ~割までに留めて、さらに小数の表示を省く。あるいは、割分と％で利用。いずれにしろ小数は不要
-                    小数第二位まで使う感じで？
-
-            表示の問題もある
-            decimal_normalizeをどこから引っ張る？
-        def _decimal_normalize(self, number: Union[str, sy.Integer, sy.Float]) -> str:
-            ----
-            小数点以下で末尾まで続いている連続した0を消去した文字列を返す。(eg. 100.00->100, 31.0010->31.001)
-
-            Args:
-                number (Union[str, sy.Integer, sy.Float]): 処理したい数
-
-            Returns:
-                number_str (str): 0が消去された文字列 
-            ----
-            number_str = str(number)
-            while True:
-                if ("." in number_str and number_str[-1] == "0") or (number_str[-1] == "."):
-                    number_str = number_str[:-1]
-                    continue
-                break
-            return number_str
-            
-            そこまで煩雑な処理ではないので中に入れても良い。関数として独立させても良い。
-            とりあえず独立させておいて、random_ratio経由でしか利用しないようであれば、しれっと中に入れる感じで
-            それでも主に桁絡みで何かしらの修正は必要そう
-            あとは割合の表示の方では、\\( \\)のありなしで多少の齟齬がある可能性
         """
         
-        def random_ratio(selected_ratio: str, digit_under_decimal_point: int = 1) -> Tuple[sy.Float, str]:
+        def random_ratio(selected_ratio: str) -> Tuple[sy.Float, str]:
             """ランダムな割合と、その日本語表示をあわせて出力する
 
             Args:
@@ -596,12 +196,9 @@ class FormulaWithSymbol:
             Remind:
                 出力用の日本語は、\\( \\)で囲まないことを前提としている
             """
+            digit_under_decimal_point = 1
             if digit_under_decimal_point == 1:
                 ratio_value = 0.1 * sy.Integer(randint(1, 9))
-            elif digit_under_decimal_point == 2:
-                ratio_value = 0.01 * sy.Integer(randint(1, 99))
-            else:
-                raise ValueError(f"'digit_under_the_decimal_point' is {digit_under_decimal_point}. This must be 1 or 2.")
             ratio_value = round(ratio_value, 6)
             if selected_ratio == "percentage":
                 normalized_percentage = self._decimal_normalize(sy.latex(ratio_value * 100))
@@ -620,12 +217,11 @@ class FormulaWithSymbol:
 
         x = sy.Symbol("x")
         items = ["お菓子", "ジュース", "お弁当", "洗剤"]
-        # problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
-        problem_theme = "multiple_items_with_discount"
+        problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
         if problem_theme == "discount":
             item = choice(items)
             price_before_discount = x
-            discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+            discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]))
             remained_ratio_value = 1 - discount_ratio_value
             remained_ratio_str = self._decimal_normalize(remained_ratio_value)
             price_after_discount = self._multiply_or_divide(price_before_discount, remained_ratio_value, multiply_or_divide="multiply")
@@ -649,7 +245,7 @@ class FormulaWithSymbol:
             first_price, second_price = sample([x, sy.Integer(randint(1, 10) * 100)], k=2)
             discount_type = choice(["first_item", "second_item", "both"])
             if discount_type == "first_item":
-                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]))
                 remained_ratio_value = 1 - discount_ratio_value
                 remained_ratio_str = self._decimal_normalize(remained_ratio_value)
                 first_price_after_discount = self._multiply_or_divide(first_price, remained_ratio_value, multiply_or_divide="multiply")
@@ -660,7 +256,7 @@ class FormulaWithSymbol:
                 latex_answer += f"金額は\\( {first_price_after_discount} \\)円となる。\n"
                 latex_answer += f"{second_item}の金額と合わせると、\\( {first_price_after_discount} + {second_price} \\)円となる。"
             elif discount_type == "second_item":
-                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                discount_ratio_value, discount_ratio_out_of_latex = random_ratio(choice(["percentage", "japanese_percentage"]))
                 remained_ratio_value = 1 - discount_ratio_value
                 remained_ratio_str = self._decimal_normalize(remained_ratio_value)
                 second_price_after_discount = self._multiply_or_divide(second_price, remained_ratio_value, multiply_or_divide="multiply")
@@ -671,13 +267,13 @@ class FormulaWithSymbol:
                 latex_answer += f"金額は\\( {second_price_after_discount} \\)円となる。\n"
                 latex_answer += f"{first_item}の金額と合わせると、\\( {first_price} + {second_price_after_discount} \\)円となる。"
             elif discount_type == "both":
-                discount_ratio_value1, discount_ratio_out_of_latex1 = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                discount_ratio_value1, discount_ratio_out_of_latex1 = random_ratio(choice(["percentage", "japanese_percentage"]))
                 remained_ratio_value1 = 1 - discount_ratio_value1
                 remained_ratio_str1 = self._decimal_normalize(remained_ratio_value1)
                 first_price_after_discount = self._multiply_or_divide(first_price, remained_ratio_value1, multiply_or_divide="multiply")
-                discount_ratio_value2, discount_ratio_out_of_latex2 = random_ratio(choice(["percentage", "japanese_percentage"]), 1)
+                discount_ratio_value2, discount_ratio_out_of_latex2 = random_ratio(choice(["percentage", "japanese_percentage"]))
                 remained_ratio_value2 = 1 - discount_ratio_value2
-                remained_ratio_str2 = self._decimal_normalize(remained_ratio_value1)
+                remained_ratio_str2 = self._decimal_normalize(remained_ratio_value2)
                 second_price_after_discount = self._multiply_or_divide(second_price, remained_ratio_value2, multiply_or_divide="multiply")
                 latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
                 latex_problem += f"{first_item}が{discount_ratio_out_of_latex1}、"
@@ -691,16 +287,38 @@ class FormulaWithSymbol:
                 latex_answer += f"2つの金額と合わせると、\\( {first_price_after_discount} + {second_price_after_discount} \\)円となる。"
         return latex_answer, latex_problem
         
-    def _make_expression_with_formula_and_calculate_problem(self):
-        """文字を用いた式の表現と、数の計算をあわせて問う問題の作成
+    def _make_expression_with_formula_and_calculate_area_problem(self) -> Tuple[str, str]:
+        """面積をテーマとした式の表現のみを問う問題の作成
         
         Returns:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
-            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題 
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
-        latex_answer = "dummy answer"
-        latex_problem = "dummy problem"
+        x = sy.Symbol("x")
+        selected_shape = choice(["triangle", "parallelogram"])
+        base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
+        unit = "\\mathrm{{cm}}"
+        answer_unit = "\\mathrm{{cm^2}}"
+        base_latex_with_unit = self._make_latex_with_unit(base, unit, with_parentheses=False)
+        height_latex_with_unit = self._make_latex_with_unit(height, unit, with_parentheses=False)
+        if selected_shape == "triangle":
+            area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)} \\div 2", answer_unit, with_parentheses=True)
+            latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の三角形があります。\n"
+            latex_problem += "(1)三角形の面積を\\( x \\)を使った式で表しなさい。\n"
+            latex_answer = "(1)三角形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)なので、\n"
+            latex_answer += f"\\( {area_latex_with_unit} \\)\n"
+            if base == x:
+                # next
+                latex_problem += f"(2)底辺が\\(  \\mathrm{{cm}} \\)"
+            elif height == x:
+                latex_problem
+        elif selected_shape == "parallelogram":
+            area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
+            latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の平行四辺形があります。\n"
+            latex_problem += "(1)平行四辺形の面積を\\( x \\)を使った式で表しなさい。\n"
+            latex_answer = "(1)平行四辺形の面積は、(底辺) \\( \\times \\) (高さ)なので、\n"
+            latex_answer += f"\\( {area_latex_with_unit} \\)"
         return latex_answer, latex_problem
 
     def _make_from_formula_to_condition_problem(self):

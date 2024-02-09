@@ -294,9 +294,26 @@ class FormulaWithSymbol:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        
+        
+        Developing:
+            base_value, height_valueの分岐が大きい。
+                どちらが文字になるかは場合によりけりだが、結局どちらにしろ値が必要になることには変わりない
+                つまり、(底辺)....の公式もしかり、同じ部分にまとめられれば、多少は見やすくなりそうではある。
+                {action}の考え方を採用できないか？
+                if base == x:
+                    symbol_length = "底辺"
+                    actual_value = sy.Integer(randint(1, 10))
+                のようなものを設けることで、置き換える手間が不要になるのではないか？
+                答え依存であることを意識して、答えから逆算して考える？？
+            
+            さすがに三角形と平行四辺形は分けておいたほうが良い？
+                面戦機を求める公式は同じだが、必要なパラメータは底辺と高さである点では共通している
+                actionと同じで、解答を主導して、要所要所の公式と計算だけ入れ変えていけば？？
         """
         x = sy.Symbol("x")
-        selected_shape = choice(["triangle", "parallelogram"])
+        # selected_shape = choice(["triangle", "parallelogram"])
+        selected_shape = "triangle"
         base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
         unit = "\\mathrm{{cm}}"
         answer_unit = "\\mathrm{{cm^2}}"
@@ -309,10 +326,21 @@ class FormulaWithSymbol:
             latex_answer = "(1)三角形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)なので、\n"
             latex_answer += f"\\( {area_latex_with_unit} \\)\n"
             if base == x:
-                # next
-                latex_problem += f"(2)底辺が\\(  \\mathrm{{cm}} \\)"
+                base_value = sy.Integer(randint(1, 10))
+                base_value_latex_with_unit = self._make_latex_with_unit(base_value, unit, with_parentheses=False)
+                area_value = base_value * height * sy.Rational(1, 2)
+                latex_problem += f"(2)底辺が\\( {base_value_latex_with_unit} \\)のときの面積を求めよ。"
+                latex_answer += f"(2)底辺が\\( {base_value_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)なので、\n"
+                latex_answer += f"面積は、\\( {sy.latex(base_value)} \\times {sy.latex(height)} \\div 2  \\)\n"
             elif height == x:
-                latex_problem
+                height_value = sy.Integer(randint(1, 10))
+                height_value_latex_with_unit = self._make_latex_with_unit(height_value, unit, with_parentheses=False)
+                area_value = base * height_value * sy.Rational(1, 2)
+                latex_problem += f"(2)高さが\\( {height_value_latex_with_unit} \\)のときの面積を求めよ。"
+                latex_answer += f"(2)底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_value_latex_with_unit} \\)なので、\n"
+                latex_answer += f"面積は、\\( {sy.latex(base)} \\times {sy.latex(height_value)} \\div 2 \\)"
+            area_value_latex_with_unit = self._make_latex_with_unit(area_value, answer_unit, with_parentheses=True)
+            latex_answer += f"\\( = {area_value_latex_with_unit} \\)"
         elif selected_shape == "parallelogram":
             area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
             latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の平行四辺形があります。\n"
@@ -332,36 +360,7 @@ class FormulaWithSymbol:
         latex_answer = "dummy answer"
         latex_problem = "dummy problem"
         return latex_answer, latex_problem
-    
-    def _random_number_maker(self, min_value: int = 1, max_value: int = 10, mode: str = None) -> Union[sy.Integer, sy.Float, sy.Rational]:
-        """指定された最小値以上、最大値以下の数を小数や整数、分数で出力する
-        
-        Args:
-            min_value (int): 最小値。デフォルト値は1
-            max_value (int): 最大値。デフォルト値は10。
-            mode (str): 指定する数のタイプ。デフォルト値はNone。
-        
-        Returns:
-            number (Union[sy.Integer, sy.Float, sy.Rational]): 指定された諸条件を満たした数
-        
-        Note:
-            整数は指定された最大値、最小値をもとに値を返すが、分数・小数のときは、ランダム生成に利用される最大値と最小値となる。
-        """
-        if mode is None:
-            selected_mode = choice(["integer", "float", "frac"])
-        else:
-            selected_mode = mode
-        if selected_mode == "integer":
-            number = sy.Integer(randint(min_value, max_value))
-        elif selected_mode == "float":
-            number = sy.Float(0.1 * randint(min_value, max_value))
-        elif selected_mode == "frac":
-            numerator = randint(min_value, max_value)
-            denominator= randint(min_value, max_value)
-            number = sy.Rational(numerator, denominator)
-        else:
-            raise ValueError(f"selected_mode is {selected_mode}. This isn't expected value.")
-        return number
+
 
     def _make_latex_with_unit(self, amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational, str], unit: str, *, with_parentheses: bool) -> str:
         """与えられた量と単位をlatex形式で返すための関数
@@ -465,26 +464,6 @@ class FormulaWithSymbol:
 
         Returns:
             calculated_amount (str) : 計算した式
-        
-        Developing:
-            first_amountに違いは存在する？しない？
-            多分しない。xだろうが1000だろうが同じ
-                何を受け取るか？には検討の余地がある？問題がふわふわしてる？
-                一応strでもそれ以外でも受け取れる形にしておく??
-                    数やかけ算の対応が難しくなるのでは？？
-                    数か文字しか入れないように押さえておく
-            
-            考えられるパターンは、
-            数×数, 数÷数←特に操作必要なし。普通に計算
-            文字×数, 数×文字, 文字÷数, 数÷文字←いずれも文字をそのままキープしておく
-            
-            もう一歩踏み込むと、1個目は数だろうと文字だろうと、通常のまま？
-                2 * x = 2 \\times x
-                2 * 300 = 600
-                保留で良い？
-                あるいは、数々のパターンの時には、さっさと計算する。いずれかが文字であれば、そのまま置いて、計算記号を挟む
-            
-            計算は小数が出ないことを前提とするべき?
         """
         # latex済想定
         if isinstance(first_amount, str):

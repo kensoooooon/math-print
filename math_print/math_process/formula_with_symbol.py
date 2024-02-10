@@ -323,19 +323,21 @@ class FormulaWithSymbol:
             substitute_target = "高さ"
         substitute_value = sy.Integer(randint(1, 10))
         substitute_value_with_unit = self._make_latex_with_unit(substitute_value, unit, with_parentheses=False)
-        # selected_shape = choice(["triangle", "parallelogram"])
-        selected_shape = "triangle"
+        selected_shape = choice(["triangle", "parallelogram"])
+        # selected_shape = "triangle"
         if selected_shape == "triangle":
             shape = "三角形"
             area_formula = "(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)"
             area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)} \\div 2", answer_unit, with_parentheses=True)
-            area_value = (base * height).subs(x, substitute_target) * sy.Rational(1, 2)
+            area_value = (base * height).subs(x, substitute_value) * sy.Rational(1, 2)
         elif selected_shape == "parallelogram":
             shape = "平行四辺形"
             area_formula = "(底辺) \\( \\times \\) (高さ)"
             area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
-            area_value = (base * height).subs(x, substitute_target)
-        area_value_latex_with_unit = self._make_latex_with_unit(base, answer_unit, with_parentheses=True)
+            print(f"base * height: {base * height}")
+            area_value = (base * height).subs(x, substitute_value)
+        print(f"area_value: {area_value}")
+        area_value_latex_with_unit = self._make_latex_with_unit(area_value, answer_unit, with_parentheses=False)
         latex_problem = f"底辺が\\( {base_latex_with_unit} \\), 高さが\\( {height_latex_with_unit} \\)の{shape}があります。\n"
         latex_problem += f"(1){shape}の面積を\\( x \\)を使った式で表しなさい。\n"
         latex_problem += f"(2){substitute_target}が\\( {substitute_value_with_unit} \\)のときの面積を求めなさい。"
@@ -344,6 +346,7 @@ class FormulaWithSymbol:
         latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {sy.latex(substitute_value)} \\)になるので、\n"
         latex_answer += f"面積は、\\( {area_value_latex_with_unit} \\)"
         #######
+        """
         base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
         unit = "\\mathrm{{cm}}"
         answer_unit = "\\mathrm{{cm^2}}"
@@ -377,6 +380,7 @@ class FormulaWithSymbol:
             latex_problem += "(1)平行四辺形の面積を\\( x \\)を使った式で表しなさい。\n"
             latex_answer = "(1)平行四辺形の面積は、(底辺) \\( \\times \\) (高さ)なので、\n"
             latex_answer += f"\\( {area_latex_with_unit} \\)"
+        """
         return latex_answer, latex_problem
 
     def _make_from_formula_to_condition_problem(self):

@@ -312,8 +312,38 @@ class FormulaWithSymbol:
                 actionと同じで、解答を主導して、要所要所の公式と計算だけ入れ変えていけば？？
         """
         x = sy.Symbol("x")
+        base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
+        unit = "\\mathrm{{cm}}"
+        answer_unit = "\\mathrm{{cm^2}}"
+        base_latex_with_unit = self._make_latex_with_unit(base, unit, with_parentheses=False)
+        height_latex_with_unit = self._make_latex_with_unit(height, unit, with_parentheses=False)
+        if base == x:
+            substitute_target = "底辺"
+        elif height == x:
+            substitute_target = "高さ"
+        substitute_value = sy.Integer(randint(1, 10))
+        substitute_value_with_unit = self._make_latex_with_unit(substitute_value, unit, with_parentheses=False)
         # selected_shape = choice(["triangle", "parallelogram"])
         selected_shape = "triangle"
+        if selected_shape == "triangle":
+            shape = "三角形"
+            area_formula = "(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)"
+            area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)} \\div 2", answer_unit, with_parentheses=True)
+            area_value = (base * height).subs(x, substitute_target) * sy.Rational(1, 2)
+        elif selected_shape == "parallelogram":
+            shape = "平行四辺形"
+            area_formula = "(底辺) \\( \\times \\) (高さ)"
+            area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
+            area_value = (base * height).subs(x, substitute_target)
+        area_value_latex_with_unit = self._make_latex_with_unit(base, answer_unit, with_parentheses=True)
+        latex_problem = f"底辺が\\( {base_latex_with_unit} \\), 高さが\\( {height_latex_with_unit} \\)の{shape}があります。\n"
+        latex_problem += f"(1){shape}の面積を\\( x \\)を使った式で表しなさい。\n"
+        latex_problem += f"(2){substitute_target}が\\( {substitute_value_with_unit} \\)のときの面積を求めなさい。"
+        latex_answer = f"(1){shape}の面積は、{area_formula}なので、\n"
+        latex_answer += f"\\( {area_formula_after_substitution} \\)\n"
+        latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {sy.latex(substitute_value)} \\)になるので、\n"
+        latex_answer += f"面積は、\\( {area_value_latex_with_unit} \\)"
+        #######
         base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
         unit = "\\mathrm{{cm}}"
         answer_unit = "\\mathrm{{cm^2}}"

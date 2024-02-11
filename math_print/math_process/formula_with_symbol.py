@@ -45,6 +45,15 @@ class FormulaWithSymbol:
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_weight_problem()
             elif selected_theme == "price":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_calculate_price_problem()
+        elif selected_problem_type == "expression_with_formula_and_solve":
+            if selected_theme == "area":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_solve_area_problem()
+            elif selected_theme == "volume":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_solve_volume_problem()
+            elif selected_theme == "weight":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_solve_weight_problem()
+            elif selected_theme == "price":
+                self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_solve_price_problem()
         elif selected_problem_type == "from_formula_to_condition":
             self.latex_answer, self.latex_problem = self._make_from_formula_to_condition_problem()
         else:
@@ -288,28 +297,12 @@ class FormulaWithSymbol:
         return latex_answer, latex_problem
         
     def _make_expression_with_formula_and_calculate_area_problem(self) -> Tuple[str, str]:
-        """面積をテーマとした式の表現のみを問う問題の作成
+        """面積をテーマとした式の表現と計算の問題と解答を出力する
         
         Returns:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-        
-        
-        Developing:
-            base_value, height_valueの分岐が大きい。
-                どちらが文字になるかは場合によりけりだが、結局どちらにしろ値が必要になることには変わりない
-                つまり、(底辺)....の公式もしかり、同じ部分にまとめられれば、多少は見やすくなりそうではある。
-                {action}の考え方を採用できないか？
-                if base == x:
-                    symbol_length = "底辺"
-                    actual_value = sy.Integer(randint(1, 10))
-                のようなものを設けることで、置き換える手間が不要になるのではないか？
-                答え依存であることを意識して、答えから逆算して考える？？
-            
-            さすがに三角形と平行四辺形は分けておいたほうが良い？
-                面戦機を求める公式は同じだが、必要なパラメータは底辺と高さである点では共通している
-                actionと同じで、解答を主導して、要所要所の公式と計算だけ入れ変えていけば？？
         """
         x = sy.Symbol("x")
         base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
@@ -324,7 +317,6 @@ class FormulaWithSymbol:
         substitute_value = sy.Integer(randint(1, 10))
         substitute_value_with_unit = self._make_latex_with_unit(substitute_value, unit, with_parentheses=False)
         selected_shape = choice(["triangle", "parallelogram"])
-        # selected_shape = "triangle"
         if selected_shape == "triangle":
             shape = "三角形"
             area_formula = "(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)"
@@ -334,9 +326,7 @@ class FormulaWithSymbol:
             shape = "平行四辺形"
             area_formula = "(底辺) \\( \\times \\) (高さ)"
             area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
-            print(f"base * height: {base * height}")
             area_value = (base * height).subs(x, substitute_value)
-        print(f"area_value: {area_value}")
         area_value_latex_with_unit = self._make_latex_with_unit(area_value, answer_unit, with_parentheses=False)
         latex_problem = f"底辺が\\( {base_latex_with_unit} \\), 高さが\\( {height_latex_with_unit} \\)の{shape}があります。\n"
         latex_problem += f"(1){shape}の面積を\\( x \\)を使った式で表しなさい。\n"
@@ -345,42 +335,62 @@ class FormulaWithSymbol:
         latex_answer += f"\\( {area_formula_after_substitution} \\)\n"
         latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {sy.latex(substitute_value)} \\)になるので、\n"
         latex_answer += f"面積は、\\( {area_value_latex_with_unit} \\)"
-        #######
+        return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
+        """式での表現と、xを求める問題と解答を出力
+
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        
+        Developing:
+            とりあえず大本はcalculateの方でよさそう。
+                (1)はそのままで、(2)の方に改造が必要な感じ
+                あとはxの値を整数に抑えるために、予め偶数を組んでおく
+                あるいは、範囲が狭くなることを重視して分数を許容するか
+                さらにあるいは、2,4,6,8,10で通すか
+                とりあえず2,4,6,...で通す
+                やっぱり1,2,3,4,5で
+                
+                途中の説明を数字ごとにやると、行が増えて面倒といえば面倒
+                →答えのまま試していって、答えの段階だけを表すというのも手か。
         """
+        x = sy.Symbol("x")
         base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
         unit = "\\mathrm{{cm}}"
         answer_unit = "\\mathrm{{cm^2}}"
         base_latex_with_unit = self._make_latex_with_unit(base, unit, with_parentheses=False)
         height_latex_with_unit = self._make_latex_with_unit(height, unit, with_parentheses=False)
+        if base == x:
+            substitute_target = "底辺"
+        elif height == x:
+            substitute_target = "高さ"
+        substitute_value = sy.Integer(randint(1, 5))
+        substitute_value_with_unit = self._make_latex_with_unit(substitute_value, unit, with_parentheses=False)
+        selected_shape = choice(["triangle", "parallelogram"])
         if selected_shape == "triangle":
-            area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)} \\div 2", answer_unit, with_parentheses=True)
-            latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の三角形があります。\n"
-            latex_problem += "(1)三角形の面積を\\( x \\)を使った式で表しなさい。\n"
-            latex_answer = "(1)三角形の面積は、(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)なので、\n"
-            latex_answer += f"\\( {area_latex_with_unit} \\)\n"
-            if base == x:
-                base_value = sy.Integer(randint(1, 10))
-                base_value_latex_with_unit = self._make_latex_with_unit(base_value, unit, with_parentheses=False)
-                area_value = base_value * height * sy.Rational(1, 2)
-                latex_problem += f"(2)底辺が\\( {base_value_latex_with_unit} \\)のときの面積を求めよ。"
-                latex_answer += f"(2)底辺が\\( {base_value_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)なので、\n"
-                latex_answer += f"面積は、\\( {sy.latex(base_value)} \\times {sy.latex(height)} \\div 2  \\)\n"
-            elif height == x:
-                height_value = sy.Integer(randint(1, 10))
-                height_value_latex_with_unit = self._make_latex_with_unit(height_value, unit, with_parentheses=False)
-                area_value = base * height_value * sy.Rational(1, 2)
-                latex_problem += f"(2)高さが\\( {height_value_latex_with_unit} \\)のときの面積を求めよ。"
-                latex_answer += f"(2)底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_value_latex_with_unit} \\)なので、\n"
-                latex_answer += f"面積は、\\( {sy.latex(base)} \\times {sy.latex(height_value)} \\div 2 \\)"
-            area_value_latex_with_unit = self._make_latex_with_unit(area_value, answer_unit, with_parentheses=True)
-            latex_answer += f"\\( = {area_value_latex_with_unit} \\)"
+            shape = "三角形"
+            area_formula = "(底辺) \\( \\times \\) (高さ) \\( \\div 2 \\)"
+            area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)} \\div 2", answer_unit, with_parentheses=True)
+            area_value = (base * height).subs(x, substitute_value) * sy.Rational(1, 2)
         elif selected_shape == "parallelogram":
-            area_latex_with_unit = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
-            latex_problem = f"底辺が\\( {base_latex_with_unit} \\)、高さが\\( {height_latex_with_unit} \\)の平行四辺形があります。\n"
-            latex_problem += "(1)平行四辺形の面積を\\( x \\)を使った式で表しなさい。\n"
-            latex_answer = "(1)平行四辺形の面積は、(底辺) \\( \\times \\) (高さ)なので、\n"
-            latex_answer += f"\\( {area_latex_with_unit} \\)"
-        """
+            shape = "平行四辺形"
+            area_formula = "(底辺) \\( \\times \\) (高さ)"
+            area_formula_after_substitution = self._make_latex_with_unit(f"{sy.latex(base)} \\times {sy.latex(height)}", answer_unit, with_parentheses=True)
+            area_value = (base * height).subs(x, substitute_value)
+        area_value_latex_with_unit = self._make_latex_with_unit(area_value, answer_unit, with_parentheses=False)
+        latex_problem = f"底辺が\\( {base_latex_with_unit} \\), 高さが\\( {height_latex_with_unit} \\)の{shape}があります。\n"
+        latex_problem += f"(1){shape}の面積を\\( x \\)を使った式で表しなさい。\n"
+        # next
+        latex_problem += f"(2)面積が\\( {area_value_latex_with_unit} \\)のときの{substitute_target}は何\\( \\mathrm{{cm}} \\)ですか。\n"
+        latex_problem += "\\( x \\)に\\( 1, 2, 3, \\cdots \\)を当てはめて求めなさい。"
+        latex_answer = f"(1){shape}の面積は、{area_formula}なので、\n"
+        latex_answer += f"\\( {area_formula_after_substitution} \\)\n"
+        latex_answer += "(2)(1)で表した式の\\( x \\)に、指定された数を当てはめていくと、\n"
+        latex_answer += f"\\( x = {sy.latex(substitute_value)} \\)で面積が\\( {area_value_latex_with_unit} \\)になる。"
+        latex_answer += f"よって答えは、\\( {substitute_value_with_unit} \\)"
         return latex_answer, latex_problem
 
     def _make_from_formula_to_condition_problem(self):

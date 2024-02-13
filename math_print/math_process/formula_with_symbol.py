@@ -337,8 +337,8 @@ class FormulaWithSymbol:
         latex_answer += f"面積は、\\( {area_value_latex_with_unit} \\)"
         return latex_answer, latex_problem
     
-    def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
-        """式での表現と、xを求める問題と解答を出力
+    def _make_expression_with_formula_and_calculate_volume_problem(self) -> Tuple[str, str]:
+        """体積をテーマとした式の表現と計算の問題と解答を出力する。
 
         Returns:
             Tuple[str, str]: 問題と解答
@@ -346,16 +346,66 @@ class FormulaWithSymbol:
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         
         Developing:
-            とりあえず大本はcalculateの方でよさそう。
-                (1)はそのままで、(2)の方に改造が必要な感じ
-                あとはxの値を整数に抑えるために、予め偶数を組んでおく
-                あるいは、範囲が狭くなることを重視して分数を許容するか
-                さらにあるいは、2,4,6,8,10で通すか
-                とりあえず2,4,6,...で通す
-                やっぱり1,2,3,4,5で
-                
-                途中の説明を数字ごとにやると、行が増えて面倒といえば面倒
-                →答えのまま試していって、答えの段階だけを表すというのも手か。
+            面積の問題を参考に、latex_problem, latex_answerドリブンに考えていく
+                まず出てくる違いとしては、substitute_targetの扱い
+                    底辺、高さしかなかった面積とは違い、増やしたか減らしたかによって話が変わってくる。
+                    代入したときの値も違うし、表記も違う
+                    「初めの量が…」
+                    ではなくて、結果的に～になったときに、初めの量か増やした量のいずれかがいくつかという聞き方に変わりそう
+                    x+a=b, a+x=b, x-a=b, a-x=b
+                    で、さらにその後の量が辻褄があう量にしておく必要がある。これは増やした減らしたを決めてからでないと話ができない。
+                    要するに、どこで増減の判断を取るか？が問題になってくる。今の位置だとやや離れる。前に持ってくると後ろの合体部分が変わってくる。
+                あとはシンプルに変数名もわかりづらい    
+        """
+        x = sy.Symbol("x")
+        item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
+        start_amount, delta = sample([x, sy.Integer(randint(1, 10))], k=2)
+        if start_amount == x:
+            substitute_targe = "初めの量"
+        elif delta == x:
+            subsbi\
+        start_unit, delta_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
+        answered_unit = choice([start_unit, delta_unit])
+        start_amount_latex_in_problem = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
+        delta_latex_in_problem = self._make_latex_with_unit(delta, delta_unit, with_parentheses=False)
+        if start_unit == answered_unit:
+            start_amount_latex_in_answer = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+        else:
+            non_adjusted_start_amount = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+            adjusted_start_amount = self._unit_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit, with_parentheses=True)
+            start_amount_latex_in_answer = f"{non_adjusted_start_amount} = {adjusted_start_amount}"
+        if delta_unit == answered_unit:
+            delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
+        else:
+            non_adjusted_delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
+            adjusted_delta_latex_in_answer = self._unit_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit, with_parentheses=True)
+            delta_latex_in_answer= f"{non_adjusted_delta_latex_in_answer} = {adjusted_delta_latex_in_answer}"
+        start_amount_in_answer = self._amount_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit)
+        delta_amount_in_answer = self._amount_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit)
+        increase_or_decrease = choice(["increase", "decrease"])
+        if increase_or_decrease == "increase":
+            action = "増やした"
+            added_amount = f"{start_amount_in_answer} + {delta_amount_in_answer}"
+            answer = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
+        elif increase_or_decrease == "decrease":
+            action = "減らした"
+            subtracted_amount = f"{start_amount_in_answer} - {delta_amount_in_answer}"
+            answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+        latex_problem = f"初めに{item}が\\( {start_amount_latex_in_problem} \\)ありました。\n"
+        latex_problem += f"(1)\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。\n"
+        latex_problem += f"(2)"
+        latex_answer = f"(1)初めの量が\\( {start_amount_latex_in_answer} \\)で、"
+        latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
+        latex_answer += f"答えは、\\( {answer} \\)となる。\n"
+        return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
+        """式での表現と、xを求める面積の問題と解答を出力
+
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         """
         x = sy.Symbol("x")
         base, height = sample([x, sy.Integer(randint(1, 10))], k=2)
@@ -383,7 +433,6 @@ class FormulaWithSymbol:
         area_value_latex_with_unit = self._make_latex_with_unit(area_value, answer_unit, with_parentheses=False)
         latex_problem = f"底辺が\\( {base_latex_with_unit} \\), 高さが\\( {height_latex_with_unit} \\)の{shape}があります。\n"
         latex_problem += f"(1){shape}の面積を\\( x \\)を使った式で表しなさい。\n"
-        # next
         latex_problem += f"(2)面積が\\( {area_value_latex_with_unit} \\)のときの{substitute_target}は何\\( \\mathrm{{cm}} \\)ですか。\n"
         latex_problem += "\\( x \\)に\\( 1, 2, 3, \\cdots \\)を当てはめて求めなさい。"
         latex_answer = f"(1){shape}の面積は、{area_formula}なので、\n"
@@ -391,6 +440,51 @@ class FormulaWithSymbol:
         latex_answer += "(2)(1)で表した式の\\( x \\)に、指定された数を当てはめていくと、\n"
         latex_answer += f"\\( x = {sy.latex(substitute_value)} \\)で面積が\\( {area_value_latex_with_unit} \\)になる。"
         latex_answer += f"よって答えは、\\( {substitute_value_with_unit} \\)"
+        return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_and_solve_volume_problem(self) -> Tuple[str, str]:
+        """式での表現と、xを求める体積の問題と解答を作成
+        
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        """
+        x = sy.Symbol("x")
+        item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
+        start_amount, delta = sample([x, sy.Integer(randint(1, 10))], k=2)
+        start_unit, delta_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
+        answered_unit = choice([start_unit, delta_unit])
+        start_amount_latex_in_problem = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
+        delta_latex_in_problem = self._make_latex_with_unit(delta, delta_unit, with_parentheses=False)
+        if start_unit == answered_unit:
+            start_amount_latex_in_answer = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+        else:
+            non_adjusted_start_amount = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=True)
+            adjusted_start_amount = self._unit_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit, with_parentheses=True)
+            start_amount_latex_in_answer = f"{non_adjusted_start_amount} = {adjusted_start_amount}"
+        if delta_unit == answered_unit:
+            delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
+        else:
+            non_adjusted_delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
+            adjusted_delta_latex_in_answer = self._unit_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit, with_parentheses=True)
+            delta_latex_in_answer= f"{non_adjusted_delta_latex_in_answer} = {adjusted_delta_latex_in_answer}"
+        start_amount_in_answer = self._amount_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit)
+        delta_amount_in_answer = self._amount_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit)
+        increase_or_decrease = choice(["increase", "decrease"])
+        if increase_or_decrease == "increase":
+            action = "増やした"
+            added_amount = f"{start_amount_in_answer} + {delta_amount_in_answer}"
+            answer = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
+        elif increase_or_decrease == "decrease":
+            action = "減らした"
+            subtracted_amount = f"{start_amount_in_answer} - {delta_amount_in_answer}"
+            answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+        latex_problem = f"初めに{item}が\\( {start_amount_latex_in_problem} \\)ありました。\n"
+        latex_problem += f"(1)\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
+        latex_answer = f"(1)初めの量が\\( {start_amount_latex_in_answer} \\)で、"
+        latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
+        latex_answer += f"答えは、\\( {answer} \\)となる。"
         return latex_answer, latex_problem
 
     def _make_from_formula_to_condition_problem(self):

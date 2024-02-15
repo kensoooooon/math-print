@@ -376,6 +376,8 @@ class FormulaWithSymbol:
                             2. 別の関数を用意するが、お互いの関数は依存しないように。あくまで亜種のように振る舞う
                             3. 別の関数を用意して、さらにその関数に一部処理を委託する
                             の3択。
+                            
+                            とりあえず関数の一部処理を委託する形で
         """
         x = sy.Symbol("x")
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
@@ -554,49 +556,61 @@ class FormulaWithSymbol:
             to_unit (str): 変換先の単位
 
         Returns:
-            adjusted_amount (str): 指定された単位に合わせた量
+            adjusted_amount_latex (str): 指定された単位に合わせた量
+        
+        Developing:
+            どこまで分割する？
+            今は単位ごとに分けている
+                ここから単位のありなしで考えてよい？あるいは変換のありなしまで含めるべき？
         """
-        # volume (standard is dl)
+        # no symbol
+        if not(from_amount.free_symbols):
+            adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
+            adjusted_amount_latex = sy.latex(adjusted_amount)
+        # volume
         # no change
         if ((from_unit == "L") and (to_unit == "L")):
-            adjusted_amount = from_amount
+            adjusted_amount_latex = sy.latex(from_amount)
         # no change
         elif ((from_unit == "dL") and (to_unit == "dL")):
-            adjusted_amount = from_amount
+            adjusted_amount_latex = sy.latex(from_amount)
         # * 10
         elif (from_unit == "L") and (to_unit == "dL"):
             if from_amount.free_symbols:
-                adjusted_amount = f"{from_amount} \\times 10"
+                adjusted_amount_latex = f"{from_amount} \\times 10"
             else:
-                adjusted_amount = sy.latex(from_amount * sy.Integer(10))
+                adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
+                adjusted_amount_latex = sy.latex(adjusted_amount)
         # / 10
         elif (from_unit == "dL") and (to_unit == "L"):
             if from_amount.free_symbols:
-                adjusted_amount = f"{from_amount} \\div 10"
+                adjusted_amount_latex = f"{from_amount} \\div 10"
             else:
-                adjusted_amount = sy.latex(from_amount * sy.Rational(1, 10))
+                adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
+                adjusted_amount_latex = sy.latex(adjusted_amount)
         # weight
         # no change
         elif (from_unit == "kg") and (to_unit == "kg"):
-            adjusted_amount = from_amount
+            adjusted_amount_latex = sy.latex(from_amount)
         # no change
         elif (from_unit == "g") and (to_unit == "g"):
-            adjusted_amount = from_amount
+            adjusted_amount_latex = sy.latex(from_amount)
         # * 1000
         elif (from_unit == "kg") and (to_unit == "g"):
             if from_amount.free_symbols:
-                adjusted_amount = f"{from_amount} \\times 1000"
+                adjusted_amount_latex = f"{from_amount} \\times 1000"
             else:
-                adjusted_amount = sy.latex(from_amount * 1000)
+                adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
+                adjusted_amount_latex = sy.latex(adjusted_amount)
         # / 1000
         elif (from_unit == "g") and (to_unit == "kg"):
             if from_amount.free_symbols:
-                adjusted_amount = f"{from_amount} \\div 1000"
+                adjusted_amount_latex = f"{from_amount} \\div 1000"
             else:
-                adjusted_amount = sy.latex(from_amount * sy.Rational(1, 1000))
+                adjusted_amount_latex = sy.latex(from_amount * sy.Rational(1, 1000))
         else:
             raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
-        return adjusted_amount
+        return adjusted_amount_latex
     
     def _amount_calculator_for_adjustment(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str) -> Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]:
         """単位変換の作業のうち、計算のみを請け負う関数
@@ -607,10 +621,50 @@ class FormulaWithSymbol:
             to_unit (str): _description_
 
         Returns:
-            Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]: _description_
+            Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]: 代入可能な値
+        
+        Developing:
+            代入の問題を作成するのに必要に駆られて作成
+            無難に別処理として関数を立ち上げたが、もしかしたら元のやつとoptionalで運用するかも？
+            
+            必要な機能としては、単位を見て〇倍、あるいは÷〇をしてくれるやつ
+            たとえば、dL→Lであれば、1/10倍したうえで計算してほしい
+            
+            問題は、どこまで元関数の機能を受け継ぐか？ということ。なんか一部だけ渡すは気持ち悪いような気もする
+            
+            from_unit, to_unitをみてシンプルに計算する機能だけをいったん実装してみる
+            
+            元関数についても少々ごちゃついているため、多少は改善の余地がありそう
         """
-        # next
-        pass
+        # volume (standard is dl)
+        # no change
+        if ((from_unit == "L") and (to_unit == "L")):
+            adjusted_amount = from_amount
+        # no change
+        elif ((from_unit == "dL") and (to_unit == "dL")):
+            adjusted_amount = from_amount
+        # * 10
+        elif (from_unit == "L") and (to_unit == "dL"):
+            adjusted_amount = from_amount * sy.Integer(10)
+        # / 10
+        elif (from_unit == "dL") and (to_unit == "L"):
+            adjusted_amount = from_amount * sy.Rational(1, 10)
+        # weight
+        # no change
+        elif (from_unit == "kg") and (to_unit == "kg"):
+            adjusted_amount = from_amount
+        # no change
+        elif (from_unit == "g") and (to_unit == "g"):
+            adjusted_amount = from_amount
+        # * 1000
+        elif (from_unit == "kg") and (to_unit == "g"):
+            adjusted_amount = from_amount * sy.Integer(1000)
+        # / 1000
+        elif (from_unit == "g") and (to_unit == "kg"):
+            adjusted_amount = from_amount * sy.Rational(1, 1000)
+        else:
+            raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
+        return adjusted_amount
 
     def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str, with_parentheses: bool) -> str:
         """指定された単位へと与えられた量を変換した上で、latex形式で返す関数

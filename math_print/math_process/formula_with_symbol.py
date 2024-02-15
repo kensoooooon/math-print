@@ -355,15 +355,31 @@ class FormulaWithSymbol:
                     x+a=b, a+x=b, x-a=b, a-x=b
                     で、さらにその後の量が辻褄があう量にしておく必要がある。これは増やした減らしたを決めてからでないと話ができない。
                     要するに、どこで増減の判断を取るか？が問題になってくる。今の位置だとやや離れる。前に持ってくると後ろの合体部分が変わってくる。
-                あとはシンプルに変数名もわかりづらい    
+                あとはシンプルに変数名もわかりづらい
+                
+                併せて、計算後の代入をどのように行うか？
+                    一括で計算して、「xが…になるので、答えは」で出したいが、その元となる式が多分ない
+                    →表示だけをメインにやっていたので、あくまで返ってくるのはlatex=文字列
+                        別に計算用の関数を作る、というのがわかりやすいが、中身が重複している缶がある
+                        self.で引っ張って、重複部分を減らす？
+                            中身としては、_unit_adjusterのなかで、_amount_adjusterを呼んで、そこからさらに_latex_with_unitを呼んでいる
+                            amount_adjusterの中身では、単位間の倍数調整は行われている。これをとりあえず利用する形で良さそう？
+                            amount_adjusterの中身だけを改造して、値で返して欲しい場合とそうでない場合をoptionalな関数で分ける？
+                                やれないことはなさそうだが、ごちゃつきそうはある。
+                            関数を分割すると良さげ？
+                                eg.adjusted_amount = sy.latex(from_amount * sy.Integer(10))の計算部分を部分的に委託する感じで。
+                                ただ、中で文字か否かによって分けてある対応が別部に委託されるのが面倒に感じる可能性もある？
+                                    st. adjusted_amount = sy.latex(from_amount * sy.Integer(10))
+                                    が、adjusted_amount = sy.latex(self._amount_calcueofofo(...))って感じになる。
+                            結局のところ、
+                            1. 中の関数をoptionalな引数を基準に書き換える
+                            2. 別の関数を用意するが、お互いの関数は依存しないように。あくまで亜種のように振る舞う
+                            3. 別の関数を用意して、さらにその関数に一部処理を委託する
+                            の3択。
         """
         x = sy.Symbol("x")
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
         start_amount, delta = sample([x, sy.Integer(randint(1, 10))], k=2)
-        if start_amount == x:
-            substitute_targe = "初めの量"
-        elif delta == x:
-            subsbi\
         start_unit, delta_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
         answered_unit = choice([start_unit, delta_unit])
         start_amount_latex_in_problem = self._make_latex_with_unit(start_amount, start_unit, with_parentheses=False)
@@ -386,17 +402,23 @@ class FormulaWithSymbol:
         if increase_or_decrease == "increase":
             action = "増やした"
             added_amount = f"{start_amount_in_answer} + {delta_amount_in_answer}"
-            answer = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
+            answer1 = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
         elif increase_or_decrease == "decrease":
             action = "減らした"
             subtracted_amount = f"{start_amount_in_answer} - {delta_amount_in_answer}"
-            answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+            answer1 = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+        if start_amount == x:
+            substitute_target = "初めの量"
+        elif delta == x:
+            substitute_target = f"{action}した量"
+        substitute_value = sy.Integer(randint(1, 10))
+        substitute_value_with_unit = self._unit_adjuster()
         latex_problem = f"初めに{item}が\\( {start_amount_latex_in_problem} \\)ありました。\n"
         latex_problem += f"(1)\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。\n"
-        latex_problem += f"(2)"
+        latex_problem += f"(2){substitute_target}が"
         latex_answer = f"(1)初めの量が\\( {start_amount_latex_in_answer} \\)で、"
         latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
-        latex_answer += f"答えは、\\( {answer} \\)となる。\n"
+        latex_answer += f"答えは、\\( {answer1} \\)となる。\n"
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
@@ -524,7 +546,7 @@ class FormulaWithSymbol:
         return amount_with_unit_latex
     
     def _amount_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str) -> str:
-        """量の変換のみの対応を行う関数
+        """量の変換を行う関数
 
         Args:
             from_amount (Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]): 基準となる量
@@ -532,7 +554,7 @@ class FormulaWithSymbol:
             to_unit (str): 変換先の単位
 
         Returns:
-            adjusted_amount (str): 指定された単位に合わせた量 
+            adjusted_amount (str): 指定された単位に合わせた量
         """
         # volume (standard is dl)
         # no change
@@ -575,6 +597,20 @@ class FormulaWithSymbol:
         else:
             raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
         return adjusted_amount
+    
+    def _amount_calculator_for_adjustment(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str) -> Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]:
+        """単位変換の作業のうち、計算のみを請け負う関数
+
+        Args:
+            from_amount (Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]): _description_   
+            from_unit (str): _description_
+            to_unit (str): _description_
+
+        Returns:
+            Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]: _description_
+        """
+        # next
+        pass
 
     def _unit_adjuster(self, from_amount: Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float], *, from_unit: str, to_unit: str, with_parentheses: bool) -> str:
         """指定された単位へと与えられた量を変換した上で、latex形式で返す関数

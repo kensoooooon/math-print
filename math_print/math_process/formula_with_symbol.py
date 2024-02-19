@@ -25,7 +25,7 @@ class FormulaWithSymbol:
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
         # selected_theme = choice(["area", "volume", "weight", "price"])
-        selected_theme = "area"
+        selected_theme = "volume"
         if selected_problem_type == "expression_with_formula":
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
@@ -378,6 +378,128 @@ class FormulaWithSymbol:
                             の3択。
                             
                             とりあえず関数の一部処理を委託する形で
+                    
+                
+                代入が出来る式をどう作るか？
+                    単位を読んで、量を自動的に変換してくれる関数amount_adjusterは作ったので、とりあえずそこに代入してみる
+                別件では、単純にプログラムが読みづらい
+                    答え側から再度考慮してみる?
+                そもそも問題の表現が固まっていないのが大いなる問題な気もする
+                    特に単位をどちらに寄せて与えるか？
+                        せっかく式を作らせたわけだし、シンプルな置き換えで計算を機能させる方が良さそうな気もする
+                        変換過程は、(1)の段階で問いかけているという考え方で
+                        となると、問題に与える単位は、常に答え側に寄せてやらせるべきかもしれない
+                        すなわち、たとえばdLで答える形式ならば、(1)ですでにdLへの統一は済んでいるはずだから、
+                        与えられる量もdLであるべき？
+                        ↑問題文から考えると逆っぽい
+                            xL=x × 10 dLとすでに変換済みであるため、ここではx=3のように与えるべき
+                            計算自体は、amount_adjusterに任せる
+                
+                やはりどうにもごちゃつく
+                    原因は何？
+                        一つは表現が(2)を想定したものになっていない。これはそこそこ確かっぽい
+                            delta, startもそこまで良いとは言えないが、特にin_answerの部分が、どのanswerなのかが曖昧。
+                        条件分岐も怪しい
+                            (2)の計算後の値を確定させるためには、
+                                ・どちらがxで表されているか(start or delta)
+                                ・増やしているのか減らしているのか(increase or decrease)
+                                ・それぞれの単位はどのようになっているか？(("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL"))
+                                    体積の部分は、結局10倍なのか、1/10倍なのか1倍なのかの3択だから、多少の選択というか、改造の余地もなくはなさそう？
+                                あたりが必須っぽいが、どうにも条件が増えすぎてはっきりしない  
+                        とりあえず諸々作り直してみる？
+                        なんか微妙そう
+                    
+                    とりあえず条件分岐はガバな気がする。
+                    いずれか一方が解答先の単位と必ず一致しているはずだから、
+                        start_unit == answered_unitであれば、delta_unit != answered_unitであることは確定する。
+                        まとめることは可能だが、まとめるべきか？
+                        ↑まとめるべきではない。というのも、共通単位を取る場合が存在するから。delta_unit!=answered_unitのような条件は成立しない。
+                    やるべきなのは、一括の変換？
+                        どうせ単位で判断してくれるはずだから、共通か否かに関わらずとりあえずぶっこんでおけば、OK??
+                            解答内での扱いに{...}={...}が入ってくる点で異なる。ので、やるべき内容が同じとは限らない
+                    他の部分との共通化はどうか？
+                    
+                    やはり(2)追加に伴う追加分のみに注目するか、あるいは手前の部分はいじるにしても名前だけにしておくべきか
+                        名前の変更なら？
+                        追加分のみなら？
+                            2×2で分けるのも良いが、パターンは少なく、浅くしたい。今のところそこそこ浅く保ててるし
+                            「」
+                            既存関数でゴリ押し出来たりしない？？？
+                    
+                    減算では特に負になられると困る
+                        トータルから計算し直す？
+                        substitute_valueは、手前に入るときと後に入る時の2つがある。
+                        eg. x(dL) - 5(L) >= 0
+                            x/10 - 5 >= 0
+                            x >= 50
+                        eg2. 5(L) - x(dL) >= 0
+                            5 - x/10 >= 0
+                            x <= 50
+                        start_unit, deltaを変わらずランダムにする場合、式を見てから最小値・最大値を求めてsubstitute_valueを決める必要がある
+                        この流れでいくと、answerの数値を決めてからやるべき？とも感じる
+                        eg3. a - b = 50
+                        a > 50
+                        0 < b <
+                        
+                        a + b = k, a - b = kでそれぞれ分けてから取り組んだほうが良さそうな気がしてきた。適当に突っ込んでいると、正負がはみ出そう
+                            問題は単位変換をどうするか？
+                            調整した後の値だということにしないと、いきなり10倍とか1/10倍になって、どう考えても負の数が出てくる
+                            L, dLで場合分け？はせずに済むのであればぜひそうしたい感がある
+                                L, L -> L, dL, dL -> dL
+                                L, dL -> L or dL, dL, L -> L or dL
+                                値が10倍になったり1/10倍になったりすると、分数が出そう
+                                となると、初めから10の倍数にしておけばシンプル？？
+                                ただ、シンプルではあるが大小関係が狂う可能性もあるので、
+                                answered_unit基準で考えたほうが良い？？
+                        
+                        問題(1)では、a_unit, b_unitはそのままだが、与えてあるa,bはいずれもk準拠
+                        どこで変換するか？できれば関数で単一単純に処理できるのが望ましい。
+
+                        なんか答えをバラしてない？
+        """
+        item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
+        ###########new#############
+        a_unit, b_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
+        k_unit = choice([a_unit, b_unit])
+        increase_or_decrease = choice(["increase", "decrease"])
+        # a + b = k (by k_unit)
+        if increase_or_decrease == "increase":
+            action = "増やした"
+            a = sy.Integer(randint(1, 10) * 10)
+            b = sy.Integer(randint(1, 10) * 10)
+            k = a + b
+        # a - b = k (by k_unit)
+        elif increase_or_decrease == "decrease":
+            action = "減らした"
+            k = sy.Integer(randint(1, 10) * 10)
+            b = k + sy.Integer(randint(1, 10) * 10)
+            a = k + sy.Integer(randint(1, 10) * 10)
+        x = sy.Symbol("x")
+        # which is x?
+        replaced_by_x = choice(["a", "b"])
+        if replaced_by_x == "a":
+            substitute_target = "初めの量"
+            a_in_problem1 = self._amount_adjuster(x, from_unit=k_unit, to_unit=a_unit)
+            a_in_problem1_with_unit = self._make_latex_with_unit(a_in_problem1, a_unit, with_parentheses=False)
+            b_in_problem1 = self._amount_adjuster(b, from_unit=k_unit, to_unit=b_unit)
+            b_in_problem1_with_unit = self._make_latex_with_unit(b_in_problem1, b_unit, with_parentheses=False)
+            substitute_value_in_problem2 = self._amount_adjuster(a, from_unit=k_unit, to_unit=a_unit)
+            substitute_value_in_problem2_with_unit = self._make_latex_with_unit(substitute_value_in_problem2, a_unit, with_parentheses=False)
+        elif replaced_by_x == "b":
+            substitute_target = f"{action}した量"
+            a_in_problem1 = self._amount_adjuster(a, from_unit=k_unit, to_unit=a_unit)
+            a_in_problem1_with_unit = self._make_latex_with_unit(a_in_problem1, a_unit, with_parentheses=False)
+            b_in_problem1 = self._amount_adjuster(x, from_unit=k_unit, to_unit=b_unit)
+            b_in_problem1_with_unit = self._make_latex_with_unit(b_in_problem1, b_unit, with_parentheses=False)
+            substitute_value_in_problem2 = self._amount_adjuster(b, from_unit=k_unit, to_unit=b_unit)
+            substitute_value_in_problem2_with_unit = self._make_latex_with_unit(substitute_value_in_problem2, b_unit, with_parentheses=False)
+        latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( \\mathrm{{{k_unit}}} \\)を、\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(2){substitute_target}が\\( {substitute_value_in_problem2_with_unit} \\)のときの体積を求めなさい。"
+        latex_answer = f"(1)初めの量が\\( {a_in_answer1} \\)、{action}した量が\\( {b_in_answer1} \\)なので、\n"
+        latex_answer += f"答えは\\( {answer1} \\)"
+        
+        ########################
         """
         x = sy.Symbol("x")
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
@@ -398,29 +520,44 @@ class FormulaWithSymbol:
             non_adjusted_delta_latex_in_answer = self._make_latex_with_unit(delta, delta_unit, with_parentheses=True)
             adjusted_delta_latex_in_answer = self._unit_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit, with_parentheses=True)
             delta_latex_in_answer= f"{non_adjusted_delta_latex_in_answer} = {adjusted_delta_latex_in_answer}"
+        
         start_amount_in_answer = self._amount_adjuster(start_amount, from_unit=start_unit, to_unit=answered_unit)
         delta_amount_in_answer = self._amount_adjuster(delta, from_unit=delta_unit, to_unit=answered_unit)
+        # ここで量の調節が必要
+        # substitute_value = sy.Integer(randint(1, 10))
+        substitute_value_with_unit = self._make_latex_with_unit(substitute_value, answered_unit, with_parentheses=False)
+        substitute_value_after_adjustment = self._amount_adjuster(substitute_value, from_unit=start_unit, to_unit=answered_unit)
         increase_or_decrease = choice(["increase", "decrease"])
         if increase_or_decrease == "increase":
             action = "増やした"
-            added_amount = f"{start_amount_in_answer} + {delta_amount_in_answer}"
-            answer1 = self._make_latex_with_unit(added_amount, answered_unit, with_parentheses=True)
+            added_amount_formula = f"{start_amount_in_answer} + {delta_amount_in_answer}"
+            answer1 = self._make_latex_with_unit(added_amount_formula, answered_unit, with_parentheses=True)
         elif increase_or_decrease == "decrease":
             action = "減らした"
-            subtracted_amount = f"{start_amount_in_answer} - {delta_amount_in_answer}"
-            answer1 = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
+            subtracted_amount_formula = f"{start_amount_in_answer} - {delta_amount_in_answer}"
+            answer1 = self._make_latex_with_unit(subtracted_amount_formula, answered_unit, with_parentheses=True)
         if start_amount == x:
             substitute_target = "初めの量"
+            start_for_answer2 = self._amount_calculator_for_adjustment(substitute_value, from_unit=start_unit, to_unit=answered_unit)
+            delta_for_answer2 = self._amount_calculator_for_adjustment(delta, from_unit=delta_unit, to_unit=answered_unit)
+            answer2 = self._make_latex_with_unit
         elif delta == x:
             substitute_target = f"{action}した量"
-        substitute_value = sy.Integer(randint(1, 10))
-        substitute_value_with_unit = self._unit_adjuster()
+            start_for_answer2 = self._amount_calculator_for_adjustment(start_amount, from_unit=start_unit, to_unit=answered_unit)
+            delta_for_answer2 = self._amount_calculator_for_adjustment(substitute_value, from_unit=delta_unit, to_unit=answered_unit)
+        if increase_or_decrease == "increase":
+            answer2 = self._make_latex_with_unit(start_for_answer2 + delta_for_answer2, answered_unit, with_parentheses=True)
+        elif increase_or_decrease == "decrease":
+            answer2 = self._make_latex_with_unit(start_for_answer2 - delta_for_answer2, answered_unit, with_parentheses=True)
         latex_problem = f"初めに{item}が\\( {start_amount_latex_in_problem} \\)ありました。\n"
         latex_problem += f"(1)\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。\n"
-        latex_problem += f"(2){substitute_target}が"
+        latex_problem += f"(2){substitute_target}が\\( {substitute_value_with_unit} \\)のときの体積を求めなさい。"
         latex_answer = f"(1)初めの量が\\( {start_amount_latex_in_answer} \\)で、"
         latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
         latex_answer += f"答えは、\\( {answer1} \\)となる。\n"
+        latex_answer += f"(2)(1)で表した式のxが\\( {sy.latex(substitute_value)} \\)になるので、\n"
+        latex_answer += f"体積は、\\( {answer2} \\)"
+        """
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
@@ -607,7 +744,8 @@ class FormulaWithSymbol:
             if from_amount.free_symbols:
                 adjusted_amount_latex = f"{from_amount} \\div 1000"
             else:
-                adjusted_amount_latex = sy.latex(from_amount * sy.Rational(1, 1000))
+                adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
+                adjusted_amount_latex = sy.latex(adjusted_amount)
         else:
             raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
         return adjusted_amount_latex

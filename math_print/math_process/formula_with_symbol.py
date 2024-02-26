@@ -353,12 +353,14 @@ class FormulaWithSymbol:
             
             単位がおかしいところがある。
                 問題表示のせいなのか、設定のせいなのか、(2)がまだ出来ていないせいなのかは不明
+            
+            b_in_problem1_with_unitが怪しい
+                表示形式が揃えられていない
         """
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
         ###########new#############
         a_unit, b_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
         k_unit = choice([a_unit, b_unit])
-        print(a_unit, b_unit, k_unit)
         increase_or_decrease = choice(["increase", "decrease"])
         # a + b = k (by k_unit)
         if increase_or_decrease == "increase":
@@ -376,19 +378,63 @@ class FormulaWithSymbol:
         # which is x?
         replaced_by_x = choice(["a", "b"])
         if replaced_by_x == "a":
-            a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
-            b_in_problem1_with_unit = self._make_latex_with_unit(b, b_unit, with_parentheses=False)
+            # for problem(2)
             substitute_target = "初めの量"
-            substitute_value_in_problem2_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            # substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
+            substitute_value = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
+            b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            if a_unit == k_unit:
+                a_in_answer1 = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
+            else:
+                a_before_adjustment = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
+                a_after_adjustment = self._unit_adjuster(x, from_unit=a_unit, to_unit=k_unit, with_parentheses=True)
+                a_in_answer1 = f"{a_before_adjustment} = {a_after_adjustment}"
+            if b_unit == k_unit:
+                b_in_answer1 = self._make_latex_with_unit(b, b_unit, with_parentheses=True)
+            else:
+                b_before_adjustment = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=True)
+                b_after_adjustment = self._make_latex_with_unit(b, k_unit, with_parentheses=True)
+                b_in_answer1 = f"{b_before_adjustment} = {b_after_adjustment}"
+            a_in_formula_in_answer1 = self._amount_adjuster(x, from_unit=a_unit, to_unit=k_unit)
+            if increase_or_decrease == "increase":
+                answer1 = f"{a_in_formula_in_answer1} + {b}"
+            elif increase_or_decrease == "decrease":
+                answer1 = f"{a_in_formula_in_answer1} - {b}"
         elif replaced_by_x == "b":
-            a_in_problem1_with_unit = self._make_latex_with_unit(a, a_unit, with_parentheses=False)
+            if increase_or_decrease == "increase":
+                substitute_target = "増えた量"
+            elif increase_or_decrease == "decrease":
+                substitute_target = "減らした量"
+            # substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
+            substitute_value = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
-            substitute_target = f"{action}量"
-            substitute_value_in_problem2_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            if a_unit == k_unit:
+                a_in_answer1 = self._make_latex_with_unit(a, a_unit, with_parentheses=True)
+            else:
+                a_before_adjustment = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=True)
+                a_after_adjustment = self._make_latex_with_unit(a, k_unit, with_parentheses=True)
+                a_in_answer1 = f"{a_before_adjustment} = {a_after_adjustment}"
+            if b_unit == k_unit:
+                b_in_answer1 = self._make_latex_with_unit(x, b_unit, with_parentheses=True)
+            else:
+                b_before_adjustment = self._make_latex_with_unit(x, b_unit, with_parentheses=True)
+                b_after_adjustment = self._unit_adjuster(x, from_unit=b_unit, to_unit=k_unit, with_parentheses=True)
+                b_in_answer1 = f"{b_before_adjustment} = {b_after_adjustment}"
+            b_in_formula_in_answer1 = self._amount_adjuster(x, from_unit=b_unit, to_unit=k_unit)
+            if increase_or_decrease == "increase":
+                answer1 = f"{a} + {b_in_formula_in_answer1}"
+            elif increase_or_decrease == "decrease":
+                answer1 = f"{a} - {b_in_formula_in_answer1}"
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
         latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
-        latex_problem += f"(2){substitute_target}が\\( {substitute_value_in_problem2_with_unit} \\)のときの体積を求めなさい。"
-        latex_answer = f"\\( {a}, {b}, {k} \\)"
+        latex_problem += f"(2){substitute_target}が\\( {substitute_value} \\)のときの値を計算しなさい。"
+        latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
+        latex_answer += f"\\( {answer1} \\)\n"
+        latex_answer += f"(2)(1)の式の\\( x \\)が\\( {substitute_value} \\)になるので、"
+        answer2 = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
+        latex_answer += f"\\( {answer2} \\)"
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
@@ -591,19 +637,6 @@ class FormulaWithSymbol:
 
         Returns:
             Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]: 代入可能な値
-        
-        Developing:
-            代入の問題を作成するのに必要に駆られて作成
-            無難に別処理として関数を立ち上げたが、もしかしたら元のやつとoptionalで運用するかも？
-            
-            必要な機能としては、単位を見て〇倍、あるいは÷〇をしてくれるやつ
-            たとえば、dL→Lであれば、1/10倍したうえで計算してほしい
-            
-            問題は、どこまで元関数の機能を受け継ぐか？ということ。なんか一部だけ渡すは気持ち悪いような気もする
-            
-            from_unit, to_unitをみてシンプルに計算する機能だけをいったん実装してみる
-            
-            元関数についても少々ごちゃついているため、多少は改善の余地がありそう
         """
         # volume (standard is dl)
         # no change

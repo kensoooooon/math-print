@@ -25,7 +25,7 @@ class FormulaWithSymbol:
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
         # selected_theme = choice(["area", "volume", "weight", "price"])
-        selected_theme = "volume"
+        selected_theme = "weight"
         if selected_problem_type == "expression_with_formula":
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
@@ -353,6 +353,9 @@ class FormulaWithSymbol:
                     xの置換先を決定した後のanswer1
             そもそもの原因として、解答や問題に一切場合分けを持ち込まないことを前提としていることが関連している可能性？
                 これ自体は問題に必要な情報がわかるので悪くないが、一方で文中の変数の表現にわかりづらいものが生じている場合がある
+            
+            a->a_valueなどとすることで、よりやりやすく？
+                重複しているような雰囲気を感じる
         """
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
         ###########new#############
@@ -433,6 +436,98 @@ class FormulaWithSymbol:
         answer2 = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
         latex_answer += f"\\( {answer2} \\)"
         return latex_answer, latex_problem
+
+    def _make_expression_with_formula_and_calculate_weight_problem(self) -> Tuple[str, str]:
+        """重さをテーマとした式の表現と計算の問題と解答を出力する。
+
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        
+        Developing:
+            概ね使いまわせそう
+                単位が1000倍ベースなので、そこだけ要注意か？
+        """
+        item = choice(["米", "小麦粉", "水", "塩"])
+        a_unit, b_unit = choice([("kg", "kg"), ("g", "g"), ("kg", "g"), ("g", "kg")])
+        k_unit = choice([a_unit, b_unit])
+        increase_or_decrease = choice(["increase", "decrease"])
+        # a + b = k (by k_unit)
+        if increase_or_decrease == "increase":
+            action = "増やした"
+            a = sy.Integer(randint(1, 10) * 10)
+            b = sy.Integer(randint(1, 10) * 10)
+            k = a + b
+        # a - b = k (by k_unit)
+        elif increase_or_decrease == "decrease":
+            action = "減らした"
+            k = sy.Integer(randint(1, 10) * 10)
+            b = k + sy.Integer(randint(1, 10) * 10)
+            a = b + k
+        x = sy.Symbol("x")
+        # which is x?
+        replaced_by_x = choice(["a", "b"])
+        if replaced_by_x == "a":
+            # for problem(2)
+            substitute_target = "初めの量"
+            # substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
+            substitute_value = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
+            b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            if a_unit == k_unit:
+                a_in_answer1 = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
+            else:
+                a_before_adjustment = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
+                a_after_adjustment = self._unit_adjuster(x, from_unit=a_unit, to_unit=k_unit, with_parentheses=True)
+                a_in_answer1 = f"{a_before_adjustment} = {a_after_adjustment}"
+            if b_unit == k_unit:
+                b_in_answer1 = self._make_latex_with_unit(b, b_unit, with_parentheses=True)
+            else:
+                b_before_adjustment = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=True)
+                b_after_adjustment = self._make_latex_with_unit(b, k_unit, with_parentheses=True)
+                b_in_answer1 = f"{b_before_adjustment} = {b_after_adjustment}"
+            a_in_formula_in_answer1 = self._amount_adjuster(x, from_unit=a_unit, to_unit=k_unit)
+            if increase_or_decrease == "increase":
+                answer1 = f"{a_in_formula_in_answer1} + {b}"
+            elif increase_or_decrease == "decrease":
+                answer1 = f"{a_in_formula_in_answer1} - {b}"
+        elif replaced_by_x == "b":
+            if increase_or_decrease == "increase":
+                substitute_target = "増えた量"
+            elif increase_or_decrease == "decrease":
+                substitute_target = "減らした量"
+            # substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
+            substitute_value = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
+            if a_unit == k_unit:
+                a_in_answer1 = self._make_latex_with_unit(a, a_unit, with_parentheses=True)
+            else:
+                a_before_adjustment = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=True)
+                a_after_adjustment = self._make_latex_with_unit(a, k_unit, with_parentheses=True)
+                a_in_answer1 = f"{a_before_adjustment} = {a_after_adjustment}"
+            if b_unit == k_unit:
+                b_in_answer1 = self._make_latex_with_unit(x, b_unit, with_parentheses=True)
+            else:
+                b_before_adjustment = self._make_latex_with_unit(x, b_unit, with_parentheses=True)
+                b_after_adjustment = self._unit_adjuster(x, from_unit=b_unit, to_unit=k_unit, with_parentheses=True)
+                b_in_answer1 = f"{b_before_adjustment} = {b_after_adjustment}"
+            b_in_formula_in_answer1 = self._amount_adjuster(x, from_unit=b_unit, to_unit=k_unit)
+            if increase_or_decrease == "increase":
+                answer1 = f"{a} + {b_in_formula_in_answer1}"
+            elif increase_or_decrease == "decrease":
+                answer1 = f"{a} - {b_in_formula_in_answer1}"
+        latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の重さ\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(2){substitute_target}が\\( {substitute_value} \\)のときの値を計算しなさい。"
+        latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
+        latex_answer += f"\\( {answer1} \\)\n"
+        latex_answer += f"(2)(1)の式の\\( x \\)が\\( {substitute_value} \\)になるので、"
+        answer2 = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
+        latex_answer += f"\\( {answer2} \\)"
+        return latex_answer, latex_problem
+        
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
         """式での表現と、xを求める面積の問題と解答を出力

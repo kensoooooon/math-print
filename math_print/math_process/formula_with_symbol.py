@@ -444,10 +444,6 @@ class FormulaWithSymbol:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-        
-        Developing:
-            概ね使いまわせそう
-                単位が1000倍ベースなので、そこだけ要注意か？
         """
         item = choice(["米", "小麦粉", "水", "塩"])
         a_unit, b_unit = choice([("kg", "kg"), ("g", "g"), ("kg", "g"), ("g", "kg")])
@@ -456,14 +452,14 @@ class FormulaWithSymbol:
         # a + b = k (by k_unit)
         if increase_or_decrease == "increase":
             action = "増やした"
-            a = sy.Integer(randint(1, 10) * 10)
-            b = sy.Integer(randint(1, 10) * 10)
+            a = sy.Integer(randint(1, 10) * 100)
+            b = sy.Integer(randint(1, 10) * 100)
             k = a + b
         # a - b = k (by k_unit)
         elif increase_or_decrease == "decrease":
             action = "減らした"
-            k = sy.Integer(randint(1, 10) * 10)
-            b = k + sy.Integer(randint(1, 10) * 10)
+            k = sy.Integer(randint(1, 10) * 100)
+            b = k + sy.Integer(randint(1, 10) * 100)
             a = b + k
         x = sy.Symbol("x")
         # which is x?
@@ -527,7 +523,56 @@ class FormulaWithSymbol:
         answer2 = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
         latex_answer += f"\\( {answer2} \\)"
         return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_and_calculate_price_problem(self) -> Tuple[str, str]:
+        """値段をテーマとした式の表現と計算の問題と解答を出力する。
+
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        """
         
+        def random_ratio() -> Tuple[sy.Float, str]:
+            """ランダムな割合と、その日本語表示をあわせて出力する
+            
+            Returns:
+                Tuple[sy.Float, str]: 計算用の値と、出力用の日本語
+                - ratio_value (sy.Float())
+
+            Remind:
+                出力用の日本語は、\\( \\)で囲まないことを前提としている
+            """
+            digit_under_decimal_point = 1
+            if digit_under_decimal_point == 1:
+                ratio_value = 0.1 * sy.Integer(randint(1, 9))
+            ratio_value = round(ratio_value, 6)
+            selected_ratio = choice(["percentage", "japanese_percentage"])
+            if selected_ratio == "percentage":
+                normalized_percentage = self._decimal_normalize(sy.latex(ratio_value * 100))
+                ratio_out_of_latex = f"\\( {normalized_percentage} \\% \\)"
+            elif selected_ratio == "japanese_percentage":
+                digit_list = sy.latex(ratio_value)[2:]
+                japanese_percentage_names = ["割", "分"]
+                japanese_percentage_str = ""
+                for digit, name in zip(digit_list, japanese_percentage_names):
+                    if digit != "0":
+                        japanese_percentage_str += (digit + name)
+                ratio_out_of_latex = japanese_percentage_str
+            else:
+                raise ValueError(f"")
+            return ratio_value, ratio_out_of_latex
+        
+        x = sy.Symbol("x")
+        items = ["お菓子", "ジュース", "お弁当", "洗剤"]
+        problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
+        if problem_theme == "discount":
+            item = choice(items)
+            price_before_discount = sy.Integer(randint(1, 20) * 100)
+            discount_ratio_value, discount_ratio_latex = random_ratio()
+            remained_ratio_value = 1 - discount_ratio_value
+            remained_ratio_str = self._decimal_normalize(remained_ratio_value)
+            
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
         """式での表現と、xを求める面積の問題と解答を出力

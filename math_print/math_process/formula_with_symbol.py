@@ -221,7 +221,7 @@ class FormulaWithSymbol:
                         japanese_percentage_str += (digit + name)
                 ratio_out_of_latex = japanese_percentage_str
             else:
-                raise ValueError(f"")
+                raise ValueError(f"'selected_ratio' must be 'japanese_percentage' or 'percentage'. {selected_ratio} is unconcerned value.")
             return ratio_value, ratio_out_of_latex
 
         x = sy.Symbol("x")
@@ -565,14 +565,18 @@ class FormulaWithSymbol:
         
         x = sy.Symbol("x")
         items = ["お菓子", "ジュース", "お弁当", "洗剤"]
-        problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
+        # problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
+        problem_theme = "discount"
         if problem_theme == "discount":
             item = choice(items)
             price_before_discount = sy.Integer(randint(1, 20) * 100)
             discount_ratio_value, discount_ratio_latex = random_ratio()
             remained_ratio_value = 1 - discount_ratio_value
             remained_ratio_str = self._decimal_normalize(remained_ratio_value)
-            
+            price_after_discount = price_before_discount * remained_ratio_value
+            latex_problem = f"\\( x \\)円の{item}がありました。\n"
+            latex_problem += f"(1){discount_ratio_latex}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。\n"
+            latex_problem += f"(2)"
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
         """式での表現と、xを求める面積の問題と解答を出力
@@ -865,3 +869,4 @@ class FormulaWithSymbol:
                 continue
             break
         return number_str
+    

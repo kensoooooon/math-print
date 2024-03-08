@@ -25,7 +25,7 @@ class FormulaWithSymbol:
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
         # selected_theme = choice(["area", "volume", "weight", "price"])
-        selected_theme = "weight"
+        selected_theme = "price"
         if selected_problem_type == "expression_with_formula":
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
@@ -566,17 +566,45 @@ class FormulaWithSymbol:
         x = sy.Symbol("x")
         items = ["お菓子", "ジュース", "お弁当", "洗剤"]
         # problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
-        problem_theme = "discount"
+        problem_theme = "multiple_items_without_discount"
         if problem_theme == "discount":
             item = choice(items)
-            price_before_discount = sy.Integer(randint(1, 20) * 100)
-            discount_ratio_value, discount_ratio_latex = random_ratio()
+            price_before_discount = sy.Integer(randint(1, 50) * 100)
+            discount_ratio_value, discount_ratio = random_ratio()
             remained_ratio_value = 1 - discount_ratio_value
             remained_ratio_str = self._decimal_normalize(remained_ratio_value)
-            price_after_discount = price_before_discount * remained_ratio_value
+            price_after_discount = self._decimal_normalize(price_before_discount * remained_ratio_value)
+            price_after_discount_for_problem1 = self._multiply_or_divide(x, remained_ratio_value, multiply_or_divide="multiply")
             latex_problem = f"\\( x \\)円の{item}がありました。\n"
-            latex_problem += f"(1){discount_ratio_latex}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。\n"
-            latex_problem += f"(2)"
+            latex_problem += f"(1){discount_ratio}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。\n"
+            latex_problem += f"(2){item}の元の値段が\\( {price_before_discount} \\)円だったときの金額を求めなさい。"
+            latex_answer = f"(1){discount_ratio}だけ値引きされたということは、"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
+            latex_answer += f"よって答えは、\\( {price_after_discount_for_problem1} \\)円。\n"
+            latex_answer += f"(2)(1)で使われた\\( x \\)が\\( {price_before_discount} \\)になるので、\n"
+            latex_answer += f"\\( {price_after_discount} \\)円が答えとなる。"
+        elif problem_theme == "multiple_items_without_discount":
+            first_item, second_item = sample(items, k=2)
+            first_price, second_price = sy.Integer(randint(1, 50) * 100), sy.Integer(randint(1, 50) * 100)
+            total_price = first_price + second_price
+            substitute_item = choice([first_item, second_item])
+            if substitute_item == first_item:
+                first_price_in_problem = x
+                second_price_in_problem = second_price
+                substitute_value = first_price
+            elif substitute_item == second_item:
+                first_price_in_problem = first_price
+                second_price_in_problem = x
+                substitute_value = second_price
+            total_price_in_answer1 = f"{first_price_in_problem} + {second_price_in_problem}"
+            latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
+            latex_problem += f"(1)2つを一緒に買ったときの金額を、\\( x \\)を用いて表しなさい。\n"
+            latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの金額を求めなさい。"
+            latex_answer = f"(1)1つ目の価格と2つ目の価格を合わせると、\\( {total_price_in_answer1} \\)となる。\n"
+            latex_answer += f"(2)(1)で表した式の\\( x \\)が{substitute_value}になるので、\\( {total_price} \\)円が答えとなる。"
+        elif problem_theme == "multiple_items_with_discount":
+            pass
+        return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:
         """式での表現と、xを求める面積の問題と解答を出力

@@ -605,6 +605,75 @@ class FormulaWithSymbol:
         elif problem_theme == "multiple_items_with_discount":
             first_item, second_item = sample(items, k=2)
             first_price_before_discount, second_price_before_discount = sy.Integer(randint(1, 50) * 100), sy.Integer(randint(1, 50) * 100)
+            """
+            代入先のアイテムと、割引先のアイテムは別に一致していない問題
+                表示を分ける必要がある
+                    割引あり「割引前の～～の値段が」割引なし「～～の値段が」
+                プランとしては、前に処理するか、あるいはもともとの分岐をなくすか、あるいはそれを超えて大幅な処理変更を行うか
+                    前の処理
+                        substitute_targetあたりの処理で、どちらの処理を示すか
+                            この場合は、割引の有無がまだ感知できていないので、後に回す必要がある。
+                            前に回すというやり方も考えられる。すなわち、substitute_itemにとどまらず、discount_typeもあわせて確認しておく。
+                    もともとの分岐をなくす
+                        割合わかりやすい。substitute_itemがそのまま割引の対象になる。コードも全体的にスッキリする
+                            一方でその分の問題の分岐が失われる。単調になる
+                    処理変更
+                        関数等に一任する。見た目のスッキリと問題の複雑性は保たれる可能性があるが、何をどう分けるかを考える必要がある
+                            d1 * a + d2 * bで一括の処理を行うか？
+                                (d1, d2) = (1, 0.5), (0.5, 1), (1, 1), (0.5, 0.5)のように、first, second, bothの3つにとどまらず圧縮できる可能性がある
+                                    (1, 1)は合計金額と実質同じだが、表記が異なるため導入するのがよいかは不明な点もある
+                            関数に一任する
+                                肥大化する気も？
+                                
+                            何かを何かを組み合わせる？
+                                    
+            """
+            ################experiment###################
+            substitute_item = choice([first_item, second_item])
+            # substitute_item = first_item
+            # discount_type = choice(["first_item_only", "second_item_only", "both"])
+            discount_type = choice(["first_item_only", "second_item_only"])
+            # condition variance
+            if substitute_item == first_item:
+                first_price_in_problem1 = x
+                second_price_in_problem1 = second_price_before_discount
+                substitute_value = first_price_before_discount
+            elif substitute_item == second_item:
+                first_price_in_problem1 = first_price_before_discount
+                second_price_in_problem1 = x
+                substitute_value = second_price_before_discount
+            if discount_type == "first_item_only":
+                discount_ratio_value, discount_ratio = random_ratio()
+                discount_item = first_item
+                remained_ratio = 1 - discount_ratio_value
+                remained_ratio_str = self._decimal_normalize(remained_ratio)
+                not_discount_item = second_item
+                discount_item_price = self._multiply_or_divide(first_price_in_problem1, remained_ratio, multiply_or_divide="multiply")
+                not_discount_item_price = second_price_in_problem1
+                total_price_in_answer1 = f"{discount_item_price} + {not_discount_item_price}"
+                total_price_in_answer2 = self._decimal_normalize(first_price_before_discount * remained_ratio + second_price_before_discount)
+            elif discount_type == "second_item_only":
+                discount_ratio_value, discount_ratio = random_ratio()
+                discount_item = second_item
+                remained_ratio = 1 - discount_ratio_value
+                remained_ratio_str = self._decimal_normalize(remained_ratio)
+                not_discount_item = first_item
+                discount_item_price = self._multiply_or_divide(second_price_in_problem1, remained_ratio, multiply_or_divide="multiply")
+                not_discount_item_price = first_price_in_problem1
+                total_price_in_answer1 = f"{not_discount_item_price} + {discount_item_price}"
+                total_price_in_answer2 = self._decimal_normalize(first_price_before_discount + second_price_before_discount * remained_ratio)
+            elif discount_type == "both":
+                pass
+            latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+            latex_problem += f"(1){discount_item}が{discount_ratio}だけ値引きされたときの合計の金額を、\\( x \\)を用いて表しなさい。\n"
+            latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの合計の金額を求めなさい。"
+            latex_answer = f"(1){discount_ratio}だけ値引きされるということは、\n"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、金額は\\( {discount_item_price} \\)となる。\n"
+            latex_answer += f"{not_discount_item}と合わせると、\\( {total_price_in_answer1} \\)円となる。\n"
+            latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {substitute_value} \\)になるので、\n"
+            latex_answer += f"\\( {total_price_in_answer2} \\)円となる。"
+            ################experiment###################
+            """
             substitute_item = choice([first_item, second_item])
             if substitute_item == first_item:
                 first_price_in_problem = x
@@ -620,22 +689,35 @@ class FormulaWithSymbol:
                 discount_ratio_value, discount_ratio = random_ratio()
                 remained_ratio_value = 1 - discount_ratio_value
                 remained_ratio_str = self._decimal_normalize(remained_ratio_value)
-                # first_price_after_discount = self._decimal_normalize(first_price_before_discount * remained_ratio_value)
-                first_price_after_discount = self._multiply_or_divide(first_price_before_discount, remained_ratio_value, multiply_or_divide="multiply")
-                total_price_after_discount = f"{first_price_after_discount} + {second_price_before_discount}"
+                first_price_in_answer1 = self._multiply_or_divide(first_price_in_problem, remained_ratio_value, multiply_or_divide="multiply")
+                second_price_in_answer1 = second_price_in_problem
+                total_price_after_discount = f"{first_price_in_answer1} + {second_price_in_answer1}"
                 total_price_after_substitution = self._decimal_normalize(first_price_before_discount * remained_ratio_value + second_price_before_discount)
                 latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
                 latex_problem += f"(1){first_item}が{discount_ratio}だけ値引きされたときの合計の金額を、\\( x \\)を用いて表しなさい。\n"
-                latex_problem += f"(2)値引き前の{substitute_item}が\\( {first_price_before_discount} \\)円だったときの合計の金額を求めなさい。"
+                latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの合計の金額を求めなさい。"
                 latex_answer = f"(1){discount_ratio}だけ値引きされたということは、\n"
-                latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)、金額は\\( {first_price_after_discount} \\)円となる。\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)、金額は\\( {first_price_in_answer1} \\)円となる。\n"
                 latex_answer += f"{second_item}の金額と合わせると、\\( {total_price_after_discount} \\)となる。\n" 
-                latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {first_price_before_discount} \\)となるので、\n"
-                latex_answer += f"{second_item}の金額と合わせると、\\( {total_price_after_substitution} \\)円となる。" 
+                latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {substitute_value} \\)となるので、\\( {total_price_after_substitution} \\)円となる。" 
             elif discount_type == "second_item_only":
-                pass
+                discount_ratio_value, discount_ratio = random_ratio()
+                remained_ratio_value = 1 - discount_ratio_value
+                remained_ratio_str = self._decimal_normalize(remained_ratio_value)
+                first_price_in_answer1 = first_price_in_problem
+                second_price_in_answer1 = self._multiply_or_divide(second_price_in_problem, remained_ratio_value, multiply_or_divide="multiply")
+                total_price_after_discount = f"{first_price_in_answer1} + {second_price_in_answer1}"
+                total_price_after_substitution = self._decimal_normalize(first_price_before_discount + second_price_before_discount * remained_ratio_value)
+                latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
+                latex_problem += f"(1){second_item}が{discount_ratio}だけ値引きされたときの合計の金額を、\\( x \\)を用いて表しなさい。\n"
+                latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの合計の金額を求めなさい。"
+                latex_answer = f"(1){discount_ratio}だけ値引きされたということは、\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)、金額は\\( {second_price_in_answer1} \\)円となる。\n"
+                latex_answer += f"{first_item}の金額と合わせると、\\( {total_price_after_discount} \\)となる。\n" 
+                latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {substitute_value} \\)となるので、\\( {total_price_after_substitution} \\)円となる。" 
             elif discount_type == "both":
                 pass
+            """
         return latex_answer, latex_problem
     
     def _make_expression_with_formula_and_solve_area_problem(self) -> Tuple[str, str]:

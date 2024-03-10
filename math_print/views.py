@@ -2037,11 +2037,10 @@ def print_formula_with_symbol(request):
             problem2 = FormulaWithSymbol(problem_types=problem_types)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
-    render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {})
+    render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
     return render_to_return
 
 # display section
-
 
 def display_number_problem(request):
     PROBLEM_NUMBER = 20

@@ -705,43 +705,7 @@ class FormulaWithSymbol:
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         
         Developing:
-            面積の方はsubstitute_valueを適当に決めても破綻しなかったが、こちらは増加だけでなく減少もあるため、適当に決めてるとマイナスが出る。
-                a + b = k型の計算方式を採用する。
-                    単位は？
-                
-            ワンちゃんexpression_with_formula_and_calculate型と同じ形でいけない？
-                a + b = k, a - b = kという形は共通であり、聞かれる内容が異なるだけ感がある
             
-            3/11
-                骨子は同じだが、探るための条件がやや厳しい
-                    途中でランダムに単位が変わる
-                        たとえばL, dLのとき、dLが選択されていればLのほうは10倍になる
-                        10倍になれば、当然探る範囲も増える
-                        
-                        L + dL = dL
-                        -dL selected
-                        k(dL) = a(dL) + b(dL)
-                        - convert
-                        k(dL) = a(L) + b(dL)
-                        
-                        before
-                            10 <= a(dL) <= 100
-                        value set
-                            1 <= a(L) <= 10
-                        
-                        変換先に応じて、探す範囲を10, 20, 30,...から1, 2, 3,....と切り替えられる必要がある
-                        
-                        一方で、
-                        同じくk(dL) = a(dL) + b(dL)だったとしても、
-                        
-                        before = after
-                            10 <= b(dL) <= 100
-                        のように状況が保たれることがある。
-                    
-                    あちこちぐるぐるしているが、実は10倍すべきパターンと1/10倍すべきパターンとそのままのパターンしかなさそおう？
-                    対象となるのは、aもしくはb。これらが変換されているときは、探索先も10倍or1/10倍すべき？って感じ？
-                    if replaced_by_x == "a":
-
         """
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
         a_unit, b_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
@@ -750,14 +714,14 @@ class FormulaWithSymbol:
         # a + b = k (by k_unit)
         if increase_or_decrease == "increase":
             action = "増やした"
-            a = sy.Integer(randint(1, 10) * 10)
-            b = sy.Integer(randint(1, 10) * 10)
+            a = sy.Integer(randint(1, 5) * 10)
+            b = sy.Integer(randint(1, 5) * 10)
             k = a + b
         # a - b = k (by k_unit)
         elif increase_or_decrease == "decrease":
             action = "減らした"
-            k = sy.Integer(randint(1, 10) * 10)
-            b = k + sy.Integer(randint(1, 10) * 10)
+            k = sy.Integer(randint(1, 5) * 10)
+            b = k + sy.Integer(randint(1, 5) * 10)
             a = b + k
         x = sy.Symbol("x")
         # which is x?
@@ -786,6 +750,14 @@ class FormulaWithSymbol:
                 answer1 = f"{a_in_formula_in_answer1} + {b}"
             elif increase_or_decrease == "decrease":
                 answer1 = f"{a_in_formula_in_answer1} - {b}"
+            if ((a_unit, k_unit) == ("L", "L")) or ((a_unit, k_unit) == ("dL", "dL")):
+                search_number = "10, 20, 30, \\ldots"
+            # 50L -> 500dL
+            elif (a_unit, k_unit) == ("dL", "L"):
+                search_number = "100, 200, 300, \\ldots"
+            # 50dL -> 5L
+            elif (a_unit, k_unit) == ("L", "dL"):
+                search_number = "1, 2, 3, \\ldots"
         elif replaced_by_x == "b":
             if increase_or_decrease == "increase":
                 substitute_target = "増えた量"
@@ -812,14 +784,22 @@ class FormulaWithSymbol:
                 answer1 = f"{a} + {b_in_formula_in_answer1}"
             elif increase_or_decrease == "decrease":
                 answer1 = f"{a} - {b_in_formula_in_answer1}"
+            if ((b_unit, k_unit) == ("L", "L")) or ((b_unit, k_unit) == ("dL", "dL")):
+                search_number = "10, 20, 30, \\ldots"
+            # 50L -> 500dL
+            elif (b_unit, k_unit) == ("dL", "L"):
+                search_number = "100, 200, 300, \\ldots"
+            # 50dL -> 5L
+            elif (b_unit, k_unit) == ("L", "dL"):
+                search_number = "1, 2, 3, \\ldots"
+        k_with_unit = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
         latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
-        latex_problem += f"(2){substitute_target}が\\( {substitute_value} \\)のときの値を計算しなさい。"
+        latex_problem += f"(2){action}後の体積が\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\\( {search_number} \\)を当てはめていくことで求めなさい。"
         latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
         latex_answer += f"\\( {answer1} \\)\n"
-        latex_answer += f"(2)(1)の式の\\( x \\)が\\( {substitute_value} \\)になるので、"
-        answer2 = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
-        latex_answer += f"\\( {answer2} \\)"
+        latex_answer += f"(2)順番に当てはめていくと、\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、\n"
+        latex_answer += f"答えは\\( {substitute_value} \\)となる。"
         return latex_answer, latex_problem
     
     def _make_from_formula_to_condition_problem(self):

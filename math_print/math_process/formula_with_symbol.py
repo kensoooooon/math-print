@@ -988,6 +988,12 @@ class FormulaWithSymbol:
 
         Returns:
             Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]: 代入可能な値
+        
+        Developing:
+            2024/3/14
+            変換の方式を、分数から小数に変更
+            eg. * sy.Rational(1, 10) -> sy.Float(0.1)
+            問題があれば戻すこと
         """
         # volume (standard is dl)
         # no change
@@ -1001,7 +1007,7 @@ class FormulaWithSymbol:
             adjusted_amount = from_amount * sy.Integer(10)
         # / 10
         elif (from_unit == "dL") and (to_unit == "L"):
-            adjusted_amount = from_amount * sy.Rational(1, 10)
+            adjusted_amount = self._decimal_normalize(from_amount * sy.Float(0.1))
         # weight
         # no change
         elif (from_unit == "kg") and (to_unit == "kg"):
@@ -1014,7 +1020,7 @@ class FormulaWithSymbol:
             adjusted_amount = from_amount * sy.Integer(1000)
         # / 1000
         elif (from_unit == "g") and (to_unit == "kg"):
-            adjusted_amount = from_amount * sy.Rational(1, 1000)
+            adjusted_amount = self._decimal_normalize(from_amount * sy.Float(0.001))
         else:
             raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
         return adjusted_amount

@@ -270,24 +270,24 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="FormulaWithSymbolFivePaperRadio" checked>
                         <label class="form-check-label" for="FormulaWithSymbolFivePaperRadio">
-                            6問×5枚
+                            10問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="FormulaWithSymbolTenPaperRadio">
                         <label class="form-check-label" for="FormulaWithSymbolTenPaperRadio">
-                            6問×10枚
+                            10問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="FormulaWithSymbolFifteenPaperRadio">
                         <label class="form-check-label" for="FormulaWithSymbolFifteenPaperRadio">
-                            6問×15枚
+                            10問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'formula_with_symbol_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'formula_with_symbol_display' %}">      
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'formula_with_symbol_display' %}">      
             </form>
         </div>
     </div>

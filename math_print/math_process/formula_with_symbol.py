@@ -25,7 +25,7 @@ class FormulaWithSymbol:
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
         # selected_theme = choice(["area", "volume", "weight", "price"])
-        selected_theme = "volume"
+        selected_theme = "weight"
         if selected_problem_type == "expression_with_formula":
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
@@ -392,7 +392,6 @@ class FormulaWithSymbol:
                 substitute_target = "増えた量"
             elif increase_or_decrease == "decrease":
                 substitute_target = "減らした量"
-            # substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
             substitute_value = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
             a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
@@ -704,8 +703,8 @@ class FormulaWithSymbol:
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
         
-        Developing:
-            
+        Note:
+            負の数を登場させないために、初めに計算結果の方で単位を統一して計算してから変換している
         """
         item = choice(["ジュース", "お茶", "コーヒー", "水", "チャイ"])
         a_unit, b_unit = choice([("L", "L"), ("dL", "dL"), ("dL", "L"), ("L", "dL")])
@@ -724,13 +723,9 @@ class FormulaWithSymbol:
             b = k + sy.Integer(randint(1, 5) * 10)
             a = b + k
         x = sy.Symbol("x")
-        # which is x?
         replaced_by_x = choice(["a", "b"])
         if replaced_by_x == "a":
-            # for problem(2)
-            substitute_target = "初めの量"
-            # substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
-            substitute_value = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
             a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
             if a_unit == k_unit:
@@ -750,21 +745,9 @@ class FormulaWithSymbol:
                 answer1 = f"{a_in_formula_in_answer1} + {b}"
             elif increase_or_decrease == "decrease":
                 answer1 = f"{a_in_formula_in_answer1} - {b}"
-            if ((a_unit, k_unit) == ("L", "L")) or ((a_unit, k_unit) == ("dL", "dL")):
-                search_number = "10, 20, 30, \\ldots"
-            # 50L -> 500dL
-            elif (a_unit, k_unit) == ("dL", "L"):
-                search_number = "100, 200, 300, \\ldots"
-            # 50dL -> 5L
-            elif (a_unit, k_unit) == ("L", "dL"):
-                search_number = "1, 2, 3, \\ldots"
+            search_unit = a_unit
         elif replaced_by_x == "b":
-            if increase_or_decrease == "increase":
-                substitute_target = "増えた量"
-            elif increase_or_decrease == "decrease":
-                substitute_target = "減らした量"
-            # substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
-            substitute_value = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
             a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
             if a_unit == k_unit:
@@ -784,24 +767,115 @@ class FormulaWithSymbol:
                 answer1 = f"{a} + {b_in_formula_in_answer1}"
             elif increase_or_decrease == "decrease":
                 answer1 = f"{a} - {b_in_formula_in_answer1}"
-            if ((b_unit, k_unit) == ("L", "L")) or ((b_unit, k_unit) == ("dL", "dL")):
-                search_number = "10, 20, 30, \\ldots"
-            # 50L -> 500dL
-            elif (b_unit, k_unit) == ("dL", "L"):
-                search_number = "100, 200, 300, \\ldots"
-            # 50dL -> 5L
-            elif (b_unit, k_unit) == ("L", "dL"):
-                search_number = "1, 2, 3, \\ldots"
+            search_unit = b_unit
+        if ((search_unit, k_unit) == ("L", "L")) or ((search_unit, k_unit) == ("dL", "dL")):
+            search_number = "10, 20, 30, \\ldots"
+        elif (search_unit, k_unit) == ("dL", "L"):
+            search_number = "100, 200, 300, \\ldots"
+        elif (search_unit, k_unit) == ("L", "dL"):
+            search_number = "1, 2, 3, \\ldots"
         k_with_unit = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
         latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
-        latex_problem += f"(2){action}後の体積が\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\\( {search_number} \\)を当てはめていくことで求めなさい。"
+        latex_problem += f"(2){action}後の体積が\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\\( {search_number} \\)と当てはめていくことで求めなさい。"
         latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
         latex_answer += f"\\( {answer1} \\)\n"
-        latex_answer += f"(2)順番に当てはめていくと、\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、\n"
+        latex_answer += f"(2)(1)の式に指定された数を順番に当てはめていくと、\n"
+        latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、"
         latex_answer += f"答えは\\( {substitute_value} \\)となる。"
         return latex_answer, latex_problem
     
+    def _make_expression_with_formula_and_solve_weight_problem(self) -> Tuple[str, str]:
+        """式での表現と、xを求める重さの問題と解答を作成
+        
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+
+        Developing:
+
+        """
+        item = choice(["米", "小麦粉", "水", "塩"])
+        a_unit, b_unit = choice([("kg", "kg"), ("g", "g"), ("kg", "g"), ("g", "kg")])
+        k_unit = choice([a_unit, b_unit])
+        increase_or_decrease = choice(["increase", "decrease"])
+        # a + b = k (by k_unit)
+        if increase_or_decrease == "increase":
+            action = "増やした"
+            a = sy.Integer(randint(1, 10) * 100)
+            b = sy.Integer(randint(1, 10) * 100)
+            k = a + b
+        # a - b = k (by k_unit)
+        elif increase_or_decrease == "decrease":
+            action = "減らした"
+            k = sy.Integer(randint(1, 10) * 100)
+            b = k + sy.Integer(randint(1, 10) * 100)
+            a = b + k
+        x = sy.Symbol("x")
+        # which is x?
+        replaced_by_x = choice(["a", "b"])
+        if replaced_by_x == "a":
+            substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
+            a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
+            b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
+            if a_unit == k_unit:
+                a_in_answer1 = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
+            else:
+                a_before_adjustment = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
+                a_after_adjustment = self._unit_adjuster(x, from_unit=a_unit, to_unit=k_unit, with_parentheses=True)
+                a_in_answer1 = f"{a_before_adjustment} = {a_after_adjustment}"
+            if b_unit == k_unit:
+                b_in_answer1 = self._make_latex_with_unit(b, b_unit, with_parentheses=True)
+            else:
+                b_before_adjustment = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=True)
+                b_after_adjustment = self._make_latex_with_unit(b, k_unit, with_parentheses=True)
+                b_in_answer1 = f"{b_before_adjustment} = {b_after_adjustment}"
+            a_in_formula_in_answer1 = self._amount_adjuster(x, from_unit=a_unit, to_unit=k_unit)
+            if increase_or_decrease == "increase":
+                answer1 = f"{a_in_formula_in_answer1} + {b}"
+            elif increase_or_decrease == "decrease":
+                answer1 = f"{a_in_formula_in_answer1} - {b}"
+            search_unit = a_unit
+        elif replaced_by_x == "b":
+            substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
+            a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
+            if a_unit == k_unit:
+                a_in_answer1 = self._make_latex_with_unit(a, a_unit, with_parentheses=True)
+            else:
+                a_before_adjustment = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=True)
+                a_after_adjustment = self._make_latex_with_unit(a, k_unit, with_parentheses=True)
+                a_in_answer1 = f"{a_before_adjustment} = {a_after_adjustment}"
+            if b_unit == k_unit:
+                b_in_answer1 = self._make_latex_with_unit(x, b_unit, with_parentheses=True)
+            else:
+                b_before_adjustment = self._make_latex_with_unit(x, b_unit, with_parentheses=True)
+                b_after_adjustment = self._unit_adjuster(x, from_unit=b_unit, to_unit=k_unit, with_parentheses=True)
+                b_in_answer1 = f"{b_before_adjustment} = {b_after_adjustment}"
+            b_in_formula_in_answer1 = self._amount_adjuster(x, from_unit=b_unit, to_unit=k_unit)
+            if increase_or_decrease == "increase":
+                answer1 = f"{a} + {b_in_formula_in_answer1}"
+            elif increase_or_decrease == "decrease":
+                answer1 = f"{a} - {b_in_formula_in_answer1}"
+            search_unit = b_unit
+        if ((search_unit, k_unit) == ("kg", "kg")) or ((search_unit, k_unit) == ("g", "g")):
+            search_number = "100, 200, 300, \\ldots"
+        elif (search_unit, k_unit) == ("g", "kg"):
+            search_number = "100000, 200000, 3000000, \\ldots"
+        elif (search_unit, k_unit) == ("kg", "g"):
+            search_number = "0.1, 0.2, 0.3, \\ldots"
+        k_with_unit = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
+        latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の重さ\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(2){action}後の重さが\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\\( {search_number} \\)と当てはめていくことで求めなさい。"
+        latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
+        latex_answer += f"\\( {answer1} \\)\n"
+        latex_answer += f"(2)(1)の式に指定された数を順番に当てはめていくと、\n"
+        latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、"
+        latex_answer += f"答えは\\( {substitute_value} \\)となる。"
+        return latex_answer, latex_problem
+        
     def _make_from_formula_to_condition_problem(self):
         """提示された問題の条件に合致する式を選ぶ問題の作成
         

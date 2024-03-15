@@ -792,9 +792,6 @@ class FormulaWithSymbol:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-
-        Developing:
-
         """
         item = choice(["米", "小麦粉", "水", "塩"])
         a_unit, b_unit = choice([("kg", "kg"), ("g", "g"), ("kg", "g"), ("g", "kg")])
@@ -803,14 +800,14 @@ class FormulaWithSymbol:
         # a + b = k (by k_unit)
         if increase_or_decrease == "increase":
             action = "増やした"
-            a = sy.Integer(randint(1, 10) * 100)
-            b = sy.Integer(randint(1, 10) * 100)
+            a = sy.Integer(randint(1, 6) * 100)
+            b = sy.Integer(randint(1, 6) * 100)
             k = a + b
         # a - b = k (by k_unit)
         elif increase_or_decrease == "decrease":
             action = "減らした"
-            k = sy.Integer(randint(1, 10) * 100)
-            b = k + sy.Integer(randint(1, 10) * 100)
+            k = sy.Integer(randint(1, 6) * 100)
+            b = k + sy.Integer(randint(1, 6) * 100)
             a = b + k
         x = sy.Symbol("x")
         # which is x?
@@ -818,6 +815,7 @@ class FormulaWithSymbol:
         if replaced_by_x == "a":
             substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
             a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
+            print(f"a_in_problem1_with_unit: {a_in_problem1_with_unit}")
             b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
             if a_unit == k_unit:
                 a_in_answer1 = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
@@ -840,6 +838,7 @@ class FormulaWithSymbol:
         elif replaced_by_x == "b":
             substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
             a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
+            print(f"a_in_problem1_with_unit: {a_in_problem1_with_unit}")
             b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
             if a_unit == k_unit:
                 a_in_answer1 = self._make_latex_with_unit(a, a_unit, with_parentheses=True)
@@ -875,7 +874,158 @@ class FormulaWithSymbol:
         latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、"
         latex_answer += f"答えは\\( {substitute_value} \\)となる。"
         return latex_answer, latex_problem
+    
+    def _make_expression_with_formula_and_solve_price_problem(self):
+        """式での表現と、xを求める値段の問題と解答を作成
         
+        Returns:
+            Tuple[str, str]: 問題と解答
+            - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
+            - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
+        """
+        
+        def random_ratio() -> Tuple[sy.Float, str]:
+            """ランダムな割合と、その日本語表示をあわせて出力する
+            
+            Returns:
+                Tuple[sy.Float, str]: 計算用の値と、出力用の日本語
+                - ratio_value (sy.Float())
+
+            Remind:
+                出力用の日本語は、\\( \\)で囲まないことを前提としている
+            """
+            digit_under_decimal_point = 1
+            if digit_under_decimal_point == 1:
+                ratio_value = 0.1 * sy.Integer(randint(1, 9))
+            ratio_value = round(ratio_value, 6)
+            selected_ratio = choice(["percentage", "japanese_percentage"])
+            if selected_ratio == "percentage":
+                normalized_percentage = self._decimal_normalize(sy.latex(ratio_value * 100))
+                ratio_out_of_latex = f"\\( {normalized_percentage} \\% \\)"
+            elif selected_ratio == "japanese_percentage":
+                digit_list = sy.latex(ratio_value)[2:]
+                japanese_percentage_names = ["割", "分"]
+                japanese_percentage_str = ""
+                for digit, name in zip(digit_list, japanese_percentage_names):
+                    if digit != "0":
+                        japanese_percentage_str += (digit + name)
+                ratio_out_of_latex = japanese_percentage_str
+            else:
+                raise ValueError(f"")
+            return ratio_value, ratio_out_of_latex
+        
+        x = sy.Symbol("x")
+        items = ["お菓子", "ジュース", "お弁当", "洗剤"]
+        problem_theme = choice(["discount", "multiple_items_without_discount", "multiple_items_with_discount"])
+        if problem_theme == "discount":
+            item = choice(items)
+            price_before_discount = sy.Integer(randint(1, 15) * 100)
+            discount_ratio_value, discount_ratio = random_ratio()
+            remained_ratio_value = 1 - discount_ratio_value
+            remained_ratio_str = self._decimal_normalize(remained_ratio_value)
+            price_after_discount = self._decimal_normalize(price_before_discount * remained_ratio_value)
+            price_after_discount_for_problem1 = self._multiply_or_divide(x, remained_ratio_value, multiply_or_divide="multiply")
+            latex_problem = f"\\( x \\)円の{item}がありました。\n"
+            latex_problem += f"(1){discount_ratio}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。\n"
+            latex_problem += f"(2)値引き後の{item}が\\( {price_after_discount} \\)円だったときの値引き前の金額を、\n"
+            latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめていくことで求めなさい。"
+            latex_answer = f"(1){discount_ratio}だけ値引きされたということは、\n"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
+            latex_answer += f"よって答えは、\\( {price_after_discount_for_problem1} \\)円。\n"
+            latex_answer += f"(2)(1)の式に指定された数をあてはめていくと、\n"
+            latex_answer += f"\\( x = {price_before_discount} \\)のときに、\\( {price_after_discount} \\)円になるので、"
+            latex_answer += f"答えは\\( {price_before_discount} \\)円となる。"
+        elif problem_theme == "multiple_items_without_discount":
+            first_item, second_item = sample(items, k=2)
+            first_price, second_price = sy.Integer(randint(1, 15) * 100), sy.Integer(randint(1, 15) * 100)
+            total_price = first_price + second_price
+            substitute_item = choice([first_item, second_item])
+            if substitute_item == first_item:
+                first_price_in_problem = x
+                second_price_in_problem = second_price
+                substitute_value = first_price
+            elif substitute_item == second_item:
+                first_price_in_problem = first_price
+                second_price_in_problem = x
+                substitute_value = second_price
+            total_price_in_answer1 = f"{first_price_in_problem} + {second_price_in_problem}"
+            latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
+            latex_problem += f"(1)2つを一緒に買ったときの金額を、\\( x \\)を用いて表しなさい。\n"
+            latex_problem += f"(2)合計金額が\\( {total_price} \\)円だったときの{substitute_item}の金額を、\n"
+            latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめていくことで求めなさい。"
+            latex_answer = f"(1)1つ目の価格と2つ目の価格を合わせると、\\( {total_price_in_answer1} \\)となる。\n"
+            latex_answer += f"(2)(1)の式の\\( x \\)に指定された数をあてはめていくと、\n"
+            latex_answer += f"\\( x = {substitute_value} \\)のときに合計金額が\\( {total_price} \\)円になるので、\n"
+            latex_answer += f"答えは\\( {substitute_value} \\)円となる。"
+        elif problem_theme == "multiple_items_with_discount":
+            first_item, second_item = sample(items, k=2)
+            first_price_before_discount, second_price_before_discount = sy.Integer(randint(1, 10) * 100), sy.Integer(randint(1, 10) * 100)
+            substitute_item = choice([first_item, second_item])
+            if substitute_item == first_item:
+                first_price_in_problem1 = x
+                second_price_in_problem1 = second_price_before_discount
+                substitute_value = first_price_before_discount
+            elif substitute_item == second_item:
+                first_price_in_problem1 = first_price_before_discount
+                second_price_in_problem1 = x
+                substitute_value = second_price_before_discount
+            discount_type = choice(["first_item_only", "second_item_only", "both"])
+            if discount_type != "both":
+                if discount_type == "first_item_only":
+                    discount_ratio_value, discount_ratio = random_ratio()
+                    discount_item = first_item
+                    remained_ratio = 1 - discount_ratio_value
+                    remained_ratio_str = self._decimal_normalize(remained_ratio)
+                    not_discount_item = second_item
+                    discount_item_price = self._multiply_or_divide(first_price_in_problem1, remained_ratio, multiply_or_divide="multiply")
+                    not_discount_item_price = second_price_in_problem1
+                    total_price_in_answer1 = f"{discount_item_price} + {not_discount_item_price}"
+                    total_price_in_problem2 = self._decimal_normalize(first_price_before_discount * remained_ratio + second_price_before_discount)
+                elif discount_type == "second_item_only":
+                    discount_ratio_value, discount_ratio = random_ratio()
+                    discount_item = second_item
+                    remained_ratio = 1 - discount_ratio_value
+                    remained_ratio_str = self._decimal_normalize(remained_ratio)
+                    not_discount_item = first_item
+                    discount_item_price = self._multiply_or_divide(second_price_in_problem1, remained_ratio, multiply_or_divide="multiply")
+                    not_discount_item_price = first_price_in_problem1
+                    total_price_in_answer1 = f"{not_discount_item_price} + {discount_item_price}"
+                    total_price_in_problem2= self._decimal_normalize(first_price_before_discount + second_price_before_discount * remained_ratio)
+                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+                latex_problem += f"(1){discount_item}が{discount_ratio}だけ値引きされたときの合計の金額を、\\( x \\)を用いて表しなさい。\n"
+                latex_problem += f"(2)合計の金額が\\( {total_price_in_problem2} \\)円だったときの{substitute_item}の金額を、\n"
+                latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめることで求めなさい。"
+                latex_answer = f"(1){discount_ratio}だけ値引きされるということは、\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、金額は\\( {discount_item_price} \\)となる。\n"
+                latex_answer += f"{not_discount_item}と合わせると、\\( {total_price_in_answer1} \\)円となる。\n"
+                latex_answer += f"(2)(1)の式の\\( x \\)に指定された数を当てはめていくと、\n"
+                latex_answer += f"\\( x = {substitute_value} \\)のときに合計金額が\\( {total_price_in_problem2} \\)円となるので、\n"
+                latex_answer += f"答えは\\( {substitute_value} \\)円となる。"
+            else:
+                discount_ratio_value1, discount_ratio1 = random_ratio()
+                discount_ratio_value2, discount_ratio2 = random_ratio()
+                remained_ratio1 = 1 - discount_ratio_value1
+                remained_ratio_str1 = self._decimal_normalize(remained_ratio1)
+                remained_ratio2 = 1 - discount_ratio_value2
+                remained_ratio_str2 = self._decimal_normalize(remained_ratio2)
+                discount_item1_price = self._multiply_or_divide(first_price_in_problem1, remained_ratio1, multiply_or_divide="multiply")
+                discount_item2_price = self._multiply_or_divide(second_price_in_problem1, remained_ratio2, multiply_or_divide="multiply")
+                total_price_in_answer1 = f"{discount_item1_price} + {discount_item2_price}"
+                total_price_in_problem2 = self._decimal_normalize(first_price_before_discount * remained_ratio1 + second_price_before_discount * remained_ratio2)
+                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+                latex_problem += f"(1){first_item}が{discount_ratio1}、{second_item}が{discount_ratio2}だけ値引きされたときの合計の金額を、\n"
+                latex_problem += f"\\( x \\)を用いて表しなさい。\n"
+                latex_problem += f"(2)合計の金額が\\( {total_price_in_problem2} \\)円だったときの{substitute_item}の金額を、\n"
+                latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめていくことで求めなさい。"
+                latex_answer = f"(1){discount_ratio1}と{discount_ratio2}だけ値引きされるということは、\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと、{first_item}は\\( {remained_ratio_str1} \\)、{second_item}は\\( {remained_ratio_str2} \\)、\n"
+                latex_answer += f"金額は\\( {discount_item1_price}, {discount_item2_price} \\)となる。\n"
+                latex_answer += f"両方を合わせると、\\( {total_price_in_answer1} \\)となる。\n"
+                latex_answer += f"(2)(1)の式の\\( x \\)に指定された数を当てはめていくと、\n"
+                latex_answer += f"\\( x = {substitute_value} \\)のときに合計金額が\\( {total_price_in_problem2} \\)円となるので、\n"
+                latex_answer += f"答えは\\( {substitute_value} \\)円となる。"
+        return latex_answer, latex_problem
+
     def _make_from_formula_to_condition_problem(self):
         """提示された問題の条件に合致する式を選ぶ問題の作成
         
@@ -928,6 +1078,7 @@ class FormulaWithSymbol:
             今は単位ごとに分けている
                 ここから単位のありなしで考えてよい？あるいは変換のありなしまで含めるべき？
         """
+        print(f"from_unit: {from_unit}, to_unit: {to_unit}")
         # no symbol
         if not(from_amount.free_symbols):
             adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
@@ -994,6 +1145,10 @@ class FormulaWithSymbol:
             変換の方式を、分数から小数に変更
             eg. * sy.Rational(1, 10) -> sy.Float(0.1)
             問題があれば戻すこと
+            
+            おそらくここで、小数の計算が変わってしまったので、おかしなことになっている
+            next
+            search_number経由？
         """
         # volume (standard is dl)
         # no change
@@ -1038,7 +1193,10 @@ class FormulaWithSymbol:
             adjusted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
         """
         adjusted_amount = self._amount_adjuster(from_amount, from_unit=from_unit, to_unit=to_unit)
+        print(f"adjusted_amount: {adjusted_amount}")
         adjusted_amount_with_unit = self._make_latex_with_unit(adjusted_amount, to_unit, with_parentheses=with_parentheses)
+        print(f"adjusted_amount_with_unit: {adjusted_amount_with_unit}")
+        print("-------------------------")
         return adjusted_amount_with_unit
     
     def _multiply_or_divide(self, first_amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational], second_amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational], *, multiply_or_divide: str) -> str:

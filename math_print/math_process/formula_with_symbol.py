@@ -24,8 +24,8 @@ class FormulaWithSymbol:
         """
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
-        # selected_theme = choice(["area", "volume", "weight", "price"])
-        selected_theme = "weight"
+        selected_theme = choice(["area", "volume", "weight", "price"])
+        # selected_theme = "weight"
         if selected_problem_type == "expression_with_formula":
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
@@ -725,7 +725,7 @@ class FormulaWithSymbol:
         x = sy.Symbol("x")
         replaced_by_x = choice(["a", "b"])
         if replaced_by_x == "a":
-            substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
+            substitute_value = self._decimal_normalize(self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit))
             a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
             if a_unit == k_unit:
@@ -747,7 +747,7 @@ class FormulaWithSymbol:
                 answer1 = f"{a_in_formula_in_answer1} - {b}"
             search_unit = a_unit
         elif replaced_by_x == "b":
-            substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
+            substitute_value = self._decimal_normalize(self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit))
             a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
             if a_unit == k_unit:
@@ -813,9 +813,8 @@ class FormulaWithSymbol:
         # which is x?
         replaced_by_x = choice(["a", "b"])
         if replaced_by_x == "a":
-            substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
+            substitute_value = self._decimal_normalize(self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit))
             a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
-            print(f"a_in_problem1_with_unit: {a_in_problem1_with_unit}")
             b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
             if a_unit == k_unit:
                 a_in_answer1 = self._make_latex_with_unit(x, a_unit, with_parentheses=True)
@@ -836,9 +835,8 @@ class FormulaWithSymbol:
                 answer1 = f"{a_in_formula_in_answer1} - {b}"
             search_unit = a_unit
         elif replaced_by_x == "b":
-            substitute_value = self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit)
+            substitute_value = self._decimal_normalize(self._amount_calculator_for_adjustment(b, from_unit=k_unit, to_unit=b_unit))
             a_in_problem1_with_unit = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
-            print(f"a_in_problem1_with_unit: {a_in_problem1_with_unit}")
             b_in_problem1_with_unit = self._make_latex_with_unit(x, b_unit, with_parentheses=False)
             if a_unit == k_unit:
                 a_in_answer1 = self._make_latex_with_unit(a, a_unit, with_parentheses=True)
@@ -1078,7 +1076,6 @@ class FormulaWithSymbol:
             今は単位ごとに分けている
                 ここから単位のありなしで考えてよい？あるいは変換のありなしまで含めるべき？
         """
-        print(f"from_unit: {from_unit}, to_unit: {to_unit}")
         # no symbol
         if not(from_amount.free_symbols):
             adjusted_amount = self._amount_calculator_for_adjustment(from_amount, from_unit=from_unit, to_unit=to_unit)
@@ -1149,6 +1146,7 @@ class FormulaWithSymbol:
             おそらくここで、小数の計算が変わってしまったので、おかしなことになっている
             next
             search_number経由？
+            戻す。
         """
         # volume (standard is dl)
         # no change
@@ -1162,7 +1160,7 @@ class FormulaWithSymbol:
             adjusted_amount = from_amount * sy.Integer(10)
         # / 10
         elif (from_unit == "dL") and (to_unit == "L"):
-            adjusted_amount = self._decimal_normalize(from_amount * sy.Float(0.1))
+            adjusted_amount = from_amount * sy.Float(0.1)
         # weight
         # no change
         elif (from_unit == "kg") and (to_unit == "kg"):
@@ -1175,7 +1173,7 @@ class FormulaWithSymbol:
             adjusted_amount = from_amount * sy.Integer(1000)
         # / 1000
         elif (from_unit == "g") and (to_unit == "kg"):
-            adjusted_amount = self._decimal_normalize(from_amount * sy.Float(0.001))
+            adjusted_amount = from_amount * sy.Float(0.001)
         else:
             raise ValueError(f"'from_unit' is {from_unit}, and 'to_unit' is {to_unit}.")
         return adjusted_amount
@@ -1193,10 +1191,7 @@ class FormulaWithSymbol:
             adjusted_amount_with_unit (str): 変換先への単位に合わせたlatex形式
         """
         adjusted_amount = self._amount_adjuster(from_amount, from_unit=from_unit, to_unit=to_unit)
-        print(f"adjusted_amount: {adjusted_amount}")
         adjusted_amount_with_unit = self._make_latex_with_unit(adjusted_amount, to_unit, with_parentheses=with_parentheses)
-        print(f"adjusted_amount_with_unit: {adjusted_amount_with_unit}")
-        print("-------------------------")
         return adjusted_amount_with_unit
     
     def _multiply_or_divide(self, first_amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational], second_amount: Union[sy.Symbol, sy.Integer, sy.Float, sy.Rational], *, multiply_or_divide: str) -> str:

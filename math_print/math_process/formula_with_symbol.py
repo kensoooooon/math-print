@@ -25,7 +25,6 @@ class FormulaWithSymbol:
         sy.init_printing(order="grevlex")
         selected_problem_type = choice(settings["problem_types"])
         selected_theme = choice(["area", "volume", "weight", "price"])
-        # selected_theme = "weight"
         if selected_problem_type == "expression_with_formula":
             if selected_theme == "area":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_area_problem()
@@ -53,8 +52,6 @@ class FormulaWithSymbol:
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_solve_weight_problem()
             elif selected_theme == "price":
                 self.latex_answer, self.latex_problem = self._make_expression_with_formula_and_solve_price_problem()
-        elif selected_problem_type == "from_formula_to_condition":
-            self.latex_answer, self.latex_problem = self._make_from_formula_to_condition_problem()
         else:
             raise ValueError(f"selected_problem_type is {selected_problem_type}. This isn't concerned value.")
     
@@ -126,7 +123,8 @@ class FormulaWithSymbol:
             subtracted_amount = f"{start_amount_in_answer} - {delta_amount_in_answer}"
             answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
         latex_problem = f"初めに{item}が\\( {start_amount_latex_in_problem} \\)ありました。\n"
-        latex_problem += f"\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
+        latex_problem += f"\\( {delta_latex_in_problem} \\){action}後の体積\\( (\\mathrm{{{answered_unit}}}) \\)を、\n"
+        latex_problem += f"\\( x \\)を使った式で表しなさい。"
         latex_answer = f"初めの量が\\( {start_amount_latex_in_answer} \\)で、"
         latex_answer += f"{action}量が、\\( {delta_latex_in_answer} \\)なので、\n"
         latex_answer += f"答えは、\\( {answer} \\)となる。"
@@ -171,7 +169,8 @@ class FormulaWithSymbol:
             subtracted_amount = f"{start_amount_for_calculation} - {delta_amount_for_calculation}"
             answer = self._make_latex_with_unit(subtracted_amount, answered_unit, with_parentheses=True)
         latex_problem = f"初めに{item}が\\( {start_amount_in_problem} \\)ありました。\n"
-        latex_problem += f"\\( {delta_amount_in_problem} \\){action}後の重さ\\( (\\mathrm{{{answered_unit}}}) \\)を、\\( x \\)を使った式で表しなさい。"
+        latex_problem += f"\\( {delta_amount_in_problem} \\){action}後の重さ\\( (\\mathrm{{{answered_unit}}}) \\)を、\n"
+        latex_problem += f"\\( x \\)を使った式で表しなさい。"
         latex_answer = f"初めの量が\\( {start_amount_in_answer} \\)で、"
         latex_answer += f"{action}量が、\\( {delta_amount_in_answer} \\)なので、\n"
         latex_answer += f"答えは、\\( {answer} \\)となる。"
@@ -235,8 +234,9 @@ class FormulaWithSymbol:
             price_after_discount = self._multiply_or_divide(price_before_discount, remained_ratio_value, multiply_or_divide="multiply")
             latex_problem = f"初めに\\( {sy.latex(x)} \\)円の{item}がありました。"
             latex_problem += f"{discount_ratio_out_of_latex}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。"
-            latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、"
-            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
+            latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、\n"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\n"
+            latex_answer += f"\\( {remained_ratio_str} \\)となる。\n"
             latex_answer += f"よって答えは、\\( {price_after_discount} \\)円。"
         elif problem_theme == "multiple_items_without_discount":
             first_item, second_item = sample(items, k=2)
@@ -258,9 +258,10 @@ class FormulaWithSymbol:
                 remained_ratio_str = self._decimal_normalize(remained_ratio_value)
                 first_price_after_discount = self._multiply_or_divide(first_price, remained_ratio_value, multiply_or_divide="multiply")
                 latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
-                latex_problem += f"{first_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
+                latex_problem += f"{first_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、\n"
+                latex_problem += f"2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
                 latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、\n"
-                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、"
+                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、\n"
                 latex_answer += f"金額は\\( {first_price_after_discount} \\)円となる。\n"
                 latex_answer += f"{second_item}の金額と合わせると、\\( {first_price_after_discount} + {second_price} \\)円となる。"
             elif discount_type == "second_item":
@@ -269,9 +270,10 @@ class FormulaWithSymbol:
                 remained_ratio_str = self._decimal_normalize(remained_ratio_value)
                 second_price_after_discount = self._multiply_or_divide(second_price, remained_ratio_value, multiply_or_divide="multiply")
                 latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
-                latex_problem += f"{second_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
+                latex_problem += f"{second_item}が{discount_ratio_out_of_latex}だけ値引きされた後に、\n"
+                latex_problem += f"2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
                 latex_answer = f"{discount_ratio_out_of_latex}だけ値引きされたということは、\n"
-                latex_answer += f"値引きされた後の{second_item}の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、"
+                latex_answer += f"値引きされた後の{second_item}の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、\n"
                 latex_answer += f"金額は\\( {second_price_after_discount} \\)円となる。\n"
                 latex_answer += f"{first_item}の金額と合わせると、\\( {first_price} + {second_price_after_discount} \\)円となる。"
             elif discount_type == "both":
@@ -284,13 +286,13 @@ class FormulaWithSymbol:
                 remained_ratio_str2 = self._decimal_normalize(remained_ratio_value2)
                 second_price_after_discount = self._multiply_or_divide(second_price, remained_ratio_value2, multiply_or_divide="multiply")
                 latex_problem = f"\\( {first_price} \\)円の{first_item}と、\\( {second_price} \\)円の{second_item}がありました。\n"
-                latex_problem += f"{first_item}が{discount_ratio_out_of_latex1}、"
+                latex_problem += f"{first_item}が{discount_ratio_out_of_latex1}、\n"
                 latex_problem += f"{second_item}が{discount_ratio_out_of_latex2}だけそれぞれ値引きされた後に、\n"
                 latex_problem += f"2つを一緒に買った時の金額を、\\( x \\)を用いて表しなさい。"
                 latex_answer = f"{discount_ratio_out_of_latex1}だけ値引きされたということは、\n"
-                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと\\( {remained_ratio_str1} \\)、"
+                latex_answer += f"値引きされた後の{first_item}の金額を小数の割合で示すと\\( {remained_ratio_str1} \\)、\n"
                 latex_answer += f"金額は\\( {first_price_after_discount} \\)円となる。\n"
-                latex_answer += f"また、同じように値引きされた後の{second_item}の金額を小数の割合で示すと\\( {remained_ratio_str2} \\)、"
+                latex_answer += f"また、同じように値引きされた後の{second_item}の金額を小数の割合で示すと\\( {remained_ratio_str2} \\)、\n"
                 latex_answer += f"金額は\\( {second_price_after_discount} \\)円となる。\n"
                 latex_answer += f"2つの金額と合わせると、\\( {first_price_after_discount} + {second_price_after_discount} \\)円となる。"
         return latex_answer, latex_problem
@@ -364,9 +366,7 @@ class FormulaWithSymbol:
         # which is x?
         replaced_by_x = choice(["a", "b"])
         if replaced_by_x == "a":
-            # for problem(2)
             substitute_target = "初めの量"
-            # substitute_value = self._amount_calculator_for_adjustment(a, from_unit=k_unit, to_unit=a_unit)
             substitute_value = self._unit_adjuster(a, from_unit=k_unit, to_unit=a_unit, with_parentheses=False)
             a_in_problem1_with_unit = self._make_latex_with_unit(x, a_unit, with_parentheses=False)
             b_in_problem1_with_unit = self._unit_adjuster(b, from_unit=k_unit, to_unit=b_unit, with_parentheses=False)
@@ -413,7 +413,8 @@ class FormulaWithSymbol:
             elif increase_or_decrease == "decrease":
                 answer1 = f"{a} - {b_in_formula_in_answer1}"
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
-        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\n"
+        latex_problem += f"\\( x \\)を使って表しなさい。\n"
         latex_problem += f"(2){substitute_target}が\\( {substitute_value} \\)のときの値を計算しなさい。"
         latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
         latex_answer += f"\\( {answer1} \\)\n"
@@ -500,7 +501,8 @@ class FormulaWithSymbol:
             elif increase_or_decrease == "decrease":
                 answer1 = f"{a} - {b_in_formula_in_answer1}"
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
-        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の重さ\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の重さ\\( (\\mathrm{{{k_unit}}}) \\)を、\n"
+        latex_problem += f"\\( x \\)を使って表しなさい。\n"
         latex_problem += f"(2){substitute_target}が\\( {substitute_value} \\)のときの値を計算しなさい。"
         latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
         latex_answer += f"\\( {answer1} \\)\n"
@@ -562,8 +564,9 @@ class FormulaWithSymbol:
             latex_problem = f"\\( x \\)円の{item}がありました。\n"
             latex_problem += f"(1){discount_ratio}だけ値引きされたときの金額を、\\( x \\)を用いて表しなさい。\n"
             latex_problem += f"(2){item}の元の値段が\\( {price_before_discount} \\)円だったときの金額を求めなさい。"
-            latex_answer = f"(1){discount_ratio}だけ値引きされたということは、"
-            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
+            latex_answer = f"(1){discount_ratio}だけ値引きされたということは、\n"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\n"
+            latex_answer += f"\\( {remained_ratio_str} \\)となる。\n"
             latex_answer += f"よって答えは、\\( {price_after_discount_for_problem1} \\)円。\n"
             latex_answer += f"(2)(1)で使われた\\( x \\)が\\( {price_before_discount} \\)になるので、\n"
             latex_answer += f"\\( {price_after_discount} \\)円が答えとなる。"
@@ -581,7 +584,8 @@ class FormulaWithSymbol:
                 second_price_in_problem = x
                 substitute_value = second_price
             total_price_in_answer1 = f"{first_price_in_problem} + {second_price_in_problem}"
-            latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
+            latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\n"
+            latex_problem += f"\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
             latex_problem += f"(1)2つを一緒に買ったときの金額を、\\( x \\)を用いて表しなさい。\n"
             latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの金額を求めなさい。"
             latex_answer = f"(1)1つ目の価格と2つ目の価格を合わせると、\\( {total_price_in_answer1} \\)となる。\n"
@@ -590,7 +594,6 @@ class FormulaWithSymbol:
             first_item, second_item = sample(items, k=2)
             first_price_before_discount, second_price_before_discount = sy.Integer(randint(1, 50) * 100), sy.Integer(randint(1, 50) * 100)
             substitute_item = choice([first_item, second_item])
-            # condition variance
             if substitute_item == first_item:
                 first_price_in_problem1 = x
                 second_price_in_problem1 = second_price_before_discount
@@ -621,11 +624,13 @@ class FormulaWithSymbol:
                     not_discount_item_price = first_price_in_problem1
                     total_price_in_answer1 = f"{not_discount_item_price} + {discount_item_price}"
                     total_price_in_answer2 = self._decimal_normalize(first_price_before_discount + second_price_before_discount * remained_ratio)
-                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\n"
+                latex_problem += f"\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
                 latex_problem += f"(1){discount_item}が{discount_ratio}だけ値引きされたときの合計の金額を、\\( x \\)を用いて表しなさい。\n"
                 latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの合計の金額を求めなさい。"
                 latex_answer = f"(1){discount_ratio}だけ値引きされるということは、\n"
-                latex_answer += f"値引きされた後の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、金額は\\( {discount_item_price} \\)となる。\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、\n"
+                latex_answer += f"金額は\\( {discount_item_price} \\)となる。\n"
                 latex_answer += f"{not_discount_item}と合わせると、\\( {total_price_in_answer1} \\)円となる。\n"
                 latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {substitute_value} \\)になるので、\n"
                 latex_answer += f"\\( {total_price_in_answer2} \\)円となる。"
@@ -640,12 +645,15 @@ class FormulaWithSymbol:
                 discount_item2_price = self._multiply_or_divide(second_price_in_problem1, remained_ratio2, multiply_or_divide="multiply")
                 total_price_in_answer1 = f"{discount_item1_price} + {discount_item2_price}"
                 total_price_in_answer2 = self._decimal_normalize(first_price_before_discount * remained_ratio1 + second_price_before_discount * remained_ratio2)
-                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\n"
+                latex_problem += f"\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
                 latex_problem += f"(1){first_item}が{discount_ratio1}、{second_item}が{discount_ratio2}だけ値引きされたときの合計の金額を、\n"
                 latex_problem += f"\\( x \\)を用いて表しなさい。\n"
                 latex_problem += f"(2){substitute_item}が\\( {substitute_value} \\)円だったときの合計の金額を求めなさい。"
                 latex_answer = f"(1){discount_ratio1}と{discount_ratio2}だけ値引きされるということは、\n"
-                latex_answer += f"値引きされた後の金額を小数の割合で示すと、{first_item}は\\( {remained_ratio_str1} \\)、{second_item}は\\( {remained_ratio_str2} \\)、\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと、\n"
+                latex_answer += f"{first_item}は\\( {remained_ratio_str1} \\)、\n"
+                latex_answer += f"{second_item}は\\( {remained_ratio_str2} \\)、\n"
                 latex_answer += f"金額は\\( {discount_item1_price}, {discount_item2_price} \\)となる。\n"
                 latex_answer += f"両方を合わせると、\\( {total_price_in_answer1} \\)となる。\n"
                 latex_answer += f"(2)(1)で表した式の\\( x \\)が\\( {substitute_value} \\)になるので、\n"
@@ -691,7 +699,7 @@ class FormulaWithSymbol:
         latex_answer = f"(1){shape}の面積は、{area_formula}なので、\n"
         latex_answer += f"\\( {area_formula_after_substitution} \\)\n"
         latex_answer += "(2)(1)で表した式の\\( x \\)に、指定された数を当てはめていくと、\n"
-        latex_answer += f"\\( x = {sy.latex(substitute_value)} \\)で面積が\\( {area_value_latex_with_unit} \\)になる。"
+        latex_answer += f"\\( x = {sy.latex(substitute_value)} \\)で面積が\\( {area_value_latex_with_unit} \\)になる。\n"
         latex_answer += f"よって答えは、\\( {substitute_value_with_unit} \\)"
         return latex_answer, latex_problem
     
@@ -776,12 +784,14 @@ class FormulaWithSymbol:
             search_number = "1, 2, 3, \\ldots"
         k_with_unit = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
-        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
-        latex_problem += f"(2){action}後の体積が\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\\( {search_number} \\)と当てはめていくことで求めなさい。"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の体積\\( (\\mathrm{{{k_unit}}}) \\)を、\n"
+        latex_problem += f"\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(2){action}後の体積が\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\n"
+        latex_problem += f"\\( {search_number} \\)と当てはめていくことで求めなさい。"
         latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
         latex_answer += f"\\( {answer1} \\)\n"
         latex_answer += f"(2)(1)の式に指定された数を順番に当てはめていくと、\n"
-        latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、"
+        latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、\n"
         latex_answer += f"答えは\\( {substitute_value} \\)となる。"
         return latex_answer, latex_problem
     
@@ -864,12 +874,14 @@ class FormulaWithSymbol:
             search_number = "0.1, 0.2, 0.3, \\ldots"
         k_with_unit = self._make_latex_with_unit(k, k_unit, with_parentheses=False)
         latex_problem = f"初めに{item}が\\( {a_in_problem1_with_unit} \\)ありました。\n"
-        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の重さ\\( (\\mathrm{{{k_unit}}}) \\)を、\\( x \\)を使って表しなさい。\n"
-        latex_problem += f"(2){action}後の重さが\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\\( {search_number} \\)と当てはめていくことで求めなさい。"
+        latex_problem += f"(1)\\( {b_in_problem1_with_unit} \\)だけ{action}した後の重さ\\( (\\mathrm{{{k_unit}}}) \\)を、\n"
+        latex_problem += f"\\( x \\)を使って表しなさい。\n"
+        latex_problem += f"(2){action}後の重さが\\( {k_with_unit} \\)になるときの\\( x \\)の値を、\n"
+        latex_problem += f"\\( {search_number} \\)と当てはめていくことで求めなさい。"
         latex_answer = f"(1)初めの量が、\\( {a_in_answer1} \\), {action}量が\\( {b_in_answer1} \\)なので、\n"
         latex_answer += f"\\( {answer1} \\)\n"
         latex_answer += f"(2)(1)の式に指定された数を順番に当てはめていくと、\n"
-        latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、"
+        latex_answer += f"\\( x = {substitute_value} \\)のときに\\( {k_with_unit} \\)になるので、\n"
         latex_answer += f"答えは\\( {substitute_value} \\)となる。"
         return latex_answer, latex_problem
     
@@ -928,7 +940,8 @@ class FormulaWithSymbol:
             latex_problem += f"(2)値引き後の{item}が\\( {price_after_discount} \\)円だったときの値引き前の金額を、\n"
             latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめていくことで求めなさい。"
             latex_answer = f"(1){discount_ratio}だけ値引きされたということは、\n"
-            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\\( {remained_ratio_str} \\)となる。\n"
+            latex_answer += f"値引きされた後の金額を小数の割合で示すと、\n"
+            latex_answer += f"\\( {remained_ratio_str} \\)となる。\n"
             latex_answer += f"よって答えは、\\( {price_after_discount_for_problem1} \\)円。\n"
             latex_answer += f"(2)(1)の式に指定された数をあてはめていくと、\n"
             latex_answer += f"\\( x = {price_before_discount} \\)のときに、\\( {price_after_discount} \\)円になるので、"
@@ -947,7 +960,8 @@ class FormulaWithSymbol:
                 second_price_in_problem = x
                 substitute_value = second_price
             total_price_in_answer1 = f"{first_price_in_problem} + {second_price_in_problem}"
-            latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
+            latex_problem = f"\\( {first_price_in_problem} \\)円の{first_item}と、\n"
+            latex_problem += f"\\( {second_price_in_problem} \\)円の{second_item}がありました。\n"
             latex_problem += f"(1)2つを一緒に買ったときの金額を、\\( x \\)を用いて表しなさい。\n"
             latex_problem += f"(2)合計金額が\\( {total_price} \\)円だったときの{substitute_item}の金額を、\n"
             latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめていくことで求めなさい。"
@@ -989,12 +1003,14 @@ class FormulaWithSymbol:
                     not_discount_item_price = first_price_in_problem1
                     total_price_in_answer1 = f"{not_discount_item_price} + {discount_item_price}"
                     total_price_in_problem2= self._decimal_normalize(first_price_before_discount + second_price_before_discount * remained_ratio)
-                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\n"
+                latex_problem += f"\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
                 latex_problem += f"(1){discount_item}が{discount_ratio}だけ値引きされたときの合計の金額を、\\( x \\)を用いて表しなさい。\n"
                 latex_problem += f"(2)合計の金額が\\( {total_price_in_problem2} \\)円だったときの{substitute_item}の金額を、\n"
                 latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめることで求めなさい。"
                 latex_answer = f"(1){discount_ratio}だけ値引きされるということは、\n"
-                latex_answer += f"値引きされた後の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、金額は\\( {discount_item_price} \\)となる。\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと\\( {remained_ratio_str} \\)、\n"
+                latex_answer += f"金額は\\( {discount_item_price} \\)となる。\n"
                 latex_answer += f"{not_discount_item}と合わせると、\\( {total_price_in_answer1} \\)円となる。\n"
                 latex_answer += f"(2)(1)の式の\\( x \\)に指定された数を当てはめていくと、\n"
                 latex_answer += f"\\( x = {substitute_value} \\)のときに合計金額が\\( {total_price_in_problem2} \\)円となるので、\n"
@@ -1010,13 +1026,16 @@ class FormulaWithSymbol:
                 discount_item2_price = self._multiply_or_divide(second_price_in_problem1, remained_ratio2, multiply_or_divide="multiply")
                 total_price_in_answer1 = f"{discount_item1_price} + {discount_item2_price}"
                 total_price_in_problem2 = self._decimal_normalize(first_price_before_discount * remained_ratio1 + second_price_before_discount * remained_ratio2)
-                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
+                latex_problem = f"\\( {first_price_in_problem1} \\)円の{first_item}と、\n"
+                latex_problem += f"\\( {second_price_in_problem1} \\)円の{second_item}がありました。\n"
                 latex_problem += f"(1){first_item}が{discount_ratio1}、{second_item}が{discount_ratio2}だけ値引きされたときの合計の金額を、\n"
                 latex_problem += f"\\( x \\)を用いて表しなさい。\n"
                 latex_problem += f"(2)合計の金額が\\( {total_price_in_problem2} \\)円だったときの{substitute_item}の金額を、\n"
                 latex_problem += f"\\( x \\)に\\( 100, 200, 300, \\ldots \\)を当てはめていくことで求めなさい。"
                 latex_answer = f"(1){discount_ratio1}と{discount_ratio2}だけ値引きされるということは、\n"
-                latex_answer += f"値引きされた後の金額を小数の割合で示すと、{first_item}は\\( {remained_ratio_str1} \\)、{second_item}は\\( {remained_ratio_str2} \\)、\n"
+                latex_answer += f"値引きされた後の金額を小数の割合で示すと、\n"
+                latex_answer += f"{first_item}は\\( {remained_ratio_str1} \\)、\n"
+                latex_answer += f"{second_item}は\\( {remained_ratio_str2} \\)、\n"
                 latex_answer += f"金額は\\( {discount_item1_price}, {discount_item2_price} \\)となる。\n"
                 latex_answer += f"両方を合わせると、\\( {total_price_in_answer1} \\)となる。\n"
                 latex_answer += f"(2)(1)の式の\\( x \\)に指定された数を当てはめていくと、\n"
@@ -1070,11 +1089,6 @@ class FormulaWithSymbol:
 
         Returns:
             adjusted_amount_latex (str): 指定された単位に合わせた量
-        
-        Developing:
-            どこまで分割する？
-            今は単位ごとに分けている
-                ここから単位のありなしで考えてよい？あるいは変換のありなしまで含めるべき？
         """
         # no symbol
         if not(from_amount.free_symbols):
@@ -1136,17 +1150,6 @@ class FormulaWithSymbol:
 
         Returns:
             Union[sy.Symbol, sy.Integer, sy.Rational, sy.Float]: 代入可能な値
-        
-        Developing:
-            2024/3/14
-            変換の方式を、分数から小数に変更
-            eg. * sy.Rational(1, 10) -> sy.Float(0.1)
-            問題があれば戻すこと
-            
-            おそらくここで、小数の計算が変わってしまったので、おかしなことになっている
-            next
-            search_number経由？
-            戻す。
         """
         # volume (standard is dl)
         # no change
@@ -1205,7 +1208,6 @@ class FormulaWithSymbol:
         Returns:
             calculated_amount (str) : 計算した式
         """
-        # latex済想定
         if isinstance(first_amount, str):
             raise ValueError(f"'first_amount' must not be str.{first_amount} is wrong.")
         if isinstance(second_amount, str):

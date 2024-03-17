@@ -2028,7 +2028,6 @@ def print_formula_with_symbol(request):
         problem_types.append("expression_with_formula")
         problem_types.append("expression_with_formula_and_calculate")
         problem_types.append("expression_with_formula_and_solve")
-        problem_types.append("from_formula_to_condition")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -3677,7 +3676,6 @@ def display_formula_with_symbol(request):
         problem_types.append("expression_with_formula")
         problem_types.append("expression_with_formula_and_calculate")
         problem_types.append("expression_with_formula_and_solve")
-        problem_types.append("from_formula_to_condition")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = FormulaWithSymbol(problem_types=problem_types)

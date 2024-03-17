@@ -233,7 +233,7 @@ function uncheckAllStatus(target){
 
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>文字を使った式</p>
+            <p id="formula_with_symbol">文字を使った式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">出題される問題</small>
@@ -254,12 +254,6 @@ function uncheckAllStatus(target){
                         <input class="form-check-input" type="checkbox" value="expression_with_formula_and_solve" name="problem_type" id="expression_with_formula_and_solveCheck" checked>
                         <label class="form-check-label" for="expression_with_formula_and_solveCheck">
                             式での表現+当てはまるxを探す
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="from_formula_to_condition" name="problem_type" id="from_formula_to_conditionCheck" checked>
-                        <label class="form-check-label" for="from_formula_to_conditionCheck">
-                            式から当てはまる条件を選ぶ
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
@@ -297,7 +291,7 @@ function uncheckAllStatus(target){
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>
     <footer class="container-fluid print_footer">
-        <small><a href="#">© 2023 有明学習振興</a></small>
+        <small><a href="#">© 2024 有明学習振興</a></small>
     </footer>
 </div>
 {% endblock %}

@@ -21,9 +21,9 @@ function showAnswer(){
     }
 }
 function refresh() {
-  var url = location.origin;
-  var pathname = location.pathname;
-  var hash = location.hash;
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
 
   location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
 }
@@ -55,10 +55,10 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
-                            {{ math_problem_tuple.0.latex_problem }}
+                            {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            {{ math_problem_tuple.0.latex_answer }}
+                            {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
                         </p>
                     </li>
                 </div>
@@ -66,10 +66,10 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
-                            {{ math_problem_tuple.1.latex_problem }}
+                            {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            {{ math_problem_tuple.1.latex_answer }}
+                            {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
                         </p>
                     </li>
                 </div>
@@ -86,6 +86,6 @@ function refresh() {
 </div>
 
 <footer class="container-fluid print_footer">
-    <small><a href="#">© 2023 有明学習振興</a></small>
+    <small><a href="#">© 2024 有明学習振興</a></small>
 </footer>
 {% endblock %}

@@ -233,7 +233,7 @@ function uncheckAllStatus(target){
 
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>文字を使った式</p>
+            <p id="formula_with_symbol">文字を使った式</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">出題される問題</small>
@@ -247,13 +247,13 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="expression_with_formula_and_calculate" name="problem_type" id="expression_with_formula_and_calculateCheck" checked>
                         <label class="form-check-label" for="expression_with_formula_and_calculateCheck">
-                            式での表現と値の計算
+                            式での表現+値の計算
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="from_formula_to_condition" name="problem_type" id="from_formula_to_conditionCheck" checked>
-                        <label class="form-check-label" for="from_formula_to_conditionCheck">
-                            式から当てはまる条件を選ぶ
+                        <input class="form-check-input" type="checkbox" value="expression_with_formula_and_solve" name="problem_type" id="expression_with_formula_and_solveCheck" checked>
+                        <label class="form-check-label" for="expression_with_formula_and_solveCheck">
+                            式での表現+当てはまるxを探す
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
@@ -264,24 +264,24 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="FormulaWithSymbolFivePaperRadio" checked>
                         <label class="form-check-label" for="FormulaWithSymbolFivePaperRadio">
-                            20問×5枚
+                            10問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="FormulaWithSymbolTenPaperRadio">
                         <label class="form-check-label" for="FormulaWithSymbolTenPaperRadio">
-                            20問×10枚
+                            10問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="FormulaWithSymbolFifteenPaperRadio">
                         <label class="form-check-label" for="FormulaWithSymbolFifteenPaperRadio">
-                            20問×15枚
+                            10問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'formula_with_symbol_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'formula_with_symbol_display' %}">      
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'formula_with_symbol_display' %}">      
             </form>
         </div>
     </div>
@@ -291,7 +291,7 @@ function uncheckAllStatus(target){
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>
     <footer class="container-fluid print_footer">
-        <small><a href="#">© 2023 有明学習振興</a></small>
+        <small><a href="#">© 2024 有明学習振興</a></small>
     </footer>
 </div>
 {% endblock %}

@@ -36,7 +36,7 @@ function showAnswer(){
 <style type="text/css" media="print">
     .print_pages{
         /*A4縦 172,251*/
-        width: 210mm;
+        width: 230mm;
         height: 260mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
@@ -90,10 +90,7 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                {{ math_problem_tuple.0.latex_problem }}
-                            </p>
-                            <p class="answer" style="visibility:hidden;">
-                                {{ math_problem_tuple.0.latex_answer }}
+                                {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                             </p>
                         </li>
                     </div>
@@ -101,10 +98,7 @@ function showAnswer(){
                         <li>
                             <p>
                                 \( \quad \)
-                                {{ math_problem_tuple.1.latex_problem }}
-                            </p>
-                            <p class="answer" style="visibility:hidden;">
-                                {{ math_problem_tuple.1.latex_answer }}
+                                {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                             </p>
                         </li>
                     </div>
@@ -112,8 +106,17 @@ function showAnswer(){
             {% endfor %}
         </ol>
         <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <footer class="container-fluid print_footer">
-            <small><a href="#">© 2023 有明学習振興</a></small>
+            <small><a href="#">© 2024 有明学習振興</a></small>
         </footer>
     </section>
     <section class="print_pages">
@@ -123,23 +126,15 @@ function showAnswer(){
                 <div class="problem">
                     <div>
                         <li>
-                            <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.0.latex_problem }}
-                            </p>
                             <p class="answer" style="visibility:visible;">
-                                \({{ math_problem_tuple.0.latex_answer }}\)
+                                {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
                             </p>
                         </li>
                     </div>
                     <div>
                         <li>
-                            <p>
-                                \( \quad \)
-                                {{ math_problem_tuple.1.latex_problem }}
-                            </p>
                             <p class="answer" style="visibility:visible;">
-                                \({{ math_problem_tuple.1.latex_answer }}\)
+                                {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
                             </p>
                         </li>
                     </div>
@@ -147,8 +142,17 @@ function showAnswer(){
             {% endfor %}
         </ol>
         <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <footer class="container-fluid print_footer">
-            <small><a href="#">© 2023 有明学習振興</a></small>
+            <small><a href="#">© 2024 有明学習振興</a></small>
         </footer>
     </section>
 {% endfor %}

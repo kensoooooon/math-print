@@ -67,6 +67,7 @@ from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import Add
 from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
 from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
+from .math_process.integration_calculation_of_high_school3 import IntegrationCalculationOfHighSchool3
 
 
 
@@ -110,6 +111,9 @@ def show_highschool1(request):
 
 def show_highschool2(request):
     return render(request, 'math_print/highschool2/highschool2.html', {})
+
+def show_highschool3(request):
+    return render(request, 'math_print/highschool3/highschool3.html', {})
 
 
 # problem and explanation
@@ -2039,6 +2043,20 @@ def print_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
     return render_to_return
 
+def print_integration_calculation_of_high_school3(request):
+    PROBLEM_NUMBER = 10
+    paper_number = int(request.POST["paper_number"])
+    calculation_types = request.POST.getlist("calculation_type")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = IntegrationCalculationOfHighSchool3(calculation_types=calculation_types)
+            problem2 = IntegrationCalculationOfHighschool3(calculation_types=calculation_types)
+        math_problem_tuple_inner_list.append((problem1, problem2))
+    render_to_return = render(request, 'math_print/highschool3/integration_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render_to_return
+
 # display section
 
 def display_number_problem(request):
@@ -3684,6 +3702,24 @@ def display_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return
 
+def display_integration_calculation_of_high_school3(request):
+    """高校3年生用の積分計算の問題をブラウザ表示
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 10
+    calculation_types = request.POST.getlist("calculation_type")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = IntegrationCalculationOfHighSchool3(calculation_types=calculation_types)
+        problem2 = IntegrationCalculationOfHighSchool3(calculation_types=calculation_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+    return render_to_return
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

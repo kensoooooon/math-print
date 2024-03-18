@@ -1,0 +1,100 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+計算練習(高3)
+{% endblock %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+<script>
+    function checkAllCheckBoxes(checkbox_name){
+        let checkboxes = document.getElementsByName(checkbox_name);
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (!(checkboxes[i].checked)) {
+                checkboxes[i].checked = true;
+            }
+        }
+    }
+
+    function uncheckAllCheckBoxes(checkbox_name){
+        let checkboxes = document.getElementsByName(checkbox_name);
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                checkboxes[i].checked = false;
+            }
+        }
+    }
+
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>積分計算</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">使用する公式</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="composite_function_with_polynomial" name="calculation_type" id="integration_composite_function_with_polynomial">
+                        <label class="form-check-label" for="integration_composite_function_with_polynomial">
+                            合成関数の微分(多項式)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`calculation_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`calculation_type`)" value="全部はずし">
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="IntegrationCalculationFivePaperRadio" checked>
+                        <label class="form-check-label" for="IntegrationCalculationFivePaperRadio">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="IntegrationCalculationTenPaperRadio">
+                        <label class="form-check-label" for="IntegrationCalculationTenPaperRadio">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="IntegrationCalculationFifteenPaperRadio">
+                        <label class="form-check-label" for="IntegrationCalculationFifteenPaperRadio">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs3_integration_calculation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'hs3_integration_calculation_display' %}">      
+            </form>
+        </div>
+    </div>
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+</div>
+{% endblock %}

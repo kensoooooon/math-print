@@ -67,7 +67,7 @@ from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import Add
 from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
 from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
-from .math_process.integration_calculation_of_high_school3 import IntegrationCalculationOfHighSchool3
+from .math_process.hs3_integration_calculation import IntegralCalculationOfHighSchool3
 
 
 
@@ -2043,16 +2043,22 @@ def print_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
     return render_to_return
 
-def print_integration_calculation_of_high_school3(request):
+def print_integral_calculation_of_high_school3(request):
     PROBLEM_NUMBER = 10
     paper_number = int(request.POST["paper_number"])
+    integral_types = request.POST.getlist("integral_type")
+    if not(integral_types):
+        integral_types.append("indefinite_integral")
+        integral_types.append("definite_integral")
     calculation_types = request.POST.getlist("calculation_type")
+    if not(calculation_types):
+        calculation_types.append("substitution_of_linear_expression")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
-            problem1 = IntegrationCalculationOfHighSchool3(calculation_types=calculation_types)
-            problem2 = IntegrationCalculationOfHighschool3(calculation_types=calculation_types)
+            problem1 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
+            problem2 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
         math_problem_tuple_inner_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
@@ -3702,7 +3708,7 @@ def display_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return
 
-def display_integration_calculation_of_high_school3(request):
+def display_integral_calculation_of_high_school3(request):
     """高校3年生用の積分計算の問題をブラウザ表示
     
     Args:
@@ -3712,11 +3718,17 @@ def display_integration_calculation_of_high_school3(request):
         render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
     """
     PROBLEM_NUMBER = 10
+    integral_types = request.POST.getlist("integral_type")
+    if not(integral_types):
+        integral_types.append("indefinite_integral")
+        integral_types.append("definite_integral")
     calculation_types = request.POST.getlist("calculation_type")
+    if not(calculation_types):
+        calculation_types.append("substitution_of_linear_expression")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
-        problem1 = IntegrationCalculationOfHighSchool3(calculation_types=calculation_types)
-        problem2 = IntegrationCalculationOfHighSchool3(calculation_types=calculation_types)
+        problem1 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
+        problem2 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return

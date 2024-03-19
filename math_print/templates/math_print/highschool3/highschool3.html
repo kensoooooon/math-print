@@ -56,12 +56,29 @@
             <p>積分計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                <small class="text-muted">不定積分と定積分</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="indefenite_integral" name="integral_type" id="indefenite_integral">
+                        <label class="form-check-label" for="indefenite_integral">
+                            不定積分
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="definite_integral" name="integral_type" id="definite_integral">
+                        <label class="form-check-label" for="definite_integral">
+                            定積分
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`integral_type`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`integral_type`)" value="全部はずし">
+                </div>
                 <small class="text-muted">使用する公式</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="composite_function_with_polynomial" name="calculation_type" id="integration_composite_function_with_polynomial">
-                        <label class="form-check-label" for="integration_composite_function_with_polynomial">
-                            合成関数の微分(多項式)
+                        <input class="form-check-input" type="checkbox" value="substitution_of_linear_expression" name="calculation_type" id="substitution_of_linear_expression">
+                        <label class="form-check-label" for="substitution_of_linear_expression">
+                            1次式の置換
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`calculation_type`)" value="全部のせ">
@@ -70,26 +87,26 @@
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="IntegrationCalculationFivePaperRadio" checked>
-                        <label class="form-check-label" for="IntegrationCalculationFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="IntegralCalculationFivePaperRadio" checked>
+                        <label class="form-check-label" for="IntegralCalculationFivePaperRadio">
                             10問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="IntegrationCalculationTenPaperRadio">
-                        <label class="form-check-label" for="IntegrationCalculationTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="IntegralCalculationTenPaperRadio">
+                        <label class="form-check-label" for="IntegralCalculationTenPaperRadio">
                             10問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="IntegrationCalculationFifteenPaperRadio">
-                        <label class="form-check-label" for="IntegrationCalculationFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="IntegralCalculationFifteenPaperRadio">
+                        <label class="form-check-label" for="IntegralCalculationFifteenPaperRadio">
                             10問×15枚
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs3_integration_calculation_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'hs3_integration_calculation_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs3_integral_calculation_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'hs3_integral_calculation_display' %}">      
             </form>
         </div>
     </div>

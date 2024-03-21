@@ -59,8 +59,8 @@
                 <small class="text-muted">不定積分と定積分</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="indefenite_integral" name="integral_type" id="indefenite_integral">
-                        <label class="form-check-label" for="indefenite_integral">
+                        <input class="form-check-input" type="checkbox" value="indefinite_integral" name="integral_type" id="indefinite_integral">
+                        <label class="form-check-label" for="indefinite_integral">
                             不定積分
                         </label>
                     </div>
@@ -72,6 +72,17 @@
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`integral_type`)" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`integral_type`)" value="全部はずし">
+                </div>
+                <small class="text-muted">使用される関数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="n_dimension" name="used_function" id="used_function_n_dimension_function">
+                        <label class="form-check-label" for="used_function_n_dimension_function">
+                            n次関数
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`used_function`)" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`used_function`)" value="全部はずし">
                 </div>
                 <small class="text-muted">使用する公式</small>
                 <div class="form-group">

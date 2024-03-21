@@ -2050,6 +2050,9 @@ def print_integral_calculation_of_high_school3(request):
     if not(integral_types):
         integral_types.append("indefinite_integral")
         integral_types.append("definite_integral")
+    used_functions = request.POST.getlist("used_function")
+    if not(used_functions):
+        used_functions.append("n_dimension")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
@@ -2057,8 +2060,14 @@ def print_integral_calculation_of_high_school3(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
-            problem1 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
-            problem2 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
+            problem1 = IntegralCalculationOfHighSchool3(
+                integral_types=integral_types, used_functions=used_functions,
+                calculation_types=calculation_types
+                )
+            problem2 = IntegralCalculationOfHighSchool3(
+                integral_types=integral_types, used_functions=used_functions,
+                calculation_types=calculation_types
+                )
         math_problem_tuple_inner_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
@@ -3722,13 +3731,20 @@ def display_integral_calculation_of_high_school3(request):
     if not(integral_types):
         integral_types.append("indefinite_integral")
         integral_types.append("definite_integral")
+    used_functions = request.POST.getlist("used_function")
+    if not(used_functions):
+        used_functions.append("n_dimension")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
-        problem1 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
-        problem2 = IntegralCalculationOfHighSchool3(integral_types=integral_types, calculation_types=calculation_types)
+        problem1 = IntegralCalculationOfHighSchool3(
+            integral_types=integral_types, used_functions=used_functions,
+            calculation_types=calculation_types)
+        problem2 = IntegralCalculationOfHighSchool3(
+            integral_types=integral_types, used_functions=used_functions,
+            calculation_types=calculation_types)
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return

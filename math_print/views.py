@@ -2052,7 +2052,8 @@ def print_integral_calculation_of_high_school3(request):
         integral_types.append("definite_integral")
     used_functions = request.POST.getlist("used_function")
     if not(used_functions):
-        used_functions.append("n_dimension")
+        used_functions.append("n_dimension_function")
+        used_functions.append("fractional_function")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
@@ -3733,7 +3734,8 @@ def display_integral_calculation_of_high_school3(request):
         integral_types.append("definite_integral")
     used_functions = request.POST.getlist("used_function")
     if not(used_functions):
-        used_functions.append("n_dimension")
+        used_functions.append("n_dimension_function")
+        used_functions.append("fractional_function")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")

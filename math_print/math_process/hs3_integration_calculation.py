@@ -53,10 +53,8 @@ class IntegralCalculationOfHighSchool3:
         """
         x = sy.Symbol("x")
         # k(ax + b)^n
-        if used_function == "n_dimension":
-            linear_function = self._random_n_dimension_function(1)
-            a = linear_function.coeff(x, 1)
-            b = linear_function.coeff(x, 0)
+        if used_function == "n_dimension_function":
+            linear_function = self._random_n_dimension_function(1, use_frac=False)
             n = sy.Integer(randint(3, 6))
             k = self._random_number(use_frac=False, including_zero=False)
             f = k * (linear_function ** n)
@@ -65,6 +63,18 @@ class IntegralCalculationOfHighSchool3:
             f_down_latex = sy.latex(f_down)
             latex_problem = f"\\int {f_down_latex} \\, dx"
             latex_answer = f"= {f_latex} + C"
+        # k/(ax+b), k/(ax+b)^n
+        # next (logも合わせて出したい)
+        elif used_function == "fractional_function":
+            linear_function = self._random_n_dimension_function(1, use_frac=False)
+            k = self._random_number(use_frac=False, including_zero=False)
+            n = sy.Integer(randint(1, 2))
+            f = k / (linear_function ** n)
+            f_latex = sy.latex(f)
+            f_down = sy.diff(f, x)
+            f_down_latex = sy.latex(f_down)
+            latex_problem = f"\\int {f_down_latex} \\, dx"
+            latex_answer = f"={f_latex} + C"
         return latex_answer, latex_problem
     
     def _random_n_dimension_function(self, dimension: int, use_frac: bool=True) -> sy.Add:
@@ -87,8 +97,8 @@ class IntegralCalculationOfHighSchool3:
         x = sy.Symbol("x")
         function = 0
         for i in range(dimension):
-            function += self._random_number() * (x ** i)
-        function += self._random_number(including_zero=False) * (x ** dimension)
+            function += self._random_number(use_frac=use_frac) * (x ** i)
+        function += self._random_number(use_frac=use_frac, including_zero=False) * (x ** dimension)
         return function
     
     def _random_number(self, use_frac: bool = True, including_zero: bool = True) -> Union[sy.Integer, sy.Rational]:

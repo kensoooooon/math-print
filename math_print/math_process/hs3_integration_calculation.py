@@ -21,14 +21,10 @@ class IntegralCalculationOfHighSchool3:
         """
         sy.init_printing(order='grevlex')
         selected_integral_type = choice(settings["integral_types"])
-        print(f"selected_integral_type: {selected_integral_type}")
         selected_calculation_type = choice(settings["calculation_types"])
-        print(f"selected_calculation_type: {selected_calculation_type}")
         used_function = choice(settings["used_functions"])
-        print(f"used_function: {used_function}")
         if selected_integral_type == "indefinite_integral":
             if selected_calculation_type == "substitution_of_linear_expression":
-                print("hit")
                 self.latex_answer, self.latex_problem = self._make_indefinite_substitution_of_linear_expression_problem(used_function)
         elif selected_integral_type == "definite_integral":
             if selected_calculation_type == "substitution_of_linear_expression":
@@ -61,16 +57,14 @@ class IntegralCalculationOfHighSchool3:
             linear_function = self._random_n_dimension_function(1)
             a = linear_function.coeff(x, 1)
             b = linear_function.coeff(x, 0)
-            n = sy.Integer(randint(2, 6))
-            k = self._random_number(including_zero=False)
-            f = k * (a * x + b) ** n
+            n = sy.Integer(randint(3, 6))
+            k = self._random_number(use_frac=False, including_zero=False)
+            f = k * (linear_function ** n)
             f_latex = sy.latex(f)
             f_down = sy.diff(f, x)
             f_down_latex = sy.latex(f_down)
             latex_problem = f"\\int {f_down_latex} \\, dx"
-            print(f"latex_problem: {latex_problem}")
             latex_answer = f"= {f_latex} + C"
-            print(f"latex_answer: {latex_answer}")
         return latex_answer, latex_problem
     
     def _random_n_dimension_function(self, dimension: int, use_frac: bool=True) -> sy.Add:
@@ -113,9 +107,9 @@ class IntegralCalculationOfHighSchool3:
         else:
             number_type = "integer"
         if number_type == "integer":
-            number = sy.Integer(randint(1, 8))
+            number = sy.Integer(randint(1, 6))
         elif number_type == "frac":
-            denominator = sy.Integer(randint(2, 8))
+            denominator = sy.Integer(randint(2, 6))
             divisors = set(sy.divisors(denominator))
             numbers = set(range(1, denominator+1))
             candidates = numbers - divisors

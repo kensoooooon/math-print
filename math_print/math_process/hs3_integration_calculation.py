@@ -1,4 +1,5 @@
 from random import choice, randint, random
+import re
 from typing import Dict, Optional, Tuple, Union
 
 import sympy as sy
@@ -53,8 +54,8 @@ class IntegralCalculationOfHighSchool3:
         """
         x = sy.Symbol("x")
         # k(ax + b)^n
+        linear_function = self._random_n_dimension_function(1, use_frac=False)
         if used_function == "n_dimension_function":
-            linear_function = self._random_n_dimension_function(1, use_frac=False)
             n = sy.Integer(randint(3, 6))
             k = self._random_number(use_frac=False, including_zero=False)
             f = k * (linear_function ** n)
@@ -63,18 +64,23 @@ class IntegralCalculationOfHighSchool3:
             f_down_latex = sy.latex(f_down)
             latex_problem = f"\\int {f_down_latex} \\, dx"
             latex_answer = f"= {f_latex} + C"
-        # k/(ax+b), k/(ax+b)^n
-        # next (logも合わせて出したい)
+        # k/(ax+b), k/(ax+b)^n) (n=1 or 2)
         elif used_function == "fractional_function":
-            linear_function = self._random_n_dimension_function(1, use_frac=False)
-            k = self._random_number(use_frac=False, including_zero=False)
             n = sy.Integer(randint(1, 2))
-            f = k / (linear_function ** n)
-            f_latex = sy.latex(f)
+            k = self._random_number(use_frac=False, including_zero=False)
+            if random() > 0.5:
+                f = k * 1 / (linear_function)
+                f_latex = sy.latex(f)
+            else:
+                f = k * sy.log(linear_function)
+                pattern = r'\\left\((.*?)\\right\)'
+                f_latex = re.sub(pattern, r'| \1 |', sy.latex(f))
             f_down = sy.diff(f, x)
             f_down_latex = sy.latex(f_down)
             latex_problem = f"\\int {f_down_latex} \\, dx"
             latex_answer = f"={f_latex} + C"
+        elif used_function == "sin":
+            pass
         return latex_answer, latex_problem
     
     def _random_n_dimension_function(self, dimension: int, use_frac: bool=True) -> sy.Add:

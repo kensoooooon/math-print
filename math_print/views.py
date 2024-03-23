@@ -2054,6 +2054,7 @@ def print_integral_calculation_of_high_school3(request):
     if not(used_functions):
         used_functions.append("n_dimension_function")
         used_functions.append("fractional_function")
+        used_functions.append("sin")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
@@ -3736,6 +3737,7 @@ def display_integral_calculation_of_high_school3(request):
     if not(used_functions):
         used_functions.append("n_dimension_function")
         used_functions.append("fractional_function")
+        used_functions.append("sin")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")

@@ -52,6 +52,23 @@ class IntegralCalculationOfHighSchool3:
             
             基本的に積分後を主体として、微分先をやらせたほうがよい場合が多い
         """
+        
+        def problem_and_answer(function_latex_for_answer: str, function_latex_for_problem: str) -> Tuple[str, str]:
+            """不定積分用の問題と解答を出力
+
+            Args:
+                function_for_answer (str): 解答に利用したいlatex形式の式
+                function_for_problem (str): 問題に利用したいlatex形式の式
+
+            Returns:
+                Tuple[str, str]: latex形式の問題と解答
+                - latex_answer (str): 解答
+                - latex_problem (str): 問題
+            """
+            latex_answer = f"={function_latex_for_answer} + C"
+            latex_problem = f"\\int {function_latex_for_problem} \\, dx"
+            return latex_answer, latex_problem
+    
         x = sy.Symbol("x")
         # k(ax + b)^n
         linear_function = self._random_n_dimension_function(1, use_frac=False)
@@ -60,10 +77,8 @@ class IntegralCalculationOfHighSchool3:
             k = self._random_number(use_frac=False, including_zero=False)
             f = k * (linear_function ** n)
             f_latex = sy.latex(f)
-            f_down = sy.diff(f, x)
-            f_down_latex = sy.latex(f_down)
-            latex_problem = f"\\int {f_down_latex} \\, dx"
-            latex_answer = f"= {f_latex} + C"
+            f_down_latex = self._differentiate_latex(f)
+            latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
         # k/(ax+b), k/(ax+b)^n) (n=1 or 2)
         elif used_function == "fractional_function":
             n = sy.Integer(randint(1, 2))
@@ -75,13 +90,45 @@ class IntegralCalculationOfHighSchool3:
                 f = k * sy.log(linear_function)
                 pattern = r'\\left\((.*?)\\right\)'
                 f_latex = re.sub(pattern, r'| \1 |', sy.latex(f))
-            f_down = sy.diff(f, x)
-            f_down_latex = sy.latex(f_down)
-            latex_problem = f"\\int {f_down_latex} \\, dx"
-            latex_answer = f"={f_latex} + C"
+            f_down_latex = self._differentiate_latex(f)
+            latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
         elif used_function == "sin":
             pass
         return latex_answer, latex_problem
+    
+    def _problem_and_answer_for_indefinite_integral(self, function, rewrite_function=None) -> Tuple[str, str]:
+        """与えられた関数を微分し、不定積分の問題と解答を出力
+
+        Args:
+            function : 微分対象となる関数
+            rewrite_function (_type_, optional): 書き換えを行いたい関数. Defaults to None.
+
+        Returns:
+            Tuple[str, str]: latex形式で記述された解答と問題
+            - latex_answer (str): 解答
+            - latex_problem (str): 問題
+        
+        Developing:
+            いったん保留で。対数のときのような特殊な処理を挟むと、こちらに結局全移行してしまいそう
+                全体を見てみて、特殊な処理が少なそうだったら、あらためて稼働する
+        """
+        x = sy.Symbol("x")
+        f_down = sy.diff(function, x)
+        
+
+    def _differentiate_latex(self, function) -> str:
+        """関数を微分し、latexを作成・出力するための関数
+
+        Args:
+            function: 微分対象となる関数
+        
+        Returns:
+            f_down_latex (str): 微分された関数のlatex形式
+        """
+        x = sy.Symbol("x")
+        f_down = sy.diff(function, x)
+        f_down_latex = sy.latex(f_down)
+        return f_down_latex
     
     def _random_n_dimension_function(self, dimension: int, use_frac: bool=True) -> sy.Add:
         """指定された次数のn次関数をランダムに出力する

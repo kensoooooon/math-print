@@ -1,7 +1,7 @@
 {% extends 'math_print/base.html' %}
 
 {% block title %}
-計算練習(高3)
+積分計算
 {% endblock %}
 
 {% block hero_unit %}
@@ -14,6 +14,7 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -26,103 +27,123 @@
         });
 </script>
 <script>
-    function checkAllCheckBoxes(checkbox_name){
-        let checkboxes = document.getElementsByName(checkbox_name);
+function checkAllStatus(target){
+    let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < checkboxes.length; i++) {
-            if (!(checkboxes[i].checked)) {
-                checkboxes[i].checked = true;
-            }
+    for (let i =0; i < statuses.length; i++){
+        if (!(statuses[i].checked)){
+            statuses[i].checked = true;
         }
     }
+}
 
-    function uncheckAllCheckBoxes(checkbox_name){
-        let checkboxes = document.getElementsByName(checkbox_name);
+function uncheckAllStatus(target){
+    let statuses = document.getElementsByName(target);
 
-        for (let i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                checkboxes[i].checked = false;
-            }
+    for (let i =0; i < statuses.length; i++){
+        if (statuses[i].checked){
+            statuses[i].checked = false;
         }
     }
-
+}
 </script>
 {% endblock %}
 
 {% block body %}
 <div class="container-fluid">
+
     <div class="row">
         <div class="col border-end border-bottom">
-            <p>積分計算</p>
+            <p id="formula_with_symbol">積分計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <small class="text-muted">不定積分と定積分</small>
+                <small class="text-muted">積分計算のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="indefinite_integral" name="integral_type" id="indefinite_integral">
-                        <label class="form-check-label" for="indefinite_integral">
+                        <input class="form-check-input" type="checkbox" value="indefinite_integral" name="integral_type" id="IntegrationOfCalculationIndefiniteIntegral" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationIndefiniteIntegral">
                             不定積分
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="definite_integral" name="integral_type" id="definite_integral">
-                        <label class="form-check-label" for="definite_integral">
+                        <input class="form-check-input" type="checkbox" value="definite_integral" name="integral_type" id="IntegrationOfCalculationDefiniteIntegral" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationDefiniteIntegral">
                             定積分
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`integral_type`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`integral_type`)" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('integral_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('integral_type')" value="全部はずし">
                 </div>
-                <small class="text-muted">使用される関数</small>
+                <small class="text-muted">使用される積分公式</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="n_dimension_function" name="used_function" id="used_function_n_dimension_function">
-                        <label class="form-check-label" for="used_function_n_dimension_function">
-                            n次関数
+                        <input class="form-check-input" type="checkbox" value="n_dimension_function" name="used_formula" id="IntegrationOfCalculationNDimension" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationNDimension">
+                            \( \int x^n \, dx = \dfrac{1}{n+1} x^{n+1} + C \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="fractional_function" name="used_function" id="used_function_fractional_function">
-                        <label class="form-check-label" for="used_function_fractional_function">
-                            分数関数
+                        <input class="form-check-input" type="checkbox" value="1/x" name="used_formula" id="IntegrationOfCalculation1/x" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculation1/x">
+                            \( \int \dfrac{dx}{x} = \log{x} + C \)
                         </label>
                     </div>
-                    <input class="form-check-input" type="checkbox" value="sin" name="used_function" id="used_function_sin">
-                    <label class="form-check-label" for="used_function_sin">
-                        \\( sin \\)
-                    </label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1/x^2" name="used_formula" id="IntegrationOfCalculation1/x^2" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculation1/x^2">
+                            \( \int \dfrac{dx}{x^2} = -\frac{1}{x} + C \)
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="sin" name="used_formula" id="IntegrationOfCalculationSin" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationSin">
+                            \( \int sin{x} \, dx = -cos{x} + C\)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="cos" name="used_formula" id="IntegrationOfCalculationCos" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationCos">
+                            \( \int cos{x} \, dx = sin{x} + C \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1/cos^2x" name="used_formula" id="IntegrationOfCalculationCos" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationCos">
+                            \( \int_{ }^{ } \dfrac{1}{cos^{2}x} \, dx = tan{x} + C \)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_formula')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_formula')" value="全部はずし">
                 </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`used_function`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`used_function`)" value="全部はずし">
-                </div>
-                <small class="text-muted">使用する公式</small>
+                <small class="text-muted">積分計算のタイプ</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="substitution_of_linear_expression" name="calculation_type" id="substitution_of_linear_expression">
-                        <label class="form-check-label" for="substitution_of_linear_expression">
+                        <input class="form-check-input" type="checkbox" value="substitution_of_linear_expression" name="calculation_type" id="IntegrationOfCalculationSubstituteOfLinearExpression" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationSubstituteOfLinearExpression">
                             1次式の置換
                         </label>
                     </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllCheckBoxes(`calculation_type`)" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllCheckBoxes(`calculation_type`)" value="全部はずし">
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="IntegralCalculationFivePaperRadio" checked>
-                        <label class="form-check-label" for="IntegralCalculationFivePaperRadio">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="IntegrationOfCalculationFivePaperRadio" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationFivePaperRadio">
                             10問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="IntegralCalculationTenPaperRadio">
-                        <label class="form-check-label" for="IntegralCalculationTenPaperRadio">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="IntegrationOfCalculationTenPaperRadio">
+                        <label class="form-check-label" for="IntegrationOfCalculationTenPaperRadio">
                             10問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="IntegralCalculationFifteenPaperRadio">
-                        <label class="form-check-label" for="IntegralCalculationFifteenPaperRadio">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="IntegrationOfCalculationFifteenPaperRadio">
+                        <label class="form-check-label" for="IntegrationOfCalculationFifteenPaperRadio">
                             10問×15枚
                         </label>
                     </div>
@@ -132,8 +153,13 @@
             </form>
         </div>
     </div>
+
+    <br>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>
     </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2024 有明学習振興</a></small>
+    </footer>
 </div>
 {% endblock %}

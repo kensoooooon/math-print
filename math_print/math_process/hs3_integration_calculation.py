@@ -18,12 +18,12 @@ class IntegralCalculationOfHighSchool3:
             settings (dict): 問題の各種設定を格納
             - integral_types: indefinite_integral(不定積分)か、definite_integral(定積分)のいずれか
             - calculation_types: substitution_of_linear_expression(1次式の置換)などの計算ギミックの設定
-            - used_functions: n_dimension_function(n次関数)などの利用される関数の設定
+            - used_formulas: n_dimension_function(n次関数)などの利用される積分公式の確認
         """
         sy.init_printing(order='grevlex')
         selected_integral_type = choice(settings["integral_types"])
         selected_calculation_type = choice(settings["calculation_types"])
-        used_function = choice(settings["used_functions"])
+        used_function = choice(settings["used_formula"])
         if selected_integral_type == "indefinite_integral":
             if selected_calculation_type == "substitution_of_linear_expression":
                 self.latex_answer, self.latex_problem = self._make_indefinite_substitution_of_linear_expression_problem(used_function)
@@ -31,7 +31,7 @@ class IntegralCalculationOfHighSchool3:
             if selected_calculation_type == "substitution_of_linear_expression":
                 self.latex_answer, self.latex_problem = self._make_definite_substitution_of_linear_expression_problem(used_function)
 
-    def _make_indefinite_substitution_of_linear_expression_problem(self, used_function: str) -> Tuple[str, str]:
+    def _make_indefinite_substitution_of_linear_expression_problem(self, used_formula: str) -> Tuple[str, str]:
         """1次式の置換を用いるタイプの不定計算問題を作成
 
         Args:
@@ -72,28 +72,40 @@ class IntegralCalculationOfHighSchool3:
         x = sy.Symbol("x")
         # k(ax + b)^n
         linear_function = self._random_n_dimension_function(1, use_frac=False)
-        if used_function == "n_dimension_function":
+        if used_formula == "n_dimension_function":
             n = sy.Integer(randint(3, 6))
             k = self._random_number(use_frac=False, including_zero=False)
             f = k * (linear_function ** n)
             f_latex = sy.latex(f)
             f_down_latex = self._differentiate_latex(f)
             latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
-        # k/(ax+b), k/(ax+b)^n) (n=1 or 2)
-        elif used_function == "fractional_function":
+        # k/(ax+b)
+        elif used_formula == "1/x":
             n = sy.Integer(randint(1, 2))
             k = self._random_number(use_frac=False, including_zero=False)
-            if random() > 0.5:
-                f = k * 1 / (linear_function)
-                f_latex = sy.latex(f)
-            else:
-                f = k * sy.log(linear_function)
-                pattern = r'\\left\((.*?)\\right\)'
-                f_latex = re.sub(pattern, r'| \1 |', sy.latex(f))
+            f = k * 1 / (linear_function)
+            f_latex = sy.latex(f)
             f_down_latex = self._differentiate_latex(f)
             latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
-        elif used_function == "sin":
-            pass
+        # k/(ax+b)^2
+        elif used_formula == "1/x^2":
+            f = k * sy.log(linear_function)
+            pattern = r'\\left\((.*?)\\right\)'
+            f_latex = re.sub(pattern, r'| \1 |', sy.latex(f))
+            f_down_latex = self._differentiate_latex(f)
+            latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
+        elif used_formula == "sin":
+            k = self._random_number(use_frac=True, including_zero=False)
+            f = k * sy.sin(linear_function)
+            f_latex = sy.latex(f)
+            f_down_latex = self._differentiate_latex(f)
+            latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
+        elif used_formula == "cos":
+            k = self._random_number(use_frac=True, including_zero=False)
+            f = k * sy.cos(linear_function)
+            f_latex = sy.latex(f)
+            f_down_latex = self._differentiate_latex(f)
+            latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
         return latex_answer, latex_problem
     
     def _problem_and_answer_for_indefinite_integral(self, function, rewrite_function=None) -> Tuple[str, str]:
@@ -114,7 +126,6 @@ class IntegralCalculationOfHighSchool3:
         """
         x = sy.Symbol("x")
         f_down = sy.diff(function, x)
-        
 
     def _differentiate_latex(self, function) -> str:
         """関数を微分し、latexを作成・出力するための関数

@@ -2044,17 +2044,28 @@ def print_formula_with_symbol(request):
     return render_to_return
 
 def print_integral_calculation_of_high_school3(request):
+    """高校3年生の積分の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
     PROBLEM_NUMBER = 10
     paper_number = int(request.POST["paper_number"])
     integral_types = request.POST.getlist("integral_type")
     if not(integral_types):
         integral_types.append("indefinite_integral")
         integral_types.append("definite_integral")
-    used_functions = request.POST.getlist("used_function")
-    if not(used_functions):
-        used_functions.append("n_dimension_function")
-        used_functions.append("fractional_function")
-        used_functions.append("sin")
+    used_formulas = request.POST.getlist("used_formula")
+    if not(used_formulas):
+        used_formulas.append("n_dimension_function")
+        used_formulas.append("1/x")
+        used_formulas.append("1/x^2")
+        used_formulas.append("sin")
+        used_formulas.append("cos")
+        used_formulas.append("1/cos^2x")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
@@ -2063,11 +2074,11 @@ def print_integral_calculation_of_high_school3(request):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
             problem1 = IntegralCalculationOfHighSchool3(
-                integral_types=integral_types, used_functions=used_functions,
+                integral_types=integral_types, used_formulas=used_formulas,
                 calculation_types=calculation_types
                 )
             problem2 = IntegralCalculationOfHighSchool3(
-                integral_types=integral_types, used_functions=used_functions,
+                integral_types=integral_types, used_formulas=used_formulas,
                 calculation_types=calculation_types
                 )
         math_problem_tuple_inner_list.append((problem1, problem2))
@@ -3733,21 +3744,24 @@ def display_integral_calculation_of_high_school3(request):
     if not(integral_types):
         integral_types.append("indefinite_integral")
         integral_types.append("definite_integral")
-    used_functions = request.POST.getlist("used_function")
-    if not(used_functions):
-        used_functions.append("n_dimension_function")
-        used_functions.append("fractional_function")
-        used_functions.append("sin")
+    used_formulas = request.POST.getlist("used_formula")
+    if not(used_formulas):
+        used_formulas.append("n_dimension_function")
+        used_formulas.append("1/x")
+        used_formulas.append("1/x^2")
+        used_formulas.append("sin")
+        used_formulas.append("cos")
+        used_formulas.append("1/cos^2x")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = IntegralCalculationOfHighSchool3(
-            integral_types=integral_types, used_functions=used_functions,
+            integral_types=integral_types, used_formulas=used_formulas,
             calculation_types=calculation_types)
         problem2 = IntegralCalculationOfHighSchool3(
-            integral_types=integral_types, used_functions=used_functions,
+            integral_types=integral_types, used_formulas=used_formulas,
             calculation_types=calculation_types)
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})

@@ -4,7 +4,7 @@ from typing import Dict, Optional, Tuple, Union
 
 import sympy as sy
 
-class IntegralCalculationOfHighSchool3:
+class IntegralCalculationOfLinearFunctionReplacement:
     """高校3年生用の積分計算の問題と解答を出力
     
     Attributes:
@@ -23,13 +23,16 @@ class IntegralCalculationOfHighSchool3:
         sy.init_printing(order='grevlex')
         selected_integral_type = choice(settings["integral_types"])
         selected_calculation_type = choice(settings["calculation_types"])
-        used_function = choice(settings["used_formula"])
+        used_formula = choice(settings["used_formulas"])
         if selected_integral_type == "indefinite_integral":
             if selected_calculation_type == "substitution_of_linear_expression":
-                self.latex_answer, self.latex_problem = self._make_indefinite_substitution_of_linear_expression_problem(used_function)
+                self.latex_answer, self.latex_problem = self._make_indefinite_substitution_of_linear_expression_problem(used_formula)
         elif selected_integral_type == "definite_integral":
             if selected_calculation_type == "substitution_of_linear_expression":
-                self.latex_answer, self.latex_problem = self._make_definite_substitution_of_linear_expression_problem(used_function)
+                self.latex_answer, self.latex_problem = self._make_definite_substitution_of_linear_expression_problem(used_formula)
+    
+    def __repr__(self):
+        return f"latex_answer: {self.latex_answer}, latex_problem: {self.latex_problem}"
 
     def _make_indefinite_substitution_of_linear_expression_problem(self, used_formula: str) -> Tuple[str, str]:
         """1次式の置換を用いるタイプの不定計算問題を作成
@@ -51,6 +54,16 @@ class IntegralCalculationOfHighSchool3:
                     →とりあえず作ってみて、あれそうだったら改修なり撤去するなりでよさそう
             
             基本的に積分後を主体として、微分先をやらせたほうがよい場合が多い
+            
+            3/31
+            おおむねうまくいっているが、
+                ・重複した表現が多いのが気にかかる。同じ処理をひとまとめにして、分岐も含めてまとめるべき？
+                ・cosやsinは、何だかマイナスが勝手に消されている雰囲気を感じる。チェックする
+                    ->勝手に消されているでファイナルアンサー。ただ、そこまでの影響もないような気はするので、いったん保留
+            4/2
+            引き続き作業。三角関数の続き
+                sin^2=-1/tanxはどうも難しそう。30分程度苦戦したが、うまくいかなかった。
+                そのため、とりあえず手作業で実装するべき
         """
         
         def problem_and_answer(function_latex_for_answer: str, function_latex_for_problem: str) -> Tuple[str, str]:
@@ -89,6 +102,7 @@ class IntegralCalculationOfHighSchool3:
             latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
         # k/(ax+b)^2
         elif used_formula == "1/x^2":
+            k = self._random_number(use_frac=False, including_zero=False)
             f = k * sy.log(linear_function)
             pattern = r'\\left\((.*?)\\right\)'
             f_latex = re.sub(pattern, r'| \1 |', sy.latex(f))
@@ -106,6 +120,25 @@ class IntegralCalculationOfHighSchool3:
             f_latex = sy.latex(f)
             f_down_latex = self._differentiate_latex(f)
             latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
+        elif used_formula == "1/cos^2x":
+            k = self._random_number(use_frac=False, including_zero=False)
+            f = k * sy.tan(linear_function)
+            f_latex = sy.latex(f)
+            f_down_latex = self._differentiate_latex(f, rewrite=sy.cos, simplify=True)
+            latex_answer, latex_problem = problem_and_answer(f_latex, f_down_latex)
+        elif used_formula == "1/sin^2x":
+            """
+            どうも手作業で実装したほうが早そうなので、もう書く
+            """
+            a = self._random_number(use_frac=False, including_zero=False)
+            b = self._random_number(use_frac=False, including_zero=False)
+            linear_function = a * x + b
+            k = self._random_number(use_frac=False, including_zero=False)
+            f = k * (1 / sy.sin(linear_function) ** 2)
+            f_latex = sy.latex(f)
+            f_up = -1 * k * (1 / a) * (1 / sy.tan(linear_function))
+            f_up_latex = sy.latex(f_up)
+            latex_answer, latex_problem = problem_and_answer(f_up_latex, f_latex)
         return latex_answer, latex_problem
     
     def _problem_and_answer_for_indefinite_integral(self, function, rewrite_function=None) -> Tuple[str, str]:
@@ -127,17 +160,24 @@ class IntegralCalculationOfHighSchool3:
         x = sy.Symbol("x")
         f_down = sy.diff(function, x)
 
-    def _differentiate_latex(self, function) -> str:
+    def _differentiate_latex(self, function, rewrite=False, simplify=False) -> str:
         """関数を微分し、latexを作成・出力するための関数
 
         Args:
             function: 微分対象となる関数
+            rewrite (bool): 書き直しを必要とするか否か。デフォルトはFalse
+            simplify (bool): 単純化を必要とするか否か。デフォルトはFalse
         
         Returns:
             f_down_latex (str): 微分された関数のlatex形式
         """
         x = sy.Symbol("x")
-        f_down = sy.diff(function, x)
+        if rewrite:
+            f_down = sy.diff(function, x).rewrite(rewrite)
+        else:
+            f_down = sy.diff(function, x)
+        if simplify:
+            f_down = sy.simplify(f_down)
         f_down_latex = sy.latex(f_down)
         return f_down_latex
     

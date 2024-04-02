@@ -67,7 +67,7 @@ from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import Add
 from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
 from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
-from .math_process.hs3_integration_calculation import IntegralCalculationOfHighSchool3
+from .math_process.hs3_integration_calculation_of_linear_function_replacement import IntegralCalculationOfLinearFunctionReplacement
 
 
 
@@ -2043,8 +2043,8 @@ def print_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
     return render_to_return
 
-def print_integral_calculation_of_high_school3(request):
-    """高校3年生の積分の問題のプリント用表示を担当
+def print_integral_calculation_of_linear_function_replacement(request):
+    """高校3年生の1次式の置換を用いるタイプの積分の問題のプリント用表示を担当
 
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -2066,6 +2066,7 @@ def print_integral_calculation_of_high_school3(request):
         used_formulas.append("sin")
         used_formulas.append("cos")
         used_formulas.append("1/cos^2x")
+        used_formulas.append("1/sin^2x")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
@@ -2073,16 +2074,17 @@ def print_integral_calculation_of_high_school3(request):
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
-            problem1 = IntegralCalculationOfHighSchool3(
+            problem1 = IntegralCalculationOfLinearFunctionReplacement(
                 integral_types=integral_types, used_formulas=used_formulas,
                 calculation_types=calculation_types
                 )
-            problem2 = IntegralCalculationOfHighSchool3(
+            problem2 = IntegralCalculationOfLinearFunctionReplacement(
                 integral_types=integral_types, used_formulas=used_formulas,
                 calculation_types=calculation_types
                 )
-        math_problem_tuple_inner_list.append((problem1, problem2))
-    render_to_return = render(request, 'math_print/highschool3/integration_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
 
 # display section
@@ -3730,8 +3732,8 @@ def display_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return
 
-def display_integral_calculation_of_high_school3(request):
-    """高校3年生用の積分計算の問題をブラウザ表示
+def display_integral_calculation_of_linear_function_replacement(request):
+    """高校3年生用の1次式の置換を用いるタイプの積分計算の問題をブラウザ表示
     
     Args:
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
@@ -3752,15 +3754,16 @@ def display_integral_calculation_of_high_school3(request):
         used_formulas.append("sin")
         used_formulas.append("cos")
         used_formulas.append("1/cos^2x")
+        used_formulas.append("1/sin^2x")
     calculation_types = request.POST.getlist("calculation_type")
     if not(calculation_types):
         calculation_types.append("substitution_of_linear_expression")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
-        problem1 = IntegralCalculationOfHighSchool3(
+        problem1 = IntegralCalculationOfLinearFunctionReplacement(
             integral_types=integral_types, used_formulas=used_formulas,
             calculation_types=calculation_types)
-        problem2 = IntegralCalculationOfHighSchool3(
+        problem2 = IntegralCalculationOfLinearFunctionReplacement(
             integral_types=integral_types, used_formulas=used_formulas,
             calculation_types=calculation_types)
         math_problem_tuple_list.append((problem1, problem2))

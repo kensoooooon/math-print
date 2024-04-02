@@ -54,7 +54,7 @@ function uncheckAllStatus(target){
 
     <div class="row">
         <div class="col border-end border-bottom">
-            <p id="formula_with_symbol">積分計算</p>
+            <p id="formula_with_symbol">1次式の置換を用いるタイプの積分計算</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">積分計算のタイプ</small>
@@ -98,19 +98,26 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="sin" name="used_formula" id="IntegrationOfCalculationSin" checked>
                         <label class="form-check-label" for="IntegrationOfCalculationSin">
-                            \( \int sin{x} \, dx = -cos{x} + C\)
+                            \( \int \sin x \, dx = -\cos x + C\)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="cos" name="used_formula" id="IntegrationOfCalculationCos" checked>
                         <label class="form-check-label" for="IntegrationOfCalculationCos">
-                            \( \int cos{x} \, dx = sin{x} + C \)
+                            \( \int \cos{x} \, dx = \sin x + C \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="1/cos^2x" name="used_formula" id="IntegrationOfCalculationCos" checked>
-                        <label class="form-check-label" for="IntegrationOfCalculationCos">
-                            \( \int_{ }^{ } \dfrac{1}{cos^{2}x} \, dx = tan{x} + C \)
+                        <input class="form-check-input" type="checkbox" value="1/cos^2x" name="used_formula" id="IntegrationOfCalculation1/Cos^2x" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculation1/Cos^2x">
+                            \( \int_{ }^{ } \dfrac{1}{\cos^{2} x} \, dx = \tan x + C \)
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1/sin^2x" name="used_formula" id="IntegrationOfCalculation1/Sin^2x" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculation1/Sin^2x">
+                            \( \int_{ }^{ } \dfrac{1}{\sin^{2}x} \, dx = -\dfrac{1}{\tan x} + C \)
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_formula')" value="全部のせ">
@@ -148,8 +155,8 @@ function uncheckAllStatus(target){
                         </label>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs3_integral_calculation_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'hs3_integral_calculation_display' %}">      
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs3_integral_calculation_of_linear_function_replacement_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'hs3_integral_calculation_of_linear_function_replacement_display' %}">      
             </form>
         </div>
     </div>

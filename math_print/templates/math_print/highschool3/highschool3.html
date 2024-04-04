@@ -85,7 +85,7 @@ function uncheckAllStatus(target){
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" value="1/x" name="used_formula" id="IntegrationOfCalculation1/x" checked>
                         <label class="form-check-label" for="IntegrationOfCalculation1/x">
-                            \( \int \dfrac{dx}{x} = \log{x} + C \)
+                            \( \int \dfrac{dx}{x} = \log|{x}| + C \)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -122,17 +122,6 @@ function uncheckAllStatus(target){
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_formula')" value="全部のせ">
                     <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('used_formula')" value="全部はずし">
-                </div>
-                <small class="text-muted">積分計算のタイプ</small>
-                <div class="form-group">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="substitution_of_linear_expression" name="calculation_type" id="IntegrationOfCalculationSubstituteOfLinearExpression" checked>
-                        <label class="form-check-label" for="IntegrationOfCalculationSubstituteOfLinearExpression">
-                            1次式の置換
-                        </label>
-                    </div>
-                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('calculation_type')" value="全部のせ">
-                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('calculation_type')" value="全部はずし">
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

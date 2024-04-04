@@ -2067,20 +2067,15 @@ def print_integral_calculation_of_linear_function_replacement(request):
         used_formulas.append("cos")
         used_formulas.append("1/cos^2x")
         used_formulas.append("1/sin^2x")
-    calculation_types = request.POST.getlist("calculation_type")
-    if not(calculation_types):
-        calculation_types.append("substitution_of_linear_expression")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
             problem1 = IntegralCalculationOfLinearFunctionReplacement(
                 integral_types=integral_types, used_formulas=used_formulas,
-                calculation_types=calculation_types
                 )
             problem2 = IntegralCalculationOfLinearFunctionReplacement(
                 integral_types=integral_types, used_formulas=used_formulas,
-                calculation_types=calculation_types
                 )
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
@@ -3755,17 +3750,14 @@ def display_integral_calculation_of_linear_function_replacement(request):
         used_formulas.append("cos")
         used_formulas.append("1/cos^2x")
         used_formulas.append("1/sin^2x")
-    calculation_types = request.POST.getlist("calculation_type")
-    if not(calculation_types):
-        calculation_types.append("substitution_of_linear_expression")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = IntegralCalculationOfLinearFunctionReplacement(
             integral_types=integral_types, used_formulas=used_formulas,
-            calculation_types=calculation_types)
+        )
         problem2 = IntegralCalculationOfLinearFunctionReplacement(
             integral_types=integral_types, used_formulas=used_formulas,
-            calculation_types=calculation_types)
+        )
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return

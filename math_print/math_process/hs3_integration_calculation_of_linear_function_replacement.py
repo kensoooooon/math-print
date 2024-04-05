@@ -161,6 +161,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
             k = self._random_number(use_frac=True, including_zero=False)
             function = k * (-1 * sy.tan(linear_function))
             differentiated_function = k * a * (1 / sy.sin(linear_function) ** 2)
+        elif used_formula == "e^x":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = 
         return function, differentiated_function
     
     def _random_integer(self, min_abs: int = 1, max_abs: int = 6, positive_or_negative=None):

@@ -2060,7 +2060,7 @@ def print_integral_calculation_of_linear_function_replacement(request):
         integral_types.append("definite_integral")
     used_formulas = request.POST.getlist("used_formula")
     if not(used_formulas):
-        used_formulas.append("n_dimension_function")
+        used_formulas.append("x^n")
         used_formulas.append("1/x")
         used_formulas.append("1/x^2")
         used_formulas.append("sin")
@@ -2068,6 +2068,9 @@ def print_integral_calculation_of_linear_function_replacement(request):
         used_formulas.append("1/cos^2x")
         used_formulas.append("1/sin^2x")
         used_formulas.append("e^x")
+        used_formulas.append("a^x")
+        used_formulas.append("1/x^(1/2)")
+        used_formulas.append("x^(1/2)")
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
@@ -3744,7 +3747,7 @@ def display_integral_calculation_of_linear_function_replacement(request):
         integral_types.append("definite_integral")
     used_formulas = request.POST.getlist("used_formula")
     if not(used_formulas):
-        used_formulas.append("n_dimension_function")
+        used_formulas.append("x^n")
         used_formulas.append("1/x")
         used_formulas.append("1/x^2")
         used_formulas.append("sin")
@@ -3752,6 +3755,9 @@ def display_integral_calculation_of_linear_function_replacement(request):
         used_formulas.append("1/cos^2x")
         used_formulas.append("1/sin^2x")
         used_formulas.append("e^x")
+        used_formulas.append("a^x")
+        used_formulas.append("1/x^(1/2)")
+        used_formulas.append("x^(1/2)")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = IntegralCalculationOfLinearFunctionReplacement(

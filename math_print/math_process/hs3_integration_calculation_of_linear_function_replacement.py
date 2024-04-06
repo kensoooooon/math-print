@@ -102,6 +102,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 Tuple[str, str]: latex形式の問題と解答
                 - latex_answer (str): 解答
                 - latex_problem (str): 問題
+            
+            Note:
+                1/xで出てくる積分の絶対値記号の追加や、a^xで出てくるlog(a)のカッコの消去など、特別な措置が必要なものは別枠にて処理
             """
             latex_answer = f"={function_latex_for_answer} + C"
             latex_problem = f"\\int {function_latex_for_problem} \\, dx"
@@ -111,6 +114,11 @@ class IntegralCalculationOfLinearFunctionReplacement:
         if used_formula == "1/x":
             pattern = r'\\left\((.*?)\\right\)'
             function_latex = re.sub(pattern, r'| \1 |', sy.latex(function))
+        elif used_formula == "a^x":
+            pattern = r'\\log\\{\\left\((.*?)\\right\)\\}' 
+            result = re.sub(pattern, r'log\1', sy.latex(function))
+            result = re.sub(r'\\left\(|\\right\)', '', result)
+            function_latex = re.sub(r'\s+', '', result)
         else:
             function_latex = sy.latex(function)
         differentiated_function_latex = sy.latex(differentiated_function)
@@ -132,7 +140,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
         a = self._random_integer()
         b = self._random_integer()
         linear_function = a * x + b
-        if used_formula == "n_dimension_function":
+        if used_formula == "x^n":
             n = self._random_integer(min_abs=3, max_abs=6, positive_or_negative="positive")
             k = self._random_integer(min_abs=2, max_abs=3)
             function = k * linear_function ** n
@@ -163,7 +171,22 @@ class IntegralCalculationOfLinearFunctionReplacement:
             differentiated_function = k * a * (1 / sy.sin(linear_function) ** 2)
         elif used_formula == "e^x":
             k = self._random_number(use_frac=True, including_zero=False)
-            function = 
+            function = k * sy.E ** linear_function
+            differentiated_function = k * a * (sy.E ** linear_function)
+        elif used_formula == "a^x":
+            k = self._random_number(use_frac=True, including_zero=False)
+            base = self._random_integer(min_abs=2, max_abs=8, positive_or_negative="positive")
+            function = k * (base ** linear_function) / sy.log(base)
+            differentiated_function = k * a * (base ** linear_function)
+        elif used_formula == "1/x^(1/2)":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * 2 * sy.sqrt(linear_function)
+            differentiated_function = k * a * (1 / sy.sqrt(linear_function))
+        elif used_formula == "x^(1/2)":
+            # next is 表示
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * sy.Rational(2, 3) * linear_function * sy.sqrt(linear_function)
+            differentiated_function = k * a * sy.sqrt(linear_function)
         return function, differentiated_function
     
     def _random_integer(self, min_abs: int = 1, max_abs: int = 6, positive_or_negative=None):

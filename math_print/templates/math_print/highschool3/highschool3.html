@@ -77,7 +77,7 @@ function uncheckAllStatus(target){
                 <small class="text-muted">使用される積分公式</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="n_dimension_function" name="used_formula" id="IntegrationOfCalculationNDimension" checked>
+                        <input class="form-check-input" type="checkbox" value="x^n" name="used_formula" id="IntegrationOfCalculationNDimension" checked>
                         <label class="form-check-label" for="IntegrationOfCalculationNDimension">
                             \( \int x^n \, dx = \dfrac{1}{n+1} x^{n+1} + C \)
                         </label>
@@ -92,6 +92,19 @@ function uncheckAllStatus(target){
                         <input class="form-check-input" type="checkbox" value="1/x^2" name="used_formula" id="IntegrationOfCalculation1/x^2" checked>
                         <label class="form-check-label" for="IntegrationOfCalculation1/x^2">
                             \( \int \dfrac{dx}{x^2} = -\frac{1}{x} + C \)
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="x^(1/2)" name="used_formula" id="IntegrationOfCalculationx^(1/2)" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationx^(1/2)">
+                            \( \int \sqrt{x} \, dx = \dfrac{2}{3} x\sqrt{x} + C \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="1/x^(1/2)" name="used_formula" id="IntegrationOfCalculation1/x^(1/2)" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculation1/x^(1/2)">
+                            \( \int \dfrac{dx}{\sqrt{x}} = 2\sqrt{x} + C \)
                         </label>
                     </div>
                     <br>
@@ -125,6 +138,12 @@ function uncheckAllStatus(target){
                         <input class="form-check-input" type="checkbox" value="e^x" name="used_formula" id="IntegrationOfCalculatione^x" checked>
                         <label class="form-check-label" for="IntegrationOfCalculatione^x">
                             \( \int_{ }^{ } e^x \, dx = e^x + C \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="a^x" name="used_formula" id="IntegrationOfCalculationa^x" checked>
+                        <label class="form-check-label" for="IntegrationOfCalculationa^x">
+                            \( \int_{ }^{ } a^x \, dx = \dfrac{a^x}{\log{a}} + C \)
                         </label>
                     </div>
                     <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('used_formula')" value="全部のせ">

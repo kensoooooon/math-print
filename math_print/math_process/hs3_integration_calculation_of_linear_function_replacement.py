@@ -1,3 +1,4 @@
+from collections import namedtuple
 from random import choice, randint, random
 import re
 from typing import Dict, Optional, Tuple, Union
@@ -119,6 +120,24 @@ class IntegralCalculationOfLinearFunctionReplacement:
             latex_answer = f"={function_latex_for_answer} + C"
             latex_problem = f"\\int {function_latex_for_problem} \\, dx"
             return latex_answer, latex_problem
+        
+        def problem_and_answer() -> Tuple[str, str]:
+            """定積分用の問題と解答を出力
+            
+            Returns:
+                Tuple[str, str]: latex形式の問題と解答
+                - latex_answer (str): 解答
+                - latex_problem (str): 問題
+            
+            Developing:
+                あくまで、解答と問題の最終出力を行うのが基本的な働きになる
+                -> ∫^{a}_{b} f(x) = [F(x)]^{a}_{b} = F(a) - F(b) = answerまでは作りたい
+                --> 最低限、f(x), F(x), a, b, answerは受け取るだけ。計算は外部任せ
+                    というほうが、indefinite_integral側との整合性は取れる。あちらは与えられたlatexから解答を追加していただけなので、
+                --> こっちで計算も担当することは可能だが、それはそれで処理がバラけそうだし、かぶりそうだし、何よりあとで見直したとき分かりづらそう
+                
+                よって、後は渡し方。引数も悪くないが、ここではシンプルにnamedtumpleを採用するのが良さそう？
+            """
     
     def _make_and_differentiate_function(self, used_formula: str) -> Tuple:
         """与えられた積分公式に応じて、ランダムな関数の作成と微分を行う

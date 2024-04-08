@@ -28,10 +28,10 @@ class IntegralCalculationOfLinearFunctionReplacement:
             self.latex_answer, self.latex_problem = self._make_definite_substitution_of_linear_expression_problem(used_formula)
     
     def __repr__(self):
-        return f"latex_answer: {self.latex_answer}, latex_problem: {self.latex_problem}"
+        return f"IntegralCalculationOfLinearFunctionReplacement(latex_answer: {self.latex_answer}, latex_problem: {self.latex_problem})"
 
     def _make_indefinite_substitution_of_linear_expression_problem(self, used_formula: str) -> Tuple[str, str]:
-        """1次式の置換を用いるタイプの不定計算問題を作成
+        """1次式の置換を用いるタイプの不定積分計算問題を作成
 
         Args:
             used_function (str): 使用される関数
@@ -40,55 +40,6 @@ class IntegralCalculationOfLinearFunctionReplacement:
             Tuple[str, str]: 問題と解答
             - latex_answer (str): latex形式と通常の文字列が混在していることを前提とした解答
             - latex_problem (str): latex形式と通常の文字列が混在していることを前提とした問題
-        
-        Developing:
-            n次関数, 分数関数
-            
-            どこまで分離する？
-                n次関数, 三角関数などの関数単位で作成してくれるように?
-                    使い勝手は悪くなさそうだが、ランダムなものが返ってくるせいで計算が難しくなる可能性はありそう
-                    →とりあえず作ってみて、あれそうだったら改修なり撤去するなりでよさそう
-            
-            基本的に積分後を主体として、微分先をやらせたほうがよい場合が多い
-            
-            3/31
-            おおむねうまくいっているが、
-                ・重複した表現が多いのが気にかかる。同じ処理をひとまとめにして、分岐も含めてまとめるべき？
-                ・cosやsinは、何だかマイナスが勝手に消されている雰囲気を感じる。チェックする
-                    ->勝手に消されているでファイナルアンサー。ただ、そこまでの影響もないような気はするので、いったん保留
-            4/2
-            引き続き作業。三角関数の続き
-                sin^2=-1/tanxはどうも難しそう。30分程度苦戦したが、うまくいかなかった。
-                そのため、とりあえず手作業で実装するべき
-
-            4/4
-            問題ばらけすぎ問題
-                結局「1次式の置換」「部分積分」のようにわけて実装することにした
-            なんかx^nの値がでかすぎね？問題
-                そんな設定をしているつもりはないのに、なぜか4桁の数が飛び出てくる
-                別に解けないことはないが、問題の趣旨からは外れるので、原因を確認して修正したい系
-                ->gpt君に聞いてみた結果、おそらくx^n+0の形式で、自動的に展開が行われているのがその原因っぽいと判明。
-                x^n+0の形式では、当然6 * (6x)**6のような値がでる
-                ↑ax+b(b≠0)でかいけつ
-            
-            計算遅くね問題
-                微分がシンプルに遅い。10~20秒程度待たされる。
-                →わりとかったるいので、微分も手作業で実装する？手順が決まっていることを考えれば、さして無理筋でもなさそう
-            
-            4/5
-            そこそこ解決
-            あとはリファクタリングというか、再構成をどうするか
-                この後定積分に用いることを考えたら、手作業は別に分離しておいて、いつでも引っ張り出せるようにしておくというのも一つの手段。
-                問題になるのが、途中経過をどこまで記すか？ということ
-                    月みたいに事細かにかくのであれば、あまり隠蔽しすぎると、欲しいものがなくなって困ってしまうかも？
-                    とりあえず作ってみて考える？
-                    すなわち、関数の作成部分と関数・被積分関数の作成を一元化
-                    関数ができた後は、定積分と否定積分で共通の部分と、逆に共通でない部分を見抜く必要がある。
-                    →とりあえず作ってみる
-                        機能としては、
-                        ・与えられたモード(n_dimension_functionや1/cos^2x)などに応じて、f_latex, f_down_latex
-                            ここちょっと怪しい？全体的に
-                                結局、微分した関数がほしいのん？？
         """
         
         def problem_and_answer(function_latex_for_answer: str, function_latex_for_problem: str) -> Tuple[str, str]:
@@ -104,7 +55,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 - latex_problem (str): 問題
             
             Note:
-                1/xで出てくる積分の絶対値記号の追加や、a^xで出てくるlog(a)のカッコの消去など、特別な措置が必要なものは別枠にて処理
+                1/xで出てくる積分の絶対値記号の追加や、a^xで出てくるlog(a)のカッコの消去など、特別な措置が必要なものは別枠にて文字列の処理
             """
             latex_answer = f"={function_latex_for_answer} + C"
             latex_problem = f"\\int {function_latex_for_problem} \\, dx"
@@ -119,11 +70,55 @@ class IntegralCalculationOfLinearFunctionReplacement:
             result = re.sub(pattern, r'log\1', sy.latex(function))
             result = re.sub(r'\\left\(|\\right\)', '', result)
             function_latex = re.sub(r'\s+', '', result)
+        elif used_formula == "x^(1/2)":
+            latex_str = sy.latex(function)
+            sqrt_part = re.search(r"\\sqrt{[^}]+}", latex_str).group(0)
+            if "\\cdot" in latex_str:
+                other_part = re.sub(r"\\sqrt{[^}]+} \\cdot ", "", latex_str)
+            else:
+                other_part = re.sub(r"\\sqrt{[^}]+}", "", latex_str)
+            function_latex = f"{other_part} {sqrt_part}"
         else:
             function_latex = sy.latex(function)
         differentiated_function_latex = sy.latex(differentiated_function)
         latex_answer, latex_problem = problem_and_answer(function_latex, differentiated_function_latex)
         return latex_answer, latex_problem
+
+    def _make_definite_substitution_of_linear_expression_problem(self, used_formula: str) -> Tuple:
+        """1次式の置換を用いるタイプの定積分計算問題を作成
+        
+        Args:
+            used_formula (str): 使用する公式
+        
+        Returns:
+            Tuple[str, str]: latex形式の問題と解答
+            - latex_answer (str): latex形式の解答
+            - latex_problem (str): latex形式の問題
+        
+        Developing:
+            4/8
+            スタート
+            まずは対応する式の形やproblem_and_answerを考える必要がある
+                返ってくるのは関数(解答用)と微分された関数(問題用)
+                    -> それにプラスして、積分範囲を設定し、問題の情報に追加
+                    あわせて、積分計算を実施する。
+                    ∫^{end}_{start} f'(x) dx = [f(x)]^{end}_{start} = value.
+        """
+        def problem_and_answer(function_latex_for_answer: str, function_latex_for_problem: str) -> Tuple[str, str]:
+            """定積分用の問題と解答を出力
+
+            Args:
+                function_for_answer (str): 解答に利用したいlatex形式の式
+                function_for_problem (str): 問題に利用したいlatex形式の式
+
+            Returns:
+                Tuple[str, str]: latex形式の問題と解答
+                - latex_answer (str): 解答
+                - latex_problem (str): 問題
+            """
+            latex_answer = f"={function_latex_for_answer} + C"
+            latex_problem = f"\\int {function_latex_for_problem} \\, dx"
+            return latex_answer, latex_problem
     
     def _make_and_differentiate_function(self, used_formula: str) -> Tuple:
         """与えられた積分公式に応じて、ランダムな関数の作成と微分を行う

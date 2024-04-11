@@ -114,6 +114,15 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 
                 以上が必要そう。問題は渡し方だが、どこまでを委任するかが重要
                 -> 不定積分での利用と、役割の収まりの良さを意識すると、全部文字列が良さそう
+                
+            4/11
+            継続
+            大枠はできたが、細かい問題が散見される
+                値が無駄にでかい
+                    3乗4乗を扱っているので仕方ないといえば仕方ないが、もう少し抑えないとシンプルな計算問題ではなくなってしまう
+                定積分の途中表示がガバい
+                    -(-a)のあたりが表現できていない。単純にこの段階をスキップするか、どこかの段階(latex化しているところ？)
+                    で書き換える必要がある
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -149,7 +158,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             """
             end = definite_integral_information.end
             start = definite_integral_information.start
-            original_function = definite_integral_information.start
+            original_function = definite_integral_information.original_function
             integral_of_function = definite_integral_information.integral_of_function
             end_value = definite_integral_information.end_value
             start_value = definite_integral_information.start_value
@@ -160,6 +169,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             latex_answer += f"= {result}"
             return latex_answer, latex_problem
         
+        x = sy.Symbol("x")
         function, differentiated_function = self._make_and_differentiate_function(used_formula)
         if used_formula == "1/x":
             pattern = r'\\left\((.*?)\\right\)'
@@ -179,7 +189,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
             function_latex = f"{other_part} {sqrt_part}"
         else:
             function_latex = sy.latex(function)
+        print(f"function_latex: {function_latex}")
         differentiated_function_latex = sy.latex(differentiated_function)
+        print(f"differentiated_function_latex: {differentiated_function_latex}")
         # setting for definite integral
         if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
             start_denominator = choice([2, 3, 4, 6])
@@ -189,7 +201,8 @@ class IntegralCalculationOfLinearFunctionReplacement:
             end_numerator = start_numerator + self._random_integer(max_abs = end_denominator * 2, positive_or_negative="positive")
             end = sy.pi * sy.Rational(end_numerator, end_denominator)
         else:
-            end = self._random_integer
+            start = self._random_integer(max_abs=1)
+            end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
         end_latex = sy.latex(end)
         start_latex = sy.latex(start)
         original_function_latex = differentiated_function_latex
@@ -201,8 +214,13 @@ class IntegralCalculationOfLinearFunctionReplacement:
         result = end_value - start_value
         result_latex = sy.latex(result)
         information = DefiniteIntegralInformation(
-            
+            end=end_latex, start=start_latex,
+            original_function=original_function_latex, integral_of_function=integral_function_latex,
+            end_value=end_value_latex, start_value=start_value_latex,
+            result=result_latex
         )
+        latex_answer, latex_problem = problem_and_answer(information)
+        return latex_answer, latex_problem
     
     def _make_and_differentiate_function(self, used_formula: str) -> Tuple:
         """与えられた積分公式に応じて、ランダムな関数の作成と微分を行う
@@ -216,12 +234,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
             - differentiated_function: 微分した関数
         """
         x = sy.Symbol("x")
-        a = self._random_integer()
-        b = self._random_integer()
+        a = self._random_integer(max_abs=2)
+        b = self._random_integer(max_abs=2)
         linear_function = a * x + b
         if used_formula == "x^n":
-            n = self._random_integer(min_abs=3, max_abs=6, positive_or_negative="positive")
-            k = self._random_integer(min_abs=2, max_abs=3)
+            n = self._random_integer(min_abs=3, max_abs=4, positive_or_negative="positive")
+            k = self._random_integer(min_abs=1, max_abs=2)
             function = k * linear_function ** n
             differentiated_function = k * n * a * linear_function ** (n - 1)
         elif used_formula == "1/x":

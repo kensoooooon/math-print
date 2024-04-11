@@ -1,4 +1,5 @@
 from collections import namedtuple
+import math
 from random import choice, randint, random
 import re
 from typing import Dict, NamedTuple, Optional, Tuple, Union
@@ -123,6 +124,13 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 定積分の途中表示がガバい
                     -(-a)のあたりが表現できていない。単純にこの段階をスキップするか、どこかの段階(latex化しているところ？)
                     で書き換える必要がある
+                
+                Invalid comparison of non-real 4*log(4) + 4*I*piが1/xで発生。
+                おそらくlogの計算でひっかかった模様。
+                    シンプルに考えれば、linear_functionを読み取った上で、それが0より大きくなるような範囲で積分範囲を設定する必要がある。
+                    面倒そうではあるが、それ以前にそもそもこれは可能なのか？
+                        ・真数は読み取れる？
+                        あれこれやったらいけそう
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -189,9 +197,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             function_latex = f"{other_part} {sqrt_part}"
         else:
             function_latex = sy.latex(function)
-        print(f"function_latex: {function_latex}")
         differentiated_function_latex = sy.latex(differentiated_function)
-        print(f"differentiated_function_latex: {differentiated_function_latex}")
         # setting for definite integral
         if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
             start_denominator = choice([2, 3, 4, 6])
@@ -200,6 +206,60 @@ class IntegralCalculationOfLinearFunctionReplacement:
             end_denominator = choice([2, 3, 4, 6])
             end_numerator = start_numerator + self._random_integer(max_abs = end_denominator * 2, positive_or_negative="positive")
             end = sy.pi * sy.Rational(end_numerator, end_denominator)
+        elif used_formula == "1/x":
+            """
+            from sympy import symbols, log, Mul
+
+            # シンボルの定義
+            x = symbols('x')
+
+            # 式の定義
+            expr = 2 * log(3 * x - 5)
+
+            # logの真数を取得する関数
+            def get_log_argument(expression):
+                # expressionを再帰的に探索し、log関数を探す
+                if expression.func is log:
+                    # log関数の場合、その引数を返す
+                    return expression.args[0]
+                elif expression.func is Mul:
+                    # 積の場合、各項を調べる
+                    for arg in expression.args:
+                        result = get_log_argument(arg)
+                        if result is not None:
+                            return result
+                return None
+
+            # 真数部分の取得
+            log_arg = get_log_argument(expr)
+
+            # 結果の出力
+            print(log_arg)
+
+            """
+            def get_log_argument(expression):
+                if expression.func is sy.log:
+                    return expression.args[0]
+                elif expression.func is sy.Mul:
+                    for arg in expression.args:
+                        result = get_log_argument(arg)
+                        if result is not None:
+                            return result
+                return None
+        
+            linear_function = get_log_argument(function)
+            a = linear_function.coeff(x)
+            b = linear_function.subs(x, 0)
+            if a > 0:
+                min_value = math.ceil(-b / a)
+                start = randint(min_value + 1, min_value + 3)
+                end = start + randint(1, 2)
+            elif a < 0:
+                max_value = math.floor(-b / a)
+                end = randint(max_value - 3, max_value - 1)
+                start = end - randint(1, 2)
+            else:
+                raise ValueError(f"a mustn't be 0. 'linear_function' is {linear_function}.")
         else:
             start = self._random_integer(max_abs=1)
             end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
@@ -207,10 +267,45 @@ class IntegralCalculationOfLinearFunctionReplacement:
         start_latex = sy.latex(start)
         original_function_latex = differentiated_function_latex
         integral_function_latex = function_latex
+        """
+        from chat gpt
+        import re
+
+        def simplify_log_expression(expression):
+            # \left( と \right) を除去
+            expression = re.sub(r"\\left\(|\\right\)", "", expression)
+            
+            # logの後の括弧内の数字のみを残す
+            expression = re.sub(r"log\{\((\d+)\)\}", r"log{\1}", expression)
+            
+            return expression
+
+        # 例としていくつかの文字列を処理
+        expressions = [
+            r"\left( - 2 \log{\left(3 \right)} \right)",
+            r"2 \log{\left(2 \right)}",
+            r"2 \log{\left(6 \right)}",
+            # 他の文字列も同様に追加可能
+        ]
+
+        # 各式に対して関数を適用し、結果を出力
+        for expr in expressions:
+            simplified_expr = simplify_log_expression(expr)
+            print(simplified_expr)
+
+        """
         end_value = function.subs(x, end)
-        end_value_latex = sy.latex(end_value)
+        if end_value >= 0:
+            end_value_latex = sy.latex(end_value)
+        else:
+            end_value_latex = f"\\left( {sy.latex(end_value)} \\right)"
+        print(end_value_latex)
         start_value = function.subs(x, start)
-        start_value_latex = sy.latex(start_value)
+        if start_value >= 0:
+            start_value_latex = sy.latex(start_value)
+        else:
+            start_value_latex = f"\\left( {sy.latex(start_value)} \\right)"
+        print(start_value_latex)
         result = end_value - start_value
         result_latex = sy.latex(result)
         information = DefiniteIntegralInformation(

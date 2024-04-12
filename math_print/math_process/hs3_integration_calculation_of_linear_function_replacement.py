@@ -59,8 +59,8 @@ class IntegralCalculationOfLinearFunctionReplacement:
             Note:
                 1/xで出てくる積分の絶対値記号の追加や、a^xで出てくるlog(a)のカッコの消去など、特別な措置が必要なものは別枠にて文字列の処理
             """
-            latex_answer = f"={function_latex_for_answer} + C"
-            latex_problem = f"\\int {function_latex_for_problem} \\, dx"
+            latex_answer = f"\\( ={function_latex_for_answer} + C \\)"
+            latex_problem = f"\\( \\int {function_latex_for_problem} \\, dx \\)"
             return latex_answer, latex_problem
     
         function, differentiated_function = self._make_and_differentiate_function(used_formula)
@@ -131,6 +131,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
                     面倒そうではあるが、それ以前にそもそもこれは可能なのか？
                         ・真数は読み取れる？
                         あれこれやったらいけそう
+            4/12
+            引き続きlogに関連する問題
+                値の取得は完了。あとは()を取り除く
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -171,10 +174,10 @@ class IntegralCalculationOfLinearFunctionReplacement:
             end_value = definite_integral_information.end_value
             start_value = definite_integral_information.start_value
             result = definite_integral_information.result
-            latex_problem = f"\\int^{{{end}}}_{{{start}}} {original_function} \, dx \n"
-            latex_answer = f"= \\left[ {integral_of_function} \\right]^{{{end}}}_{{{start}}} \n"
-            latex_answer += f"= {end_value} - {start_value} \n"
-            latex_answer += f"= {result}"
+            latex_problem = f"\\( \\int^{{{end}}}_{{{start}}} {original_function} \, dx \\)"
+            latex_answer = f"\\( = \\left[ {integral_of_function} \\right]^{{{end}}}_{{{start}}} \\)\n"
+            latex_answer += f"\\( = {end_value} - {start_value} \\) \n"
+            latex_answer += f"\\( = {result} \\)"
             return latex_answer, latex_problem
         
         x = sy.Symbol("x")
@@ -207,37 +210,15 @@ class IntegralCalculationOfLinearFunctionReplacement:
             end_numerator = start_numerator + self._random_integer(max_abs = end_denominator * 2, positive_or_negative="positive")
             end = sy.pi * sy.Rational(end_numerator, end_denominator)
         elif used_formula == "1/x":
-            """
-            from sympy import symbols, log, Mul
-
-            # シンボルの定義
-            x = symbols('x')
-
-            # 式の定義
-            expr = 2 * log(3 * x - 5)
-
-            # logの真数を取得する関数
             def get_log_argument(expression):
-                # expressionを再帰的に探索し、log関数を探す
-                if expression.func is log:
-                    # log関数の場合、その引数を返す
-                    return expression.args[0]
-                elif expression.func is Mul:
-                    # 積の場合、各項を調べる
-                    for arg in expression.args:
-                        result = get_log_argument(arg)
-                        if result is not None:
-                            return result
-                return None
+                """logの真数部分を取得し、与えるべきxの判断材料とする
 
-            # 真数部分の取得
-            log_arg = get_log_argument(expr)
+                Args:
+                    expression: 式
 
-            # 結果の出力
-            print(log_arg)
-
-            """
-            def get_log_argument(expression):
+                Returns:
+                    1次式
+                """
                 if expression.func is sy.log:
                     return expression.args[0]
                 elif expression.func is sy.Mul:
@@ -246,7 +227,6 @@ class IntegralCalculationOfLinearFunctionReplacement:
                         if result is not None:
                             return result
                 return None
-        
             linear_function = get_log_argument(function)
             a = linear_function.coeff(x)
             b = linear_function.subs(x, 0)
@@ -267,47 +247,40 @@ class IntegralCalculationOfLinearFunctionReplacement:
         start_latex = sy.latex(start)
         original_function_latex = differentiated_function_latex
         integral_function_latex = function_latex
-        """
-        from chat gpt
-        import re
-
-        def simplify_log_expression(expression):
-            # \left( と \right) を除去
-            expression = re.sub(r"\\left\(|\\right\)", "", expression)
-            
-            # logの後の括弧内の数字のみを残す
-            expression = re.sub(r"log\{\((\d+)\)\}", r"log{\1}", expression)
-            
-            return expression
-
-        # 例としていくつかの文字列を処理
-        expressions = [
-            r"\left( - 2 \log{\left(3 \right)} \right)",
-            r"2 \log{\left(2 \right)}",
-            r"2 \log{\left(6 \right)}",
-            # 他の文字列も同様に追加可能
-        ]
-
-        # 各式に対して関数を適用し、結果を出力
-        for expr in expressions:
-            simplified_expr = simplify_log_expression(expr)
-            print(simplified_expr)
-
-        """
         end_value = function.subs(x, end)
-        if end_value >= 0:
-            end_value_latex = sy.latex(end_value)
-        else:
-            end_value_latex = f"\\left( {sy.latex(end_value)} \\right)"
-        print(end_value_latex)
         start_value = function.subs(x, start)
-        if start_value >= 0:
-            start_value_latex = sy.latex(start_value)
-        else:
-            start_value_latex = f"\\left( {sy.latex(start_value)} \\right)"
-        print(start_value_latex)
         result = end_value - start_value
-        result_latex = sy.latex(result)
+        # for display check
+        if used_formula == "1/x":
+            pattern_for_removing_left_right = r"\\left\(|\\right\)"
+            pattern_for_removing_bracket = r"log\{\((\d+)\)\}"
+            after_removing = r"log{\1}"
+            by_expression = re.sub(pattern_for_removing_left_right, "", sy.latex(end_value))
+            if end_value >= 0:
+                end_value_latex = re.sub(pattern_for_removing_bracket, after_removing, by_expression)
+            else:
+                end_value_latex = f"\\left( {re.sub(pattern_for_removing_bracket, after_removing, by_expression)} \\right)"
+            by_expression = re.sub(pattern_for_removing_left_right, "", sy.latex(start_value))
+            if start_value >= 0:
+                start_value_latex = re.sub(pattern_for_removing_bracket, after_removing, by_expression)
+            else:
+                start_value_latex = f"\\left( {re.sub(pattern_for_removing_bracket, after_removing, by_expression)} \\right)"
+            by_expression = re.sub(pattern_for_removing_left_right, "", sy.latex(result))
+            result_latex = re.sub(pattern_for_removing_bracket, after_removing, by_expression)
+        else:
+            # next
+            # 多分無限大が悪さしてる
+            print(f"end_value: {end_value}")
+            print(f"start_value: {start_value}")
+            if end_value >= 0:
+                end_value_latex = sy.latex(end_value)
+            else:
+                end_value_latex = f"\\left( {sy.latex(end_value)} \\right)"
+            if start_value >= 0:
+                start_value_latex = sy.latex(start_value)
+            else:
+                start_value_latex = f"\\left( {sy.latex(start_value)} \\right)"
+            result_latex = sy.latex(result)
         information = DefiniteIntegralInformation(
             end=end_latex, start=start_latex,
             original_function=original_function_latex, integral_of_function=integral_function_latex,

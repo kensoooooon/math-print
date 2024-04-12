@@ -1,6 +1,6 @@
 from collections import namedtuple
 import math
-from random import choice, randint, random
+from random import choice, randint, random, sample
 import re
 from typing import Dict, NamedTuple, Optional, Tuple, Union
 
@@ -134,6 +134,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
             4/12
             引き続きlogに関連する問題
                 値の取得は完了。あとは()を取り除く
+            
+            1/x^2の担当
+            denom=0になる瞬間があるので、こちらもlog同様に関数の分母をなんとかかんとか取得してやる必要がありそう
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -240,6 +243,28 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 start = end - randint(1, 2)
             else:
                 raise ValueError(f"a mustn't be 0. 'linear_function' is {linear_function}.")
+        elif used_formula == "1/x^2":
+            
+            def find_singular_point(function):
+                """分母を0にする点(極)を求めることで、無限大を出すことを防ぐ
+                
+                Args:
+                    function (分数関数): 分母が1次関数である分数関数
+                
+                Returns:
+                    singular_point (Union[sy.Integer, sy.Rational]): 分母を0にする
+                """
+                function_apart = sy.apart(function, x)
+                linear_function = function_apart.as_numer_denom()[1]
+                a = linear_function.coeff(x, 1)
+                b = linear_function.subs(x, 0)
+                # ax + b = 0
+                singular_point = sy.Rational(-b, a)
+                return singular_point
+
+            singular_point = find_singular_point(function)
+            candidates = [i for i in range(-5, 5) if i != singular_point]
+            start, end = sorted(sample(candidates, 2))
         else:
             start = self._random_integer(max_abs=1)
             end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
@@ -268,10 +293,6 @@ class IntegralCalculationOfLinearFunctionReplacement:
             by_expression = re.sub(pattern_for_removing_left_right, "", sy.latex(result))
             result_latex = re.sub(pattern_for_removing_bracket, after_removing, by_expression)
         else:
-            # next
-            # 多分無限大が悪さしてる
-            print(f"end_value: {end_value}")
-            print(f"start_value: {start_value}")
             if end_value >= 0:
                 end_value_latex = sy.latex(end_value)
             else:

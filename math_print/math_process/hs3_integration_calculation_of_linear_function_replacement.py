@@ -137,6 +137,11 @@ class IntegralCalculationOfLinearFunctionReplacement:
             
             1/x^2の担当
             denom=0になる瞬間があるので、こちらもlog同様に関数の分母をなんとかかんとか取得してやる必要がありそう
+            
+            4/13
+                ここまでの問題は大体解決
+                次は、√xの積分でInvalid comparison of non-real 4*I/3が発生
+                ->おそらく、これまでと同じようにルートの中身が負になっているから、個別に調整が必要そう
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -204,7 +209,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
         else:
             function_latex = sy.latex(function)
         differentiated_function_latex = sy.latex(differentiated_function)
-        # setting for definite integral
+        # setting value for definite integral
         if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
             start_denominator = choice([2, 3, 4, 6])
             start_numerator = self._random_integer(max_abs = start_denominator * 2,  positive_or_negative="positive")
@@ -265,6 +270,8 @@ class IntegralCalculationOfLinearFunctionReplacement:
             singular_point = find_singular_point(function)
             candidates = [i for i in range(-5, 5) if i != singular_point]
             start, end = sorted(sample(candidates, 2))
+        elif used_formula == "x^(1/2)":
+            pass
         else:
             start = self._random_integer(max_abs=1)
             end = start + self._random_integer(max_abs=2, positive_or_negative="positive")

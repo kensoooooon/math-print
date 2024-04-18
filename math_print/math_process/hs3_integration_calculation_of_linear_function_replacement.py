@@ -142,6 +142,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 ここまでの問題は大体解決
                 次は、√xの積分でInvalid comparison of non-real 4*I/3が発生
                 ->おそらく、これまでと同じようにルートの中身が負になっているから、個別に調整が必要そう
+            
+            4/18
+                次は1/(x)^(1/2)
+                    確か中身をどう取得するか？みたいなことを考えていたはず。
+                    
+                logがまたぐとやばそう
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -271,7 +277,29 @@ class IntegralCalculationOfLinearFunctionReplacement:
             candidates = [i for i in range(-5, 5) if i != singular_point]
             start, end = sorted(sample(candidates, 2))
         elif used_formula == "x^(1/2)":
-            pass
+            """
+            import sympy as sy
+
+            expr = (4*x/3 + 2/3) * sqrt(2*x + 1)
+            print(expr.args)
+            expr2 = sy.sqrt(3 * x - 1) * (4 * x ** 2 + 5)
+            print(expr2.args)
+            """
+            print(f"function: {function}")
+            
+            def extract_sqrt_argument(expression):
+                if expression.func == sy.sqrt:
+                    return expression.args[0]
+                else:
+                    for arg in expression.args:
+                        result = extract_sqrt_argument(arg)
+                        if result is not None:
+                            return result
+                return None
+            
+            
+            start = self._random_integer(max_abs=1)
+            end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
         else:
             start = self._random_integer(max_abs=1)
             end = start + self._random_integer(max_abs=2, positive_or_negative="positive")

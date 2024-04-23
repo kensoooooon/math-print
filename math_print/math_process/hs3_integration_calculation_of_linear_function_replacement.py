@@ -62,8 +62,25 @@ class IntegralCalculationOfLinearFunctionReplacement:
             latex_answer = f"\\( ={function_latex_for_answer} + C \\)"
             latex_problem = f"\\( \\int {function_latex_for_problem} \\, dx \\)"
             return latex_answer, latex_problem
-    
-        function, differentiated_function = self._make_and_differentiate_function(used_formula)
+        """
+        x = sy.Symbol("x")
+        a = self._random_integer(max_abs=5)
+        b = self._random_integer(max_abs=5)
+        linear_function = a * x + b
+        """
+        function, differentiated_function = self._make_and_differentiate_function_for_indefinite_integrate(used_formula)
+        """
+        多分まとめられて、3/2乗になると発動しているっぽい
+        ->sqrt表記がないんだから、それはそうって感じの挙動ではある
+        
+        なぜなくなる？
+        """
+        """
+        print(f"linear_function: {linear_function}")
+        print(f"function: {function}")
+        print(f"differentiated_function: {differentiated_function}")
+        print("---------------------------")
+        """
         if used_formula == "1/x":
             pattern = r'\\left\((.*?)\\right\)'
             function_latex = re.sub(pattern, r'| \1 |', sy.latex(function))
@@ -148,6 +165,17 @@ class IntegralCalculationOfLinearFunctionReplacement:
                     確か中身をどう取得するか？みたいなことを考えていたはず。
                     
                 logがまたぐとやばそう
+            
+            4/21
+                logの修正から
+                    →なんか問題なさそう。
+                
+                次は√xの積分に着手
+            
+            4/22
+                構造がだるだるになったので、1次関数を直接中身で与える感じにした。カプセル化の解除
+                    
+
         """
         
         class DefiniteIntegralInformation(NamedTuple):
@@ -194,7 +222,13 @@ class IntegralCalculationOfLinearFunctionReplacement:
             latex_answer += f"\\( = {result} \\)"
             return latex_answer, latex_problem
         
+        # new added
+        """
         x = sy.Symbol("x")
+        a = self._random_integer(max_abs=2)
+        b = self._random_integer(max_abs=2)
+        linear_function = a * x + b
+        """
         function, differentiated_function = self._make_and_differentiate_function(used_formula)
         if used_formula == "1/x":
             pattern = r'\\left\((.*?)\\right\)'
@@ -224,26 +258,6 @@ class IntegralCalculationOfLinearFunctionReplacement:
             end_numerator = start_numerator + self._random_integer(max_abs = end_denominator * 2, positive_or_negative="positive")
             end = sy.pi * sy.Rational(end_numerator, end_denominator)
         elif used_formula == "1/x":
-            def get_log_argument(expression):
-                """logの真数部分を取得し、与えるべきxの判断材料とする
-
-                Args:
-                    expression: 式
-
-                Returns:
-                    1次式
-                """
-                if expression.func is sy.log:
-                    return expression.args[0]
-                elif expression.func is sy.Mul:
-                    for arg in expression.args:
-                        result = get_log_argument(arg)
-                        if result is not None:
-                            return result
-                return None
-            linear_function = get_log_argument(function)
-            a = linear_function.coeff(x)
-            b = linear_function.subs(x, 0)
             if a > 0:
                 min_value = math.ceil(-b / a)
                 start = randint(min_value + 1, min_value + 3)
@@ -254,52 +268,22 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 start = end - randint(1, 2)
             else:
                 raise ValueError(f"a mustn't be 0. 'linear_function' is {linear_function}.")
-        elif used_formula == "1/x^2":
-            
-            def find_singular_point(function):
-                """分母を0にする点(極)を求めることで、無限大を出すことを防ぐ
-                
-                Args:
-                    function (分数関数): 分母が1次関数である分数関数
-                
-                Returns:
-                    singular_point (Union[sy.Integer, sy.Rational]): 分母を0にする
-                """
-                function_apart = sy.apart(function, x)
-                linear_function = function_apart.as_numer_denom()[1]
-                a = linear_function.coeff(x, 1)
-                b = linear_function.subs(x, 0)
-                # ax + b = 0
-                singular_point = sy.Rational(-b, a)
-                return singular_point
-
-            singular_point = find_singular_point(function)
-            candidates = [i for i in range(-5, 5) if i != singular_point]
-            start, end = sorted(sample(candidates, 2))
+        elif used_formula == "1/x^2":       
+            singular_point = sy.Rational(-b, a)
+            if random() > 0.5:
+                start = math.ceil(singular_point) + self._random_integer(max_abs=2, positive_or_negative="positive")
+                end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
+            else:
+                end = math.floor(singular_point) - self._random_integer(max_abs=2,positive_or_negative="positive")
+                start = end - self._random_integer(max_abs=2, positive_or_negative="positive")
         elif used_formula == "x^(1/2)":
-            """
-            import sympy as sy
-
-            expr = (4*x/3 + 2/3) * sqrt(2*x + 1)
-            print(expr.args)
-            expr2 = sy.sqrt(3 * x - 1) * (4 * x ** 2 + 5)
-            print(expr2.args)
-            """
-            print(f"function: {function}")
-            
-            def extract_sqrt_argument(expression):
-                if expression.func == sy.sqrt:
-                    return expression.args[0]
-                else:
-                    for arg in expression.args:
-                        result = extract_sqrt_argument(arg)
-                        if result is not None:
-                            return result
-                return None
-            
-            
-            start = self._random_integer(max_abs=1)
-            end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
+            x_with_zero = sy.Rational(-b, a)
+            if a > 0:
+                start = math.ceil(x_with_zero) + self._random_integer(max_abs=2, positive_or_negative="positive")
+                end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
+            else:
+                end = math.floor(singular_point) - self._random_integer(max_abs=2, positive_or_negative="positive")
+                start = end - self._random_integer(max_abs=2, positive_or_negative="positive")
         else:
             start = self._random_integer(max_abs=1)
             end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
@@ -346,7 +330,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
         latex_answer, latex_problem = problem_and_answer(information)
         return latex_answer, latex_problem
     
-    def _make_and_differentiate_function(self, used_formula: str) -> Tuple:
+    def _make_and_differentiate_function_for_indefinite_integrate(self, used_formula: str) -> Tuple:
         """与えられた積分公式に応じて、ランダムな関数の作成と微分を行う
         
         Args:
@@ -361,6 +345,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
         a = self._random_integer(max_abs=2)
         b = self._random_integer(max_abs=2)
         linear_function = a * x + b
+        """
+        print(f"linear_function: {linear_function}")
+        x = sy.Symbol("x")
+        a = linear_function.coeff(x, 1)
+        print(f"a: {a}")
+        """
         if used_formula == "x^n":
             n = self._random_integer(min_abs=3, max_abs=4, positive_or_negative="positive")
             k = self._random_integer(min_abs=1, max_abs=2)

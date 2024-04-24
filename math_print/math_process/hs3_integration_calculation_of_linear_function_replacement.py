@@ -157,7 +157,42 @@ class IntegralCalculationOfLinearFunctionReplacement:
             
             4/22
                 構造がだるだるになったので、1次関数を直接中身で与える感じにした。カプセル化の解除
+            
+            4/24
+                さらにわけわからんことになったので、不定積分用と定積分用で関数を分離。不定積分の安全確保
+                
+                あとは定積分の方を逐次確認していく
+                
+                三角関数がガバガバ
+                    1ってなんだよ問題
                     
+                    なんか1, -1, 0が多い以外は概ね想定の挙動
+                        4, 6だけでも分母は良さそうではある
+                    
+                    subs段階でなにかやってる感じがある？
+                    
+                    そもそも2 * x - 1などの計算をやって、値がその通りなるとは限らない
+                        これ。2 * pi - 1とかは、ほんとにそうするしかない。
+                        start_valueになるように逆算する系の対処が必要そう
+                        
+                    # 目標となる値に着地するように、xの値を逆算する。
+
+                    from random import choice, randint
+                    import sympy as sy
+
+                    x = sy.Symbol("x")
+                    for _ in range(10):
+                        linear_function = randint(1, 3) * x + randint(-5, 5)
+                        print(f"linear_function: {linear_function}")
+                        denominator = choice([4, 6])
+                        numerator = randint(1, denominator * 2)
+                        radian = sy.Rational(numerator, denominator) * sy.pi
+                        # a * x + b = radian
+                    
+                    あとは多分分岐にも、おそらく怪しいところがあるかもしれない
+                        ぱっとみなさそう
+                        -> printチェック
+                        上の項が最もアウトくさい
 
         """
         
@@ -383,7 +418,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
         return function, differentiated_function
     
     def _make_and_differentiate_function_for_definite_integral(self, used_formula: str, linear_function) -> Tuple:
-        """与えられた積分公式に応じて、定積分の問題で用いるためのランダムな関数の作成と微分を行う
+        """与えられた積分公式と1次関数に応じて、定積分の問題で用いるためのランダムな関数の作成と微分を行う
         
         Args:
             used_formula (str): 使用する積分公式
@@ -392,21 +427,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             Tuple: 元の関数と微分した関数
             - function: 元の関数
             - differentiated_function: 微分した関数
-        
-        Developing:
-            定積分用に分離。なんか謎の動作多かったので
-            
-            とりあえずは同じものを流用する
-                なぜ不具合起きるのか案件
-            
-            せっかくだし、start, endも決定すべき？
-                名前からは外れる気もするが…
-                あるいは別関数を_make...problem...の中で用意したほうが自然？
         """
-        # x = sy.Symbol("x")
-        # a = self._random_integer(max_abs=2)
-        # b = self._random_integer(max_abs=2)
-        # linear_function = a * x + b
         x = sy.Symbol("x")
         a = linear_function.coeff(x, 1)
         if used_formula == "x^n":

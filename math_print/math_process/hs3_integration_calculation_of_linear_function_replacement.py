@@ -62,25 +62,8 @@ class IntegralCalculationOfLinearFunctionReplacement:
             latex_answer = f"\\( ={function_latex_for_answer} + C \\)"
             latex_problem = f"\\( \\int {function_latex_for_problem} \\, dx \\)"
             return latex_answer, latex_problem
-        """
-        x = sy.Symbol("x")
-        a = self._random_integer(max_abs=5)
-        b = self._random_integer(max_abs=5)
-        linear_function = a * x + b
-        """
-        function, differentiated_function = self._make_and_differentiate_function_for_indefinite_integrate(used_formula)
-        """
-        多分まとめられて、3/2乗になると発動しているっぽい
-        ->sqrt表記がないんだから、それはそうって感じの挙動ではある
-        
-        なぜなくなる？
-        """
-        """
-        print(f"linear_function: {linear_function}")
-        print(f"function: {function}")
-        print(f"differentiated_function: {differentiated_function}")
-        print("---------------------------")
-        """
+
+        function, differentiated_function = self._make_and_differentiate_function_for_indefinite_integral(used_formula)
         if used_formula == "1/x":
             pattern = r'\\left\((.*?)\\right\)'
             function_latex = re.sub(pattern, r'| \1 |', sy.latex(function))
@@ -222,14 +205,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
             latex_answer += f"\\( = {result} \\)"
             return latex_answer, latex_problem
         
-        # new added
-        """
+        # new added for calculation singular point.
         x = sy.Symbol("x")
         a = self._random_integer(max_abs=2)
         b = self._random_integer(max_abs=2)
         linear_function = a * x + b
-        """
-        function, differentiated_function = self._make_and_differentiate_function(used_formula)
+        function, differentiated_function = self._make_and_differentiate_function_for_definite_integral(used_formula, linear_function)
         if used_formula == "1/x":
             pattern = r'\\left\((.*?)\\right\)'
             function_latex = re.sub(pattern, r'| \1 |', sy.latex(function))
@@ -282,7 +263,15 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 start = math.ceil(x_with_zero) + self._random_integer(max_abs=2, positive_or_negative="positive")
                 end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
             else:
-                end = math.floor(singular_point) - self._random_integer(max_abs=2, positive_or_negative="positive")
+                end = math.floor(x_with_zero) - self._random_integer(max_abs=2, positive_or_negative="positive")
+                start = end - self._random_integer(max_abs=2, positive_or_negative="positive")
+        elif used_formula == "1/x^(1/2)":
+            x_with_zero = sy.Rational(-b, a)
+            if a > 0:
+                start = math.ceil(x_with_zero) + self._random_integer(max_abs=2, positive_or_negative="positive")
+                end = start + self._random_integer(max_abs=2, positive_or_negative="positive")
+            else:
+                end = math.floor(x_with_zero) - self._random_integer(max_abs=2, positive_or_negative="positive")
                 start = end - self._random_integer(max_abs=2, positive_or_negative="positive")
         else:
             start = self._random_integer(max_abs=1)
@@ -330,8 +319,8 @@ class IntegralCalculationOfLinearFunctionReplacement:
         latex_answer, latex_problem = problem_and_answer(information)
         return latex_answer, latex_problem
     
-    def _make_and_differentiate_function_for_indefinite_integrate(self, used_formula: str) -> Tuple:
-        """与えられた積分公式に応じて、ランダムな関数の作成と微分を行う
+    def _make_and_differentiate_function_for_indefinite_integral(self, used_formula: str) -> Tuple:
+        """与えられた積分公式に応じて、不定積分の問題で用いるためのランダムな関数の作成と微分を行う
         
         Args:
             used_formula (str): 使用する積分公式
@@ -345,12 +334,81 @@ class IntegralCalculationOfLinearFunctionReplacement:
         a = self._random_integer(max_abs=2)
         b = self._random_integer(max_abs=2)
         linear_function = a * x + b
+        if used_formula == "x^n":
+            n = self._random_integer(min_abs=3, max_abs=4, positive_or_negative="positive")
+            k = self._random_integer(min_abs=1, max_abs=2)
+            function = k * linear_function ** n
+            differentiated_function = k * n * a * linear_function ** (n - 1)
+        elif used_formula == "1/x":
+            k = self._random_integer(min_abs=2, max_abs=4)
+            function = k * sy.log(linear_function)
+            differentiated_function = k * (a / linear_function)
+        elif used_formula == "1/x^2":
+            k = self._random_integer(min_abs=2, max_abs=4)
+            function = k * (1 / linear_function)
+            differentiated_function = -1 * k * a * (1 / linear_function ** 2)
+        elif used_formula == "sin":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * sy.sin(linear_function)
+            differentiated_function = k * a * sy.cos(linear_function)
+        elif used_formula == "cos":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * sy.cos(linear_function)
+            differentiated_function = -k * a * sy.sin(linear_function)
+        elif used_formula == "1/cos^2x":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * sy.tan(linear_function)
+            differentiated_function = k * a * (1 / sy.cos(linear_function) ** 2)
+        elif used_formula == "1/sin^2x":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * (-1 * sy.tan(linear_function))
+            differentiated_function = k * a * (1 / sy.sin(linear_function) ** 2)
+        elif used_formula == "e^x":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * sy.E ** linear_function
+            differentiated_function = k * a * (sy.E ** linear_function)
+        elif used_formula == "a^x":
+            k = self._random_number(use_frac=True, including_zero=False)
+            base = self._random_integer(min_abs=2, max_abs=8, positive_or_negative="positive")
+            function = k * (base ** linear_function) / sy.log(base)
+            differentiated_function = k * a * (base ** linear_function)
+        elif used_formula == "1/x^(1/2)":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * 2 * sy.sqrt(linear_function)
+            differentiated_function = k * a * (1 / sy.sqrt(linear_function))
+        elif used_formula == "x^(1/2)":
+            k = self._random_number(use_frac=True, including_zero=False)
+            function = k * sy.Rational(2, 3) * linear_function * sy.sqrt(linear_function)
+            differentiated_function = k * a * sy.sqrt(linear_function)
+        return function, differentiated_function
+    
+    def _make_and_differentiate_function_for_definite_integral(self, used_formula: str, linear_function) -> Tuple:
+        """与えられた積分公式に応じて、定積分の問題で用いるためのランダムな関数の作成と微分を行う
+        
+        Args:
+            used_formula (str): 使用する積分公式
+        
+        Returns:
+            Tuple: 元の関数と微分した関数
+            - function: 元の関数
+            - differentiated_function: 微分した関数
+        
+        Developing:
+            定積分用に分離。なんか謎の動作多かったので
+            
+            とりあえずは同じものを流用する
+                なぜ不具合起きるのか案件
+            
+            せっかくだし、start, endも決定すべき？
+                名前からは外れる気もするが…
+                あるいは別関数を_make...problem...の中で用意したほうが自然？
         """
-        print(f"linear_function: {linear_function}")
+        # x = sy.Symbol("x")
+        # a = self._random_integer(max_abs=2)
+        # b = self._random_integer(max_abs=2)
+        # linear_function = a * x + b
         x = sy.Symbol("x")
         a = linear_function.coeff(x, 1)
-        print(f"a: {a}")
-        """
         if used_formula == "x^n":
             n = self._random_integer(min_abs=3, max_abs=4, positive_or_negative="positive")
             k = self._random_integer(min_abs=1, max_abs=2)

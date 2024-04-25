@@ -193,6 +193,17 @@ class IntegralCalculationOfLinearFunctionReplacement:
                         ぱっとみなさそう
                         -> printチェック
                         上の項が最もアウトくさい
+            
+            4/25
+                アウトくさい例の項目の修正
+                    揃うように調整はしたものの、なにか値がしっかりと表示されていない
+                    →計算間違いか、あるいはsympyの三角関数の仕様かチェック
+                        多分sy.nsimplifyで解決可能
+                    
+                    tanにk * sy.pi / 2が入るのは不味い
+                    
+                    解決したが、なんか値がしっかりと表示されていない案件
+                        要チェックnext
 
         """
         
@@ -266,13 +277,40 @@ class IntegralCalculationOfLinearFunctionReplacement:
             function_latex = sy.latex(function)
         differentiated_function_latex = sy.latex(differentiated_function)
         # setting value for definite integral
-        if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
-            start_denominator = choice([2, 3, 4, 6])
-            start_numerator = self._random_integer(max_abs = start_denominator * 2,  positive_or_negative="positive")
-            start = sy.pi * sy.Rational(start_numerator, start_denominator)
-            end_denominator = choice([2, 3, 4, 6])
-            end_numerator = start_numerator + self._random_integer(max_abs = end_denominator * 2, positive_or_negative="positive")
-            end = sy.pi * sy.Rational(end_numerator, end_denominator)
+        if used_formula in ["sin", "cos", "1/sin^2x"]:
+
+            def create_x_value_with_radian(a: int, b: int):
+                """三角関数に代入したときに、きちんと計算できるようなxをランダムに作成する
+                
+                Args:
+                    a (int): 1次関数の1次の係数
+                    b (int): 1次関数の定数項
+                
+                Returns:
+                    x_value (sy.Mul): 調整されたxの値
+                """
+                denominator = choice([4, 6])
+                numerator = self._random_integer(max_abs=denominator*2, positive_or_negative="positive")
+                radian = sy.pi * sy.Rational(numerator, denominator)
+                x_value = sy.together((radian - b) / a)
+                return x_value
+            
+            start = create_x_value_with_radian(a, b)
+            end = create_x_value_with_radian(a, b)
+        elif used_formula == "1/cos^2x":
+            candidates = []
+            for denominator in [4, 6]:
+                for numerator in range(0, 2 * denominator):
+                    coeff = sy.Rational(numerator, denominator)
+                    if (coeff.denominator == 2) and ((coeff.numerator % 2) == 1):
+                        continue
+                    candidates.append(coeff * sy.pi)
+            unique_candidates = sorted(candidates)
+            radian1, radian2 = sample(unique_candidates, 2)
+            if radian1 > radian2:
+                end, start = radian1, radian2
+            else:
+                end, start = radian2, radian1                
         elif used_formula == "1/x":
             if a > 0:
                 min_value = math.ceil(-b / a)
@@ -284,7 +322,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 start = end - randint(1, 2)
             else:
                 raise ValueError(f"a mustn't be 0. 'linear_function' is {linear_function}.")
-        elif used_formula == "1/x^2":       
+        elif used_formula == "1/x^2":
             singular_point = sy.Rational(-b, a)
             if random() > 0.5:
                 start = math.ceil(singular_point) + self._random_integer(max_abs=2, positive_or_negative="positive")
@@ -315,8 +353,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
         start_latex = sy.latex(start)
         original_function_latex = differentiated_function_latex
         integral_function_latex = function_latex
-        end_value = function.subs(x, end)
-        start_value = function.subs(x, start)
+        if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
+            end_value = sy.nsimplify(function.subs(x, end))
+            start_value = sy.nsimplify(function.subs(x, start))
+        else:
+            end_value = function.subs(x, end)
+            start_value = function.subs(x, start)
         result = end_value - start_value
         # for display check
         if used_formula == "1/x":

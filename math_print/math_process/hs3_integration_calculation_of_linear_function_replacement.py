@@ -204,6 +204,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
                     
                     解決したが、なんか値がしっかりと表示されていない案件
                         要チェックnext
+                        
+            4/27
+                tanの表示怪しい問題
+                
+                そもそも代入されているものが怪しい説？
+                    jupyterで触った感じ、決して値が数字にならない仕様があるとかではなかったっぽい
 
         """
         
@@ -280,7 +286,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
         if used_formula in ["sin", "cos", "1/sin^2x"]:
 
             def create_x_value_with_radian(a: int, b: int):
-                """三角関数に代入したときに、きちんと計算できるようなxをランダムに作成する
+                """三角関数(sin, cos)に代入したときに、きちんと計算できるようなxをランダムに作成する
                 
                 Args:
                     a (int): 1次関数の1次の係数
@@ -290,14 +296,25 @@ class IntegralCalculationOfLinearFunctionReplacement:
                     x_value (sy.Mul): 調整されたxの値
                 """
                 denominator = choice([4, 6])
-                numerator = self._random_integer(max_abs=denominator*2, positive_or_negative="positive")
-                radian = sy.pi * sy.Rational(numerator, denominator)
-                x_value = sy.together((radian - b) / a)
+                numerator1 = self._random_integer(max_abs=denominator*2, positive_or_negative="positive")
+                radian1 = sy.pi * sy.Rational(numerator1, denominator)
+                x_value1 = sy.together((radian1 - b) / a)
+                x_value2 = 
                 return x_value
             
+            x1 = create_x_value_with_radian(a, b)
+            x2 = create_x_value_with_radian(a, b)
+            if x1 > x2:
+                start, end = 
             start = create_x_value_with_radian(a, b)
             end = create_x_value_with_radian(a, b)
+            
         elif used_formula == "1/cos^2x":
+            
+            def create_x_value_with_radian(a: int, b: int):
+                """三角関数(tan)に代入した時に、きちんと計算できるようなxをランダムに作成
+                """
+            
             candidates = []
             for denominator in [4, 6]:
                 for numerator in range(0, 2 * denominator):
@@ -310,7 +327,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
             if radian1 > radian2:
                 end, start = radian1, radian2
             else:
-                end, start = radian2, radian1                
+                end, start = radian2, radian1
+            print(f"end: {end}")
+            print(f"start: {start}")                
         elif used_formula == "1/x":
             if a > 0:
                 min_value = math.ceil(-b / a)
@@ -355,7 +374,9 @@ class IntegralCalculationOfLinearFunctionReplacement:
         integral_function_latex = function_latex
         if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
             end_value = sy.nsimplify(function.subs(x, end))
+            print(f"end_value: {end_value}")
             start_value = sy.nsimplify(function.subs(x, start))
+            print(f"start_value: {start_value}")
         else:
             end_value = function.subs(x, end)
             start_value = function.subs(x, start)

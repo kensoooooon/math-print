@@ -210,6 +210,12 @@ class IntegralCalculationOfLinearFunctionReplacement:
                 
                 そもそも代入されているものが怪しい説？
                     jupyterで触った感じ、決して値が数字にならない仕様があるとかではなかったっぽい
+                
+            5/1
+                tanの表示怪しいあらため、代入怪しい問題の解決
+                    そもそも積分計算的に、π/2あたりをまたぐのはセーフなの？->nanになるのはヤバそうな雰囲気
+                        駄目らしい。1/x含めて再検討
+                        1/xはまたがないようにできている？？
 
         """
         
@@ -283,7 +289,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             function_latex = sy.latex(function)
         differentiated_function_latex = sy.latex(differentiated_function)
         # setting value for definite integral
-        if used_formula in ["sin", "cos", "1/sin^2x"]:
+        if used_formula in ["sin", "cos"]:
 
             def create_x_value_with_radian(a: int, b: int):
                 """三角関数(sin, cos)に代入したときに、きちんと計算できるようなxをランダムに作成する
@@ -293,43 +299,82 @@ class IntegralCalculationOfLinearFunctionReplacement:
                     b (int): 1次関数の定数項
                 
                 Returns:
-                    x_value (sy.Mul): 調整されたxの値
+                    Tuple[sy.Rational, sy.Rational]: 計算可能なx
+                    - smaller_x (sy.Rational): 小さい方のx
+                    - bigger_x (sy.Rational): 大きい方のx
                 """
                 denominator = choice([4, 6])
                 numerator1 = self._random_integer(max_abs=denominator*2, positive_or_negative="positive")
                 radian1 = sy.pi * sy.Rational(numerator1, denominator)
-                x_value1 = sy.together((radian1 - b) / a)
-                x_value2 = 
-                return x_value
-            
-            x1 = create_x_value_with_radian(a, b)
-            x2 = create_x_value_with_radian(a, b)
-            if x1 > x2:
-                start, end = 
-            start = create_x_value_with_radian(a, b)
-            end = create_x_value_with_radian(a, b)
-            
+                smaller_x = sy.together((radian1 - b) / a)
+                numerator2 = self._random_integer(min_abs=numerator1+1, max_abs=(numerator1+1)*2, positive_or_negative="positive")
+                radian2 = sy.pi * sy.Rational(numerator2, denominator)
+                bigger_x = sy.together((radian2 - b) / a)
+                return smaller_x, bigger_x
+        
+            start, end = create_x_value_with_radian(a, b)
         elif used_formula == "1/cos^2x":
             
             def create_x_value_with_radian(a: int, b: int):
                 """三角関数(tan)に代入した時に、きちんと計算できるようなxをランダムに作成
+                
+                Args:
+                    a (int): 1次関数の1次の係数
+                    b (int): 1次関数の定数項
+                
+                Returns:
+                    Tuple[sy.Rational, sy.Rational]: 計算可能なx
+                    - smaller_x (sy.Rational): 小さい方のx
+                    - bigger_x (sy.Rational): 大きい方のx
                 """
-            
-            candidates = []
-            for denominator in [4, 6]:
-                for numerator in range(0, 2 * denominator):
-                    coeff = sy.Rational(numerator, denominator)
-                    if (coeff.denominator == 2) and ((coeff.numerator % 2) == 1):
-                        continue
-                    candidates.append(coeff * sy.pi)
-            unique_candidates = sorted(candidates)
-            radian1, radian2 = sample(unique_candidates, 2)
-            if radian1 > radian2:
-                end, start = radian1, radian2
-            else:
-                end, start = radian2, radian1
-            print(f"end: {end}")
-            print(f"start: {start}")                
+                if random() > 0.5:
+                    candidates = {sy.pi * sy.Rational(numerator, denominator) for denominator in (4, 6) for numerator in range(int(-denominator/2)+1, int(denominator/2))}
+                else:
+                    candidates = {sy.pi * sy.Rational(numerator, denominator) for denominator in (4, 6) for numerator in range(int(denominator/2)+1, denominator+2)}
+                radian1, radian2 = sample(candidates, 2)
+                x1 = sy.together((radian1 - b) / a)
+                x2 = sy.together((radian2 - b) / a)
+                if x1 > x2:
+                    bigger_x, smaller_x = x1, x2
+                elif x1 < x2:
+                    bigger_x, smaller_x = x2, x1
+                else:
+                    raise ValueError(f"x1 is {x1}, and x2 is {x2}. They mustn't be same.")
+                return smaller_x, bigger_x
+
+            start, end = create_x_value_with_radian(a, b)
+        elif used_formula == "1/sin^2x":
+
+            def create_x_value_with_radian(a: int, b: int):
+                """三角関数(1/tanx)に代入した時に、きちんと計算できるようなxをランダムに作成
+                
+                Args:
+                    a (int): 1次関数の1次の係数
+                    b (int): 1次関数の定数項
+                
+                Returns:
+                    Tuple[sy.Rational, sy.Rational]: 計算可能なx
+                    - smaller_x (sy.Rational): 小さい方のx
+                    - bigger_x (sy.Rational): 大きい方のx
+                """
+                if random() > 0.5:
+                    candidates = {sy.pi * sy.Rational(numerator, denominator) for denominator in (4, 6) for numerator in range(int(-denominator/2)+1, int(denominator/2))}
+                    candidates.remove(0)
+                else:
+                    candidates = {sy.pi * sy.Rational(numerator, denominator) for denominator in (4, 6) for numerator in range(int(denominator/2)+1, denominator+2)}
+                    candidates.remove(sy.pi)
+                radian1, radian2 = sample(candidates, 2)
+                x1 = sy.together((radian1 - b) / a)
+                x2 = sy.together((radian2 - b) / a)
+                if x1 > x2:
+                    bigger_x, smaller_x = x1, x2
+                elif x1 < x2:
+                    bigger_x, smaller_x = x2, x1
+                else:
+                    raise ValueError(f"x1 is {x1}, and x2 is {x2}. They mustn't be same.")
+                return smaller_x, bigger_x
+
+            start, end = create_x_value_with_radian(a, b)
         elif used_formula == "1/x":
             if a > 0:
                 min_value = math.ceil(-b / a)
@@ -374,9 +419,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
         integral_function_latex = function_latex
         if used_formula in ["sin", "cos", "1/cos^2x", "1/sin^2x"]:
             end_value = sy.nsimplify(function.subs(x, end))
-            print(f"end_value: {end_value}")
             start_value = sy.nsimplify(function.subs(x, start))
-            print(f"start_value: {start_value}")
         else:
             end_value = function.subs(x, end)
             start_value = function.subs(x, start)
@@ -459,7 +502,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             differentiated_function = k * a * (1 / sy.cos(linear_function) ** 2)
         elif used_formula == "1/sin^2x":
             k = self._random_number(use_frac=True, including_zero=False)
-            function = k * (-1 * sy.tan(linear_function))
+            function = k * (-1 / sy.tan(linear_function))
             differentiated_function = k * a * (1 / sy.sin(linear_function) ** 2)
         elif used_formula == "e^x":
             k = self._random_number(use_frac=True, including_zero=False)
@@ -520,7 +563,7 @@ class IntegralCalculationOfLinearFunctionReplacement:
             differentiated_function = k * a * (1 / sy.cos(linear_function) ** 2)
         elif used_formula == "1/sin^2x":
             k = self._random_number(use_frac=True, including_zero=False)
-            function = k * (-1 * sy.tan(linear_function))
+            function = k * (-1 / sy.tan(linear_function))
             differentiated_function = k * a * (1 / sy.sin(linear_function) ** 2)
         elif used_formula == "e^x":
             k = self._random_number(use_frac=True, including_zero=False)

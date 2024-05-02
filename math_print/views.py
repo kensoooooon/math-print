@@ -67,6 +67,7 @@ from .math_process.addition_and_subtraction_of_fraction_for_4th_grade import Add
 from .math_process.multiplication_and_division_of_fraction_for_6th_grade import MultiplicationAndDivisionOfFractionFor6thGrade
 from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
+from .math_process.hs3_integration_calculation_of_linear_function_replacement import IntegralCalculationOfLinearFunctionReplacement
 
 
 
@@ -110,6 +111,9 @@ def show_highschool1(request):
 
 def show_highschool2(request):
     return render(request, 'math_print/highschool2/highschool2.html', {})
+
+def show_highschool3(request):
+    return render(request, 'math_print/highschool3/highschool3.html', {})
 
 
 # problem and explanation
@@ -2039,6 +2043,49 @@ def print_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_print.html', {"math_problem_list_of_list": math_problem_list_of_list})
     return render_to_return
 
+def print_integral_calculation_of_linear_function_replacement(request):
+    """高校3年生の1次式の置換を用いるタイプの積分の問題のプリント用表示を担当
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 10
+    paper_number = int(request.POST["paper_number"])
+    integral_types = request.POST.getlist("integral_type")
+    if not(integral_types):
+        integral_types.append("indefinite_integral")
+        integral_types.append("definite_integral")
+    used_formulas = request.POST.getlist("used_formula")
+    if not(used_formulas):
+        used_formulas.append("x^n")
+        used_formulas.append("1/x")
+        used_formulas.append("1/x^2")
+        used_formulas.append("sin")
+        used_formulas.append("cos")
+        used_formulas.append("1/cos^2x")
+        used_formulas.append("1/sin^2x")
+        used_formulas.append("e^x")
+        used_formulas.append("a^x")
+        used_formulas.append("1/x^(1/2)")
+        used_formulas.append("x^(1/2)")
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = IntegralCalculationOfLinearFunctionReplacement(
+                integral_types=integral_types, used_formulas=used_formulas,
+                )
+            problem2 = IntegralCalculationOfLinearFunctionReplacement(
+                integral_types=integral_types, used_formulas=used_formulas,
+                )
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render_to_return
+
 # display section
 
 def display_number_problem(request):
@@ -3684,6 +3731,44 @@ def display_formula_with_symbol(request):
     render_to_return = render(request, 'math_print/elementary_school6/formula_with_symbol/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
     return render_to_return
 
+def display_integral_calculation_of_linear_function_replacement(request):
+    """高校3年生用の1次式の置換を用いるタイプの積分計算の問題をブラウザ表示
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 10
+    integral_types = request.POST.getlist("integral_type")
+    if not(integral_types):
+        integral_types.append("indefinite_integral")
+        integral_types.append("definite_integral")
+    used_formulas = request.POST.getlist("used_formula")
+    if not(used_formulas):
+        used_formulas.append("x^n")
+        used_formulas.append("1/x")
+        used_formulas.append("1/x^2")
+        used_formulas.append("sin")
+        used_formulas.append("cos")
+        used_formulas.append("1/cos^2x")
+        used_formulas.append("1/sin^2x")
+        used_formulas.append("e^x")
+        used_formulas.append("a^x")
+        used_formulas.append("1/x^(1/2)")
+        used_formulas.append("x^(1/2)")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = IntegralCalculationOfLinearFunctionReplacement(
+            integral_types=integral_types, used_formulas=used_formulas,
+        )
+        problem2 = IntegralCalculationOfLinearFunctionReplacement(
+            integral_types=integral_types, used_formulas=used_formulas,
+        )
+        math_problem_tuple_list.append((problem1, problem2))
+    render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+    return render_to_return
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

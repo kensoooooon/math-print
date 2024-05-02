@@ -231,4 +231,10 @@ urlpatterns = [
     # 種々の数列の和
     path('series/print', views.print_series, name='series_print'),
     path('series/display', views.display_series, name='series_display'),
+    #########################################
+    ### 高3 ###
+    path('highschool3/', views.show_highschool3, name='highschool3'),
+    # 1次式の置換を用いる積分計算
+    path('integration_calculation/print', views.print_integral_calculation_of_linear_function_replacement, name='hs3_integral_calculation_of_linear_function_replacement_print'),
+    path('integration_calculation/display', views.display_integral_calculation_of_linear_function_replacement, name='hs3_integral_calculation_of_linear_function_replacement_display'),
 ]

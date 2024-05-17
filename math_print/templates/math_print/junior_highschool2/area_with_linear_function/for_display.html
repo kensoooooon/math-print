@@ -288,6 +288,7 @@ function draw() {
     // problem drawing part
     //// left problem drawing part
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
+        /*ここでlinear_function1, 2, 3で渡せそう？*/
         var left_stage = new createjs.Stage(left_canvas_id);
         addAxis(left_stage);
         addGridLineToGraph(left_stage);

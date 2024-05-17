@@ -68,6 +68,7 @@ from .math_process.multiplication_and_division_of_fraction_for_6th_grade import 
 from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
 from .math_process.hs3_integration_calculation_of_linear_function_replacement import IntegralCalculationOfLinearFunctionReplacement
+from .math_process.area_with_linear_function import AreaWithLinearFunction
 
 
 
@@ -2086,6 +2087,32 @@ def print_integral_calculation_of_linear_function_replacement(request):
     render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
 
+def print_area_with_linear_function(request):
+    """中学2年生用の直線で囲まれた面積のプリント要表示を担当
+    
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素
+    """
+    PROBLEM_NUMBER = 6
+    paper_number = int(request.POST['paper_number'])
+    problem_types = request.POST.getlist('problem_type')
+    if not(problem_types):
+        problem_types.append('one_side_on_axis')
+        problem_types.append('no_side_on_axis')
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = AreaWithLinearFunction(problem_types=problem_types)
+            problem2 = AreaWithLinearFunction(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render_to_return
+
 # display section
 
 def display_number_problem(request):
@@ -3768,6 +3795,28 @@ def display_integral_calculation_of_linear_function_replacement(request):
         )
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/highschool3/integration_of_calculation/for_display.html', {"math_problem_tuple_list": math_problem_tuple_list})
+    return render_to_return
+
+def display_area_with_linear_function(request):
+    """中学2年生用の三角形の直線と面積の問題をブラウザ表示
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 4
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("one_side_on_axis")
+        problem_types.append("no_side_on_axis")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = AreaWithLinearFunction(problem_types=problem_types)
+        problem2 = AreaWithLinearFunction(problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     return render_to_return
 
 # explain section

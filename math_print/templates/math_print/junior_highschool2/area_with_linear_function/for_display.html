@@ -114,6 +114,10 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
         x = -7, 7, y=-7, 7のいずれかは必ず通るはずなので、そこを終点として計算している感じがある。
     */
     // x = -7, 7 |  y= -7, 7 check
+    console.log(`x1: ${x1}`);
+    console.log(`x1: ${y1}`);
+    console.log(`x1: ${x2}`);
+    console.log(`x1: ${y2}`);
     let linear_coefficient = (y2 - y1) / (x2 - x1)
     let intercept = -linear_coefficient * x1 + y1;
     let end_points = [];
@@ -208,7 +212,17 @@ function draw() {
     right_canvas.height = 160;
     right_canvas.style = "background-color:#CCFFFF";
 
+
+    var left_problem_p = document.createElement('p');
+    var left_problem_p = document.createElement('p');
+    left_problem_p.setAttribute("style", "visibility:visible");
+    left_problem_p.setAttribute("class", "problem");
+    var left_problem_string = "以下の問題に答えよ";
+    var left_problem = document.createTextNode(left_problem_string);
+    left_problem_p.appendChild(left_problem);
+    left_div.appendChild(left_problem_p);
     // left problem sentence part
+    /*
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
         var left_problem_p = document.createElement('p');
         left_problem_p.setAttribute("style", "visibility:visible");
@@ -242,8 +256,17 @@ function draw() {
         left_problem_p.appendChild(left_problem);
         left_div.appendChild(left_problem_p);
     }
+    */
 
+    var right_problem_p = document.createElement('p');
+    right_problem_p.setAttribute("style", "visibility:visible");
+    right_problem_p.setAttribute("class", "problem");
+    var right_problem_string = "以下の問題に答えよ";
+    var right_problem = document.createTextNode(right_problem_string);
+    right_problem_p.appendChild(right_problem);
+    right_div.appendChild(right_problem_p);
     // right problem sentence part
+    /*
     if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
         var right_problem_p = document.createElement('p');
         right_problem_p.setAttribute("style", "visibility:visible");
@@ -277,6 +300,7 @@ function draw() {
         right_problem_p.appendChild(right_problem);
         right_div.appendChild(right_problem_p);
     }
+    */
 
     left_div.appendChild(left_canvas);
     right_div.appendChild(right_canvas);
@@ -287,8 +311,35 @@ function draw() {
 
     // problem drawing part
     //// left problem drawing part
+    var left_stage = new createjs.Stage(left_canvas_id);
+    addAxis(left_stage);
+    // linear_function1
+    var left_x1_1 = Number({{ information_tuple.0.linear_function1.x1 }});
+    var left_y1_1 = Number({{ information_tuple.0.linear_function1.y1 }});
+    var left_x2_1 = Number({{ information_tuple.0.linear_function1.x2 }});
+    var left_y2_1 = Number({{ information_tuple.0.linear_function1.y2 }});
+    console.log(`left_x1_1: ${left_x1_1}`);
+    console.log(`left_y1_1: ${left_y1_1}`);
+    console.log(`left_x2_1: ${left_x2_1}`);
+    console.log(`left_y2_1: ${left_y2_1}`);
+    addCoordinateToGraph(left_stage, left_x1_1, left_y1_1, left_x2_1, left_y2_1);
+    drawLinearFunction(left_stage, left_x1_1, left_y1_1, left_x2_1, left_y2_1);
+    // linear_function2
+    var left_x1_2 = Number({{ information_tuple.0.linear_function2.x1 }});
+    var left_y1_2 = Number({{ information_tuple.0.linear_function2.y1 }});
+    var left_x2_2 = Number({{ information_tuple.0.linear_function2.x2 }});
+    var left_y2_2 = Number({{ information_tuple.0.linear_function2.y2 }});
+    addCoordinateToGraph(left_stage, left_x1_2, left_y1_2, left_x2_2, left_y2_2);
+    drawLinearFunction(left_stage, left_x1_2, left_y1_2, left_x2_2, left_y2_2);
+    // linear_function3
+    var left_x1_3 = Number({{ information_tuple.0.linear_function3.x1 }});
+    var left_y1_3 = Number({{ information_tuple.0.linear_function3.y1 }});
+    var left_x2_3 = Number({{ information_tuple.0.linear_function3.x2 }});
+    var left_y2_3 = Number({{ information_tuple.0.linear_function3.y2 }});
+    addCoordinateToGraph(left_stage, left_x1_3, left_y1_3, left_x2_3, left_y2_3);
+    drawLinearFunction(left_stage, left_x1_3, left_y1_3, left_x2_3, left_y2_3);
+    /*
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
-        /*ここでlinear_function1, 2, 3で渡せそう？*/
         var left_stage = new createjs.Stage(left_canvas_id);
         addAxis(left_stage);
         addGridLineToGraph(left_stage);
@@ -315,8 +366,33 @@ function draw() {
         addAxis(left_stage);
         addGridLineToGraph(left_stage);
     }
+    */
 
     //// right problem drawing part
+    var right_stage = new createjs.Stage(right_canvas_id);
+    addAxis(right_stage);
+    // linear_function1
+    var right_x1_1 = Number({{ information_tuple.1.linear_function1.x1 }});
+    var right_y1_1 = Number({{ information_tuple.1.linear_function1.y1 }});
+    var right_x2_1 = Number({{ information_tuple.1.linear_function1.x2 }});
+    var right_y2_1 = Number({{ information_tuple.1.linear_function1.y2 }});
+    addCoordinateToGraph(right_stage, right_x1_1, right_y1_1, right_x2_1, right_y2_1);
+    drawLinearFunction(right_stage, right_x1_1, right_y1_1, right_x2_1, right_y2_1);
+    // linear_function2
+    var right_x1_2 = Number({{ information_tuple.1.linear_function2.x1 }});
+    var right_y1_2 = Number({{ information_tuple.1.linear_function2.y1 }});
+    var right_x2_2 = Number({{ information_tuple.1.linear_function2.x2 }});
+    var right_y2_2 = Number({{ information_tuple.1.linear_function2.y2 }});
+    addCoordinateToGraph(right_stage, right_x1_2, right_y1_2, right_x2_2, right_y2_2);
+    drawLinearFunction(right_stage, right_x1_2, right_y1_2, right_x2_2, right_y2_2);
+    // linear_function3
+    var right_x1_3 = Number({{ information_tuple.1.linear_function3.x1 }});
+    var right_y1_3 = Number({{ information_tuple.1.linear_function3.y1 }});
+    var right_x2_3 = Number({{ information_tuple.1.linear_function3.x2 }});
+    var right_y2_3 = Number({{ information_tuple.1.linear_function3.y2 }});
+    addCoordinateToGraph(right_stage, right_x1_3, right_y1_3, right_x2_3, right_y2_3);
+    drawLinearFunction(right_stage, right_x1_3, right_y1_3, right_x2_3, right_y2_3);
+    /*
     if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
         var right_stage = new createjs.Stage(right_canvas_id);
         addAxis(right_stage);
@@ -344,9 +420,18 @@ function draw() {
         addAxis(right_stage);
         addGridLineToGraph(right_stage);
     }
+    */
 
     // answer part
     //// left answer part
+    var left_answer_p = document.createElement('p');
+    left_answer_p.setAttribute("style", "visibility:hidden");
+    left_answer_p.setAttribute("class", "answer");
+    var left_answer_string = "{{ information_tuple.0.latex_answer }}";
+    var left_answer = document.createTextNode(left_answer_string);
+    left_answer_p.appendChild(left_answer);
+    left_div.appendChild(left_answer_p);
+    /*
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
         var left_answer_p = document.createElement('p');
         left_answer_p.setAttribute("style", "visibility:hidden");
@@ -400,8 +485,17 @@ function draw() {
         var left_y2 = Number({{ information_tuple.0.linear_function.y2 }});
         drawLinearFunction(left_answer_stage, left_x1, left_y1, left_x2, left_y2);
     }
+    */
 
     //// right answer part
+    var right_answer_p = document.createElement('p');
+    right_answer_p.setAttribute("style", "visibility:hidden");
+    right_answer_p.setAttribute("class", "answer");
+    var right_answer_string = "{{ information_tuple.1.latex_answer }}";
+    var right_answer = document.createTextNode(right_answer_string);
+    right_answer_p.appendChild(right_answer);
+    right_div.appendChild(right_answer_p);
+    /*
     if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {
         var right_answer_p = document.createElement('p');
         right_answer_p.setAttribute("style", "visibility:hidden");
@@ -454,6 +548,7 @@ function draw() {
         var right_y2 = Number({{ information_tuple.1.linear_function.y2 }});
         drawLinearFunction(right_answer_stage, right_x1, right_y1, right_x2, right_y2);
     }
+    */
     {% endfor %}
     MathJax.typeset();
 }
@@ -469,7 +564,7 @@ function add_other_parts_to_page() {
     h1_in_hero.innerHTML = "ようこそ!";
     var p_in_hero = document.createElement('p');
     p_in_hero.setAttribute("class", "text-dark");
-    p_in_hero.innerHTML = "おうぎ形の弧の長さや中心角、面積を求める";
+    p_in_hero.innerHTML = "1次関数で囲まれた三角形の面積を求める";
     //// hero unit add phase
     hero_inner_div.appendChild(h1_in_hero);
     hero_inner_div.appendChild(p_in_hero);

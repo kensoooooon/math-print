@@ -57,6 +57,14 @@ linear_functionの修正から
 
             「軸に沿う2点+1点」
 
+6/5
+引き続き直線の扱い
+    3点を定めて、そこからもう一点を定めるという方針でよさそう
+    描画の方はあまり触りたくないので、linear_functionのステータス自体は触らずにいたい系
+    クラス内クラスで置きかえてあげる？
+    やっぱり問題ごとに点の作り方がごろっと違うので、LinearFunctionは共有しつつ、作り方はしっかりと変えたほうが良さそう
+        若干不明なところはあるが、やはりわかりづらいので、とりあえず軸＋１点からぼちぼち動かしていく
+
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple
@@ -72,6 +80,24 @@ class AreaWithLinearFunction:
         latex_answer (str): LaTeX形式を前提とした解答
         latex_problem (str): LaTeX形式を前提とした問題
     """
+
+    class LinearFunction(NamedTuple):
+        """1次関数の通る点と式を格納
+
+        Args:
+            x1, y1, x2, y2 (str): 1次関数が通る2点
+            linear_function_latex (str): latex形式で記述された1次関数の式
+            linear_coefficient_latex (str): latex形式で記述された1次関数の傾き
+            intercept_latex (str): latex形式で記述された切片
+        """
+        x1: str
+        y1: str
+        x2: str
+        y2: str
+        linear_equation_latex: str
+        linear_coefficient_latex: str
+        intercept_latex: str
+    
     def __init__(self, **settings: Dict):
         sy.init_printing(order='grevlex')
         selected_problem_type = choice(settings["problem_types"])
@@ -81,6 +107,40 @@ class AreaWithLinearFunction:
             self.latex_answer, self.latex_problem, self.linear_function1, self.linear_function2, self.linear_function3 = self._make_no_side_on_axis_problem()
     
     def _make_one_side_on_axis_problem(self):
+        """3点のうち、2点が軸上にある問題、解答、描画用情報の作成
+        
+        Developing:
+            returnはタプル絡みでもうちょっとスマートにできない？？(アンパッキング)
+            def sample():
+                numbers = (1, 2, 3)
+                return numbers
+
+            n1, n2, n3 = sample()
+            で通る→そのまますっと返してもOK
+            
+            中で決めるなら、decide_linear_function_statuses()でok
+            
+            動作抜き出し
+                x,y軸のいずれかに属する2点を決定。eg. (3, 0), (-2, 0) or (0, 1), (0, 4) (0<=x<=5, 0<=y<=5)
+                それ以外(y=0ならy≠0, x=0ならx≠0)でもう一点を追加
+                2/3点を選びつつ、でもない
+                    軸にある奴1, 2と、軸にないやつでそれぞれ直線を生成
+                3つの直線を決定(一つはx or y軸)
+                軸上の2点を底辺にし（絶対値の座標差）、もう一点を高さとして扱う
+                面積が出る
+                問題文の出力
+                    (1)直線◯◯を求めよ
+                    (2)
+                    ↑なんかふわふわ時間してる？？軸タイプは何を与えていたっけ？？？
+            
+            どのようまとめ方が適切？？出来る限り分割するのが良さそうではあるけども
+                point_decide -> 3 points (l1, 2)
+                calculate_linear_function -> 3 linear_functions (l3, 4, 5)
+                    一つはx,y軸的な感じちょっと表現に怪しみを感じる。(LaTex)周り
+                calculate_area -> 1 area(l6)
+                
+            x or y軸の存在を考えると、LinearFunctionもそのままで良いかは若干微妙な可能性を感じる？
+        """
         linear_function1 = self._decide_linear_function_status()
         linear_function2 = self._decide_linear_function_status()
         linear_function3 = self._decide_linear_function_status()

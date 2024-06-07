@@ -65,9 +65,13 @@ linear_functionの修正から
     やっぱり問題ごとに点の作り方がごろっと違うので、LinearFunctionは共有しつつ、作り方はしっかりと変えたほうが良さそう
         若干不明なところはあるが、やはりわかりづらいので、とりあえず軸＋１点からぼちぼち動かしていく
 
+6/7
+まずは問題ごとに、3点を決定して扱う方法から。
+
+それとは別件で、やはり「0以外or0も含む整数を与えるランダム関数」みたいなのは合ったほうが良いかも？
 """
 from random import choice, randint, random
-from typing import Dict, NamedTuple
+from typing import Dict, NamedTuple, Optional
 
 
 import sympy as sy
@@ -132,6 +136,7 @@ class AreaWithLinearFunction:
                     (1)直線◯◯を求めよ
                     (2)
                     ↑なんかふわふわ時間してる？？軸タイプは何を与えていたっけ？？？
+                    ↑2つの直線を与えている。交点を求めさせる作業を
             
             どのようまとめ方が適切？？出来る限り分割するのが良さそうではあるけども
                 point_decide -> 3 points (l1, 2)
@@ -140,7 +145,31 @@ class AreaWithLinearFunction:
                 calculate_area -> 1 area(l6)
                 
             x or y軸の存在を考えると、LinearFunctionもそのままで良いかは若干微妙な可能性を感じる？
+        
         """
+        class Point(NamedTuple):
+            x: int
+            y: int
+            
+        zero_coordinate = choice(["x", "y"])
+        if zero_coordinate == "x":
+            x1 = 0
+            y1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
+            x2 = 0
+            y2 = point1_y + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
+            x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
+            y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
+        elif zero_coordinate == "y":
+            x1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
+            y1 = 0
+            x2 = point1_x + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
+            y2 = 0
+            x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
+            y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
+        p1 = Point(x1, y1)
+        p2 = Point(x2, y2)
+        p3 = Point(x3, y3)
+        pA, pB, pC = sample((p1, p2, p3), k=3)
         linear_function1 = self._decide_linear_function_status()
         linear_function2 = self._decide_linear_function_status()
         linear_function3 = self._decide_linear_function_status()
@@ -202,3 +231,23 @@ class AreaWithLinearFunction:
         )
         return linear_function
     
+    def _random_integer(self, min_num: int=-7, max_num: int=7, *, removing_zero: Optional[bool]=None) -> sy.Integer:
+        """指定された条件を満たすランダムな整数を出力
+        
+        Args:
+            min_num (int): 出力される整数の最小値。デフォルトは-7
+            max_num (int): 出力される整数の最大値。デフォルトは7
+            removing_zero (Optional[bool]): 0を含むか否か。デフォルトはNone(どちらでも良い)
+        
+        Returns:
+            integer (sy.Integer): 指定された条件を満たす整数
+        """
+        if min_num >= max_num:
+            raise ValueError(f"'max_num' must be more than 'min_num'. Now, 'min_num' is {min_num}, and 'max_num' is {max_num}.")
+        numbers = list(range(min_num, max_num+1))
+        if removing_zero is None:
+            removing_zero = choice((True, False))
+        if removing_zero and (0 in numbers):
+            numbers.remove(0)
+        integer = sy.Integer(choice(numbers))
+        return integer

@@ -118,6 +118,11 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
     console.log(`x1: ${y1}`);
     console.log(`x1: ${x2}`);
     console.log(`x1: ${y2}`);
+    // y軸
+    if (x1 === 0 && x2 === 0) {
+        return;
+    }
+    // それ以外
     let linear_coefficient = (y2 - y1) / (x2 - x1)
     let intercept = -linear_coefficient * x1 + y1;
     let end_points = [];

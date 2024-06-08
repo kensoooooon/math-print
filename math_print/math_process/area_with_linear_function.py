@@ -69,6 +69,117 @@ linear_functionの修正から
 まずは問題ごとに、3点を決定して扱う方法から。
 
 それとは別件で、やはり「0以外or0も含む整数を与えるランダム関数」みたいなのは合ったほうが良いかも？
+
+6/8
+直線の作成から
+    「2点を通る直線を求める」という計算は頻出しそうだから、メソッドとして作成する系
+    
+返すのはEqでよいのか？という疑惑がある
+    文字列で
+
+どうせ3点からの計算は必須だよね
+    公式で計算できるように
+    
+描画が軸の存在をあまり想定していないような気がする
+
+function drawLinearFunction(stage, x1, y1, x2, y2) {
+    /*
+    多分線分で直線を引くから、端っこを計算している感じ
+        x = -7, 7, y=-7, 7のいずれかは必ず通るはずなので、そこを終点として計算している感じがある。
+    */
+    // x = -7, 7 |  y= -7, 7 check
+    console.log(`x1: ${x1}`);
+    console.log(`x1: ${y1}`);
+    console.log(`x1: ${x2}`);
+    console.log(`x1: ${y2}`);
+    let linear_coefficient = (y2 - y1) / (x2 - x1)
+    let intercept = -linear_coefficient * x1 + y1;
+    let end_points = [];
+    // x = -7 check
+    let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
+    if (Math.abs(y_with_x_minus_7) <= 7) {
+        end_points.push([-7, y_with_x_minus_7]);
+    }
+    // y = -7 check
+    let x_with_y_minus_7 = (-7 - intercept) / linear_coefficient;
+    if (Math.abs(x_with_y_minus_7) <= 7) {
+        let skip = false;
+        for (let point of end_points) {
+            if(point.toString() == [x_with_y_minus_7, -7].toString()) {
+                skip = true;
+                break;
+            }
+        }
+        if (skip == false) {
+            end_points.push([x_with_y_minus_7, -7]);  
+        }
+    }
+    // x = 7 check
+    let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
+    if (Math.abs(y_with_x_plus_7) <= 7) {
+        let skip = false;
+        for (let point of end_points) {
+            if(point.toString() == [7, y_with_x_plus_7].toString()) {
+                skip = true;
+                break;
+            }
+        }
+        if (skip == false) {
+            end_points.push([7, y_with_x_plus_7]);  
+        }
+    }
+    // y = 7 check
+    let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;
+    if (Math.abs(x_with_y_plus_7) <= 7) {
+        let skip = false;
+        for (let point of end_points) {
+            if(point.toString() == [x_with_y_plus_7, 7].toString()) {
+                skip = true;
+                break;
+            }
+        }
+        if (skip == false) {
+            end_points.push([x_with_y_plus_7, 7]);  
+        }
+    }
+    let end_x1, end_y1, end_x2, end_y2;
+    [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+    // convert x1~y2 to pixel(320, 160)
+    let end_x1_p = 160 + 10 * end_x1;
+    let end_y1_p = 80 + 10 * -end_y1;
+    let end_x2_p = 160 + 10 * end_x2;
+    let end_y2_p = 80 + 10 * -end_y2;
+    drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+    // y = -2 x + 7, y = -3 x + 14
+    // (7, -7), (7, -7)
+    // three points.
+    stage.update();
+}
+
+
+↑していない系
+特に、let linear_coefficient = (y2 - y1) / (x2 - x1)
+でx1 = x2であるとエラーを吐き散らかす
+
+    両方にそれぞれx1=x2の時に挙動を変化させるようなロジックを組む。
+        こちらでは、x1 = x2(y軸)であれば、式にはx=....を出力するように。（点はとくに変化させない）
+        あちらでは、ifでごっそり分岐させる系？？？
+            多分動作があまり頭に入っていない。クソコードみがある。
+            リファクタリングまでやる？それはそれで面倒でもあるが、後々のことを考えるとなしとまでは言い切れない
+            
+            そもそもどのような動作をしているのかは、いずれにしろ把握必須
+            
+            linear_coefficient_latex = sy.latex(a),
+            intercept_latex = sy.latex(b)
+            が何をしているのかも地味に不明。計算だけに使っているなら、まだ条件分岐でなんとかなりそうだが…
+            →おそらく表示にしか使っていない。ないなら困らない気がするし、余計なものを付けたくないので、削除
+    
+    LaTexのケアの場所も把握していない
+        こちら側で一律ケアする必要がある
+        関数作成
+    
+    y=0のaxis周りのやつからがnext
+        
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional
@@ -84,23 +195,22 @@ class AreaWithLinearFunction:
         latex_answer (str): LaTeX形式を前提とした解答
         latex_problem (str): LaTeX形式を前提とした問題
     """
-
+    class Point(NamedTuple):
+        x: int
+        y: int
+        
     class LinearFunction(NamedTuple):
         """1次関数の通る点と式を格納
 
         Args:
             x1, y1, x2, y2 (str): 1次関数が通る2点
             linear_function_latex (str): latex形式で記述された1次関数の式
-            linear_coefficient_latex (str): latex形式で記述された1次関数の傾き
-            intercept_latex (str): latex形式で記述された切片
         """
         x1: str
         y1: str
         x2: str
         y2: str
         linear_equation_latex: str
-        linear_coefficient_latex: str
-        intercept_latex: str
     
     def __init__(self, **settings: Dict):
         sy.init_printing(order='grevlex')
@@ -147,10 +257,6 @@ class AreaWithLinearFunction:
             x or y軸の存在を考えると、LinearFunctionもそのままで良いかは若干微妙な可能性を感じる？
         
         """
-        class Point(NamedTuple):
-            x: int
-            y: int
-            
         zero_coordinate = choice(["x", "y"])
         if zero_coordinate == "x":
             x1 = 0
@@ -169,10 +275,10 @@ class AreaWithLinearFunction:
         p1 = Point(x1, y1)
         p2 = Point(x2, y2)
         p3 = Point(x3, y3)
-        pA, pB, pC = sample((p1, p2, p3), k=3)
-        linear_function1 = self._decide_linear_function_status()
-        linear_function2 = self._decide_linear_function_status()
-        linear_function3 = self._decide_linear_function_status()
+        # なんとなく表示用に混乱しそうな気がするので、いったん点の入替えはパス
+        # pA, pB, pC = sample((p1, p2, p3), k=3)
+        linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1, p3)
+        linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2, p3)
         latex_answer = "dummy answer"
         latex_problem = "dummy problem"
         return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
@@ -191,23 +297,6 @@ class AreaWithLinearFunction:
         Returns:
             linear_function (LinearFunction): 1次関数の式と通る点を格納
         """
-        class LinearFunction(NamedTuple):
-            """1次関数の通る点と式を格納
-
-            Args:
-                x1, y1, x2, y2 (str): 1次関数が通る2点
-                linear_function_latex (str): latex形式で記述された1次関数の式
-                linear_coefficient_latex (str): latex形式で記述された1次関数の傾き
-                intercept_latex (str): latex形式で記述された切片
-            """
-            x1: str
-            y1: str
-            x2: str
-            y2: str
-            linear_equation_latex: str
-            linear_coefficient_latex: str
-            intercept_latex: str
-
         x = sy.Symbol("x", real=True)
         y = sy.Symbol("y", real=True)
         x1 = randint(-5, 5 - 1)
@@ -251,3 +340,60 @@ class AreaWithLinearFunction:
             numbers.remove(0)
         integer = sy.Integer(choice(numbers))
         return integer
+    
+    def _calculate_linear_function_by_two_points(self, p1: Point, p2: Point, /) -> LinearFunction:
+        """与えられた2点から直線の式を計算する
+
+        Args:
+            p1 (Point): 通る点その1
+            p2 (Point): 通る点その2
+
+        Returns:
+            linear_function (sy.core.relational.Equality): 1次関数
+        
+        Developing:
+            6/8
+                x1 = x2のときの挙動を変化
+                
+        """
+        x = sy.Symbol("x", real=True)
+        y = sy.Symbol("y", real=True)
+        if p1.x == p2.x:
+            # next
+            y_axis = sy.Eq(y, 0)
+        a = sy.Rational(p2.y - p1.y, p2.x - p1.x)
+        right = sy.simplify(a * (x - p1.x) + p1.y)
+        linear_function_latex = f"\( {sy.latex(sy.Eq(y, right))} \)".replace("\\", "\\\\")
+        linear_function = LinearFunction(
+            x1 = str(p1.x), y1 = str(p1.y),
+            x2 = str(p2.x), y2 = str(p2.y),
+            linear_equation_latex = linear_function_latex
+        )
+        return linear_function
+
+    def _calculate_area_by_three_points(self, p1: Point, p2: Point, p3: Point, /) -> Union[sy.Integer, sy.Rational]:
+        """指定された3点を通る三角形の面積を計算する
+        
+        Args:
+            p1, p2, p3 (Point): 指定された3点
+        
+        Returns:
+            area (Union[sy.Integer, sy.Rational]): 計算された面積
+        """
+        area = sy.Rational(1, 2) * sy.Abs((p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y))
+        if area <= 0:
+            raise ValueError(f"area must be more than 0. Let's check each value of Point: {p1}, {p2}, {p3}")
+        return area
+    
+    def _latex_maker(self, formula: sy.Equality) -> str:
+        """与えられた式をLaTex形式にカッコ込で変形する
+        
+        Args:
+            formula (sy.Equality): y = 3x - 4や、y = 0などの公式
+        
+        Returns:
+            latex (str): LaTex形式とカッコが複合された文字列
+        """
+        #         linear_function_latex = f"\( {sy.latex(sy.Eq(y, right))} \)".replace("\\", "\\\\")
+        latex = f"\( {sy.latex(formula)} \)".replace("\\", "\\\\")
+        return latex

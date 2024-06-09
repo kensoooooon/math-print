@@ -179,10 +179,14 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
         関数作成
     
     y=0のaxis周りのやつからがnext
+
+6/9
+y=0のaxis周りがよくわからん。
+とりあえず黄色いところから
         
 """
 from random import choice, randint, random
-from typing import Dict, NamedTuple, Optional
+from typing import Dict, NamedTuple, Optional, Tuple, Union
 
 
 import sympy as sy
@@ -210,7 +214,7 @@ class AreaWithLinearFunction:
         y1: str
         x2: str
         y2: str
-        linear_equation_latex: str
+        linear_function_latex: str
     
     def __init__(self, **settings: Dict):
         sy.init_printing(order='grevlex')
@@ -257,28 +261,36 @@ class AreaWithLinearFunction:
             x or y軸の存在を考えると、LinearFunctionもそのままで良いかは若干微妙な可能性を感じる？
         
         """
-        zero_coordinate = choice(["x", "y"])
-        if zero_coordinate == "x":
-            x1 = 0
-            y1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
-            x2 = 0
-            y2 = point1_y + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
-            x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
-            y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
-        elif zero_coordinate == "y":
-            x1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
-            y1 = 0
-            x2 = point1_x + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
-            y2 = 0
-            x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
-            y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
-        p1 = Point(x1, y1)
-        p2 = Point(x2, y2)
-        p3 = Point(x3, y3)
-        # なんとなく表示用に混乱しそうな気がするので、いったん点の入替えはパス
-        # pA, pB, pC = sample((p1, p2, p3), k=3)
-        linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1, p3)
-        linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2, p3)
+        def make_three_points() -> Tuple[self.Point, self.Point, self.Point]:
+            """3点のうち、いずれか2点が軸上に存在する点を作成する
+
+            Returns:
+                Tuple[self.Point, self.Point, self.Point]: 条件を満たす3点
+            """
+            zero_coordinate = choice(["x", "y"])
+            if zero_coordinate == "x":
+                x1 = 0
+                y1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
+                x2 = 0
+                y2 = y1 + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
+                x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
+                y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
+            elif zero_coordinate == "y":
+                x1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
+                y1 = 0
+                x2 = x1 + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
+                y2 = 0
+                x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
+                y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
+            p1_on_axis = self.Point(x1, y1)
+            p2_on_axis = self.Point(x2, y2)
+            p3_not_on_axis = self.Point(x3, y3)
+            return p1_on_axis, p2_on_axis, p3_not_on_axis
+        
+        p1_on_axis, p2_on_axis, p3_not_on_axis = make_three_points()
+        linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1_on_axis, p3_not_on_axis)
+        linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2_on_axis, p3_not_on_axis)
+        area = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
         latex_answer = "dummy answer"
         latex_problem = "dummy problem"
         return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
@@ -308,14 +320,14 @@ class AreaWithLinearFunction:
         linear_coefficient = sy.Rational(y2 - y1, x2 - x1)
         right_of_equation = sy.expand(linear_coefficient * x - linear_coefficient * x1 + y1)
         right_of_equation_latex = sy.latex(right_of_equation)
-        linear_equation_latex = f"\( y = {right_of_equation_latex} \)".replace("\\", "\\\\")
+        linear_function_latex = f"\( y = {right_of_equation_latex} \)".replace("\\", "\\\\")
         linear_coefficient_latex = f"\( {sy.latex(linear_coefficient)} \)".replace("\\", "\\\\")
         intercept = -linear_coefficient * x1 + y1
         intercept_latex = f"\( {sy.latex(intercept)} \)".replace("\\", "\\\\")
-        linear_function = LinearFunction(
+        linear_function = self.LinearFunction(
             x1=str(x1), y1=str(y1),
             x2=str(x2), y2=str(y2),
-            linear_equation_latex=linear_equation_latex,
+            linear_function_latex=linear_function_latex,
             linear_coefficient_latex=linear_coefficient_latex, intercept_latex=intercept_latex
         )
         return linear_function
@@ -341,6 +353,36 @@ class AreaWithLinearFunction:
         integer = sy.Integer(choice(numbers))
         return integer
     
+    def _three_points_maker(self, condition: str) -> Tuple[Point, Point, Point]:
+        """指定された条件に対して、それを満たす3つの点を作成し、返す
+
+        Args:
+            condition (str): "two_points_on_axis"と"no_point_on_axis"のいずれか
+
+        Returns:
+            Tuple[Point, Point, Point]: 条件を満たす3点
+            
+        Developing:
+            これ、なんかヤバそうな雰囲気がない？？
+            →どれが軸上の点か判然としないのがヤバそう
+            特に軸上に点がある状態だと、「それ以外の二点」とで扱いを変える必要がある
+                単純に順番で区別する？初めの一点だけは軸上じゃない的な
+                あるいは、関数の方で区別する？？
+                    2点を与えたときに、その2点が何仕様なのかは判別しやすい？
+                あるいは変数名で区別する？？
+                    妙なロジックとかは必要なさそう。とりあえずこっち？？
+            
+            またぐのがよくないんじゃないか？という説がある
+                中でそれぞれthree pointを作るとか？
+                こっちのが良さそうな気がしてきたな？？？？
+        """
+        if condition == "two_points_on_axis":
+            pass
+        elif condition == "no_point_on_axis":
+            pass
+        else:
+            raise ValueError(f"'condition' must be 'two_points_on_axis' or 'no_point_on_axis'")
+    
     def _calculate_linear_function_by_two_points(self, p1: Point, p2: Point, /) -> LinearFunction:
         """与えられた2点から直線の式を計算する
 
@@ -359,16 +401,23 @@ class AreaWithLinearFunction:
         x = sy.Symbol("x", real=True)
         y = sy.Symbol("y", real=True)
         if p1.x == p2.x:
-            # next
-            y_axis = sy.Eq(y, 0)
-        a = sy.Rational(p2.y - p1.y, p2.x - p1.x)
-        right = sy.simplify(a * (x - p1.x) + p1.y)
-        linear_function_latex = f"\( {sy.latex(sy.Eq(y, right))} \)".replace("\\", "\\\\")
-        linear_function = LinearFunction(
-            x1 = str(p1.x), y1 = str(p1.y),
-            x2 = str(p2.x), y2 = str(p2.y),
-            linear_equation_latex = linear_function_latex
-        )
+            y_axis = sy.Eq(x, 0)
+            y_axis_latex = self._latex_maker(y_axis)
+            linear_function = self.LinearFunction(
+                x1 = str(p1.x), y1 = str(p1.y),
+                x2 = str(p2.x), y2 = str(p2.y),
+                linear_function_latex= y_axis_latex
+            )
+        else:
+            a = sy.Rational(p2.y - p1.y, p2.x - p1.x)
+            right = sy.simplify(a * (x - p1.x) + p1.y)
+            linear_function_equation = sy.Eq(y, right)
+            linear_function_latex = self._latex_maker(linear_function_equation)
+            linear_function = self.LinearFunction(
+                x1 = str(p1.x), y1 = str(p1.y),
+                x2 = str(p2.x), y2 = str(p2.y),
+                linear_function_latex = linear_function_latex
+            )
         return linear_function
 
     def _calculate_area_by_three_points(self, p1: Point, p2: Point, p3: Point, /) -> Union[sy.Integer, sy.Rational]:

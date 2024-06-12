@@ -183,12 +183,38 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
 6/9
 y=0のaxis周りがよくわからん。
 とりあえず黄色いところから
+
+6/12
+続き
+
+とりあえず直線を表示チェックするところまでは進んだ
+    ・時々エラーを吐く
+        点が存在していない場合があるらしい
+    ・描画が面積用にカスタマイズされていない
+        3点を示すのではなく、それぞれの場所に①, ②を置き描画する必要がある。
+    ・点の配置がマジで面倒っぽい??
+        適当にA,B,Cでいける？
+            zero_coordinateの設定がないと、とても面倒そう？名前で判別可能？？
+            
+    ・改行周りでそこそこの面倒も
+        from django.template.defaultfilters import linebreaksbr
+
+        def my_view(request):
+            problem_text = "問題のテキスト\n次の行に続きます"
+            processed_text = linebreaksbr(problem_text)
+            context = {'processed_text': processed_text}
+            return render(request, 'my_template.html', context)
+        でいけるらしい？
         
+        ->linebreaksbr | safe + innerHTMLでとりあえずOK
+
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional, Tuple, Union
 
 
+# views側でフィルター生成
+from django.template.defaultfilters import linebreaksbr
 import sympy as sy
 
 
@@ -272,28 +298,37 @@ class AreaWithLinearFunction:
                 x1 = 0
                 y1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
                 x2 = 0
-                y2 = y1 + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
-                x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
-                y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
+                y2 = y1 + self._random_integer(min_num=-2, max_num=2, removing_zero=True)
+                x3 = self._random_integer(min_num=-5, max_num=5, removing_zero=True)
+                y3 = self._random_integer(min_num=-5, max_num=5, removing_zero=False)
             elif zero_coordinate == "y":
                 x1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
                 y1 = 0
-                x2 = x1 + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
+                x2 = x1 + self._random_integer(min_num=-2, max_num=2, removing_zero=True)
                 y2 = 0
-                x3 = self._random_integer(min_num=-7, max_num=7, removing_zero=False)
-                y3 = self._random_integer(min_num=-7, max_num=7, removing_zero=True)
+                x3 = self._random_integer(min_num=-5, max_num=5, removing_zero=True)
+                y3 = self._random_integer(min_num=-5, max_num=5, removing_zero=True)
             p1_on_axis = self.Point(x1, y1)
             p2_on_axis = self.Point(x2, y2)
             p3_not_on_axis = self.Point(x3, y3)
-            return p1_on_axis, p2_on_axis, p3_not_on_axis
+            return zero_coordinate, p1_on_axis, p2_on_axis, p3_not_on_axis
         
-        p1_on_axis, p2_on_axis, p3_not_on_axis = make_three_points()
+        zero_coordinate, p1_on_axis, p2_on_axis, p3_not_on_axis = make_three_points()
         linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1_on_axis, p3_not_on_axis)
         linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2_on_axis, p3_not_on_axis)
+        line_in_parallel_with_y_axis = self._calculate_linear_function_by_two_points(p1_on_axis, p2_on_axis)
         area = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
-        latex_answer = "dummy answer"
-        latex_problem = "dummy problem"
-        return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
+        latex_problem = f"図のように、2直線{linear_function_without_axis1.linear_function_latex}…①, {linear_function_without_axis2.linear_function_latex}…②が、"
+        latex_problem += f"点Aで交わっている。\n"
+        if zero_coordinate == "x":
+            latex_problem += f"①とy軸の交点をB, ②とy軸の交点をCとするとき、"
+        elif zero_coordinate == "y":
+            latex_problem += f"①とx軸の交点をB, ②とx軸の交点をCとするとき、"
+        triangle_ABC = self._latex_maker("\\triangle ABC")
+        latex_problem += f"{triangle_ABC}の面積を求めよ。"
+        # latex_problem = linebreaksbr(latex_problem)
+        latex_answer = f"area is {area}"
+        return latex_answer, latex_problem, linear_function_without_axis1, linear_function_without_axis2, line_in_parallel_with_y_axis
     
     def _make_no_side_on_axis_problem(self):
         linear_function1 = self._decide_linear_function_status()
@@ -302,35 +337,6 @@ class AreaWithLinearFunction:
         latex_answer = "dummy answer"
         latex_problem = "dummy problem"
         return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
-
-    def _decide_linear_function_status(self):
-        """1次関数のステータスを決定
-
-        Returns:
-            linear_function (LinearFunction): 1次関数の式と通る点を格納
-        """
-        x = sy.Symbol("x", real=True)
-        y = sy.Symbol("y", real=True)
-        x1 = randint(-5, 5 - 1)
-        x2 = x1 + randint(1, 5 - x1)
-        y1 = randint(-5, 5 - 1)
-        y2 = y1 + randint(1, 5 - y1)
-        if random() > 0.5:
-            y1, y2 = y2, y1
-        linear_coefficient = sy.Rational(y2 - y1, x2 - x1)
-        right_of_equation = sy.expand(linear_coefficient * x - linear_coefficient * x1 + y1)
-        right_of_equation_latex = sy.latex(right_of_equation)
-        linear_function_latex = f"\( y = {right_of_equation_latex} \)".replace("\\", "\\\\")
-        linear_coefficient_latex = f"\( {sy.latex(linear_coefficient)} \)".replace("\\", "\\\\")
-        intercept = -linear_coefficient * x1 + y1
-        intercept_latex = f"\( {sy.latex(intercept)} \)".replace("\\", "\\\\")
-        linear_function = self.LinearFunction(
-            x1=str(x1), y1=str(y1),
-            x2=str(x2), y2=str(y2),
-            linear_function_latex=linear_function_latex,
-            linear_coefficient_latex=linear_coefficient_latex, intercept_latex=intercept_latex
-        )
-        return linear_function
     
     def _random_integer(self, min_num: int=-7, max_num: int=7, *, removing_zero: Optional[bool]=None) -> sy.Integer:
         """指定された条件を満たすランダムな整数を出力
@@ -353,36 +359,6 @@ class AreaWithLinearFunction:
         integer = sy.Integer(choice(numbers))
         return integer
     
-    def _three_points_maker(self, condition: str) -> Tuple[Point, Point, Point]:
-        """指定された条件に対して、それを満たす3つの点を作成し、返す
-
-        Args:
-            condition (str): "two_points_on_axis"と"no_point_on_axis"のいずれか
-
-        Returns:
-            Tuple[Point, Point, Point]: 条件を満たす3点
-            
-        Developing:
-            これ、なんかヤバそうな雰囲気がない？？
-            →どれが軸上の点か判然としないのがヤバそう
-            特に軸上に点がある状態だと、「それ以外の二点」とで扱いを変える必要がある
-                単純に順番で区別する？初めの一点だけは軸上じゃない的な
-                あるいは、関数の方で区別する？？
-                    2点を与えたときに、その2点が何仕様なのかは判別しやすい？
-                あるいは変数名で区別する？？
-                    妙なロジックとかは必要なさそう。とりあえずこっち？？
-            
-            またぐのがよくないんじゃないか？という説がある
-                中でそれぞれthree pointを作るとか？
-                こっちのが良さそうな気がしてきたな？？？？
-        """
-        if condition == "two_points_on_axis":
-            pass
-        elif condition == "no_point_on_axis":
-            pass
-        else:
-            raise ValueError(f"'condition' must be 'two_points_on_axis' or 'no_point_on_axis'")
-    
     def _calculate_linear_function_by_two_points(self, p1: Point, p2: Point, /) -> LinearFunction:
         """与えられた2点から直線の式を計算する
 
@@ -396,17 +372,21 @@ class AreaWithLinearFunction:
         Developing:
             6/8
                 x1 = x2のときの挙動を変化
+            
+            6/12
+                p1.x == p2.xのときの挙動に変化が必要
+                
                 
         """
         x = sy.Symbol("x", real=True)
         y = sy.Symbol("y", real=True)
         if p1.x == p2.x:
-            y_axis = sy.Eq(x, 0)
-            y_axis_latex = self._latex_maker(y_axis)
+            line_in_parallel_with_y_axis = sy.Eq(x, p1.x)
+            line_in_parallel_with_y_axis_latex = self._latex_maker(line_in_parallel_with_y_axis)
             linear_function = self.LinearFunction(
                 x1 = str(p1.x), y1 = str(p1.y),
                 x2 = str(p2.x), y2 = str(p2.y),
-                linear_function_latex= y_axis_latex
+                linear_function_latex= line_in_parallel_with_y_axis_latex
             )
         else:
             a = sy.Rational(p2.y - p1.y, p2.x - p1.x)
@@ -434,15 +414,19 @@ class AreaWithLinearFunction:
             raise ValueError(f"area must be more than 0. Let's check each value of Point: {p1}, {p2}, {p3}")
         return area
     
-    def _latex_maker(self, formula: sy.Equality) -> str:
+    def _latex_maker(self, formula: Union[sy.Equality, str]) -> str:
         """与えられた式をLaTex形式にカッコ込で変形する
         
         Args:
-            formula (sy.Equality): y = 3x - 4や、y = 0などの公式
+            formula (Union[sy.Equality, str]): y = 3x - 4や、y = 0などの公式
         
         Returns:
             latex (str): LaTex形式とカッコが複合された文字列
         """
-        #         linear_function_latex = f"\( {sy.latex(sy.Eq(y, right))} \)".replace("\\", "\\\\")
-        latex = f"\( {sy.latex(formula)} \)".replace("\\", "\\\\")
+        #  linear_function_latex = f"\( {sy.latex(sy.Eq(y, right))} \)".replace("\\", "\\\\")
+        if isinstance(formula, str):
+            latex = f"\( {formula} \)".replace("\\", "\\\\")
+        else:
+            latex = f"\( {sy.latex(formula)} \)".replace("\\", "\\\\")
         return latex
+    

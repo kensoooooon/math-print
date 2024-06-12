@@ -33,7 +33,7 @@ function refresh() {
         stage.update();
 }
 
-function drawDegreeCharacter(stage, x, y, character) {
+function drawCharacter(stage, x, y, character) {
     var text = new createjs.Text(character, "15px Arial", "#000000");
     text.x = x;
     text.y = y;
@@ -41,11 +41,43 @@ function drawDegreeCharacter(stage, x, y, character) {
     stage.update();
 }
 
+function drawLineNumber(stage, x1, y1, x2, y2, character) {
+    /*
+    single check?
+
+    right only check
+    */
+    // convert x1~y2 to pixel(320, 160)
+    console.log(`x1: ${x1}`);
+    console.log(`y1: ${y1}`);
+    console.log(`x2: ${x2}`);
+    console.log(`y2: ${y2}`);
+    console.log("---------------");
+    if (x1 === 0 & x2 === 0) {
+        let x_p = 160 + 10 * -1;
+        let y_p = 80 + 10 * -6;
+    }
+    else {
+        let linear_coefficient = (y2 - y1) / (x2 - x1);
+        let intercept = -linear_coefficient * x1 + y1;
+        if (x1 > x2) {
+            let right_y = linear_coefficient * x1 + intercept;
+        }
+        else {
+            let right_y = linear_coefficient * x2 + intercept;
+        }
+        let x_p = 160 + 10 * 6;
+        let y_p = 80 + 10 * -right_y;
+    }
+    drawCharacter(stage, x_p, y_p, character);
+    stage.update();
+}
+
 function addAxis(stage) {
     drawLine(stage, 90, 80, 230, 80);
     drawLine(stage, 160, 10, 160, 150);
-    drawDegreeCharacter(stage, 235, 80, "x");
-    drawDegreeCharacter(stage, 155, -5, "y");
+    drawCharacter(stage, 235, 80, "x");
+    drawCharacter(stage, 155, -5, "y");
 }
 
 function addGridLineToGraph(stage) {
@@ -66,11 +98,11 @@ function addGridLineToGraph(stage) {
     graphic.endStroke();
     graphic.beginStroke("#000000");
     graphic.setStrokeStyle(0.5);
-    drawDegreeCharacter(stage, 10 * 1 + 90, 80, "-5");
-    drawDegreeCharacter(stage, 10 * 11 + 90 + 5, 80, "5");
-    drawDegreeCharacter(stage, 160, 10 * 1 + 10, "5");
-    drawDegreeCharacter(stage, 160, 10 * 11 + 10, "-5");
-    drawDegreeCharacter(stage, 160, 80, "O");
+    drawCharacter(stage, 10 * 1 + 90, 80, "-5");
+    drawCharacter(stage, 10 * 11 + 90 + 5, 80, "5");
+    drawCharacter(stage, 160, 10 * 1 + 10, "5");
+    drawCharacter(stage, 160, 10 * 11 + 10, "-5");
+    drawCharacter(stage, 160, 80, "O");
     graphic.endStroke();
     let shape = new createjs.Shape(graphic);
     stage.addChild(shape);
@@ -100,8 +132,8 @@ function addCoordinateToGraph(stage, x1, y1, x2, y2) {
     } 
     let point1 = "(" + String(x1) + ", " + String(y1) + ")";
     let point2 = "(" + String(x2) + ", " + String(y2) + ")";
-    drawDegreeCharacter(stage, x1_p, y1_p, point1);
-    drawDegreeCharacter(stage, x2_p, y2_p, point2);
+    drawCharacter(stage, x1_p, y1_p, point1);
+    drawCharacter(stage, x2_p, y2_p, point2);
     graphic.endStroke();
     let shape = new createjs.Shape(graphic);
     stage.addChild(shape);
@@ -115,15 +147,16 @@ function drawLinearFunction(stage, x1, y1, x2, y2) {
     */
     // x = -7, 7 |  y= -7, 7 check
     console.log(`x1: ${x1}`);
-    console.log(`x1: ${y1}`);
-    console.log(`x1: ${x2}`);
-    console.log(`x1: ${y2}`);
+    console.log(`y1: ${y1}`);
+    console.log(`x2: ${x2}`);
+    console.log(`y2: ${y2}`);
+    console.log("---------------");
     // y軸
     if (x1 === 0 && x2 === 0) {
         return;
     }
     // それ以外
-    let linear_coefficient = (y2 - y1) / (x2 - x1)
+    let linear_coefficient = (y2 - y1) / (x2 - x1);
     let intercept = -linear_coefficient * x1 + y1;
     let end_points = [];
     // x = -7 check
@@ -222,9 +255,10 @@ function draw() {
     var left_problem_p = document.createElement('p');
     left_problem_p.setAttribute("style", "visibility:visible");
     left_problem_p.setAttribute("class", "problem");
-    var left_problem_string = "以下の問題に答えよ";
-    var left_problem = document.createTextNode(left_problem_string);
-    left_problem_p.appendChild(left_problem);
+    // var left_problem_string = "以下の問題に答えよ";
+    var left_problem_string = "{{ information_tuple.0.latex_problem |linebreaksbr|safe }}";
+    // var left_problem = document.createTextNode(left_problem_string);
+    left_problem_p.innerHTML = left_problem_string;
     left_div.appendChild(left_problem_p);
     // left problem sentence part
     /*
@@ -266,9 +300,10 @@ function draw() {
     var right_problem_p = document.createElement('p');
     right_problem_p.setAttribute("style", "visibility:visible");
     right_problem_p.setAttribute("class", "problem");
-    var right_problem_string = "以下の問題に答えよ";
-    var right_problem = document.createTextNode(right_problem_string);
-    right_problem_p.appendChild(right_problem);
+    // var right_problem_string = "以下の問題に答えよ。"
+    var right_problem_string = "{{ information_tuple.1.latex_problem|linebreaksbr|safe }}";
+    // var right_problem = document.createTextNode(right_problem_string);
+    right_problem_p.innerHTML = right_problem_string;
     right_div.appendChild(right_problem_p);
     // right problem sentence part
     /*
@@ -323,25 +358,24 @@ function draw() {
     var left_y1_1 = Number({{ information_tuple.0.linear_function1.y1 }});
     var left_x2_1 = Number({{ information_tuple.0.linear_function1.x2 }});
     var left_y2_1 = Number({{ information_tuple.0.linear_function1.y2 }});
-    console.log(`left_x1_1: ${left_x1_1}`);
-    console.log(`left_y1_1: ${left_y1_1}`);
-    console.log(`left_x2_1: ${left_x2_1}`);
-    console.log(`left_y2_1: ${left_y2_1}`);
-    addCoordinateToGraph(left_stage, left_x1_1, left_y1_1, left_x2_1, left_y2_1);
+    // addCoordinateToGraph(left_stage, left_x1_1, left_y1_1, left_x2_1, left_y2_1);
+    drawLineNumber(left_stage, left_x1_1, left_y1_1, left_x2_1, left_y2_1, "①");
     drawLinearFunction(left_stage, left_x1_1, left_y1_1, left_x2_1, left_y2_1);
     // linear_function2
     var left_x1_2 = Number({{ information_tuple.0.linear_function2.x1 }});
     var left_y1_2 = Number({{ information_tuple.0.linear_function2.y1 }});
     var left_x2_2 = Number({{ information_tuple.0.linear_function2.x2 }});
     var left_y2_2 = Number({{ information_tuple.0.linear_function2.y2 }});
-    addCoordinateToGraph(left_stage, left_x1_2, left_y1_2, left_x2_2, left_y2_2);
+    // addCoordinateToGraph(left_stage, left_x1_2, left_y1_2, left_x2_2, left_y2_2);
+    drawLineNumber(left_stage, left_x1_2, left_y1_2, left_x2_2, left_y2_2, "②")
     drawLinearFunction(left_stage, left_x1_2, left_y1_2, left_x2_2, left_y2_2);
     // linear_function3
     var left_x1_3 = Number({{ information_tuple.0.linear_function3.x1 }});
     var left_y1_3 = Number({{ information_tuple.0.linear_function3.y1 }});
     var left_x2_3 = Number({{ information_tuple.0.linear_function3.x2 }});
     var left_y2_3 = Number({{ information_tuple.0.linear_function3.y2 }});
-    addCoordinateToGraph(left_stage, left_x1_3, left_y1_3, left_x2_3, left_y2_3);
+    // addCoordinateToGraph(left_stage, left_x1_3, left_y1_3, left_x2_3, left_y2_3);
+    drawLineNumber(left_stage, left_x1_3, left_y1_3, left_x2_3, left_y2_3);
     drawLinearFunction(left_stage, left_x1_3, left_y1_3, left_x2_3, left_y2_3);
     /*
     if ("{{ information_tuple.0.selected_problem_type }}" == "with_grid_to_linear_function") {
@@ -381,21 +415,21 @@ function draw() {
     var right_y1_1 = Number({{ information_tuple.1.linear_function1.y1 }});
     var right_x2_1 = Number({{ information_tuple.1.linear_function1.x2 }});
     var right_y2_1 = Number({{ information_tuple.1.linear_function1.y2 }});
-    addCoordinateToGraph(right_stage, right_x1_1, right_y1_1, right_x2_1, right_y2_1);
+    // addCoordinateToGraph(right_stage, right_x1_1, right_y1_1, right_x2_1, right_y2_1);
     drawLinearFunction(right_stage, right_x1_1, right_y1_1, right_x2_1, right_y2_1);
     // linear_function2
     var right_x1_2 = Number({{ information_tuple.1.linear_function2.x1 }});
     var right_y1_2 = Number({{ information_tuple.1.linear_function2.y1 }});
     var right_x2_2 = Number({{ information_tuple.1.linear_function2.x2 }});
     var right_y2_2 = Number({{ information_tuple.1.linear_function2.y2 }});
-    addCoordinateToGraph(right_stage, right_x1_2, right_y1_2, right_x2_2, right_y2_2);
+    // addCoordinateToGraph(right_stage, right_x1_2, right_y1_2, right_x2_2, right_y2_2);
     drawLinearFunction(right_stage, right_x1_2, right_y1_2, right_x2_2, right_y2_2);
     // linear_function3
     var right_x1_3 = Number({{ information_tuple.1.linear_function3.x1 }});
     var right_y1_3 = Number({{ information_tuple.1.linear_function3.y1 }});
     var right_x2_3 = Number({{ information_tuple.1.linear_function3.x2 }});
     var right_y2_3 = Number({{ information_tuple.1.linear_function3.y2 }});
-    addCoordinateToGraph(right_stage, right_x1_3, right_y1_3, right_x2_3, right_y2_3);
+    // addCoordinateToGraph(right_stage, right_x1_3, right_y1_3, right_x2_3, right_y2_3);
     drawLinearFunction(right_stage, right_x1_3, right_y1_3, right_x2_3, right_y2_3);
     /*
     if ("{{ information_tuple.1.selected_problem_type }}" == "with_grid_to_linear_function") {

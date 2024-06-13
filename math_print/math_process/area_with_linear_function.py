@@ -208,6 +208,18 @@ y=0のaxis周りがよくわからん。
         
         ->linebreaksbr | safe + innerHTMLでとりあえずOK
 
+6/13
+    引き続き作業だが、そもそもhtmlファイルがかったるすぎる説がある
+        全体を作成しなくても、関数の中でだけforループを回せば済むのではないか？？
+        明らかに作業の遅延に直結しているため、解消できるならしておきたいところ。
+        -> for_display_new.htmlで試作
+        
+            疑問
+            ・テンプレートタグを利用したループは2回取れるのか？
+                仮に取れるのであれば、どのようにすればよいのか？
+                    対応としては問題1問につき、linear_functionが3つ状態
+                    よくわからんので、とりあえずぶん回してみる？
+
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional, Tuple, Union
@@ -424,9 +436,15 @@ class AreaWithLinearFunction:
             latex (str): LaTex形式とカッコが複合された文字列
         """
         #  linear_function_latex = f"\( {sy.latex(sy.Eq(y, right))} \)".replace("\\", "\\\\")
+        """
         if isinstance(formula, str):
             latex = f"\( {formula} \)".replace("\\", "\\\\")
         else:
             latex = f"\( {sy.latex(formula)} \)".replace("\\", "\\\\")
+        """
+        if isinstance(formula, str):
+            latex = f"\( {formula} \)"
+        else:
+            latex = f"\( {sy.latex(formula)} \)"
         return latex
     

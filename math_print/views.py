@@ -3816,7 +3816,7 @@ def display_area_with_linear_function(request):
         problem1 = AreaWithLinearFunction(problem_types=problem_types)
         problem2 = AreaWithLinearFunction(problem_types=problem_types)
         math_problem_tuple_list.append((problem1, problem2))
-    render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+    render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_display_new.html', {'math_problem_tuple_list': math_problem_tuple_list})
     return render_to_return
 
 # explain section

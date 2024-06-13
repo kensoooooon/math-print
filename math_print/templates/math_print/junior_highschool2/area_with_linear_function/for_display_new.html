@@ -1,0 +1,330 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script>
+    function showAnswer(){
+        var nodes = document.getElementsByClassName('answer');
+        for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+    
+    }
+    function refresh() {
+        var url = location.origin;
+        var pathname = location.pathname;
+        var hash = location.hash;
+        location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+    }
+    </script>
+    
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <script>
+        window.addEventListener("load", draw);
+    
+        function drawLine(stage, start_x, start_y, end_x, end_y) {
+            var graphic = new createjs.Graphics();
+            graphic.setStrokeStyle(1);
+            graphic.beginStroke("#000000");
+            graphic.moveTo(start_x, start_y);
+            graphic.lineTo(end_x, end_y);
+            graphic.endStroke();
+            var shape = new createjs.Shape(graphic);
+            stage.addChild(shape);
+            stage.update();
+    }
+    
+    function drawCharacter(stage, x, y, character) {
+        var text = new createjs.Text(character, "15px Arial", "#000000");
+        text.x = x;
+        text.y = y;
+        stage.addChild(text);
+        stage.update();
+    }
+    
+    function drawLineNumber(stage, x1, y1, x2, y2, character) {
+        /*
+        single check?
+    
+        right only check
+        */
+        // convert x1~y2 to pixel(320, 160)
+        console.log(`x1: ${x1}`);
+        console.log(`y1: ${y1}`);
+        console.log(`x2: ${x2}`);
+        console.log(`y2: ${y2}`);
+        console.log("---------------");
+        if (x1 === 0 & x2 === 0) {
+            let x_p = 160 + 10 * -1;
+            let y_p = 80 + 10 * -6;
+        }
+        else {
+            let linear_coefficient = (y2 - y1) / (x2 - x1);
+            let intercept = -linear_coefficient * x1 + y1;
+            if (x1 > x2) {
+                let right_y = linear_coefficient * x1 + intercept;
+            }
+            else {
+                let right_y = linear_coefficient * x2 + intercept;
+            }
+            let x_p = 160 + 10 * 6;
+            let y_p = 80 + 10 * -right_y;
+        }
+        drawCharacter(stage, x_p, y_p, character);
+        stage.update();
+    }
+    
+    function addAxis(stage) {
+        drawLine(stage, 90, 80, 230, 80);
+        drawLine(stage, 160, 10, 160, 150);
+        drawCharacter(stage, 235, 80, "x");
+        drawCharacter(stage, 155, -5, "y");
+    }
+    
+    function addGridLineToGraph(stage) {
+        let graphic = new createjs.Graphics();
+        // dash line
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.7);
+        for (let i = 0; i <= 14; i++) {
+            let x = 10 * i + 90;
+            graphic.moveTo(x, 10);
+            graphic.lineTo(x, 150);
+        }
+        for (let i = 0; i <= 14; i++) {
+            let y = 10 * i + 10;
+            graphic.moveTo(90, y);
+            graphic.lineTo(230, y);
+        }
+        graphic.endStroke();
+        graphic.beginStroke("#000000");
+        graphic.setStrokeStyle(0.5);
+        drawCharacter(stage, 10 * 1 + 90, 80, "-5");
+        drawCharacter(stage, 10 * 11 + 90 + 5, 80, "5");
+        drawCharacter(stage, 160, 10 * 1 + 10, "5");
+        drawCharacter(stage, 160, 10 * 11 + 10, "-5");
+        drawCharacter(stage, 160, 80, "O");
+        graphic.endStroke();
+        let shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+    
+    function addCoordinateToGraph(stage, x1, y1, x2, y2) {
+        let graphic = new createjs.Graphics();
+        let x1_p = 10 * x1 + 160;
+        let y1_p = 10 * (-y1) + 80;
+        let x2_p = 10 * x2 + 160;
+        let y2_p = 10 * (-y2) + 80;
+        graphic.beginFill("Black");
+        graphic.drawCircle(x1_p, y1_p, 2);
+        graphic.drawCircle(x2_p, y2_p, 2);
+        graphic.endFill();
+        if (y1_p > y2_p) {
+            x1_p = x1_p + 5;
+            x2_p = x2_p + 5;
+            y1_p = y1_p + 5;
+            y2_p = y2_p - 5;
+        } else {
+            x1_p = x1_p - 45;
+            x2_p = x2_p - 45;
+            y1_p = y1_p - 5;
+            y2_p = y2_p + 5;
+        } 
+        let point1 = "(" + String(x1) + ", " + String(y1) + ")";
+        let point2 = "(" + String(x2) + ", " + String(y2) + ")";
+        drawCharacter(stage, x1_p, y1_p, point1);
+        drawCharacter(stage, x2_p, y2_p, point2);
+        graphic.endStroke();
+        let shape = new createjs.Shape(graphic);
+        stage.addChild(shape);
+        stage.update();
+    }
+    
+    function drawLinearFunction(stage, x1, y1, x2, y2) {
+        /*
+        多分線分で直線を引くから、端っこを計算している感じ
+            x = -7, 7, y=-7, 7のいずれかは必ず通るはずなので、そこを終点として計算している感じがある。
+        */
+        // x = -7, 7 |  y= -7, 7 check
+        console.log(`x1: ${x1}`);
+        console.log(`y1: ${y1}`);
+        console.log(`x2: ${x2}`);
+        console.log(`y2: ${y2}`);
+        console.log("---------------");
+        // y軸
+        if (x1 === 0 && x2 === 0) {
+            return;
+        }
+        // それ以外
+        let linear_coefficient = (y2 - y1) / (x2 - x1);
+        let intercept = -linear_coefficient * x1 + y1;
+        let end_points = [];
+        // x = -7 check
+        let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
+        if (Math.abs(y_with_x_minus_7) <= 7) {
+            end_points.push([-7, y_with_x_minus_7]);
+        }
+        // y = -7 check
+        let x_with_y_minus_7 = (-7 - intercept) / linear_coefficient;
+        if (Math.abs(x_with_y_minus_7) <= 7) {
+            let skip = false;
+            for (let point of end_points) {
+                if(point.toString() == [x_with_y_minus_7, -7].toString()) {
+                    skip = true;
+                    break;
+                }
+            }
+            if (skip == false) {
+                end_points.push([x_with_y_minus_7, -7]);  
+            }
+        }
+        // x = 7 check
+        let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
+        if (Math.abs(y_with_x_plus_7) <= 7) {
+            let skip = false;
+            for (let point of end_points) {
+                if(point.toString() == [7, y_with_x_plus_7].toString()) {
+                    skip = true;
+                    break;
+                }
+            }
+            if (skip == false) {
+                end_points.push([7, y_with_x_plus_7]);  
+            }
+        }
+        // y = 7 check
+        let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;
+        if (Math.abs(x_with_y_plus_7) <= 7) {
+            let skip = false;
+            for (let point of end_points) {
+                if(point.toString() == [x_with_y_plus_7, 7].toString()) {
+                    skip = true;
+                    break;
+                }
+            }
+            if (skip == false) {
+                end_points.push([x_with_y_plus_7, 7]);  
+            }
+        }
+        let end_x1, end_y1, end_x2, end_y2;
+        [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+        // convert x1~y2 to pixel(320, 160)
+        let end_x1_p = 160 + 10 * end_x1;
+        let end_y1_p = 80 + 10 * -end_y1;
+        let end_x2_p = 160 + 10 * end_x2;
+        let end_y2_p = 80 + 10 * -end_y2;
+        drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+        // y = -2 x + 7, y = -3 x + 14
+        // (7, -7), (7, -7)
+        // three points.
+        stage.update();
+    }
+
+    function draw() {
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        // let left_canvas = document.getElementById("left_canvas_{{ forloop.counter }}");
+        let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}")
+        addAxis(left_stage_{{ forloop.counter }});
+        let left_x1_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.x1 }});
+        let left_y1_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.y1 }});
+        let left_x2_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.x2 }});
+        let left_y2_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.y2 }});
+        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_{{ forloop.counter }}, left_y1_{{ forloop.counter }}, left_x2_{{ forloop.counter }}, left_y2_{{ forloop.counter }}, "①");
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_{{ forloop.counter }}, left_y1_{{ forloop.counter }}, left_x2_{{ forloop.counter }}, left_y2_{{ forloop.counter }});
+    {% endfor %}
+    }
+
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+等式の変形
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">1次関数と面積</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<ol>
+    <p>[]内の文字について等式を変形せよ</p>
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            <canvas id="left_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
+                        </p>
+                    </li>
+                </div>
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
+                        </p>
+                    </li>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</ol>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
+    <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
+    <a href="{% url 'junior_highschool2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2024 有明学習振興</a></small>
+</footer>
+{% endblock %}

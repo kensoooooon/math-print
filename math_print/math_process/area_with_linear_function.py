@@ -220,6 +220,12 @@ y=0のaxis周りがよくわからん。
                     対応としては問題1問につき、linear_functionが3つ状態
                     よくわからんので、とりあえずぶん回してみる？
 
+
+6/14
+    htmlファイルについてはそこそこ順調に改装が進む
+    
+    一方で、forループについては、二度目が空っぽになっているご様子。イテレータ的動作？
+
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional, Tuple, Union
@@ -338,7 +344,6 @@ class AreaWithLinearFunction:
             latex_problem += f"①とx軸の交点をB, ②とx軸の交点をCとするとき、"
         triangle_ABC = self._latex_maker("\\triangle ABC")
         latex_problem += f"{triangle_ABC}の面積を求めよ。"
-        # latex_problem = linebreaksbr(latex_problem)
         latex_answer = f"area is {area}"
         return latex_answer, latex_problem, linear_function_without_axis1, linear_function_without_axis2, line_in_parallel_with_y_axis
     

@@ -80,22 +80,23 @@ function refresh() {
         console.log(`y1: ${y1}`);
         console.log(`x2: ${x2}`);
         console.log(`y2: ${y2}`);
-        console.log("---------------");
-        if (x1 === 0 & x2 === 0) {
-            let x_p = 160 + 10 * -1;
-            let y_p = 80 + 10 * -6;
+        let x_p, y_p;
+        if (x1 == 0 && x2 == 0) {
+            x_p = 160 + 10 * -2;
+            y_p = 80 + 10 * -6;
         }
         else {
             let linear_coefficient = (y2 - y1) / (x2 - x1);
             let intercept = -linear_coefficient * x1 + y1;
+            let right_y;
             if (x1 > x2) {
-                let right_y = linear_coefficient * x1 + intercept;
+                right_y = linear_coefficient * x1 + intercept;
             }
             else {
-                let right_y = linear_coefficient * x2 + intercept;
+                right_y = linear_coefficient * x2 + intercept;
             }
-            let x_p = 160 + 10 * 6;
-            let y_p = 80 + 10 * -right_y;
+            x_p = 160 + 10 * 6;
+            y_p = 80 + 10 * -right_y;
         }
         drawCharacter(stage, x_p, y_p, character);
         stage.update();
@@ -174,11 +175,6 @@ function refresh() {
             x = -7, 7, y=-7, 7のいずれかは必ず通るはずなので、そこを終点として計算している感じがある。
         */
         // x = -7, 7 |  y= -7, 7 check
-        console.log(`x1: ${x1}`);
-        console.log(`y1: ${y1}`);
-        console.log(`x2: ${x2}`);
-        console.log(`y2: ${y2}`);
-        console.log("---------------");
         // y軸
         if (x1 === 0 && x2 === 0) {
             return;
@@ -250,17 +246,23 @@ function refresh() {
 
     function draw() {
     {% for math_problem_tuple in math_problem_tuple_list %}
+        // {{ math_problem_tuple }}
+        // {{ math_problem_tuple.0 }}
+        // {{ math_problem_tuple.0.linear_function1 }}
+        // {{ math_problem_tuple.0.linear_function1.x1 }}
         // let left_canvas = document.getElementById("left_canvas_{{ forloop.counter }}");
         let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}")
         addAxis(left_stage_{{ forloop.counter }});
-        let left_x1_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.x1 }});
-        let left_y1_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.y1 }});
-        let left_x2_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.x2 }});
-        let left_y2_{{ forloop.counter }} = Number({{ information_tuple.0.linear_function1.y2 }});
+        // var left_x1_1 = Number({{ information_tuple.0.linear_function1.x1 }});
+        let left_x1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
+        let left_y1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
+        let left_x2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
+        let left_y2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
         drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_{{ forloop.counter }}, left_y1_{{ forloop.counter }}, left_x2_{{ forloop.counter }}, left_y2_{{ forloop.counter }}, "①");
         drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_{{ forloop.counter }}, left_y1_{{ forloop.counter }}, left_x2_{{ forloop.counter }}, left_y2_{{ forloop.counter }});
     {% endfor %}
     }
+    
 
 </script>
 {% endblock %}
@@ -293,10 +295,10 @@ function refresh() {
                         <p>
                             \( \quad \)
                             <canvas id="left_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            <br>
                             {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
                             {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
                         </p>
                     </li>
@@ -305,6 +307,8 @@ function refresh() {
                     <li>
                         <p>
                             \( \quad \)
+                            <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            <br>
                             {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">

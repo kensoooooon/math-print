@@ -246,20 +246,27 @@ function refresh() {
 
     function draw() {
     {% for math_problem_tuple in math_problem_tuple_list %}
-        // {{ math_problem_tuple }}
-        // {{ math_problem_tuple.0 }}
-        // {{ math_problem_tuple.0.linear_function1 }}
-        // {{ math_problem_tuple.0.linear_function1.x1 }}
-        // let left_canvas = document.getElementById("left_canvas_{{ forloop.counter }}");
         let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}")
         addAxis(left_stage_{{ forloop.counter }});
         // var left_x1_1 = Number({{ information_tuple.0.linear_function1.x1 }});
-        let left_x1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
-        let left_y1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
-        let left_x2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
-        let left_y2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
-        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_{{ forloop.counter }}, left_y1_{{ forloop.counter }}, left_x2_{{ forloop.counter }}, left_y2_{{ forloop.counter }}, "①");
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_{{ forloop.counter }}, left_y1_{{ forloop.counter }}, left_x2_{{ forloop.counter }}, left_y2_{{ forloop.counter }});
+        let left_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
+        let left_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
+        let left_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
+        let left_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
+        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }}, "①");
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
+        let left_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x1 }});
+        let left_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y1 }});
+        let left_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x2 }});
+        let left_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y2 }});
+        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }}, "②");
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
+        let left_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x1 }});
+        let left_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y1 }});
+        let left_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x2 }});
+        let left_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y2 }});
+        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }}, "②");
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
     {% endfor %}
     }
     
@@ -271,7 +278,7 @@ function refresh() {
 {% endblock %}
 
 {% block title %}
-等式の変形
+1次関数と面積
 {% endblock %}
 
 {% block hero_unit %}
@@ -286,7 +293,6 @@ function refresh() {
 {% block body %}
 
 <ol>
-    <p>[]内の文字について等式を変形せよ</p>
     {% for math_problem_tuple in math_problem_tuple_list %}
         <div class="container-fluid">
             <div class="row">

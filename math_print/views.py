@@ -3806,7 +3806,7 @@ def display_area_with_linear_function(request):
     Returns:
         render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
     """
-    PROBLEM_NUMBER = 4
+    PROBLEM_NUMBER = 10
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("one_side_on_axis")

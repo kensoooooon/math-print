@@ -237,6 +237,13 @@ y=0のaxis周りがよくわからん。
                     randomは0に近い値も出すんだから、そりゃねといった感じになる。
                     ある程度話すためには、間じゃなくて、以上の方を確保する必要がありそう
 
+6/17
+    直線の描写がやっぱり微妙なのじゃないか疑惑
+        点が近すぎるのが要因の一つなのは間違いない気がする。
+            random_integerを作り直すか、あるいは別に手動で作り直すか
+                理想としては、3~6, -3~-6のように、ある程度対極に位置してくれると嬉しい系
+                -> min_numを正の値の場合と負の値の場合で、取る？あるいは、足されるという
+
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional, Tuple, Union

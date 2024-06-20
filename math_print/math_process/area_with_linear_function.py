@@ -244,6 +244,22 @@ y=0のaxis周りがよくわからん。
                 理想としては、3~6, -3~-6のように、ある程度対極に位置してくれると嬉しい系
                 -> min_numを正の値の場合と負の値の場合で、取る？あるいは、足されるという
 
+6/20
+点の問題はOK。面積の検出も役に立った
+
+その他は、やっぱり①, ②が描写としてガバい。そもそも個数すら怪しい
+    とりあえず確認はするとして、方針はどうするか
+        直線を求める過程、あるいは別の場所で、改めて配置するか
+            左端なり右端なりで統一し、常に上、あるいは下になるように？
+                はみ出しそうなのが懸念点
+                →4端チェック決めて、「一番余裕がありそうなところ」を置くか？？？？
+
+あとは、手を付けるのは多分後にはなるが、交点をどう扱うのかもまぁまぁ面倒になりそうな気がする。
+    数はそのままに、名前を変えるか
+    あるいは、intersectionなどの名前を用いて、新しく読み取れるようにするか
+        こちらのほうがPythonが少し読みづらくなる程度で、まだ許容できそうな気がする
+        というか、JavaScriptで慣れないことをあれこれやりたくない
+
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional, Tuple, Union
@@ -333,17 +349,17 @@ class AreaWithLinearFunction:
             zero_coordinate = "x"
             if zero_coordinate == "x":
                 x1 = 0
-                y1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
+                y1 = self._random_integer(min_num=2, max_num=5, removing_zero=False)
                 x2 = 0
-                y2 = y1 + self._random_integer(min_num=-4, max_num=4, removing_zero=True)
-                x3 = self._random_integer(min_num=-6, max_num=6, removing_zero=True)
+                y2 = self._random_integer(min_num=-5, max_num=-2, removing_zero=True)
+                x3 = self._random_integer(min_num=3, max_num=6, removing_zero=True) * choice([1, -1])
                 y3 = self._random_integer(min_num=-6, max_num=6, removing_zero=False)
             elif zero_coordinate == "y":
-                x1 = self._random_integer(min_num=-3, max_num=3, removing_zero=False)
+                x1 = self._random_integer(min_num=2, max_num=5, removing_zero=False)
                 y1 = 0
-                x2 = x1 + self._random_integer(min_num=-3, max_num=3, removing_zero=True)
+                x2 = x1 + self._random_integer(min_num=-5, max_num=-2, removing_zero=True)
                 y2 = 0
-                x3 = self._random_integer(min_num=-6, max_num=6, removing_zero=True)
+                x3 = self._random_integer(min_num=3, max_num=6, removing_zero=True) * choice([1, -1])
                 y3 = self._random_integer(min_num=-6, max_num=6, removing_zero=True)
             p1_on_axis = self.Point(x1, y1)
             p2_on_axis = self.Point(x2, y2)

@@ -259,6 +259,10 @@ y=0のaxis周りがよくわからん。
     あるいは、intersectionなどの名前を用いて、新しく読み取れるようにするか
         こちらのほうがPythonが少し読みづらくなる程度で、まだ許容できそうな気がする
         というか、JavaScriptで慣れないことをあれこれやりたくない
+    
+6/22
+線番号の描写から(in js)
+
 
 """
 from random import choice, randint, random

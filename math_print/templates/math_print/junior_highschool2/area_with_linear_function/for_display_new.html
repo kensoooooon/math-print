@@ -43,206 +43,97 @@ function refresh() {
         var hash = location.hash;
         location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
     }
-    </script>
+</script>
     
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-    <script>
-        window.addEventListener("load", draw);
-    
-        function drawLine(stage, start_x, start_y, end_x, end_y) {
-            var graphic = new createjs.Graphics();
-            graphic.setStrokeStyle(1);
-            graphic.beginStroke("#000000");
-            graphic.moveTo(start_x, start_y);
-            graphic.lineTo(end_x, end_y);
-            graphic.endStroke();
-            var shape = new createjs.Shape(graphic);
-            stage.addChild(shape);
-            stage.update();
-    }
-    
-    function drawCharacter(stage, x, y, character) {
-        var text = new createjs.Text(character, "15px Arial", "#000000");
-        text.x = x;
-        text.y = y;
-        stage.addChild(text);
-        stage.update();
-    }
-    
-    function drawLineNumber(stage, x1, y1, x2, y2, character) {
-        /*
-        single check?
-    
-        right only check
-        */
-        // convert x1~y2 to pixel(320, 160)
-        console.log(`x1: ${x1}`);
-        console.log(`y1: ${y1}`);
-        console.log(`x2: ${x2}`);
-        console.log(`y2: ${y2}`);
-        let x_p, y_p;
-        if (x1 == 0 && x2 == 0) {
-            x_p = 160 + 10 * -2;
-            y_p = 80 + 10 * -6;
-        }
-        else {
-            let linear_coefficient = (y2 - y1) / (x2 - x1);
-            let intercept = -linear_coefficient * x1 + y1;
-            let right_y;
-            if (x1 > x2) {
-                right_y = linear_coefficient * x1 + intercept;
-            }
-            else {
-                right_y = linear_coefficient * x2 + intercept;
-            }
-            x_p = 160 + 10 * 6;
-            y_p = 80 + 10 * -right_y;
-        }
-        drawCharacter(stage, x_p, y_p, character);
-        stage.update();
-    }
-    
+
+<script>
+    window.addEventListener("load", draw);
+        
     function addAxis(stage) {
         drawLine(stage, 90, 80, 230, 80);
         drawLine(stage, 160, 10, 160, 150);
-        drawCharacter(stage, 235, 80, "x");
-        drawCharacter(stage, 155, -5, "y");
+        drawLabel(stage, 235, 80, "x");
+        drawLabel(stage, 155, -5, "y");
     }
-    
-    function addGridLineToGraph(stage) {
-        let graphic = new createjs.Graphics();
-        // dash line
-        graphic.beginStroke("#000000");
-        graphic.setStrokeStyle(0.7);
-        for (let i = 0; i <= 14; i++) {
-            let x = 10 * i + 90;
-            graphic.moveTo(x, 10);
-            graphic.lineTo(x, 150);
-        }
-        for (let i = 0; i <= 14; i++) {
-            let y = 10 * i + 10;
-            graphic.moveTo(90, y);
-            graphic.lineTo(230, y);
-        }
-        graphic.endStroke();
-        graphic.beginStroke("#000000");
-        graphic.setStrokeStyle(0.5);
-        drawCharacter(stage, 10 * 1 + 90, 80, "-5");
-        drawCharacter(stage, 10 * 11 + 90 + 5, 80, "5");
-        drawCharacter(stage, 160, 10 * 1 + 10, "5");
-        drawCharacter(stage, 160, 10 * 11 + 10, "-5");
-        drawCharacter(stage, 160, 80, "O");
-        graphic.endStroke();
-        let shape = new createjs.Shape(graphic);
-        stage.addChild(shape);
-        stage.update();
-    }
-    
-    function addCoordinateToGraph(stage, x1, y1, x2, y2) {
-        let graphic = new createjs.Graphics();
-        let x1_p = 10 * x1 + 160;
-        let y1_p = 10 * (-y1) + 80;
-        let x2_p = 10 * x2 + 160;
-        let y2_p = 10 * (-y2) + 80;
-        graphic.beginFill("Black");
-        graphic.drawCircle(x1_p, y1_p, 2);
-        graphic.drawCircle(x2_p, y2_p, 2);
-        graphic.endFill();
-        if (y1_p > y2_p) {
-            x1_p = x1_p + 5;
-            x2_p = x2_p + 5;
-            y1_p = y1_p + 5;
-            y2_p = y2_p - 5;
-        } else {
-            x1_p = x1_p - 45;
-            x2_p = x2_p - 45;
-            y1_p = y1_p - 5;
-            y2_p = y2_p + 5;
-        } 
-        let point1 = "(" + String(x1) + ", " + String(y1) + ")";
-        let point2 = "(" + String(x2) + ", " + String(y2) + ")";
-        drawCharacter(stage, x1_p, y1_p, point1);
-        drawCharacter(stage, x2_p, y2_p, point2);
-        graphic.endStroke();
-        let shape = new createjs.Shape(graphic);
-        stage.addChild(shape);
-        stage.update();
-    }
-    
-    function drawLinearFunction(stage, x1, y1, x2, y2) {
-        /*
-        多分線分で直線を引くから、端っこを計算している感じ
-            x = -7, 7, y=-7, 7のいずれかは必ず通るはずなので、そこを終点として計算している感じがある。
-        */
-        // x = -7, 7 |  y= -7, 7 check
-        // y軸
+
+    function drawLinearFunctionWithLabel(stage, x1, y1, x2, y2, label) {
         if (x1 === 0 && x2 === 0) {
             return;
         }
-        // それ以外
+    
         let linear_coefficient = (y2 - y1) / (x2 - x1);
         let intercept = -linear_coefficient * x1 + y1;
         let end_points = [];
-        // x = -7 check
-        let y_with_x_minus_7 = linear_coefficient * -7 + intercept;
-        if (Math.abs(y_with_x_minus_7) <= 7) {
-            end_points.push([-7, y_with_x_minus_7]);
-        }
-        // y = -7 check
-        let x_with_y_minus_7 = (-7 - intercept) / linear_coefficient;
-        if (Math.abs(x_with_y_minus_7) <= 7) {
-            let skip = false;
-            for (let point of end_points) {
-                if(point.toString() == [x_with_y_minus_7, -7].toString()) {
-                    skip = true;
-                    break;
-                }
-            }
-            if (skip == false) {
-                end_points.push([x_with_y_minus_7, -7]);  
+    
+        function addEndPoint(x, y) {
+            if (Math.abs(x) <= 7 && Math.abs(y) <= 7) {
+                end_points.push([x, y]);
             }
         }
-        // x = 7 check
-        let y_with_x_plus_7 = linear_coefficient * 7 + intercept;
-        if (Math.abs(y_with_x_plus_7) <= 7) {
-            let skip = false;
-            for (let point of end_points) {
-                if(point.toString() == [7, y_with_x_plus_7].toString()) {
-                    skip = true;
-                    break;
-                }
-            }
-            if (skip == false) {
-                end_points.push([7, y_with_x_plus_7]);  
-            }
+    
+        addEndPoint(-7, linear_coefficient * -7 + intercept); // x = -7
+        addEndPoint((7 - intercept) / linear_coefficient, 7); // y = 7
+        addEndPoint(7, linear_coefficient * 7 + intercept); // x = 7
+        addEndPoint((-7 - intercept) / linear_coefficient, -7); // y = -7
+    
+        if (end_points.length < 2) {
+            return;
         }
-        // y = 7 check
-        let x_with_y_plus_7 = (7 - intercept) / linear_coefficient;
-        if (Math.abs(x_with_y_plus_7) <= 7) {
-            let skip = false;
-            for (let point of end_points) {
-                if(point.toString() == [x_with_y_plus_7, 7].toString()) {
-                    skip = true;
-                    break;
-                }
-            }
-            if (skip == false) {
-                end_points.push([x_with_y_plus_7, 7]);  
-            }
+    
+        let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+    
+        function toPixel(x, y) {
+            return [160 + 10 * x, 80 + 10 * -y];
         }
-        let end_x1, end_y1, end_x2, end_y2;
-        [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
-        // convert x1~y2 to pixel(320, 160)
-        let end_x1_p = 160 + 10 * end_x1;
-        let end_y1_p = 80 + 10 * -end_y1;
-        let end_x2_p = 160 + 10 * end_x2;
-        let end_y2_p = 80 + 10 * -end_y2;
+    
+        let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
+        let [end_x2_p, end_y2_p] = toPixel(end_x2, end_y2);
+    
         drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
-        // y = -2 x + 7, y = -3 x + 14
-        // (7, -7), (7, -7)
-        // three points.
+    
+        // ラベルを描画
+        let label_positions = [
+            { x: end_x1_p + 10, y: end_y1_p },     // 右側
+            { x: end_x1_p - 30, y: end_y1_p },     // 左側
+            { x: end_x1_p, y: end_y1_p + 10 },     // 上側
+            { x: end_x1_p, y: end_y1_p - 20 }      // 下側
+        ];
+    
+        // 最適な位置を選択
+        for (let pos of label_positions) {
+            if (!isOverlapWithLine(end_x1_p, end_y1_p, end_x2_p, end_y2_p, pos.x, pos.y)) {
+                drawLabel(stage, pos.x, pos.y, label);
+                break;
+            }
+        }
+    
         stage.update();
     }
+    
+    function drawLabel(stage, x, y, label) {
+        let text = new createjs.Text(label, "14px Arial", "#000");
+        text.x = x;
+        text.y = y;
+        stage.addChild(text);
+    }
+    
+    function drawLine(stage, x1, y1, x2, y2) {
+        let line = new createjs.Shape();
+        line.graphics.setStrokeStyle(1).beginStroke("#000").moveTo(x1, y1).lineTo(x2, y2);
+        stage.addChild(line);
+    }
+    
+    function isOverlapWithLine(x1, y1, x2, y2, lx, ly) {
+        let threshold = 10; // ラベルと直線が重なる範囲を定義
+        let minX = Math.min(x1, x2) - threshold;
+        let maxX = Math.max(x1, x2) + threshold;
+        let minY = Math.min(y1, y2) - threshold;
+        let maxY = Math.max(y1, y2) + threshold;
+    
+        return (lx >= minX && lx <= maxX && ly >= minY && ly <= maxY);
+    }
+    
 
     function draw() {
     {% for math_problem_tuple in math_problem_tuple_list %}
@@ -253,20 +144,23 @@ function refresh() {
         let left_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
         let left_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
         let left_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
-        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }}, "①");
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
+        // drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }}, "①");
+        // drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
+        drawLinearFunctionWithLabel(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }}, "①");
         let left_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x1 }});
         let left_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y1 }});
         let left_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x2 }});
         let left_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y2 }});
-        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }}, "②");
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
+        // drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }}, "②");
+        // drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
+        drawLinearFunctionWithLabel(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }}, "②");
         let left_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x1 }});
         let left_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y1 }});
         let left_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x2 }});
         let left_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y2 }});
-        drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }}, "②");
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
+        // drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }}, "②");
+        // drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
+        drawLinearFunctionWithLabel(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }}, "③");
     {% endfor %}
     }
     

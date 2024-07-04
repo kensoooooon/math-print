@@ -263,6 +263,12 @@ y=0のaxis周りがよくわからん。
 6/22
 線番号の描写から(in js)
 
+7/4
+久々の再開
+
+線番号と交点名を省いたので、まずは問題文の修正から
+次は回答文の修正
+
 
 """
 from random import choice, randint, random
@@ -270,7 +276,8 @@ from typing import Dict, NamedTuple, Optional, Tuple, Union
 
 
 # views側でフィルター生成
-from django.template.defaultfilters import linebreaksbr
+# 結局使ってなさげ
+# from django.template.defaultfilters import linebreaksbr
 import sympy as sy
 
 
@@ -376,11 +383,12 @@ class AreaWithLinearFunction:
         line_in_parallel_with_y_axis = self._calculate_linear_function_by_two_points(p1_on_axis, p2_on_axis)
         area = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
         latex_problem = f"図のように、2直線{linear_function_without_axis1.linear_function_latex}…①, {linear_function_without_axis2.linear_function_latex}…②が、"
-        latex_problem += f"点Aで交わっている。\n"
+        latex_problem += "1点で交わっている。\n"
+        latex_problem += "直線の交点をA,"
         if zero_coordinate == "x":
-            latex_problem += f"①とy軸の交点をB, ②とy軸の交点をCとするとき、"
+            latex_problem += "①とy軸の交点をB, ②とy軸の交点をCとするとき、\n"
         elif zero_coordinate == "y":
-            latex_problem += f"①とx軸の交点をB, ②とx軸の交点をCとするとき、"
+            latex_problem += "①とx軸の交点をB, ②とx軸の交点をCとするとき、\n"
         triangle_ABC = self._latex_maker("\\triangle ABC")
         latex_problem += f"{triangle_ABC}の面積を求めよ。"
         latex_answer = f"area is {area}"

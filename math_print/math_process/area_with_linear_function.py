@@ -269,6 +269,9 @@ y=0のaxis周りがよくわからん。
 線番号と交点名を省いたので、まずは問題文の修正から
 次は回答文の修正
 
+7/11
+回答文の修正
+    x,y軸で表現がやや面倒っぽい？そのまま突っ込めばいける？
 
 """
 from random import choice, randint, random
@@ -317,44 +320,15 @@ class AreaWithLinearFunction:
         """3点のうち、2点が軸上にある問題、解答、描画用情報の作成
         
         Developing:
-            returnはタプル絡みでもうちょっとスマートにできない？？(アンパッキング)
-            def sample():
-                numbers = (1, 2, 3)
-                return numbers
-
-            n1, n2, n3 = sample()
-            で通る→そのまますっと返してもOK
-            
-            中で決めるなら、decide_linear_function_statuses()でok
-            
-            動作抜き出し
-                x,y軸のいずれかに属する2点を決定。eg. (3, 0), (-2, 0) or (0, 1), (0, 4) (0<=x<=5, 0<=y<=5)
-                それ以外(y=0ならy≠0, x=0ならx≠0)でもう一点を追加
-                2/3点を選びつつ、でもない
-                    軸にある奴1, 2と、軸にないやつでそれぞれ直線を生成
-                3つの直線を決定(一つはx or y軸)
-                軸上の2点を底辺にし（絶対値の座標差）、もう一点を高さとして扱う
-                面積が出る
-                問題文の出力
-                    (1)直線◯◯を求めよ
-                    (2)
-                    ↑なんかふわふわ時間してる？？軸タイプは何を与えていたっけ？？？
-                    ↑2つの直線を与えている。交点を求めさせる作業を
-            
-            どのようまとめ方が適切？？出来る限り分割するのが良さそうではあるけども
-                point_decide -> 3 points (l1, 2)
-                calculate_linear_function -> 3 linear_functions (l3, 4, 5)
-                    一つはx,y軸的な感じちょっと表現に怪しみを感じる。(LaTex)周り
-                calculate_area -> 1 area(l6)
-                
-            x or y軸の存在を考えると、LinearFunctionもそのままで良いかは若干微妙な可能性を感じる？
+            7/11
+            回答文の作成
         
         """
-        def make_three_points() -> Tuple[self.Point, self.Point, self.Point]:
+        def make_three_points() -> Tuple[str, self.Point, self.Point, self.Point]:
             """3点のうち、いずれか2点が軸上に存在する点を作成する
 
             Returns:
-                Tuple[self.Point, self.Point, self.Point]: 条件を満たす3点
+                Tuple[zero_coordinate, self.Point, self.Point, self.Point]: どちらに0を取っているかとう表示+条件を満たす3点
             """
             # zero_coordinate = choice(["x", "y"])
             zero_coordinate = "x"
@@ -381,17 +355,32 @@ class AreaWithLinearFunction:
         linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1_on_axis, p3_not_on_axis)
         linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2_on_axis, p3_not_on_axis)
         line_in_parallel_with_y_axis = self._calculate_linear_function_by_two_points(p1_on_axis, p2_on_axis)
-        area = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
         latex_problem = f"図のように、2直線{linear_function_without_axis1.linear_function_latex}…①, {linear_function_without_axis2.linear_function_latex}…②が、"
         latex_problem += "1点で交わっている。\n"
-        latex_problem += "直線の交点をA,"
+        latex_problem += "①と②の交点をA,"
         if zero_coordinate == "x":
             latex_problem += "①とy軸の交点をB, ②とy軸の交点をCとするとき、\n"
         elif zero_coordinate == "y":
             latex_problem += "①とx軸の交点をB, ②とx軸の交点をCとするとき、\n"
         triangle_ABC = self._latex_maker("\\triangle ABC")
         latex_problem += f"{triangle_ABC}の面積を求めよ。"
-        latex_answer = f"area is {area}"
+        cross_point_A = self._latex_maker(f'({p3_not_on_axis.x}, {p3_not_on_axis.y})')
+        latex_answer = f"交点Aは{cross_point_A}となる。\n"
+        cross_point_B = self._latex_maker(f'({p1_on_axis.x}, {p1_on_axis.y})')
+        cross_point_C = self._latex_maker(f'({p2_on_axis.x}, {p2_on_axis.y})')
+        latex_answer += f"また、交点Bは{cross_point_B}, 交点Cは{cross_point_C}となる。\n"
+        if zero_coordinate == 'x':
+            width = sy.Abs(p1_on_axis.y - p2_on_axis.x)
+            height = sy.Abs(p3_not_on_axis.x)
+        elif zero_coordinate == 'y':
+            width = sy.Abs(p1_on_axis.x - p2_on_axis.x)
+            height = sy.Abs(p3_not_on_axis.y)
+        width_latex = self._latex_maker(width)
+        height_latex = self._latex_maker(height)
+        latex_answer += f"よって、{triangle_ABC}は底辺が{width_latex}, 高さが{height_latex}の三角形となるため、"
+        area = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
+        area_latex = self._latex_maker(area)
+        latex_answer += f"面積は{area_latex}となる。" 
         return latex_answer, latex_problem, linear_function_without_axis1, linear_function_without_axis2, line_in_parallel_with_y_axis
     
     def _make_no_side_on_axis_problem(self):

@@ -55,63 +55,11 @@ function refresh() {
         drawLine(stage, 160, 10, 160, 150);
         drawLabel(stage, 235, 80, "x");
         drawLabel(stage, 155, -5, "y");
-    }
-
-    function drawLinearFunctionWithLabel(stage, x1, y1, x2, y2, label) {
-        if (x1 === 0 && x2 === 0) {
-            return;
-        }
-    
-        let linear_coefficient = (y2 - y1) / (x2 - x1);
-        let intercept = -linear_coefficient * x1 + y1;
-        let end_points = [];
-    
-        function addEndPoint(x, y) {
-            if (Math.abs(x) <= 7 && Math.abs(y) <= 7) {
-                end_points.push([x, y]);
-            }
-        }
-    
-        addEndPoint(-7, linear_coefficient * -7 + intercept); // x = -7
-        addEndPoint((7 - intercept) / linear_coefficient, 7); // y = 7
-        addEndPoint(7, linear_coefficient * 7 + intercept); // x = 7
-        addEndPoint((-7 - intercept) / linear_coefficient, -7); // y = -7
-    
-        if (end_points.length < 2) {
-            return;
-        }
-    
-        let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
-    
-        function toPixel(x, y) {
-            return [160 + 10 * x, 80 + 10 * -y];
-        }
-    
-        let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
-        let [end_x2_p, end_y2_p] = toPixel(end_x2, end_y2);
-    
-        drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
-    
-        // ラベルを描画
-        let label_positions = [
-            { x: end_x1_p + 10, y: end_y1_p },     // 右側
-            { x: end_x1_p - 30, y: end_y1_p },     // 左側
-            { x: end_x1_p, y: end_y1_p + 10 },     // 上側
-            { x: end_x1_p, y: end_y1_p - 20 }      // 下側
-        ];
-    
-        // 最適な位置を選択
-        for (let pos of label_positions) {
-            if (!isOverlapWithLine(end_x1_p, end_y1_p, end_x2_p, end_y2_p, pos.x, pos.y)) {
-                drawLabel(stage, pos.x, pos.y, label);
-                break;
-            }
-        }
-    
-        stage.update();
+        drawLabel(stage, 145, 90, "O");
     }
 
     function drawLinearFunction(stage, x1, y1, x2, y2) {
+        // y axis
         if (x1 === 0 && x2 === 0) {
             return;
         }
@@ -163,43 +111,45 @@ function refresh() {
         stage.addChild(line);
     }
     
-    function isOverlapWithLine(x1, y1, x2, y2, lx, ly) {
-        let threshold = 10; // ラベルと直線が重なる範囲を定義
-        let minX = Math.min(x1, x2) - threshold;
-        let maxX = Math.max(x1, x2) + threshold;
-        let minY = Math.min(y1, y2) - threshold;
-        let maxY = Math.max(y1, y2) + threshold;
-    
-        return (lx >= minX && lx <= maxX && ly >= minY && ly <= maxY);
-    }
-    
 
     function draw() {
     {% for math_problem_tuple in math_problem_tuple_list %}
+        // left problem
         let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}")
         addAxis(left_stage_{{ forloop.counter }});
-        // var left_x1_1 = Number({{ information_tuple.0.linear_function1.x1 }});
         let left_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
         let left_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
         let left_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
         let left_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
-        // drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }}, "①");
-        // drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
         drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
         let left_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x1 }});
         let left_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y1 }});
         let left_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x2 }});
         let left_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y2 }});
-        // drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }}, "②");
-        // drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
         drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
         let left_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x1 }});
         let left_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y1 }});
         let left_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x2 }});
         let left_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y2 }});
-        // drawLineNumber(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }}, "②");
-        // drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
         drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
+        // right problem
+        let right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ forloop.counter }}")
+        addAxis(right_stage_{{ forloop.counter }});
+        let right_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x1 }});
+        let right_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y1 }});
+        let right_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x2 }});
+        let right_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y2 }});
+        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_1_{{ forloop.counter }}, right_y1_1_{{ forloop.counter }}, right_x2_1_{{ forloop.counter }}, right_y2_1_{{ forloop.counter }});
+        let right_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x1 }});
+        let right_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y1 }});
+        let right_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x2 }});
+        let right_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y2 }});
+        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_2_{{ forloop.counter }}, right_y1_2_{{ forloop.counter }}, right_x2_2_{{ forloop.counter }}, right_y2_2_{{ forloop.counter }});
+        let right_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x1 }});
+        let right_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y1 }});
+        let right_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x2 }});
+        let right_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y2 }});
+        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_3_{{ forloop.counter }}, right_y1_3_{{ forloop.counter }}, right_x2_3_{{ forloop.counter }}, right_y2_3_{{ forloop.counter }});
     {% endfor %}
     }
     

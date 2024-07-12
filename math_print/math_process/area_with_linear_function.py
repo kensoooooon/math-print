@@ -273,14 +273,19 @@ y=0のaxis周りがよくわからん。
 回答文の修正
     x,y軸で表現がやや面倒っぽい？そのまま突っ込めばいける？
 
+7/12
+グラフの修正
+    原点がない
+    →修正
+    右側のキャンパスが未描画
+    →修正
+
+次はy軸に限らないパターン？
+    なんか思ったより動いた。多分完了
 """
 from random import choice, randint, random
 from typing import Dict, NamedTuple, Optional, Tuple, Union
 
-
-# views側でフィルター生成
-# 結局使ってなさげ
-# from django.template.defaultfilters import linebreaksbr
 import sympy as sy
 
 
@@ -319,10 +324,15 @@ class AreaWithLinearFunction:
     def _make_one_side_on_axis_problem(self):
         """3点のうち、2点が軸上にある問題、解答、描画用情報の作成
         
-        Developing:
-            7/11
-            回答文の作成
+        Returns:
+            latex_answer (str): latex混じりで記述された解答
+            latex_problem (str): latex混じりで記述された問題
+            linear_function1, linear_function2, linear_function3 (sy.Eq): 三角形を作る1次関数
         
+        Developing:
+            7/12
+                おそらく完了。多分大丈夫？
+                もう少しテストがいるかも？？
         """
         def make_three_points() -> Tuple[str, self.Point, self.Point, self.Point]:
             """3点のうち、いずれか2点が軸上に存在する点を作成する
@@ -330,8 +340,7 @@ class AreaWithLinearFunction:
             Returns:
                 Tuple[zero_coordinate, self.Point, self.Point, self.Point]: どちらに0を取っているかとう表示+条件を満たす3点
             """
-            # zero_coordinate = choice(["x", "y"])
-            zero_coordinate = "x"
+            zero_coordinate = choice(["x", "y"])
             if zero_coordinate == "x":
                 x1 = 0
                 y1 = self._random_integer(min_num=2, max_num=5, removing_zero=False)
@@ -355,7 +364,7 @@ class AreaWithLinearFunction:
         linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1_on_axis, p3_not_on_axis)
         linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2_on_axis, p3_not_on_axis)
         line_in_parallel_with_y_axis = self._calculate_linear_function_by_two_points(p1_on_axis, p2_on_axis)
-        latex_problem = f"図のように、2直線{linear_function_without_axis1.linear_function_latex}…①, {linear_function_without_axis2.linear_function_latex}…②が、"
+        latex_problem = f"2直線{linear_function_without_axis1.linear_function_latex}…①, {linear_function_without_axis2.linear_function_latex}…②が、"
         latex_problem += "1点で交わっている。\n"
         latex_problem += "①と②の交点をA,"
         if zero_coordinate == "x":

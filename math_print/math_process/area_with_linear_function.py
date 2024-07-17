@@ -282,8 +282,29 @@ y=0のaxis周りがよくわからん。
 
 次はy軸に限らないパターン？
     なんか思ったより動いた。多分完了
+    
+7/14
+    3点パターン
+
+7/17
+    同様に3点パターン
+        解答の記述がまぁまぁ面倒くさそう。どこでどの方向に切るか？っていう。
+        というのも、三角形ABC、もっというと点ABCはランダムであるため、切断方向が定めづらいから。
+        変な方向に切ると、「そこに辺ないじゃん」状態になる。
+        そのため、点ABCそれぞれについて、どの方向で切断すれば辺があるかをチェックする必要が出てくる
+            単純な判定だと、ある座標がある時に、そこから切れる方向は2方向（x, yのいずれかに並行）
+            点によっては全く切れない場合もあれば、特定方向にだけ切断可能な場合もある
+                x軸と平行な切断であれば、
+                いや、いずれの場合も、残りの2点で描かれる直線のx,yの両定義域内である必要があるっぽい
+                    x軸方向に対して
+                    まずは右に切るか左に切るか。これは一番小さい値であれば右、真ん中であれば左右のいずれか、大きい値であれば左に切るしかない
+                    y軸方向に対して
+                    一番小さい値であれば上、真ん中であれば上下、最大であれば下に切ることになる
+            場合によっては全く切断不可能であることもあれば、複数方向へ切断可能な場合がある。
+            上下左右という感覚は…多分おかしくない。結局切断したときの交点を求める必要があるし
+        1点と1直線という捉え方の方がシンプルそう？それともやることは一緒？
 """
-from random import choice, randint, random
+from random import choice, randint
 from typing import Dict, NamedTuple, Optional, Tuple, Union
 
 import sympy as sy
@@ -305,13 +326,13 @@ class AreaWithLinearFunction:
 
         Args:
             x1, y1, x2, y2 (str): 1次関数が通る2点
-            linear_function_latex (str): latex形式で記述された1次関数の式
+            latex (str): latex形式で記述された1次関数の式
         """
         x1: str
         y1: str
         x2: str
         y2: str
-        linear_function_latex: str
+        latex: str
     
     def __init__(self, **settings: Dict):
         sy.init_printing(order='grevlex')
@@ -322,17 +343,12 @@ class AreaWithLinearFunction:
             self.latex_answer, self.latex_problem, self.linear_function1, self.linear_function2, self.linear_function3 = self._make_no_side_on_axis_problem()
     
     def _make_one_side_on_axis_problem(self):
-        """3点のうち、2点が軸上にある問題、解答、描画用情報の作成
+        """3辺のうち、1辺が軸上にある三角形の面積を求める問題、解答、描画用情報の作成
         
         Returns:
             latex_answer (str): latex混じりで記述された解答
             latex_problem (str): latex混じりで記述された問題
             linear_function1, linear_function2, linear_function3 (sy.Eq): 三角形を作る1次関数
-        
-        Developing:
-            7/12
-                おそらく完了。多分大丈夫？
-                もう少しテストがいるかも？？
         """
         def make_three_points() -> Tuple[str, self.Point, self.Point, self.Point]:
             """3点のうち、いずれか2点が軸上に存在する点を作成する
@@ -364,7 +380,7 @@ class AreaWithLinearFunction:
         linear_function_without_axis1 = self._calculate_linear_function_by_two_points(p1_on_axis, p3_not_on_axis)
         linear_function_without_axis2 = self._calculate_linear_function_by_two_points(p2_on_axis, p3_not_on_axis)
         line_in_parallel_with_y_axis = self._calculate_linear_function_by_two_points(p1_on_axis, p2_on_axis)
-        latex_problem = f"2直線{linear_function_without_axis1.linear_function_latex}…①, {linear_function_without_axis2.linear_function_latex}…②が、"
+        latex_problem = f"2直線{linear_function_without_axis1.latex}…①, {linear_function_without_axis2.latex}…②が、"
         latex_problem += "1点で交わっている。\n"
         latex_problem += "①と②の交点をA,"
         if zero_coordinate == "x":
@@ -393,11 +409,52 @@ class AreaWithLinearFunction:
         return latex_answer, latex_problem, linear_function_without_axis1, linear_function_without_axis2, line_in_parallel_with_y_axis
     
     def _make_no_side_on_axis_problem(self):
-        linear_function1 = self._decide_linear_function_status()
-        linear_function2 = self._decide_linear_function_status()
-        linear_function3 = self._decide_linear_function_status()
-        latex_answer = "dummy answer"
-        latex_problem = "dummy problem"
+        """3辺のうち、いずれの辺も軸上に存在しない三角形の問題、解答、描画用情報の作成
+
+        Returns:
+            latex_answer (str): latex混じりで記述された解答
+            latex_problem (str): latex混じりで記述された問題
+            linear_function1, linear_function2, linear_function3 (sy.Eq): 三角形を作る1次関数        
+        """
+        
+        def make_three_points() -> Tuple[str, self.Point, self.Point, self.Point]:
+            """3点のうち、2点は軸上に存在しない点を作成する
+
+            Returns:
+                Tuple[self.Point, self.Point, self.Point]: x,y軸上に2点以上存在していない点
+            """
+            
+            def create_three_numbers() -> Tuple[int, int, int]:
+                """0が2個以上含まれない3つの数を返す
+                
+                Returns:
+                    numbers (Tuple[int, int, int]: -5以上5以下で、0は最大1個しか含まれない3つの数
+                """                
+                while True:
+                    numbers = [randint(-5, 5) for _ in range(3)]
+                    if numbers.count(0) < 2:
+                        return numbers
+            
+            x1, x2, x3 = create_three_numbers()
+            y1, y2, y3 = create_three_numbers()
+            p1 = self.Point(x1, y1)
+            p2 = self.Point(x2, y2)
+            p3 = self.Point(x3, y3)
+            return p1, p2, p3
+
+        p1, p2, p3 = make_three_points()
+        linear_function1 = self._decide_linear_function_status(p1, p2)
+        linear_function2 = self._decide_linear_function_status(p2, p3)
+        linear_function3 = self._decide_linear_function_status(p3, p1)
+        latex_problem = f"3直線{linear_function1}…①, {linear_function2}…②, {linear_function3}…③が一点で交わっている。\n"
+        latex_problem += f"①と②の交点をA, ②と③の交点をB, ③と①の交点をCとするとき、"
+        triangle_ABC = self._latex_maker("\\triangle ABC")
+        latex_problem += f"{triangle_ABC}の面積を求めよ。"
+        cross_point_A = self._latex_maker(f'({p2.x}, {p2.y})')
+        cross_point_B = self._latex_maker(f'({p3.x}, {p3.y})')
+        cross_point_C = self._latex_maker(f'({p1.x}, {p1.y})')
+        latex_answer = f"それぞれの交点を求めると、交点Aは{cross_point_A}, 交点Bは{cross_point_B}, 交点Cは{cross_point_C}となる。\n"
+        latex_answer += f""
         return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
     
     def _random_integer(self, min_num: int=-7, max_num: int=7, *, removing_zero: Optional[bool]=None) -> sy.Integer:
@@ -448,7 +505,7 @@ class AreaWithLinearFunction:
             linear_function = self.LinearFunction(
                 x1 = str(p1.x), y1 = str(p1.y),
                 x2 = str(p2.x), y2 = str(p2.y),
-                linear_function_latex= line_in_parallel_with_y_axis_latex
+                latex= line_in_parallel_with_y_axis_latex
             )
         else:
             a = sy.Rational(p2.y - p1.y, p2.x - p1.x)
@@ -458,7 +515,7 @@ class AreaWithLinearFunction:
             linear_function = self.LinearFunction(
                 x1 = str(p1.x), y1 = str(p1.y),
                 x2 = str(p2.x), y2 = str(p2.y),
-                linear_function_latex = linear_function_latex
+                latex = linear_function_latex
             )
         return linear_function
 

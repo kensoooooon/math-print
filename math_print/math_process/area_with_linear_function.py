@@ -303,9 +303,19 @@ y=0のaxis周りがよくわからん。
             場合によっては全く切断不可能であることもあれば、複数方向へ切断可能な場合がある。
             上下左右という感覚は…多分おかしくない。結局切断したときの交点を求める必要があるし
         1点と1直線という捉え方の方がシンプルそう？それともやることは一緒？
+    
+7/28
+    同様のパターン
+        切断どうするか問題。
+        とりあえず切れるだけ切って、その後候補から適当に選ぶ？多分全く切れないってことはなさそうだが…
+        check_うんぬんで計算する系？
+        とりあえず中には関数作ったほうが良さそう
+            意外と対処に困る系統かも？
+            点を取って、返してくれなければ困るんだが、
+            どの点を取ったかも答えにはガッツリ絡んでくる。
 """
 from random import choice, randint
-from typing import Dict, NamedTuple, Optional, Tuple, Union
+from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
 import sympy as sy
 
@@ -441,6 +451,18 @@ class AreaWithLinearFunction:
             p2 = self.Point(x2, y2)
             p3 = self.Point(x3, y3)
             return p1, p2, p3
+        
+        def search_cut_point(point1: self.Point, point2: self.Point, point3: self.Point) -> Tuple[self.Point, str, self.Point]:
+            """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を
+
+            Args:
+                point1 (self.Point): _description_
+                point2 (self.Point): _description_
+                point3 (self.Point): _description_
+
+            Returns:
+                Tuple[self.Point, str, self.Point]: _description_
+            """
 
         p1, p2, p3 = make_three_points()
         linear_function1 = self._decide_linear_function_status(p1, p2)

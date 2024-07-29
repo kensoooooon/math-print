@@ -313,6 +313,15 @@ y=0のaxis周りがよくわからん。
             意外と対処に困る系統かも？
             点を取って、返してくれなければ困るんだが、
             どの点を取ったかも答えにはガッツリ絡んでくる。
+
+7/29
+    切断の取り方
+        x軸と水平に切断する場合は、(y1 < y2 < y3)を満たすy2からしか切れない
+        y軸と水平に切断する場合は、(x1 < x2 < x3)を満たすx2からしか切れない
+            上記に加えて、左右どちらに切るか、上下どちらに切るかが変わってくる
+                x軸水平
+                y2だけ確定させて、あとはそこから左右に引いてみて、ヒットする方向を取る
+                    ヒットは線分形式はどう？yを代入したときに、x座標が出てくるが、それが残りの直線の間
 """
 from random import choice, randint
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
@@ -453,16 +462,23 @@ class AreaWithLinearFunction:
             return p1, p2, p3
         
         def search_cut_point(point1: self.Point, point2: self.Point, point3: self.Point) -> Tuple[self.Point, str, self.Point]:
-            """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を
+            """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を返す
 
             Args:
-                point1 (self.Point): _description_
-                point2 (self.Point): _description_
-                point3 (self.Point): _description_
+                point1 (self.Point): 三角形を作る点1
+                point2 (self.Point): 三角形を作る点2
+                point3 (self.Point): 三角形を作る点3
 
             Returns:
-                Tuple[self.Point, str, self.Point]: _description_
+                Tuple[self.Point, str, self.Point]: 
+                    - standard_point_to_cut (self.Point): 切断の起点になる点
+                    - cut_direction (str): 切断方向(vertical, horizontal)
+                    - end_point_to_cut (self.Point): 切り口の終点
+            
+            Developing:
             """
+            # vertical check
+            
 
         p1, p2, p3 = make_three_points()
         linear_function1 = self._decide_linear_function_status(p1, p2)

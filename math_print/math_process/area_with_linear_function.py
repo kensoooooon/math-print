@@ -322,6 +322,28 @@ y=0のaxis周りがよくわからん。
                 x軸水平
                 y2だけ確定させて、あとはそこから左右に引いてみて、ヒットする方向を取る
                     ヒットは線分形式はどう？yを代入したときに、x座標が出てくるが、それが残りの直線の間
+
+7/30
+    引き続き切断の取り方
+        hitの取り方をどうするか？という話
+        直線を作って代入するというのが一つの手段。ただ、何となくそこまで大げさにやる必要がある？？という気がしなくもない感
+        なんなら大小判定で取れちゃう？結局自分が一番小さいときと真ん中のとき、そして一番大きいときしかないから
+            本当にパターン数足りてる？？？大丈夫？？？？
+            いったん全パターン取ったほうがよき？？？？
+        欲しい情報から逆算するのもありっぽい
+            交わる直線は欲しいし、交点も欲しい。
+            どの点から切っているかも欲しい
+            欲しいものだらけかな？
+            でも、欲しいものの中に直線の式がある以上、直線の式が要らないってことはなさそう
+                ただ、既に出しているものを重複で求めるのもいかがなもの？感はある
+        
+        そもそも水平・垂直に線を引くことが理解できていない可能性がある
+            ・yを代入して、そのxが・・・・
+                なんか無駄が多くない？？？
+                切断方向ってのが頭の中でリンクしていない系？
+                シンプルに真ん中のyで切断のy確定、そこから代入でx座標オラァ！で良き？
+                左右とる必要なんてないのでは？？？？・
+            
 """
 from random import choice, randint
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
@@ -461,13 +483,13 @@ class AreaWithLinearFunction:
             p3 = self.Point(x3, y3)
             return p1, p2, p3
         
-        def search_cut_point(point1: self.Point, point2: self.Point, point3: self.Point) -> Tuple[self.Point, str, self.Point]:
+        def search_cut_point(p1: self.Point, p2: self.Point, p3: self.Point) -> Tuple[self.Point, str, self.Point]:
             """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を返す
 
             Args:
-                point1 (self.Point): 三角形を作る点1
-                point2 (self.Point): 三角形を作る点2
-                point3 (self.Point): 三角形を作る点3
+                p1 (self.Point): 三角形を作る点1
+                p2 (self.Point): 三角形を作る点2
+                p3 (self.Point): 三角形を作る点3
 
             Returns:
                 Tuple[self.Point, str, self.Point]: 
@@ -476,8 +498,18 @@ class AreaWithLinearFunction:
                     - end_point_to_cut (self.Point): 切り口の終点
             
             Developing:
+                名前の使い回しをどうするねん問題
+                当然ながら、点の判別は必須。与えられたものと返したものをどう一致させるか？
+                council with chatgpt
+                    辞書、タプル、named系、自作クラス
+                    具体例を引っ張ったほうが良さそう？
+                    ラベルの追加とか？辞書とか？ラベルから辞書、辞書からラベルでスムーズに相互参照できるようにする？
+                    というかなる？？？
             """
-            # vertical check
+            # parallel with x-axis check.
+            
+            # parallel with y-axis check.
+            
             
 
         p1, p2, p3 = make_three_points()

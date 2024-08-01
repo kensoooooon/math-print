@@ -343,7 +343,13 @@ y=0のaxis周りがよくわからん。
                 切断方向ってのが頭の中でリンクしていない系？
                 シンプルに真ん中のyで切断のy確定、そこから代入でx座標オラァ！で良き？
                 左右とる必要なんてないのでは？？？？・
-            
+
+7/31
+    引き続き切断の話  
+        領域取るというのも一つの手段？
+        あるいは正負で確実に判定取れる？
+            正だったら右、負だったら左
+        とりあえずガチガチに条件分岐させるか・・・？？            
 """
 from random import choice, randint
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
@@ -361,6 +367,7 @@ class AreaWithLinearFunction:
     class Point(NamedTuple):
         x: int
         y: int
+        label: Optional[str] = None
         
     class LinearFunction(NamedTuple):
         """1次関数の通る点と式を格納
@@ -478,13 +485,13 @@ class AreaWithLinearFunction:
             
             x1, x2, x3 = create_three_numbers()
             y1, y2, y3 = create_three_numbers()
-            p1 = self.Point(x1, y1)
-            p2 = self.Point(x2, y2)
-            p3 = self.Point(x3, y3)
+            p1 = self.Point(x1, y1, '交点C')
+            p2 = self.Point(x2, y2, '交点A')
+            p3 = self.Point(x3, y3, '交点B')
             return p1, p2, p3
         
         def search_cut_point(p1: self.Point, p2: self.Point, p3: self.Point) -> Tuple[self.Point, str, self.Point]:
-            """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を返す
+            """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を返す。また、複数ある場合はランダムな点を返す
 
             Args:
                 p1 (self.Point): 三角形を作る点1
@@ -506,6 +513,7 @@ class AreaWithLinearFunction:
                     ラベルの追加とか？辞書とか？ラベルから辞書、辞書からラベルでスムーズに相互参照できるようにする？
                     というかなる？？？
             """
+            points = []
             # parallel with x-axis check.
             
             # parallel with y-axis check.

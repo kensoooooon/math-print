@@ -349,9 +349,57 @@ y=0のaxis周りがよくわからん。
         領域取るというのも一つの手段？
         あるいは正負で確実に判定取れる？
             正だったら右、負だったら左
-        とりあえずガチガチに条件分岐させるか・・・？？            
+        とりあえずガチガチに条件分岐させるか・・・？？      
+        
+8/2
+    引き続き切断
+        これy座標等しいとヤバない？→x軸に平行であれば、そもそも切断自体が不要
+            問題の趣旨として、そもそも切断ありきである以上、y軸に平行な状況は避けるべき
+            点の作り方の中で、その作り方を変えるべき
+
+# more likely with real situation
+
+from random import randint, sample
+from typing import NamedTuple, Optional
+import sympy as sy
+
+class Point(NamedTuple):
+    x: int
+    y: int
+    label: Optional[str] = None
+
+def make_three_points():
+    x1, x2, x3 = sample(list(range(-5, 6)), 3)
+    y1, y2, y3 = sample(list(range(-5, 6)), 3)
+    p1 = Point(x1, y1, '交点C')
+    p2 = Point(x2, y2, '交点A')
+    p3 = Point(x3, y3, '交点B')
+    return p1, p2, p3
+
+def check_points_to_cut(point1, point2, point3):
+    # parallel with x axis cut.
+    points_sorted_by_y = sorted([point1, point2, point3], key=lambda point: point.y)
+    print(points_sorted_by_y)
+    standard_point_to_cut = points_sorted_by_y[1]
+    print(standard_point_to_cut)
+    xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+    another_point1, another_point2 = points_sorted_by_y[0], points_sorted_by_y[2]
+    x1, y1 = another_point1.x, another_point1.y
+    x2, y2 = another_point2.x, another_point2.y
+    x = sy.Symbol('x', real=True)
+    lf = ((y2 - y1) / (x2 - x1)) * (x - x1) + y1
+    lf_value = lf.subs(x, xs)
+    print(lf_value)
+
+    
+p1, p2, p3 = make_three_points()
+print(p1, p2, p3)
+print("--------------------------------")
+check_points_to_cut(p1, p2, p3)
+
+上下＋傾きで左右のチェックを入れる系
 """
-from random import choice, randint
+from random import choice, randint, sample
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
 import sympy as sy
@@ -470,21 +518,12 @@ class AreaWithLinearFunction:
 
             Returns:
                 Tuple[self.Point, self.Point, self.Point]: x,y軸上に2点以上存在していない点
-            """
             
-            def create_three_numbers() -> Tuple[int, int, int]:
-                """0が2個以上含まれない3つの数を返す
-                
-                Returns:
-                    numbers (Tuple[int, int, int]: -5以上5以下で、0は最大1個しか含まれない3つの数
-                """                
-                while True:
-                    numbers = [randint(-5, 5) for _ in range(3)]
-                    if numbers.count(0) < 2:
-                        return numbers
-            
-            x1, x2, x3 = create_three_numbers()
-            y1, y2, y3 = create_three_numbers()
+            Developing:
+                ぶっこぬきに変更
+            """            
+            x1, x2, x3 = sample(list(range(-5, 5 + 1)), 3)
+            y1, y2, y3 = sample(list(range(-5, 5 + 1)), 3)
             p1 = self.Point(x1, y1, '交点C')
             p2 = self.Point(x2, y2, '交点A')
             p3 = self.Point(x3, y3, '交点B')
@@ -513,11 +552,16 @@ class AreaWithLinearFunction:
                     ラベルの追加とか？辞書とか？ラベルから辞書、辞書からラベルでスムーズに相互参照できるようにする？
                     というかなる？？？
             """
-            points = []
-            # parallel with x-axis check.
-            
+            points = [p1, p2, p3]
+            # parallel with x-axis cut check(y1 < y2 < y3, cut by y2).
+            points_sorted_by_y = sorted(points, key=lambda point: point.y)
+            standard_point_to_cut = points_sorted_by_y[1]
+            another_point1 = points_sorted_by_y[0]
+            another_point2 = points_sorted_by_y[2]
+            point_with_smaller_x, point_with_larger_x = sorted([another_point1, another_point2], key=lambda point: point.x)
+            if standard_point_to_cut.x <=  
             # parallel with y-axis check.
-            
+            points_sorted_by_x = sorted(points, key=lambda point: point.x)
             
 
         p1, p2, p3 = make_three_points()

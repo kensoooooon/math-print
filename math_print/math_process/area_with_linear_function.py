@@ -398,6 +398,85 @@ print("--------------------------------")
 check_points_to_cut(p1, p2, p3)
 
 上下＋傾きで左右のチェックを入れる系
+
+
+8/8
+    引き続き切断。いい加減終わらせたい
+    ロジックはあっているはず。あとは、具体的な流れ。
+        上のコードでは、順番を入れ替えた後、直線側へのy座標の代入？？
+        →なんかちがくない？xに代入してね？？？？
+            正しくやるのであれば、切断点と基準となる点で等しくなるのはy座標のはず。
+            つまり、別途の式変形が必要なる系？
+
+    def check_points_to_cut(point1, point2, point3):
+        # parallel with x axis cut.
+        points_sorted_by_y = sorted([point1, point2, point3], key=lambda point: point.y)
+        print(points_sorted_by_y)
+        standard_point_to_cut = points_sorted_by_y[1]
+        print(standard_point_to_cut)
+        xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+        another_point1, another_point2 = points_sorted_by_y[0], points_sorted_by_y[2]
+        x1, y1 = another_point1.x, another_point1.y
+        x2, y2 = another_point2.x, another_point2.y
+        x = sy.Symbol('x', real=True)
+        a = sy.Rational(y2 - y1, x2 - x1)
+        b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
+        y_of_cut_point = ys
+        x_of_cut_point = sy.Rational(y_of_cut_point - b, a)
+        print(f"(x_of_cut_point, y_of_cut_point) = ({x_of_cut_point}, {y_of_cut_point})")
+        
+    で、これに＋して切断方向を考える必要があるが、
+    ロジック考えるより、基準点より右か左かで判定するほうが楽じゃね？もう出てるわけだし・・・
+        
+    # more likely with real situation
+
+    from random import randint, sample
+    from typing import NamedTuple, Optional
+    import sympy as sy
+
+    class Point(NamedTuple):
+        x: int
+        y: int
+        label: Optional[str] = None
+
+    def make_three_points():
+        x1, x2, x3 = sample(list(range(-5, 6)), 3)
+        y1, y2, y3 = sample(list(range(-5, 6)), 3)
+        p1 = Point(x1, y1, '交点C')
+        p2 = Point(x2, y2, '交点A')
+        p3 = Point(x3, y3, '交点B')
+        return p1, p2, p3
+
+    def check_points_to_cut(point1, point2, point3):
+        # parallel with x axis cut.
+        points_sorted_by_y = sorted([point1, point2, point3], key=lambda point: point.y)
+        print(points_sorted_by_y)
+        standard_point_to_cut = points_sorted_by_y[1]
+        print(standard_point_to_cut)
+        xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+        another_point1, another_point2 = points_sorted_by_y[0], points_sorted_by_y[2]
+        x1, y1 = another_point1.x, another_point1.y
+        x2, y2 = another_point2.x, another_point2.y
+        x = sy.Symbol('x', real=True)
+        a = sy.Rational(y2 - y1, x2 - x1)
+        b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
+        y_of_cut_point = ys
+        x_of_cut_point = sy.Rational(y_of_cut_point - b, a)
+        print(f"(x_of_cut_point, y_of_cut_point) = ({x_of_cut_point}, {y_of_cut_point})")
+        if xs < x_of_cut_point:
+            print('右方向への切断')
+        elif xs > x_of_cut_point:
+            print('左方向への切断')
+        else:
+            raise ValueError(f"xs must not be equal to x_of_cut_point.")
+
+
+    for _ in range(10):
+        p1, p2, p3 = make_three_points()
+        print(p1, p2, p3)
+        print("------------")
+        check_points_to_cut(p1, p2, p3)
+        print("----------------------------------------")
 """
 from random import choice, randint, sample
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
@@ -559,7 +638,6 @@ class AreaWithLinearFunction:
             another_point1 = points_sorted_by_y[0]
             another_point2 = points_sorted_by_y[2]
             point_with_smaller_x, point_with_larger_x = sorted([another_point1, another_point2], key=lambda point: point.x)
-            if standard_point_to_cut.x <=  
             # parallel with y-axis check.
             points_sorted_by_x = sorted(points, key=lambda point: point.x)
             

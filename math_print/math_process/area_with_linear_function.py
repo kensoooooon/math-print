@@ -477,6 +477,134 @@ check_points_to_cut(p1, p2, p3)
         print("------------")
         check_points_to_cut(p1, p2, p3)
         print("----------------------------------------")
+    
+8/23
+    思い出しから
+    
+    切断方向の確定を取っていた
+    
+    下の3点でエラーを吐く
+    
+    Point(x=-1, y=4, label='交点C') Point(x=-4, y=5, label='交点A') Point(x=5, y=2, label='交点B')
+    ------------
+    [Point(x=5, y=2, label='交点B'), Point(x=-1, y=4, label='交点C'), Point(x=-4, y=5, label='交点A')]
+    Point(x=-1, y=4, label='交点C')
+    (x_of_cut_point, y_of_cut_point) = (-1, 4)
+    
+    一直線上くさい？？
+    →確定
+    y=-1/3x+11/3上
+    
+    切断のロジックではなく、点の生成ロジックに問題あり？
+    →問題あり。そこまで高い確率かはさておき、適当に3点を選んでいる以上、一直線上に来る可能性がある
+    どのように選ぶ？
+        わかりやすいのは、傾きをそれぞれ算出し、イコールであればループを抜けない形
+        ただ、少し効率は落ちる可能性がある（一直線になる確率次第）
+        数学的なアルゴリズムで回避できるのであれば、それが一番良い
+        いずれにしても、「x,yともに0は1個までしか含まない」という点を鑑みると、while True, break型のが良さそう？
+        それで実装
+8/24
+    引き続き実装。点の生成ロジックもOKだし、切断も多分そのままOK。
+        次はy方向の切断実験。
+
+        # more likely with real situation
+
+        from random import randint, sample, random
+        from typing import NamedTuple, Optional
+        import sympy as sy
+
+        class Point(NamedTuple):
+            x: int
+            y: int
+            label: Optional[str] = None
+
+        def make_three_points():
+            while True:
+                x1, x2, x3 = sample(list(range(-5, 5 + 1)), 3)
+                y1, y2, y3 = sample(list(range(-5, 5 + 1)), 3)
+                slope1 = sy.Rational(y2 - y1, x2 - x1)
+                slope2 = sy.Rational(y3 - y2, x3 - x2)
+                if slope1 != slope2:
+                    break
+            p1 = Point(x1, y1, '交点C')
+            p2 = Point(x2, y2, '交点A')
+            p3 = Point(x3, y3, '交点B')
+            return p1, p2, p3
+
+        def check_points_to_cut(point1, point2, point3):
+            if random() > 0.5:
+                # parallel with x axis cut.
+                points_sorted_by_y = sorted([point1, point2, point3], key=lambda point: point.y)
+                print(points_sorted_by_y)
+                standard_point_to_cut = points_sorted_by_y[1]
+                print(standard_point_to_cut)
+                xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+                another_point1, another_point2 = points_sorted_by_y[0], points_sorted_by_y[2]
+                x1, y1 = another_point1.x, another_point1.y
+                x2, y2 = another_point2.x, another_point2.y
+                x = sy.Symbol('x', real=True)
+                a = sy.Rational(y2 - y1, x2 - x1)
+                b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
+                y_of_cut_point = ys
+                x_of_cut_point = sy.Rational(y_of_cut_point - b, a)
+                print(f"(x_of_cut_point, y_of_cut_point) = ({x_of_cut_point}, {y_of_cut_point})")
+                if xs < x_of_cut_point:
+                    print('右方向への切断')
+                elif xs > x_of_cut_point:
+                    print('左方向への切断')
+                else:
+                    raise ValueError(f"xs must not be equal to x_of_cut_point.")
+            else:
+                # parallel with y axis cut.
+                points_sorted_by_x = sorted([point1, point2, point3], key=lambda point: point.x)
+                print(points_sorted_by_x)
+                standard_point_to_cut = points_sorted_by_x[1]
+                print(standard_point_to_cut)
+                xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+                another_point1, another_point2 = points_sorted_by_x[0], points_sorted_by_x[2]
+                x1, y1 = another_point1.x, another_point1.y
+                x2, y2 = another_point2.x, another_point2.y
+                x = sy.Symbol('x', real=True)
+                a = sy.Rational(y2 - y1, x2 - x1)
+                b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
+                # y_of_cut_point = ys
+                x_of_cut_point = xs
+                # x_of_cut_point = sy.Rational(y_of_cut_point - b, a)
+                y_of_cut_point = sy.Rational(a * xs + b)
+                print(f"(x_of_cut_point, y_of_cut_point) = ({x_of_cut_point}, {y_of_cut_point})")
+                if ys < y_of_cut_point:
+                    print('上方向への切断')
+                elif ys > y_of_cut_point:
+                    print('下方向への切断')
+                else:
+                    raise ValueError(f"ys must not be equal to y_of_cut_point.")
+
+
+        for _ in range(10):
+            p1, p2, p3 = make_three_points()
+            print(p1, p2, p3)
+            print("------------")
+            check_points_to_cut(p1, p2, p3)
+            print("----------------------------------------")
+            
+        動作OK
+        
+        次は、これらをまとめて扱えるか？という話。
+            関数に分離したほうがよい？
+            引数は3点、返り値は3点+方向
+            分けるのであれば、x,yで別々の関数として扱うべき？
+            →振り分け、x平行, y平行で分けるべきというお話
+        
+        Pointで分数を扱う必要が出てきた。
+            切断点は普通に分数になる可能性が極めて高いっぽい。
+            現状のNamedTupleとその利用だと、主にlatex周りがヤバそうなニオイ
+            ↑latex_makerで対応可能そ？
+            動かしてみないとわからん
+        
+        扱うのであれば、intではなくRationalとして一貫して扱う法がよさそ？
+        
+        あと別件ではあるが、どうにも一次関数のx,yがstrなのは危うさを感じる気がする？？？
+        
 """
 from random import choice, randint, sample
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
@@ -492,8 +620,8 @@ class AreaWithLinearFunction:
         latex_problem (str): LaTeX形式を前提とした問題
     """
     class Point(NamedTuple):
-        x: int
-        y: int
+        x: Union[sy.Integer, sy.Rational]
+        y: Union[sy.Integer, sy.Rational]
         label: Optional[str] = None
         
     class LinearFunction(NamedTuple):
@@ -600,46 +728,72 @@ class AreaWithLinearFunction:
             
             Developing:
                 ぶっこぬきに変更
-            """            
-            x1, x2, x3 = sample(list(range(-5, 5 + 1)), 3)
-            y1, y2, y3 = sample(list(range(-5, 5 + 1)), 3)
+            """
+            while True:
+                x1, x2, x3 = sample(list(range(-5, 5 + 1)), 3)
+                y1, y2, y3 = sample(list(range(-5, 5 + 1)), 3)
+                slope1 = sy.Rational(y2 - y1, x2 - x1)
+                slope2 = sy.Rational(y3 - y2, x3 - x2)
+                if slope1 != slope2:
+                    break
+            x1, x2, x3 = sy.Integer(x1), sy.Integer(x2), sy.Integer(x3)
+            y1, y2, y3 = sy.Integer(y1), sy.Integer(y2), sy.Integer(y3)
             p1 = self.Point(x1, y1, '交点C')
             p2 = self.Point(x2, y2, '交点A')
             p3 = self.Point(x3, y3, '交点B')
             return p1, p2, p3
         
-        def search_cut_point(p1: self.Point, p2: self.Point, p3: self.Point) -> Tuple[self.Point, str, self.Point]:
-            """3点から切断の基準になる点とその方向(垂直or水平)、および切断後の点を返す。また、複数ある場合はランダムな点を返す
-
-            Args:
-                p1 (self.Point): 三角形を作る点1
-                p2 (self.Point): 三角形を作る点2
-                p3 (self.Point): 三角形を作る点3
-
-            Returns:
-                Tuple[self.Point, str, self.Point]: 
-                    - standard_point_to_cut (self.Point): 切断の起点になる点
-                    - cut_direction (str): 切断方向(vertical, horizontal)
-                    - end_point_to_cut (self.Point): 切り口の終点
+        def check_points_to_cut(point1: self.Point, point2: self.Point, point3: self.Point) -> tuple[str, self.Point, self.Point]:
             
-            Developing:
-                名前の使い回しをどうするねん問題
-                当然ながら、点の判別は必須。与えられたものと返したものをどう一致させるか？
-                council with chatgpt
-                    辞書、タプル、named系、自作クラス
-                    具体例を引っ張ったほうが良さそう？
-                    ラベルの追加とか？辞書とか？ラベルから辞書、辞書からラベルでスムーズに相互参照できるようにする？
-                    というかなる？？？
-            """
-            points = [p1, p2, p3]
-            # parallel with x-axis cut check(y1 < y2 < y3, cut by y2).
-            points_sorted_by_y = sorted(points, key=lambda point: point.y)
-            standard_point_to_cut = points_sorted_by_y[1]
-            another_point1 = points_sorted_by_y[0]
-            another_point2 = points_sorted_by_y[2]
-            point_with_smaller_x, point_with_larger_x = sorted([another_point1, another_point2], key=lambda point: point.x)
-            # parallel with y-axis check.
-            points_sorted_by_x = sorted(points, key=lambda point: point.x)
+            def cut_parallel_to_x_axis(point1, point2, point3):
+                points_sorted_by_y = sorted([point1, point2, point3], key=lambda point: point.y)
+                standard_point_to_cut = points_sorted_by_y[1]
+                xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+                another_point1, another_point2 = points_sorted_by_y[0], points_sorted_by_y[2]
+                x1, y1 = another_point1.x, another_point1.y
+                x2, y2 = another_point2.x, another_point2.y
+                x = sy.Symbol('x', real=True)
+                a = sy.Rational(y2 - y1, x2 - x1)
+                b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
+                y_of_cut_point = ys
+                x_of_cut_point = sy.Rational(y_of_cut_point - b, a)
+                if xs < x_of_cut_point:
+                    direction = "右方向"
+                elif xs > x_of_cut_point:
+                    direction = "左方向"
+                else:
+                    raise ValueError(f"xs must not be equal to x_of_cut_point.")
+                cut_point = self.Point(x_of_cut_point, y_of_cut_point)
+                standard_point = standard_point_to_cut
+                return direction, standard_point, cut_point
+
+            def cut_parallel_to_y_axis(point1, point2, point3):
+                points_sorted_by_x = sorted([point1, point2, point3], key=lambda point: point.x)
+                print(points_sorted_by_x)
+                standard_point_to_cut = points_sorted_by_x[1]
+                print(standard_point_to_cut)
+                xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
+                another_point1, another_point2 = points_sorted_by_x[0], points_sorted_by_x[2]
+                x1, y1 = another_point1.x, another_point1.y
+                x2, y2 = another_point2.x, another_point2.y
+                x = sy.Symbol('x', real=True)
+                a = sy.Rational(y2 - y1, x2 - x1)
+                b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
+                x_of_cut_point = xs
+                y_of_cut_point = sy.Rational(a * xs + b)
+                print(f"(x_of_cut_point, y_of_cut_point) = ({x_of_cut_point}, {y_of_cut_point})")
+                if ys < y_of_cut_point:
+                    print('上方向への切断')
+                elif ys > y_of_cut_point:
+                    print('下方向への切断')
+                else:
+                    raise ValueError(f"ys must not be equal to y_of_cut_point.")
+
+            if random() > 0.5:
+                cut_parallel_to_x_axis(point1, point2, point3)
+            else:
+                cut_parallel_to_y_axis(point1, point2, point3)
+
             
 
         p1, p2, p3 = make_three_points()
@@ -734,7 +888,7 @@ class AreaWithLinearFunction:
         return area
     
     def _latex_maker(self, formula: Union[sy.Equality, str]) -> str:
-        """与えられた式をLaTex形式にカッコ込で変形する
+        """与えられた式をLaTex形式にカッコ込で変形する。すでにlatex形式である場合は、カッコのみ追加する
         
         Args:
             formula (Union[sy.Equality, str]): y = 3x - 4や、y = 0などの公式

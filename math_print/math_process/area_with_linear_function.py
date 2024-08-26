@@ -604,6 +604,9 @@ check_points_to_cut(p1, p2, p3)
         扱うのであれば、intではなくRationalとして一貫して扱う法がよさそ？
         
         あと別件ではあるが、どうにも一次関数のx,yがstrなのは危うさを感じる気がする？？？
+
+8/26
+    続き
         
 """
 from random import choice, randint, sample
@@ -725,9 +728,6 @@ class AreaWithLinearFunction:
 
             Returns:
                 Tuple[self.Point, self.Point, self.Point]: x,y軸上に2点以上存在していない点
-            
-            Developing:
-                ぶっこぬきに変更
             """
             while True:
                 x1, x2, x3 = sample(list(range(-5, 5 + 1)), 3)
@@ -743,9 +743,35 @@ class AreaWithLinearFunction:
             p3 = self.Point(x3, y3, '交点B')
             return p1, p2, p3
         
-        def check_points_to_cut(point1: self.Point, point2: self.Point, point3: self.Point) -> tuple[str, self.Point, self.Point]:
+        def check_points_to_cut(point1: self.Point, point2: self.Point, point3: self.Point) -> Tuple[str, self.Point, self.Point]:
+            """与えられた3点から切断方向、切断の基準となる点、切断先となる点を求める
             
-            def cut_parallel_to_x_axis(point1, point2, point3):
+            Args:
+                point1 (self.Point): 三角形を作る点その1
+                point2 (self.Point): 三角形を作る点その2
+                point3 (self.Point): 三角形を作る点その3
+            
+            Returns:
+                direction (str): 切断方向(上下左右のいずれか)
+                standard_point (self.Point): 切断の基準となる点
+                cut_point (self.Point): 切断先の点
+                common_width (sy.Rational): 切断した三角形に共通する底辺
+                height1 (sy.Rational): 切断した三角形の高さその1
+                height2 (sy.Rational): 切断した三角形の高さその2
+            """
+            
+            def cut_parallel_to_x_axis(point1, point2, point3) -> Tuple[str, self.Point, self.Point]:
+                """
+                Args:
+                    point1 (self.Point): 三角形を作る点その1
+                    point2 (self.Point): 三角形を作る点その2
+                    point3 (self.Point): 三角形を作る点その3
+            
+                Returns:
+                    direction (str): 切断方向(上下左右のいずれか)
+                    standard_point (self.Point): 切断の基準となる点
+                    cut_point (self.Point): 切断先の点
+                """
                 points_sorted_by_y = sorted([point1, point2, point3], key=lambda point: point.y)
                 standard_point_to_cut = points_sorted_by_y[1]
                 xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
@@ -767,11 +793,9 @@ class AreaWithLinearFunction:
                 standard_point = standard_point_to_cut
                 return direction, standard_point, cut_point
 
-            def cut_parallel_to_y_axis(point1, point2, point3):
+            def cut_parallel_to_y_axis(point1, point2, point3) -> Tuple[str, self.Point, self.Point]:
                 points_sorted_by_x = sorted([point1, point2, point3], key=lambda point: point.x)
-                print(points_sorted_by_x)
                 standard_point_to_cut = points_sorted_by_x[1]
-                print(standard_point_to_cut)
                 xs, ys = standard_point_to_cut.x, standard_point_to_cut.y
                 another_point1, another_point2 = points_sorted_by_x[0], points_sorted_by_x[2]
                 x1, y1 = another_point1.x, another_point1.y
@@ -781,20 +805,43 @@ class AreaWithLinearFunction:
                 b = y1 - sy.Rational(y2 - y1, x2 - x1) * x1
                 x_of_cut_point = xs
                 y_of_cut_point = sy.Rational(a * xs + b)
-                print(f"(x_of_cut_point, y_of_cut_point) = ({x_of_cut_point}, {y_of_cut_point})")
                 if ys < y_of_cut_point:
-                    print('上方向への切断')
+                    direction = "上方向"
                 elif ys > y_of_cut_point:
-                    print('下方向への切断')
+                    direction = "下方向"
                 else:
                     raise ValueError(f"ys must not be equal to y_of_cut_point.")
+                cut_point = self.Point(x_of_cut_point, y_of_cut_point)
+                standard_point = standard_point_to_cut
+                return direction, standard_point, cut_point
 
             if random() > 0.5:
-                cut_parallel_to_x_axis(point1, point2, point3)
+                direction, standard_point, cut_point, common_width, height1, height2 = cut_parallel_to_x_axis(point1, point2, point3)
             else:
-                cut_parallel_to_y_axis(point1, point2, point3)
+                direction, standard_point, cut_point, common_width, height1, height2 = cut_parallel_to_y_axis(point1, point2, point3)
+            return direction, standard_point, cut_point
+        
+        def calculate_common_base_length(cut_direction: str, standard_point: self.Point, cut_point: self.Point) -> sy.Rational:
+            """共通の底辺の長さを計算する"""
+            if (cut_direction == "右方向") or (cut_direction == "左方向"):
+                return sy.Abs(cut_point.x - standard_point.x)
+            elif (cut_direction == "上方向") or (cut_direction == "下方向"):
+                return sy.Abs(cut_point.y - standard_point.y)
 
-            
+        def calculate_heights(cut_direction: str, point1: Point, point2: Point, cut_point: Point) -> Tuple[sy.Rational, sy.Rational]:
+            # nexco
+            """切断した三角形の高さを計算する"""
+            if (cut_direction == "右方向") or (cut_direction == "左方向"):
+                return sy.Abs(cut_point.x - standard_point.x)
+            elif (cut_direction == "上方向") or (cut_direction == "下方向"):
+                return sy.Abs(cut_point.y - standard_point.y)
+            return height1, height2
+
+        def calculate_triangle_areas(base: sy.Rational, height1: sy.Rational, height2: sy.Rational) -> Tuple[sy.Rational, sy.Rational]:
+            """切断した2つの三角形の面積を計算する"""
+            area1 = (base * height1) / 2
+            area2 = (base * height2) / 2
+            return area1, area2
 
         p1, p2, p3 = make_three_points()
         linear_function1 = self._decide_linear_function_status(p1, p2)
@@ -808,7 +855,13 @@ class AreaWithLinearFunction:
         cross_point_B = self._latex_maker(f'({p3.x}, {p3.y})')
         cross_point_C = self._latex_maker(f'({p1.x}, {p1.y})')
         latex_answer = f"それぞれの交点を求めると、交点Aは{cross_point_A}, 交点Bは{cross_point_B}, 交点Cは{cross_point_C}となる。\n"
-        latex_answer += f""
+        direction, standard_point, cut_point = check_point_to_cut(p1, p2, p3)
+        latex_answer += f"ここで、{standard_point.label}から{direction}に向けて線を伸ばしていくと、\n"
+        x_of_cut_point = self._latex_maker(cut_point.x)
+        y_of_cut_point = self._latex_maker(cut_point.y)
+        cut_point_latex = self._latex_maker(f"({x_of_cut_point}, {y_of_cut_point})")
+        latex_answer += f"{cut_point_latex}で残りの辺と交わる。\n"
+        latex_answer += "ここを境目に三角形を2つに分けると、それぞれの三角形は、\n" 
         return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
     
     def _random_integer(self, min_num: int=-7, max_num: int=7, *, removing_zero: Optional[bool]=None) -> sy.Integer:
@@ -887,11 +940,11 @@ class AreaWithLinearFunction:
             raise ValueError(f"area must be more than 0. Let's check each value of Point: {p1}, {p2}, {p3}")
         return area
     
-    def _latex_maker(self, formula: Union[sy.Equality, str]) -> str:
+    def _latex_maker(self, formula: Union[sy.Equality, str, sy.Rational, sy.Integer]) -> str:
         """与えられた式をLaTex形式にカッコ込で変形する。すでにlatex形式である場合は、カッコのみ追加する
         
         Args:
-            formula (Union[sy.Equality, str]): y = 3x - 4や、y = 0などの公式
+            formula (Union[sy.Equality, str, sy.Rational, sy.Integer]): y = 3x - 4や、y = 0などの公式。あるいは整数や分数などのシンボル
         
         Returns:
             latex (str): LaTex形式とカッコが複合された文字列

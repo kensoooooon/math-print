@@ -607,9 +607,21 @@ check_points_to_cut(p1, p2, p3)
 
 8/26
     続き
+
+8/30
+    続き
+    
+    共通の底辺を求めるのはOKとして、高さをどのように拾うか？
+        切断方向だけでは拾いきれない？
+        そもそも3点のうち、どれが切断の基準点で、どれが残りの点なのかの判断が必要？
+            とりあえず全点計算してみて、0のやつは除く系？
+    
+    解決。次はdisplayのprintについて。
+        構造の変更としては、loop部分を全体で削減している。要素の追加については手動で行い、そこからdrawをループで回す
         
+            
 """
-from random import choice, randint, sample
+from random import choice, randint, random, sample
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
 import sympy as sy
@@ -816,38 +828,75 @@ class AreaWithLinearFunction:
                 return direction, standard_point, cut_point
 
             if random() > 0.5:
-                direction, standard_point, cut_point, common_width, height1, height2 = cut_parallel_to_x_axis(point1, point2, point3)
+                direction, standard_point, cut_point = cut_parallel_to_x_axis(point1, point2, point3)
             else:
-                direction, standard_point, cut_point, common_width, height1, height2 = cut_parallel_to_y_axis(point1, point2, point3)
+                direction, standard_point, cut_point = cut_parallel_to_y_axis(point1, point2, point3)
             return direction, standard_point, cut_point
         
         def calculate_common_base_length(cut_direction: str, standard_point: self.Point, cut_point: self.Point) -> sy.Rational:
-            """共通の底辺の長さを計算する"""
+            """共通の底辺の長さを計算する
+
+            Args:
+                cut_direction (str): 切断方向
+                standard_point (self.Point): 切断の基準点
+                cut_point (self.Point): 切断先の点
+            
+            Returns:
+                (sy.Rational): 共通の底辺
+            """
             if (cut_direction == "右方向") or (cut_direction == "左方向"):
                 return sy.Abs(cut_point.x - standard_point.x)
             elif (cut_direction == "上方向") or (cut_direction == "下方向"):
                 return sy.Abs(cut_point.y - standard_point.y)
 
-        def calculate_heights(cut_direction: str, point1: Point, point2: Point, cut_point: Point) -> Tuple[sy.Rational, sy.Rational]:
-            # nexco
-            """切断した三角形の高さを計算する"""
+        def calculate_heights(cut_direction: str, point1: self.Point, point2: self.Point, point3: self.Point, *, standard_point: self.Point) -> Tuple[sy.Rational, sy.Rational]:
+            """切断した三角形の高さを計算する
+            
+            Args:
+                cut_direction (str): 切断方向
+                point1, point2, point3 (self.Point): 三角形を構成する3点
+                standard_point (self.Point): 切断の基準となった点
+            
+            Returns:
+                height1, height2 (sy.Rational): 三角形の面積を求めるための高さとして扱われる値
+            """
+            another_points = []
+            if (point1.x != standard_point.x) and (point1.y != standard_point.y):
+                another_points.append(point1)
+            if (point2.x != standard_point.x) and (point2.y != standard_point.y):
+                another_points.append(point2)
+            if (point3.x != standard_point.x) and (point3.y != standard_point.y):
+                another_points.append(point3)
+            if len(another_points) != 2:
+                raise ValueError(f"length of 'another_points' must be 2. let's check {another_points}.")
+            another_point1, another_point2 = another_points
             if (cut_direction == "右方向") or (cut_direction == "左方向"):
-                return sy.Abs(cut_point.x - standard_point.x)
+                height1 = sy.Abs(another_point1.y - standard_point.y)
+                height2 = sy.Abs(another_point2.y - standard_point.y)
             elif (cut_direction == "上方向") or (cut_direction == "下方向"):
-                return sy.Abs(cut_point.y - standard_point.y)
+                height1 = sy.Abs(another_point1.x - standard_point.x)
+                height2 = sy.Abs(another_point2.x - standard_point.x)
             return height1, height2
 
-        def calculate_triangle_areas(base: sy.Rational, height1: sy.Rational, height2: sy.Rational) -> Tuple[sy.Rational, sy.Rational]:
-            """切断した2つの三角形の面積を計算する"""
-            area1 = (base * height1) / 2
-            area2 = (base * height2) / 2
+        def calculate_triangle_areas(common_base: sy.Rational, height1: sy.Rational, height2: sy.Rational) -> Tuple[sy.Rational, sy.Rational]:
+            """分割した三角形の面積を個別に求める
+            
+            Args:
+                common_base (sy.Rational): 共通の底辺
+                height1, height2(sy.Rational): 三角形の高さ
+            
+            Returns:
+                area1, area2 (sy.Rational): 計算された面積
+            """
+            area1 = (common_base * height1) * sy.Rational(1, 2)
+            area2 = (common_base * height2) * sy.Rational(1, 2)
             return area1, area2
 
         p1, p2, p3 = make_three_points()
-        linear_function1 = self._decide_linear_function_status(p1, p2)
-        linear_function2 = self._decide_linear_function_status(p2, p3)
-        linear_function3 = self._decide_linear_function_status(p3, p1)
-        latex_problem = f"3直線{linear_function1}…①, {linear_function2}…②, {linear_function3}…③が一点で交わっている。\n"
+        linear_function1 = self._calculate_linear_function_by_two_points(p1, p2)
+        linear_function2 = self._calculate_linear_function_by_two_points(p2, p3)
+        linear_function3 = self._calculate_linear_function_by_two_points(p3, p1)
+        latex_problem = f"3直線{linear_function1.latex}…①, {linear_function2.latex}…②, {linear_function3.latex}…③が一点で交わっている。\n"
         latex_problem += f"①と②の交点をA, ②と③の交点をB, ③と①の交点をCとするとき、"
         triangle_ABC = self._latex_maker("\\triangle ABC")
         latex_problem += f"{triangle_ABC}の面積を求めよ。"
@@ -855,13 +904,29 @@ class AreaWithLinearFunction:
         cross_point_B = self._latex_maker(f'({p3.x}, {p3.y})')
         cross_point_C = self._latex_maker(f'({p1.x}, {p1.y})')
         latex_answer = f"それぞれの交点を求めると、交点Aは{cross_point_A}, 交点Bは{cross_point_B}, 交点Cは{cross_point_C}となる。\n"
-        direction, standard_point, cut_point = check_point_to_cut(p1, p2, p3)
-        latex_answer += f"ここで、{standard_point.label}から{direction}に向けて線を伸ばしていくと、\n"
-        x_of_cut_point = self._latex_maker(cut_point.x)
-        y_of_cut_point = self._latex_maker(cut_point.y)
-        cut_point_latex = self._latex_maker(f"({x_of_cut_point}, {y_of_cut_point})")
+        cut_direction, standard_point, cut_point = check_points_to_cut(p1, p2, p3)
+        latex_answer += f"ここで、{standard_point.label}から{cut_direction}に向けて線を伸ばしていくと、\n"
+        x_of_cut_point = sy.latex(cut_point.x)
+        y_of_cut_point = sy.latex(cut_point.y)
+        cut_point_latex = self._latex_maker(f'({x_of_cut_point}, {y_of_cut_point})')
         latex_answer += f"{cut_point_latex}で残りの辺と交わる。\n"
         latex_answer += "ここを境目に三角形を2つに分けると、それぞれの三角形は、\n" 
+        common_base = calculate_common_base_length(cut_direction, standard_point, cut_point)
+        common_base_latex = self._latex_maker(common_base)
+        height1, height2 = calculate_heights(cut_direction, p1, p2, p3 , standard_point=standard_point)
+        height1_latex = self._latex_maker(height1)
+        height2_latex = self._latex_maker(height2)
+        latex_answer += f"底辺が{common_base_latex}, 高さがそれぞれ{height1_latex}, {height2_latex}の三角形となり、\n"
+        area1, area2 = calculate_triangle_areas(common_base, height1, height2)
+        area1_latex = self._latex_maker(area1)
+        area2_latex = self._latex_maker(area2)
+        latex_answer += f"面積はそれぞれ{area1_latex}, {area2_latex}となる。\n"
+        total_area = area1 + area2
+        total_area_to_check = self._calculate_area_by_three_points(p1, p2, p3)
+        if total_area != total_area_to_check:
+            raise ValueError(f"sum of area1({area1}) and area2({area2}) must be equal to total_area_to_check({total_area_to_check}).")
+        total_area_latex = self._latex_maker(total_area)
+        latex_answer += f"これらの面積を合わせると、答えは{total_area_latex}となる。"
         return latex_answer, latex_problem, linear_function1, linear_function2, linear_function3
     
     def _random_integer(self, min_num: int=-7, max_num: int=7, *, removing_zero: Optional[bool]=None) -> sy.Integer:

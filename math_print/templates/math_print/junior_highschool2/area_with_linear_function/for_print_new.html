@@ -1,0 +1,307 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script>
+    function showAnswer(){
+        var nodes = document.getElementsByClassName('answer');
+        for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+    
+    }
+    function refresh() {
+        var url = location.origin;
+        var pathname = location.pathname;
+        var hash = location.hash;
+        location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+    }
+</script>
+    
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+<script>
+    window.addEventListener("load", draw);
+        
+    function addAxis(stage) {
+        drawLine(stage, 90, 80, 230, 80);
+        drawLine(stage, 160, 10, 160, 150);
+        drawLabel(stage, 235, 80, "x");
+        drawLabel(stage, 155, -5, "y");
+        drawLabel(stage, 145, 90, "O");
+    }
+
+    function drawLinearFunction(stage, x1, y1, x2, y2) {
+        // y axis
+        if (x1 === 0 && x2 === 0) {
+            return;
+        }
+    
+        let linear_coefficient = (y2 - y1) / (x2 - x1);
+        let intercept = -linear_coefficient * x1 + y1;
+        let end_points = [];
+    
+        function addEndPoint(x, y) {
+            if (Math.abs(x) <= 7 && Math.abs(y) <= 7) {
+                end_points.push([x, y]);
+            }
+        }
+    
+        addEndPoint(-7, linear_coefficient * -7 + intercept); // x = -7
+        addEndPoint((7 - intercept) / linear_coefficient, 7); // y = 7
+        addEndPoint(7, linear_coefficient * 7 + intercept); // x = 7
+        addEndPoint((-7 - intercept) / linear_coefficient, -7); // y = -7
+    
+        if (end_points.length < 2) {
+            return;
+        }
+    
+        let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+    
+        function toPixel(x, y) {
+            return [160 + 10 * x, 80 + 10 * -y];
+        }
+    
+        let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
+        let [end_x2_p, end_y2_p] = toPixel(end_x2, end_y2);
+    
+        drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+        stage.update();
+    }
+
+    
+    
+    function drawLabel(stage, x, y, label) {
+        let text = new createjs.Text(label, "14px Arial", "#000");
+        text.x = x;
+        text.y = y;
+        stage.addChild(text);
+    }
+    
+    function drawLine(stage, x1, y1, x2, y2) {
+        let line = new createjs.Shape();
+        line.graphics.setStrokeStyle(1).beginStroke("#000").moveTo(x1, y1).lineTo(x2, y2);
+        stage.addChild(line);
+    }
+    
+
+    function draw() {
+    {% for inner_list in math_problem_list_of_list %}
+        {% with outer_loop_counter=forloop.counter %}
+            {% for math_problem_tuple  in inner_list %}
+                {% with inner_loop_counter=forloop.counter %}
+                    // left problem
+                    let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}")
+                    addAxis(left_stage_{{ forloop.counter }});
+                    let left_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
+                    let left_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
+                    let left_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
+                    let left_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
+                    drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
+                    let left_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x1 }});
+                    let left_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y1 }});
+                    let left_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x2 }});
+                    let left_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y2 }});
+                    drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
+                    let left_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x1 }});
+                    let left_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y1 }});
+                    let left_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x2 }});
+                    let left_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y2 }});
+                    drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
+                    // right problem
+                    let right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ outer_loop_counter }}_{{ innner_loop_counter }}")
+                    addAxis(right_stage_{{ forloop.counter }});
+                    let right_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x1 }});
+                    let right_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y1 }});
+                    let right_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x2 }});
+                    let right_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y2 }});
+                    drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_1_{{ forloop.counter }}, right_y1_1_{{ forloop.counter }}, right_x2_1_{{ forloop.counter }}, right_y2_1_{{ forloop.counter }});
+                    let right_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x1 }});
+                    let right_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y1 }});
+                    let right_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x2 }});
+                    let right_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y2 }});
+                    drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_2_{{ forloop.counter }}, right_y1_2_{{ forloop.counter }}, right_x2_2_{{ forloop.counter }}, right_y2_2_{{ forloop.counter }});
+                    let right_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x1 }});
+                    let right_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y1 }});
+                    let right_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x2 }});
+                    let right_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y2 }});
+                    drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_3_{{ forloop.counter }}, right_y1_3_{{ forloop.counter }}, right_x2_3_{{ forloop.counter }}, right_y2_3_{{ forloop.counter }});
+                {% endwith %}
+            {% endfor %}
+        {% endwith %}    
+    {% endfor %}
+    }
+    
+
+</script>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .problem{
+        display: flex;
+        gap: 1em;
+    }
+    .problem>div{
+        width: 50%;
+    }
+</style>
+<style type="text/css" media="print">
+    .print_pages{
+        /*A4縦 172,251*/
+        width: 230mm;
+        height: 260mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+    }
+    /*最後のページは改ページを入れない*/
+    .print_pages:last-child{
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav{
+        display: none;
+    }
+
+    p.number_of_problem {
+        text-align: right;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+1次関数と面積
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">1次関数と面積</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+<div class="container button_container">
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <form>
+                <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+{% for inner_list in math_problem_list_of_list %}
+    {% with outer_loop_counter=forloop.counter %}
+        <section class="print_pages">
+            <p class="number_of_problem">問題: No. {{ outer_loop_counter }}</p>
+            <ol>
+                {% for math_problem_tuple in inner_list %}
+                    {% with inner_loop_counter=forloop.counter %}
+                        <div class="problem">
+                            <div>
+                                <li>
+                                    <p>
+                                        \( \quad \)
+                                        <canvas id="left_canvas_{{ outer_loop_counter }}_{{ innner_loop_counter }}" width="320" height="160"></canvas>
+                                        <br>
+                                        {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
+                                    </p>
+                                </li>
+                            </div>
+                            <div>
+                                <li>
+                                    <p>
+                                        \( \quad \)
+                                        <canvas id="right_canvas_{{ forloop.counter }}_{{ inner_loop_counter }}" width="320" height="160"></canvas>
+                                        <br>
+                                        {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
+                                    </p>
+                                </li>
+                            </div>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </ol>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <footer class="container-fluid print_footer">
+                <small><a href="#">© 2024 有明学習振興</a></small>
+            </footer>
+        </section>
+        <section class="print_pages">
+            <p class="number_of_problem">解答: No. {{ forloop.counter }}</p>
+            <ol>
+                {% for math_problem_tuple in inner_list %}
+                    <div class="problem">
+                        <div>
+                            <li>
+                                <p class="answer" style="visibility:visible;">
+                                    {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
+                                </p>
+                            </li>
+                        </div>
+                        <div>
+                            <li>
+                                <p class="answer" style="visibility:visible;">
+                                    {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
+                                </p>
+                            </li>
+                        </div>
+                    </div>
+                {% endfor %}
+            </ol>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <footer class="container-fluid print_footer">
+                <small><a href="#">© 2024 有明学習振興</a></small>
+            </footer>
+        </section>
+    {% endwith %}
+{% endfor %}
+{% endblock %}

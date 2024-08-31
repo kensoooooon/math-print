@@ -2110,7 +2110,7 @@ def print_area_with_linear_function(request):
             problem2 = AreaWithLinearFunction(problem_types=problem_types)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
-    render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_print_new.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
 
 # display section
@@ -3806,7 +3806,7 @@ def display_area_with_linear_function(request):
     Returns:
         render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
     """
-    PROBLEM_NUMBER = 10
+    PROBLEM_NUMBER = 6
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("one_side_on_axis")

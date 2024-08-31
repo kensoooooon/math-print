@@ -189,9 +189,8 @@ class AreaWithLinearFunction:
                 slope1 = sy.Rational(y2 - y1, x2 - x1)
                 slope2 = sy.Rational(y3 - y2, x3 - x2)
                 if slope1 != slope2:
-                    if (x1 != x2) and (x2 != x3) and (x3 != x1):
-                        if (y1 != y2) and (y2 != y3) and (y3 != y1):
-                            break
+                    if (len(set(x1, x2, x3)) == 3) and (len(set(y1, y2, y3)) == 3):
+                        break
             x1, x2, x3 = sy.Integer(x1), sy.Integer(x2), sy.Integer(x3)
             y1, y2, y3 = sy.Integer(y1), sy.Integer(y2), sy.Integer(y3)
             p1 = self.Point(x1, y1, '交点C')
@@ -401,15 +400,6 @@ class AreaWithLinearFunction:
 
         Returns:
             linear_function (sy.core.relational.Equality): 1次関数
-        
-        Developing:
-            6/8
-                x1 = x2のときの挙動を変化
-            
-            6/12
-                p1.x == p2.xのときの挙動に変化が必要
-                
-                
         """
         x = sy.Symbol("x", real=True)
         y = sy.Symbol("y", real=True)

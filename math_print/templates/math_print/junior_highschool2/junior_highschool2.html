@@ -475,6 +475,52 @@
         </div>
         <div class="row">
             <div class="col border-end border-bottom">
+                <p id="area_with_linear_function">1次関数で囲まれた面積</p>
+                <form action="?" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <small class="text-muted">問題のタイプ</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="one_side_on_axis" name="problem_type" id="AreaWithLinearFunction_one_side_on_axis" checked>
+                            <label class="form-check-label" for="AreaWithLinearFunction_one_side_on_axis">
+                                1辺が軸上の三角形
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" value="no_side_on_axis" name="problem_type" id="AreaWithLinearFunction_no_side_on_axis" checked>
+                            <label class="form-check-label" for="AreaWithLinearFunction_no_side_on_axis">
+                                いずれの辺も軸上ではない三角形
+                            </label>
+                        </div>
+                    </div>
+                    <small class="text-muted">枚数</small>
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="5" name="paper_number" id="AreaWithLinearFunctionFivePaperRadio" checked>
+                            <label class="form-check-label" for="AreaWithLinearFunctionFivePaperRadio">
+                                6問×5枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="10" name="paper_number" id="AreaWithLinearFunctionTenPaperRadio">
+                            <label class="form-check-label" for="AreaWithLinearFunctionTenPaperRadio">
+                                6問×10枚
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" value="15" name="paper_number" id="AreaWithLinearFunctionFifteenPaperRadio">
+                            <label class="form-check-label" for="AreaWithLinearFunctionFifteenPaperRadio">
+                                6問×15枚
+                            </label>
+                        </div>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'area_with_linear_function_print' %}">
+                    <input class="btn btn-primary" type="submit" value="そのまま解く(6問)" formaction="{% url 'area_with_linear_function_display' %}">
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col border-end border-bottom">
                 <p>平行線などを利用して角度を求める</p>
                 <form action="?" method="post" enctype="multipart/form-data">
                     {% csrf_token %}

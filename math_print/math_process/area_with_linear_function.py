@@ -374,7 +374,7 @@ class AreaWithLinearFunction:
             )
         return linear_function
 
-    def _calculate_area_by_three_points(self, p1: Point, p2: Point, p3: Point, /) -> Union[sy.Integer, sy.Rational]:
+    def _calculate_area_by_three_points(self, p1: Point, p2: Point, p3: Point) -> Union[sy.Integer, sy.Rational]:
         """指定された3点を通る三角形の面積を計算する
         
         Args:

@@ -1,21 +1,3 @@
-"""
-8/30
-    続き
-    
-    共通の底辺を求めるのはOKとして、高さをどのように拾うか？
-        切断方向だけでは拾いきれない？
-        そもそも3点のうち、どれが切断の基準点で、どれが残りの点なのかの判断が必要？
-            とりあえず全点計算してみて、0のやつは除く系？
-    
-    解決。次はdisplayのprintについて。
-        構造の変更としては、loop部分を全体で削減している。要素の追加については手動で行い、そこからdrawをループで回す
-
-8/31
-    大体上がり。あとは一部直線の形が見づらいところがあるので、交点を適度にはなせると良いが…？
-    →象限ごとに分割して3点を与える系で。とりあえずいずれも軸上にないパターンのみで良さそう？
-    
-    描画に難あり。ワンちゃん選べないかな？という話で考える。範囲を広げて候補を広げたが、計算はどうなる？要チェック
-"""
 from random import choice, randint, random, sample
 from typing import Dict, List, NamedTuple, Optional, Tuple, Union
 
@@ -72,18 +54,18 @@ class AreaWithLinearFunction:
             zero_coordinate = choice(["x", "y"])
             if zero_coordinate == "x":
                 x1 = 0
-                y1 = self._random_integer(min_num=2, max_num=5, removing_zero=False)
+                y1 = self._random_integer(min_num=3, max_num=12, removing_zero=False)  # 絶対値3以上12以下
                 x2 = 0
-                y2 = self._random_integer(min_num=-5, max_num=-2, removing_zero=True)
-                x3 = self._random_integer(min_num=3, max_num=6, removing_zero=True) * choice([1, -1])
-                y3 = self._random_integer(min_num=-6, max_num=6, removing_zero=False)
+                y2 = self._random_integer(min_num=-12, max_num=-3, removing_zero=False)  # 絶対値3以上12以下
+                x3 = self._random_integer(min_num=3, max_num=12, removing_zero=True) * choice([1, -1])  # 絶対値3以上12以下
+                y3 = self._random_integer(min_num=-12, max_num=12, removing_zero=False)  # 絶対値3以上12以下
             elif zero_coordinate == "y":
-                x1 = self._random_integer(min_num=2, max_num=5, removing_zero=False)
+                x1 = self._random_integer(min_num=3, max_num=12, removing_zero=False)  # 絶対値3以上12以下
                 y1 = 0
-                x2 = x1 + self._random_integer(min_num=-5, max_num=-2, removing_zero=True)
+                x2 = self._random_integer(min_num=-12, max_num=-3, removing_zero=False)  # 絶対値3以上12以下
                 y2 = 0
-                x3 = self._random_integer(min_num=3, max_num=6, removing_zero=True) * choice([1, -1])
-                y3 = self._random_integer(min_num=-6, max_num=6, removing_zero=True)
+                x3 = self._random_integer(min_num=3, max_num=12, removing_zero=True) * choice([1, -1])  # 絶対値3以上12以下
+                y3 = self._random_integer(min_num=-12, max_num=12, removing_zero=True)  # 絶対値3以上12以下
             p1_on_axis = self.Point(x1, y1)
             p2_on_axis = self.Point(x2, y2)
             p3_not_on_axis = self.Point(x3, y3)
@@ -108,7 +90,7 @@ class AreaWithLinearFunction:
         cross_point_C = self._latex_maker(f'({p2_on_axis.x}, {p2_on_axis.y})')
         latex_answer += f"また、交点Bは{cross_point_B}, 交点Cは{cross_point_C}となる。\n"
         if zero_coordinate == 'x':
-            width = sy.Abs(p1_on_axis.y - p2_on_axis.x)
+            width = sy.Abs(p1_on_axis.y - p2_on_axis.y)
             height = sy.Abs(p3_not_on_axis.x)
         elif zero_coordinate == 'y':
             width = sy.Abs(p1_on_axis.x - p2_on_axis.x)
@@ -116,7 +98,10 @@ class AreaWithLinearFunction:
         width_latex = self._latex_maker(width)
         height_latex = self._latex_maker(height)
         latex_answer += f"よって、{triangle_ABC}は底辺が{width_latex}, 高さが{height_latex}の三角形となるため、"
-        area = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
+        area = sy.Rational(1, 2) * width * height
+        area_to_check = self._calculate_area_by_three_points(p1_on_axis, p2_on_axis, p3_not_on_axis)
+        if area != area_to_check:
+            raise ValueError(f"area is {area}, area_to_check is {area_to_check}. These two values must be equal.")
         area_latex = self._latex_maker(area)
         latex_answer += f"面積は{area_latex}となる。" 
         return latex_answer, latex_problem, linear_function_without_axis1, linear_function_without_axis2, line_in_parallel_with_y_axis
@@ -135,49 +120,16 @@ class AreaWithLinearFunction:
 
             Returns:
                 Tuple[self.Point, self.Point, self.Point]: x,y軸上に2点以上存在していない点
-            """
-            while True:
-                x1, x2, x3 = sample(list(range(-5, 5 + 1)), 3)
-                y1, y2, y3 = sample(list(range(-5, 5 + 1)), 3)
-                slope1 = sy.Rational(y2 - y1, x2 - x1)
-                slope2 = sy.Rational(y3 - y2, x3 - x2)
-                if slope1 != slope2:
-                    break
-            x1, x2, x3 = sy.Integer(x1), sy.Integer(x2), sy.Integer(x3)
-            y1, y2, y3 = sy.Integer(y1), sy.Integer(y2), sy.Integer(y3)
-            p1 = self.Point(x1, y1, '交点C')
-            p2 = self.Point(x2, y2, '交点A')
-            p3 = self.Point(x3, y3, '交点B')
-            return p1, p2, p3
-        
-        def new_make_three_points() -> Tuple[self.Point, self.Point, self.Point]:
-            """3点のうち、2点は軸上に存在しない点を作成する
-
-            Returns:
-                Tuple[self.Point, self.Point, self.Point]: x,y軸上に2点以上存在していない点
             
-            Developing:
-                selected_quadrants = sample(list(quadrants.keys()), 3)
-                points = []
-                used_x = set()
-                used_y = set()
-
-                for q in selected_quadrants:
-                    while True:
-                        x, y = quadrants[q]()
-                        if x not in used_x and y not in used_y:  # x, y座標が他の点と重複しない場合
-                            used_x.add(x)
-                            used_y.add(y)
-                            points.append((x, y))
-                            break
-            
+            Note:
+                描画である程度距離を離すため、象限ごとに点を選択する方式を採用。
+                また、描画範囲を10pixelから5pixelに変更し、与えられる座標の幅を拡大
             """
-            # nexco
             quadrants = {
-                1: lambda: (sy.Integer(choice(range(1, 6))), sy.Integer(choice(range(1, 6)))),
-                2: lambda: (sy.Integer(choice(range(-5, 0))), sy.Integer(choice(range(1, 6)))),
-                3: lambda: (sy.Integer(choice(range(-5, 0))), sy.Integer(choice(range(-5, 0)))),
-                4: lambda: (sy.Integer(choice(range(1, 6))), sy.Integer(choice(range(-5, 0))))
+                1: lambda: (sy.Integer(choice(range(3, 13))), sy.Integer(choice(range(3, 13)))),
+                2: lambda: (sy.Integer(choice(range(-12, -2))), sy.Integer(choice(range(3, 13)))),
+                3: lambda: (sy.Integer(choice(range(-12, -2))), sy.Integer(choice(range(-12, -2)))),
+                4: lambda: (sy.Integer(choice(range(3, 13))), sy.Integer(choice(range(-12, -2))))
             }
             
             while True:
@@ -189,7 +141,7 @@ class AreaWithLinearFunction:
                 slope1 = sy.Rational(y2 - y1, x2 - x1)
                 slope2 = sy.Rational(y3 - y2, x3 - x2)
                 if slope1 != slope2:
-                    if (len(set(x1, x2, x3)) == 3) and (len(set(y1, y2, y3)) == 3):
+                    if (len(set((x1, x2, x3))) == 3) and (len(set((y1, y2, y3))) == 3):
                         break
             x1, x2, x3 = sy.Integer(x1), sy.Integer(x2), sy.Integer(x3)
             y1, y2, y3 = sy.Integer(y1), sy.Integer(y2), sy.Integer(y3)
@@ -300,7 +252,6 @@ class AreaWithLinearFunction:
             Returns:
                 height1, height2 (sy.Rational): 三角形の面積を求めるための高さとして扱われる値
             """
-            print(f"points: {point1}, {point2}, {point3}")
             another_points = []
             if (point1.x != standard_point.x) and (point1.y != standard_point.y):
                 another_points.append(point1)
@@ -333,7 +284,7 @@ class AreaWithLinearFunction:
             area2 = (common_base * height2) * sy.Rational(1, 2)
             return area1, area2
 
-        p1, p2, p3 = new_make_three_points()
+        p1, p2, p3 = make_three_points()
         linear_function1 = self._calculate_linear_function_by_two_points(p1, p2)
         linear_function2 = self._calculate_linear_function_by_two_points(p2, p3)
         linear_function3 = self._calculate_linear_function_by_two_points(p3, p1)

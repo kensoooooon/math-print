@@ -58,46 +58,6 @@ function refresh() {
         drawLabel(stage, 145, 90, "O");
     }
 
-    // nexco
-    /*
-    function drawLinearFunction(stage, x1, y1, x2, y2) {
-        // y axis
-        if (x1 === 0 && x2 === 0) {
-            return;
-        }
-    
-        let linear_coefficient = (y2 - y1) / (x2 - x1);
-        let intercept = -linear_coefficient * x1 + y1;
-        let end_points = [];
-    
-        function addEndPoint(x, y) {
-            if (Math.abs(x) <= 7 && Math.abs(y) <= 7) {
-                end_points.push([x, y]);
-            }
-        }
-    
-        addEndPoint(-7, linear_coefficient * -7 + intercept); // x = -7
-        addEndPoint((7 - intercept) / linear_coefficient, 7); // y = 7
-        addEndPoint(7, linear_coefficient * 7 + intercept); // x = 7
-        addEndPoint((-7 - intercept) / linear_coefficient, -7); // y = -7
-    
-        if (end_points.length < 2) {
-            return;
-        }
-    
-        let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
-    
-        function toPixel(x, y) {
-            return [160 + 10 * x, 80 + 10 * -y];
-        }
-    
-        let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
-        let [end_x2_p, end_y2_p] = toPixel(end_x2, end_y2);
-    
-        drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
-        stage.update();
-    }
-    */
     function drawLinearFunction(stage, x1, y1, x2, y2) {
         //
         if (x1 === 0 && x2 === 0) {

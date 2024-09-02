@@ -59,7 +59,7 @@ function refresh() {
     }
 
     function drawLinearFunction(stage, x1, y1, x2, y2) {
-        // y axis
+        //
         if (x1 === 0 && x2 === 0) {
             return;
         }
@@ -69,15 +69,15 @@ function refresh() {
         let end_points = [];
     
         function addEndPoint(x, y) {
-            if (Math.abs(x) <= 7 && Math.abs(y) <= 7) {
+            if (Math.abs(x) <= 14 && Math.abs(y) <= 14) {
                 end_points.push([x, y]);
             }
         }
     
-        addEndPoint(-7, linear_coefficient * -7 + intercept); // x = -7
-        addEndPoint((7 - intercept) / linear_coefficient, 7); // y = 7
-        addEndPoint(7, linear_coefficient * 7 + intercept); // x = 7
-        addEndPoint((-7 - intercept) / linear_coefficient, -7); // y = -7
+        addEndPoint(-14, linear_coefficient * -14 + intercept); // x = -14
+        addEndPoint((14 - intercept) / linear_coefficient, 14); // y = 14
+        addEndPoint(14, linear_coefficient * 14 + intercept); // x = 14
+        addEndPoint((-14 - intercept) / linear_coefficient, -14); // y = 14
     
         if (end_points.length < 2) {
             return;
@@ -86,7 +86,7 @@ function refresh() {
         let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
     
         function toPixel(x, y) {
-            return [160 + 10 * x, 80 + 10 * -y];
+            return [160 + 5 * x, 80 + 5 * -y];
         }
     
         let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
@@ -267,7 +267,7 @@ function refresh() {
             </footer>
         </section>
         <section class="print_pages">
-            <p class="number_of_problem">解答: No. {{ outer_loop_counter }}_{{ inner_loop_counter }}</p>
+            <p class="number_of_problem">解答: No. {{ outer_loop_counter }}</p>
             <ol>
                 {% for math_problem_tuple in inner_list %}
                     <div class="problem">

@@ -342,7 +342,7 @@ class AreaWithLinearFunction:
         integer = sy.Integer(choice(numbers))
         return integer
     
-    def _calculate_linear_function_by_two_points(self, p1: Point, p2: Point, /) -> LinearFunction:
+    def _calculate_linear_function_by_two_points(self, p1: Point, p2: Point) -> LinearFunction:
         """与えられた2点から直線の式を計算する
 
         Args:

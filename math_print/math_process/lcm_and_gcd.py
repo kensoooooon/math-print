@@ -1,3 +1,14 @@
+"""
+9/4
+"出題に利用される数の最大値"を100以下でも通るようにするための処理
+値自体は別にhtmlの方でmaxを解除すれば済む話だが、生成のロジックがうまく回るかが不明。というか、ロジックがよく理解できていない
+    現状は、与えられた最大値を満たすように、適当な数→公倍数や公約数の流れで計算している
+    処理が面倒になっていることの一端はここにある気がする
+    
+    _base_num_makerの動作がよく理解できていない。なにか面倒なことをしているのはわかるが...
+        self._max_problem_numberを超えないような自然数の指数を求めて、そこからランダムに数をかけて扱っている感じがある。
+"""
+
 from random import choice, randint, shuffle
 
 import sympy as sy
@@ -53,7 +64,7 @@ class LCMAndGCD:
                 y (int): もととなる数その2
 
             Returns:
-                lcms (list): 最大公約数を含め5つの公倍数が含まれたリスト
+                lcms (list): 最小公倍数を含め5つの公倍数が含まれたリスト
             """
             import math
             lcms = [((x * y) // math.gcd(x, y)) * i for i in range(1, 6)]
@@ -127,8 +138,6 @@ class LCMAndGCD:
                 max_index (int): max_problem_numberを超えない最大の指数
             Note:
                 max_value (floor): num * (base ** max_value) - max_problem_number = 0の解を、solveでなく手計算で求めている値
-            Making:
-                どこでbreak?また、同じ値になったときにはじく判定は？
             """
             from math import floor
             max_value = (sy.log(self._max_problem_number) - sy.log(num)) / (sy.log(base))

@@ -1,3 +1,8 @@
+"""
+2024/9/5
+    生成に利用される数の下限値を10に引き下げ。html側に置いて対処したため、こちらでは特に動作の変更はない
+"""
+
 from random import choice, randint, shuffle
 
 import sympy as sy
@@ -53,7 +58,7 @@ class LCMAndGCD:
                 y (int): もととなる数その2
 
             Returns:
-                lcms (list): 最大公約数を含め5つの公倍数が含まれたリスト
+                lcms (list): 最小公倍数を含め5つの公倍数が含まれたリスト
             """
             import math
             lcms = [((x * y) // math.gcd(x, y)) * i for i in range(1, 6)]
@@ -80,11 +85,14 @@ class LCMAndGCD:
             """2つの数x,yの公約数をすべて出力する関数
 
             Args:
-                x (_type_): _description_
-                y (_type_): _description_
+                x (int): 自然数
+                y (int): 自然数
 
             Returns:
-                _type_: _description_
+                (list): すべての約数を合わせたリスト
+            
+            Note:
+                平方根までの範囲をチェックしつつ、逆側も同時に登録を行っている
             """
             import math
             gcd = math.gcd(x, y)
@@ -111,11 +119,8 @@ class LCMAndGCD:
         Return:
             num1 (int): 対象となる数その1
             num2 (int): 対象となる数その2
-        
-        Note:
-            いずれの数も1以上100以下
-            等しくない数を生成する
         """
+        
         def max_indexer(num, base):
             """その数にかけたときに、max_problem_numberを超えない最大の指数を求める関数
 
@@ -124,11 +129,9 @@ class LCMAndGCD:
                 base (int): かけられる数の指数となる値
 
             Returns:
-                max_index (int): max_problem_numberを超えない最大の指数
+                max_index (int): max_problem_numberを超えないように計算するための最大の指数
             Note:
                 max_value (floor): num * (base ** max_value) - max_problem_number = 0の解を、solveでなく手計算で求めている値
-            Making:
-                どこでbreak?また、同じ値になったときにはじく判定は？
             """
             from math import floor
             max_value = (sy.log(self._max_problem_number) - sy.log(num)) / (sy.log(base))
@@ -152,5 +155,4 @@ class LCMAndGCD:
             if (num1 != 1) and (num2 != 1) and (num1 != num2):
                 break
         return num1, num2
-            
     

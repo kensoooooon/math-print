@@ -1332,13 +1332,20 @@ def print_square_root_calculate_problem(request):
         calculation_types.append("addition_and_subtraction_only")
         calculation_types.append("multiplication_and_division_only")
         calculation_types.append("using_expand_formula")
+    numbers_of_terms = request.POST.getlist('number_of_terms')
+    if not(numbers_of_terms):
+        numbers_of_terms.append(2)
+        numbers_of_terms.append(3)
+        numbers_of_terms.append(4)
+    else:
+        numbers_of_terms = [int(number_of_term) for number_of_term in numbers_of_terms]
     paper_number = int(request.POST["paper_number"])
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(int(PROBLEM_NUMBER//2)):
-            problem1 = SquareRootCalculateProblem(calculation_types=calculation_types)
-            problem2 = SquareRootCalculateProblem(calculation_types=calculation_types)
+            problem1 = SquareRootCalculateProblem(calculation_types=calculation_types, numbers_of_terms=numbers_of_terms)
+            problem2 = SquareRootCalculateProblem(calculation_types=calculation_types, numbers_of_terms=numbers_of_terms)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     
@@ -3136,10 +3143,17 @@ def display_square_root_calculate_problem(request):
         calculation_types.append("addition_and_subtraction_only")
         calculation_types.append("multiplication_and_division_only")
         calculation_types.append("using_expand_formula")
+    numbers_of_terms = request.POST.getlist('number_of_terms')
+    if not(numbers_of_terms):
+        numbers_or_terms.append(2)
+        numbers_of_terms.append(3)
+        numbers_of_terms.append(4)
+    else:
+        numbers_of_terms = [int(number_of_terms) for number_of_terms in numbers_of_terms]
     math_problem_tuple_list = []
     for _ in range(int(PROBLEM_NUMBER//2)):
-        problem1 = SquareRootCalculateProblem(calculation_types=calculation_types)
-        problem2 = SquareRootCalculateProblem(calculation_types=calculation_types)
+        problem1 = SquareRootCalculateProblem(calculation_types=calculation_types, numbers_of_terms=numbers_of_terms)
+        problem2 = SquareRootCalculateProblem(calculation_types=calculation_types, numbers_of_terms=numbers_of_terms)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/junior_highschool3/square_root_calculate/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 

@@ -3145,7 +3145,7 @@ def display_square_root_calculate_problem(request):
         calculation_types.append("using_expand_formula")
     numbers_of_terms = request.POST.getlist('number_of_terms')
     if not(numbers_of_terms):
-        numbers_or_terms.append(2)
+        numbers_of_terms.append(2)
         numbers_of_terms.append(3)
         numbers_of_terms.append(4)
     else:

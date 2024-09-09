@@ -1,3 +1,8 @@
+"""
+9/9
+平方根の和・差と積・商の計算において、指定の項数で計算できるように変更
+    与えられるのは、[2, 3, 4]のような数字入のリスト
+"""
 from random import choice, randint, random, shuffle
 
 
@@ -19,6 +24,7 @@ class SquareRootCalculateProblem:
             settings (dict): 問題の設定を格納
         """
         self._calculation_types = settings["calculation_types"]
+        self._numbers_of_terms = settings["numbers_of_terms"]
         self.latex_answer, self.latex_problem = self._make_problem()
     
     def _make_problem(self):
@@ -86,17 +92,18 @@ class SquareRootCalculateProblem:
         
         prime_numbers = [2, 3, 5, 7, 11]
         shuffle(prime_numbers)
-        number_of_term = randint(2, 4)
+        # number_of_term = randint(2, 4)
+        number_of_terms = choice(self._numbers_of_terms)
         # two common bases
         coeff_and_base = []
-        if number_of_term == 2:
+        if number_of_terms == 2:
             common_base = prime_numbers.pop()
             coefficient1 = self._make_random_integer(farther_distance_from_zero=5)
             coeff_and_base.append((coefficient1, common_base))
             coefficient2 = self._make_random_integer(farther_distance_from_zero=5)
             coeff_and_base.append((coefficient2, common_base))
         # two common bases and one uncommon base 
-        elif number_of_term == 3:
+        elif number_of_terms == 3:
             common_base = prime_numbers.pop()
             coefficient1 = self._make_random_integer(farther_distance_from_zero=5)
             coeff_and_base.append((coefficient1, common_base))
@@ -106,7 +113,7 @@ class SquareRootCalculateProblem:
             coefficient3 = self._make_random_integer(farther_distance_from_zero=5)
             coeff_and_base.append((coefficient3, uncommon_base))
         # two common bases and two other common bases
-        elif number_of_term == 4:
+        elif number_of_terms == 4:
             common_base1 = prime_numbers.pop()
             coefficient1 = self._make_random_integer(farther_distance_from_zero=5)
             coeff_and_base.append((coefficient1, common_base1))
@@ -181,10 +188,11 @@ class SquareRootCalculateProblem:
         
         prime_numbers = [2, 3, 5, 7, 11]
         shuffle(prime_numbers)
-        number_of_term = randint(2, 4)
+        # number_of_term = randint(2, 4)
+        number_of_terms = choice(self._numbers_of_terms)
         # multiplication to division of common base
         coeff_and_base_and_calculation_types = []
-        if number_of_term == 2:
+        if number_of_terms == 2:
             common_base = prime_numbers.pop()
             coeff1 = self._make_random_integer(farther_distance_from_zero=5)
             calculation_type1 = "multiplication"
@@ -193,7 +201,7 @@ class SquareRootCalculateProblem:
             calculation_type2 = "division"
             coeff_and_base_and_calculation_types.append((common_base, coeff2, calculation_type2))
         # multiplication to division of common base and multiplication or division of uncommon base
-        elif number_of_term == 3:
+        elif number_of_terms == 3:
             common_base = prime_numbers.pop()
             coeff1 = self._make_random_integer(farther_distance_from_zero=4)
             calculation_type1 = "multiplication"
@@ -206,7 +214,7 @@ class SquareRootCalculateProblem:
             calculation_type3 = choice(["multiplication", "division"])
             coeff_and_base_and_calculation_types.append((uncommon_base, coeff3, calculation_type3))
         # two by two common bases for multiplication to division
-        elif number_of_term == 4:
+        elif number_of_terms == 4:
             common_base1 = prime_numbers.pop()
             coeff1 = self._make_random_integer(farther_distance_from_zero=3)
             calculation_type1 = "multiplication"
@@ -237,8 +245,8 @@ class SquareRootCalculateProblem:
         shuffle(prime_numbers)
         selected_formula = choice(
             ["a(b+c)=ab+ac", "(a+b)c=ac+bc",
-             "(a+b)(c+d)=ac+ad+bc+bd", "(a+b)^2=a^2+2ab+b^2",
-             "(a-b)^2=a^2-2ab+b^2", "(a+b)(a-b)=a^2-b^2",]
+            "(a+b)(c+d)=ac+ad+bc+bd", "(a+b)^2=a^2+2ab+b^2",
+            "(a-b)^2=a^2-2ab+b^2", "(a+b)(a-b)=a^2-b^2",]
         )
         latex_problem = ""
         if selected_formula == "a(b+c)=ab+ac":

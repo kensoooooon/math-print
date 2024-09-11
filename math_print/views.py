@@ -84,8 +84,10 @@ def update_information(request):
 def about_me(request):
     return render(request, 'math_print/about_me.html', {})
 
-
 # index
+def show_elementary_school2(request):
+    return render(request, 'math_print/elementary_school2/elementary_school2.html', {})
+
 def show_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
 
@@ -2120,6 +2122,10 @@ def print_area_with_linear_function(request):
     render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
 
+def print_clock(request):
+    render_to_return = render(request, 'math_print/elementary_school2/clock/for_print.html', {})
+    return render_to_return
+
 # display section
 
 def display_number_problem(request):
@@ -3832,6 +3838,11 @@ def display_area_with_linear_function(request):
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     return render_to_return
+
+def display_clock(request):
+    render_to_return = render(request, 'math_print/elementary_school2/clock/for_display.html', {})
+    return render_to_return
+
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

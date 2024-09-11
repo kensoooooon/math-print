@@ -1,2 +1,225 @@
-this is clock for display html.
-display correctly.
+{% extends 'math_print/base.html' %}
+
+{% block script %}
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
+<script>
+function showAnswer(){
+    var nodes = document.getElementsByClassName('answer');
+    for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+}
+function refresh() {
+    var url = location.origin;
+    var pathname = location.pathname;
+    var hash = location.hash;
+
+  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+}
+</script>
+
+<script>
+    function showAnswer(){
+        var nodes = document.getElementsByClassName('answer');
+        for(var i = 0; i < nodes.length; i++){
+        nodes[i].style.visibility = 'visible';
+    }
+    
+    }
+    function refresh() {
+        var url = location.origin;
+        var pathname = location.pathname;
+        var hash = location.hash;
+        location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
+    }
+</script>
+    
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+<script>
+    window.addEventListener("load", draw);
+        
+    function addAxis(stage) {
+        drawLine(stage, 90, 80, 230, 80);
+        drawLine(stage, 160, 10, 160, 150);
+        drawLabel(stage, 235, 80, "x");
+        drawLabel(stage, 155, -5, "y");
+        drawLabel(stage, 145, 90, "O");
+    }
+
+    function drawLinearFunction(stage, x1, y1, x2, y2) {
+        //
+        if (x1 === 0 && x2 === 0) {
+            return;
+        }
+    
+        let linear_coefficient = (y2 - y1) / (x2 - x1);
+        let intercept = -linear_coefficient * x1 + y1;
+        let end_points = [];
+    
+        function addEndPoint(x, y) {
+            if (Math.abs(x) <= 14 && Math.abs(y) <= 14) {
+                end_points.push([x, y]);
+            }
+        }
+    
+        addEndPoint(-14, linear_coefficient * -14 + intercept); // x = -14
+        addEndPoint((14 - intercept) / linear_coefficient, 14); // y = 14
+        addEndPoint(14, linear_coefficient * 14 + intercept); // x = 14
+        addEndPoint((-14 - intercept) / linear_coefficient, -14); // y = 14
+    
+        if (end_points.length < 2) {
+            return;
+        }
+    
+        let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+    
+        function toPixel(x, y) {
+            return [160 + 5 * x, 80 + 5 * -y];
+        }
+    
+        let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
+        let [end_x2_p, end_y2_p] = toPixel(end_x2, end_y2);
+    
+        drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+        stage.update();
+    }
+
+    
+    
+    function drawLabel(stage, x, y, label) {
+        let text = new createjs.Text(label, "14px Arial", "#000");
+        text.x = x;
+        text.y = y;
+        stage.addChild(text);
+    }
+    
+    function drawLine(stage, x1, y1, x2, y2) {
+        let line = new createjs.Shape();
+        line.graphics.setStrokeStyle(1).beginStroke("#000").moveTo(x1, y1).lineTo(x2, y2);
+        stage.addChild(line);
+    }
+    
+
+    /*
+    function draw() {
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        // left problem
+        let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}")
+        addAxis(left_stage_{{ forloop.counter }});
+        let left_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
+        let left_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
+        let left_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
+        let left_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
+        let left_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x1 }});
+        let left_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y1 }});
+        let left_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x2 }});
+        let left_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y2 }});
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
+        let left_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x1 }});
+        let left_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y1 }});
+        let left_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x2 }});
+        let left_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y2 }});
+        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
+        // right problem
+        let right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ forloop.counter }}")
+        addAxis(right_stage_{{ forloop.counter }});
+        let right_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x1 }});
+        let right_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y1 }});
+        let right_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x2 }});
+        let right_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y2 }});
+        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_1_{{ forloop.counter }}, right_y1_1_{{ forloop.counter }}, right_x2_1_{{ forloop.counter }}, right_y2_1_{{ forloop.counter }});
+        let right_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x1 }});
+        let right_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y1 }});
+        let right_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x2 }});
+        let right_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y2 }});
+        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_2_{{ forloop.counter }}, right_y1_2_{{ forloop.counter }}, right_x2_2_{{ forloop.counter }}, right_y2_2_{{ forloop.counter }});
+        let right_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x1 }});
+        let right_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y1 }});
+        let right_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x2 }});
+        let right_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y2 }});
+        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_3_{{ forloop.counter }}, right_y1_3_{{ forloop.counter }}, right_x2_3_{{ forloop.counter }}, right_y2_3_{{ forloop.counter }});
+    {% endfor %}
+    }
+    */
+    
+
+</script>
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block title %}
+1次関数と面積
+{% endblock %}
+
+{% block hero_unit %}
+<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
+    <div class="container">
+        <h1 class="display-4">ようこそ!</h1>
+        <p class="text-dark">時計</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block body %}
+
+<ol>
+    {% for math_problem_tuple in math_problem_tuple_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            <canvas id="left_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            <br>
+                            {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
+                        </p>
+                    </li>
+                </div>
+                <div class="col-md-6">
+                    <li>
+                        <p>
+                            \( \quad \)
+                            <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            <br>
+                            {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
+                        </p>
+                        <p class="answer" style="visibility:hidden;">
+                            {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
+                        </p>
+                    </li>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</ol>
+
+<div class="d-grid gap-3 col-6 mx-auto">
+    <button class="btn btn-outline-success" type="button" onclick="showAnswer()">答えを表示する</button>
+    <button class="btn btn-outline-success" type="button" onclick="location.reload(false)">もう一度解く</button>
+    <a href="{% url 'elementary_school2' %}" class="btn btn-primary" type="button">問題選択へ戻る</a>
+    <a href="{% url 'index' %}" class="btn btn-primary" type="button">トップへ戻る</a>
+</div>
+
+<footer class="container-fluid print_footer">
+    <small><a href="#">© 2024 有明学習振興</a></small>
+</footer>
+{% endblock %}

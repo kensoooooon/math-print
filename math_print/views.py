@@ -69,6 +69,7 @@ from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
 from .math_process.hs3_integration_calculation_of_linear_function_replacement import IntegralCalculationOfLinearFunctionReplacement
 from .math_process.area_with_linear_function import AreaWithLinearFunction
+from .math_process.clock import ClockProblem
 
 
 
@@ -3840,7 +3841,24 @@ def display_area_with_linear_function(request):
     return render_to_return
 
 def display_clock(request):
-    render_to_return = render(request, 'math_print/elementary_school2/clock/for_display.html', {})
+    """小学2年生用の時計の問題をブラウザ表示
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 4
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_type):
+        problem_type.append("read_time")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = ClockProblem(problem_types=problem_types)
+        problem2 = ClockProblem(problem_types=problem_types)
+        math_problem_tuple_list.append((problem1, problem2))
+    render_to_return = render(request, 'math_print/elementary_school2/clock/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     return render_to_return
 
 

@@ -10,6 +10,7 @@ class AreaWithLinearFunction:
     Attributes:
         latex_answer (str): LaTeX形式を前提とした解答
         latex_problem (str): LaTeX形式を前提とした問題
+        linear_function1, linear_function2, linear_function3 (LinearFunction): 描画用の一次関数の情報
     """
     class Point(NamedTuple):
         x: Union[sy.Integer, sy.Rational]

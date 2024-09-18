@@ -2124,8 +2124,29 @@ def print_area_with_linear_function(request):
     return render_to_return
 
 def print_clock(request):
-    render_to_return = render(request, 'math_print/elementary_school2/clock/for_print.html', {})
-    return render_to_return
+    """小学2年生用の時計の問題をプリント表示
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 6
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("read_time")
+        problem_types.append("time_delta_without_am_pm")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = ClockProblem(problem_types=problem_types)
+            problem2 = ClockProblem(problem_types=problem_types)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school2/clock/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 # display section
 
@@ -3847,19 +3868,19 @@ def display_clock(request):
         request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
 
     Returns:
-        render_to_return (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+        (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
     """
-    PROBLEM_NUMBER = 4
+    PROBLEM_NUMBER = 6
     problem_types = request.POST.getlist("problem_type")
-    if not(problem_type):
-        problem_type.append("read_time")
+    if not(problem_types):
+        problem_types.append("read_time")
+        problem_types.append("time_delta_without_am_pm")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = ClockProblem(problem_types=problem_types)
         problem2 = ClockProblem(problem_types=problem_types)
         math_problem_tuple_list.append((problem1, problem2))
-    render_to_return = render(request, 'math_print/elementary_school2/clock/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
-    return render_to_return
+    return render(request, 'math_print/elementary_school2/clock/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 
 # explain section

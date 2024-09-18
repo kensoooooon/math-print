@@ -49,111 +49,92 @@ function refresh() {
 
 <script>
     window.addEventListener("load", draw);
-        
-    function addAxis(stage) {
-        drawLine(stage, 90, 80, 230, 80);
-        drawLine(stage, 160, 10, 160, 150);
-        drawLabel(stage, 235, 80, "x");
-        drawLabel(stage, 155, -5, "y");
-        drawLabel(stage, 145, 90, "O");
-    }
 
-    function drawLinearFunction(stage, x1, y1, x2, y2) {
-        //
-        if (x1 === 0 && x2 === 0) {
-            return;
+    function drawClock(stage, hour, minute) {
+        // w=640, h=320
+        // 時計のベースとなる円の描画
+        const circle = new createjs.Shape();
+        circle.graphics.setStrokeStyle(3).beginStroke("black").drawCircle(320, 160, 160);  // 中心(320, 160), 半径160
+        stage.addChild(circle);
+    
+        // 時計の文字盤に1~12の数字を表示
+        const radius = 140;  // 数字を配置する円の半径（時計より少し内側）
+        for (let i = 1; i <= 12; i++) {
+            const angle = (i - 3) * (Math.PI * 2) / 12;  // 時計の角度を計算（0時は上ではなく右なので-3）
+            const x = 320 + radius * Math.cos(angle);    // 中心のx座標
+            const y = 160 + radius * Math.sin(angle);    // 中心のy座標
+            const text = new createjs.Text(i.toString(), "20px Arial", "black");
+            text.textAlign = "center";
+            text.textBaseline = "middle";
+            text.x = x;
+            text.y = y;
+            stage.addChild(text);
         }
     
-        let linear_coefficient = (y2 - y1) / (x2 - x1);
-        let intercept = -linear_coefficient * x1 + y1;
-        let end_points = [];
+        // 分の刻み線を描画
+        const tickRadius = 160;  // 刻みの位置
+        const tickLength = 10;   // 刻み線の長さ
+        for (let i = 0; i < 60; i++) {
+            const angle = (i - 15) * (Math.PI * 2) / 60;  // 60分の角度を計算
+            const startX = 320 + tickRadius * Math.cos(angle);
+            const startY = 160 + tickRadius * Math.sin(angle);
+            const endX = 320 + (tickRadius - tickLength) * Math.cos(angle);
+            const endY = 160 + (tickRadius - tickLength) * Math.sin(angle);
     
-        function addEndPoint(x, y) {
-            if (Math.abs(x) <= 14 && Math.abs(y) <= 14) {
-                end_points.push([x, y]);
-            }
+            const tick = new createjs.Shape();
+            tick.graphics.setStrokeStyle(i % 5 === 0 ? 3 : 1).beginStroke("black")
+                .moveTo(startX, startY).lineTo(endX, endY);
+            stage.addChild(tick);
         }
     
-        addEndPoint(-14, linear_coefficient * -14 + intercept); // x = -14
-        addEndPoint((14 - intercept) / linear_coefficient, 14); // y = 14
-        addEndPoint(14, linear_coefficient * 14 + intercept); // x = 14
-        addEndPoint((-14 - intercept) / linear_coefficient, -14); // y = 14
+        // 短針の描画（hour, minuteをもとに角度計算）
+        const shortHandLength = 80;
+        const hourAngle = ((hour % 12) + minute / 60) * (Math.PI * 2) / 12 - Math.PI / 2;  // 時針の角度
+        const shortHandX = 320 + shortHandLength * Math.cos(hourAngle);
+        const shortHandY = 160 + shortHandLength * Math.sin(hourAngle);
     
-        if (end_points.length < 2) {
-            return;
-        }
+        const shortHand = new createjs.Shape();
+        shortHand.graphics.setStrokeStyle(6).beginStroke("black")
+            .moveTo(320, 160).lineTo(shortHandX, shortHandY);  // 中心から短針の先まで
+        stage.addChild(shortHand);
     
-        let [[end_x1, end_y1], [end_x2, end_y2]] = end_points;
+        // 長針の描画（minuteをもとに角度計算）
+        const longHandLength = 120;
+        const minuteAngle = (minute * (Math.PI * 2) / 60) - Math.PI / 2;  // 分針の角度
+        const longHandX = 320 + longHandLength * Math.cos(minuteAngle);
+        const longHandY = 160 + longHandLength * Math.sin(minuteAngle);
     
-        function toPixel(x, y) {
-            return [160 + 5 * x, 80 + 5 * -y];
-        }
+        const longHand = new createjs.Shape();
+        longHand.graphics.setStrokeStyle(4).beginStroke("black")
+            .moveTo(320, 160).lineTo(longHandX, longHandY);  // 中心から長針の先まで
+        stage.addChild(longHand);
     
-        let [end_x1_p, end_y1_p] = toPixel(end_x1, end_y1);
-        let [end_x2_p, end_y2_p] = toPixel(end_x2, end_y2);
-    
-        drawLine(stage, end_x1_p, end_y1_p, end_x2_p, end_y2_p);
+        // ステージを更新して描画
         stage.update();
     }
-
     
-    
-    function drawLabel(stage, x, y, label) {
-        let text = new createjs.Text(label, "14px Arial", "#000");
-        text.x = x;
-        text.y = y;
-        stage.addChild(text);
-    }
-    
-    function drawLine(stage, x1, y1, x2, y2) {
-        let line = new createjs.Shape();
-        line.graphics.setStrokeStyle(1).beginStroke("#000").moveTo(x1, y1).lineTo(x2, y2);
-        stage.addChild(line);
-    }
-    
-
-    /*
     function draw() {
-    {% for math_problem_tuple in math_problem_tuple_list %}
-        // left problem
-        let left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}")
-        addAxis(left_stage_{{ forloop.counter }});
-        let left_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x1 }});
-        let left_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y1 }});
-        let left_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.x2 }});
-        let left_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function1.y2 }});
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_1_{{ forloop.counter }}, left_y1_1_{{ forloop.counter }}, left_x2_1_{{ forloop.counter }}, left_y2_1_{{ forloop.counter }});
-        let left_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x1 }});
-        let left_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y1 }});
-        let left_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.x2 }});
-        let left_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function2.y2 }});
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_2_{{ forloop.counter }}, left_y1_2_{{ forloop.counter }}, left_x2_2_{{ forloop.counter }}, left_y2_2_{{ forloop.counter }});
-        let left_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x1 }});
-        let left_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y1 }});
-        let left_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.x2 }});
-        let left_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.0.linear_function3.y2 }});
-        drawLinearFunction(left_stage_{{ forloop.counter }}, left_x1_3_{{ forloop.counter }}, left_y1_3_{{ forloop.counter }}, left_x2_3_{{ forloop.counter }}, left_y2_3_{{ forloop.counter }});
-        // right problem
-        let right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ forloop.counter }}")
-        addAxis(right_stage_{{ forloop.counter }});
-        let right_x1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x1 }});
-        let right_y1_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y1 }});
-        let right_x2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.x2 }});
-        let right_y2_1_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function1.y2 }});
-        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_1_{{ forloop.counter }}, right_y1_1_{{ forloop.counter }}, right_x2_1_{{ forloop.counter }}, right_y2_1_{{ forloop.counter }});
-        let right_x1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x1 }});
-        let right_y1_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y1 }});
-        let right_x2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.x2 }});
-        let right_y2_2_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function2.y2 }});
-        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_2_{{ forloop.counter }}, right_y1_2_{{ forloop.counter }}, right_x2_2_{{ forloop.counter }}, right_y2_2_{{ forloop.counter }});
-        let right_x1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x1 }});
-        let right_y1_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y1 }});
-        let right_x2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.x2 }});
-        let right_y2_3_{{ forloop.counter }} = Number({{ math_problem_tuple.1.linear_function3.y2 }});
-        drawLinearFunction(right_stage_{{ forloop.counter }}, right_x1_3_{{ forloop.counter }}, right_y1_3_{{ forloop.counter }}, right_x2_3_{{ forloop.counter }}, right_y2_3_{{ forloop.counter }});
-    {% endfor %}
+        let hour;
+        let minute;
+        {% for math_problem_tuple in math_problem_tuple_list %}
+            {% if math_problem_tuple.0.show_canvas %}
+                // 左側の問題に対してキャンバスを描画
+                const left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}");
+                hour = {{ math_problem_tuple.0.time_information.hour }};  // 修正済み
+                minute = {{ math_problem_tuple.0.time_information.minute }};  // 修正済み
+                drawClock(left_stage_{{ forloop.counter }}, hour, minute);
+
+            {% endif %}
+            
+            {% if math_problem_tuple.1.show_canvas %}
+                // 右側の問題に対してキャンバスを描画
+                const right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ forloop.counter }}");
+                hour = {{ math_problem_tuple.1.time_information.hour }};  // 修正済み
+                minute = {{ math_problem_tuple.1.time_information.minute }};  // 修正済み
+                drawClock(right_stage_{{ forloop.counter }}, hour, minute);
+            {% endif %}
+        {% endfor %}
     }
-    */
     
 
 </script>
@@ -163,7 +144,7 @@ function refresh() {
 {% endblock %}
 
 {% block title %}
-1次関数と面積
+時計
 {% endblock %}
 
 {% block hero_unit %}
@@ -184,26 +165,30 @@ function refresh() {
                 <div class="col-md-6">
                     <li>
                         <p>
-                            \( \quad \)
-                            <canvas id="left_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            {% if math_problem_tuple.0.show_canvas %}
+                                \( \quad \)
+                                <canvas id="left_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
+                            {% endif %}
                             <br>
-                            {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
+                            {{ math_problem_tuple.0.problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            {{ math_problem_tuple.0.latex_answer | linebreaksbr }}
+                            {{ math_problem_tuple.0.answer | linebreaksbr }}
                         </p>
                     </li>
                 </div>
                 <div class="col-md-6">
                     <li>
                         <p>
-                            \( \quad \)
-                            <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                            {% if math_problem_tuple.1.show_canvas %}
+                                \( \quad \)
+                                <canvas id="right_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
+                            {% endif %}
                             <br>
-                            {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
+                            {{ math_problem_tuple.1.problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
-                            {{ math_problem_tuple.1.latex_answer | linebreaksbr }}
+                            {{ math_problem_tuple.1.answer | linebreaksbr }}
                         </p>
                     </li>
                 </div>

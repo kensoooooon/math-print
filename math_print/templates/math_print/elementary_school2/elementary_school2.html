@@ -52,30 +52,36 @@
                             時計の絵から時刻を読み取る
                         </label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_without_am_pm" name="problem_type" id="problem_type_read_time" checked>
+                        <label class="form-check-label" for="problem_type_read_time">
+                            ある時間の前後の時間を答える(午前・午後なし)
+                        </label>
+                    </div>
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="5" name="paper_number" id="ClockFivePaperRadio" checked>
                         <label class="form-check-label" for="ClockFivePaperRadio">
-                            20問×5枚
+                            6問×5枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="10" name="paper_number" id="ClockTenPaperRadio">
                         <label class="form-check-label" for="ClockTenPaperRadio">
-                            20問×10枚
+                            6問×10枚
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" value="15" name="paper_number" id="ClockFifteenPaperRadio">
                         <label class="form-check-label" for="ClockFifteenPaperRadio">
-                            20問×15枚
+                            6問×15枚
                         </label>
                     </div>
                 </div>
                 <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'clock_print' %}">
-                <input class="btn btn-primary" type="submit" value="そのまま解く(20問)" formaction="{% url 'clock_display' %}">      
+                <input class="btn btn-primary" type="submit" value="そのまま解く(6問)" formaction="{% url 'clock_display' %}">      
             </form>
         </div>
     </div>

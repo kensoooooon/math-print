@@ -161,6 +161,9 @@ print(f"24時間制の時間は: {time5}")  # 結果: 18:45
 問題の作成
     とりあえず、午前とか午後とかはなしで。あるいは全て24時間制で？
     余計な処理のことを考えると、とりあえずは全部午前扱いで良さそう
+    
+9/19
+差分の取り方
 """
 from random import choice, randint
 from datetime import datetime, timedelta
@@ -233,11 +236,17 @@ class TimeInformation(NamedTuple):
         # 可読性のための文字列フォーマット
         if self.am_or_pm is None:
             # AM/PMの情報がない場合は24時間制で表示
-            return f"{self.hour:02d}時{self.minute:02d}分"
+            if self.minute == 0:
+                return f"{self.hour}時"
+            return f"{self.hour}時{self.minute}分"
         elif self.am_or_pm == "am":
-            return f"午前{self.hour:02d}時{self.minute:02d}分"
+            if self.minute == 0:
+                return f"午前{self.hour}時"
+            return f"午前{self.hour}時{self.minute}分"
         elif self.am_or_pm == "pm":
-            return f"午後{self.hour:02d}時{self.minute:02d}分"
+            if self.minute == 0:
+                return f"午後{self.hour時}"
+            return f"午後{self.hour}時{self.minute}分"
         else:
             raise ValueError(f"am_or_pm must 'None', 'am' or 'pm'. {self.am_or_pm} is wrong.")
 
@@ -304,7 +313,22 @@ class ClockProblem:
         Developing:
             午前午後を跨がないようなロジックを考える必要がある
             シンプルに、ある時間をはじめに設定して、そこから12時00分と0時00分を跨がないようにランダム値を決めれ場良さそう？
+
+            t = TimeInformation(3, 30)
+            delta_from_new_day  = t.difference_in_minutes(TimeInformation(0, 0))
+            print(delta_from_new_day)
+            print(divmod(delta_from_new_day, 60))
+            delta_to_noon = TimeInformation(12, 0).difference_in_minutes(t)
+            print(delta_to_noon)
+            print(divmod(delta_to_noon, 60))
+                        
+            210
+            (3, 30)
+            510
+            (8, 30)
         """
-        time = randint(0, 12)
-        hour = randint(0, 59)
-        before_time = TimeInformation()
+        hour = randint(0, 11)
+        minute = randint(0, 59)
+        before_time = TimeInformation(hour, minute)
+        time_from_new_day =before_time.difference_in_minute()
+        

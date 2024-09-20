@@ -312,23 +312,6 @@ class ClockProblem:
         Returns:
             answer (str): 解答
             problem (str): 問題
-        
-        Developing:
-            午前午後を跨がないようなロジックを考える必要がある
-            シンプルに、ある時間をはじめに設定して、そこから12時00分と0時00分を跨がないようにランダム値を決めれ場良さそう？
-
-            t = TimeInformation(3, 30)
-            delta_from_new_day  = t.difference_in_minutes(TimeInformation(0, 0))
-            print(delta_from_new_day)
-            print(divmod(delta_from_new_day, 60))
-            delta_to_noon = TimeInformation(12, 0).difference_in_minutes(t)
-            print(delta_to_noon)
-            print(divmod(delta_to_noon, 60))
-                        
-            210
-            (3, 30)
-            510
-            (8, 30)
         """
         def max_hour_minute(time, before_or_after):
             """ランダムな計算でも午前午後、および日付の変更を跨がないような時間と分を算出
@@ -350,19 +333,42 @@ class ClockProblem:
             # 進むので、12時を跨がないように
             elif before_or_after == "after":
                 word = '後'
-                minutes_to_noon = time.difference_in_minutes(TimeInformation(11, 59))
+                minutes_to_noon = TimeInformation(11, 59).difference_in_minutes(time)
                 max_hour, max_minute = divmod(minutes_to_noon, 60)
             else:
                 raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
             return word, max_hour, max_minute
-
-        def 
-
+        
+        def make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after):
+            """前後の選択と、時間と分数に応じて、答えのためのTimeInformationを作成
+                
+            Args:
+                delta_hour (int): 経過した時間数
+                delta_minute (int): 経過した分数
+                before_or_after (str): 前と後のいずれか
+            
+            Returns:
+                new_time (TimeInformation): 新しい時間
+            """
+            minutes = delta_hour * 60 + delta_minute
+            if before_or_after == "before":
+                new_time = time.subtract_minutes(minutes)
+            elif before_or_after == "after":
+                new_time = time.add_minutes(minutes)
+            else:
+                raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
+            return new_time
+    
         hour = randint(0, 11)
         minute = randint(0, 59)
         time = TimeInformation(hour, minute)
-        before_or_after = choice(["before", "after"])
+        print(f"time: {time}")
+        # before_or_after = choice(["before", "after"])
+        before_or_after = "before"
         word, max_hour, max_minute = max_hour_minute(time, before_or_after)
+        print(f"word: {word}")
+        print(f"max_hour: {max_hour}")
+        print(f"max_minute: {max_minute}")
         delta_hour = randint(0, max_hour)
         delta_minute = randint(0, max_minute)
         problem = f"{time}の"
@@ -371,5 +377,7 @@ class ClockProblem:
         if delta_minute != 0:
             problem += f"{delta_minute}分"
         problem += f"{word}は何時何分ですか。"
-        
+        new_time = make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after)
+        answer = str(new_time)
+        return answer, problem
         

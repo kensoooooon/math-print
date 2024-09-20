@@ -164,6 +164,9 @@ print(f"24時間制の時間は: {time5}")  # 結果: 18:45
     
 9/19
 差分の取り方
+
+9/20
+前回の続きから。
 """
 from random import choice, randint
 from datetime import datetime, timedelta
@@ -327,8 +330,46 @@ class ClockProblem:
             510
             (8, 30)
         """
+        def max_hour_minute(time, before_or_after):
+            """ランダムな計算でも午前午後、および日付の変更を跨がないような時間と分を算出
+            
+            Args:
+                time (TimeInformation): 基準となる時間の情報
+                before_or_after (str): 遡る問題なのか、進む問題なのか
+                
+            Returns:
+                word (str): 問題文の表示に利用する表現
+                max_hour (int): 午前午後を跨がない最大の時間
+                max_minute (int): 午前午後を跨がない最大の分数
+            """
+            # 遡るので、0時を跨がないように
+            if before_or_after == "before":
+                word = '前'
+                minutes_from_new_day = time.difference_in_minutes(TimeInformation(0, 1))
+                max_hour, max_minute = divmod(minutes_from_new_day, 60)
+            # 進むので、12時を跨がないように
+            elif before_or_after == "after":
+                word = '後'
+                minutes_to_noon = time.difference_in_minutes(TimeInformation(11, 59))
+                max_hour, max_minute = divmod(minutes_to_noon, 60)
+            else:
+                raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
+            return word, max_hour, max_minute
+
+        def 
+
         hour = randint(0, 11)
         minute = randint(0, 59)
-        before_time = TimeInformation(hour, minute)
-        time_from_new_day =before_time.difference_in_minute()
+        time = TimeInformation(hour, minute)
+        before_or_after = choice(["before", "after"])
+        word, max_hour, max_minute = max_hour_minute(time, before_or_after)
+        delta_hour = randint(0, max_hour)
+        delta_minute = randint(0, max_minute)
+        problem = f"{time}の"
+        if delta_hour != 0:
+            problem += f"{delta_hour}時間"
+        if delta_minute != 0:
+            problem += f"{delta_minute}分"
+        problem += f"{word}は何時何分ですか。"
+        
         

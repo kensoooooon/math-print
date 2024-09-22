@@ -2136,7 +2136,8 @@ def print_clock(request):
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("read_time")
-        problem_types.append("time_delta_without_am_pm")
+        problem_types.append("time_delta_without_am_pm_with_picture")
+        problem_types.append("time_delta_without_am_pm_without_picture")
     paper_number = int(request.POST["paper_number"])
     math_problem_list_of_list = []
     for _ in range(paper_number):
@@ -3874,7 +3875,8 @@ def display_clock(request):
     problem_types = request.POST.getlist("problem_type")
     if not(problem_types):
         problem_types.append("read_time")
-        problem_types.append("time_delta_without_am_pm")
+        problem_types.append("time_delta_without_am_pm_with_picture")
+        problem_types.append("time_delta_without_am_pm_without_picture")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = ClockProblem(problem_types=problem_types)

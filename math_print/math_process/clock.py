@@ -252,18 +252,7 @@ class TimeInformation(NamedTuple):
             return f"午後{self.hour}時{self.minute}分"
         else:
             raise ValueError(f"am_or_pm must 'None', 'am' or 'pm'. {self.am_or_pm} is wrong.")
-
-# 使用例
-"""
-time1 = TimeInformation(8, 30)  # 24時間制の8:30
-time2 = time1.subtract_minutes(25)  # 25分前
-print(f"8時30分の25分前は: {time2}")  # 結果: 08:05
-
-time3 = TimeInformation(3, 30, is_pm=True)  # 午後3:30 (15:30)
-time4 = TimeInformation(5, 20, is_pm=True)  # 午後5:20 (17:20)
-diff = time3.difference_in_minutes(time4)  # 15:30から17:20までの時間差
-print(f"15時30分から17時20分までの時間は: {diff}分")  # 結果: 110分
-"""
+        
 
 class ClockProblem:
     """小学2年生用の時計関連の問題と解答を出力
@@ -273,7 +262,6 @@ class ClockProblem:
         problem (str): 日本語の記述を前提とした問題
         time_information (TimeInformation): 描画用の時間と分の情報
     """
-    
     def __init__(self, **settings):
         """
         初期設定
@@ -284,9 +272,12 @@ class ClockProblem:
         if selected_problem_type == "read_time":
             self.show_canvas = True
             self.answer, self.problem, self.time_information = self._make_read_time_problem()
-        elif selected_problem_type == "time_delta_without_am_pm":
+        elif selected_problem_type == "time_delta_without_am_pm_with_picture":
+            self.show_canvas = True
+            self.answer, self.problem, self.time_information = self._make_time_delta_without_am_pm_problem()
+        elif selected_problem_type  == "time_delta_without_am_pm_without_picture":
             self.show_canvas = False
-            self.answer, self.problem = self._make_time_delta_without_am_pm_problem()
+            self.answer, self.problem, _ = self._make_time_delta_without_am_pm_problem()
     
     def _make_read_time_problem(self):
         """表示された時計の画像を見て、その時間を読み取る問題の作成
@@ -312,8 +303,9 @@ class ClockProblem:
         Returns:
             answer (str): 解答
             problem (str): 問題
+            time (TimeInformation): 描画用の情報
         """
-        def max_hour_minute(time, before_or_after):
+        def calculate_max_minutes(time, before_or_after):
             """ランダムな計算でも午前午後、および日付の変更を跨がないような時間と分を算出
             
             Args:
@@ -322,22 +314,21 @@ class ClockProblem:
                 
             Returns:
                 word (str): 問題文の表示に利用する表現
-                max_hour (int): 午前午後を跨がない最大の時間
-                max_minute (int): 午前午後を跨がない最大の分数
+                max_minutes (int): 日付や午前午後を跨がない最大の分数
             """
             # 遡るので、0時を跨がないように
             if before_or_after == "before":
                 word = '前'
                 minutes_from_new_day = time.difference_in_minutes(TimeInformation(0, 1))
-                max_hour, max_minute = divmod(minutes_from_new_day, 60)
+                max_minutes = minutes_from_new_day
             # 進むので、12時を跨がないように
             elif before_or_after == "after":
                 word = '後'
                 minutes_to_noon = TimeInformation(11, 59).difference_in_minutes(time)
-                max_hour, max_minute = divmod(minutes_to_noon, 60)
+                max_minutes = minutes_to_noon
             else:
                 raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
-            return word, max_hour, max_minute
+            return word, max_minutes
         
         def make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after):
             """前後の選択と、時間と分数に応じて、答えのためのTimeInformationを作成
@@ -362,15 +353,10 @@ class ClockProblem:
         hour = randint(0, 11)
         minute = randint(0, 59)
         time = TimeInformation(hour, minute)
-        print(f"time: {time}")
-        # before_or_after = choice(["before", "after"])
-        before_or_after = "before"
-        word, max_hour, max_minute = max_hour_minute(time, before_or_after)
-        print(f"word: {word}")
-        print(f"max_hour: {max_hour}")
-        print(f"max_minute: {max_minute}")
-        delta_hour = randint(0, max_hour)
-        delta_minute = randint(0, max_minute)
+        before_or_after = choice(["before", "after"])
+        word, max_minutes = calculate_max_minutes(time, before_or_after)
+        delta_minutes = randint(0, max_minutes)
+        delta_hour, delta_minute = divmod(delta_minutes, 60)
         problem = f"{time}の"
         if delta_hour != 0:
             problem += f"{delta_hour}時間"
@@ -379,5 +365,4 @@ class ClockProblem:
         problem += f"{word}は何時何分ですか。"
         new_time = make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after)
         answer = str(new_time)
-        return answer, problem
-        
+        return answer, problem, time

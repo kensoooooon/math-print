@@ -167,6 +167,9 @@ print(f"24時間制の時間は: {time5}")  # 結果: 18:45
 
 9/20
 前回の続きから。
+
+9/23
+次の問題
 """
 from random import choice, randint
 from datetime import datetime, timedelta
@@ -268,16 +271,21 @@ class ClockProblem:
         
         settings (dict): 各種設定を格納。この問題ではどのタイプの問題か
         """
+        selected_width_of_time = choice(settings["widths_of_time"])
         selected_problem_type = choice(settings["problem_types"])
+        self.selected_problem_type = selected_problem_type
         if selected_problem_type == "read_time":
             self.show_canvas = True
             self.answer, self.problem, self.time_information = self._make_read_time_problem()
         elif selected_problem_type == "time_delta_without_am_pm_with_picture":
             self.show_canvas = True
-            self.answer, self.problem, self.time_information = self._make_time_delta_without_am_pm_problem()
+            self.answer, self.problem, self.time_information = self._make_time_delta_without_am_pm_problem(selected_width_of_time)
         elif selected_problem_type  == "time_delta_without_am_pm_without_picture":
             self.show_canvas = False
-            self.answer, self.problem, _ = self._make_time_delta_without_am_pm_problem()
+            self.answer, self.problem, _ = self._make_time_delta_without_am_pm_problem(selected_width_of_time)
+        elif selected_problem_type == "time_delta_with_two_clock_pictures":
+            self.show_canvas = True
+            self.answer, self.problem, self.time_information1, self.time_information2 = self._make_time_delta_with_two_clock_pictures(selected_width_of_time)
     
     def _make_read_time_problem(self):
         """表示された時計の画像を見て、その時間を読み取る問題の作成
@@ -297,8 +305,11 @@ class ClockProblem:
         problem = "時計は何時何分ですか?"
         return answer, problem, time_information
 
-    def _make_time_delta_without_am_pm_problem(self):
+    def _make_time_delta_without_am_pm_problem(self, width_of_time):
         """午前午後の入れ替えを含まない時間の経過を問う問題と回答の作成
+        
+        Args:
+            width_of_time (str): 時間の幅(less_than_one_hour or greater_than_or_equal_to_one_hour)
         
         Returns:
             answer (str): 解答
@@ -350,12 +361,20 @@ class ClockProblem:
                 raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
             return new_time
     
-        hour = randint(0, 11)
+        hour = randint(1, 11)
         minute = randint(0, 59)
         time = TimeInformation(hour, minute)
         before_or_after = choice(["before", "after"])
         word, max_minutes = calculate_max_minutes(time, before_or_after)
-        delta_minutes = randint(0, max_minutes)
+        if width_of_time == "less_than_one_hour":
+            if max_minutes < 59:
+                delta_minutes = randint(0, max_minutes)
+            else:
+                delta_minutes = randint(0, 59)
+        elif width_of_time == "greater_than_or_equal_to_one_hour":
+            delta_minutes = randint(0, max_minutes)
+        else:
+            raise ValueError(f"'width_of_time' must be 'less_than_one_hour' or 'greater_than_or_equal_to_one_hour'. {width_of_time} is wrong assignment.")
         delta_hour, delta_minute = divmod(delta_minutes, 60)
         problem = f"{time}の"
         if delta_hour != 0:
@@ -366,3 +385,99 @@ class ClockProblem:
         new_time = make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after)
         answer = str(new_time)
         return answer, problem, time
+
+    def _make_time_delta_with_two_clock_pictures(self, width_of_time):
+        """2つの時計の絵から、経過時間(前後)を求める問題の作成
+        
+        Args:
+            width_of_time (str): 時間の幅(less_than_one_hour or greater_than_or_equal_to_one_hour)
+        
+        Returns:
+            answer (str): 解答
+            problem (str): 問題
+            time1 (TimeInformation): 基準となる時間の情報
+            time2 (TimeInformation): 経過後の時間の情報
+        """
+        
+        def calculate_minutes(time, before_or_after, width_of_time):
+            """ランダムな計算でも午前午後、および日付の変更を跨がないような時間と分を算出
+            
+            Args:
+                time (TimeInformation): 基準となる時間の情報
+                before_or_after (str): 遡る問題なのか、進む問題なのか
+                
+            Returns:
+                word (str): 問題文の表示に利用する表現
+                max_minutes (int): 日付や午前午後を跨がない最大の分数
+            """
+            # 遡るので、0時を跨がないように
+            if before_or_after == "before":
+                word = '前'
+                minutes_from_new_day = time.difference_in_minutes(TimeInformation(0, 1))
+                max_minutes = minutes_from_new_day
+            # 進むので、12時を跨がないように
+            elif before_or_after == "after":
+                word = '後'
+                minutes_to_noon = TimeInformation(11, 59).difference_in_minutes(time)
+                max_minutes = minutes_to_noon
+            else:
+                raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
+            if width_of_time == "less_than_one_hour":
+                if max_minutes < 59:
+                    delta_minutes = randint(1, max_minutes)
+                else:
+                    delta_minutes = randint(1, 59)
+            elif width_of_time == "greater_than_or_equal_to_one_hour":
+                delta_minutes = randint(1, max_minutes)
+            return word, delta_minutes
+
+        def make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after):
+            """前後の選択と、時間と分数に応じて、答えのためのTimeInformationを作成
+                
+            Args:
+                delta_hour (int): 経過した時間数
+                delta_minute (int): 経過した分数
+                before_or_after (str): 前と後のいずれか
+            
+            Returns:
+                new_time (TimeInformation): 新しい時間
+            """
+            minutes = delta_hour * 60 + delta_minute
+            if before_or_after == "before":
+                new_time = time.subtract_minutes(minutes)
+            elif before_or_after == "after":
+                new_time = time.add_minutes(minutes)
+            else:
+                raise ValueError(f"'before_or_after' must be 'before' or 'after'. {before_or_after} is wrong assignment.")
+            return new_time
+
+        before_or_after = choice(['before', 'after'])
+        hour1 = randint(1, 11)
+        minute1 = randint(0, 59)
+        time1 = TimeInformation(hour1, minute1)
+        word, delta_minutes = calculate_minutes(time1, before_or_after, width_of_time)
+        delta_hour, delta_minute = divmod(delta_minutes, 60)
+        time2 = make_time_information_for_answer(time1, delta_hour, delta_minute, before_or_after)
+        problem = f"右の時計は、左の時計のどれくらい{word}ですか。"
+        answer = ""
+        if delta_hour != 0:
+            answer += f"{delta_hour}時間"
+        if delta_minute != 0:
+            answer += f"{delta_minute}分"
+        answer += word
+        return answer, problem, time1, time2
+    
+    def _make_random_hour_and_minute(self) -> tuple[int, int]:
+        """条件に応じたランダムな時間と分を返す
+
+        Returns:
+            hour (int): 時
+            minute (int): 分
+        """
+        if self.selected_width_of_time == "less_than_one_hour":
+            hour = 0
+            minute = randint(0, 59)
+        elif self.selected_width_of_time == "greater_than_or_equal_to_one_hour":
+            hour = randint(0, 11)
+            minute = randint(0, 59)
+        return hour, minute

@@ -64,6 +64,31 @@
                             ある時間の前後の時間を答える(午前・午後なし)+時計絵の表示なし
                         </label>
                     </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_two_clock_pictures" name="problem_type" id="problem_type_time_delta_with_two_clock_pictures" checked>
+                        <label class="form-check-label" for="problem_type_time_delta_with_two_clock_pictures">
+                            2つの時計の絵から、経過した時間を求める
+                        </label>
+                    </div>
+                    <br>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">時間の幅</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="less_than_one_hour" name="width_of_time" id="width_of_time_less_than_one_hour" checked>
+                        <label class="form-check-label" for="width_of_time_less_than_one_hour">
+                            1時間未満
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="greater_than_or_equal_to_one_hour" name="width_of_time" id="width_of_time_greater_than_or_equal_to_one_hour" checked>
+                        <label class="form-check-label" for="width_of_time_greater_than_or_equal_to_one_hour">
+                            1時間以上
+                        </label>
+                    </div>
                 </div>
                 <small class="text-muted">枚数</small>
                 <div class="form-group">

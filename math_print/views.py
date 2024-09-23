@@ -2138,13 +2138,18 @@ def print_clock(request):
         problem_types.append("read_time")
         problem_types.append("time_delta_without_am_pm_with_picture")
         problem_types.append("time_delta_without_am_pm_without_picture")
+        problem_types.append("time_delta_with_two_clock_pictures")
+    widths_of_time = request.POST.getlist("width_of_time")
+    if not(widths_of_time):
+        widths_of_time.append("less_than_one_hour")
+        widths_of_time.append("greater_than_or_equal_to_one_hour")
     paper_number = int(request.POST["paper_number"])
     math_problem_list_of_list = []
     for _ in range(paper_number):
         math_problem_tuple_inner_list = []
         for _ in range(PROBLEM_NUMBER // 2):
-            problem1 = ClockProblem(problem_types=problem_types)
-            problem2 = ClockProblem(problem_types=problem_types)
+            problem1 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
+            problem2 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
     return render(request, 'math_print/elementary_school2/clock/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
@@ -3877,10 +3882,15 @@ def display_clock(request):
         problem_types.append("read_time")
         problem_types.append("time_delta_without_am_pm_with_picture")
         problem_types.append("time_delta_without_am_pm_without_picture")
+        problem_types.append("time_delta_with_two_clock_pictures")
+    widths_of_time = request.POST.getlist("width_of_time")
+    if not(widths_of_time):
+        widths_of_time.append("less_than_one_hour")
+        widths_of_time.append("greater_than_or_equal_to_one_hour")
     math_problem_tuple_list = []
     for _ in range(PROBLEM_NUMBER // 2):
-        problem1 = ClockProblem(problem_types=problem_types)
-        problem2 = ClockProblem(problem_types=problem_types)
+        problem1 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
+        problem2 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
         math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/elementary_school2/clock/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 

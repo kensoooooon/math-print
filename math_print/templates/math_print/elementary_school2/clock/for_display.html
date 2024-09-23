@@ -50,19 +50,47 @@ function refresh() {
 <script>
     window.addEventListener("load", draw);
 
-    function drawClock(stage, hour, minute) {
-        // w=640, h=320
-        // 時計のベースとなる円の描画
+    function drawSingleClock(stage, hour, minute) {
+        const clockRadius = 150;
+        const stageCenterX = 320;
+        const stageCenterY = 160;
+        drawSingleClockOnPosition(stage, hour, minute, stageCenterX, stageCenterY, clockRadius);
+        stage.update();
+    }
+
+    function drawDoubleClock(stage, hour1, minute1, hour2, minute2) {
+        // ステージをクリアして古い描画を消去
+        stage.removeAllChildren();
+    
+        // 時計のプロパティを定義
+        const clockRadius = 120; // 時計のサイズを少し縮小
+        const stageCenterX = 320; // キャンバスの幅の中央
+        const stageCenterY = 160; // キャンバスの高さの中央
+    
+        // 左側に最初の時計を描画（間隔を広げるため -180）
+        drawSingleClockOnPosition(stage, hour1, minute1, stageCenterX - 180, stageCenterY, clockRadius);
+    
+        // 右側に2番目の時計を描画（間隔を広げるため +180）
+        drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 180, stageCenterY, clockRadius);
+    
+        // 2つの時計の間に矢印を描画（矢印を短く調整）
+        // drawArrow(stage, stageCenterX - 50, stageCenterY, stageCenterX + 50, stageCenterY);
+    
+        // ステージを更新して全ての描画をレンダリング
+        stage.update();
+    }
+    
+    function drawSingleClockOnPosition(stage, hour, minute, centerX, centerY, radius) {
+        // 時計のベースとなる円を描画
         const circle = new createjs.Shape();
-        circle.graphics.setStrokeStyle(3).beginStroke("black").drawCircle(320, 160, 160);  // 中心(320, 160), 半径160
+        circle.graphics.setStrokeStyle(3).beginStroke("black").drawCircle(centerX, centerY, radius);
         stage.addChild(circle);
     
         // 時計の文字盤に1~12の数字を表示
-        const radius = 140;  // 数字を配置する円の半径（時計より少し内側）
         for (let i = 1; i <= 12; i++) {
-            const angle = (i - 3) * (Math.PI * 2) / 12;  // 時計の角度を計算（0時は上ではなく右なので-3）
-            const x = 320 + radius * Math.cos(angle);    // 中心のx座標
-            const y = 160 + radius * Math.sin(angle);    // 中心のy座標
+            const angle = (i - 3) * (Math.PI * 2) / 12;
+            const x = centerX + (radius - 20) * Math.cos(angle);
+            const y = centerY + (radius - 20) * Math.sin(angle);
             const text = new createjs.Text(i.toString(), "20px Arial", "black");
             text.textAlign = "center";
             text.textBaseline = "middle";
@@ -72,66 +100,88 @@ function refresh() {
         }
     
         // 分の刻み線を描画
-        const tickRadius = 160;  // 刻みの位置
-        const tickLength = 10;   // 刻み線の長さ
         for (let i = 0; i < 60; i++) {
-            const angle = (i - 15) * (Math.PI * 2) / 60;  // 60分の角度を計算
-            const startX = 320 + tickRadius * Math.cos(angle);
-            const startY = 160 + tickRadius * Math.sin(angle);
-            const endX = 320 + (tickRadius - tickLength) * Math.cos(angle);
-            const endY = 160 + (tickRadius - tickLength) * Math.sin(angle);
-    
+            const angle = (i - 15) * (Math.PI * 2) / 60;
+            const startX = centerX + radius * Math.cos(angle);
+            const startY = centerY + radius * Math.sin(angle);
+            const endX = centerX + (radius - (i % 5 === 0 ? 15 : 5)) * Math.cos(angle);
+            const endY = centerY + (radius - (i % 5 === 0 ? 15 : 5)) * Math.sin(angle);
             const tick = new createjs.Shape();
             tick.graphics.setStrokeStyle(i % 5 === 0 ? 3 : 1).beginStroke("black")
                 .moveTo(startX, startY).lineTo(endX, endY);
             stage.addChild(tick);
         }
     
-        // 短針の描画（hour, minuteをもとに角度計算）
-        const shortHandLength = 80;
-        const hourAngle = ((hour % 12) + minute / 60) * (Math.PI * 2) / 12 - Math.PI / 2;  // 時針の角度
-        const shortHandX = 320 + shortHandLength * Math.cos(hourAngle);
-        const shortHandY = 160 + shortHandLength * Math.sin(hourAngle);
-    
+        // 短針の描画
+        const hourAngle = ((hour % 12) + minute / 60) * (Math.PI * 2) / 12 - Math.PI / 2;
+        const shortHandX = centerX + (radius - 60) * Math.cos(hourAngle);
+        const shortHandY = centerY + (radius - 60) * Math.sin(hourAngle);
         const shortHand = new createjs.Shape();
         shortHand.graphics.setStrokeStyle(6).beginStroke("black")
-            .moveTo(320, 160).lineTo(shortHandX, shortHandY);  // 中心から短針の先まで
+            .moveTo(centerX, centerY).lineTo(shortHandX, shortHandY);
         stage.addChild(shortHand);
     
-        // 長針の描画（minuteをもとに角度計算）
-        const longHandLength = 120;
-        const minuteAngle = (minute * (Math.PI * 2) / 60) - Math.PI / 2;  // 分針の角度
-        const longHandX = 320 + longHandLength * Math.cos(minuteAngle);
-        const longHandY = 160 + longHandLength * Math.sin(minuteAngle);
-    
+        // 長針の描画
+        const minuteAngle = (minute * (Math.PI * 2) / 60) - Math.PI / 2;
+        const longHandX = centerX + (radius - 20) * Math.cos(minuteAngle);
+        const longHandY = centerY + (radius - 20) * Math.sin(minuteAngle);
         const longHand = new createjs.Shape();
         longHand.graphics.setStrokeStyle(4).beginStroke("black")
-            .moveTo(320, 160).lineTo(longHandX, longHandY);  // 中心から長針の先まで
+            .moveTo(centerX, centerY).lineTo(longHandX, longHandY);
         stage.addChild(longHand);
+    }
     
-        // ステージを更新して描画
-        stage.update();
+    function drawArrow(stage, startX, startY, endX, endY) {
+        // 2つの時計の間に矢印を描画
+        const arrow = new createjs.Shape();
+        arrow.graphics.setStrokeStyle(2).beginStroke("black")
+            .moveTo(startX, startY).lineTo(endX, endY); // メインの線
+    
+        // 矢印の先端を描画（シンプルな三角形）
+        const arrowHeadSize = 10;
+        const angle = Math.atan2(endY - startY, endX - startX);
+        arrow.graphics.moveTo(endX, endY)
+            .lineTo(endX - arrowHeadSize * Math.cos(angle - Math.PI / 6), endY - arrowHeadSize * Math.sin(angle - Math.PI / 6))
+            .moveTo(endX, endY)
+            .lineTo(endX - arrowHeadSize * Math.cos(angle + Math.PI / 6), endY - arrowHeadSize * Math.sin(angle + Math.PI / 6));
+    
+        stage.addChild(arrow);
     }
     
     function draw() {
-        let hour;
-        let minute;
+        let hour1;
+        let minute1;
+        let hour2;
+        let minute2;
         {% for math_problem_tuple in math_problem_tuple_list %}
             {% if math_problem_tuple.0.show_canvas %}
-                // 左側の問題に対してキャンバスを描画
                 const left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}");
-                hour = {{ math_problem_tuple.0.time_information.hour }};  // 修正済み
-                minute = {{ math_problem_tuple.0.time_information.minute }};  // 修正済み
-                drawClock(left_stage_{{ forloop.counter }}, hour, minute);
-
+                {% if math_problem_tuple.0.selected_problem_type == "time_delta_with_two_clock_pictures" %}
+                    hour1 = {{ math_problem_tuple.0.time_information1.hour }};
+                    minute1 = {{ math_problem_tuple.0.time_information1.minute }};
+                    hour2 = {{ math_problem_tuple.0.time_information2.hour }};
+                    minute2 = {{ math_problem_tuple.0.time_information2.minute }};
+                    drawDoubleClock(left_stage_{{ forloop.counter }}, hour1, minute1, hour2, minute2);
+                {% else %}
+                    hour1 = {{ math_problem_tuple.0.time_information.hour }};
+                    minute1 = {{ math_problem_tuple.0.time_information.minute }};
+                    drawSingleClock(left_stage_{{ forloop.counter }}, hour1, minute1);
+                {% endif %}
             {% endif %}
             
             {% if math_problem_tuple.1.show_canvas %}
-                // 右側の問題に対してキャンバスを描画
                 const right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ forloop.counter }}");
-                hour = {{ math_problem_tuple.1.time_information.hour }};  // 修正済み
-                minute = {{ math_problem_tuple.1.time_information.minute }};  // 修正済み
-                drawClock(right_stage_{{ forloop.counter }}, hour, minute);
+                {% if math_problem_tuple.1.selected_problem_type == "time_delta_with_two_clock_pictures" %}
+                    hour1 = {{ math_problem_tuple.1.time_information1.hour }};
+                    minute1 = {{ math_problem_tuple.1.time_information1.minute }};
+                    hour2 = {{ math_problem_tuple.1.time_information2.hour }};
+                    minute2 = {{ math_problem_tuple.1.time_information2.minute }};
+                    drawDoubleClock(right_stage_{{ forloop.counter }}, hour1, minute1, hour2, minute2);
+                {% else %}
+                    hour1 = {{ math_problem_tuple.1.time_information.hour }};
+                    minute1 = {{ math_problem_tuple.1.time_information.minute }};
+                    drawSingleClock(right_stage_{{ forloop.counter }}, hour1, minute1);
+                {% endif %}
             {% endif %}
         {% endfor %}
     }

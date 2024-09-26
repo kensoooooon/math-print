@@ -2139,6 +2139,10 @@ def print_clock(request):
         problem_types.append("time_delta_without_am_pm_with_picture")
         problem_types.append("time_delta_without_am_pm_without_picture")
         problem_types.append("time_delta_with_two_clock_pictures")
+        problem_types.append("time_delta_with_am_pm_with_picture")
+        problem_types.append("time_delta_with_am_pm_without_picture")
+        problem_types.append("time_delta_with_24_hours_with_picture")
+        problem_types.append("time_delta_with_24_hours_without_picture")
     widths_of_time = request.POST.getlist("width_of_time")
     if not(widths_of_time):
         widths_of_time.append("less_than_one_hour")
@@ -3883,6 +3887,10 @@ def display_clock(request):
         problem_types.append("time_delta_without_am_pm_with_picture")
         problem_types.append("time_delta_without_am_pm_without_picture")
         problem_types.append("time_delta_with_two_clock_pictures")
+        problem_types.append("time_delta_with_am_pm_with_picture")
+        problem_types.append("time_delta_with_am_pm_without_picture")
+        problem_types.append("time_delta_with_24_hours_with_picture")
+        problem_types.append("time_delta_with_24_hours_without_picture")
     widths_of_time = request.POST.getlist("width_of_time")
     if not(widths_of_time):
         widths_of_time.append("less_than_one_hour")

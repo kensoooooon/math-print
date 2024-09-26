@@ -197,11 +197,6 @@ class TimeInformation(NamedTuple):
                 hour_24 = self.hour
             else:
                 hour_24 = 0
-        # elif self.am_or_pm == "pm":
-            # if self.hour == 12:
-            #     hour_24 = self.hour
-            # else:
-            #     hour_24 = self.hour + 12
         elif self.am_or_pm == "pm":
             if self.hour == 12:
                 hour_24 = 12
@@ -245,24 +240,6 @@ class TimeInformation(NamedTuple):
         # 別のTimeInformationとの時間差を分で返す
         delta = self.to_datetime() - other.to_datetime()
         return int(delta.total_seconds() // 60)
-
-    # def __str__(self) -> str:
-        # # 可読性のための文字列フォーマット
-        # if self.am_or_pm is None:
-        #     # AM/PMの情報がない場合は24時間制で表示
-        #     if self.minute == 0:
-        #         return f"{self.hour}時"
-        #     return f"{self.hour}時{self.minute}分"
-        # elif self.am_or_pm == "am":
-        #     if self.minute == 0:
-        #         return f"午前{self.hour}時"
-        #     return f"午前{self.hour}時{self.minute}分"
-        # elif self.am_or_pm == "pm":
-        #     if self.minute == 0:
-        #         return f"午後{self.hour時}"
-        #     return f"午後{self.hour}時{self.minute}分"
-        # else:
-        #     raise ValueError(f"am_or_pm must 'None', 'am' or 'pm'. {self.am_or_pm} is wrong.")
 
     def __str__(self) -> str:
         # 可読性のための文字列フォーマット
@@ -328,6 +305,8 @@ class ClockProblem:
         elif selected_problem_type  == "time_delta_with_24_hours_without_picture":
             self.show_canvas = False
             self.answer, self.problem, _ = self._make_time_delta_with_24_hours_problem(selected_width_of_time)
+        else:
+            raise ValueError(f"'selected_problem_type' arg is {selected_problem_type}. This isn't expected value.")
 
     def _make_read_time_problem(self):
         """表示された時計の画像を見て、その時間を読み取る問題の作成
@@ -672,18 +651,3 @@ class ClockProblem:
         new_time = make_time_information_for_answer(time, delta_hour, delta_minute, before_or_after)
         answer = str(new_time)
         return answer, problem, time
-    
-    def _make_random_hour_and_minute(self):
-        """条件に応じたランダムな時間と分を返す
-
-        Returns:
-            hour (int): 時
-            minute (int): 分
-        """
-        if self.selected_width_of_time == "less_than_one_hour":
-            hour = 0
-            minute = randint(0, 59)
-        elif self.selected_width_of_time == "greater_than_or_equal_to_one_hour":
-            hour = randint(0, 11)
-            minute = randint(0, 59)
-        return hour, minute

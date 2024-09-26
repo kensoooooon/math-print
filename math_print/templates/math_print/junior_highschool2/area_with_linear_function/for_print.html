@@ -12,40 +12,8 @@
         }
         });
 </script>
-
-<script>
-function showAnswer(){
-    var nodes = document.getElementsByClassName('answer');
-    for(var i = 0; i < nodes.length; i++){
-        nodes[i].style.visibility = 'visible';
-    }
-}
-function refresh() {
-    var url = location.origin;
-    var pathname = location.pathname;
-    var hash = location.hash;
-
-  location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
-}
-</script>
-
-<script>
-    function showAnswer(){
-        var nodes = document.getElementsByClassName('answer');
-        for(var i = 0; i < nodes.length; i++){
-        nodes[i].style.visibility = 'visible';
-    }
     
-    }
-    function refresh() {
-        var url = location.origin;
-        var pathname = location.pathname;
-        var hash = location.hash;
-        location = url + pathname + '?application_refresh=' + (Math.random() * 100000) + hash;
-    }
-</script>
-    
-    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
 <script>
     window.addEventListener("load", draw);

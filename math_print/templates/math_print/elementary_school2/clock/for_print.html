@@ -3,6 +3,18 @@
 {% block script %}    
 <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
 
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+        });
+</script>
+
 <script>
     window.addEventListener("load", draw);
 
@@ -28,9 +40,6 @@
     
         // 右側に2番目の時計を描画（間隔を広げるため +180）
         drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 180, stageCenterY, clockRadius);
-    
-        // 2つの時計の間に矢印を描画（矢印を短く調整）
-        // drawArrow(stage, stageCenterX - 50, stageCenterY, stageCenterX + 50, stageCenterY);
     
         // ステージを更新して全ての描画をレンダリング
         stage.update();
@@ -144,44 +153,6 @@
         {% endfor %}
     }
     
-    function draw() {
-        let hour1;
-        let minute1;
-        let hour2;
-        let minute2;
-        {% for math_problem_tuple in math_problem_tuple_list %}
-            {% if math_problem_tuple.0.show_canvas %}
-                const left_stage_{{ forloop.counter }} = new createjs.Stage("left_canvas_{{ forloop.counter }}");
-                {% if math_problem_tuple.0.selected_problem_type == "time_delta_with_two_clock_pictures" %}
-                    hour1 = {{ math_problem_tuple.0.time_information1.hour }};
-                    minute1 = {{ math_problem_tuple.0.time_information1.minute }};
-                    hour2 = {{ math_problem_tuple.0.time_information2.hour }};
-                    minute2 = {{ math_problem_tuple.0.time_information2.minute }};
-                    drawDoubleClock(left_stage_{{ forloop.counter }}, hour1, minute1, hour2, minute2);
-                {% else %}
-                    hour1 = {{ math_problem_tuple.0.time_information.hour }};
-                    minute1 = {{ math_problem_tuple.0.time_information.minute }};
-                    drawSingleClock(left_stage_{{ forloop.counter }}, hour1, minute1);
-                {% endif %}
-            {% endif %}
-            
-            {% if math_problem_tuple.1.show_canvas %}
-                const right_stage_{{ forloop.counter }} = new createjs.Stage("right_canvas_{{ forloop.counter }}");
-                {% if math_problem_tuple.1.selected_problem_type == "time_delta_with_two_clock_pictures" %}
-                    hour1 = {{ math_problem_tuple.1.time_information1.hour }};
-                    minute1 = {{ math_problem_tuple.1.time_information1.minute }};
-                    hour2 = {{ math_problem_tuple.1.time_information2.hour }};
-                    minute2 = {{ math_problem_tuple.1.time_information2.minute }};
-                    drawDoubleClock(right_stage_{{ forloop.counter }}, hour1, minute1, hour2, minute2);
-                {% else %}
-                    hour1 = {{ math_problem_tuple.1.time_information.hour }};
-                    minute1 = {{ math_problem_tuple.1.time_information.minute }};
-                    drawSingleClock(right_stage_{{ forloop.counter }}, hour1, minute1);
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    }
-    
 
 </script>
 {% endblock %}
@@ -199,11 +170,14 @@
 <style type="text/css" media="print">
     .print_pages{
         /*A4縦 172,251*/
-        width: 230mm;
+        // width: 230mm;
+        width: 400mm;
         height: 260mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
-        page-break-after: always;
+        // page-break-after: always;
+        // transform: scale(0.6);
+        transform-origin: top left; /* 縮小の起点を左上に設定 */
     }
     /*最後のページは改ページを入れない*/
     .print_pages:last-child{

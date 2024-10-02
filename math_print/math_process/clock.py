@@ -388,7 +388,9 @@ class ClockProblem:
         before_or_after = choice(["before", "after"])
         word, max_minutes = calculate_max_minutes(time, before_or_after)
         if width_of_time == "less_than_one_hour":
-            if max_minutes < 59:
+            if max_minutes == 1:
+                delta_minutes = 1
+            elif max_minutes < 59:
                 delta_minutes = randint(0, max_minutes)
             else:
                 delta_minutes = randint(0, 59)

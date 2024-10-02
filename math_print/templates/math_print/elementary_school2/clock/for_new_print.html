@@ -1,0 +1,248 @@
+{% extends 'math_print/base.html' %}
+
+{% block script %}    
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        extensions: ["tex2jax.js"],
+        jax: ["input/TeX","output/HTML-CSS"],
+        tex2jax: {
+            inlineMath: [["$","$"],["\\(","\\)"]],
+            displayMath: [["$$","$$"],["\\[","\\]"]]
+        }
+    });
+</script>
+
+<script>
+    window.addEventListener("load", draw);
+
+    function drawSingleClock(stage, hour, minute) {
+        const clockRadius = 120; // 時計のサイズを縮小
+        const stageCenterX = 256; // 中央の位置を調整
+        const stageCenterY = 128; // 縦の位置も調整
+        drawSingleClockOnPosition(stage, hour, minute, stageCenterX, stageCenterY, clockRadius);
+        stage.update();
+    }
+
+    function drawDoubleClock(stage, hour1, minute1, hour2, minute2) {
+        stage.removeAllChildren();
+    
+        const clockRadius = 90;
+        // const stageCenterX = 256;
+        const stageCenterX = 200;
+        const stageCenterY = 128;
+    
+        // drawSingleClockOnPosition(stage, hour1, minute1, stageCenterX - 140, stageCenterY, clockRadius); // 左側の時計
+        // drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 140, stageCenterY, clockRadius); // 右側の時計
+        drawSingleClockOnPosition(stage, hour1, minute1, stageCenterX - 100, stageCenterY, clockRadius); // 左右をより近づける
+        drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 100, stageCenterY, clockRadius);        
+        stage.update();
+    }
+    
+    function drawSingleClockOnPosition(stage, hour, minute, centerX, centerY, radius) {
+        const circle = new createjs.Shape();
+        circle.graphics.setStrokeStyle(3).beginStroke("black").drawCircle(centerX, centerY, radius);
+        stage.addChild(circle);
+
+        for (let i = 1; i <= 12; i++) {
+            const angle = (i - 3) * (Math.PI * 2) / 12;
+            const x = centerX + (radius - 20) * Math.cos(angle);
+            const y = centerY + (radius - 20) * Math.sin(angle);
+            const text = new createjs.Text(i.toString(), "16px Arial", "black");
+            text.textAlign = "center";
+            text.textBaseline = "middle";
+            text.x = x;
+            text.y = y;
+            stage.addChild(text);
+        }
+
+        for (let i = 0; i < 60; i++) {
+            const angle = (i - 15) * (Math.PI * 2) / 60;
+            const startX = centerX + radius * Math.cos(angle);
+            const startY = centerY + radius * Math.sin(angle);
+            const endX = centerX + (radius - (i % 5 === 0 ? 15 : 5)) * Math.cos(angle);
+            const endY = centerY + (radius - (i % 5 === 0 ? 15 : 5)) * Math.sin(angle);
+            const tick = new createjs.Shape();
+            tick.graphics.setStrokeStyle(i % 5 === 0 ? 3 : 1).beginStroke("black")
+                .moveTo(startX, startY).lineTo(endX, endY);
+            stage.addChild(tick);
+        }
+
+        const hourAngle = ((hour % 12) + minute / 60) * (Math.PI * 2) / 12 - Math.PI / 2;
+        const shortHandX = centerX + (radius - 60) * Math.cos(hourAngle);
+        const shortHandY = centerY + (radius - 60) * Math.sin(hourAngle);
+        const shortHand = new createjs.Shape();
+        shortHand.graphics.setStrokeStyle(6).beginStroke("black")
+            .moveTo(centerX, centerY).lineTo(shortHandX, shortHandY);
+        stage.addChild(shortHand);
+
+        const minuteAngle = (minute * (Math.PI * 2) / 60) - Math.PI / 2;
+        const longHandX = centerX + (radius - 20) * Math.cos(minuteAngle);
+        const longHandY = centerY + (radius - 20) * Math.sin(minuteAngle);
+        const longHand = new createjs.Shape();
+        longHand.graphics.setStrokeStyle(4).beginStroke("black")
+            .moveTo(centerX, centerY).lineTo(longHandX, longHandY);
+        stage.addChild(longHand);
+    }
+
+    function draw() {
+        let hour1, minute1, hour2, minute2;
+        {% for inner_list in math_problem_list_of_list %}
+            {% with outer_loop_counter=forloop.counter %}
+                {% for math_problem_tuple in inner_list %}
+                    {% with inner_loop_counter=forloop.counter %}
+                        {% if math_problem_tuple.0.show_canvas %}
+                            const left_stage_{{ outer_loop_counter }}_{{ inner_loop_counter }} = new createjs.Stage("left_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}");
+                            {% if math_problem_tuple.0.selected_problem_type == "time_delta_with_two_clock_pictures" %}
+                                hour1 = {{ math_problem_tuple.0.time_information1.hour }};
+                                minute1 = {{ math_problem_tuple.0.time_information1.minute }};
+                                hour2 = {{ math_problem_tuple.0.time_information2.hour }};
+                                minute2 = {{ math_problem_tuple.0.time_information2.minute }};
+                                drawDoubleClock(left_stage_{{ outer_loop_counter }}_{{ inner_loop_counter }}, hour1, minute1, hour2, minute2);
+                            {% else %}
+                                hour = {{ math_problem_tuple.0.time_information.hour }};
+                                minute = {{ math_problem_tuple.0.time_information.minute }};
+                                drawSingleClock(left_stage_{{ outer_loop_counter }}_{{ inner_loop_counter }}, hour, minute);
+                            {% endif %}
+                        {% endif %}
+                        {% if math_problem_tuple.1.show_canvas %}
+                            const right_stage_{{ outer_loop_counter }}_{{ inner_loop_counter }} = new createjs.Stage("right_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}");
+                            {% if math_problem_tuple.1.selected_problem_type == "time_delta_with_two_clock_pictures" %}
+                                hour1 = {{ math_problem_tuple.1.time_information1.hour }};
+                                minute1 = {{ math_problem_tuple.1.time_information1.minute }};
+                                hour2 = {{ math_problem_tuple.1.time_information2.hour }};
+                                minute2 = {{ math_problem_tuple.1.time_information2.minute }};
+                                drawDoubleClock(right_stage_{{ outer_loop_counter }}_{{ inner_loop_counter }}, hour1, minute1, hour2, minute2);
+                            {% else %}
+                                hour = {{ math_problem_tuple.1.time_information.hour }};
+                                minute = {{ math_problem_tuple.1.time_information.minute }};
+                                drawSingleClock(right_stage_{{ outer_loop_counter }}_{{ inner_loop_counter }}, hour, minute);
+                            {% endif %}
+                        {% endif %}
+                    {% endwith %}
+                {% endfor %}
+            {% endwith %}
+        {% endfor %}
+    }
+</script>
+{% endblock %}
+
+{% block css %}
+<style type="text/css">
+    .problem {
+        display: flex;
+        gap: 2em; /* キャンバス間の間隔を広げる */
+    }
+    .problem>div {
+        width: 50%;
+    }
+</style>
+<style type="text/css" media="print">
+    .print_pages {
+        width: 210mm;
+        height: 297mm;
+        margin: 0mm 0mm;
+        padding: 0mm 0mm;
+        page-break-after: always;
+        transform: scale(0.85); /* ページ全体を少し縮小 */
+        transform-origin: top left;
+    }
+    .print_pages:last-child {
+        page-break-after: auto;
+    }
+    .hero_unit, .base_footer, .button_container, .nav {
+        display: none;
+    }
+
+    p.number_of_problem {
+        text-align: right;
+    }
+</style>
+{% endblock %}
+
+{% block title %}
+時計
+{% endblock %}
+
+{% block body %}
+<div class="container button_container">
+    <div class="row justify-content-start">
+        <div class="col-6">
+            <form>
+                <input type="button" class="btn btn-outline-primary" value="印刷する" onclick="window.print()">
+            </form>
+        </div>
+    </div>
+    <br>
+</div>
+{% for inner_list in math_problem_list_of_list %}
+    {% with outer_loop_counter=forloop.counter %}
+        <section class="print_pages">
+            <p class="number_of_problem">問題: No. {{ outer_loop_counter }}</p>
+            <ol>
+                {% for math_problem_tuple in inner_list %}
+                    {% with inner_loop_counter=forloop.counter %}
+                        <div class="problem">
+                            <div>
+                                <li>
+                                    <p>
+                                        \( \quad \)
+                                        {{ math_problem_tuple.0.problem | linebreaksbr }}
+                                        {% if math_problem_tuple.0.show_canvas %}
+                                            <canvas id="left_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}" width="512" height="256"></canvas>
+                                            <br>
+                                        {% endif %}
+                                    </p>
+                                </li>
+                            </div>
+                            <div>
+                                <li>
+                                    <p>
+                                        \( \quad \)
+                                        {{ math_problem_tuple.1.problem | linebreaksbr }}
+                                        {% if math_problem_tuple.1.show_canvas %}
+                                            <canvas id="right_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}" width="512" height="256"></canvas>
+                                            <br>
+                                        {% endif %}
+                                    </p>
+                                </li>
+                            </div>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </ol>
+            <footer class="container-fluid print_footer">
+                <small><a href="#">© 2024 有明学習振興</a></small>
+            </footer>
+        </section>
+        <section class="print_pages">
+            <p class="number_of_problem">解答: No. {{ outer_loop_counter }}</p>
+            <ol>
+                {% for math_problem_tuple in inner_list %}
+                    <div class="problem">
+                        <div>
+                            <li>
+                                <p class="answer" style="visibility:visible;">
+                                    {{ math_problem_tuple.0.answer | linebreaksbr }}
+                                </p>
+                            </li>
+                        </div>
+                        <div>
+                            <li>
+                                <p class="answer" style="visibility:visible;">
+                                    {{ math_problem_tuple.1.answer | linebreaksbr }}
+                                </p>
+                            </li>
+                        </div>
+                    </div>
+                {% endfor %}
+            </ol>
+            <footer class="container-fluid print_footer">
+                <small><a href="#">© 2024 有明学習振興</a></small>
+            </footer>
+        </section>
+    {% endwith %}
+{% endfor %}
+{% endblock %}

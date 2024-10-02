@@ -215,12 +215,12 @@ function refresh() {
                 <div class="col-md-6">
                     <li>
                         <p>
+                            {{ math_problem_tuple.0.problem | linebreaksbr }}
                             {% if math_problem_tuple.0.show_canvas %}
                                 \( \quad \)
                                 <canvas id="left_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
                             {% endif %}
                             <br>
-                            {{ math_problem_tuple.0.problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
                             {{ math_problem_tuple.0.answer | linebreaksbr }}
@@ -230,12 +230,12 @@ function refresh() {
                 <div class="col-md-6">
                     <li>
                         <p>
+                            {{ math_problem_tuple.1.problem | linebreaksbr }}
                             {% if math_problem_tuple.1.show_canvas %}
                                 \( \quad \)
                                 <canvas id="right_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
                             {% endif %}
                             <br>
-                            {{ math_problem_tuple.1.problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
                             {{ math_problem_tuple.1.answer | linebreaksbr }}

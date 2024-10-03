@@ -12,59 +12,54 @@
             inlineMath: [["$","$"],["\\(","\\)"]],
             displayMath: [["$$","$$"],["\\[","\\]"]]
         }
-        });
+    });
 </script>
 
 <script>
     window.addEventListener("load", draw);
 
     function drawSingleClock(stage, hour, minute) {
-        const clockRadius = 150;
-        const stageCenterX = 320;
-        const stageCenterY = 160;
+        const clockRadius = 120; // 時計のサイズを縮小
+        const stageCenterX = 256; // 中央の位置を調整
+        const stageCenterY = 128; // 縦の位置も調整
         drawSingleClockOnPosition(stage, hour, minute, stageCenterX, stageCenterY, clockRadius);
         stage.update();
     }
 
     function drawDoubleClock(stage, hour1, minute1, hour2, minute2) {
-        // ステージをクリアして古い描画を消去
         stage.removeAllChildren();
     
-        // 時計のプロパティを定義
-        const clockRadius = 120; // 時計のサイズを少し縮小
-        const stageCenterX = 320; // キャンバスの幅の中央
-        const stageCenterY = 160; // キャンバスの高さの中央
+        const clockRadius = 90;
+        const stageCenterX = 256;
+        // const stageCenterX = 200;
+        const stageCenterY = 128;
+        // left adjustment
+        const left_offset = 60;
     
-        // 左側に最初の時計を描画（間隔を広げるため -180）
-        drawSingleClockOnPosition(stage, hour1, minute1, stageCenterX - 180, stageCenterY, clockRadius);
-    
-        // 右側に2番目の時計を描画（間隔を広げるため +180）
-        drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 180, stageCenterY, clockRadius);
-    
-        // ステージを更新して全ての描画をレンダリング
+        // drawSingleClockOnPosition(stage, hour1, minute1, stageCenterX - 140, stageCenterY, clockRadius); // 左側の時計
+        // drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 140, stageCenterY, clockRadius); // 右側の時計
+        drawSingleClockOnPosition(stage, hour1, minute1, stageCenterX - 100 - left_offset, stageCenterY, clockRadius); // 左右をより近づける
+        drawSingleClockOnPosition(stage, hour2, minute2, stageCenterX + 100 - left_offset, stageCenterY, clockRadius);        
         stage.update();
     }
     
     function drawSingleClockOnPosition(stage, hour, minute, centerX, centerY, radius) {
-        // 時計のベースとなる円を描画
         const circle = new createjs.Shape();
         circle.graphics.setStrokeStyle(3).beginStroke("black").drawCircle(centerX, centerY, radius);
         stage.addChild(circle);
-    
-        // 時計の文字盤に1~12の数字を表示
+
         for (let i = 1; i <= 12; i++) {
             const angle = (i - 3) * (Math.PI * 2) / 12;
             const x = centerX + (radius - 20) * Math.cos(angle);
             const y = centerY + (radius - 20) * Math.sin(angle);
-            const text = new createjs.Text(i.toString(), "20px Arial", "black");
+            const text = new createjs.Text(i.toString(), "16px Arial", "black");
             text.textAlign = "center";
             text.textBaseline = "middle";
             text.x = x;
             text.y = y;
             stage.addChild(text);
         }
-    
-        // 分の刻み線を描画
+
         for (let i = 0; i < 60; i++) {
             const angle = (i - 15) * (Math.PI * 2) / 60;
             const startX = centerX + radius * Math.cos(angle);
@@ -76,8 +71,7 @@
                 .moveTo(startX, startY).lineTo(endX, endY);
             stage.addChild(tick);
         }
-    
-        // 短針の描画
+
         const hourAngle = ((hour % 12) + minute / 60) * (Math.PI * 2) / 12 - Math.PI / 2;
         const shortHandX = centerX + (radius - 60) * Math.cos(hourAngle);
         const shortHandY = centerY + (radius - 60) * Math.sin(hourAngle);
@@ -85,8 +79,7 @@
         shortHand.graphics.setStrokeStyle(6).beginStroke("black")
             .moveTo(centerX, centerY).lineTo(shortHandX, shortHandY);
         stage.addChild(shortHand);
-    
-        // 長針の描画
+
         const minuteAngle = (minute * (Math.PI * 2) / 60) - Math.PI / 2;
         const longHandX = centerX + (radius - 20) * Math.cos(minuteAngle);
         const longHandY = centerY + (radius - 20) * Math.sin(minuteAngle);
@@ -94,23 +87,6 @@
         longHand.graphics.setStrokeStyle(4).beginStroke("black")
             .moveTo(centerX, centerY).lineTo(longHandX, longHandY);
         stage.addChild(longHand);
-    }
-    
-    function drawArrow(stage, startX, startY, endX, endY) {
-        // 2つの時計の間に矢印を描画
-        const arrow = new createjs.Shape();
-        arrow.graphics.setStrokeStyle(2).beginStroke("black")
-            .moveTo(startX, startY).lineTo(endX, endY); // メインの線
-    
-        // 矢印の先端を描画（シンプルな三角形）
-        const arrowHeadSize = 10;
-        const angle = Math.atan2(endY - startY, endX - startX);
-        arrow.graphics.moveTo(endX, endY)
-            .lineTo(endX - arrowHeadSize * Math.cos(angle - Math.PI / 6), endY - arrowHeadSize * Math.sin(angle - Math.PI / 6))
-            .moveTo(endX, endY)
-            .lineTo(endX - arrowHeadSize * Math.cos(angle + Math.PI / 6), endY - arrowHeadSize * Math.sin(angle + Math.PI / 6));
-    
-        stage.addChild(arrow);
     }
 
     function draw() {
@@ -152,38 +128,33 @@
             {% endwith %}
         {% endfor %}
     }
-    
-
 </script>
 {% endblock %}
 
 {% block css %}
 <style type="text/css">
-    .problem{
+    .problem {
         display: flex;
-        gap: 1em;
+        gap: 2em; /* キャンバス間の間隔を広げる */
     }
-    .problem>div{
+    .problem>div {
         width: 50%;
     }
 </style>
 <style type="text/css" media="print">
-    .print_pages{
-        /*A4縦 172,251*/
-        // width: 230mm;
-        width: 400mm;
-        height: 260mm;
+    .print_pages {
+        width: 210mm;
+        height: 297mm;
         margin: 0mm 0mm;
         padding: 0mm 0mm;
-        // page-break-after: always;
-        // transform: scale(0.6);
-        transform-origin: top left; /* 縮小の起点を左上に設定 */
+        page-break-after: always;
+        transform: scale(0.85); /* ページ全体を少し縮小 */
+        transform-origin: top left;
     }
-    /*最後のページは改ページを入れない*/
-    .print_pages:last-child{
+    .print_pages:last-child {
         page-break-after: auto;
     }
-    .hero_unit, .base_footer, .button_container, .nav{
+    .hero_unit, .base_footer, .button_container, .nav {
         display: none;
     }
 
@@ -195,15 +166,6 @@
 
 {% block title %}
 時計
-{% endblock %}
-
-{% block hero_unit %}
-<div class="p-3 p-sm-5 mb-4 bg-img hero_unit">
-    <div class="container">
-        <h1 class="display-4">ようこそ!</h1>
-        <p class="text-dark">時計</p>
-    </div>
-</div>
 {% endblock %}
 
 {% block body %}
@@ -229,34 +191,34 @@
                                 <li>
                                     <p>
                                         \( \quad \)
-                                        {% if math_problem_tuple.0.show_canvas %}
-                                            <canvas id="left_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}" width="640" height="320"></canvas>
-                                            <br>
-                                        {% endif %}
                                         {{ math_problem_tuple.0.problem | linebreaksbr }}
                                     </p>
+                                    {% if math_problem_tuple.0.show_canvas %}
+                                        <div>
+                                            <canvas id="left_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}" width="512" height="256"></canvas>
+                                        </div>        
+                                    <br>
+                                {% endif %}
                                 </li>
                             </div>
                             <div>
                                 <li>
                                     <p>
                                         \( \quad \)
-                                        {% if math_problem_tuple.1.show_canvas %}
-                                            <canvas id="right_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}" width="640" height="320"></canvas>
-                                            <br>
-                                        {% endif %}
                                         {{ math_problem_tuple.1.problem | linebreaksbr }}
                                     </p>
+                                    {% if math_problem_tuple.1.show_canvas %}
+                                        <div>
+                                            <canvas id="right_canvas_{{ outer_loop_counter }}_{{ inner_loop_counter }}" width="512" height="256"></canvas>
+                                        </div>        
+                                    <br>
+                                    {% endif %}
                                 </li>
                             </div>
                         </div>
                     {% endwith %}
                 {% endfor %}
             </ol>
-            <br>
-            <br>
-            <br>
-            <br>
             <footer class="container-fluid print_footer">
                 <small><a href="#">© 2024 有明学習振興</a></small>
             </footer>
@@ -283,11 +245,6 @@
                     </div>
                 {% endfor %}
             </ol>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
             <footer class="container-fluid print_footer">
                 <small><a href="#">© 2024 有明学習振興</a></small>
             </footer>

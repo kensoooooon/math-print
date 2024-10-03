@@ -216,12 +216,14 @@ function refresh() {
                     <li>
                         <p>
                             {{ math_problem_tuple.0.problem | linebreaksbr }}
-                            {% if math_problem_tuple.0.show_canvas %}
-                                \( \quad \)
-                                <canvas id="left_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
-                            {% endif %}
-                            <br>
                         </p>
+                        {% if math_problem_tuple.0.show_canvas %}
+                            \( \quad \)
+                            <div>
+                                <canvas id="left_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
+                            </div>
+                        {% endif %}
+                        <br>
                         <p class="answer" style="visibility:hidden;">
                             {{ math_problem_tuple.0.answer | linebreaksbr }}
                         </p>
@@ -231,12 +233,14 @@ function refresh() {
                     <li>
                         <p>
                             {{ math_problem_tuple.1.problem | linebreaksbr }}
-                            {% if math_problem_tuple.1.show_canvas %}
-                                \( \quad \)
-                                <canvas id="right_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
-                            {% endif %}
-                            <br>
                         </p>
+                        {% if math_problem_tuple.1.show_canvas %}
+                            \( \quad \)
+                            <div>
+                                <canvas id="right_canvas_{{ forloop.counter }}" width="640" height="320"></canvas>
+                            </div>
+                        {% endif %}
+                    <br>
                         <p class="answer" style="visibility:hidden;">
                             {{ math_problem_tuple.1.answer | linebreaksbr }}
                         </p>

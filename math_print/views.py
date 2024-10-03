@@ -2156,7 +2156,7 @@ def print_clock(request):
             problem2 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
             math_problem_tuple_inner_list.append((problem1, problem2))
         math_problem_list_of_list.append(math_problem_tuple_inner_list)
-    return render(request, 'math_print/elementary_school2/clock/for_new_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+    return render(request, 'math_print/elementary_school2/clock/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
 
 # display section
 

@@ -11,6 +11,12 @@ urlpatterns = [
     ### 更新情報 ###
     path('update_information/', views.update_information, name='update_information'),
     ##########################################
+    ### 小2 ###
+    path('elementary_school2/', views.show_elementary_school2, name='elementary_school2'),
+    ### 時計 ###
+    path('clock/print', views.print_clock, name='clock_print'),
+    path('clock/display', views.display_clock, name='clock_display'),
+    ##########################################
     ### 小3 ###
     path('elementary_school3/', views.show_elementary_school3, name='elementary_school3'),
     ### 単位の変換 ###

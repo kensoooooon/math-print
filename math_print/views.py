@@ -69,6 +69,7 @@ from .math_process.series import Series
 from .math_process.formula_with_symbol import FormulaWithSymbol
 from .math_process.hs3_integration_calculation_of_linear_function_replacement import IntegralCalculationOfLinearFunctionReplacement
 from .math_process.area_with_linear_function import AreaWithLinearFunction
+from .math_process.clock import ClockProblem
 
 
 
@@ -84,8 +85,10 @@ def update_information(request):
 def about_me(request):
     return render(request, 'math_print/about_me.html', {})
 
-
 # index
+def show_elementary_school2(request):
+    return render(request, 'math_print/elementary_school2/elementary_school2.html', {})
+
 def show_elementary_school3(request):
     return render(request, 'math_print/elementary_school3/elementary_school3.html', {})
 
@@ -2120,6 +2123,41 @@ def print_area_with_linear_function(request):
     render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
     return render_to_return
 
+def print_clock(request):
+    """小学2年生用の時計の問題をプリント表示
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 6
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("read_time")
+        problem_types.append("time_delta_without_am_pm_with_picture")
+        problem_types.append("time_delta_without_am_pm_without_picture")
+        problem_types.append("time_delta_with_two_clock_pictures")
+        problem_types.append("time_delta_with_am_pm_with_picture")
+        problem_types.append("time_delta_with_am_pm_without_picture")
+        problem_types.append("time_delta_with_24_hours_with_picture")
+        problem_types.append("time_delta_with_24_hours_without_picture")
+    widths_of_time = request.POST.getlist("width_of_time")
+    if not(widths_of_time):
+        widths_of_time.append("less_than_one_hour")
+        widths_of_time.append("greater_than_or_equal_to_one_hour")
+    paper_number = int(request.POST["paper_number"])
+    math_problem_list_of_list = []
+    for _ in range(paper_number):
+        math_problem_tuple_inner_list = []
+        for _ in range(PROBLEM_NUMBER // 2):
+            problem1 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
+            problem2 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
+            math_problem_tuple_inner_list.append((problem1, problem2))
+        math_problem_list_of_list.append(math_problem_tuple_inner_list)
+    return render(request, 'math_print/elementary_school2/clock/for_print.html', {'math_problem_list_of_list': math_problem_list_of_list})
+
 # display section
 
 def display_number_problem(request):
@@ -3832,6 +3870,38 @@ def display_area_with_linear_function(request):
         math_problem_tuple_list.append((problem1, problem2))
     render_to_return = render(request, 'math_print/junior_highschool2/area_with_linear_function/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
     return render_to_return
+
+def display_clock(request):
+    """小学2年生用の時計の問題をブラウザ表示
+
+    Args:
+        request (django.core.handlers.wsgi.WSGIRequest): 送信されたリクエスト
+
+    Returns:
+        (django.http.response.HttpResponse): Httpでページを表示するための諸要素  
+    """
+    PROBLEM_NUMBER = 6
+    problem_types = request.POST.getlist("problem_type")
+    if not(problem_types):
+        problem_types.append("read_time")
+        problem_types.append("time_delta_without_am_pm_with_picture")
+        problem_types.append("time_delta_without_am_pm_without_picture")
+        problem_types.append("time_delta_with_two_clock_pictures")
+        problem_types.append("time_delta_with_am_pm_with_picture")
+        problem_types.append("time_delta_with_am_pm_without_picture")
+        problem_types.append("time_delta_with_24_hours_with_picture")
+        problem_types.append("time_delta_with_24_hours_without_picture")
+    widths_of_time = request.POST.getlist("width_of_time")
+    if not(widths_of_time):
+        widths_of_time.append("less_than_one_hour")
+        widths_of_time.append("greater_than_or_equal_to_one_hour")
+    math_problem_tuple_list = []
+    for _ in range(PROBLEM_NUMBER // 2):
+        problem1 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
+        problem2 = ClockProblem(problem_types=problem_types, widths_of_time=widths_of_time)
+        math_problem_tuple_list.append((problem1, problem2))
+    return render(request, 'math_print/elementary_school2/clock/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
+
 
 # explain section
 def explain_one_sixth_calculate_area_by_integration(request):

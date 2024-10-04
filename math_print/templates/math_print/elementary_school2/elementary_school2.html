@@ -1,0 +1,154 @@
+{% extends 'math_print/base.html' %}
+
+{% block title %}
+計算練習(小2)
+{% endblock %}
+
+{% block hero_unit %}
+    <div class="p-3 p-sm-5 mb-4 bg-img">
+        <div class="container">
+            <h1 class="display-4">ようこそ!</h1>
+            <p class="text-dark">計算練習と計算練習と計算練習</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    function checkAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (!(statuses[i].checked)){
+                statuses[i].checked = true;
+            }
+        }
+    }
+
+    function uncheckAllStatus(target){
+        let statuses = document.getElementsByName(target);
+
+        for (let i =0; i < statuses.length; i++){
+            if (statuses[i].checked){
+                statuses[i].checked = false;
+            }
+        }
+    }
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p id="clock">時計</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">出題される問題</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="read_time" name="problem_type" id="problem_type_read_time" checked>
+                        <label class="form-check-label" for="problem_type_read_time">
+                            時計の絵から時刻を読み取る
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_without_am_pm_with_picture" name="problem_type" id="problem_type_time_delta_without_am_pm_with_picture" checked>
+                        <label class="form-check-label" for="problem_type_time_delta_without_am_pm_with_picture">
+                            ある時間の前後の時間を答える(午前・午後なし)+時計絵の表示あり
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_without_am_pm_without_picture" name="problem_type" id="problem_type_time_delta_without_am_pm_without_picture">
+                        <label class="form-check-label" for="problem_type_time_delta_without_am_pm_without_picture">
+                            ある時間の前後の時間を答える(午前・午後なし)+時計絵の表示なし
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_am_pm_with_picture" name="problem_type" id="problem_type_time_delta_with_am_pm_with_picture" checked>
+                        <label class="form-check-label" for="problem_type_time_delta_with_am_pm_with_picture">
+                            ある時間の前後の時間を答える(午前・午後あり)+時計絵の表示あり
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_am_pm_without_picture" name="problem_type" id="problem_type_time_delta_with_am_pm_without_picture">
+                        <label class="form-check-label" for="problem_type_time_delta_with_am_pm_without_picture">
+                            ある時間の前後の時間を答える(午前・午後あり)+時計絵の表示なし
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_24_hours_with_picture" name="problem_type" id="problem_type_time_delta_with_24_hours_with_picture" checked>
+                        <label class="form-check-label" for="problem_type_time_delta_with_24_hours_with_picture">
+                            ある時間の前後の時間を答える(24時間)+時計絵の表示あり
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_24_hours_without_picture" name="problem_type" id="problem_type_time_delta_with_24_hours_without_picture">
+                        <label class="form-check-label" for="problem_type_time_delta_with_24_hours_without_picture">
+                            ある時間の前後の時間を答える(24時間)+時計絵の表示なし
+                        </label>
+                    </div>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_two_clock_pictures" name="problem_type" id="problem_type_time_delta_with_two_clock_pictures">
+                        <label class="form-check-label" for="problem_type_time_delta_with_two_clock_pictures">
+                            2つの時計の絵から、経過した時間を求める
+                        </label>
+                    </div>
+                    <br>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('problem_type')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('problem_type')" value="全部はずし">
+                </div>
+                <small class="text-muted">時間の幅</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="less_than_one_hour" name="width_of_time" id="width_of_time_less_than_one_hour">
+                        <label class="form-check-label" for="width_of_time_less_than_one_hour">
+                            1時間未満
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="greater_than_or_equal_to_one_hour" name="width_of_time" id="width_of_time_greater_than_or_equal_to_one_hour" checked>
+                        <label class="form-check-label" for="width_of_time_greater_than_or_equal_to_one_hour">
+                            1時間以上
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="ClockFivePaperRadio" checked>
+                        <label class="form-check-label" for="ClockFivePaperRadio">
+                            6問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="ClockTenPaperRadio">
+                        <label class="form-check-label" for="ClockTenPaperRadio">
+                            6問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="ClockFifteenPaperRadio">
+                        <label class="form-check-label" for="ClockFifteenPaperRadio">
+                            6問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'clock_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(6問)" formaction="{% url 'clock_display' %}">      
+            </form>
+        </div>
+    </div>
+
+    <div class="row center">
+        <a href="{% url 'index' %}">トップページに戻る</a>
+    </div>
+    <footer class="container-fluid print_footer">
+        <small><a href="#">© 2024 有明学習振興</a></small>
+    </footer>
+</div>
+{% endblock %}

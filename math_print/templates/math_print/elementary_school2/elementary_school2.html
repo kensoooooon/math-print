@@ -41,7 +41,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col border-end border-bottom">
-            <p id="addition_and_subtraction_title">時計</p>
+            <p id="clock">時計</p>
             <form action="?" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <small class="text-muted">出題される問題</small>
@@ -60,7 +60,7 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="time_delta_without_am_pm_without_picture" name="problem_type" id="problem_type_time_delta_without_am_pm_without_picture" checked>
+                        <input class="form-check-input" type="checkbox" value="time_delta_without_am_pm_without_picture" name="problem_type" id="problem_type_time_delta_without_am_pm_without_picture">
                         <label class="form-check-label" for="problem_type_time_delta_without_am_pm_without_picture">
                             ある時間の前後の時間を答える(午前・午後なし)+時計絵の表示なし
                         </label>
@@ -73,7 +73,7 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="time_delta_with_am_pm_without_picture" name="problem_type" id="problem_type_time_delta_with_am_pm_without_picture" checked>
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_am_pm_without_picture" name="problem_type" id="problem_type_time_delta_with_am_pm_without_picture">
                         <label class="form-check-label" for="problem_type_time_delta_with_am_pm_without_picture">
                             ある時間の前後の時間を答える(午前・午後あり)+時計絵の表示なし
                         </label>
@@ -86,14 +86,14 @@
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="time_delta_with_24_hours_without_picture" name="problem_type" id="problem_type_time_delta_with_24_hours_without_picture" checked>
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_24_hours_without_picture" name="problem_type" id="problem_type_time_delta_with_24_hours_without_picture">
                         <label class="form-check-label" for="problem_type_time_delta_with_24_hours_without_picture">
                             ある時間の前後の時間を答える(24時間)+時計絵の表示なし
                         </label>
                     </div>
                     <br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="time_delta_with_two_clock_pictures" name="problem_type" id="problem_type_time_delta_with_two_clock_pictures" checked>
+                        <input class="form-check-input" type="checkbox" value="time_delta_with_two_clock_pictures" name="problem_type" id="problem_type_time_delta_with_two_clock_pictures">
                         <label class="form-check-label" for="problem_type_time_delta_with_two_clock_pictures">
                             2つの時計の絵から、経過した時間を求める
                         </label>
@@ -105,7 +105,7 @@
                 <small class="text-muted">時間の幅</small>
                 <div class="form-group">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" value="less_than_one_hour" name="width_of_time" id="width_of_time_less_than_one_hour" checked>
+                        <input class="form-check-input" type="checkbox" value="less_than_one_hour" name="width_of_time" id="width_of_time_less_than_one_hour">
                         <label class="form-check-label" for="width_of_time_less_than_one_hour">
                             1時間未満
                         </label>

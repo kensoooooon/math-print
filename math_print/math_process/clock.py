@@ -1,4 +1,3 @@
-
 from random import choice, randint
 from datetime import datetime, timedelta
 from typing import NamedTuple, Optional

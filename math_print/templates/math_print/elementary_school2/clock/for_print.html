@@ -22,7 +22,9 @@
         const clockRadius = 120; // 時計のサイズを縮小
         const stageCenterX = 256; // 中央の位置を調整
         const stageCenterY = 128; // 縦の位置も調整
-        drawSingleClockOnPosition(stage, hour, minute, stageCenterX, stageCenterY, clockRadius);
+        // left adjustment
+        const left_offset = 80;
+        drawSingleClockOnPosition(stage, hour, minute, stageCenterX - left_offset, stageCenterY, clockRadius);
         stage.update();
     }
 

@@ -181,10 +181,10 @@ function refresh() {
             <div class="row">
                 <div class="col-md-6">
                     <li>
+                        <canvas id="left_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                        <br>
                         <p>
                             \( \quad \)
-                            <canvas id="left_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
-                            <br>
                             {{ math_problem_tuple.0.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">
@@ -194,10 +194,10 @@ function refresh() {
                 </div>
                 <div class="col-md-6">
                     <li>
+                        <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
+                        <br>
                         <p>
                             \( \quad \)
-                            <canvas id="right_canvas_{{ forloop.counter }}" width="320" height="160"></canvas>
-                            <br>
                             {{ math_problem_tuple.1.latex_problem | linebreaksbr }}
                         </p>
                         <p class="answer" style="visibility:hidden;">

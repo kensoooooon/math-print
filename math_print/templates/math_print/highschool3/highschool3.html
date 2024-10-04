@@ -176,6 +176,64 @@ function uncheckAllStatus(target){
         </div>
     </div>
 
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p id="integration_by_parts">部分積分</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">部分積分のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="double_polynomial" name="type_of_integration_by_parts" id="type_of_integration_by_parts_double_polynomial" checked>
+                        <label class="form-check-label" for="type_of_integration_by_parts_double_polynomial">
+                            (多項式) × (多項式)
+                        </label>
+                    </div>
+                    <input class="btn btn-outline-primary" type="button" onclick="checkAllStatus('type_of_integration_by_parts')" value="全部のせ">
+                    <input class="btn btn-outline-primary" type="button" onclick="uncheckAllStatus('type_of_integration_by_parts')" value="全部はずし">
+                </div>
+                <small class="text-muted">積分のタイプ</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="indefinite_integral" name="integral_type" id="integral_type_indefinite_integral" checked>
+                        <label class="form-check-label" for="integral_type_indefinite_integral">
+                            不定積分
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="definite_integral" name="integral_type" id="integral_type_definite_integral">
+                        <label class="form-check-label" for="integral_type_definite_integral">
+                            定積分
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="IntegrationByPartsFivePaperRadio" checked>
+                        <label class="form-check-label" for="IntegrationByPartsFivePaperRadio">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="IntegrationByPartsTenPaperRadio">
+                        <label class="form-check-label" for="IntegrationByPartsTenPaperRadio">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="IntegrationByPartsFifteenPaperRadio">
+                        <label class="form-check-label" for="IntegrationByPartsFifteenPaperRadio">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'hs3_integration_by_parts_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'hs3_integration_by_parts_display' %}">      
+            </form>
+        </div>
+    </div>
+
     <br>
     <div class="row center">
         <a href="{% url 'index' %}">トップページに戻る</a>

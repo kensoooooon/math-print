@@ -246,6 +246,6 @@ urlpatterns = [
     # 1次式の置換を用いる積分計算
     path('integration_calculation/print', views.print_integral_calculation_of_linear_function_replacement, name='hs3_integral_calculation_of_linear_function_replacement_print'),
     path('integration_calculation/display', views.display_integral_calculation_of_linear_function_replacement, name='hs3_integral_calculation_of_linear_function_replacement_display'),
-    path('integration_by_parts/display', views.print_integration_by_parts, name='hs3_integration_by_parts_print'),
+    path('integration_by_parts/print', views.print_integration_by_parts, name='hs3_integration_by_parts_print'),
     path('integration_by_parts/display', views.display_integration_by_parts, name='hs3_integration_by_parts_display'),
 ]

@@ -3936,7 +3936,7 @@ def display_integration_by_parts(request):
     for _ in range(PROBLEM_NUMBER // 2):
         problem1 = IntegrationByPartsProblem(types_of_integration_by_parts=types_of_integration_by_parts, integral_types=integral_types)
         problem2 = IntegrationByPartsProblem(types_of_integration_by_parts=types_of_integration_by_parts, integral_types=integral_types)
-        math_problem_tuple_list = []
+        math_problem_tuple_list.append((problem1, problem2))
     return render(request, 'math_print/highschool3/integration_by_parts/for_display.html', {'math_problem_tuple_list': math_problem_tuple_list})
 
 

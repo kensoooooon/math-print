@@ -81,6 +81,69 @@ print(make_linear_pow_function(3, -4, 2))
 
 全体を確立できるロジックが難しい状態。特に()の外れ方あたりが、そこそこに工夫しないとまずそう。因数分解の追加？
 積分サイドは全く未定。おそらく、微分側から逆算して、そこから微分していくようにしてたどる形がよいと思われ？
+
+import sympy as sy
+
+x = sy.Symbol('x', real=True)
+
+def make_linear_pow_function(a, b, m, target_degree):
+    # 初期係数 k と初期関数
+    k = 1
+    functions = [k * (a * x + b) ** m]
+    
+    # for文を使用して、mからtarget_degreeまで微分を繰り返す
+    for current_degree in range(m, target_degree, -1):
+        k *= current_degree * a  # 係数の累積更新
+        factored_function = sy.factor(k * (a * x + b) ** (current_degree - 1))
+        functions.append(factored_function)
+    
+    return functions
+
+f = 0
+functions1 = make_linear_pow_function(2, 3, 3, 0)
+functions2 = make_linear_pow_function(-2, 1, 4, 1)[::-1]
+for f1, f2 in zip(functions1, functions2):
+    print(f1)
+    print(f2)
+    print(f1 * f2)
+    f += f1 * f2
+    print("---------------")
+    
+display(f)
+
+微分サイドは基本的に積分サイドより低次数であるべき
+計算が楽だから。
+
+import sympy as sy
+
+x = sy.Symbol('x', real=True)
+
+def make_linear_pow_function(a, b, m, target_degree):
+    # 初期係数 k と初期関数
+    k = 1
+    functions = [k * (a * x + b) ** m]
+    
+    # for文を使用して、mからtarget_degreeまで微分を繰り返す
+    for current_degree in range(m, target_degree, -1):
+        k *= current_degree * a  # 係数の累積更新
+        factored_function = sy.factor(k * (a * x + b) ** (current_degree - 1))
+        functions.append(factored_function)
+    
+    return functions
+
+f = 0
+functions1 = make_linear_pow_function(2, -5, 2, 0)
+functions2 = make_linear_pow_function(2, 3, 4, 3)[::-1]
+for f1, f2 in zip(functions1, functions2):
+    print(f1)
+    print(f2)
+    print(f1 * f2)
+    f += f1 * f2
+    print("---------------")
+    
+display(f)
+
+次数は概ねあってきたが、次数側がズレている
 """
 from random import choice, randint
 

@@ -145,6 +145,7 @@ display(f)
 
 次数は概ねあってきたが、次数側がズレている
 
+<<<<<<< HEAD
 10/6
 係数のなんとなくのズレがある
     微分側と積分側を同じ関数で処理していることが原因っぽい？
@@ -167,6 +168,127 @@ display(f)
         置いておかないと、係数が少しずつ累積していく
         追加で、積分後の係数も置いておく必要がある
             係数は次数の逆数になっている？
+=======
+10/19
+import sympy as sy
+
+x = sy.Symbol('x', real=True)
+
+f = ((3 * x - 4) ** 2) * ((x - 2) ** 3)
+display(f)
+f_plus1 = sy.integrate(f, x)
+display(f_plus1)
+
+g = (
+    ((3 * x - 4) ** 2) * (sy.Rational(1, 4) * (x - 2) ** 4) 
+    - 2 * 3 * (3 * x - 4) * (sy.Rational(1, 4) * sy.Rational(1, 5) * (x - 2) ** 5) 
+    + 2 * 3 * 3 * 1 * (sy.Rational(1, 4) * sy.Rational(1, 5) * sy.Rational(1, 6) * (x - 2) ** 6)
+)
+display(sy.expand(g))
+print(g == f)
+
+瞬間部分積分の計算的な認識はあっている
+
+import sympy as sy
+
+x = sy.Symbol('x', real=True)
+f = (3 * x - 4) ** 2
+display(f)
+f_minus1 = sy.factor(sy.diff(f, x))
+display(f_minus1)
+f_minus2 = sy.factor(sy.diff(f_minus1, x))
+display(f_minus2)
+
+g = sy.Rational(1, 6) * sy.Rational(1, 7) * sy.Rational(1, 8) * (x - 2) ** 8
+display(g)
+g_minus1 = sy.diff(g, x)
+display(g_minus1)
+g_minus2 = sy.diff(g_minus1, x)
+display(g_minus2)
+g_minus3 = sy.diff(g_minus2, x)
+display(g_minus3)
+
+あとはmore, lessと関連付ける。それと、適当な手に負える程度の係数に留める必要がある
+
+from random import choice, randint
+import sympy as sy
+
+def random_integer(a, b, including_zero=True):
+    if including_zero:
+        return randint(a, b)
+    else:        
+        if a <= 0 <= b:
+            # 0を避けて範囲を分割
+            return choice(list(range(a, 0)) + list(range(1, b + 1)))
+        else:
+            # 0が範囲に含まれていない場合
+            return randint(a, b)
+
+sy.init_printing(order='grevlex')
+        
+x = sy.Symbol('x', real=True)
+        
+less_dimension = 2
+more_dimension = 5
+
+a1 = random_integer(1, 3, including_zero=False)
+b1 = random_integer(-2, 2, including_zero=False)
+f = (a1 * x + b1) ** less_dimension
+display(f)
+
+for i in range(1, less_dimension + 1):
+    fn = sy.diff(f, x, i)
+    display(sy.factor(fn, x))
+
+print("-------------")
+a2 = random_integer(-2, 2, including_zero=False)
+b2 = random_integer(-2, 2)
+g = (a2 * x + b2) ** more_dimension
+display(g)
+
+for i in range(1, less_dimension + 1):
+
+
+
+from random import choice, randint
+import sympy as sy
+
+def random_integer(a, b, including_zero=True):
+    if including_zero:
+        return randint(a, b)
+    else:        
+        if a <= 0 <= b:
+            # 0を避けて範囲を分割
+            return choice(list(range(a, 0)) + list(range(1, b + 1)))
+        else:
+            # 0が範囲に含まれていない場合
+            return randint(a, b)
+
+sy.init_printing(order='grevlex')
+        
+x = sy.Symbol('x', real=True)
+        
+less_dimension = 2
+more_dimension = 5
+
+a1 = random_integer(1, 3, including_zero=False)
+b1 = random_integer(-2, 2, including_zero=False)
+f = (a1 * x + b1) ** less_dimension
+display(f)
+
+for i in range(1, less_dimension + 1):
+    fn = sy.diff(f, x, i)
+    display(sy.factor(fn, x))
+
+print("-------------")
+a2 = random_integer(-2, 2, including_zero=False)
+b2 = random_integer(-2, 2)
+g = (a2 * x + b2) ** more_dimension
+display(g)
+
+for i in range(1, less_dimension + 1):
+
+>>>>>>> ae1e29f (processing.)
 """
 from random import choice, randint
 

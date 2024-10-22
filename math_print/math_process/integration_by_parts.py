@@ -264,6 +264,70 @@ display(g)
 
 for i in range(1, less_dimension + 1):
 
+10/22
+多項式×多項式のロジックを引き続き考える。
+ある程度は関係性がわかってきた
+
+# 積分の係数周り
+less側+1だけ積分、つまり逆側の微分が必要になる
+more側の指数+1, +2, +3, ...のように逆数を配置する必要がある
+    1 / (more + (less + 1))のような係数を配置する
+    分母はmore + (less + 1), more + less, more + less - 1のように、more + (less + 1)を起点として、less分だけ落とす必要がある
+
+from random import choice, randint
+import sympy as sy
+
+sy.init_printing(order='grevlex')
+
+def step_factorial(start, end):
+    result = 1
+    for i in range(start, end + 1):
+        result *= i
+    return result
+
+def random_integer(a, b, including_zero=True):
+    if including_zero:
+        return randint(a, b)
+    else:        
+        if a <= 0 <= b:
+            # 0を避けて範囲を分割
+            return choice(list(range(a, 0)) + list(range(1, b + 1)))
+        else:
+            # 0が範囲に含まれていない場合
+            return randint(a, b)
+
+x = sy.Symbol('x', real=True)
+
+less_dimension = 2
+a1 = random_integer(-2, 2, including_zero=False)
+b1 = random_integer(-2, 2)
+f = (a1 * x + b1) ** 2
+display(f)
+fs = []
+fs.append(f)
+for i in range(1, less_dimension + 1):
+    diff_f = sy.diff(f, x, i)
+    display(sy.factor(diff_f))
+    fs.append(diff_f)
+
+print("-----------------")
+more_dimension = 5
+a2 = random_integer(-2, 2, including_zero=False)
+b2 = random_integer(-2, 2)
+g = (a2 * x + b2) ** more_dimension
+display(g)
+denom = step_factorial(more_dimension + 1, more_dimension + 1 + less_dimension)
+print(denom)
+g_plus = sy.Rational(1, denom) * (a2 * x + b2) ** (more_dimension + (less_dimension + 1))
+display(g_plus)
+gs = []
+for i in range(1, less_dimension + 1):
+    diff_g_plus = sy.diff(g_plus, x, i)
+    display(diff_g_plus)
+    gs.append(diff_g_plus)
+
+gs.reverse()
+
 """
 from random import choice, randint
 

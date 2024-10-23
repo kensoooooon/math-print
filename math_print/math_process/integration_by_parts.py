@@ -328,6 +328,84 @@ for i in range(1, less_dimension + 1):
 
 gs.reverse()
 
+10/23
+それぞれの項を出すための計算方法は概ね定まった。
+
+from random import choice, randint
+import sympy as sy
+
+sy.init_printing(order='grevlex')
+
+def step_factorial(start, end):
+    result = 1
+    for i in range(start, end + 1):
+        result *= i
+    return result
+
+def random_integer(a, b, including_zero=True):
+    if including_zero:
+        return randint(a, b)
+    else:        
+        if a <= 0 <= b:
+            # 0を避けて範囲を分割
+            return choice(list(range(a, 0)) + list(range(1, b + 1)))
+        else:
+            # 0が範囲に含まれていない場合
+            return randint(a, b)
+
+x = sy.Symbol('x', real=True)
+
+less_dimension = 2
+# a1 = random_integer(-2, 2, including_zero=False)
+a1 = 3
+# b1 = random_integer(-2, 2)
+b1 = -4
+f = (a1 * x + b1) ** 2
+display(f)
+fs = [f, f]
+for i in range(1, less_dimension + 1):
+    diff_f = sy.diff(f, x, i)
+    display(sy.factor(diff_f))
+    fs.append(diff_f)
+
+print("-----------------")
+more_dimension = 5
+# a2 = random_integer(-2, 2, including_zero=False)
+a2 = 1
+# b2 = random_integer(-2, 2)
+b2 = -2
+g = (a2 * x + b2) ** more_dimension
+display(g)
+denom = step_factorial(more_dimension + 1, more_dimension + 1 + less_dimension)
+g_plus = sy.Rational(1, denom) * (a2 * x + b2) ** (more_dimension + (less_dimension + 1))
+display(g_plus)
+gs = [g_plus]
+for i in range(1, less_dimension + 1):
+    diff_g_plus = sy.diff(g_plus, x, i)
+    display(diff_g_plus)
+    gs.append(diff_g_plus)
+
+gs.reverse()
+gs = [g] + gs
+
+print("-------------------")
+print(f"fs length: {len(fs)}")
+print(fs)
+print(f"gs length: {len(gs)}")
+print(gs)
+result = 0
+for index, (left, right) in enumerate(zip(fs, gs)):
+    if index % 2 == 0:
+        sign = +1
+    else:
+        sign = -1
+    result += sign * (left * right)
+
+display(result)
+
+あとは、表示と計算をどこまで行うか？という話になってくる
+    瞬間部分積分を前提とするのであれば、+, -を順番に書いていく形でほぼ事足りる
+
 """
 from random import choice, randint
 

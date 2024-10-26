@@ -406,8 +406,99 @@ display(result)
 あとは、表示と計算をどこまで行うか？という話になってくる
     瞬間部分積分を前提とするのであれば、+, -を順番に書いていく形でほぼ事足りる
 
-"""
+
+10/26
+途中経過を一回だけ見せて、最後に答えについては省略して見せる形式で
+
 from random import choice, randint
+import sympy as sy
+
+sy.init_printing(order='grevlex')
+
+def step_factorial(start, end):
+    result = 1
+    for i in range(start, end + 1):
+        result *= i
+    return result
+
+def random_integer(a, b, including_zero=True):
+    if including_zero:
+        return randint(a, b)
+    else:        
+        if a <= 0 <= b:
+            # 0を避けて範囲を分割
+            return choice(list(range(a, 0)) + list(range(1, b + 1)))
+        else:
+            # 0が範囲に含まれていない場合
+            return randint(a, b)
+
+x = sy.Symbol('x', real=True)
+
+less_dimension = 2
+# a1 = random_integer(-2, 2, including_zero=False)
+a1 = 3
+# b1 = random_integer(-2, 2)
+b1 = -4
+f = (a1 * x + b1) ** 2
+display(f)
+fs = [f]
+for i in range(1, less_dimension + 1):
+    diff_f = sy.diff(f, x, i)
+    fs.append(sy.factor(diff_f))
+
+print("-----------------")
+more_dimension = 5
+# a2 = random_integer(-2, 2, including_zero=False)
+a2 = 1
+# b2 = random_integer(-2, 2)
+b2 = -2
+g = (a2 * x + b2) ** more_dimension
+display(g)
+denom = step_factorial(more_dimension + 1, more_dimension + 1 + less_dimension)
+g_plus = sy.Rational(1, denom) * (a2 * x + b2) ** (more_dimension + (less_dimension + 1))
+gs = [g_plus]
+for i in range(1, less_dimension + 1):
+    diff_g_plus = sy.diff(g_plus, x, i)
+    gs.append(diff_g_plus)
+
+gs.reverse()
+
+print("-------------------")
+print(f"fs length: {len(fs)}")
+print(fs)
+print(f"gs length: {len(gs)}")
+print(gs)
+result = 0
+for index, (left, right) in enumerate(zip(fs, gs)):
+    if index % 2 == 0:
+        sign = +1
+    else:
+        sign = -1
+    result += sign * (left * right)
+
+display(sy.factor(result))
+
+formula = f"\\int {sy.latex(f)} {sy.latex(g)} \\, dx \n"
+formula += "="
+for index, (left, right) in enumerate(zip(fs, gs)):
+    if index == 0:
+        sign = ""
+    elif index % 2 == 0:
+        sign = "+"
+    else:
+        sign = "-"
+    formula += f"{sign} {sy.latex(left)}{sy.latex(right)}"
+
+    
+display(formula)
+
+定型の問題ならある程度対処できるようになってきた
+
+その他調整が必要そうな点
+    全く同じax+bになると、そもそも部分積分を使う意味がなくなる
+    
+"""
+from random import choice, randint, sample
 
 import sympy as sy
 
@@ -427,6 +518,7 @@ class IntegrationByPartsProblem:
         Raises:
             ValueError: 想定していないタイプの問題が指定されたときに送出
         """
+        sy.init_printing(order='grevlex')
         selected_calculation_type = choice(settings["types_of_integration_by_parts"])
         selected_integral_type = choice(settings["integral_types"])
         if selected_calculation_type == "double_polynomial":
@@ -444,9 +536,127 @@ class IntegrationByPartsProblem:
             latex_answer (str): latex形式で記述されていることを前提とした解答
             latex_problem (str): latex形式で記述されていることを前提とした問題
         """
+        
+        def step_factorial(start, end):
+            """startからendまでの階乗を計算するための関数
+            
+            Args:
+                start (int): 起点となる数
+                end (int): 終点となる数
+            
+            Returns:
+                result (int): 階乗の結果
+                
+            Raises:
+                ValueError: start, endのいずれかが負の数。またはstartの方がendより大きいときに送出される
+            """
+            if (start < 0) or (end < 0):
+                raise ValueError(f"'start' and 'end' must be more or equal 0. {start} and {end} is invalid value.")
+            if start >= end:
+                raise ValueError(f"'end' must be more than 'start'. {start} and {end} is invalid value.")
+            result = 1
+            for i in range(start, end + 1):
+                result *= i
+            return result
+
+        def random_integer(min_value, max_value, including_zero=True):
+            """min_valueからmax_valueまでの範囲のランダムな整数を出力する
+            
+            Args:
+                min_value (int): 最小値
+                max_value (int): 最大値
+                including_zero (Optional[bool]): 0を含むか否か。デフォルトはTrue(含む)
+            
+            Returns:
+                random_integer(sy.Integer): 条件を満たす整数
+            """
+            if including_zero:
+                random_integer = randint(min_value, max_value)
+            else:        
+                if min_value <= 0 <= max_value:
+                    # 0を避けて範囲を分割
+                    random_integer = choice(list(range(min_value, 0)) + list(range(1, max_value + 1)))
+                else:
+                    # 0が範囲に含まれていない場合
+                    random_integer = randint(min_value, max_value)
+            return sy.Integer(random_integer)
+
+        def random_four_integers(min_value, max_value, including_zero=True):
+            """min_valueからmax_valueまでの範囲で条件を満たす4つの整数を出力する。
+            
+            Args:
+                min_value (int): 最小値
+                max_value (int): 最大値
+                including_zero (Optional[bool]): 0を含むか否か。デフォルトはTrue(含む)
+            
+            Returns:
+                tuple: (a1, a2, b1, b2) 条件を満たす4つの整数(sy.Integer)
+            """
+            def generate_candidates():
+                """整数候補のリストを生成する関数"""
+                if including_zero:
+                    return list(range(min_value, max_value + 1))
+                else:
+                    if min_value <= 0 <= max_value:
+                        return list(range(min_value, 0)) + list(range(1, max_value + 1))
+                    else:
+                        return list(range(min_value, max_value + 1))
+
+            candidates = generate_candidates()
+
+            while True:
+                # まず a1 と a2 を選ぶ（a1 = a2 も許可）
+                a1 = choice(candidates)
+                a2 = choice(candidates)
+
+                # b1 と b2 を選ぶ（b1 = b2 も許可）
+                b1 = choice(candidates)
+                b2 = choice(candidates)
+
+                # 条件をチェック (a1 = a2 かつ b1 = b2 を避ける)
+                if not (a1 == a2 and b1 == b2):
+                    return sy.Integer(a1), sy.Integer(a2), sy.Integer(b1), sy.Integer(b2)
+
+
+        
+        x = sy.Symbol('x', real=True)
         if selected_integral_type == "indefinite_integral":
-            latex_answer = "This is dummy answer."
-            latex_problem = "This is dummy problem."
+            a1, a2, b1, b2 = random_four_integer(-3, 3)
+            less_dimension = 1
+            more_dimension = 4
+            f = (a1 * x + b1) ** less_dimension
+            fs = [f]
+            for i in range(1, less_dimension + 1):
+                diff_f = sy.diff(f, x, i)
+                fs.append(sy.factor(diff_f))
+            g = (a2 * x + b2) ** more_dimension
+            denom = step_factorial(more_dimension + 1, more_dimension + 1 + less_dimension)
+            g_plus = sy.Rational(1, denom) * (a2 * x + b2) ** (more_dimension + (less_dimension + 1))
+            gs = [g_plus]
+            for i in range(1, less_dimension + 1):
+                diff_g_plus = sy.diff(g_plus, x, i)
+                gs.append(diff_g_plus)
+            gs.reverse()
+            result = 0
+            for index, (left, right) in enumerate(zip(fs, gs)):
+                if index % 2 == 0:
+                    sign = +1
+                else:
+                    sign = -1
+                result += sign * (left * right)
+            answer = sy.factor(result)
+            latex_problem = f"\\( \\int {sy.latex(f)} {sy.latex(g)} \\, dx \\)"
+            latex_answer = "\\( ="
+            for index, (left, right) in enumerate(zip(fs, gs)):
+                if index == 0:
+                    sign = ""
+                elif index % 2 == 0:
+                    sign = "+"
+                else:
+                    sign = "-"
+                latex_answer += f"{sign} {sy.latex(left)}{sy.latex(right)}"
+            latex_answer += "+ C \\) \n"
+            latex_answer += f"\\( = {sy.latex(answer)} + C \\)"
         elif selected_integral_type == "definite_integral":
             latex_answer = "This is dummy answer."
             latex_problem = "This is dummy problem."

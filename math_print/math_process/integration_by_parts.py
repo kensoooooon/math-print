@@ -497,6 +497,8 @@ display(formula)
 その他調整が必要そうな点
     全く同じax+bになると、そもそも部分積分を使う意味がなくなる
     
+10/27
+    random_four_integersで調整完了のはず
 """
 from random import choice, randint, sample
 
@@ -621,7 +623,7 @@ class IntegrationByPartsProblem:
         
         x = sy.Symbol('x', real=True)
         if selected_integral_type == "indefinite_integral":
-            a1, a2, b1, b2 = random_four_integer(-3, 3)
+            a1, a2, b1, b2 = random_four_integers(-3, 3)
             less_dimension = 1
             more_dimension = 4
             f = (a1 * x + b1) ** less_dimension

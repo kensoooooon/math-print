@@ -499,6 +499,12 @@ display(formula)
     
 10/27
     random_four_integersで調整完了のはず
+    
+    後は()の表示が出来ていない点も要調整
+        ある程度中括弧で対応できそうだが、細かいところの調整がガバい
+        定数項がなければカッコは不要
+        掛け算であれば前後はカッコで囲む
+        など
 """
 from random import choice, randint, sample
 
@@ -610,6 +616,9 @@ class IntegrationByPartsProblem:
                 # まず a1 と a2 を選ぶ（a1 = a2 も許可）
                 a1 = choice(candidates)
                 a2 = choice(candidates)
+                
+                if (a1 == 0) or (a2 == 0):
+                    continue
 
                 # b1 と b2 を選ぶ（b1 = b2 も許可）
                 b1 = choice(candidates)
@@ -619,13 +628,26 @@ class IntegrationByPartsProblem:
                 if not (a1 == a2 and b1 == b2):
                     return sy.Integer(a1), sy.Integer(a2), sy.Integer(b1), sy.Integer(b2)
 
-
+        def latex_with_brackets(formula):
+            """式にカッコがない場合はそれを補いつつ、latex形式への変換を行う
+            
+            Args:
+                formula (sy.Expr): latexに変換したい数式
+            
+            Returns:
+                latex_formula (str): latex形式の数式
+            """
+            if ('(' not in sy.latex(formula)) or (')' not in sy.latex(formula)):
+                latex_formula = f"( {sy.latex(formula)} )"
+            else:
+                latex_formula = sy.latex(formula)
+            return latex_formula
         
         x = sy.Symbol('x', real=True)
         if selected_integral_type == "indefinite_integral":
             a1, a2, b1, b2 = random_four_integers(-3, 3)
-            less_dimension = 1
-            more_dimension = 4
+            less_dimension = random_integer(1, 3, including_zero=False)
+            more_dimension = less_dimension + random_integer(1, 3, including_zero=False)
             f = (a1 * x + b1) ** less_dimension
             fs = [f]
             for i in range(1, less_dimension + 1):
@@ -647,7 +669,10 @@ class IntegrationByPartsProblem:
                     sign = -1
                 result += sign * (left * right)
             answer = sy.factor(result)
-            latex_problem = f"\\( \\int {sy.latex(f)} {sy.latex(g)} \\, dx \\)"
+            # 1乗への対応
+            f_latex = latex_with_brackets(f)
+            g_latex = latex_with_brackets(g)
+            latex_problem = f"\\( \\int {f_latex} {g_latex} \\, dx \\)"
             latex_answer = "\\( ="
             for index, (left, right) in enumerate(zip(fs, gs)):
                 if index == 0:
@@ -656,7 +681,11 @@ class IntegrationByPartsProblem:
                     sign = "+"
                 else:
                     sign = "-"
-                latex_answer += f"{sign} {sy.latex(left)}{sy.latex(right)}"
+                # 1乗への対応
+                left_latex = latex_with_brackets(left)
+                right_latex = latex_with_brackets(right)
+                latex_answer += f"{sign} \\left\\{{ {left_latex} \\right\\}} \\left\\{{ {right_latex} \\right\\}}"
+                # latex_answer += f"{sign} {left_latex} {right_latex}"
             latex_answer += "+ C \\) \n"
             latex_answer += f"\\( = {sy.latex(answer)} + C \\)"
         elif selected_integral_type == "definite_integral":

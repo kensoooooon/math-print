@@ -139,20 +139,48 @@ class IntegrationByPartsProblem:
                 if not (a1 == a2 and b1 == b2):
                     return sy.Integer(a1), sy.Integer(a2), sy.Integer(b1), sy.Integer(b2)
 
+        # def latex_with_brackets(formula):
+        #     """式にカッコがない場合はそれを補いつつ、latex形式への変換を行う
+        #    
+        #     Args:
+        #        formula (sy.Expr): latexに変換したい数式
+        #    
+        #    Returns:
+        #        latex_formula (str): latex形式の数式
+        #    """
+        #    if ('(' not in sy.latex(formula)) or (')' not in sy.latex(formula)):
+        #        latex_formula = f"( {sy.latex(formula)} )"
+        #    else:
+        #        latex_formula = sy.latex(formula)
+        #    return latex_formula
+    
         def latex_with_brackets(formula):
-            """式にカッコがない場合はそれを補いつつ、latex形式への変換を行う
-            
+            """シンボルが含まれるが定数項がない場合はカッコを省略し、負の定数項がある場合はカッコを付けてlatex形式に変換する
+
             Args:
                 formula (sy.Expr): latexに変換したい数式
-            
+
             Returns:
                 latex_formula (str): latex形式の数式
             """
-            if ('(' not in sy.latex(formula)) or (')' not in sy.latex(formula)):
-                latex_formula = f"( {sy.latex(formula)} )"
+            # 定数項の確認
+            # 式の中に負の定数が含まれているかをチェック
+            has_negative_constant = any(term.is_number and term < 0 for term in formula.as_ordered_terms())
+            # シンボルが含まれる場合の処理
+            if formula.free_symbols:
+                # 定数項が存在しない場合
+                if not any(term.is_number for term in formula.as_ordered_terms()):
+                    latex_formula = sy.latex(formula)
+                # 負の定数項が存在する場合
+                elif has_negative_constant:
+                    latex_formula = f"( {sy.latex(formula)} )"
+                else:
+                    latex_formula = sy.latex(formula)
             else:
                 latex_formula = sy.latex(formula)
+
             return latex_formula
+
         
         x = sy.Symbol('x', real=True)
         if selected_integral_type == "indefinite_integral":
@@ -184,7 +212,7 @@ class IntegrationByPartsProblem:
             f_latex = latex_with_brackets(f)
             g_latex = latex_with_brackets(g)
             latex_problem = f"\\( \\int {f_latex} {g_latex} \\, dx \\)"
-            latex_answer = "\\( \\begin{{array}} = "
+            latex_answer = "\\( = \\)"
             """10/31
             直球でいじるならこの辺？
                 indexで判定つけて改行すればはみ出しは防げる
@@ -202,11 +230,11 @@ class IntegrationByPartsProblem:
                 # 1乗への対応
                 left_latex = latex_with_brackets(left)
                 right_latex = latex_with_brackets(right)
-                latex_answer += f"{sign} \\left\\{{ {left_latex} {right_latex} \\right\\}}"
+                latex_answer += f"\\( {sign} \\left\\{{ {left_latex} {right_latex} \\right\\}} \\)"
                 # latex_answer += f"{sign} {left_latex} {right_latex}"
-                if index % 2 == 1:
-                    latex_answer += '\\\\'
-            latex_answer += "+ C \\end{{array}} \\) \n"
+                if index % 3 == 1:
+                    latex_answer += '\n'
+            latex_answer += "\\( + C \\) \n"
             latex_answer += f"\\( = {sy.latex(answer)} + C \\)"
         elif selected_integral_type == "definite_integral":
             latex_answer = "This is dummy answer."

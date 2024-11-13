@@ -15,6 +15,11 @@
             latexの改行コマンドは？
                 begin+alignやarrayでどうにかなりそうな雰囲気がある(連立方程式)
                 が、今のところうまく動作していない。素の状態でhtml側に書き込むべき？
+
+
+11/13
+    表示の問題解決
+        条件の整理から
 """
 from random import choice, randint, sample
 

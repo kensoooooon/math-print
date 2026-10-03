@@ -342,6 +342,73 @@
             </form>
         </div>
     </div>
+    <div class="row">
+        <div class="col border-end border-bottom">
+            <p>三角関数を含む不等式</p>
+            <form action="?" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <small class="text-muted">\( \theta \)の範囲</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_pi" name="radian_range" id="trigonometric_inequality_up_to_pi">
+                        <label class="form-check-label" for="trigonometric_inequality_up_to_pi">
+                            \( 0 \leqq \theta \leqq \pi \)
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="up_to_2pi" name="radian_range" id="trigonometric_inequality_up_to_2pi" checked>
+                        <label class="form-check-label" for="trigonometric_inequality_up_to_2pi">
+                            \( 0 \leqq \theta < 2\pi \)
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">登場する三角関数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="sin" name="used_trigonometric_function" id="trigonometric_inequality_sin" checked>
+                        <label class="form-check-label" for="trigonometric_inequality_sin">
+                            sin
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="cos" name="used_trigonometric_function" id="trigonometric_inequality_cos" checked>
+                        <label class="form-check-label" for="trigonometric_inequality_cos">
+                            cos
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="tan" name="used_trigonometric_function" id="trigonometric_inequality_tan" checked>
+                        <label class="form-check-label" for="trigonometric_inequality_tan">
+                            tan
+                        </label>
+                    </div>
+                </div>
+                <small class="text-muted">枚数</small>
+                <div class="form-group">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="5" name="paper_number" id="TrigonometricInequalityFivePaper" checked>
+                        <label class="form-check-label" for="TrigonometricInequalityFivePaper">
+                            10問×5枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="10" name="paper_number" id="TrigonometricInequalityTenPaper">
+                        <label class="form-check-label" for="TrigonometricInequalityTenPaper">
+                            10問×10枚
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" value="15" name="paper_number" id="TrigonometricInequalityFifteenPaper">
+                        <label class="form-check-label" for="TrigonometricInequalityFifteenPaper">
+                            10問×15枚
+                        </label>
+                    </div>
+                </div>
+                <input class="btn btn-primary" type="submit" value="A4印刷用ページ表示" formaction="{% url 'trigonometric_inequality_print' %}">
+                <input class="btn btn-primary" type="submit" value="そのまま解く(10問)" formaction="{% url 'trigonometric_inequality_display' %}">
+            </form>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col border-end border-bottom">

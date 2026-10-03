@@ -225,6 +225,9 @@ urlpatterns = [
     # 三角関数
     path('trigonometric_function/print', views.print_trigonometric_function, name='trigonometric_function_print'),
     path('trigonometric_function/display', views.display_trigonometric_function, name='trigonometric_function_display'),
+    # 三角関数を含む不等式
+    path('trigonometric_inequality/print', views.print_trigonometric_inequality, name='trigonometric_inequality_print'),
+    path('trigonometric_inequality/display', views.display_trigonometric_inequality, name='trigonometric_inequality_display'),
     # 面積を求める積分
     path('calculate_area_by_integration/print', views.print_calculate_area_by_integration, name='calculate_area_by_integration_print'),
     path('calculate_area_by_integration/display', views.display_calculate_area_by_integration, name='calculate_area_by_integration_display'),

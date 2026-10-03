@@ -1069,7 +1069,8 @@ class TrigonometricFunctionProblem:
         latex_answer, latex_problem = latex_answer_and_problem_maker(selected_trigonometric_function, selected_radian_range)
         return latex_answer, latex_problem
     
-    def _trigonometric_functions_latex_maker(self):
+    @staticmethod
+    def _trigonometric_functions_latex_maker():
         """有理化を施さない三角関数の値を、latex形式で格納した辞書を出力
         
         Returns:

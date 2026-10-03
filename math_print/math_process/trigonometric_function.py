@@ -135,7 +135,7 @@ class TrigonometricFunctionProblem:
                     latex_answer = f"\\( \\theta = {sy.latex(selected_radian1)}, {sy.latex(selected_radian2)} \\)"
                 else:
                     latex_answer = f"\\( \\theta = {sy.latex(selected_radian)} \\)"
-                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi)} \\)を求めよ。"
+                latex_problem = f"\\( \\tan \\theta = {self._tan_values[selected_radian]} \\)を満たす\\( \\theta (0 \\leqq \\theta \\leqq {sy.latex(sy.pi)}) \\)を求めよ。"
             elif self._radian_range == "up_to_2pi":
                 if selected_radian < sy.pi:
                     selected_radian1 = selected_radian
